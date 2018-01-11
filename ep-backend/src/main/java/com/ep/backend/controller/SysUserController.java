@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Created by fcc on 2018/1/10.
  */
-@RequestMapping("/user")
+@RequestMapping("/sysUser")
 @Controller
 @Api(value = "后管用户")
 public class SysUserController {
@@ -21,6 +21,7 @@ public class SysUserController {
     @ApiOperation(value = "列表")
     @GetMapping("/index")
     public String getCaptcha() {
+        System.out.println("ccccccccc");
         return "sysUser/index";
     }
 
