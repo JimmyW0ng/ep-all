@@ -14,6 +14,7 @@ import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.pojo.po.EpSystemClientPo;
 import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.MessageCaptchaRepository;
+import com.ep.domain.repository.SysRoleAuthorityRepository;
 import com.ep.domain.repository.SystemClientRepository;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
@@ -67,8 +68,8 @@ public class SecurityAuthComponent {
 //    @Autowired
 //    private SysUserRepository sysUserRepository;
 //
-//    @Autowired
-//    private SysRoleAuthorityRepository sysRoleAuthorityRepository;
+@Autowired
+private SysRoleAuthorityRepository sysRoleAuthorityRepository;
 
     @Autowired
     private MessageCaptchaRepository messageCaptchaRepository;

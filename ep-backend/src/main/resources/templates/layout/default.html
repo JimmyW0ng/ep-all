@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+
+<body>
+<section id="container">
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--breadcrumbs start -->
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="/index"><i class="fa fa-home"></i>主页</a>
+                            <span></span>
+                        </li>
+                        <!--<li><a href="#">Library</a></li>-->
+                        <!--<li class="active">Data11</li>-->
+                    </ul>
+                    <!--breadcrumbs end -->
+                </div>
+            </div>
+            <div class="row" layout:fragment="main-content">
+
+            </div>
+        </section>
+    </section>
+</section>
+
+<!--footer start-->
+<footer th:replace="~{fragments/footer :: footer}">
+
+</footer>
+
+<script th:replace="~{fragments/scripts}">
+</script>
+
+
+</body>
+
+</html>
+
+

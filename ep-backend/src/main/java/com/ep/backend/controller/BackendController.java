@@ -1,9 +1,12 @@
 package com.ep.backend.controller;
 
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Author: J.W
  * @Date: 下午4:41 2018/1/9
  */
-@RequestMapping("security/backend")
+@RequestMapping("/backend")
 @Controller
 @Api(value = "api-security", description = "backend开放接口")
 public class BackendController {
@@ -26,5 +29,17 @@ public class BackendController {
     public String getCaptcha() {
         return "login";
     }
+
+    @ApiOperation(value = "后台登录按钮")
+    @PostMapping("/logined")
+    public String logined(
+//            @RequestParam(value="userName",required = false) String userName,
+            @RequestBody EpSystemUserPo epSystemUserPo
+//                          MyUeerPo userPo
+    ) {//采用@RequestBody入参只有一个
+        return "login";
+    }
+
+
 
 }

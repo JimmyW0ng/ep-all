@@ -1,6 +1,7 @@
 package com.ep.api.controller;
 
 import com.ep.api.security.SecurityAuthComponent;
+import com.ep.common.tool.IpTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
@@ -51,7 +52,7 @@ public class ApiController {
         if (resultDo.isError()) {
             return resultDo;
         }
-        return messageCaptchaService.getCaptcha(mobile, EpMessageCaptchaCaptchaType.short_msg, EpMessageCaptchaCaptchaScene.login, super.getIP(request));
+        return messageCaptchaService.getCaptcha(mobile, EpMessageCaptchaCaptchaType.short_msg, EpMessageCaptchaCaptchaScene.login, IpTools.getIpAddr(request));
     }
 
     /**
@@ -70,7 +71,7 @@ public class ApiController {
                                   @RequestParam(value = "code", required = false) String code,
                                   @RequestParam(value = "captcha", required = false) String captcha,
                                   @RequestParam(value = "clientId", required = false) String clientId,
-                                  @RequestParam(value = "clientSecret", required = false) String clientSecret
+                                  @RequestParam(value = "clientSecret", required = false) String clientSecret//1qaz2wsx
     ) {
         return securityAuthComponent.loginFromApi(mobile.toString(), code, captcha, clientId, clientSecret);
     }
