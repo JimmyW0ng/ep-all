@@ -31,10 +31,26 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     private static final long serialVersionUID = 1152533887;
 
     /**
+     * Setter for <code>ep.ep_wechat_session_token.id</code>. 主键
+     */
+    public EpWechatSessionTokenRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpWechatSessionTokenRecord
      */
     public EpWechatSessionTokenRecord() {
         super(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_session_token.session_token</code>. 平台会话token
+     */
+    public EpWechatSessionTokenRecord setSessionToken(String value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -55,43 +71,6 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_session_token.id</code>. 主键
-     */
-    public EpWechatSessionTokenRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_session_token.session_token</code>. 平台会话token
-     */
-    public String getSessionToken() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_session_token.session_token</code>. 平台会话token
-     */
-    public EpWechatSessionTokenRecord setSessionToken(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_session_token.open_id</code>. 微信用户唯一标识
-     */
-    public String getOpenId() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_wechat_session_token.open_id</code>. 微信用户唯一标识
      */
     public EpWechatSessionTokenRecord setOpenId(String value) {
@@ -100,10 +79,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.session_key</code>. 微信会话密钥
+     * Getter for <code>ep.ep_wechat_session_token.id</code>. 主键
      */
-    public String getSessionKey() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -115,10 +94,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.remarks</code>. 备注信息
+     * Getter for <code>ep.ep_wechat_session_token.session_token</code>. 平台会话token
      */
-    public String getRemarks() {
-        return (String) get(4);
+    public String getSessionToken() {
+        return (String) get(1);
     }
 
     /**
@@ -130,10 +109,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_wechat_session_token.open_id</code>. 微信用户唯一标识
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(5);
+    public String getOpenId() {
+        return (String) get(2);
     }
 
     /**
@@ -145,10 +124,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_wechat_session_token.session_key</code>. 微信会话密钥
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(6);
+    public String getSessionKey() {
+        return (String) get(3);
     }
 
     /**
@@ -160,6 +139,13 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
+     * Getter for <code>ep.ep_wechat_session_token.remarks</code>. 备注信息
+     */
+    public String getRemarks() {
+        return (String) get(4);
+    }
+
+    /**
      * Getter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
@@ -167,16 +153,18 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_wechat_session_token.create_at</code>. 创建时间
      */
-    public EpWechatSessionTokenRecord setDelFlag(Boolean value) {
-        set(7, value);
-        return this;
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(5);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_wechat_session_token.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(6);
+    }
 
     /**
      * Getter for <code>ep.ep_wechat_session_token.version</code>.
@@ -186,16 +174,8 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     // -------------------------------------------------------------------------
-    // Record9 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_wechat_session_token.version</code>.
-     */
-    public EpWechatSessionTokenRecord setVersion(Long value) {
-        set(8, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -204,6 +184,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -437,10 +421,6 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -464,6 +444,26 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
         value7(value7);
         value8(value8);
         value9(value9);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
+     */
+    public EpWechatSessionTokenRecord setDelFlag(Boolean value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_session_token.version</code>.
+     */
+    public EpWechatSessionTokenRecord setVersion(Long value) {
+        set(8, value);
         return this;
     }
 }

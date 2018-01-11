@@ -30,59 +30,81 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
 
+    private static final long serialVersionUID = -2109576008;
+
     /**
      * The reference instance of <code>ep.ep_organ_account</code>
      */
     public static final EpOrganAccount EP_ORGAN_ACCOUNT = new EpOrganAccount();
-    private static final long serialVersionUID = -2109576008;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganAccountRecord> getRecordType() {
+        return EpOrganAccountRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_account.id</code>. 主键
      */
     public final TableField<EpOrganAccountRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_account.member_id</code>. 会员id
      */
     public final TableField<EpOrganAccountRecord, Long> MEMBER_ID = createField("member_id", org.jooq.impl.SQLDataType.BIGINT, this, "会员id");
+
     /**
      * The column <code>ep.ep_organ_account.in_organ_name</code>. 内部花名
      */
     public final TableField<EpOrganAccountRecord, String> IN_ORGAN_NAME = createField("in_organ_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "内部花名");
+
     /**
      * The column <code>ep.ep_organ_account.introduce</code>. 介绍
      */
     public final TableField<EpOrganAccountRecord, String> INTRODUCE = createField("introduce", org.jooq.impl.SQLDataType.VARCHAR.length(3000), this, "介绍");
+
     /**
      * The column <code>ep.ep_organ_account.role</code>. 权限对应角色
      */
     public final TableField<EpOrganAccountRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "权限对应角色");
+
     /**
      * The column <code>ep.ep_organ_account.ogn_id</code>. 所属机构id
      */
     public final TableField<EpOrganAccountRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "所属机构id");
+
     /**
      * The column <code>ep.ep_organ_account.status</code>. 状态：待审核；正常；已冻结；已注销；
      */
     public final TableField<EpOrganAccountRecord, EpOrganAccountStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganAccountStatus.class), this, "状态：待审核；正常；已冻结；已注销；");
+
     /**
      * The column <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号
      */
     public final TableField<EpOrganAccountRecord, Long> REFER_MOBILE = createField("refer_mobile", org.jooq.impl.SQLDataType.BIGINT, this, "关联手机号");
+
     /**
      * The column <code>ep.ep_organ_account.create_at</code>. 创建时间
      */
     public final TableField<EpOrganAccountRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_account.update_at</code>. 更新时间
      */
     public final TableField<EpOrganAccountRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_account.remark</code>. 备注
      */
     public final TableField<EpOrganAccountRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_account.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganAccountRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_account.version</code>.
      */
@@ -108,14 +130,6 @@ public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
 
     private EpOrganAccount(String alias, Table<EpOrganAccountRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构后台账户");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganAccountRecord> getRecordType() {
-        return EpOrganAccountRecord.class;
     }
 
     /**

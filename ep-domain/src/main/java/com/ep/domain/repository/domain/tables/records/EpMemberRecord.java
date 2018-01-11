@@ -34,10 +34,26 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     private static final long serialVersionUID = -113360319;
 
     /**
+     * Setter for <code>ep.ep_member.id</code>. 主键
+     */
+    public EpMemberRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpMemberRecord
      */
     public EpMemberRecord() {
         super(EpMember.EP_MEMBER);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member.mobile</code>. 手机号
+     */
+    public EpMemberRecord setMobile(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -63,43 +79,6 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member.id</code>. 主键
-     */
-    public EpMemberRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member.mobile</code>. 手机号
-     */
-    public Long getMobile() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member.mobile</code>. 手机号
-     */
-    public EpMemberRecord setMobile(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member.nick_name</code>. 昵称
-     */
-    public String getNickName() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_member.nick_name</code>. 昵称
      */
     public EpMemberRecord setNickName(String value) {
@@ -108,10 +87,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.true_name</code>. 真实姓名
+     * Getter for <code>ep.ep_member.id</code>. 主键
      */
-    public String getTrueName() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -123,10 +102,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.sex</code>. 性别
+     * Getter for <code>ep.ep_member.mobile</code>. 手机号
      */
-    public EpMemberSex getSex() {
-        return (EpMemberSex) get(4);
+    public Long getMobile() {
+        return (Long) get(1);
     }
 
     /**
@@ -138,10 +117,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.email</code>. 邮箱
+     * Getter for <code>ep.ep_member.nick_name</code>. 昵称
      */
-    public String getEmail() {
-        return (String) get(5);
+    public String getNickName() {
+        return (String) get(2);
     }
 
     /**
@@ -153,10 +132,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_member.true_name</code>. 真实姓名
      */
-    public EpMemberStatus getStatus() {
-        return (EpMemberStatus) get(6);
+    public String getTrueName() {
+        return (String) get(3);
     }
 
     /**
@@ -168,10 +147,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.type</code>. 类型：会员；机构账户
+     * Getter for <code>ep.ep_member.sex</code>. 性别
      */
-    public EpMemberType getType() {
-        return (EpMemberType) get(7);
+    public EpMemberSex getSex() {
+        return (EpMemberSex) get(4);
     }
 
     /**
@@ -183,10 +162,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.role</code>. 会员角色
+     * Getter for <code>ep.ep_member.email</code>. 邮箱
      */
-    public String getRole() {
-        return (String) get(8);
+    public String getEmail() {
+        return (String) get(5);
     }
 
     /**
@@ -198,10 +177,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member.status</code>. 状态：正常；已冻结；已注销；
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public EpMemberStatus getStatus() {
+        return (EpMemberStatus) get(6);
     }
 
     /**
@@ -213,10 +192,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member.type</code>. 类型：会员；机构账户
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public EpMemberType getType() {
+        return (EpMemberType) get(7);
     }
 
     /**
@@ -228,10 +207,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.remark</code>. 备注
+     * Getter for <code>ep.ep_member.role</code>. 会员角色
      */
-    public String getRemark() {
-        return (String) get(11);
+    public String getRole() {
+        return (String) get(8);
     }
 
     /**
@@ -243,6 +222,13 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
+     * Getter for <code>ep.ep_member.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
+    }
+
+    /**
      * Getter for <code>ep.ep_member.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
@@ -250,16 +236,18 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_member.update_at</code>. 更新时间
      */
-    public EpMemberRecord setDelFlag(Boolean value) {
-        set(12, value);
-        return this;
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_member.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(11);
+    }
 
     /**
      * Getter for <code>ep.ep_member.version</code>.
@@ -269,16 +257,8 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     // -------------------------------------------------------------------------
-    // Record14 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_member.version</code>.
-     */
-    public EpMemberRecord setVersion(Long value) {
-        set(13, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -287,6 +267,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record14 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -645,10 +629,6 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -677,6 +657,26 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
         value12(value12);
         value13(value13);
         value14(value14);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_member.del_flag</code>. 删除标志
+     */
+    public EpMemberRecord setDelFlag(Boolean value) {
+        set(12, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_member.version</code>.
+     */
+    public EpMemberRecord setVersion(Long value) {
+        set(13, value);
         return this;
     }
 }

@@ -29,43 +29,61 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
 
+    private static final long serialVersionUID = -314434124;
+
     /**
      * The reference instance of <code>ep.ep_organ_class_child</code>
      */
     public static final EpOrganClassChild EP_ORGAN_CLASS_CHILD = new EpOrganClassChild();
-    private static final long serialVersionUID = -314434124;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganClassChildRecord> getRecordType() {
+        return EpOrganClassChildRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_class_child.id</code>. 主键
      */
     public final TableField<EpOrganClassChildRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_class_child.class_id</code>. 班级id
      */
     public final TableField<EpOrganClassChildRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班级id");
+
     /**
      * The column <code>ep.ep_organ_class_child.child_id</code>. 孩子id
      */
     public final TableField<EpOrganClassChildRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
+
     /**
      * The column <code>ep.ep_organ_class_child.order_id</code>. 订单id
      */
     public final TableField<EpOrganClassChildRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "订单id");
+
     /**
      * The column <code>ep.ep_organ_class_child.create_at</code>. 创建时间
      */
     public final TableField<EpOrganClassChildRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_class_child.update_at</code>. 更新时间
      */
     public final TableField<EpOrganClassChildRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_class_child.remark</code>. 备注
      */
     public final TableField<EpOrganClassChildRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_class_child.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganClassChildRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_class_child.version</code>.
      */
@@ -91,14 +109,6 @@ public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
 
     private EpOrganClassChild(String alias, Table<EpOrganClassChildRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构班级孩子表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganClassChildRecord> getRecordType() {
-        return EpOrganClassChildRecord.class;
     }
 
     /**

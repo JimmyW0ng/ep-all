@@ -32,10 +32,26 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     private static final long serialVersionUID = 645418215;
 
     /**
+     * Setter for <code>ep.ep_organ_class_schedule_comment.id</code>. 主键
+     */
+    public EpOrganClassScheduleCommentRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganClassScheduleCommentRecord
      */
     public EpOrganClassScheduleCommentRecord() {
         super(EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
+     */
+    public EpOrganClassScheduleCommentRecord setPId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -59,43 +75,6 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_schedule_comment.id</code>. 主键
-     */
-    public EpOrganClassScheduleCommentRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
-     */
-    public Long getPId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_schedule_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
-     */
-    public EpOrganClassScheduleCommentRecord setPId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.class_schedule_id</code>. 行程id
-     */
-    public Long getClassScheduleId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_class_schedule_comment.class_schedule_id</code>. 行程id
      */
     public EpOrganClassScheduleCommentRecord setClassScheduleId(Long value) {
@@ -104,10 +83,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.comment_type</code>. 评论类型: 评论；回复
+     * Getter for <code>ep.ep_organ_class_schedule_comment.id</code>. 主键
      */
-    public EpOrganClassScheduleCommentCommentType getCommentType() {
-        return (EpOrganClassScheduleCommentCommentType) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -119,10 +98,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.content</code>. 评论内容
+     * Getter for <code>ep.ep_organ_class_schedule_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
      */
-    public String getContent() {
-        return (String) get(4);
+    public Long getPId() {
+        return (Long) get(1);
     }
 
     /**
@@ -134,10 +113,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.launch_member_id</code>. 发起评论者id
+     * Getter for <code>ep.ep_organ_class_schedule_comment.class_schedule_id</code>. 行程id
      */
-    public Long getLaunchMemberId() {
-        return (Long) get(5);
+    public Long getClassScheduleId() {
+        return (Long) get(2);
     }
 
     /**
@@ -149,10 +128,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.reply_member_id</code>. 回复评论者id
+     * Getter for <code>ep.ep_organ_class_schedule_comment.comment_type</code>. 评论类型: 评论；回复
      */
-    public Long getReplyMemberId() {
-        return (Long) get(6);
+    public EpOrganClassScheduleCommentCommentType getCommentType() {
+        return (EpOrganClassScheduleCommentCommentType) get(3);
     }
 
     /**
@@ -164,10 +143,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class_schedule_comment.content</code>. 评论内容
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(7);
+    public String getContent() {
+        return (String) get(4);
     }
 
     /**
@@ -179,10 +158,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_class_schedule_comment.launch_member_id</code>. 发起评论者id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
+    public Long getLaunchMemberId() {
+        return (Long) get(5);
     }
 
     /**
@@ -194,10 +173,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_class_schedule_comment.reply_member_id</code>. 回复评论者id
      */
-    public String getRemark() {
-        return (String) get(9);
+    public Long getReplyMemberId() {
+        return (Long) get(6);
     }
 
     /**
@@ -209,6 +188,13 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class_schedule_comment.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(7);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
@@ -216,16 +202,18 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_organ_class_schedule_comment.update_at</code>. 更新时间
      */
-    public EpOrganClassScheduleCommentRecord setDelFlag(Boolean value) {
-        set(10, value);
-        return this;
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_class_schedule_comment.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(9);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_class_schedule_comment.version</code>.
@@ -235,16 +223,8 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     // -------------------------------------------------------------------------
-    // Record12 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_class_schedule_comment.version</code>.
-     */
-    public EpOrganClassScheduleCommentRecord setVersion(Long value) {
-        set(11, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -253,6 +233,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record12 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -561,10 +545,6 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -591,6 +571,26 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
         value10(value10);
         value11(value11);
         value12(value12);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
+     */
+    public EpOrganClassScheduleCommentRecord setDelFlag(Boolean value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule_comment.version</code>.
+     */
+    public EpOrganClassScheduleCommentRecord setVersion(Long value) {
+        set(11, value);
         return this;
     }
 }

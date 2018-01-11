@@ -31,10 +31,26 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     private static final long serialVersionUID = 1689061966;
 
     /**
+     * Setter for <code>ep.ep_file.id</code>. 主键
+     */
+    public EpFileRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpFileRecord
      */
     public EpFileRecord() {
         super(EpFile.EP_FILE);
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.file_name</code>. 文件名字
+     */
+    public EpFileRecord setFileName(String value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -57,43 +73,6 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_file.id</code>. 主键
-     */
-    public EpFileRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
-     */
-    public String getFileName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_file.file_name</code>. 文件名字
-     */
-    public EpFileRecord setFileName(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_file.file_url</code>. 文件url
-     */
-    public String getFileUrl() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_file.file_url</code>. 文件url
      */
     public EpFileRecord setFileUrl(String value) {
@@ -102,10 +81,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
+     * Getter for <code>ep.ep_file.id</code>. 主键
      */
-    public Byte getBizTypeCode() {
-        return (Byte) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -117,10 +96,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.source_id</code>. 业务ID
+     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
      */
-    public Long getSourceId() {
-        return (Long) get(4);
+    public String getFileName() {
+        return (String) get(1);
     }
 
     /**
@@ -132,10 +111,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.sort</code>. 排序
+     * Getter for <code>ep.ep_file.file_url</code>. 文件url
      */
-    public Integer getSort() {
-        return (Integer) get(5);
+    public String getFileUrl() {
+        return (String) get(2);
     }
 
     /**
@@ -147,10 +126,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(6);
+    public Byte getBizTypeCode() {
+        return (Byte) get(3);
     }
 
     /**
@@ -162,10 +141,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_file.source_id</code>. 业务ID
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
+    public Long getSourceId() {
+        return (Long) get(4);
     }
 
     /**
@@ -177,10 +156,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.remark</code>. 备注信息
+     * Getter for <code>ep.ep_file.sort</code>. 排序
      */
-    public String getRemark() {
-        return (String) get(8);
+    public Integer getSort() {
+        return (Integer) get(5);
     }
 
     /**
@@ -192,6 +171,13 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
+     * Getter for <code>ep.ep_file.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(6);
+    }
+
+    /**
      * Getter for <code>ep.ep_file.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
@@ -199,16 +185,18 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
      */
-    public EpFileRecord setDelFlag(Boolean value) {
-        set(9, value);
-        return this;
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_file.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(8);
+    }
 
     /**
      * Getter for <code>ep.ep_file.version</code>.
@@ -218,16 +206,8 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     // -------------------------------------------------------------------------
-    // Record11 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_file.version</code>.
-     */
-    public EpFileRecord setVersion(Long value) {
-        set(10, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -236,6 +216,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record11 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -519,10 +503,6 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -548,6 +528,26 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
         value9(value9);
         value10(value10);
         value11(value11);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_file.del_flag</code>. 删除标志
+     */
+    public EpFileRecord setDelFlag(Boolean value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.version</code>.
+     */
+    public EpFileRecord setVersion(Long value) {
+        set(10, value);
         return this;
     }
 }

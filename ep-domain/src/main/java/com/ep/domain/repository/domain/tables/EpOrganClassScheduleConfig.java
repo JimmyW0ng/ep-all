@@ -29,47 +29,66 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassScheduleConfig extends TableImpl<EpOrganClassScheduleConfigRecord> {
 
+    private static final long serialVersionUID = 200481867;
+
     /**
      * The reference instance of <code>ep.ep_organ_class_schedule_config</code>
      */
     public static final EpOrganClassScheduleConfig EP_ORGAN_CLASS_SCHEDULE_CONFIG = new EpOrganClassScheduleConfig();
-    private static final long serialVersionUID = 200481867;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganClassScheduleConfigRecord> getRecordType() {
+        return EpOrganClassScheduleConfigRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.id</code>. 主键
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.class_id</code>. 班级id
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班级id");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.catelog_id</code>. 课程sku目录id
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Long> CATELOG_ID = createField("catelog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程sku目录id");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.start_time</code>. 开始时间
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Timestamp> START_TIME = createField("start_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "开始时间");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.end_time</code>. 结束时间
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Timestamp> END_TIME = createField("end_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "结束时间");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.create_at</code>. 创建时间
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.update_at</code>. 更新时间
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.remark</code>. 备注
      */
     public final TableField<EpOrganClassScheduleConfigRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganClassScheduleConfigRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_config.version</code>.
      */
@@ -95,14 +114,6 @@ public class EpOrganClassScheduleConfig extends TableImpl<EpOrganClassScheduleCo
 
     private EpOrganClassScheduleConfig(String alias, Table<EpOrganClassScheduleConfigRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构班级行程配置表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganClassScheduleConfigRecord> getRecordType() {
-        return EpOrganClassScheduleConfigRecord.class;
     }
 
     /**

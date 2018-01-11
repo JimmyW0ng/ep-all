@@ -33,10 +33,26 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     private static final long serialVersionUID = -1906792210;
 
     /**
+     * Setter for <code>ep.ep_message_captcha.id</code>. 主键
+     */
+    public EpMessageCaptchaRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpMessageCaptchaRecord
      */
     public EpMessageCaptchaRecord() {
         super(EpMessageCaptcha.EP_MESSAGE_CAPTCHA);
+    }
+
+    /**
+     * Setter for <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
+     */
+    public EpMessageCaptchaRecord setCaptchaType(EpMessageCaptchaCaptchaType value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -61,43 +77,6 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_message_captcha.id</code>. 主键
-     */
-    public EpMessageCaptchaRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
-     */
-    public EpMessageCaptchaCaptchaType getCaptchaType() {
-        return (EpMessageCaptchaCaptchaType) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
-     */
-    public EpMessageCaptchaRecord setCaptchaType(EpMessageCaptchaCaptchaType value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_message_captcha.source_id</code>. 业务id
-     */
-    public Long getSourceId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_message_captcha.source_id</code>. 业务id
      */
     public EpMessageCaptchaRecord setSourceId(Long value) {
@@ -106,10 +85,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_code</code>. 业务编码
+     * Getter for <code>ep.ep_message_captcha.id</code>. 主键
      */
-    public String getCaptchaCode() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -121,10 +100,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_content</code>. 验证码内容
+     * Getter for <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
      */
-    public String getCaptchaContent() {
-        return (String) get(4);
+    public EpMessageCaptchaCaptchaType getCaptchaType() {
+        return (EpMessageCaptchaCaptchaType) get(1);
     }
 
     /**
@@ -136,10 +115,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：登录
+     * Getter for <code>ep.ep_message_captcha.source_id</code>. 业务id
      */
-    public EpMessageCaptchaCaptchaScene getCaptchaScene() {
-        return (EpMessageCaptchaCaptchaScene) get(5);
+    public Long getSourceId() {
+        return (Long) get(2);
     }
 
     /**
@@ -151,10 +130,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.expire_time</code>. 过期时间
+     * Getter for <code>ep.ep_message_captcha.captcha_code</code>. 业务编码
      */
-    public Timestamp getExpireTime() {
-        return (Timestamp) get(6);
+    public String getCaptchaCode() {
+        return (String) get(3);
     }
 
     /**
@@ -166,10 +145,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.ip</code>. 访问ip
+     * Getter for <code>ep.ep_message_captcha.captcha_content</code>. 验证码内容
      */
-    public String getIp() {
-        return (String) get(7);
+    public String getCaptchaContent() {
+        return (String) get(4);
     }
 
     /**
@@ -181,10 +160,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：登录
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(8);
+    public EpMessageCaptchaCaptchaScene getCaptchaScene() {
+        return (EpMessageCaptchaCaptchaScene) get(5);
     }
 
     /**
@@ -196,10 +175,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_message_captcha.expire_time</code>. 过期时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(9);
+    public Timestamp getExpireTime() {
+        return (Timestamp) get(6);
     }
 
     /**
@@ -211,10 +190,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.remark</code>. 备注
+     * Getter for <code>ep.ep_message_captcha.ip</code>. 访问ip
      */
-    public String getRemark() {
-        return (String) get(10);
+    public String getIp() {
+        return (String) get(7);
     }
 
     /**
@@ -226,6 +205,13 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
+     * Getter for <code>ep.ep_message_captcha.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(8);
+    }
+
+    /**
      * Getter for <code>ep.ep_message_captcha.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
@@ -233,16 +219,18 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Setter for <code>ep.ep_message_captcha.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_message_captcha.update_at</code>. 更新时间
      */
-    public EpMessageCaptchaRecord setDelFlag(Boolean value) {
-        set(11, value);
-        return this;
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(9);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_message_captcha.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(10);
+    }
 
     /**
      * Getter for <code>ep.ep_message_captcha.version</code>.
@@ -252,16 +240,8 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     // -------------------------------------------------------------------------
-    // Record13 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_message_captcha.version</code>.
-     */
-    public EpMessageCaptchaRecord setVersion(Long value) {
-        set(12, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -270,6 +250,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record13 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -603,10 +587,6 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -634,6 +614,26 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
         value11(value11);
         value12(value12);
         value13(value13);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_message_captcha.del_flag</code>. 删除标记
+     */
+    public EpMessageCaptchaRecord setDelFlag(Boolean value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_message_captcha.version</code>.
+     */
+    public EpMessageCaptchaRecord setVersion(Long value) {
+        set(12, value);
         return this;
     }
 }

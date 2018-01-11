@@ -29,47 +29,66 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganCourseTag extends TableImpl<EpOrganCourseTagRecord> {
 
+    private static final long serialVersionUID = -352209495;
+
     /**
      * The reference instance of <code>ep.ep_organ_course_tag</code>
      */
     public static final EpOrganCourseTag EP_ORGAN_COURSE_TAG = new EpOrganCourseTag();
-    private static final long serialVersionUID = -352209495;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganCourseTagRecord> getRecordType() {
+        return EpOrganCourseTagRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_course_tag.id</code>.
      */
     public final TableField<EpOrganCourseTagRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
     /**
      * The column <code>ep.ep_organ_course_tag.course_id</code>. 课程id
      */
     public final TableField<EpOrganCourseTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
+
     /**
      * The column <code>ep.ep_organ_course_tag.tag_name</code>. 标签名称
      */
     public final TableField<EpOrganCourseTagRecord, String> TAG_NAME = createField("tag_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "标签名称");
+
     /**
      * The column <code>ep.ep_organ_course_tag.tag_level</code>. 标签等级
      */
     public final TableField<EpOrganCourseTagRecord, Byte> TAG_LEVEL = createField("tag_level", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.TINYINT)), this, "标签等级");
+
     /**
      * The column <code>ep.ep_organ_course_tag.sort</code>. 排序
      */
     public final TableField<EpOrganCourseTagRecord, Long> SORT = createField("sort", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.BIGINT)), this, "排序");
+
     /**
      * The column <code>ep.ep_organ_course_tag.create_at</code>. 创建时间
      */
     public final TableField<EpOrganCourseTagRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_course_tag.update_at</code>. 更新时间
      */
     public final TableField<EpOrganCourseTagRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_course_tag.remark</code>. 备注
      */
     public final TableField<EpOrganCourseTagRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_course_tag.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganCourseTagRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_course_tag.version</code>.
      */
@@ -95,14 +114,6 @@ public class EpOrganCourseTag extends TableImpl<EpOrganCourseTagRecord> {
 
     private EpOrganCourseTag(String alias, Table<EpOrganCourseTagRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "课程标签表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganCourseTagRecord> getRecordType() {
-        return EpOrganCourseTagRecord.class;
     }
 
     /**

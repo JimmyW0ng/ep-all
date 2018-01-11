@@ -31,10 +31,26 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     private static final long serialVersionUID = -854311176;
 
     /**
+     * Setter for <code>ep.ep_organ_class_schedule_config.id</code>. 主键
+     */
+    public EpOrganClassScheduleConfigRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganClassScheduleConfigRecord
      */
     public EpOrganClassScheduleConfigRecord() {
         super(EpOrganClassScheduleConfig.EP_ORGAN_CLASS_SCHEDULE_CONFIG);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule_config.class_id</code>. 班级id
+     */
+    public EpOrganClassScheduleConfigRecord setClassId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -56,43 +72,6 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_schedule_config.id</code>. 主键
-     */
-    public EpOrganClassScheduleConfigRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.class_id</code>. 班级id
-     */
-    public Long getClassId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_schedule_config.class_id</code>. 班级id
-     */
-    public EpOrganClassScheduleConfigRecord setClassId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.catelog_id</code>. 课程sku目录id
-     */
-    public Long getCatelogId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_class_schedule_config.catelog_id</code>. 课程sku目录id
      */
     public EpOrganClassScheduleConfigRecord setCatelogId(Long value) {
@@ -101,10 +80,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.start_time</code>. 开始时间
+     * Getter for <code>ep.ep_organ_class_schedule_config.id</code>. 主键
      */
-    public Timestamp getStartTime() {
-        return (Timestamp) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -116,10 +95,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.end_time</code>. 结束时间
+     * Getter for <code>ep.ep_organ_class_schedule_config.class_id</code>. 班级id
      */
-    public Timestamp getEndTime() {
-        return (Timestamp) get(4);
+    public Long getClassId() {
+        return (Long) get(1);
     }
 
     /**
@@ -131,10 +110,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class_schedule_config.catelog_id</code>. 课程sku目录id
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(5);
+    public Long getCatelogId() {
+        return (Long) get(2);
     }
 
     /**
@@ -146,10 +125,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_class_schedule_config.start_time</code>. 开始时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(6);
+    public Timestamp getStartTime() {
+        return (Timestamp) get(3);
     }
 
     /**
@@ -161,10 +140,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_class_schedule_config.end_time</code>. 结束时间
      */
-    public String getRemark() {
-        return (String) get(7);
+    public Timestamp getEndTime() {
+        return (Timestamp) get(4);
     }
 
     /**
@@ -176,6 +155,13 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class_schedule_config.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(5);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_schedule_config.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
@@ -183,16 +169,18 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule_config.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_organ_class_schedule_config.update_at</code>. 更新时间
      */
-    public EpOrganClassScheduleConfigRecord setDelFlag(Boolean value) {
-        set(8, value);
-        return this;
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(6);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_class_schedule_config.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(7);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_class_schedule_config.version</code>.
@@ -202,16 +190,8 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     // -------------------------------------------------------------------------
-    // Record10 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_class_schedule_config.version</code>.
-     */
-    public EpOrganClassScheduleConfigRecord setVersion(Long value) {
-        set(9, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -220,6 +200,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record10 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -478,10 +462,6 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -506,6 +486,26 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
         value8(value8);
         value9(value9);
         value10(value10);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule_config.del_flag</code>. 删除标记
+     */
+    public EpOrganClassScheduleConfigRecord setDelFlag(Boolean value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule_config.version</code>.
+     */
+    public EpOrganClassScheduleConfigRecord setVersion(Long value) {
+        set(9, value);
         return this;
     }
 }

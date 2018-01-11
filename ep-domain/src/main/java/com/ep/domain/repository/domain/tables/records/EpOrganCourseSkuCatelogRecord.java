@@ -31,10 +31,26 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     private static final long serialVersionUID = 1387598739;
 
     /**
+     * Setter for <code>ep.ep_organ_course_sku_catelog.id</code>. 主键
+     */
+    public EpOrganCourseSkuCatelogRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganCourseSkuCatelogRecord
      */
     public EpOrganCourseSkuCatelogRecord() {
         super(EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_sku_catelog.sku_id</code>. sku.id
+     */
+    public EpOrganCourseSkuCatelogRecord setSkuId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -56,43 +72,6 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_sku_catelog.id</code>. 主键
-     */
-    public EpOrganCourseSkuCatelogRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.sku_id</code>. sku.id
-     */
-    public Long getSkuId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_sku_catelog.sku_id</code>. sku.id
-     */
-    public EpOrganCourseSkuCatelogRecord setSkuId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.catelog_title</code>. 目录标题
-     */
-    public String getCatelogTitle() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_course_sku_catelog.catelog_title</code>. 目录标题
      */
     public EpOrganCourseSkuCatelogRecord setCatelogTitle(String value) {
@@ -101,10 +80,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.catelog_desc</code>. 目录描述
+     * Getter for <code>ep.ep_organ_course_sku_catelog.id</code>. 主键
      */
-    public String getCatelogDesc() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -116,10 +95,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.catelog_index</code>. 目录索引（第几个课时）
+     * Getter for <code>ep.ep_organ_course_sku_catelog.sku_id</code>. sku.id
      */
-    public Integer getCatelogIndex() {
-        return (Integer) get(4);
+    public Long getSkuId() {
+        return (Long) get(1);
     }
 
     /**
@@ -131,10 +110,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ_course_sku_catelog.catelog_title</code>. 目录标题
      */
-    public String getRemark() {
-        return (String) get(5);
+    public String getCatelogTitle() {
+        return (String) get(2);
     }
 
     /**
@@ -146,10 +125,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_course_sku_catelog.catelog_desc</code>. 目录描述
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(6);
+    public String getCatelogDesc() {
+        return (String) get(3);
     }
 
     /**
@@ -161,10 +140,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_course_sku_catelog.catelog_index</code>. 目录索引（第几个课时）
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
+    public Integer getCatelogIndex() {
+        return (Integer) get(4);
     }
 
     /**
@@ -176,6 +155,13 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
+     * Getter for <code>ep.ep_organ_course_sku_catelog.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(5);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_course_sku_catelog.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
@@ -183,16 +169,18 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_sku_catelog.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ_course_sku_catelog.create_at</code>. 创建时间
      */
-    public EpOrganCourseSkuCatelogRecord setDelFlag(Boolean value) {
-        set(8, value);
-        return this;
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(6);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_course_sku_catelog.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_course_sku_catelog.version</code>.
@@ -202,16 +190,8 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     // -------------------------------------------------------------------------
-    // Record10 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_course_sku_catelog.version</code>.
-     */
-    public EpOrganCourseSkuCatelogRecord setVersion(Long value) {
-        set(9, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -220,6 +200,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record10 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -478,10 +462,6 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -506,6 +486,26 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
         value8(value8);
         value9(value9);
         value10(value10);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_course_sku_catelog.del_flag</code>. 删除标志
+     */
+    public EpOrganCourseSkuCatelogRecord setDelFlag(Boolean value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_sku_catelog.version</code>.
+     */
+    public EpOrganCourseSkuCatelogRecord setVersion(Long value) {
+        set(9, value);
         return this;
     }
 }

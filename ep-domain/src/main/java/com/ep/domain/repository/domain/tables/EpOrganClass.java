@@ -29,55 +29,76 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
+    private static final long serialVersionUID = 2070239393;
+
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
      */
     public static final EpOrganClass EP_ORGAN_CLASS = new EpOrganClass();
-    private static final long serialVersionUID = 2070239393;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganClassRecord> getRecordType() {
+        return EpOrganClassRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_class.id</code>. 主键
      */
     public final TableField<EpOrganClassRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_class.ogn_id</code>. 机构id
      */
     public final TableField<EpOrganClassRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+
     /**
      * The column <code>ep.ep_organ_class.course_id</code>. 课程id
      */
     public final TableField<EpOrganClassRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
+
     /**
      * The column <code>ep.ep_organ_class.sku_id</code>. sku.id
      */
     public final TableField<EpOrganClassRecord, Long> SKU_ID = createField("sku_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "sku.id");
+
     /**
      * The column <code>ep.ep_organ_class.class_name</code>. 班级名称
      */
     public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "班级名称");
+
     /**
      * The column <code>ep.ep_organ_class.class_desc</code>. 班级描述
      */
     public final TableField<EpOrganClassRecord, String> CLASS_DESC = createField("class_desc", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "班级描述");
+
     /**
      * The column <code>ep.ep_organ_class.class_leader_id</code>. 班级负责人
      */
     public final TableField<EpOrganClassRecord, Long> CLASS_LEADER_ID = createField("class_leader_id", org.jooq.impl.SQLDataType.BIGINT, this, "班级负责人");
+
     /**
      * The column <code>ep.ep_organ_class.create_at</code>. 创建时间
      */
     public final TableField<EpOrganClassRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_class.update_at</code>. 更新时间
      */
     public final TableField<EpOrganClassRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_class.remark</code>. 备注
      */
     public final TableField<EpOrganClassRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_class.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganClassRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_class.version</code>.
      */
@@ -103,14 +124,6 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
     private EpOrganClass(String alias, Table<EpOrganClassRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构课程分班表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganClassRecord> getRecordType() {
-        return EpOrganClassRecord.class;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.ep.api;
 
 import com.ep.api.config.SecurityConfig;
+import com.ep.api.config.Swagger2Config;
 import com.ep.common.config.JsonConfig;
 import com.ep.common.config.RestTempldateConfig;
 import org.springframework.boot.SpringApplication;
@@ -28,9 +29,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         // 鉴权
         SecurityConfig.class,
         // json配置
-        JsonConfig.class
+        JsonConfig.class,
         // swagger
-        // Swagger2Config.class
+        Swagger2Config.class
 })
 @ComponentScan(basePackages = {"com.ep"})
 @EnableScheduling

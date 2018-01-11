@@ -29,47 +29,66 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganCourseSkuCatelog extends TableImpl<EpOrganCourseSkuCatelogRecord> {
 
+    private static final long serialVersionUID = -1699099693;
+
     /**
      * The reference instance of <code>ep.ep_organ_course_sku_catelog</code>
      */
     public static final EpOrganCourseSkuCatelog EP_ORGAN_COURSE_SKU_CATELOG = new EpOrganCourseSkuCatelog();
-    private static final long serialVersionUID = -1699099693;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganCourseSkuCatelogRecord> getRecordType() {
+        return EpOrganCourseSkuCatelogRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.id</code>. 主键
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.sku_id</code>. sku.id
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, Long> SKU_ID = createField("sku_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "sku.id");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.catelog_title</code>. 目录标题
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, String> CATELOG_TITLE = createField("catelog_title", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "目录标题");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.catelog_desc</code>. 目录描述
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, String> CATELOG_DESC = createField("catelog_desc", org.jooq.impl.SQLDataType.VARCHAR.length(3000), this, "目录描述");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.catelog_index</code>. 目录索引（第几个课时）
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, Integer> CATELOG_INDEX = createField("catelog_index", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "目录索引（第几个课时）");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.remark</code>. 备注信息
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.create_at</code>. 创建时间
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.update_at</code>. 更新时间
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.del_flag</code>. 删除标志
      */
     public final TableField<EpOrganCourseSkuCatelogRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
+
     /**
      * The column <code>ep.ep_organ_course_sku_catelog.version</code>.
      */
@@ -95,14 +114,6 @@ public class EpOrganCourseSkuCatelog extends TableImpl<EpOrganCourseSkuCatelogRe
 
     private EpOrganCourseSkuCatelog(String alias, Table<EpOrganCourseSkuCatelogRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构课程sku目录表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganCourseSkuCatelogRecord> getRecordType() {
-        return EpOrganCourseSkuCatelogRecord.class;
     }
 
     /**

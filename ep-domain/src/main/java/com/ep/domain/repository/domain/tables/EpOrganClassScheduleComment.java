@@ -30,55 +30,76 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassScheduleComment extends TableImpl<EpOrganClassScheduleCommentRecord> {
 
+    private static final long serialVersionUID = -2131364174;
+
     /**
      * The reference instance of <code>ep.ep_organ_class_schedule_comment</code>
      */
     public static final EpOrganClassScheduleComment EP_ORGAN_CLASS_SCHEDULE_COMMENT = new EpOrganClassScheduleComment();
-    private static final long serialVersionUID = -2131364174;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganClassScheduleCommentRecord> getRecordType() {
+        return EpOrganClassScheduleCommentRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.id</code>. 主键
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Long> P_ID = createField("p_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.class_schedule_id</code>. 行程id
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Long> CLASS_SCHEDULE_ID = createField("class_schedule_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "行程id");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.comment_type</code>. 评论类型: 评论；回复
      */
     public final TableField<EpOrganClassScheduleCommentRecord, EpOrganClassScheduleCommentCommentType> COMMENT_TYPE = createField("comment_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassScheduleCommentCommentType.class), this, "评论类型: 评论；回复");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.content</code>. 评论内容
      */
     public final TableField<EpOrganClassScheduleCommentRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "评论内容");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.launch_member_id</code>. 发起评论者id
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Long> LAUNCH_MEMBER_ID = createField("launch_member_id", org.jooq.impl.SQLDataType.BIGINT, this, "发起评论者id");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.reply_member_id</code>. 回复评论者id
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Long> REPLY_MEMBER_ID = createField("reply_member_id", org.jooq.impl.SQLDataType.BIGINT, this, "回复评论者id");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.create_at</code>. 创建时间
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.update_at</code>. 更新时间
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.remark</code>. 备注
      */
     public final TableField<EpOrganClassScheduleCommentRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganClassScheduleCommentRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_class_schedule_comment.version</code>.
      */
@@ -104,14 +125,6 @@ public class EpOrganClassScheduleComment extends TableImpl<EpOrganClassScheduleC
 
     private EpOrganClassScheduleComment(String alias, Table<EpOrganClassScheduleCommentRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构行程评论表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganClassScheduleCommentRecord> getRecordType() {
-        return EpOrganClassScheduleCommentRecord.class;
     }
 
     /**

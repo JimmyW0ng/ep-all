@@ -29,39 +29,56 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpSystemRoleAuthority extends TableImpl<EpSystemRoleAuthorityRecord> {
 
+    private static final long serialVersionUID = -1996007980;
+
     /**
      * The reference instance of <code>ep.ep_system_role_authority</code>
      */
     public static final EpSystemRoleAuthority EP_SYSTEM_ROLE_AUTHORITY = new EpSystemRoleAuthority();
-    private static final long serialVersionUID = -1996007980;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpSystemRoleAuthorityRecord> getRecordType() {
+        return EpSystemRoleAuthorityRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_system_role_authority.id</code>. 主键
      */
     public final TableField<EpSystemRoleAuthorityRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_system_role_authority.role</code>. 角色名称
      */
     public final TableField<EpSystemRoleAuthorityRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "角色名称");
+
     /**
      * The column <code>ep.ep_system_role_authority.authority</code>. 权限
      */
     public final TableField<EpSystemRoleAuthorityRecord, String> AUTHORITY = createField("authority", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "权限");
+
     /**
      * The column <code>ep.ep_system_role_authority.create_at</code>. 创建时间
      */
     public final TableField<EpSystemRoleAuthorityRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_system_role_authority.update_at</code>. 更新时间
      */
     public final TableField<EpSystemRoleAuthorityRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_system_role_authority.remark</code>. 备注信息
      */
     public final TableField<EpSystemRoleAuthorityRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
+
     /**
      * The column <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
      */
     public final TableField<EpSystemRoleAuthorityRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_system_role_authority.version</code>.
      */
@@ -87,14 +104,6 @@ public class EpSystemRoleAuthority extends TableImpl<EpSystemRoleAuthorityRecord
 
     private EpSystemRoleAuthority(String alias, Table<EpSystemRoleAuthorityRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "权限表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpSystemRoleAuthorityRecord> getRecordType() {
-        return EpSystemRoleAuthorityRecord.class;
     }
 
     /**

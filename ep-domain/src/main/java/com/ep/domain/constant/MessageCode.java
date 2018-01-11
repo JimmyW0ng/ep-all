@@ -25,5 +25,25 @@ public class MessageCode {
     public static final String ERROR_PRINCIPAL_CHECK = "ERROR_PRINCIPAL_CHECK";
     public static final String ERROR_SESSION_TOKEN = "ERROR_SESSION_TOKEN";
     public static final String ERROR_WECHAT_HTTP_REQUEST = "ERROR_WECHAT_HTTP_REQUEST";
+    /**
+     * 验证码
+     */
+    public static final String ERROR_GET_CAPTCHA_NUM_OUT_LIMIT = "ERROR_GET_CAPTCHA_NUM_OUT_LIMIT";
+    /**
+     * 机构
+     */
+    public static final String ERROR_ORGAN_EXISTS = "ERROR_ORGAN_EXISTS";
+    /**
+     * 孩子
+     */
+    public static final String ERROR_CHILD_TRUE_NAME_EXISTS = "ERROR_CHILD_TRUE_NAME_EXISTS";
+    public static final String ERROR_CHILD_NOT_EXISTS = "ERROR_CHILD_NOT_EXISTS";
+    /**
+     * 课程
+     */
+    public static final String ERROR_COURSE_NOT_EXISTS = "ERROR_COURSE_NOT_EXISTS";
+    public static final String ERROR_COURSE_ENTER_NOT_START = "ERROR_COURSE_ENTER_NOT_START";
+    public static final String ERROR_COURSE_ENTER_END = "ERROR_COURSE_ENTER_END";
+    public static final String ERROR_COURSE_DUPLICATE = "ERROR_COURSE_DUPLICATE";
 
 }

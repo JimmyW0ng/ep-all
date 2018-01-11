@@ -1,0 +1,66 @@
+package com.ep.domain.constant;
+
+/**
+ * @Description:业务常量
+ * @Author: J.W
+ * @Date: 下午8:29 2018/1/6
+ */
+public class BizConstant {
+
+    /**
+     * 通用常量
+     */
+    public static String KEY_SPLIT = "KEY_SPLIT";
+
+    /**
+     * 用户信息
+     */
+    public static String CURENT_USER = "CURENT_USER";
+
+    /**
+     * 机构后台用户信息
+     */
+    public static String CURENT_BACKEND_USER = "CURENT_BACKEND_USER";
+
+    /**
+     * 平台后台用户信息
+     */
+    public static String CURENT_ADMIN_USER = "CURENT_ADMIN_USER";
+
+    /**
+     * 数据常量
+     */
+    public static int DB_NUM_ZERO = 0;
+
+    public static int DB_NUM_ONE = 1;
+
+    /**
+     * wechat
+     */
+    public static String DICT_GROUP_WECHAT = "WECHAT";
+
+    public static String DICT_KEY_WECHAT_ACCESS_TOKEN = "WECHAT_ACCESS_TOKEN";
+
+    public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
+
+    public static int WECHAT_SESSION_TIME_OUT_M = -60;
+
+    public static String WECHAT_URL_SESSION = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+
+    public static String WECHAT_URL_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+
+    public static String WECHAT_URL_WECHAT_CODE = "https://api.weixin.qq.com/wxa/getwxacode?access_token=%s";
+
+    public static String WECHAT_URL_WECHAT_CODE_UNLIMIT = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s";
+
+    /**
+     * 短信验证码
+     */
+    public static int CAPTCHA_SHORT_MSG_LENGTH = 6;
+
+    public static int CAPTCHA_SHORT_MSG_NUM_LIMIT = 10;
+
+    public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
+
+    public static int CAPTCHA_EXPIRE_DEL_HOUR_LIMIT = -1;
+}

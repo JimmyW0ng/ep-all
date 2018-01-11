@@ -29,55 +29,76 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganCourseComment extends TableImpl<EpOrganCourseCommentRecord> {
 
+    private static final long serialVersionUID = -1682395281;
+
     /**
      * The reference instance of <code>ep.ep_organ_course_comment</code>
      */
     public static final EpOrganCourseComment EP_ORGAN_COURSE_COMMENT = new EpOrganCourseComment();
-    private static final long serialVersionUID = -1682395281;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganCourseCommentRecord> getRecordType() {
+        return EpOrganCourseCommentRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_course_comment.id</code>. 主键
      */
     public final TableField<EpOrganCourseCommentRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ_course_comment.ogn_id</code>. 机构id
      */
     public final TableField<EpOrganCourseCommentRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+
     /**
      * The column <code>ep.ep_organ_course_comment.course_id</code>. 课程id
      */
     public final TableField<EpOrganCourseCommentRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
+
     /**
      * The column <code>ep.ep_organ_course_comment.score</code>. 评分（五分制）
      */
     public final TableField<EpOrganCourseCommentRecord, Byte> SCORE = createField("score", org.jooq.impl.SQLDataType.TINYINT.nullable(false), this, "评分（五分制）");
+
     /**
      * The column <code>ep.ep_organ_course_comment.member_id</code>. 评论者id
      */
     public final TableField<EpOrganCourseCommentRecord, Long> MEMBER_ID = createField("member_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "评论者id");
+
     /**
      * The column <code>ep.ep_organ_course_comment.content</code>. 评论类型: 评论；回复
      */
     public final TableField<EpOrganCourseCommentRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.CLOB, this, "评论类型: 评论；回复");
+
     /**
      * The column <code>ep.ep_organ_course_comment.order_id</code>. 关联订单id
      */
     public final TableField<EpOrganCourseCommentRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "关联订单id");
+
     /**
      * The column <code>ep.ep_organ_course_comment.create_at</code>. 创建时间
      */
     public final TableField<EpOrganCourseCommentRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_course_comment.update_at</code>. 更新时间
      */
     public final TableField<EpOrganCourseCommentRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_course_comment.remark</code>. 备注
      */
     public final TableField<EpOrganCourseCommentRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_course_comment.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganCourseCommentRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_course_comment.version</code>.
      */
@@ -103,14 +124,6 @@ public class EpOrganCourseComment extends TableImpl<EpOrganCourseCommentRecord> 
 
     private EpOrganCourseComment(String alias, Table<EpOrganCourseCommentRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构课程评分表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganCourseCommentRecord> getRecordType() {
-        return EpOrganCourseCommentRecord.class;
     }
 
     /**

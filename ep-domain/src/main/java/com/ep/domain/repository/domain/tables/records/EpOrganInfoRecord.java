@@ -32,10 +32,26 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     private static final long serialVersionUID = -1601151105;
 
     /**
+     * Setter for <code>ep.ep_organ_info.id</code>. 主键
+     */
+    public EpOrganInfoRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganInfoRecord
      */
     public EpOrganInfoRecord() {
         super(EpOrganInfo.EP_ORGAN_INFO);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_info.organ_name</code>. 机构名称
+     */
+    public EpOrganInfoRecord setOrganName(String value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -65,43 +81,6 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_info.id</code>. 主键
-     */
-    public EpOrganInfoRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_info.organ_name</code>. 机构名称
-     */
-    public String getOrganName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_info.organ_name</code>. 机构名称
-     */
-    public EpOrganInfoRecord setOrganName(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_info.organ_address</code>. 机构地址
-     */
-    public String getOrganAddress() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_info.organ_address</code>. 机构地址
      */
     public EpOrganInfoRecord setOrganAddress(String value) {
@@ -110,10 +89,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_region</code>. 机构地区
+     * Getter for <code>ep.ep_organ_info.id</code>. 主键
      */
-    public Long getOrganRegion() {
-        return (Long) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -125,10 +104,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_lng</code>. 地区经度
+     * Getter for <code>ep.ep_organ_info.organ_name</code>. 机构名称
      */
-    public String getOrganLng() {
-        return (String) get(4);
+    public String getOrganName() {
+        return (String) get(1);
     }
 
     /**
@@ -140,10 +119,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_lat</code>. 地区纬度
+     * Getter for <code>ep.ep_organ_info.organ_address</code>. 机构地址
      */
-    public String getOrganLat() {
-        return (String) get(5);
+    public String getOrganAddress() {
+        return (String) get(2);
     }
 
     /**
@@ -155,10 +134,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_short_introduce</code>. 机构简介
+     * Getter for <code>ep.ep_organ_info.organ_region</code>. 机构地区
      */
-    public String getOrganShortIntroduce() {
-        return (String) get(6);
+    public Long getOrganRegion() {
+        return (Long) get(3);
     }
 
     /**
@@ -170,10 +149,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_create_date</code>. 机构成立日期
+     * Getter for <code>ep.ep_organ_info.organ_lng</code>. 地区经度
      */
-    public Timestamp getOrganCreateDate() {
-        return (Timestamp) get(7);
+    public String getOrganLng() {
+        return (String) get(4);
     }
 
     /**
@@ -185,10 +164,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_phone</code>. 机构官方电话
+     * Getter for <code>ep.ep_organ_info.organ_lat</code>. 地区纬度
      */
-    public String getOrganPhone() {
-        return (String) get(8);
+    public String getOrganLat() {
+        return (String) get(5);
     }
 
     /**
@@ -200,10 +179,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_email</code>. 机构官方邮箱
+     * Getter for <code>ep.ep_organ_info.organ_short_introduce</code>. 机构简介
      */
-    public String getOrganEmail() {
-        return (String) get(9);
+    public String getOrganShortIntroduce() {
+        return (String) get(6);
     }
 
     /**
@@ -215,10 +194,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_url</code>. 机构官方网址
+     * Getter for <code>ep.ep_organ_info.organ_create_date</code>. 机构成立日期
      */
-    public String getOrganUrl() {
-        return (String) get(10);
+    public Timestamp getOrganCreateDate() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -230,10 +209,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.organ_introduce</code>. 机构简介
+     * Getter for <code>ep.ep_organ_info.organ_phone</code>. 机构官方电话
      */
-    public String getOrganIntroduce() {
-        return (String) get(11);
+    public String getOrganPhone() {
+        return (String) get(8);
     }
 
     /**
@@ -245,10 +224,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_organ_info.organ_email</code>. 机构官方邮箱
      */
-    public EpOrganInfoStatus getStatus() {
-        return (EpOrganInfoStatus) get(12);
+    public String getOrganEmail() {
+        return (String) get(9);
     }
 
     /**
@@ -260,10 +239,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ_info.organ_url</code>. 机构官方网址
      */
-    public String getRemark() {
-        return (String) get(13);
+    public String getOrganUrl() {
+        return (String) get(10);
     }
 
     /**
@@ -275,10 +254,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_info.organ_introduce</code>. 机构简介
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(14);
+    public String getOrganIntroduce() {
+        return (String) get(11);
     }
 
     /**
@@ -290,10 +269,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_info.status</code>. 状态：正常；已冻结；已注销；
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(15);
+    public EpOrganInfoStatus getStatus() {
+        return (EpOrganInfoStatus) get(12);
     }
 
     /**
@@ -305,6 +284,13 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
+     * Getter for <code>ep.ep_organ_info.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(13);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_info.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
@@ -312,16 +298,18 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_organ_info.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ_info.create_at</code>. 创建时间
      */
-    public EpOrganInfoRecord setDelFlag(Boolean value) {
-        set(16, value);
-        return this;
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(14);
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_info.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(15);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_info.version</code>.
@@ -331,16 +319,8 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     // -------------------------------------------------------------------------
-    // Record18 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_info.version</code>.
-     */
-    public EpOrganInfoRecord setVersion(Long value) {
-        set(17, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -349,6 +329,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record18 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -807,10 +791,6 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -843,6 +823,26 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
         value16(value16);
         value17(value17);
         value18(value18);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_info.del_flag</code>. 删除标志
+     */
+    public EpOrganInfoRecord setDelFlag(Boolean value) {
+        set(16, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_info.version</code>.
+     */
+    public EpOrganInfoRecord setVersion(Long value) {
+        set(17, value);
         return this;
     }
 }
