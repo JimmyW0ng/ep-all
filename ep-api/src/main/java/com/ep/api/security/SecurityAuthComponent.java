@@ -249,26 +249,6 @@ public class SecurityAuthComponent {
     }
 
     /**
-     * 用户密码校验
-     *
-     * @param source
-     * @param salt
-     * @param target
-     */
-    private void checkPassword(String source, String salt, String target) {
-        try {
-            // 加密
-            String password = CryptTools.aesEncrypt(source, salt);
-            if (!password.equals(target)) {
-                throw new BadCredentialsException("用户名或密码错误");
-            }
-        } catch (GeneralSecurityException e) {
-            log.error("密码加密失败！password={}", source, e);
-            throw new BadCredentialsException("用户名或密码错误");
-        }
-    }
-
-    /**
      * 图形验证码校验
      *
      * @param sourceId
