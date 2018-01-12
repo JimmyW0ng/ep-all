@@ -23,8 +23,9 @@ public class SysRoleAuthorityRepository extends AbstractCRUDRepository<EpSystemR
 
     public List<String> getAuthoritesByRole(String role) {
         return dslContext.select(EP_SYSTEM_ROLE_AUTHORITY.AUTHORITY)
-                .where(role, EP_SYSTEM_ROLE_AUTHORITY.ROLE).fetchInto(String.class);
-
-
+                .from(EP_SYSTEM_ROLE_AUTHORITY)
+                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE.eq(role))
+                .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.eq(false))
+                .fetchInto(String.class);
     }
 }
