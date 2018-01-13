@@ -36,5 +36,4 @@ public class EpMessageCaptchaPo extends AbstractBasePojo {
     private Boolean delFlag;
     private Long version;
 
-
 }

@@ -16,13 +16,10 @@ import java.sql.Timestamp;
 /**
  * 机构后台账户
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EpOrganAccountPo extends AbstractBasePojo {
-
-    private static final long serialVersionUID = 238564882;
 
     private Long id;
     private Long memberId;
@@ -37,6 +34,5 @@ public class EpOrganAccountPo extends AbstractBasePojo {
     private String remark;
     private Boolean delFlag;
     private Long version;
-
 
 }
