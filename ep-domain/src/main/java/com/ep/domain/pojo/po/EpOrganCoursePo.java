@@ -7,6 +7,7 @@ package com.ep.domain.pojo.po;
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,10 +41,15 @@ public class EpOrganCoursePo extends AbstractBasePojo {
     private Timestamp enterTimeStart;
     private Timestamp enterTimeEnd;
     private Timestamp openTime;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }

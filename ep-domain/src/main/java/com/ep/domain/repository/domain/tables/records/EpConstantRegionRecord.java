@@ -252,17 +252,17 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
+     * Getter for <code>ep.ep_constant_region.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(13);
+    }
+
+    /**
      * Getter for <code>ep.ep_constant_region.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(11);
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_region.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
     }
 
     /**
@@ -273,10 +273,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.remark</code>. 备注
+     * Getter for <code>ep.ep_constant_region.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(13);
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
     }
 
     /**

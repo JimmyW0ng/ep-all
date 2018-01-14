@@ -222,17 +222,17 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
+     * Getter for <code>ep.ep_member.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(11);
+    }
+
+    /**
      * Getter for <code>ep.ep_member.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(9);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
     }
 
     /**
@@ -243,10 +243,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.remark</code>. 备注
+     * Getter for <code>ep.ep_member.del_flag</code>. 删除标志
      */
-    public String getRemark() {
-        return (String) get(11);
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
 
     /**

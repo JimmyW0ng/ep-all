@@ -155,17 +155,17 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class_schedule_config.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(7);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_schedule_config.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(5);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(8);
     }
 
     /**
@@ -176,10 +176,10 @@ public class EpOrganClassScheduleConfigRecord extends UpdatableRecordImpl<EpOrga
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_config.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_class_schedule_config.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(7);
+    public Boolean getDelFlag() {
+        return (Boolean) get(8);
     }
 
     /**

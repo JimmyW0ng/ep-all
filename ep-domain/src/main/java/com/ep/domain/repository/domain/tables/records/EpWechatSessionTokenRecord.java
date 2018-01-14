@@ -139,17 +139,17 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
+     * Getter for <code>ep.ep_wechat_session_token.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(6);
+    }
+
+    /**
      * Getter for <code>ep.ep_wechat_session_token.remarks</code>. 备注信息
      */
     public String getRemarks() {
         return (String) get(4);
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(7);
     }
 
     /**
@@ -160,10 +160,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(6);
+    public Boolean getDelFlag() {
+        return (Boolean) get(7);
     }
 
     /**

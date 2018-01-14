@@ -188,17 +188,17 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class_schedule_comment.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(9);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_schedule_comment.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(7);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(10);
     }
 
     /**
@@ -209,10 +209,10 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(9);
+    public Boolean getDelFlag() {
+        return (Boolean) get(10);
     }
 
     /**

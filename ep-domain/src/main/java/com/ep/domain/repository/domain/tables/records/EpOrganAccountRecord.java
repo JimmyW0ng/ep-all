@@ -204,17 +204,17 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
+     * Getter for <code>ep.ep_organ_account.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(10);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_account.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(8);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_account.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(11);
     }
 
     /**
@@ -225,10 +225,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_account.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(10);
+    public Boolean getDelFlag() {
+        return (Boolean) get(11);
     }
 
     /**

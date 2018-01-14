@@ -284,17 +284,17 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
+     * Getter for <code>ep.ep_organ_info.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(15);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_info.remark</code>. 备注信息
      */
     public String getRemark() {
         return (String) get(13);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_info.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(16);
     }
 
     /**
@@ -305,10 +305,10 @@ public class EpOrganInfoRecord extends UpdatableRecordImpl<EpOrganInfoRecord> im
     }
 
     /**
-     * Getter for <code>ep.ep_organ_info.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_info.del_flag</code>. 删除标志
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(15);
+    public Boolean getDelFlag() {
+        return (Boolean) get(16);
     }
 
     /**

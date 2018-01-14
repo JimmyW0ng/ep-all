@@ -172,17 +172,17 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_role.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(8);
+    }
+
+    /**
      * Getter for <code>ep.ep_system_role.update_by</code>. 更新者
      */
     public Long getUpdateBy() {
         return (Long) get(6);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(9);
     }
 
     /**
@@ -193,10 +193,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.remark</code>. 备注信息
+     * Getter for <code>ep.ep_system_role.del_flag</code>. 删除标志
      */
-    public String getRemark() {
-        return (String) get(8);
+    public Boolean getDelFlag() {
+        return (Boolean) get(9);
     }
 
     /**

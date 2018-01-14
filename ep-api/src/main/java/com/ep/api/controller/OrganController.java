@@ -2,8 +2,10 @@ package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
+import com.ep.domain.service.OrganInfoService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrganController {
 
+    @Autowired
+    private OrganInfoService organInfoService;
+
     /**
      * 机构详情
      *
@@ -28,8 +33,7 @@ public class OrganController {
     @ApiOperation(value = "机构详情")
     @PostMapping("/detail")
     public ResultDo<OrganInfoDto> getOgnInfo(@RequestParam("ognId") Long ognId) {
-        // return ognInfoService.getOgnDetail(ognId);
-        return null;
+        return organInfoService.getOgnDetail(ognId);
     }
 
 }

@@ -11,7 +11,9 @@ import java.util.List;
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_ROLE_AUTHORITY;
 
 /**
- * Created by fcc on 2018/1/11.
+ * @Description:角色权限标Repository
+ * @Author: J.W
+ * @Date: 上午10:35 2017/11/27
  */
 @Repository
 public class SysRoleAuthorityRepository extends AbstractCRUDRepository<EpSystemRoleAuthorityRecord, Long, EpSystemRoleAuthorityPo> {

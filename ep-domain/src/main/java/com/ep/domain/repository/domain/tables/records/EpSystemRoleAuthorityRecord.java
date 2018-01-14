@@ -123,17 +123,17 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
+     * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(5);
+    }
+
+    /**
      * Getter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(3);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
     }
 
     /**
@@ -144,10 +144,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(5);
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
     }
 
     /**

@@ -5,6 +5,7 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,16 +21,24 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class EpFilePo extends AbstractBasePojo {
 
+    @JsonIgnore
     private Long id;
     private String fileName;
     private String fileUrl;
-    private Byte bizTypeCode;
+    @JsonIgnore
+    private Short bizTypeCode;
+    @JsonIgnore
     private Long sourceId;
     private Integer sort;
+    @JsonIgnore
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }
