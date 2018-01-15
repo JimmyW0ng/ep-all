@@ -8,5 +8,6 @@ import lombok.Data;
 public class OrganCourseBo extends EpOrganCoursePo {
 
     private String label;
+    private String mainPicUrl;
 
 }
