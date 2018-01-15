@@ -11,7 +11,9 @@ import java.util.List;
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_ROLE_AUTHORITY;
 
 /**
- * Created by fcc on 2018/1/11.
+ * @Description:角色权限标Repository
+ * @Author: J.W
+ * @Date: 上午10:35 2017/11/27
  */
 @Repository
 public class SysRoleAuthorityRepository extends AbstractCRUDRepository<EpSystemRoleAuthorityRecord, Long, EpSystemRoleAuthorityPo> {
@@ -23,8 +25,9 @@ public class SysRoleAuthorityRepository extends AbstractCRUDRepository<EpSystemR
 
     public List<String> getAuthoritesByRole(String role) {
         return dslContext.select(EP_SYSTEM_ROLE_AUTHORITY.AUTHORITY)
-                .where(role, EP_SYSTEM_ROLE_AUTHORITY.ROLE).fetchInto(String.class);
-
-
+                .from(EP_SYSTEM_ROLE_AUTHORITY)
+                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE.eq(role))
+                .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.eq(false))
+                .fetchInto(String.class);
     }
 }

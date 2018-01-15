@@ -52,7 +52,10 @@ public class ApiController {
         if (resultDo.isError()) {
             return resultDo;
         }
-        return messageCaptchaService.getCaptcha(mobile, EpMessageCaptchaCaptchaType.short_msg, EpMessageCaptchaCaptchaScene.login, IpTools.getIpAddr(request));
+        return messageCaptchaService.getCaptcha(mobile,
+                EpMessageCaptchaCaptchaType.short_msg,
+                EpMessageCaptchaCaptchaScene.login,
+                IpTools.getIpAddr(request));
     }
 
     /**
@@ -67,11 +70,11 @@ public class ApiController {
      */
     @ApiOperation(value = "获取前台token")
     @PostMapping("/token")
-    public ResultDo<String> login(@RequestParam(value = "mobile", required = false) Long mobile,
-                                  @RequestParam(value = "code", required = false) String code,
-                                  @RequestParam(value = "captcha", required = false) String captcha,
-                                  @RequestParam(value = "clientId", required = false) String clientId,
-                                  @RequestParam(value = "clientSecret", required = false) String clientSecret//1qaz2wsx
+    public ResultDo<String> login(@RequestParam(value = "mobile") Long mobile,
+                                  @RequestParam(value = "code") String code,
+                                  @RequestParam(value = "captcha") String captcha,
+                                  @RequestParam(value = "clientId") String clientId,
+                                  @RequestParam(value = "clientSecret") String clientSecret
     ) {
         return securityAuthComponent.loginFromApi(mobile.toString(), code, captcha, clientId, clientSecret);
     }

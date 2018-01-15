@@ -4,11 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- *
- * @author JW
- * @date 17/11/13
- */
 @Data
 public class SecurityPrincipalBo implements Serializable {
 

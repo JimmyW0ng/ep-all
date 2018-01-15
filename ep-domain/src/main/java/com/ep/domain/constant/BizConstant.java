@@ -63,4 +63,15 @@ public class BizConstant {
     public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
 
     public static int CAPTCHA_EXPIRE_DEL_HOUR_LIMIT = -1;
+
+    /**
+     * 文件业务类型
+     */
+    public static short FILE_BIZ_TYPE_CODE_ORGAN_LOGO = 100;
+    public static short FILE_BIZ_TYPE_CODE_ORGAN_BANNER = 101;
+    public static short FILE_BIZ_TYPE_CODE_COURSE_BANNER = 110;
+    public static short FILE_BIZ_TYPE_CODE_COURSE_PIC = 111;
+    public static short FILE_BIZ_TYPE_CODE_MEMBER_AVATAR = 120;
+    public static short FILE_BIZ_TYPE_CODE_CHILD_AVATAR = 130;
+    public static short FILE_BIZ_TYPE_CODE_TEACHER_AVATAR = 140;
 }

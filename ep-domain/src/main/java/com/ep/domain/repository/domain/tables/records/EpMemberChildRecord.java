@@ -236,17 +236,17 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
+     * Getter for <code>ep.ep_member_child.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(12);
+    }
+
+    /**
      * Getter for <code>ep.ep_member_child.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(10);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(13);
     }
 
     /**
@@ -257,10 +257,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.remark</code>. 备注
+     * Getter for <code>ep.ep_member_child.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(12);
+    public Boolean getDelFlag() {
+        return (Boolean) get(13);
     }
 
     /**

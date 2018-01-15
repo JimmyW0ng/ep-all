@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpFile extends TableImpl<EpFileRecord> {
 
-    private static final long serialVersionUID = -299365355;
+    private static final long serialVersionUID = 79463222;
 
     /**
      * The reference instance of <code>ep.ep_file</code>
@@ -62,7 +62,7 @@ public class EpFile extends TableImpl<EpFileRecord> {
     /**
      * The column <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
      */
-    public final TableField<EpFileRecord, Byte> BIZ_TYPE_CODE = createField("biz_type_code", org.jooq.impl.SQLDataType.TINYINT.nullable(false), this, "业务类型编码（FILE_BIZ_TYPE）");
+    public final TableField<EpFileRecord, Short> BIZ_TYPE_CODE = createField("biz_type_code", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "业务类型编码（FILE_BIZ_TYPE）");
 
     /**
      * The column <code>ep.ep_file.source_id</code>. 业务ID

@@ -16,6 +16,7 @@ import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.MessageCaptchaRepository;
 import com.ep.domain.repository.SysRoleAuthorityRepository;
 import com.ep.domain.repository.SystemClientRepository;
+import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import com.google.common.collect.Lists;
@@ -24,12 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,15 +64,9 @@ public class SecurityAuthComponent {
 
     @Autowired
     private MemberRepository memberRepository;
-//
-//    @Autowired
-//    private OgnAccountRepository ognAccountRepository;
-//
-//    @Autowired
-//    private SysUserRepository sysUserRepository;
-//
-@Autowired
-private SysRoleAuthorityRepository sysRoleAuthorityRepository;
+
+    @Autowired
+    private SysRoleAuthorityRepository sysRoleAuthorityRepository;
 
     @Autowired
     private MessageCaptchaRepository messageCaptchaRepository;
@@ -185,7 +182,41 @@ private SysRoleAuthorityRepository sysRoleAuthorityRepository;
      * @throws AuthenticationException
      */
     public void checkLogin(SecurityPrincipalBo principalBo, SecurityCredentialBo credentialBo) throws AuthenticationException {
-
+        // 校验client
+        EpSystemClientPo sysClientPo = systemClientRepository.getByClientId(principalBo.getClientId());
+        if (sysClientPo == null || !sysClientPo.getArchived()) {
+            log.error("客户端client鉴权异常：clientId:{} 在数据库中不存在", principalBo.getClientId());
+            throw new UsernameNotFoundException("客户端身份不存在");
+        }
+        String pwdEncode;
+        try {
+            pwdEncode = CryptTools.aesEncrypt(credentialBo.getClientSecret(), sysClientPo.getSalt());
+        } catch (GeneralSecurityException e) {
+            log.error("客户端client鉴权异常：clientSecret:{} 加密失败", credentialBo.getClientSecret());
+            throw new UsernameNotFoundException("客户端凭证格式错误");
+        }
+        if (!pwdEncode.equals(sysClientPo.getClientSecret())) {
+            throw new UsernameNotFoundException("客户端凭证无效");
+        }
+        // 校验用户信息
+        Long mobile = Long.valueOf(principalBo.getUserName());
+        // 校验验证码
+        this.checkAndHandleCaptcha(mobile, principalBo.getCaptchaCode(), credentialBo.getPassword());
+        // 校验会员
+        EpMemberPo mbrInfoPo = memberRepository.getByMobile(mobile);
+        if (mbrInfoPo == null) {
+            // 保存用户
+            EpMemberPo insertPo = new EpMemberPo();
+            insertPo.setMobile(mobile);
+            insertPo.setStatus(EpMemberStatus.normal);
+            memberRepository.insert(insertPo);
+        } else if (mbrInfoPo.getStatus().equals(EpMemberStatus.cancel)) {
+            throw new UsernameNotFoundException("账号已被注销");
+        } else if (mbrInfoPo.getStatus().equals(EpMemberStatus.freeze)) {
+            throw new LockedException("账号已被锁定");
+        }
+        // 定位角色
+        principalBo.setRole(sysClientPo.getRole());
 
     }
 
@@ -215,93 +246,6 @@ private SysRoleAuthorityRepository sysRoleAuthorityRepository;
             return ResultDo.build(MessageCode.ERROR_PRINCIPAL_CHECK);
         }
         return ResultDo.build();
-    }
-//
-//    /**
-//     * 小程序端安全校验已经配置角色
-//     *
-//     * @param principalBo
-//     * @param credentialBo
-//     * @param role
-//     * @throws AuthenticationException
-//     */
-//    private void checkWechatAppPrincipal(SecurityPrincipalBo principalBo, SecurityCredentialBo credentialBo, String role) throws AuthenticationException {
-//        Long mobile = Long.valueOf(principalBo.getUserName());
-//        // 校验验证码
-//        this.checkAndHandleCaptcha(mobile, principalBo.getCaptchaCode(), credentialBo.getPassword());
-//        // 校验会员
-//        MbrInfoPo mbrInfoPo = mbrInfoRepository.getByMobile(mobile);
-//        if (mbrInfoPo == null) {
-//            // 保存用户
-//            MbrInfoPo insertPo = new MbrInfoPo();
-//            insertPo.setMobile(mobile);
-//            insertPo.setStatus(MbrInfoStatus.normal);
-//            mbrInfoRepository.insert(insertPo);
-//        } else if (mbrInfoPo.getStatus().equals(MbrInfoStatus.cancel)) {
-//            throw new UsernameNotFoundException("账号已被注销");
-//        } else if (mbrInfoPo.getStatus().equals(MbrInfoStatus.freeze)) {
-//            throw new LockedException("账号已被锁定");
-//        }
-//        // 定位角色
-//        principalBo.setRole(role);
-//    }
-//
-//    /**
-//     * 后端安全校验已经配置角色
-//     *
-//     * @param principalBo
-//     * @param credentialBo
-//     */
-//    private void checkBackendPrincipal(SecurityPrincipalBo principalBo, SecurityCredentialBo credentialBo) {
-//        Long mobile = Long.valueOf(principalBo.getUserName());
-//        OgnAccountPo accountPo = ognAccountRepository.getByMobileAndOgnId(mobile, principalBo.getOgnId());
-//        if (accountPo == null || accountPo.getStatus().equals(OgnAccountStatus.cancel)) {
-//            throw new UsernameNotFoundException("用户不存在");
-//        } else if (accountPo.getStatus().equals(OgnAccountStatus.freeze)) {
-//            throw new LockedException("账号已被锁定");
-//        }
-//        this.checkPassword(credentialBo.getPassword(), accountPo.getSalt(), accountPo.getPassword());
-//        // 定位角色
-//        principalBo.setRole(accountPo.getRole());
-//    }
-//
-//    /**
-//     * 平台系统后台安全校验已经配置角色
-//     *
-//     * @param principalBo
-//     * @param credentialBo
-//     */
-//    private void checkAdminPrincipal(SecurityPrincipalBo principalBo, SecurityCredentialBo credentialBo) {
-//        Long mobile = Long.valueOf(principalBo.getUserName());
-//        SysUserPo sysUserPo = sysUserRepository.getByMobile(mobile);
-//        if (sysUserPo == null || sysUserPo.getStatus().equals(SysUserStatus.cancel)) {
-//            throw new UsernameNotFoundException("用户不存在");
-//        } else if (sysUserPo.getStatus().equals(SysUserStatus.freeze)) {
-//            throw new LockedException("账号已被锁定");
-//        }
-//        this.checkPassword(credentialBo.getPassword(), sysUserPo.getSalt(), sysUserPo.getPassword());
-//        // 定位角色
-//        principalBo.setRole(sysUserPo.getRole());
-//    }
-
-    /**
-     * 用户密码校验
-     *
-     * @param source
-     * @param salt
-     * @param target
-     */
-    private void checkPassword(String source, String salt, String target) {
-        try {
-            // 加密
-            String password = CryptTools.aesEncrypt(source, salt);
-            if (!password.equals(target)) {
-                throw new BadCredentialsException("用户名或密码错误");
-            }
-        } catch (GeneralSecurityException e) {
-            log.error("密码加密失败！password={}", source, e);
-            throw new BadCredentialsException("用户名或密码错误");
-        }
     }
 
     /**

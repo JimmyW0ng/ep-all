@@ -70,7 +70,6 @@ public class MessageCaptchaService {
         if (type.equals(EpMessageCaptchaCaptchaType.short_msg)) {
             // 查看当天已经发送次数
             int count = messageCaptchaRepository.countBySourceId(sourceId);
-            ;
             if (count > BizConstant.CAPTCHA_SHORT_MSG_NUM_LIMIT) {
                 return ResultDo.build(MessageCode.ERROR_GET_CAPTCHA_NUM_OUT_LIMIT);
             }

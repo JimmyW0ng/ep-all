@@ -155,17 +155,17 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
+     * Getter for <code>ep.ep_organ_course_sku_catelog.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_course_sku_catelog.remark</code>. 备注信息
      */
     public String getRemark() {
         return (String) get(5);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(8);
     }
 
     /**
@@ -176,10 +176,10 @@ public class EpOrganCourseSkuCatelogRecord extends UpdatableRecordImpl<EpOrganCo
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_sku_catelog.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_course_sku_catelog.del_flag</code>. 删除标志
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
+    public Boolean getDelFlag() {
+        return (Boolean) get(8);
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.Optional;
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
 
 /**
- * @Description:孩子信息标Repository
+ * @Description:孩子信息表Repository
  * @Author: J.W
  * @Date: 上午10:35 2017/11/27
  */

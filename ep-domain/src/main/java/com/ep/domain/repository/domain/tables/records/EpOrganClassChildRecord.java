@@ -139,17 +139,17 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class_child.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(6);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_child.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(4);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_child.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(7);
     }
 
     /**
@@ -160,10 +160,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_class_child.del_flag</code>. 删除标记
      */
-    public String getRemark() {
-        return (String) get(6);
+    public Boolean getDelFlag() {
+        return (Boolean) get(7);
     }
 
     /**

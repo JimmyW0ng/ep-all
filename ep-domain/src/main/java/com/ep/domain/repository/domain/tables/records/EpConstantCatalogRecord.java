@@ -123,17 +123,17 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
+     * Getter for <code>ep.ep_constant_catalog.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(5);
+    }
+
+    /**
      * Getter for <code>ep.ep_constant_catalog.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(3);
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
     }
 
     /**
@@ -144,10 +144,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Getter for <code>ep.ep_constant_catalog.remark</code>. 备注信息
+     * Getter for <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
      */
-    public String getRemark() {
-        return (String) get(5);
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
     }
 
     /**
