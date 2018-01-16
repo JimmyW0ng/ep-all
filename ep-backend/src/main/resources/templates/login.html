@@ -35,13 +35,20 @@
         </div>
         <h3>欢迎使用 EP</h3>
 
-        <form id="userFrm" class="m-t" role="form" action="/backend/logined" method="POST" enctype="">
+        <form id="userFrm" class="m-t" role="form" action="/security/backend/token" method="POST" enctype="">
             <div class="form-group">
-                <input type="email" class="form-control" name="userName" placeholder="用户名" required="">
+                <input class="form-control" name="mobile" placeholder="用户名" required="">
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="password" placeholder="密码" required="">
             </div>
+            <div class="form-group" style="display: inline-block">
+                <input name="captchaCode" placeholder="验证码" required="">
+                <img src="captcha/newCode" alt="验证码" title="点击重新获取验证码" id="captchaPng" onclick="reImg()"
+                     style="position:absolute; right: -5px; top: 2px; ">
+            </div>
+            <input type="hidden" name="clientId" value="platform_admin">
+            <input type="hidden" name="clientSecret" value="123456">
             <button type="button" onclick="logined()" class="btn btn-primary block full-width m-b">登 录</button>
 
 
@@ -59,16 +66,21 @@
 <th:block layout:fragment="scripts">
 
     <script th:inline="javascript">
+        function reImg() {
+            var img = document.getElementById("captchaPng");
+            img.src = "captcha/newCode";
+        }
 
         function logined() {
-            $.ajax({
-                type: "POST",
-                url: "/backend/logined",
-                data: JSON.stringify(parseSer2Json($("#userFrm").serialize())),//转成字符串
-                contentType: "application/json;charset=utf-8",//不使用contentType: “application/json”则data可以是对象,使用contentType: “application/json”则data只能是json字符串
-                success: function (data) {
-                }
-            })
+            $("#userFrm").submit();
+//            $.ajax({
+//                type: "POST",
+//                url: "/backend/token",
+//                data: $("#userFrm").serialize(),
+////                contentType: "application/json;charset=utf-8",//不使用contentType: “application/json”则data可以是对象,使用contentType: “application/json”则data只能是json字符串
+//                success: function (data) {
+//                }
+//            })
         }
 
         function parseSer2Json(ser) {
@@ -84,6 +96,10 @@
             }
             return obj;
         }
+        //        $(function () {
+        //            alert(0)
+        //            reImg();
+        //        })
     </script>
 </th:block>
 </body>

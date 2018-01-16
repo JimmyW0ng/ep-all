@@ -28,6 +28,11 @@ public class BizConstant {
     public static String CURENT_ADMIN_USER = "CURENT_ADMIN_USER";
 
     /**
+     * 后台登录验证码
+     */
+    public static String CAPTCHA_SESSION_KEY = "CAPTCHA_SESSION_KEY";
+
+    /**
      * 数据常量
      */
     public static int DB_NUM_ZERO = 0;

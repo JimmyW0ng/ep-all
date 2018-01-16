@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @Author: J.W
  * @Date: 下午8:26 2018/1/6
  */
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity//注解 WebSecurityConfigurer 类型的类或继承 WebSecurityConfigurerAdapter的类，必须和 @Configuration 注解一起使用
+@EnableGlobalMethodSecurity(prePostEnabled = true)//开启，判断用户对某个控制层的方法是否具有访问权限
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

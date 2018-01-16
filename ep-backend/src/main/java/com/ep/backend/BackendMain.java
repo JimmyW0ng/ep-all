@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Created by fcc on 2018/1/10.
@@ -25,9 +27,9 @@ import org.springframework.context.annotation.Import;
 //        // swagger
 //        Swagger2Config.class
 })
-@ComponentScan(basePackages = {"com.ep.backend"})
-//@EnableScheduling
-//@EnableAsync
+@ComponentScan(basePackages = {"com.ep"})
+@EnableScheduling
+@EnableAsync
 @SpringBootApplication
 public class BackendMain {
     public static void main(String[] args) {
