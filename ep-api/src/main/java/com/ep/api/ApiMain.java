@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfigura
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @Description: api启动类
@@ -34,7 +33,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         Swagger2Config.class
 })
 @ComponentScan(basePackages = {"com.ep"})
-@EnableScheduling
 @EnableAsync
 @SpringBootApplication
 public class ApiMain {

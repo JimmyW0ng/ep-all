@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * Created by J.W on 2017/10/27 0027.
+ * @Description: api鉴权过滤器
+ * @Author: J.W
+ * @Date: 下午4:41 2018/1/9
  */
 @Slf4j
 @Component

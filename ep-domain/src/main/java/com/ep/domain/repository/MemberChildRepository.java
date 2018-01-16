@@ -123,6 +123,20 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      * @param memberId
      * @return
      */
+    public List<EpMemberChildPo> getChildrenByMemberId(Long memberId) {
+        return dslContext.selectFrom(EP_MEMBER_CHILD)
+                .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .orderBy(EP_MEMBER_CHILD.ID.asc())
+                .fetchInto(EpMemberChildPo.class);
+    }
+
+    /**
+     * 查询会员的所有孩子综合信息
+     *
+     * @param memberId
+     * @return
+     */
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.fields());
         fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("signContent"));
@@ -133,7 +147,7 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
                 .and(EP_MEMBER_CHILD_SIGN.DEL_FLAG.eq(false))
                 .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
-                .orderBy(EP_MEMBER_CHILD.ID.asc())
+                .orderBy(EP_MEMBER_CHILD.SHOW_AT.desc())
                 .fetchInto(MemberChildBo.class);
     }
 
@@ -152,5 +166,6 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
                 .orderBy(EP_MEMBER_CHILD.ID.asc())
                 .fetchOneInto(EpMemberChildPo.class);
     }
+
 }
 

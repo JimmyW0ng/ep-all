@@ -137,12 +137,37 @@ public class MemberChildService {
     }
 
     /**
-     * 查询会员的所有孩子
+     * 查询会员的所有孩子的综合信息
+     *
+     * @param memberId
+     * @return
+     */
+    public List<EpMemberChildPo> getChildrenByMemberId(Long memberId) {
+        return memberChildRepository.getChildrenByMemberId(memberId);
+    }
+
+    /**
+     * 查询会员的所有孩子的综合信息
      *
      * @param memberId
      * @return
      */
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
         return memberChildRepository.queryAllByMemberId(memberId);
+    }
+
+    /**
+     * 根据主键获取孩子信息
+     *
+     * @param childId
+     * @return
+     */
+    public ResultDo<EpMemberChildPo> getById(Long childId) {
+        EpMemberChildPo child = memberChildRepository.getById(childId);
+        if (child == null) {
+            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+        }
+        ResultDo<EpMemberChildPo> resultDo = ResultDo.build();
+        return resultDo.setResult(child);
     }
 }
