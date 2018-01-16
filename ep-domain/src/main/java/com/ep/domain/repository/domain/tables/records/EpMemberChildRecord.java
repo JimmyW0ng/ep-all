@@ -192,31 +192,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.current_school</code>. 当前就读学校
-     */
-    public String getCurrentSchool() {
-        return (String) get(7);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child.current_class</code>. 所在班级
-     */
-    public String getCurrentClass() {
-        return (String) get(8);
-    }
-
-    /**
      * Getter for <code>ep.ep_member_child.relationship</code>. 关系
      */
     public String getRelationship() {
         return (String) get(9);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child.show_at</code>. 展示时间
-     */
-    public Timestamp getShowAt() {
-        return (Timestamp) get(10);
     }
 
     /**
@@ -228,10 +207,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_child.current_school</code>. 当前就读学校
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(11);
+    public String getCurrentSchool() {
+        return (String) get(7);
     }
 
     /**
@@ -243,10 +222,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_child.current_class</code>. 所在班级
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(12);
+    public String getCurrentClass() {
+        return (String) get(8);
     }
 
     /**
@@ -258,10 +237,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.remark</code>. 备注
+     * Getter for <code>ep.ep_member_child.show_at</code>. 展示时间
      */
-    public String getRemark() {
-        return (String) get(13);
+    public Timestamp getShowAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -273,10 +252,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_member_child.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -285,6 +264,27 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     public EpMemberChildRecord setDelFlag(Boolean value) {
         set(14, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(12);
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(13);
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
     }
 
     // -------------------------------------------------------------------------
@@ -402,22 +402,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
      * {@inheritDoc}
      */
     @Override
-    public Row16<Long, Long, String, String, EpMemberChildChildSex, Timestamp, String, String, String, String, Timestamp, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
-        return (Row16) super.fieldsRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row16<Long, Long, String, String, EpMemberChildChildSex, Timestamp, String, String, String, String, Timestamp, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row16) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<Timestamp> field11() {
         return EpMemberChild.EP_MEMBER_CHILD.SHOW_AT;
     }
@@ -444,6 +428,22 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     @Override
     public Field<String> field14() {
         return EpMemberChild.EP_MEMBER_CHILD.REMARK;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row16<Long, Long, String, String, EpMemberChildChildSex, Timestamp, String, String, String, String, Timestamp, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
+        return (Row16) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row16<Long, Long, String, String, EpMemberChildChildSex, Timestamp, String, String, String, String, Timestamp, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row16) super.valuesRow();
     }
 
     /**
@@ -530,22 +530,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field15() {
-        return EpMemberChild.EP_MEMBER_CHILD.DEL_FLAG;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field16() {
-        return EpMemberChild.EP_MEMBER_CHILD.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Timestamp value11() {
         return getShowAt();
     }
@@ -572,6 +556,22 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     @Override
     public String value14() {
         return getRemark();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Boolean> field15() {
+        return EpMemberChild.EP_MEMBER_CHILD.DEL_FLAG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field16() {
+        return EpMemberChild.EP_MEMBER_CHILD.VERSION;
     }
 
     /**
@@ -668,22 +668,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
      * {@inheritDoc}
      */
     @Override
-    public Boolean value15() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value16() {
-        return getVersion();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpMemberChildRecord value11(Timestamp value) {
         setShowAt(value);
         return this;
@@ -725,10 +709,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -760,5 +740,25 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         value15(value15);
         value16(value16);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean value15() {
+        return getDelFlag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value16() {
+        return getVersion();
     }
 }

@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 340205644;
+    private static final long serialVersionUID = -479886531;
 
     /**
      * The reference instance of <code>ep</code>
@@ -84,6 +84,11 @@ public class Ep extends SchemaImpl {
      * 订单表
      */
     public final EpOrder EP_ORDER = com.ep.domain.repository.domain.tables.EpOrder.EP_ORDER;
+
+    /**
+     * 机构信息表
+     */
+    public final EpOrgan EP_ORGAN = com.ep.domain.repository.domain.tables.EpOrgan.EP_ORGAN;
 
     /**
      * 机构后台账户
@@ -149,11 +154,6 @@ public class Ep extends SchemaImpl {
      * 机构课程团队信息表
      */
     public final EpOrganCourseTeam EP_ORGAN_COURSE_TEAM = com.ep.domain.repository.domain.tables.EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM;
-
-    /**
-     * 机构信息表
-     */
-    public final EpOrganInfo EP_ORGAN_INFO = com.ep.domain.repository.domain.tables.EpOrganInfo.EP_ORGAN_INFO;
 
     /**
      * 鉴权表
@@ -230,6 +230,7 @@ public class Ep extends SchemaImpl {
                 EpMemberChildTag.EP_MEMBER_CHILD_TAG,
                 EpMessageCaptcha.EP_MESSAGE_CAPTCHA,
                 EpOrder.EP_ORDER,
+                EpOrgan.EP_ORGAN,
                 EpOrganAccount.EP_ORGAN_ACCOUNT,
                 EpOrganCatalog.EP_ORGAN_CATALOG,
                 EpOrganClass.EP_ORGAN_CLASS,
@@ -243,7 +244,6 @@ public class Ep extends SchemaImpl {
                 EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG,
                 EpOrganCourseTag.EP_ORGAN_COURSE_TAG,
                 EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM,
-                EpOrganInfo.EP_ORGAN_INFO,
                 EpSystemClient.EP_SYSTEM_CLIENT,
                 EpSystemDict.EP_SYSTEM_DICT,
                 EpSystemMenu.EP_SYSTEM_MENU,

@@ -6,8 +6,8 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
+import com.ep.domain.repository.EpFileRepository;
 import com.ep.domain.repository.MemberChildRepository;
-import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,9 @@ import java.util.Optional;
 public class MemberChildService {
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
     private MemberChildRepository memberChildRepository;
+    @Autowired
+    private EpFileRepository fileRepository;
 
     /**
      * 新增孩子信息
@@ -100,6 +99,7 @@ public class MemberChildService {
         }
         EpMemberChildPo updatePo = new EpMemberChildPo();
         updatePo.setId(childId);
+        updatePo.setMemberId(memberId);
         updatePo.setChildNickName(childNickName);
         updatePo.setChildTrueName(childTrueName);
         updatePo.setChildSex(childSex);
@@ -118,11 +118,17 @@ public class MemberChildService {
     /**
      * 逻辑删除
      *
+     * @param memberId
      * @param id
      * @return
      */
-    public int delChild(Long id) {
-        return memberChildRepository.delChild(id);
+    public int delChild(Long memberId, Long id) {
+        int delNum = memberChildRepository.delChild(memberId, id);
+        if (delNum == BizConstant.DB_NUM_ONE) {
+            // 删除孩子头像
+            fileRepository.logicDelByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, id);
+        }
+        return delNum;
     }
 
     /**
@@ -159,12 +165,13 @@ public class MemberChildService {
     /**
      * 根据主键获取孩子信息
      *
+     * @param memberId
      * @param childId
      * @return
      */
-    public ResultDo<EpMemberChildPo> getById(Long childId) {
+    public ResultDo<EpMemberChildPo> getById(Long memberId, Long childId) {
         EpMemberChildPo child = memberChildRepository.getById(childId);
-        if (child == null) {
+        if (child == null || !child.getMemberId().equals(memberId)) {
             return ResultDo.build(MessageCode.ERROR_DATA_MISS);
         }
         ResultDo<EpMemberChildPo> resultDo = ResultDo.build();

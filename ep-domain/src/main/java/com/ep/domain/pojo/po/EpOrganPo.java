@@ -5,7 +5,7 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
-import com.ep.domain.repository.domain.enums.EpOrganInfoStatus;
+import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EpOrganInfoPo extends AbstractBasePojo {
+public class EpOrganPo extends AbstractBasePojo {
 
     private Long id;
     private String organName;
@@ -34,7 +34,7 @@ public class EpOrganInfoPo extends AbstractBasePojo {
     private String organEmail;
     private String organUrl;
     private String organIntroduce;
-    private EpOrganInfoStatus status;
+    private EpOrganStatus status;
     @JsonIgnore
     private String remark;
     @JsonIgnore

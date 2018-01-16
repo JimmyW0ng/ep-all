@@ -88,17 +88,18 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
+     * Setter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
+     */
+    public EpFileRecord setBizTypeCode(Short value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_file.id</code>. 主键
      */
     public Long getId() {
         return (Long) get(0);
-    }
-
-    /**
-     * Getter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
-     */
-    public Short getBizTypeCode() {
-        return (Short) get(3);
     }
 
     /**
@@ -109,22 +110,6 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
-     */
-    public EpFileRecord setBizTypeCode(Short value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_file.sort</code>. 排序
-     */
-    public EpFileRecord setSort(Integer value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_file.source_id</code>. 业务ID
      */
     public Long getSourceId() {
@@ -132,11 +117,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
      */
-    public EpFileRecord setCreateAt(Timestamp value) {
-        set(6, value);
-        return this;
+    public Short getBizTypeCode() {
+        return (Short) get(3);
     }
 
     /**
@@ -148,10 +132,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_file.create_at</code>. 创建时间
      */
-    public EpFileRecord setUpdateAt(Timestamp value) {
-        set(7, value);
+    public EpFileRecord setCreateAt(Timestamp value) {
+        set(6, value);
         return this;
     }
 
@@ -160,6 +144,22 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
      */
     public Integer getSort() {
         return (Integer) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.update_at</code>. 更新时间
+     */
+    public EpFileRecord setUpdateAt(Timestamp value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.sort</code>. 排序
+     */
+    public EpFileRecord setSort(Integer value) {
+        set(5, value);
+        return this;
     }
 
     /**

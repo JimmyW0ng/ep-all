@@ -3,6 +3,7 @@ package com.ep.api.controller;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.service.OrganCourseService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("security/course")
 @RestController
+@Api(value = "api-security-course", description = "机构课程开放接口")
 public class OrganCourseController extends ApiController {
 
     @Autowired
     private OrganCourseService organCourseService;
 
-    /**
-     * 课程详情
-     */
     @ApiOperation(value = "课程详情")
     @PostMapping("/detail")
     public ResultDo<OrganCourseDto> getCourseInfo(@RequestParam("courseId") Long courseId) {

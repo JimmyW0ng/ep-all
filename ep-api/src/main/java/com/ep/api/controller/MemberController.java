@@ -5,6 +5,8 @@ import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.dto.MemberInfoDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.MemberChildService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,16 +24,13 @@ import java.util.List;
 @Slf4j
 @RequestMapping("auth/member")
 @RestController
+@Api(value = "api-auth-member", description = "会员接口")
 public class MemberController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
 
-    /**
-     * 当前用户信息
-     *
-     * @return
-     */
+    @ApiOperation(value = "当前用户信息")
     @PostMapping("/detail")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<MemberInfoDto> index() {

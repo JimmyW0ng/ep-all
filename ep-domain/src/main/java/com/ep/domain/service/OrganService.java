@@ -6,11 +6,11 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
-import com.ep.domain.pojo.po.EpOrganInfoPo;
+import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.EpFileRepository;
 import com.ep.domain.repository.OrganCourseRepository;
-import com.ep.domain.repository.OrganInfoRepository;
-import com.ep.domain.repository.domain.enums.EpOrganInfoStatus;
+import com.ep.domain.repository.OrganRepository;
+import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,10 @@ import java.util.Optional;
  * @Date: 上午9:30 2018/1/14
  */
 @Service
-public class OrganInfoService {
+public class OrganService {
 
     @Autowired
-    private OrganInfoRepository organInfoRepository;
+    private OrganRepository organRepository;
     @Autowired
     private EpFileRepository fileRepository;
     @Autowired
@@ -41,8 +41,8 @@ public class OrganInfoService {
     public ResultDo<OrganInfoDto> getOgnDetail(Long id) {
         ResultDo<OrganInfoDto> resultDo = ResultDo.build();
         // 机构详情
-        Optional<EpOrganInfoPo> ognInfoPojo = this.getById(id);
-        if (!ognInfoPojo.isPresent() || !EpOrganInfoStatus.normal.equals(ognInfoPojo.get().getStatus())) {
+        Optional<EpOrganPo> ognInfoPojo = this.getById(id);
+        if (!ognInfoPojo.isPresent() || !EpOrganStatus.normal.equals(ognInfoPojo.get().getStatus())) {
             return ResultDo.build(MessageCode.ERROR_DATA_MISS);
         }
         // 机构banner列表
@@ -59,8 +59,8 @@ public class OrganInfoService {
      * @param id
      * @return
      */
-    public Optional<EpOrganInfoPo> getById(Long id) {
-        return Optional.ofNullable(organInfoRepository.getById(id));
+    public Optional<EpOrganPo> getById(Long id) {
+        return Optional.ofNullable(organRepository.getById(id));
     }
 
 }

@@ -41,6 +41,7 @@ public class Keys {
     public static final Identity<EpMemberChildTagRecord, Long> IDENTITY_EP_MEMBER_CHILD_TAG = Identities0.IDENTITY_EP_MEMBER_CHILD_TAG;
     public static final Identity<EpMessageCaptchaRecord, Long> IDENTITY_EP_MESSAGE_CAPTCHA = Identities0.IDENTITY_EP_MESSAGE_CAPTCHA;
     public static final Identity<EpOrderRecord, Long> IDENTITY_EP_ORDER = Identities0.IDENTITY_EP_ORDER;
+    public static final Identity<EpOrganRecord, Long> IDENTITY_EP_ORGAN = Identities0.IDENTITY_EP_ORGAN;
     public static final Identity<EpOrganAccountRecord, Long> IDENTITY_EP_ORGAN_ACCOUNT = Identities0.IDENTITY_EP_ORGAN_ACCOUNT;
     public static final Identity<EpOrganCatalogRecord, Long> IDENTITY_EP_ORGAN_CATALOG = Identities0.IDENTITY_EP_ORGAN_CATALOG;
     public static final Identity<EpOrganClassRecord, Long> IDENTITY_EP_ORGAN_CLASS = Identities0.IDENTITY_EP_ORGAN_CLASS;
@@ -54,7 +55,6 @@ public class Keys {
     public static final Identity<EpOrganCourseSkuCatelogRecord, Long> IDENTITY_EP_ORGAN_COURSE_SKU_CATELOG = Identities0.IDENTITY_EP_ORGAN_COURSE_SKU_CATELOG;
     public static final Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = Identities0.IDENTITY_EP_ORGAN_COURSE_TAG;
     public static final Identity<EpOrganCourseTeamRecord, Long> IDENTITY_EP_ORGAN_COURSE_TEAM = Identities0.IDENTITY_EP_ORGAN_COURSE_TEAM;
-    public static final Identity<EpOrganInfoRecord, Long> IDENTITY_EP_ORGAN_INFO = Identities0.IDENTITY_EP_ORGAN_INFO;
     public static final Identity<EpSystemClientRecord, Long> IDENTITY_EP_SYSTEM_CLIENT = Identities0.IDENTITY_EP_SYSTEM_CLIENT;
     public static final Identity<EpSystemDictRecord, Long> IDENTITY_EP_SYSTEM_DICT = Identities0.IDENTITY_EP_SYSTEM_DICT;
     public static final Identity<EpSystemMenuRecord, Long> IDENTITY_EP_SYSTEM_MENU = Identities0.IDENTITY_EP_SYSTEM_MENU;
@@ -80,6 +80,7 @@ public class Keys {
     public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_TAG_PRIMARY;
     public static final UniqueKey<EpMessageCaptchaRecord> KEY_EP_MESSAGE_CAPTCHA_PRIMARY = UniqueKeys0.KEY_EP_MESSAGE_CAPTCHA_PRIMARY;
     public static final UniqueKey<EpOrderRecord> KEY_EP_ORDER_PRIMARY = UniqueKeys0.KEY_EP_ORDER_PRIMARY;
+    public static final UniqueKey<EpOrganRecord> KEY_EP_ORGAN_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_PRIMARY;
     public static final UniqueKey<EpOrganAccountRecord> KEY_EP_ORGAN_ACCOUNT_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_ACCOUNT_PRIMARY;
     public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CATALOG_PRIMARY;
     public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_UNIQUE_OGN_ID_COURSE_CATALOG_ID = UniqueKeys0.KEY_EP_ORGAN_CATALOG_UNIQUE_OGN_ID_COURSE_CATALOG_ID;
@@ -94,7 +95,6 @@ public class Keys {
     public static final UniqueKey<EpOrganCourseSkuCatelogRecord> KEY_EP_ORGAN_COURSE_SKU_CATELOG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_SKU_CATELOG_PRIMARY;
     public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TAG_PRIMARY;
     public static final UniqueKey<EpOrganCourseTeamRecord> KEY_EP_ORGAN_COURSE_TEAM_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TEAM_PRIMARY;
-    public static final UniqueKey<EpOrganInfoRecord> KEY_EP_ORGAN_INFO_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_INFO_PRIMARY;
     public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_CLIENT_PRIMARY;
     public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID = UniqueKeys0.KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID;
     public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_DICT_PRIMARY;
@@ -126,6 +126,7 @@ public class Keys {
         public static Identity<EpMemberChildTagRecord, Long> IDENTITY_EP_MEMBER_CHILD_TAG = createIdentity(EpMemberChildTag.EP_MEMBER_CHILD_TAG, EpMemberChildTag.EP_MEMBER_CHILD_TAG.ID);
         public static Identity<EpMessageCaptchaRecord, Long> IDENTITY_EP_MESSAGE_CAPTCHA = createIdentity(EpMessageCaptcha.EP_MESSAGE_CAPTCHA, EpMessageCaptcha.EP_MESSAGE_CAPTCHA.ID);
         public static Identity<EpOrderRecord, Long> IDENTITY_EP_ORDER = createIdentity(EpOrder.EP_ORDER, EpOrder.EP_ORDER.ID);
+        public static Identity<EpOrganRecord, Long> IDENTITY_EP_ORGAN = createIdentity(EpOrgan.EP_ORGAN, EpOrgan.EP_ORGAN.ID);
         public static Identity<EpOrganAccountRecord, Long> IDENTITY_EP_ORGAN_ACCOUNT = createIdentity(EpOrganAccount.EP_ORGAN_ACCOUNT, EpOrganAccount.EP_ORGAN_ACCOUNT.ID);
         public static Identity<EpOrganCatalogRecord, Long> IDENTITY_EP_ORGAN_CATALOG = createIdentity(EpOrganCatalog.EP_ORGAN_CATALOG, EpOrganCatalog.EP_ORGAN_CATALOG.ID);
         public static Identity<EpOrganClassRecord, Long> IDENTITY_EP_ORGAN_CLASS = createIdentity(EpOrganClass.EP_ORGAN_CLASS, EpOrganClass.EP_ORGAN_CLASS.ID);
@@ -139,7 +140,6 @@ public class Keys {
         public static Identity<EpOrganCourseSkuCatelogRecord, Long> IDENTITY_EP_ORGAN_COURSE_SKU_CATELOG = createIdentity(EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG, EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG.ID);
         public static Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = createIdentity(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
         public static Identity<EpOrganCourseTeamRecord, Long> IDENTITY_EP_ORGAN_COURSE_TEAM = createIdentity(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM, EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.ID);
-        public static Identity<EpOrganInfoRecord, Long> IDENTITY_EP_ORGAN_INFO = createIdentity(EpOrganInfo.EP_ORGAN_INFO, EpOrganInfo.EP_ORGAN_INFO.ID);
         public static Identity<EpSystemClientRecord, Long> IDENTITY_EP_SYSTEM_CLIENT = createIdentity(EpSystemClient.EP_SYSTEM_CLIENT, EpSystemClient.EP_SYSTEM_CLIENT.ID);
         public static Identity<EpSystemDictRecord, Long> IDENTITY_EP_SYSTEM_DICT = createIdentity(EpSystemDict.EP_SYSTEM_DICT, EpSystemDict.EP_SYSTEM_DICT.ID);
         public static Identity<EpSystemMenuRecord, Long> IDENTITY_EP_SYSTEM_MENU = createIdentity(EpSystemMenu.EP_SYSTEM_MENU, EpSystemMenu.EP_SYSTEM_MENU.ID);
@@ -163,6 +163,7 @@ public class Keys {
         public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_PRIMARY = createUniqueKey(EpMemberChildTag.EP_MEMBER_CHILD_TAG, "KEY_ep_member_child_tag_PRIMARY", EpMemberChildTag.EP_MEMBER_CHILD_TAG.ID);
         public static final UniqueKey<EpMessageCaptchaRecord> KEY_EP_MESSAGE_CAPTCHA_PRIMARY = createUniqueKey(EpMessageCaptcha.EP_MESSAGE_CAPTCHA, "KEY_ep_message_captcha_PRIMARY", EpMessageCaptcha.EP_MESSAGE_CAPTCHA.ID);
         public static final UniqueKey<EpOrderRecord> KEY_EP_ORDER_PRIMARY = createUniqueKey(EpOrder.EP_ORDER, "KEY_ep_order_PRIMARY", EpOrder.EP_ORDER.ID);
+        public static final UniqueKey<EpOrganRecord> KEY_EP_ORGAN_PRIMARY = createUniqueKey(EpOrgan.EP_ORGAN, "KEY_ep_organ_PRIMARY", EpOrgan.EP_ORGAN.ID);
         public static final UniqueKey<EpOrganAccountRecord> KEY_EP_ORGAN_ACCOUNT_PRIMARY = createUniqueKey(EpOrganAccount.EP_ORGAN_ACCOUNT, "KEY_ep_organ_account_PRIMARY", EpOrganAccount.EP_ORGAN_ACCOUNT.ID);
         public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_PRIMARY = createUniqueKey(EpOrganCatalog.EP_ORGAN_CATALOG, "KEY_ep_organ_catalog_PRIMARY", EpOrganCatalog.EP_ORGAN_CATALOG.ID);
         public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_UNIQUE_OGN_ID_COURSE_CATALOG_ID = createUniqueKey(EpOrganCatalog.EP_ORGAN_CATALOG, "KEY_ep_organ_catalog_UNIQUE_OGN_ID_COURSE_CATALOG_ID", EpOrganCatalog.EP_ORGAN_CATALOG.OGN_ID, EpOrganCatalog.EP_ORGAN_CATALOG.COURSE_CATALOG_ID);
@@ -177,7 +178,6 @@ public class Keys {
         public static final UniqueKey<EpOrganCourseSkuCatelogRecord> KEY_EP_ORGAN_COURSE_SKU_CATELOG_PRIMARY = createUniqueKey(EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG, "KEY_ep_organ_course_sku_catelog_PRIMARY", EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG.ID);
         public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = createUniqueKey(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, "KEY_ep_organ_course_tag_PRIMARY", EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
         public static final UniqueKey<EpOrganCourseTeamRecord> KEY_EP_ORGAN_COURSE_TEAM_PRIMARY = createUniqueKey(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM, "KEY_ep_organ_course_team_PRIMARY", EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.ID);
-        public static final UniqueKey<EpOrganInfoRecord> KEY_EP_ORGAN_INFO_PRIMARY = createUniqueKey(EpOrganInfo.EP_ORGAN_INFO, "KEY_ep_organ_info_PRIMARY", EpOrganInfo.EP_ORGAN_INFO.ID);
         public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_PRIMARY = createUniqueKey(EpSystemClient.EP_SYSTEM_CLIENT, "KEY_ep_system_client_PRIMARY", EpSystemClient.EP_SYSTEM_CLIENT.ID);
         public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID = createUniqueKey(EpSystemClient.EP_SYSTEM_CLIENT, "KEY_ep_system_client_unique_clientid", EpSystemClient.EP_SYSTEM_CLIENT.CLIENT_ID);
         public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_PRIMARY = createUniqueKey(EpSystemDict.EP_SYSTEM_DICT, "KEY_ep_system_dict_PRIMARY", EpSystemDict.EP_SYSTEM_DICT.ID);

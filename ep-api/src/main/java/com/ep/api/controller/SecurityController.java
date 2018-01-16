@@ -32,15 +32,6 @@ public class SecurityController extends ApiController {
     @Autowired
     private SecurityAuthComponent securityAuthComponent;
 
-    /**
-     * 获取登录短信验证码
-     *
-     * @param mobile
-     * @param clientId
-     * @param clientSecret
-     * @param request
-     * @return
-     */
     @ApiOperation(value = "获取登录短信验证码")
     @PostMapping("/captcha")
     public ResultDo getCaptcha(@RequestParam("mobile") Long mobile,
@@ -58,16 +49,6 @@ public class SecurityController extends ApiController {
                 IpTools.getIpAddr(request));
     }
 
-    /**
-     * 登录
-     *
-     * @param mobile
-     * @param code
-     * @param captcha
-     * @param clientId
-     * @param clientSecret
-     * @return
-     */
     @ApiOperation(value = "获取前台token")
     @PostMapping("/token")
     public ResultDo<String> login(@RequestParam(value = "mobile") Long mobile,

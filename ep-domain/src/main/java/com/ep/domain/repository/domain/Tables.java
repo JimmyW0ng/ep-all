@@ -73,6 +73,11 @@ public class Tables {
     public static final EpOrder EP_ORDER = com.ep.domain.repository.domain.tables.EpOrder.EP_ORDER;
 
     /**
+     * 机构信息表
+     */
+    public static final EpOrgan EP_ORGAN = com.ep.domain.repository.domain.tables.EpOrgan.EP_ORGAN;
+
+    /**
      * 机构后台账户
      */
     public static final EpOrganAccount EP_ORGAN_ACCOUNT = com.ep.domain.repository.domain.tables.EpOrganAccount.EP_ORGAN_ACCOUNT;
@@ -136,11 +141,6 @@ public class Tables {
      * 机构课程团队信息表
      */
     public static final EpOrganCourseTeam EP_ORGAN_COURSE_TEAM = com.ep.domain.repository.domain.tables.EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM;
-
-    /**
-     * 机构信息表
-     */
-    public static final EpOrganInfo EP_ORGAN_INFO = com.ep.domain.repository.domain.tables.EpOrganInfo.EP_ORGAN_INFO;
 
     /**
      * 鉴权表

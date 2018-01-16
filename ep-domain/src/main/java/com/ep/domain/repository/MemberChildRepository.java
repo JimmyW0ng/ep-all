@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
@@ -40,7 +41,8 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
         UpdateSetMoreStep step = dslContext.update(EP_MEMBER_CHILD)
                 .set(EP_MEMBER_CHILD.CHILD_TRUE_NAME, updatePo.getChildTrueName())
                 .set(EP_MEMBER_CHILD.CHILD_SEX, updatePo.getChildSex())
-                .set(EP_MEMBER_CHILD.CHILD_BIRTHDAY, updatePo.getChildBirthday());
+                .set(EP_MEMBER_CHILD.CHILD_BIRTHDAY, updatePo.getChildBirthday())
+                .set(EP_MEMBER_CHILD.SHOW_AT, DateTools.getCurrentDateTime());
         if (StringTools.isNotBlank(updatePo.getChildNickName())) {
             step = step.set(EP_MEMBER_CHILD.CHILD_NICK_NAME, updatePo.getChildNickName());
         }
@@ -53,19 +55,23 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
         if (StringTools.isNotBlank(updatePo.getCurrentClass())) {
             step = step.set(EP_MEMBER_CHILD.CURRENT_CLASS, updatePo.getCurrentClass());
         }
-        return step.where(EP_MEMBER_CHILD.ID.eq(updatePo.getId())).and(EP_MEMBER_CHILD.DEL_FLAG.eq(false)).execute();
+        return step.where(EP_MEMBER_CHILD.ID.eq(updatePo.getId()))
+                .and(EP_MEMBER_CHILD.MEMBER_ID.eq(updatePo.getMemberId()))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false)).execute();
     }
 
     /**
      * 逻辑删除
      *
+     * @param memberId
      * @param id
      * @return
      */
-    public int delChild(Long id) {
+    public int delChild(Long memberId, Long id) {
         return dslContext.update(EP_MEMBER_CHILD)
                 .set(EP_MEMBER_CHILD.DEL_FLAG, true)
                 .where(EP_MEMBER_CHILD.ID.eq(id))
+                .and(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
                 .execute();
     }

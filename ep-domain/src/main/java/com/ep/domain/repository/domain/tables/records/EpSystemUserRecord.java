@@ -147,31 +147,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.password</code>. 密码
-     */
-    public String getPassword() {
-        return (String) get(4);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.role</code>. 角色
-     */
-    public String getRole() {
-        return (String) get(5);
-    }
-
-    /**
      * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
     public String getEmail() {
         return (String) get(6);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
-     */
-    public EpSystemUserType getType() {
-        return (EpSystemUserType) get(7);
     }
 
     /**
@@ -183,10 +162,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.organ_id</code>. 商户id
+     * Getter for <code>ep.ep_system_user.password</code>. 密码
      */
-    public Long getOrganId() {
-        return (Long) get(8);
+    public String getPassword() {
+        return (String) get(4);
     }
 
     /**
@@ -198,10 +177,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_system_user.role</code>. 角色
      */
-    public EpSystemUserStatus getStatus() {
-        return (EpSystemUserStatus) get(9);
+    public String getRole() {
+        return (String) get(5);
     }
 
     /**
@@ -213,10 +192,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(10);
+    public EpSystemUserType getType() {
+        return (EpSystemUserType) get(7);
     }
 
     /**
@@ -228,10 +207,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_user.organ_id</code>. 商户id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(11);
+    public Long getOrganId() {
+        return (Long) get(8);
     }
 
     /**
@@ -243,10 +222,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
      */
-    public String getRemark() {
-        return (String) get(12);
+    public EpSystemUserStatus getStatus() {
+        return (EpSystemUserStatus) get(9);
     }
 
     /**
@@ -258,10 +237,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(13);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -270,6 +249,27 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     public EpSystemUserRecord setDelFlag(Boolean value) {
         set(13, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(11);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(12);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(13);
     }
 
     // -------------------------------------------------------------------------
@@ -363,22 +363,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Row15<Long, Long, String, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
-        return (Row15) super.fieldsRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row15<Long, Long, String, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row15) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<EpSystemUserType> field8() {
         return EpSystemUser.EP_SYSTEM_USER.TYPE;
     }
@@ -421,6 +405,22 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     @Override
     public Field<String> field13() {
         return EpSystemUser.EP_SYSTEM_USER.REMARK;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row15<Long, Long, String, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
+        return (Row15) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row15<Long, Long, String, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row15) super.valuesRow();
     }
 
     /**
@@ -483,22 +483,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field14() {
-        return EpSystemUser.EP_SYSTEM_USER.DEL_FLAG;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field15() {
-        return EpSystemUser.EP_SYSTEM_USER.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpSystemUserType value8() {
         return getType();
     }
@@ -541,6 +525,22 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     @Override
     public String value13() {
         return getRemark();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Boolean> field14() {
+        return EpSystemUser.EP_SYSTEM_USER.DEL_FLAG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field15() {
+        return EpSystemUser.EP_SYSTEM_USER.VERSION;
     }
 
     /**
@@ -610,22 +610,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Boolean value14() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value15() {
-        return getVersion();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpSystemUserRecord value8(EpSystemUserType value) {
         setType(value);
         return this;
@@ -685,10 +669,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -719,5 +699,25 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         value14(value14);
         value15(value15);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean value14() {
+        return getDelFlag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value15() {
+        return getVersion();
     }
 }
