@@ -185,17 +185,17 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
-    }
-
-    /**
      * Getter for <code>ep.ep_member_child_honor.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(9);
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
     /**

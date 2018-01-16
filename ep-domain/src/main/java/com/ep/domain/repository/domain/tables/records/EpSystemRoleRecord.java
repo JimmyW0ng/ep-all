@@ -186,17 +186,17 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
-    }
-
-    /**
      * Getter for <code>ep.ep_system_role.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
         return (Boolean) get(9);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
     /**

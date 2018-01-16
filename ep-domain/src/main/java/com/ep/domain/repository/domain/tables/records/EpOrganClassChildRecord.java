@@ -153,17 +153,17 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(5);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class_child.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(7);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class_child.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(5);
     }
 
     /**

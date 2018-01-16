@@ -8,6 +8,7 @@ import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpMemberSex;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpMemberType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,13 +30,21 @@ public class EpMemberPo extends AbstractBasePojo {
     private String trueName;
     private EpMemberSex sex;
     private String email;
+    @JsonIgnore
     private EpMemberStatus status;
+    @JsonIgnore
     private EpMemberType type;
+    @JsonIgnore
     private String role;
+    @JsonIgnore
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }

@@ -202,17 +202,17 @@ public class EpOrganClassScheduleCommentRecord extends UpdatableRecordImpl<EpOrg
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule_comment.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class_schedule_comment.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(10);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class_schedule_comment.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
     }
 
     /**

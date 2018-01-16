@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("security/organ")
 @RestController
-public class OrganController {
+public class OrganController extends ApiController {
 
     @Autowired
     private OrganInfoService organInfoService;

@@ -173,6 +173,11 @@ public class Tables {
     public static final EpSystemUser EP_SYSTEM_USER = com.ep.domain.repository.domain.tables.EpSystemUser.EP_SYSTEM_USER;
 
     /**
+     * 用户-角色
+     */
+    public static final EpSystemUserRole EP_SYSTEM_USER_ROLE = com.ep.domain.repository.domain.tables.EpSystemUserRole.EP_SYSTEM_USER_ROLE;
+
+    /**
      * 微信会话token表
      */
     public static final EpWechatSessionToken EP_WECHAT_SESSION_TOKEN = com.ep.domain.repository.domain.tables.EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN;

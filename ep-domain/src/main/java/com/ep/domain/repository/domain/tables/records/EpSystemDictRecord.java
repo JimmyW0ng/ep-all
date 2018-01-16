@@ -218,17 +218,17 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(9);
-    }
-
-    /**
      * Getter for <code>ep.ep_system_dict.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(11);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_dict.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
