@@ -29,7 +29,7 @@ import java.io.IOException;
  * @Date: 下午4:41 2018/1/9
  */
 @Slf4j
-@RequestMapping("")
+@RequestMapping("security/backend")
 @Controller
 @Api(value = "api-security", description = "backend开放接口")
 public class BackendController {
