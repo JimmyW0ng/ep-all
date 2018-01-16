@@ -169,17 +169,17 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_tag.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(6);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_course_tag.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(8);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_tag.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(6);
     }
 
     /**

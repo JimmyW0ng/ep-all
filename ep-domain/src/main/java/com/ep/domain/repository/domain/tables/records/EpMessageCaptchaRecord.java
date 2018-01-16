@@ -219,17 +219,17 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(9);
-    }
-
-    /**
      * Getter for <code>ep.ep_message_captcha.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(11);
+    }
+
+    /**
+     * Getter for <code>ep.ep_message_captcha.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(9);
     }
 
     /**

@@ -137,17 +137,17 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
-    }
-
-    /**
      * Getter for <code>ep.ep_member_child_sign.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(6);
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child_sign.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
     }
 
     /**

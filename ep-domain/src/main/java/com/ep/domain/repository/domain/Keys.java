@@ -61,6 +61,7 @@ public class Keys {
     public static final Identity<EpSystemRoleRecord, Long> IDENTITY_EP_SYSTEM_ROLE = Identities0.IDENTITY_EP_SYSTEM_ROLE;
     public static final Identity<EpSystemRoleAuthorityRecord, Long> IDENTITY_EP_SYSTEM_ROLE_AUTHORITY = Identities0.IDENTITY_EP_SYSTEM_ROLE_AUTHORITY;
     public static final Identity<EpSystemUserRecord, Long> IDENTITY_EP_SYSTEM_USER = Identities0.IDENTITY_EP_SYSTEM_USER;
+    public static final Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = Identities0.IDENTITY_EP_SYSTEM_USER_ROLE;
     public static final Identity<EpWechatSessionTokenRecord, Long> IDENTITY_EP_WECHAT_SESSION_TOKEN = Identities0.IDENTITY_EP_WECHAT_SESSION_TOKEN;
 
     // -------------------------------------------------------------------------
@@ -75,6 +76,7 @@ public class Keys {
     public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_PRIMARY;
     public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_HONOR_PRIMARY;
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_PRIMARY;
+    public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID;
     public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_TAG_PRIMARY;
     public static final UniqueKey<EpMessageCaptchaRecord> KEY_EP_MESSAGE_CAPTCHA_PRIMARY = UniqueKeys0.KEY_EP_MESSAGE_CAPTCHA_PRIMARY;
     public static final UniqueKey<EpOrderRecord> KEY_EP_ORDER_PRIMARY = UniqueKeys0.KEY_EP_ORDER_PRIMARY;
@@ -101,6 +103,7 @@ public class Keys {
     public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_ROLE_PRIMARY;
     public static final UniqueKey<EpSystemRoleAuthorityRecord> KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY;
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_PRIMARY;
+    public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_ROLE_PRIMARY;
     public static final UniqueKey<EpWechatSessionTokenRecord> KEY_EP_WECHAT_SESSION_TOKEN_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_SESSION_TOKEN_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -143,6 +146,7 @@ public class Keys {
         public static Identity<EpSystemRoleRecord, Long> IDENTITY_EP_SYSTEM_ROLE = createIdentity(EpSystemRole.EP_SYSTEM_ROLE, EpSystemRole.EP_SYSTEM_ROLE.ID);
         public static Identity<EpSystemRoleAuthorityRecord, Long> IDENTITY_EP_SYSTEM_ROLE_AUTHORITY = createIdentity(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY, EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ID);
         public static Identity<EpSystemUserRecord, Long> IDENTITY_EP_SYSTEM_USER = createIdentity(EpSystemUser.EP_SYSTEM_USER, EpSystemUser.EP_SYSTEM_USER.ID);
+        public static Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = createIdentity(EpSystemUserRole.EP_SYSTEM_USER_ROLE, EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static Identity<EpWechatSessionTokenRecord, Long> IDENTITY_EP_WECHAT_SESSION_TOKEN = createIdentity(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN, EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN.ID);
     }
 
@@ -155,6 +159,7 @@ public class Keys {
         public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = createUniqueKey(EpMemberChild.EP_MEMBER_CHILD, "KEY_ep_member_child_PRIMARY", EpMemberChild.EP_MEMBER_CHILD.ID);
         public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = createUniqueKey(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR, "KEY_ep_member_child_honor_PRIMARY", EpMemberChildHonor.EP_MEMBER_CHILD_HONOR.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_PRIMARY", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.ID);
+        public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_UNIQUE_CHILD_ID", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.CHILD_ID);
         public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_PRIMARY = createUniqueKey(EpMemberChildTag.EP_MEMBER_CHILD_TAG, "KEY_ep_member_child_tag_PRIMARY", EpMemberChildTag.EP_MEMBER_CHILD_TAG.ID);
         public static final UniqueKey<EpMessageCaptchaRecord> KEY_EP_MESSAGE_CAPTCHA_PRIMARY = createUniqueKey(EpMessageCaptcha.EP_MESSAGE_CAPTCHA, "KEY_ep_message_captcha_PRIMARY", EpMessageCaptcha.EP_MESSAGE_CAPTCHA.ID);
         public static final UniqueKey<EpOrderRecord> KEY_EP_ORDER_PRIMARY = createUniqueKey(EpOrder.EP_ORDER, "KEY_ep_order_PRIMARY", EpOrder.EP_ORDER.ID);
@@ -181,6 +186,7 @@ public class Keys {
         public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_PRIMARY = createUniqueKey(EpSystemRole.EP_SYSTEM_ROLE, "KEY_ep_system_role_PRIMARY", EpSystemRole.EP_SYSTEM_ROLE.ID);
         public static final UniqueKey<EpSystemRoleAuthorityRecord> KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY = createUniqueKey(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY, "KEY_ep_system_role_authority_PRIMARY", EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ID);
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_PRIMARY", EpSystemUser.EP_SYSTEM_USER.ID);
+        public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = createUniqueKey(EpSystemUserRole.EP_SYSTEM_USER_ROLE, "KEY_ep_system_user_role_PRIMARY", EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static final UniqueKey<EpWechatSessionTokenRecord> KEY_EP_WECHAT_SESSION_TOKEN_PRIMARY = createUniqueKey(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN, "KEY_ep_wechat_session_token_PRIMARY", EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN.ID);
     }
 }

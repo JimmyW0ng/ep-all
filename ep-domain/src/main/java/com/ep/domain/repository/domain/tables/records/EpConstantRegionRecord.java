@@ -266,17 +266,17 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(12);
-    }
-
-    /**
      * Getter for <code>ep.ep_constant_region.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(14);
+    }
+
+    /**
+     * Getter for <code>ep.ep_constant_region.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(12);
     }
 
     /**

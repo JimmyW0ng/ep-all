@@ -81,20 +81,6 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
-     */
-    public String getFileName() {
-        return (String) get(1);
-    }
-
-    /**
      * Getter for <code>ep.ep_file.file_url</code>. 文件url
      */
     public String getFileUrl() {
@@ -102,11 +88,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.source_id</code>. 业务ID
+     * Getter for <code>ep.ep_file.id</code>. 主键
      */
-    public EpFileRecord setSourceId(Long value) {
-        set(4, value);
-        return this;
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -117,11 +102,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.sort</code>. 排序
+     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
      */
-    public EpFileRecord setSort(Integer value) {
-        set(5, value);
-        return this;
+    public String getFileName() {
+        return (String) get(1);
     }
 
     /**
@@ -133,10 +117,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_file.sort</code>. 排序
      */
-    public EpFileRecord setCreateAt(Timestamp value) {
-        set(6, value);
+    public EpFileRecord setSort(Integer value) {
+        set(5, value);
         return this;
     }
 
@@ -145,6 +129,22 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
      */
     public Long getSourceId() {
         return (Long) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.create_at</code>. 创建时间
+     */
+    public EpFileRecord setCreateAt(Timestamp value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.source_id</code>. 业务ID
+     */
+    public EpFileRecord setSourceId(Long value) {
+        set(4, value);
+        return this;
     }
 
     /**
@@ -185,17 +185,17 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
-    }
-
-    /**
      * Getter for <code>ep.ep_file.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
         return (Boolean) get(9);
+    }
+
+    /**
+     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -515,27 +515,6 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
      * {@inheritDoc}
      */
     @Override
-    public Short value4() {
-        return getBizTypeCode();
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EpFileRecord value4(Short value) {
-        setBizTypeCode(value);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpFileRecord values(Long value1, String value2, String value3, Short value4, Long value5, Integer value6, Timestamp value7, Timestamp value8, String value9, Boolean value10, Long value11) {
         value1(value1);
         value2(value2);
@@ -548,6 +527,27 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
         value9(value9);
         value10(value10);
         value11(value11);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Short value4() {
+        return getBizTypeCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EpFileRecord value4(Short value) {
+        setBizTypeCode(value);
         return this;
     }
 }

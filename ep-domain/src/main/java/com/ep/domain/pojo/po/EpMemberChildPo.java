@@ -6,6 +6,7 @@ package com.ep.domain.pojo.po;
 
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,17 @@ public class EpMemberChildPo extends AbstractBasePojo {
     private String currentSchool;
     private String currentClass;
     private String relationship;
+    @JsonIgnore
+    private Timestamp showAt;
+    @JsonIgnore
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }

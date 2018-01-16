@@ -1,8 +1,8 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.dto.OrganInfoDto;
-import com.ep.domain.service.OrganInfoService;
+import com.ep.domain.pojo.dto.OrganCourseDto;
+import com.ep.domain.service.OrganCourseService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +12,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Description: 机构api控制类
+ * @Description:机构课程api控制类
  * @Author: J.W
- * @Date: 下午8:26 2018/1/6
+ * @Date: 下午7:04 2018/1/15
  */
 @Slf4j
-@RequestMapping("security/organ")
+@RequestMapping("security/course")
 @RestController
-public class OrganController extends ApiController {
+public class OrganCourseController extends ApiController {
 
     @Autowired
-    private OrganInfoService organInfoService;
+    private OrganCourseService organCourseService;
 
     /**
-     * 机构详情
-     *
-     * @param ognId
-     * @return
+     * 课程详情
      */
-    @ApiOperation(value = "机构详情")
+    @ApiOperation(value = "课程详情")
     @PostMapping("/detail")
-    public ResultDo<OrganInfoDto> getOgnInfo(@RequestParam("organId") Long ognId) {
-        return organInfoService.getOgnDetail(ognId);
+    public ResultDo<OrganCourseDto> getCourseInfo(@RequestParam("courseId") Long courseId) {
+        return organCourseService.getCourseDetail(courseId);
     }
 
 }

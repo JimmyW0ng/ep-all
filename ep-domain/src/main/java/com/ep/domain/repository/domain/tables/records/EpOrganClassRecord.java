@@ -201,17 +201,17 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
         return (Boolean) get(10);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
     }
 
     /**

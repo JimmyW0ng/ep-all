@@ -153,17 +153,17 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_session_token.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(5);
-    }
-
-    /**
      * Getter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
         return (Boolean) get(7);
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_session_token.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(5);
     }
 
     /**

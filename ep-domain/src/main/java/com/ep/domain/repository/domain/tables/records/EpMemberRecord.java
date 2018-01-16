@@ -236,17 +236,17 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Getter for <code>ep.ep_member.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
-    }
-
-    /**
      * Getter for <code>ep.ep_member.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
         return (Boolean) get(12);
+    }
+
+    /**
+     * Getter for <code>ep.ep_member.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
     /**

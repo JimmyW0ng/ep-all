@@ -1,9 +1,12 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.UpdateSetMoreStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
+import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_SIGN;
 
 /**
  * @Description:孩子信息表Repository
@@ -119,12 +123,18 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      * @param memberId
      * @return
      */
-    public List<EpMemberChildPo> queryAllByMemberId(Long memberId) {
-        return dslContext.selectFrom(EP_MEMBER_CHILD)
+    public List<MemberChildBo> queryAllByMemberId(Long memberId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.fields());
+        fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("signContent"));
+        return dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD)
+                .leftJoin(EP_MEMBER_CHILD_SIGN)
+                .on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_SIGN.CHILD_ID))
+                .and(EP_MEMBER_CHILD_SIGN.DEL_FLAG.eq(false))
                 .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
                 .orderBy(EP_MEMBER_CHILD.ID.asc())
-                .fetchInto(EpMemberChildPo.class);
+                .fetchInto(MemberChildBo.class);
     }
 
     /**

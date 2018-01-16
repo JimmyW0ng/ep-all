@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMemberChildSign extends TableImpl<EpMemberChildSignRecord> {
 
-    private static final long serialVersionUID = 367115284;
+    private static final long serialVersionUID = 441367084;
 
     /**
      * The reference instance of <code>ep.ep_member_child_sign</code>
@@ -135,7 +135,7 @@ public class EpMemberChildSign extends TableImpl<EpMemberChildSignRecord> {
      */
     @Override
     public List<UniqueKey<EpMemberChildSignRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpMemberChildSignRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_SIGN_PRIMARY);
+        return Arrays.<UniqueKey<EpMemberChildSignRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_SIGN_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID);
     }
 
     /**

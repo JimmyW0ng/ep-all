@@ -31,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMemberChild extends TableImpl<EpMemberChildRecord> {
 
-    private static final long serialVersionUID = 1676651717;
+    private static final long serialVersionUID = 718623798;
 
     /**
      * The reference instance of <code>ep.ep_member_child</code>
@@ -95,6 +95,11 @@ public class EpMemberChild extends TableImpl<EpMemberChildRecord> {
      * The column <code>ep.ep_member_child.relationship</code>. 关系
      */
     public final TableField<EpMemberChildRecord, String> RELATIONSHIP = createField("relationship", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "关系");
+
+    /**
+     * The column <code>ep.ep_member_child.show_at</code>. 展示时间
+     */
+    public final TableField<EpMemberChildRecord, Timestamp> SHOW_AT = createField("show_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "展示时间");
 
     /**
      * The column <code>ep.ep_member_child.create_at</code>. 创建时间

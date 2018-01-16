@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 304408661;
+    private static final long serialVersionUID = 340205644;
 
     /**
      * The reference instance of <code>ep</code>
@@ -186,6 +186,11 @@ public class Ep extends SchemaImpl {
     public final EpSystemUser EP_SYSTEM_USER = com.ep.domain.repository.domain.tables.EpSystemUser.EP_SYSTEM_USER;
 
     /**
+     * 用户-角色
+     */
+    public final EpSystemUserRole EP_SYSTEM_USER_ROLE = com.ep.domain.repository.domain.tables.EpSystemUserRole.EP_SYSTEM_USER_ROLE;
+
+    /**
      * 微信会话token表
      */
     public final EpWechatSessionToken EP_WECHAT_SESSION_TOKEN = com.ep.domain.repository.domain.tables.EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN;
@@ -245,6 +250,7 @@ public class Ep extends SchemaImpl {
                 EpSystemRole.EP_SYSTEM_ROLE,
                 EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY,
                 EpSystemUser.EP_SYSTEM_USER,
+                EpSystemUserRole.EP_SYSTEM_USER_ROLE,
                 EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
     }
 }
