@@ -34,7 +34,10 @@ public class EpOrganPo extends AbstractBasePojo {
     private String organEmail;
     private String organUrl;
     private String organIntroduce;
+    private Byte marketWeight;
     private EpOrganStatus status;
+    private Byte togetherScore;
+    private Integer totalParticipate;
     @JsonIgnore
     private String remark;
     @JsonIgnore

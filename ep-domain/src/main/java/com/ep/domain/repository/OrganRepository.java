@@ -1,15 +1,24 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.OrganBo;
 import com.ep.domain.pojo.po.EpOrganPo;
+import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
+import static com.ep.domain.repository.domain.Tables.*;
 
 
 /**
@@ -75,6 +84,35 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .limit(BizConstant.DB_NUM_ONE)
                 .fetchOneInto(EpOrganPo.class);
         return Optional.ofNullable(ognPo);
+    }
+
+    public Page<OrganBo> queryOgnPage(Pageable pageable) {
+        long count = dslContext.selectCount().from(EP_ORGAN)
+                .where(EP_ORGAN.STATUS.eq(EpOrganStatus.normal))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN.fields());
+        fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.ID).as("catalogIds"));
+        fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.LABEL).as("catalogLabels"));
+        fieldList.add(DSL.groupConcat(EP_FILE.FILE_URL).as("fileUrl"));
+        List<OrganBo> pList = dslContext.select(fieldList)
+                .from(EP_ORGAN)
+                .leftJoin(EP_FILE)
+                .on(EP_FILE.BIZ_TYPE_CODE.eq(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC))
+                .and(EP_FILE.SOURCE_ID.eq(EP_ORGAN.ID))
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .leftJoin(EP_ORGAN_CATALOG)
+                .on(EP_ORGAN_CATALOG.OGN_ID.eq(EP_ORGAN.ID))
+                .and(EP_ORGAN_CATALOG.DEL_FLAG.eq(false))
+                .leftJoin(EP_CONSTANT_CATALOG)
+                .on(EP_CONSTANT_CATALOG.ID.eq(EP_ORGAN_CATALOG.COURSE_CATALOG_ID))
+                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .groupBy(EP_ORGAN.ID)
+                .orderBy(EP_ORGAN.MARKET_WEIGHT.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganBo.class);
+        return new PageImpl<>(pList, pageable, count);
     }
 }
 

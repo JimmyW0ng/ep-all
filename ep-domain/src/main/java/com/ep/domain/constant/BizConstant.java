@@ -74,6 +74,7 @@ public class BizConstant {
      */
     public static short FILE_BIZ_TYPE_CODE_ORGAN_LOGO = 100;
     public static short FILE_BIZ_TYPE_CODE_ORGAN_BANNER = 101;
+    public static short FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC = 102;
     public static short FILE_BIZ_TYPE_CODE_COURSE_BANNER = 110;
     public static short FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC = 111;
     public static short FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC = 112;

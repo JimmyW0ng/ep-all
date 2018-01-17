@@ -31,83 +31,119 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrgan extends TableImpl<EpOrganRecord> {
 
+    private static final long serialVersionUID = 300023347;
+
     /**
      * The reference instance of <code>ep.ep_organ</code>
      */
     public static final EpOrgan EP_ORGAN = new EpOrgan();
-    private static final long serialVersionUID = 2044100391;
+    /**
+     * The column <code>ep.ep_organ.together_score</code>. 综合得分
+     */
+    public final TableField<EpOrganRecord, Byte> TOGETHER_SCORE = createField("together_score", org.jooq.impl.SQLDataType.TINYINT, this, "综合得分");
+
     /**
      * The column <code>ep.ep_organ.id</code>. 主键
      */
     public final TableField<EpOrganRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_organ.organ_name</code>. 机构名称
      */
     public final TableField<EpOrganRecord, String> ORGAN_NAME = createField("organ_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "机构名称");
+
     /**
      * The column <code>ep.ep_organ.organ_address</code>. 机构地址
      */
     public final TableField<EpOrganRecord, String> ORGAN_ADDRESS = createField("organ_address", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构地址");
+
     /**
      * The column <code>ep.ep_organ.organ_region</code>. 机构地区
      */
     public final TableField<EpOrganRecord, Long> ORGAN_REGION = createField("organ_region", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构地区");
+
     /**
      * The column <code>ep.ep_organ.organ_lng</code>. 地区经度
      */
     public final TableField<EpOrganRecord, String> ORGAN_LNG = createField("organ_lng", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "地区经度");
+
     /**
      * The column <code>ep.ep_organ.organ_lat</code>. 地区纬度
      */
     public final TableField<EpOrganRecord, String> ORGAN_LAT = createField("organ_lat", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "地区纬度");
+
     /**
      * The column <code>ep.ep_organ.organ_short_introduce</code>. 机构简介
      */
     public final TableField<EpOrganRecord, String> ORGAN_SHORT_INTRODUCE = createField("organ_short_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
+
     /**
      * The column <code>ep.ep_organ.organ_create_date</code>. 机构成立日期
      */
     public final TableField<EpOrganRecord, Timestamp> ORGAN_CREATE_DATE = createField("organ_create_date", org.jooq.impl.SQLDataType.TIMESTAMP, this, "机构成立日期", new DateAsTimestampBinding());
+
     /**
      * The column <code>ep.ep_organ.organ_phone</code>. 机构官方电话
      */
     public final TableField<EpOrganRecord, String> ORGAN_PHONE = createField("organ_phone", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方电话");
+
     /**
      * The column <code>ep.ep_organ.organ_email</code>. 机构官方邮箱
      */
     public final TableField<EpOrganRecord, String> ORGAN_EMAIL = createField("organ_email", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方邮箱");
+
     /**
      * The column <code>ep.ep_organ.organ_url</code>. 机构官方网址
      */
     public final TableField<EpOrganRecord, String> ORGAN_URL = createField("organ_url", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方网址");
+
     /**
      * The column <code>ep.ep_organ.organ_introduce</code>. 机构简介
      */
     public final TableField<EpOrganRecord, String> ORGAN_INTRODUCE = createField("organ_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
+
     /**
      * The column <code>ep.ep_organ.market_weight</code>. 营销权重
      */
     public final TableField<EpOrganRecord, Byte> MARKET_WEIGHT = createField("market_weight", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.TINYINT)), this, "营销权重");
     /**
+     * The column <code>ep.ep_organ.total_participate</code>.
+     */
+    public final TableField<EpOrganRecord, Integer> TOTAL_PARTICIPATE = createField("total_participate", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganRecord> getRecordType() {
+        return EpOrganRecord.class;
+    }
+
+    /**
      * The column <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
      */
     public final TableField<EpOrganRecord, EpOrganStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganStatus.class), this, "状态：正常；已冻结；已注销；");
+
     /**
      * The column <code>ep.ep_organ.remark</code>. 备注信息
      */
     public final TableField<EpOrganRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
+
     /**
      * The column <code>ep.ep_organ.create_at</code>. 创建时间
      */
     public final TableField<EpOrganRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ.update_at</code>. 更新时间
      */
     public final TableField<EpOrganRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ.del_flag</code>. 删除标志
      */
     public final TableField<EpOrganRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
+
     /**
      * The column <code>ep.ep_organ.version</code>.
      */
@@ -133,14 +169,6 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
 
     private EpOrgan(String alias, Table<EpOrganRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构信息表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganRecord> getRecordType() {
-        return EpOrganRecord.class;
     }
 
     /**

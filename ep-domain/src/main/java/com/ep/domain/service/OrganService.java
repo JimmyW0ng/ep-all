@@ -3,6 +3,7 @@ package com.ep.domain.service;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
@@ -12,6 +13,8 @@ import com.ep.domain.repository.OrganCourseRepository;
 import com.ep.domain.repository.OrganRepository;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,4 +66,13 @@ public class OrganService {
         return Optional.ofNullable(organRepository.getById(id));
     }
 
+    /**
+     * 分页查询机构列表
+     *
+     * @param pageable
+     * @return
+     */
+    public Page<OrganBo> queryOgnPage(Pageable pageable) {
+        return organRepository.queryOgnPage(pageable);
+    }
 }

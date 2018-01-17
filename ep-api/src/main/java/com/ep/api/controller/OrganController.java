@@ -1,12 +1,16 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.service.OrganService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +36,12 @@ public class OrganController extends ApiController {
         return organService.getOgnDetail(ognId);
     }
 
-//    @ApiOperation(value = "机构列表")
-//    @PostMapping("/list")
-//    public ResultDo<OrganInfoDto> getOgnList(@RequestParam("organId") Long ognId) {
-//        return organService.getOgnList(ognId);
-//    }
+    @ApiOperation(value = "机构分页列表")
+    @PostMapping("/page")
+    public ResultDo<Page<OrganBo>> queryOgnPage(@PageableDefault Pageable pageable) {
+        Page<OrganBo> data = organService.queryOgnPage(pageable);
+        ResultDo<Page<OrganBo>> resultDo = ResultDo.build();
+        return resultDo.setResult(data);
+    }
 
 }

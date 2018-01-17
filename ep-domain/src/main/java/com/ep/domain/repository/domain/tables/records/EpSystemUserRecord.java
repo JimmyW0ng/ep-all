@@ -252,6 +252,13 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(13);
+    }
+
+    /**
      * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
@@ -263,13 +270,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      */
     public String getRemark() {
         return (String) get(12);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(13);
     }
 
     // -------------------------------------------------------------------------
