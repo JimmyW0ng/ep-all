@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
 import com.ep.backend.security.SecurityAuthComponent;
+import com.ep.common.captcha.Captcha;
+import com.ep.common.captcha.GifCaptcha;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import io.swagger.annotations.Api;
@@ -8,16 +10,17 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * @Description: backend开放控制类
@@ -44,11 +47,11 @@ public class BackendController {
     }
 
     /**
-     * 获取登录短信验证码
+     * 后台登录页面
      *
      * @return
      */
-    @ApiOperation(value = "后台登录页")
+    @ApiOperation(value = "后台登录页面")
     @GetMapping("/login")
     public String getCaptcha() {
         return "login";
@@ -65,7 +68,8 @@ public class BackendController {
      * @return
      */
     @PostMapping("/token")
-    public String login(HttpServletRequest request, HttpServletResponse response,
+    @ResponseBody
+    public ResultDo<String> login(HttpServletRequest request,
                         @RequestParam("mobile") Long mobile,
                         @RequestParam("password") String password,
                         @RequestParam("clientId") String clientId,
@@ -74,18 +78,25 @@ public class BackendController {
 
     ) {
         HttpSession session = request.getSession();
-        Object sessionCaptcha = session.getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
-        if (sessionCaptcha != null) {
-            if (!sessionCaptcha.toString().toLowerCase().equals(captchaCode.toLowerCase())) {
-                throw new BadCredentialsException("验证码错误");
-            }
-        } else {
-            throw new BadCredentialsException("验证码无效，请重新获取");
-        }
+        ResultDo<String> resultDo = ResultDo.build();
+        try {
+            resultDo = securityAuthComponent.loginFromBackend(session, mobile.toString(), password, clientId, clientSecret, captchaCode);
 
-        ResultDo<String> resultDo = securityAuthComponent.loginFromBackend(null, mobile.toString(), password, clientId, clientSecret, captchaCode);
-        session.setAttribute(tokenHeaderName, resultDo.getResult());
-        return "/index";
+        } catch (AuthenticationServiceException e) {
+            resultDo.setSuccess(false);
+            resultDo.setError("error_captcha");
+            resultDo.setErrorDescription(e.getMessage());
+        } catch (BadCredentialsException e) {
+            resultDo.setSuccess(false);
+            resultDo.setError("error_password");
+            resultDo.setErrorDescription(e.getMessage());
+        } catch (UsernameNotFoundException e) {
+            resultDo.setSuccess(false);
+            resultDo.setError("error_loginname");
+            resultDo.setErrorDescription(e.getMessage());
+        }
+        session.setAttribute(tokenHeaderName, resultDo.getResult());//session中加token
+        return resultDo;
     }
 
 
@@ -97,32 +108,32 @@ public class BackendController {
      */
     @RequestMapping(value = "/captcha/newCode")
     public void newCode(HttpServletRequest request, HttpServletResponse response) {
-//        HttpSession session = request.getSession();
-//        long time = System.currentTimeMillis();
-//        response.setContentType("image/png");
-//        response.setHeader("Cache-Control", "no-cache, no-store");
-//        response.setHeader("Pragma", "no-cache");
-//        response.setDateHeader("Last-Modified", time);
-//        response.setDateHeader("Date", time);
-//        response.setDateHeader("Expires", time);
-//        ServletOutputStream outputStream = null;
-//        try {
-//            outputStream = response.getOutputStream();
-//            Captcha captcha = new GifCaptcha(100, 40, 4);//   gif格式动画验证码
-//            captcha.out(outputStream);
-//            session.setAttribute(BizConstant.CAPTCHA_SESSION_KEY, captcha.text());
-//            log.info(session.getId() + "生成验证码[{}]", captcha.text());
-//        } catch (Exception e) {
-//            log.error("生成验证码失败！", e);
-//        } finally {
-//            if (outputStream != null) {
-//                try {
-//                    outputStream.close();
-//                } catch (IOException e) {
-//
-//                }
-//            }
-//        }
+        HttpSession session = request.getSession();
+        long time = System.currentTimeMillis();
+        response.setContentType("image/png");
+        response.setHeader("Cache-Control", "no-cache, no-store");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Last-Modified", time);
+        response.setDateHeader("Date", time);
+        response.setDateHeader("Expires", time);
+        ServletOutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+            Captcha captcha = new GifCaptcha(100, 40, 4);//   gif格式动画验证码
+            captcha.out(outputStream);
+            session.setAttribute(BizConstant.CAPTCHA_SESSION_KEY, captcha.text());
+            log.info(session.getId() + "生成验证码[{}]", captcha.text());
+        } catch (Exception e) {
+            log.error("生成验证码失败！", e);
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+
+                }
+            }
+        }
     }
 
 }

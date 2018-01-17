@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 不需要csrf
                 .csrf().disable()
                 // 基于token，所以不需要session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()
                 .authorizeRequests()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();

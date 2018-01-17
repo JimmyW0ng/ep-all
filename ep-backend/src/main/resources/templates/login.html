@@ -38,20 +38,26 @@
         <form id="userFrm" class="m-t" role="form" action="/security/backend/token" method="POST" enctype="">
             <div class="form-group">
                 <input class="form-control" name="mobile" placeholder="用户名" required="">
+                <label style="float: left;color:red" id="error_loginname"></label>
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="password" placeholder="密码" required="">
+                <label style="float: left;color:red" id="error_password"></label>
             </div>
-            <div class="form-group" style="display: inline-block">
-                <input name="captchaCode" placeholder="验证码" required="">
+            <div class="form-group" style="">
+                <input class="form-control" style="width: 180px;display: inline-block;float: left" name="captchaCode"
+                       placeholder="验证码" required="">
                 <img src="captcha/newCode" alt="验证码" title="点击重新获取验证码" id="captchaPng" onclick="reImg()"
-                     style="position:absolute; right: -5px; top: 2px; ">
+                     style="display: inline-block;float: right">
+
+                <label style="float: left;display: inline-block;color:red" id="error_captcha"></label>
             </div>
             <input type="hidden" name="clientId" value="platform_admin">
             <input type="hidden" name="clientSecret" value="123456">
-            <button type="button" onclick="logined()" class="btn btn-primary block full-width m-b">登 录</button>
+            <div class="form-group" style="">
+                <button type="button" onclick="logined()" class="btn btn-primary block full-width m-b">登 录</button>
 
-
+            </div>
             <p class="text-muted text-center"><a href="login.html#">
                 <small>忘记密码了？</small>
             </a> | <a href="register.html">注册一个新账号</a>
@@ -72,15 +78,20 @@
         }
 
         function logined() {
-            $("#userFrm").submit();
-//            $.ajax({
-//                type: "POST",
-//                url: "/backend/token",
-//                data: $("#userFrm").serialize(),
-////                contentType: "application/json;charset=utf-8",//不使用contentType: “application/json”则data可以是对象,使用contentType: “application/json”则data只能是json字符串
-//                success: function (data) {
-//                }
-//            })
+            $.ajax({
+                type: "POST",
+                url: "/security/backend/token",
+                data: $("#userFrm").serialize(),
+                success: function (data) {
+                    console.log(data)
+                    if (!data.success) {
+                        console.log($("#" + data.error));
+                        $("#" + data.error).text(data.errorDescription);
+                    } else {
+                        window.location = "/index/index"
+                    }
+                }
+            })
         }
 
         function parseSer2Json(ser) {

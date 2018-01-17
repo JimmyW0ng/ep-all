@@ -21,10 +21,7 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +31,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.GeneralSecurityException;
 import java.util.Collection;
 import java.util.Date;
@@ -72,47 +70,6 @@ public class SecurityAuthComponent {
     @Autowired
     private MessageCaptchaRepository messageCaptchaRepository;
 
-    /**
-     * 会员登录获取token
-     *
-     * @param userName
-     * @param captchaCode
-     * @param captchaContent
-     * @param clientId
-     * @param clientSecret
-     * @return
-     */
-    public ResultDo<String> loginFromApi(String userName,
-                                         String captchaCode,
-                                         String captchaContent,
-                                         String clientId,
-                                         String clientSecret) {
-        ResultDo<String> resultDo = ResultDo.build();
-        if (StringTools.isBlank(userName)
-                || StringTools.isBlank(captchaCode)
-                || StringTools.isBlank(captchaContent)
-                || StringTools.isBlank(clientId)
-                || StringTools.isBlank(clientSecret)) {
-            log.error("登录获取token失败，入参缺失！");
-            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
-        }
-        // 认证身份
-        SecurityPrincipalBo principal = new SecurityPrincipalBo(userName, clientId);
-        // 验证码业务编码
-        principal.setCaptchaCode(captchaCode);
-        SecurityCredentialBo credentials = new SecurityCredentialBo(captchaContent, clientSecret);
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(principal, credentials);
-        final Authentication authentication = authenticationManager.authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        try {
-            // 生成token
-            String accessToken = this.buildAccessToken(authToken.getPrincipal());
-            return resultDo.setResult(accessToken);
-        } catch (GeneralSecurityException e) {
-            return resultDo.setError(MessageCode.ERROR_ENCODE);
-        }
-    }
-
 
     /**
      * 机构后台登录获取token
@@ -123,25 +80,25 @@ public class SecurityAuthComponent {
      * @param clientSecret
      * @return
      */
-    public ResultDo<String> loginFromBackend(Long ognId,
+    public ResultDo<String> loginFromBackend(HttpSession session,
                                              String userName,
                                              String password,
                                              String clientId,
                                              String clientSecret,
-                                             String captchaCode) {
+                                             String captchaCode) throws AuthenticationException {
         ResultDo<String> resultDo = ResultDo.build();
-//        if (ognId == null
-//                || StringTools.isBlank(userName)
-//                || StringTools.isBlank(password)
-//                || StringTools.isBlank(clientId)
-//                || StringTools.isBlank(clientSecret)) {
-//            log.error("登录获取token失败，入参缺失！");
-//            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
-//        }
+        //校验验证码
+        Object sessionCaptcha = session.getAttribute(BizConstant.CAPTCHA_SESSION_KEY);//验证码
+        if (sessionCaptcha != null) {
+            if (!sessionCaptcha.toString().toLowerCase().equals(captchaCode.toLowerCase())) {
+                throw new AuthenticationServiceException("验证码错误");
+            }
+        } else {
+            throw new AuthenticationServiceException("验证码无效，请重新获取");
+        }
         // 认证身份
         SecurityPrincipalBo principal = new SecurityPrincipalBo(userName, clientId);
         principal.setCaptchaCode(captchaCode);
-//        principal.setOgnId(ognId);
         SecurityCredentialBo credentials = new SecurityCredentialBo(password, clientSecret);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(principal, credentials);
         final Authentication authentication = authenticationManager.authenticate(authToken);
