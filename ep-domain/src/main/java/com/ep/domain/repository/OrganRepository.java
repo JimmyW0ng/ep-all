@@ -107,6 +107,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .leftJoin(EP_CONSTANT_CATALOG)
                 .on(EP_CONSTANT_CATALOG.ID.eq(EP_ORGAN_CATALOG.COURSE_CATALOG_ID))
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .where(EP_ORGAN.STATUS.eq(EpOrganStatus.normal))
                 .groupBy(EP_ORGAN.ID)
                 .orderBy(EP_ORGAN.MARKET_WEIGHT.desc())
                 .limit(pageable.getPageSize())
