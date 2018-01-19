@@ -63,9 +63,9 @@ public class BackendSecurityTokenAuthFilter extends OncePerRequestFilter {
         }
         BackendPrincipalBo principalBo = resultDo.getResult();
         // 加载当前用户信息
-        securityAuthComponent.loadCurrentUserInfo(request, principalBo);
+        securityAuthComponent.loadCurrentUserInfo(principalBo);
         // 加载当前用户权限
-        String role = securityAuthComponent.getCurrentUserRole(request).getRole();
+        String role = securityAuthComponent.getCurrentUserRole().getRole();
         Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(role);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
