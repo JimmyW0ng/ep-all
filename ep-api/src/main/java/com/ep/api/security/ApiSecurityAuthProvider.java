@@ -1,7 +1,8 @@
 package com.ep.api.security;
 
-import com.ep.domain.pojo.bo.SecurityCredentialBo;
-import com.ep.domain.pojo.bo.SecurityPrincipalBo;
+import com.ep.domain.component.SecurityAuth;
+import com.ep.domain.pojo.bo.ApiCredentialBo;
+import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -20,18 +21,21 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class SecurityAuthProvider implements AuthenticationProvider {
+public class ApiSecurityAuthProvider implements AuthenticationProvider {
 
     @Autowired
-    private SecurityAuthComponent securityAuthComponent;
+    private ApiSecurityAuthComponent securityAuthComponent;
+
+    @Autowired
+    private SecurityAuth securityAuth;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-        SecurityPrincipalBo principalBo = (SecurityPrincipalBo) token.getPrincipal();
-        SecurityCredentialBo credentialsBo = (SecurityCredentialBo) token.getCredentials();
+        ApiPrincipalBo principalBo = (ApiPrincipalBo) token.getPrincipal();
+        ApiCredentialBo credentialsBo = (ApiCredentialBo) token.getCredentials();
         securityAuthComponent.checkLogin(principalBo, credentialsBo);
-        Collection<GrantedAuthority> authorities = securityAuthComponent.loadCurrentUserGrantedAuthorities(principalBo.getRole());
+        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(principalBo.getRole());
         //授权
         return new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
     }

@@ -1,4 +1,4 @@
-package com.ep.api.security;
+package com.ep.domain.component;
 
 import com.ep.common.tool.JsonTools;
 import com.ep.domain.constant.MessageCode;
@@ -19,7 +19,7 @@ import java.io.PrintWriter;
  * @Date: 下午8:29 2018/1/6
  */
 @Slf4j
-public class SecurityAuthEntryPoint implements AuthenticationEntryPoint {
+public class SecurityAuthEntryPointForJson implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         ResultDo resultDo = ResultDo.build(MessageCode.ERROR_ACCESS_DENIED).setErrorDescription(e.getMessage());

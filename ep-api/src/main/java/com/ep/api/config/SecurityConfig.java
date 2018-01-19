@@ -1,8 +1,8 @@
 package com.ep.api.config;
 
-import com.ep.api.filter.SecurityTokenAuthFilter;
-import com.ep.api.security.SecurityAuthEntryPoint;
-import com.ep.api.security.SecurityAuthProvider;
+import com.ep.api.filter.ApiSecurityTokenAuthFilter;
+import com.ep.api.security.ApiSecurityAuthProvider;
+import com.ep.domain.component.SecurityAuthEntryPointForJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,19 +20,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @Author: J.W
  * @Date: 下午8:26 2018/1/6
  */
-@EnableWebSecurity//注解 WebSecurityConfigurer 类型的类或继承 WebSecurityConfigurerAdapter的类，必须和 @Configuration 注解一起使用
-@EnableGlobalMethodSecurity(prePostEnabled = true)//开启，判断用户对某个控制层的方法是否具有访问权限
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private SecurityAuthProvider securityAuthProvider;
+    private ApiSecurityAuthProvider securityAuthProvider;
 
     @Autowired
-    private SecurityTokenAuthFilter securityTokenAuthFilter;
+    private ApiSecurityTokenAuthFilter securityTokenAuthFilter;
 
     @Bean
     public AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        return new SecurityAuthEntryPoint();
+        return new SecurityAuthEntryPointForJson();
     }
 
     @Autowired

@@ -12,6 +12,7 @@ import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -87,5 +88,29 @@ public class MessageCaptchaService {
         // TODO 目前只有短信验证码，直接返回业务编码
         return ResultDo.build().setResult(insertPo.getCaptchaCode());
     }
+
+    /**
+     * 验证码校验
+     *
+     * @param sourceId
+     * @param captchaCode
+     * @param captchaContent
+     */
+    public void checkAndHandleCaptcha(Long sourceId, String captchaCode, String captchaContent) {
+        EpMessageCaptchaPo captchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaCode(sourceId,
+                EpMessageCaptchaCaptchaType.short_msg,
+                EpMessageCaptchaCaptchaScene.login,
+                captchaCode);
+        if (captchaPo == null || captchaPo.getExpireTime().before(DateTools.getCurrentDateTime())) {
+            throw new BadCredentialsException("验证码无效，请重新获取");
+        } else if (!captchaContent.equals(captchaPo.getCaptchaContent())) {
+            throw new BadCredentialsException("验证码错误");
+        }
+        // 验证码使用后删除
+        messageCaptchaRepository.delBySourceIdAndTypeAndSence(sourceId,
+                EpMessageCaptchaCaptchaType.short_msg,
+                EpMessageCaptchaCaptchaScene.login);
+    }
+
 
 }

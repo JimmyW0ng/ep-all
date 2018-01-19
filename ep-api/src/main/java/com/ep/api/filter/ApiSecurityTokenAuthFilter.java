@@ -1,9 +1,10 @@
 package com.ep.api.filter;
 
-import com.ep.api.security.SecurityAuthComponent;
+import com.ep.api.security.ApiSecurityAuthComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.SecurityAuth;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.SecurityPrincipalBo;
+import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class SecurityTokenAuthFilter extends OncePerRequestFilter {
+public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
 
     @Value("${token.header.name}")
     private String tokenHeaderName;
@@ -37,7 +38,10 @@ public class SecurityTokenAuthFilter extends OncePerRequestFilter {
     private String tokenHeaderPrefix;
 
     @Autowired
-    private SecurityAuthComponent securityAuthComponent;
+    private ApiSecurityAuthComponent securityAuthComponent;
+
+    @Autowired
+    private SecurityAuth securityAuth;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -53,15 +57,15 @@ public class SecurityTokenAuthFilter extends OncePerRequestFilter {
         }
         authHeader = authHeader.substring(tokenHeaderPrefix.length() + 1);
         // 解析token
-        ResultDo<SecurityPrincipalBo> resultDo = securityAuthComponent.getTokenInfo(authHeader);
+        ResultDo<ApiPrincipalBo> resultDo = securityAuthComponent.getTokenInfo(authHeader);
         if (resultDo.isError()) {
             throw new ServletException(resultDo.getErrorDescription());
         }
-        SecurityPrincipalBo principalBo = resultDo.getResult();
+        ApiPrincipalBo principalBo = resultDo.getResult();
         // 加载当前用户信息
         securityAuthComponent.loadCurrentUserInfo(request, principalBo);
         // 加载当前用户权限
-        Collection<GrantedAuthority> authorities = securityAuthComponent.loadCurrentUserGrantedAuthorities(principalBo.getRole());
+        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(principalBo.getRole());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -1,6 +1,6 @@
 package com.ep.api.controller;
 
-import com.ep.api.security.SecurityAuthComponent;
+import com.ep.api.security.ApiSecurityAuthComponent;
 import com.ep.common.tool.IpTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
@@ -30,7 +30,7 @@ public class SecurityController extends ApiController {
     private MessageCaptchaService messageCaptchaService;
 
     @Autowired
-    private SecurityAuthComponent securityAuthComponent;
+    private ApiSecurityAuthComponent securityAuthComponent;
 
     @ApiOperation(value = "获取登录短信验证码")
     @PostMapping("/captcha")
