@@ -68,7 +68,7 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
         }
         ApiPrincipalBo principalBo = resultDo.getResult();
         // 加载当前用户信息
-        securityAuthComponent.loadCurrentUserInfo(request, principalBo);
+        securityAuthComponent.loadCurrentUserInfo(principalBo);
         // 加载当前用户权限
         Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(principalBo.getRole());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
