@@ -75,7 +75,7 @@ public class BackendController {
         HttpSession session = request.getSession();
         ResultDo<String> resultDo = ResultDo.build();
         try {
-            resultDo = securityAuthComponent.loginFromBackend(session, mobile.toString(), password, captchaCode);
+            resultDo = securityAuthComponent.loginFromBackend(mobile.toString(), password, captchaCode);
 
         } catch (AuthenticationServiceException e) {
             resultDo.setSuccess(false);

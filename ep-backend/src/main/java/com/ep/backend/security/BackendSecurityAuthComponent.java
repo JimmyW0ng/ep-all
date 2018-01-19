@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
 import java.security.GeneralSecurityException;
 import java.util.Date;
 
@@ -54,9 +55,10 @@ public class BackendSecurityAuthComponent {
     public ResultDo<String> loginFromBackend(String userName,
                                              String password,
                                              String captchaCode) throws AuthenticationException {
+        HttpSession session = WebTools.getCurrentRequest().getSession();
         ResultDo<String> resultDo = ResultDo.build();
         //校验验证码
-        Object sessionCaptcha = WebTools.getCurrentRequest().getSession().getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
+        Object sessionCaptcha = session.getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
         if (sessionCaptcha != null) {
             if (!sessionCaptcha.toString().toLowerCase().equals(captchaCode.toLowerCase())) {
                 throw new AuthenticationServiceException("验证码错误");
