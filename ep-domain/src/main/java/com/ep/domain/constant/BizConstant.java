@@ -18,14 +18,9 @@ public class BizConstant {
     public static String CURENT_USER = "CURENT_USER";
 
     /**
-     * 机构后台用户信息
+     * 后台用户信息
      */
     public static String CURENT_BACKEND_USER = "CURENT_BACKEND_USER";
-
-    /**
-     * 平台后台用户信息
-     */
-    public static String CURENT_ADMIN_USER = "CURENT_ADMIN_USER";
 
     /**
      * 后台登录验证码

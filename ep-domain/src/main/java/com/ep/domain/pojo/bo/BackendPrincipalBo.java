@@ -1,14 +1,12 @@
 package com.ep.domain.pojo.bo;
 
+import com.ep.domain.pojo.AbstractBasePojo;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class BackendPrincipalBo implements Serializable {
+public class BackendPrincipalBo extends AbstractBasePojo {
 
     private String userName;
-    private String clientId;
     private String captchaCode;
     private String role;
     private Long createTime;

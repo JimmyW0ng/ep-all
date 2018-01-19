@@ -53,13 +53,18 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
         }
         log.info("鉴权:token={},完毕！", authHeader);
         if (!authHeader.startsWith(tokenHeaderPrefix)) {
-            throw new ServletException("token格式错误！");
+            log.error("token格式错误！");
+            chain.doFilter(request, response);
+            return;
+            // throw new ServletException("token格式错误！");
         }
         authHeader = authHeader.substring(tokenHeaderPrefix.length() + 1);
         // 解析token
         ResultDo<ApiPrincipalBo> resultDo = securityAuthComponent.getTokenInfo(authHeader);
         if (resultDo.isError()) {
-            throw new ServletException(resultDo.getErrorDescription());
+            log.error("验证token不通过, error={}, desc={}", resultDo.getError(), resultDo.getErrorDescription());
+            chain.doFilter(request, response);
+            return;
         }
         ApiPrincipalBo principalBo = resultDo.getResult();
         // 加载当前用户信息

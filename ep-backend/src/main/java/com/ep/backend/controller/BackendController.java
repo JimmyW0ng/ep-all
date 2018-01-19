@@ -1,6 +1,6 @@
 package com.ep.backend.controller;
 
-import com.ep.backend.security.SecurityAuthComponent;
+import com.ep.backend.security.BackendSecurityAuthComponent;
 import com.ep.common.captcha.Captcha;
 import com.ep.common.captcha.GifCaptcha;
 import com.ep.domain.constant.BizConstant;
@@ -34,7 +34,7 @@ import java.io.IOException;
 public class BackendController {
 
     @Autowired
-    private SecurityAuthComponent securityAuthComponent;
+    private BackendSecurityAuthComponent securityAuthComponent;
 
     @Value("${token.header.name}")
     private String tokenHeaderName;
@@ -63,8 +63,6 @@ public class BackendController {
      *
      * @param mobile
      * @param password
-     * @param clientId
-     * @param clientSecret
      * @return
      */
     @PostMapping("/token")
@@ -72,15 +70,12 @@ public class BackendController {
     public ResultDo<String> login(HttpServletRequest request,
                         @RequestParam("mobile") Long mobile,
                         @RequestParam("password") String password,
-                        @RequestParam("clientId") String clientId,
-                        @RequestParam("clientSecret") String clientSecret,
                         @RequestParam("captchaCode") String captchaCode
-
     ) {
         HttpSession session = request.getSession();
         ResultDo<String> resultDo = ResultDo.build();
         try {
-            resultDo = securityAuthComponent.loginFromBackend(session, mobile.toString(), password, clientId, clientSecret, captchaCode);
+            resultDo = securityAuthComponent.loginFromBackend(session, mobile.toString(), password, captchaCode);
 
         } catch (AuthenticationServiceException e) {
             resultDo.setSuccess(false);
@@ -95,7 +90,8 @@ public class BackendController {
             resultDo.setError("error_loginname");
             resultDo.setErrorDescription(e.getMessage());
         }
-        session.setAttribute(tokenHeaderName, resultDo.getResult());//session中加token
+        // session中加token
+        session.setAttribute(tokenHeaderName, resultDo.getResult());
         return resultDo;
     }
 
@@ -119,7 +115,8 @@ public class BackendController {
         ServletOutputStream outputStream = null;
         try {
             outputStream = response.getOutputStream();
-            Captcha captcha = new GifCaptcha(100, 40, 4);//   gif格式动画验证码
+            // gif格式动画验证码
+            Captcha captcha = new GifCaptcha(100, 40, 4);
             captcha.out(outputStream);
             session.setAttribute(BizConstant.CAPTCHA_SESSION_KEY, captcha.text());
             log.info(session.getId() + "生成验证码[{}]", captcha.text());

@@ -1,9 +1,6 @@
 package com.ep.api.security;
 
-import com.ep.common.tool.CryptTools;
-import com.ep.common.tool.DateTools;
-import com.ep.common.tool.JsonTools;
-import com.ep.common.tool.StringTools;
+import com.ep.common.tool.*;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -20,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,7 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.util.Date;
 
@@ -114,23 +111,10 @@ public class ApiSecurityAuthComponent {
             log.error("token解析失败，token为空:{}，", token);
             return resultDo.setError(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
+        ApiPrincipalBo principalBo;
         try {
             String tokenJsonStr = CryptTools.aesDecrypt(token, tokenSecret);
-            ApiPrincipalBo principalBo = JsonTools.decode(tokenJsonStr, ApiPrincipalBo.class);
-            if (StringTools.isBlank(principalBo.getUserName())
-                    || StringTools.isBlank(principalBo.getClientId())
-                    || StringTools.isBlank(principalBo.getRole())
-                    || principalBo.getCreateTime() == null
-                    || principalBo.getExpireTime() == null) {
-                return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);
-            }
-            Date serverTime = DateTools.getCurrentDate();
-            Date tokenCreateTime = new Date(principalBo.getCreateTime());
-            Date tokenExpireTime = new Date(principalBo.getExpireTime());
-            if (serverTime.before(tokenCreateTime) || serverTime.after(tokenExpireTime)) {
-                return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);
-            }
-            return resultDo.setResult(principalBo);
+            principalBo = JsonTools.decode(tokenJsonStr, ApiPrincipalBo.class);
         } catch (GeneralSecurityException e) {
             log.error("token解密失败，token={}", token, e);
             return resultDo.setError(MessageCode.ERROR_DECODE);
@@ -138,17 +122,30 @@ public class ApiSecurityAuthComponent {
             log.error("token解析失败，token={}", token, e);
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
+        if (StringTools.isBlank(principalBo.getUserName())
+                || StringTools.isBlank(principalBo.getClientId())
+                || StringTools.isBlank(principalBo.getRole())
+                || principalBo.getCreateTime() == null
+                || principalBo.getExpireTime() == null) {
+            return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);
+        }
+        Date serverTime = DateTools.getCurrentDate();
+        Date tokenCreateTime = new Date(principalBo.getCreateTime());
+        Date tokenExpireTime = new Date(principalBo.getExpireTime());
+        if (serverTime.before(tokenCreateTime) || serverTime.after(tokenExpireTime)) {
+            return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);
+        }
+        return resultDo.setResult(principalBo);
     }
 
     /**
      * 加载用户信息
      *
-     * @param request
      * @param principalBo
      */
-    public void loadCurrentUserInfo(HttpServletRequest request, ApiPrincipalBo principalBo) {
+    public void loadCurrentUserInfo(ApiPrincipalBo principalBo) {
         EpMemberPo mbrInfoPo = memberRepository.getByMobile(Long.parseLong(principalBo.getUserName()));
-        request.setAttribute(BizConstant.CURENT_USER, mbrInfoPo);
+        WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_USER, mbrInfoPo);
     }
 
     /**
@@ -172,10 +169,10 @@ public class ApiSecurityAuthComponent {
             pwdEncode = CryptTools.aesEncrypt(credentialBo.getClientSecret(), sysClientPo.getSalt());
         } catch (GeneralSecurityException e) {
             log.error("客户端client鉴权异常：clientSecret:{} 加密失败", credentialBo.getClientSecret());
-            throw new UsernameNotFoundException("客户端凭证格式错误");
+            throw new BadCredentialsException("客户端凭证格式错误");
         }
         if (!pwdEncode.equals(sysClientPo.getClientSecret())) {
-            throw new UsernameNotFoundException("客户端凭证无效");
+            throw new BadCredentialsException("客户端凭证无效");
         }
         // 校验用户信息
         Long mobile = Long.valueOf(principalBo.getUserName());

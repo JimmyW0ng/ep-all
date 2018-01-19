@@ -1,9 +1,10 @@
 package com.ep.backend.filter;
 
-import com.ep.backend.security.SecurityAuthComponent;
+import com.ep.backend.security.BackendSecurityAuthComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.SecurityAuth;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.SecurityPrincipalBo;
+import com.ep.domain.pojo.bo.BackendPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,43 +29,44 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class SecurityTokenAuthFilter extends OncePerRequestFilter {
+public class BackendSecurityTokenAuthFilter extends OncePerRequestFilter {
 
     @Value("${token.header.name}")
     private String tokenHeaderName;
 
-    @Value("${token.header.prefix}")
-    private String tokenHeaderPrefix;
+    @Autowired
+    private BackendSecurityAuthComponent securityAuthComponent;
 
     @Autowired
-    private SecurityAuthComponent securityAuthComponent;
+    private SecurityAuth securityAuth;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String authHeader = null;
-        if (request.getSession().getAttribute(this.tokenHeaderName) != null) {
-            authHeader = this.tokenHeaderPrefix + " " + request.getSession().getAttribute(this.tokenHeaderName).toString();
-        }
+        Object authHeader = request.getSession().getAttribute(this.tokenHeaderName);
         // 没有token
-        if (StringTools.isBlank(authHeader)) {
+        if (authHeader == null) {
             chain.doFilter(request, response);
             return;
         }
-        log.info("鉴权:token={},完毕！", authHeader);
-        if (!authHeader.startsWith(tokenHeaderPrefix)) {
-            throw new ServletException("token格式错误！");
+        String token = authHeader.toString();
+        if (StringTools.isBlank(token)) {
+            chain.doFilter(request, response);
+            return;
         }
-        authHeader = authHeader.substring(tokenHeaderPrefix.length() + 1);
+        log.info("鉴权:token={},完毕！", token);
         // 解析token
-        ResultDo<SecurityPrincipalBo> resultDo = securityAuthComponent.getTokenInfo(authHeader);
+        ResultDo<BackendPrincipalBo> resultDo = securityAuthComponent.getTokenInfo(token);
         if (resultDo.isError()) {
-            throw new ServletException(resultDo.getErrorDescription());
+            log.error("验证token不通过, error={}, desc={}", resultDo.getError(), resultDo.getErrorDescription());
+            chain.doFilter(request, response);
+            return;
         }
-        SecurityPrincipalBo principalBo = resultDo.getResult();
+        BackendPrincipalBo principalBo = resultDo.getResult();
         // 加载当前用户信息
         securityAuthComponent.loadCurrentUserInfo(request, principalBo);
         // 加载当前用户权限
-        Collection<GrantedAuthority> authorities = securityAuthComponent.loadCurrentUserGrantedAuthorities(principalBo.getRole());
+        String role = securityAuthComponent.getCurrentUserRole(request).getRole();
+        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(role);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);

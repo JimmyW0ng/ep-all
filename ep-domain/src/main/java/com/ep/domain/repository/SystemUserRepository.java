@@ -18,6 +18,12 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
         super(dslContext, EP_SYSTEM_USER, EP_MEMBER.ID, EpSystemUserPo.class);
     }
 
+    /**
+     * 根据手机号获取用户
+     *
+     * @param mobile
+     * @return
+     */
     public EpSystemUserPo getByMobile(Long mobile) {
         return dslContext.selectFrom(EP_SYSTEM_USER)
                 .where(EP_SYSTEM_USER.MOBILE.equal(mobile)).fetchOneInto(EpSystemUserPo.class);

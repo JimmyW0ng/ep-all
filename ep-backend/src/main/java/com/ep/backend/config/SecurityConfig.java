@@ -1,9 +1,9 @@
 package com.ep.backend.config;
 
 
-import com.ep.backend.filter.SecurityTokenAuthFilter;
-import com.ep.backend.security.SecurityAuthEntryPoint;
-import com.ep.backend.security.SecurityAuthProvider;
+import com.ep.backend.filter.BackendSecurityTokenAuthFilter;
+import com.ep.backend.security.BackendSecurityAuthProvider;
+import com.ep.domain.component.SecurityAuthEntryPointForJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,14 +26,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private SecurityAuthProvider securityAuthProvider;
+    private BackendSecurityAuthProvider securityAuthProvider;
 
     @Autowired
-    private SecurityTokenAuthFilter securityTokenAuthFilter;
+    private BackendSecurityTokenAuthFilter securityTokenAuthFilter;
 
     @Bean
     public AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        return new SecurityAuthEntryPoint();
+        return new SecurityAuthEntryPointForJson();
     }
 
     @Autowired
