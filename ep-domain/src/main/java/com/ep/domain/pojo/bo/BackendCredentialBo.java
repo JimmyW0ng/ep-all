@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class SecurityCredentialBo implements Serializable {
+public class BackendCredentialBo implements Serializable {
 
     private String password;
     private String clientSecret;

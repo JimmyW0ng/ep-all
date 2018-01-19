@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class SecurityPrincipalBo implements Serializable {
+public class BackendPrincipalBo implements Serializable {
 
     private String userName;
     private String clientId;
@@ -13,10 +13,5 @@ public class SecurityPrincipalBo implements Serializable {
     private String role;
     private Long createTime;
     private Long expireTime;
-
-    public SecurityPrincipalBo(String userName, String clientId) {
-        this.userName = userName;
-        this.clientId = clientId;
-    }
 
 }
