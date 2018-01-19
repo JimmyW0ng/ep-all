@@ -10,9 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,17 +75,8 @@ public class BackendController {
         try {
             resultDo = securityAuthComponent.loginFromBackend(mobile.toString(), password, captchaCode);
 
-        } catch (AuthenticationServiceException e) {
+        } catch (AuthenticationException e) {
             resultDo.setSuccess(false);
-            resultDo.setError("error_captcha");
-            resultDo.setErrorDescription(e.getMessage());
-        } catch (BadCredentialsException e) {
-            resultDo.setSuccess(false);
-            resultDo.setError("error_password");
-            resultDo.setErrorDescription(e.getMessage());
-        } catch (UsernameNotFoundException e) {
-            resultDo.setSuccess(false);
-            resultDo.setError("error_loginname");
             resultDo.setErrorDescription(e.getMessage());
         }
         // session中加token

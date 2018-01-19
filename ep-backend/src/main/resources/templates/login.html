@@ -45,10 +45,14 @@
                 <label style="float: left;color:red" id="error_password"></label>
             </div>
             <div class="form-group" style="">
-                <input class="form-control" style="width: 180px;display: inline-block;float: left" name="captchaCode"
-                       placeholder="验证码" required="">
-                <img src="captcha/newCode" alt="验证码" title="点击重新获取验证码" id="captchaPng" onclick="reImg()"
-                     style="display: inline-block;float: right">
+                <div style="display: block; overflow:hidden">
+                    <input class="form-control" style="width: 150px;display: inline-block;float: left"
+                           name="captchaCode"
+                           placeholder="验证码" required="">
+                    <img src="captcha/newCode" alt="验证码" title="点击重新获取验证码" id="captchaPng" onclick="reImg()"
+                         style="display: inline-block;float: right">
+                </div>
+
 
                 <label style="float: left;display: inline-block;color:red" id="error_captcha"></label>
             </div>
@@ -85,10 +89,9 @@
                 success: function (data) {
                     console.log(data)
                     if (!data.success) {
-                        console.log($("#" + data.error));
-                        $("#" + data.error).text(data.errorDescription);
+
                     } else {
-                        window.location = "/index/index"
+                        window.location = "/auth/index/index"
                     }
                 }
             })

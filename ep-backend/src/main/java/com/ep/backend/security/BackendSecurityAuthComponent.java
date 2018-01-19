@@ -108,7 +108,6 @@ public class BackendSecurityAuthComponent {
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
         if (StringTools.isBlank(principalBo.getUserName())
-                || StringTools.isBlank(principalBo.getRole())
                 || principalBo.getCreateTime() == null
                 || principalBo.getExpireTime() == null) {
             return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);

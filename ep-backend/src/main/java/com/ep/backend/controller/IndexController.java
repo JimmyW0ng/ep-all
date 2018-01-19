@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by fcc on 2018/1/17.
  */
 @Controller
-@RequestMapping("/index")
+@RequestMapping("auth/index")
 public class IndexController {
     @Autowired
     private SystemMenuService systemMenuService;
