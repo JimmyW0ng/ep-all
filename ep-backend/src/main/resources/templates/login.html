@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:23 GMT -->
 <head>
-
     <meta charset="utf-8">
-
-
-    <title>H+ 后台主题UI框架 - 登录</title>
-
+    <title>EP后台 - 登录</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link th:href="@{/css/bootstrap.min14ed.css?v=3.3.6}" rel="stylesheet">
     <link th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet">
-
     <link th:href="@{/css/animate.min.css}" rel="stylesheet">
     <link th:href="@{/css/style.min862f.css?v=4.1.0}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -23,7 +17,7 @@
         window.top.location = window.location;
     }</script>
 </head>
-
+<body>
 <body class="gray-bg">
 
 <div class="middle-box text-center loginscreen  animated fadeInDown">
@@ -31,13 +25,17 @@
         <div>
 
             <h1 class="logo-name">EP</h1>
-
         </div>
-        <h3>欢迎使用 EP</h3>
-
-        <form id="userFrm" class="m-t" role="form" action="/security/backend/token" method="POST" enctype="">
+        <th:block th:if="${errorMsg == null}">
+            <h3>欢迎来的EP后台管理系统</h3>
+        </th:block>
+        <th:block th:if="${errorMsg != null}">
+            <h3 style="color: red"
+                th:text="${#httpSession.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').getMessage()}"></h3>
+        </th:block>
+        <form id="userFrm" class="m-t" role="form" action="/security/login" method="POST" enctype="">
             <div class="form-group">
-                <input class="form-control" name="mobile" placeholder="用户名" required="">
+                <input class="form-control" name="username" placeholder="用户名" required="">
                 <label style="float: left;color:red" id="error_loginname"></label>
             </div>
             <div class="form-group">
@@ -52,27 +50,16 @@
                     <img src="captcha/newCode" alt="验证码" title="点击重新获取验证码" id="captchaPng" onclick="reImg()"
                          style="display: inline-block;float: right">
                 </div>
-
-
                 <label style="float: left;display: inline-block;color:red" id="error_captcha"></label>
             </div>
-            <input type="hidden" name="clientId" value="platform_admin">
-            <input type="hidden" name="clientSecret" value="123456">
             <div class="form-group" style="">
-                <button type="button" onclick="logined()" class="btn btn-primary block full-width m-b">登 录</button>
-
+                <input type="submit" class="btn btn-primary block full-width m-b" value="登录">
             </div>
-            <p class="text-muted text-center"><a href="login.html#">
-                <small>忘记密码了？</small>
-            </a> | <a href="register.html">注册一个新账号</a>
-            </p>
-
         </form>
     </div>
 </div>
 <script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
 <script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
-<!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>-->
 <th:block layout:fragment="scripts">
 
     <script th:inline="javascript">
@@ -80,44 +67,7 @@
             var img = document.getElementById("captchaPng");
             img.src = "captcha/newCode";
         }
-
-        function logined() {
-            $.ajax({
-                type: "POST",
-                url: "/security/backend/token",
-                data: $("#userFrm").serialize(),
-                success: function (data) {
-                    console.log(data)
-                    if (!data.success) {
-
-                    } else {
-                        window.location = "/auth/index/index"
-                    }
-                }
-            })
-        }
-
-        function parseSer2Json(ser) {
-            var obj = {};
-            var keyvalue = [];
-            var key = "", value = "";
-            var paraString = ser.split("&");
-            for (var i in paraString) {
-                keyvalue = paraString[i].split("=");
-                key = keyvalue[0];
-                value = keyvalue[1];
-                obj[key] = value;
-            }
-            return obj;
-        }
-        //        $(function () {
-        //            alert(0)
-        //            reImg();
-        //        })
     </script>
 </th:block>
 </body>
-
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:23 GMT -->
 </html>

@@ -21,6 +21,7 @@ public class MessageCode {
      */
     public static final String ERROR_ENCODE = "ERROR_ENCODE";
     public static final String ERROR_DECODE = "ERROR_DECODE";
+    public static final String ERROR_ACCESS_NEED_AUTH = "ERROR_ACCESS_NEED_AUTH";
     public static final String ERROR_ACCESS_DENIED = "ERROR_ACCESS_DENIED";
     public static final String ERROR_PRINCIPAL_CHECK = "ERROR_PRINCIPAL_CHECK";
     public static final String ERROR_SESSION_TOKEN = "ERROR_SESSION_TOKEN";

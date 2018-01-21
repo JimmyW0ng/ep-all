@@ -27,7 +27,7 @@ public class SecurityAuth {
      * @param role
      * @return
      */
-    public Collection<GrantedAuthority> loadCurrentUserGrantedAuthorities(String role) {
+    public Collection<GrantedAuthority> loadCurrentUserGrantedAuthorities(String... role) {
         List<String> auths = sysRoleAuthorityRepository.getAuthoritesByRole(role);
         Collection<GrantedAuthority> authorities = Lists.newArrayList();
         auths.forEach(item -> authorities.add(new SimpleGrantedAuthority(item)));

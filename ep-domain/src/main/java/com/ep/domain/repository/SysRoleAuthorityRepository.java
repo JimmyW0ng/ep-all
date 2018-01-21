@@ -23,10 +23,10 @@ public class SysRoleAuthorityRepository extends AbstractCRUDRepository<EpSystemR
         super(dslContext, EP_SYSTEM_ROLE_AUTHORITY, EP_SYSTEM_ROLE_AUTHORITY.ID, EpSystemRoleAuthorityPo.class);
     }
 
-    public List<String> getAuthoritesByRole(String role) {
-        return dslContext.select(EP_SYSTEM_ROLE_AUTHORITY.AUTHORITY)
+    public List<String> getAuthoritesByRole(String... role) {
+        return dslContext.selectDistinct(EP_SYSTEM_ROLE_AUTHORITY.AUTHORITY)
                 .from(EP_SYSTEM_ROLE_AUTHORITY)
-                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE.eq(role))
+                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE.in(role))
                 .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.eq(false))
                 .fetchInto(String.class);
     }

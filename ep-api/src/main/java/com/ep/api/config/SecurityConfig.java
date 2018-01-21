@@ -1,8 +1,8 @@
 package com.ep.api.config;
 
 import com.ep.api.filter.ApiSecurityTokenAuthFilter;
+import com.ep.api.security.ApiSecurityAuthEntryPoint;
 import com.ep.api.security.ApiSecurityAuthProvider;
-import com.ep.domain.component.SecurityAuthEntryPointForJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        return new SecurityAuthEntryPointForJson();
+        return new ApiSecurityAuthEntryPoint();
     }
 
     @Autowired
@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
                 // 除上面外的所有请求全部需要鉴权认证
+                .authorizeRequests().antMatchers("/security/**").permitAll()
                 .anyRequest().authenticated();
 
         // 403设置
@@ -62,7 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/security/**");
         web.ignoring().antMatchers("/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources",

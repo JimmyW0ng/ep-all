@@ -1,8 +1,6 @@
 package com.ep.backend.security;
 
 import com.ep.domain.component.SecurityAuth;
-import com.ep.domain.pojo.bo.BackendCredentialBo;
-import com.ep.domain.pojo.bo.BackendPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -30,13 +28,13 @@ public class BackendSecurityAuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-        BackendPrincipalBo principalBo = (BackendPrincipalBo) token.getPrincipal();
-        BackendCredentialBo credentialsBo = (BackendCredentialBo) token.getCredentials();
-        securityAuthComponent.checkLogin(principalBo, credentialsBo);
-        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(principalBo.getRole());
+        String principal = authentication.getPrincipal().toString();
+        String credentials = authentication.getCredentials().toString();
+        String captchaCode = ((BackendAuthenticationDetails) authentication.getDetails()).getCaptchaCode();
+        String[] roles = securityAuthComponent.checkLogin(principal, credentials, captchaCode);
+        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(roles);
         //授权
-        return new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
+        return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), null, authorities);
     }
 
     @Override

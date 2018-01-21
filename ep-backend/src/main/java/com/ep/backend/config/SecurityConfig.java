@@ -1,9 +1,9 @@
 package com.ep.backend.config;
 
 
-import com.ep.backend.filter.BackendSecurityTokenAuthFilter;
+import com.ep.backend.security.BackendAuthenticationDetailsSource;
+import com.ep.backend.security.BackendSecurityAuthEntryPoint;
 import com.ep.backend.security.BackendSecurityAuthProvider;
-import com.ep.domain.component.SecurityAuthEntryPointForJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,9 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @Description: 鉴权设置（Spring Security Config）
@@ -28,12 +26,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BackendSecurityAuthProvider securityAuthProvider;
 
-    @Autowired
-    private BackendSecurityTokenAuthFilter securityTokenAuthFilter;
+    @Bean
+    public BackendAuthenticationDetailsSource getBackendAuthenticationDetailsSource() {
+        return new BackendAuthenticationDetailsSource();
+    }
 
     @Bean
     public AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        return new SecurityAuthEntryPointForJson();
+        BackendSecurityAuthEntryPoint entryPoint = new BackendSecurityAuthEntryPoint();
+        entryPoint.setLoginUrl("/security/login");
+        return entryPoint;
     }
 
     @Autowired
@@ -47,23 +49,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 // 不需要csrf
                 .csrf().disable()
-                // 基于token，所以不需要session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()
-                .authorizeRequests()
                 // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest().authenticated();
+                .authorizeRequests().antMatchers("/security/**").permitAll()
+                .anyRequest().authenticated().and()
+                .formLogin()
+                .loginPage("/security/login")
+                .loginProcessingUrl("/security/login")
+                .failureUrl("/security/login?error")
+                .defaultSuccessUrl("/auth/index")
+                .authenticationDetailsSource(getBackendAuthenticationDetailsSource())
+                .permitAll().and()
+                .logout().permitAll();
 
         // 403设置
         httpSecurity.exceptionHandling().authenticationEntryPoint(getAuthenticationEntryPoint());
-        // 添加鉴权filter
-        httpSecurity.addFilterBefore(securityTokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
         // 禁用缓存
         httpSecurity.headers().cacheControl();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/security/**");
         web.ignoring().antMatchers("/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources",
