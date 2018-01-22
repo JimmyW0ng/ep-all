@@ -3,6 +3,7 @@ package com.ep.api.controller;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
@@ -43,10 +44,10 @@ public class MemberChildController extends ApiController {
     @ApiOperation(value = "获取当前用户孩子列表")
     @PostMapping("/list")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<EpMemberChildPo>> children() {
+    public ResultDo<List<MemberChildBo>> children() {
         EpMemberPo currentMbr = super.getCurrentUser().get();
-        List<EpMemberChildPo> children = memberChildService.getChildrenByMemberId(currentMbr.getId());
-        ResultDo<List<EpMemberChildPo>> resultDo = ResultDo.build();
+        List<MemberChildBo> children = memberChildService.queryAllByMemberId(currentMbr.getId());
+        ResultDo<List<MemberChildBo>> resultDo = ResultDo.build();
         return resultDo.setResult(children);
     }
 

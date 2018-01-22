@@ -1,11 +1,14 @@
 package com.ep.domain.service;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
+import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
+import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,8 @@ public class MemberChildService {
 
     @Autowired
     private MemberChildRepository memberChildRepository;
+    @Autowired
+    private FileRepository fileRepository;
 
     /**
      * 新增孩子信息
@@ -151,7 +156,17 @@ public class MemberChildService {
      * @return
      */
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
-        return memberChildRepository.queryAllByMemberId(memberId);
+        List<MemberChildBo> data = memberChildRepository.queryAllByMemberId(memberId);
+        if (CollectionsTools.isEmpty(data)) {
+            return data;
+        }
+        for (MemberChildBo childBo : data) {
+            Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childBo.getId());
+            if (optional.isPresent()) {
+                childBo.setAvatar(optional.get().getFileUrl());
+            }
+        }
+        return data;
     }
 
     /**

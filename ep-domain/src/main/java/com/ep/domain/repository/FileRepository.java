@@ -19,10 +19,10 @@ import static com.ep.domain.repository.domain.Tables.EP_FILE;
  * @Date: 上午10:35 2017/11/27
  */
 @Repository
-public class EpFileRepository extends AbstractCRUDRepository<EpFileRecord, Long, EpFilePo> {
+public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, EpFilePo> {
 
     @Autowired
-    public EpFileRepository(DSLContext dslContext) {
+    public FileRepository(DSLContext dslContext) {
         super(dslContext, EP_FILE, EP_FILE.ID, EpFilePo.class);
     }
 
@@ -65,7 +65,7 @@ public class EpFileRepository extends AbstractCRUDRepository<EpFileRecord, Long,
                 .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
                 .and(EP_FILE.DEL_FLAG.eq(false))
-                .orderBy(EP_FILE.CREATE_AT.desc())
+                .orderBy(EP_FILE.SORT.desc(), EP_FILE.CREATE_AT.desc())
                 .limit(DSL.one())
                 .fetchOneInto(EpFilePo.class);
         return Optional.ofNullable(data);

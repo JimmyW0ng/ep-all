@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class MemberChildBo extends EpMemberChildPo {
 
+    private String avatar;
     private String signContent;
 
 }

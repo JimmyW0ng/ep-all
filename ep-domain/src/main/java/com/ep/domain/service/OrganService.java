@@ -8,7 +8,7 @@ import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.repository.EpFileRepository;
+import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrganCourseRepository;
 import com.ep.domain.repository.OrganRepository;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
@@ -31,7 +31,7 @@ public class OrganService {
     @Autowired
     private OrganRepository organRepository;
     @Autowired
-    private EpFileRepository fileRepository;
+    private FileRepository fileRepository;
     @Autowired
     private OrganCourseRepository ognCourseRepository;
 

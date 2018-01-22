@@ -5,7 +5,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.component.QiNiuComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpFilePo;
-import com.ep.domain.repository.EpFileRepository;
+import com.ep.domain.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class FileService {
 
     @Autowired
-    private EpFileRepository epFileRepository;
+    private FileRepository fileRepository;
 
     @Autowired
     private QiNiuComponent qiNiuComponent;
@@ -51,9 +51,9 @@ public class FileService {
         filePo.setBizTypeCode(bizTypeCode);
         filePo.setSourceId(sourceId);
         filePo.setSort(sort);
-        epFileRepository.insert(filePo);
+        fileRepository.insert(filePo);
         // 逻辑删除被替换文件
-        epFileRepository.logicDelByBizTypeAndSourceId(bizTypeCode, sourceId);
+        fileRepository.logicDelByBizTypeAndSourceId(bizTypeCode, sourceId);
         return resultDo;
     }
 }
