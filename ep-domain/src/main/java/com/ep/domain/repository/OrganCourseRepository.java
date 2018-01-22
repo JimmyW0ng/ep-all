@@ -1,6 +1,5 @@
 package com.ep.domain.repository;
 
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.po.EpOrganCoursePo;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
@@ -18,7 +17,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.*;
+import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_CATALOG;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE;
 
 /**
  * @Description:机构课程表Repository
@@ -60,18 +60,13 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * @param ognId
      * @return
      */
-    public List<OrganCourseBo> getByOgnId(Long ognId) {
+    public List<OrganCourseBo> getDetailByOgnId(Long ognId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.fields());
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
-        fieldList.add(EP_FILE.FILE_URL.as("mainPicUrl"));
         return dslContext.select(fieldList).from(EP_ORGAN_COURSE)
                 .leftJoin(EP_CONSTANT_CATALOG)
                 .on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
-                .leftJoin(EP_FILE)
-                .on(EP_ORGAN_COURSE.ID.eq(EP_FILE.SOURCE_ID))
-                .and(EP_FILE.BIZ_TYPE_CODE.eq(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC))
-                .and(EP_FILE.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online, EpOrganCourseCourseStatus.online))
