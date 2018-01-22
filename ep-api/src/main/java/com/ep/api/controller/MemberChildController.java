@@ -1,10 +1,12 @@
 package com.ep.api.controller;
 
 import com.ep.common.tool.DateTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
+import com.ep.domain.service.FileService;
 import com.ep.domain.service.MemberChildService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +36,9 @@ public class MemberChildController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
+
+    @Autowired
+    private FileService fileService;
 
     @ApiOperation(value = "获取当前用户孩子列表")
     @PostMapping("/list")
@@ -90,6 +97,23 @@ public class MemberChildController extends ApiController {
     public ResultDo delChild(@RequestParam("childId") Long childId) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
         memberChildService.delChild(currentMbr.getId(), childId);
+        return ResultDo.build();
+    }
+
+    @ApiOperation(value = "孩子上传头像", notes = "如果存在，则覆盖")
+    @PostMapping("/upload/avatar")
+    public ResultDo uploadAvatar(@RequestParam(value = "file") MultipartFile file,
+                                 @RequestParam("childId") Long childId) throws IOException {
+        EpMemberPo currentMbr = super.getCurrentUser().get();
+        ResultDo resultDo = memberChildService.getById(currentMbr.getId(), childId);
+        if (resultDo.isError()) {
+            return resultDo;
+        }
+        fileService.replaceFileByBizTypeAndSourceId(file.getOriginalFilename(),
+                file.getBytes(),
+                BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR,
+                childId,
+                BizConstant.DB_NUM_ONE);
         return ResultDo.build();
     }
 

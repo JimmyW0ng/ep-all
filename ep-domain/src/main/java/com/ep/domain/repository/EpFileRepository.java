@@ -74,26 +74,26 @@ public class EpFileRepository extends AbstractCRUDRepository<EpFileRecord, Long,
     /**
      * 根据业务类型和来源进行逻辑删除
      *
-     * @param bscFileBizType
+     * @param bizTypeCode
      * @param sourceId
      * @return
      */
-    public int logicDelByBizTypeAndSourceId(Short bscFileBizType, Long sourceId) {
-        EpFilePo bscFilePo = dslContext.selectFrom(EP_FILE)
-                .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
+    public int logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId) {
+        EpFilePo filePo = dslContext.selectFrom(EP_FILE)
+                .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
                 .and(EP_FILE.DEL_FLAG.eq(false))
-                .orderBy(EP_FILE.CREATE_AT.desc(), EP_FILE.ID.desc())
+                .orderBy(EP_FILE.ID.desc())
                 .limit(DSL.one())
                 .fetchOneInto(EpFilePo.class);
-        if (bscFilePo == null) {
+        if (filePo == null) {
             return BizConstant.DB_NUM_ZERO;
         }
         return dslContext.update(EP_FILE).set(EP_FILE.DEL_FLAG, true)
-                .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
+                .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
                 .and(EP_FILE.DEL_FLAG.eq(false))
-                .and(EP_FILE.ID.lessThan(bscFilePo.getId()))
+                .and(EP_FILE.ID.lessThan(filePo.getId()))
                 .execute();
     }
 

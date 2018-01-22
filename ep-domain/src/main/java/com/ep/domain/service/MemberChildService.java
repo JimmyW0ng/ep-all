@@ -6,7 +6,6 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
-import com.ep.domain.repository.EpFileRepository;
 import com.ep.domain.repository.MemberChildRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +27,6 @@ public class MemberChildService {
 
     @Autowired
     private MemberChildRepository memberChildRepository;
-    @Autowired
-    private EpFileRepository fileRepository;
 
     /**
      * 新增孩子信息
@@ -123,12 +120,7 @@ public class MemberChildService {
      * @return
      */
     public int delChild(Long memberId, Long id) {
-        int delNum = memberChildRepository.delChild(memberId, id);
-        if (delNum == BizConstant.DB_NUM_ONE) {
-            // 删除孩子头像
-            fileRepository.logicDelByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, id);
-        }
-        return delNum;
+        return memberChildRepository.delChild(memberId, id);
     }
 
     /**
