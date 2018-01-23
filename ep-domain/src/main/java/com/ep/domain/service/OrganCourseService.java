@@ -5,9 +5,13 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
+import com.ep.domain.pojo.po.EpConstantCatalogPo;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpOrganPo;
+import com.ep.domain.repository.ConstantCatalogRepository;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrganCourseRepository;
+import com.ep.domain.repository.OrganRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +30,11 @@ public class OrganCourseService {
     @Autowired
     private OrganCourseRepository organCourseRepository;
     @Autowired
+    private OrganRepository organRepository;
+    @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private ConstantCatalogRepository constantCatalogRepository;
 
     /**
      * 前提－课程明细
@@ -44,6 +52,19 @@ public class OrganCourseService {
         if (optional.isPresent()) {
             ognCourseBo.setMainPicUrl(optional.get().getFileUrl());
         }
+        // 获取课程类目
+        Long courseCatalogId = ognCourseBo.getCourseCatalogId();
+        if (courseCatalogId != null && courseCatalogId > BizConstant.DB_NUM_ZERO) {
+            EpConstantCatalogPo catalogPo = constantCatalogRepository.getById(courseCatalogId);
+            if (catalogPo != null) {
+                ognCourseBo.setLabel(catalogPo.getLabel());
+            }
+        }
+        // 获取机构信息
+        EpOrganPo organPo = organRepository.getById(ognCourseBo.getOgnId());
+        ognCourseBo.setOrganName(organPo.getOrganName());
+        ognCourseBo.setOrganPhone(organPo.getOrganPhone());
+        // 封装返回dto
         OrganCourseDto courseDto = new OrganCourseDto();
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();
         resultDo.setResult(courseDto);

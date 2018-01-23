@@ -40,12 +40,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * @return
      */
     public OrganCourseBo getDetailById(Long courseId) {
-        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.fields());
-        fieldList.add(EP_CONSTANT_CATALOG.LABEL);
-        return dslContext.select(fieldList).from(EP_ORGAN_COURSE)
-                .leftJoin(EP_CONSTANT_CATALOG)
-                .on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
-                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+        return dslContext.selectFrom(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.ID.eq(courseId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
