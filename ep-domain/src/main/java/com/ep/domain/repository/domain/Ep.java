@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = -479886531;
+    private static final long serialVersionUID = -1090205456;
 
     /**
      * The reference instance of <code>ep</code>
@@ -91,7 +91,7 @@ public class Ep extends SchemaImpl {
     public final EpOrgan EP_ORGAN = com.ep.domain.repository.domain.tables.EpOrgan.EP_ORGAN;
 
     /**
-     * 机构后台账户
+     * 机构账户关联信息表
      */
     public final EpOrganAccount EP_ORGAN_ACCOUNT = com.ep.domain.repository.domain.tables.EpOrganAccount.EP_ORGAN_ACCOUNT;
 

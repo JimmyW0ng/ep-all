@@ -18,7 +18,7 @@ import java.util.List;
 
 
 /**
- * 机构后台账户
+ * 机构账户关联信息表
  */
 @Generated(
         value = {
@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
 
-    private static final long serialVersionUID = -2109576008;
+    private static final long serialVersionUID = 1342938237;
 
     /**
      * The reference instance of <code>ep.ep_organ_account</code>
@@ -51,14 +51,14 @@ public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
     public final TableField<EpOrganAccountRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
 
     /**
-     * The column <code>ep.ep_organ_account.member_id</code>. 会员id
+     * The column <code>ep.ep_organ_account.account_name</code>. 机构内部名称
      */
-    public final TableField<EpOrganAccountRecord, Long> MEMBER_ID = createField("member_id", org.jooq.impl.SQLDataType.BIGINT, this, "会员id");
+    public final TableField<EpOrganAccountRecord, String> ACCOUNT_NAME = createField("account_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构内部名称");
 
     /**
-     * The column <code>ep.ep_organ_account.in_organ_name</code>. 内部花名
+     * The column <code>ep.ep_organ_account.nick_name</code>. 对外昵称
      */
-    public final TableField<EpOrganAccountRecord, String> IN_ORGAN_NAME = createField("in_organ_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "内部花名");
+    public final TableField<EpOrganAccountRecord, String> NICK_NAME = createField("nick_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "对外昵称");
 
     /**
      * The column <code>ep.ep_organ_account.introduce</code>. 介绍
@@ -66,24 +66,19 @@ public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
     public final TableField<EpOrganAccountRecord, String> INTRODUCE = createField("introduce", org.jooq.impl.SQLDataType.VARCHAR.length(3000), this, "介绍");
 
     /**
-     * The column <code>ep.ep_organ_account.role</code>. 权限对应角色
-     */
-    public final TableField<EpOrganAccountRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "权限对应角色");
-
-    /**
      * The column <code>ep.ep_organ_account.ogn_id</code>. 所属机构id
      */
     public final TableField<EpOrganAccountRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "所属机构id");
 
     /**
-     * The column <code>ep.ep_organ_account.status</code>. 状态：待审核；正常；已冻结；已注销；
+     * The column <code>ep.ep_organ_account.status</code>. 状态：待激活；正常；已冻结；已注销；
      */
-    public final TableField<EpOrganAccountRecord, EpOrganAccountStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganAccountStatus.class), this, "状态：待审核；正常；已冻结；已注销；");
+    public final TableField<EpOrganAccountRecord, EpOrganAccountStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganAccountStatus.class), this, "状态：待激活；正常；已冻结；已注销；");
 
     /**
      * The column <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号
      */
-    public final TableField<EpOrganAccountRecord, Long> REFER_MOBILE = createField("refer_mobile", org.jooq.impl.SQLDataType.BIGINT, this, "关联手机号");
+    public final TableField<EpOrganAccountRecord, Long> REFER_MOBILE = createField("refer_mobile", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "关联手机号");
 
     /**
      * The column <code>ep.ep_organ_account.create_at</code>. 创建时间
@@ -129,7 +124,7 @@ public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
     }
 
     private EpOrganAccount(String alias, Table<EpOrganAccountRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, "机构后台账户");
+        super(alias, null, aliased, parameters, "机构账户关联信息表");
     }
 
     /**

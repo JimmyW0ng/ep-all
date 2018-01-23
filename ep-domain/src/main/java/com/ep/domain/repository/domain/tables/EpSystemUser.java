@@ -31,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpSystemUser extends TableImpl<EpSystemUserRecord> {
 
-    private static final long serialVersionUID = -1801673232;
+    private static final long serialVersionUID = -258955642;
 
     /**
      * The reference instance of <code>ep.ep_system_user</code>
@@ -172,7 +172,7 @@ public class EpSystemUser extends TableImpl<EpSystemUserRecord> {
      */
     @Override
     public List<UniqueKey<EpSystemUserRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpSystemUserRecord>>asList(Keys.KEY_EP_SYSTEM_USER_PRIMARY);
+        return Arrays.<UniqueKey<EpSystemUserRecord>>asList(Keys.KEY_EP_SYSTEM_USER_PRIMARY, Keys.KEY_EP_SYSTEM_USER_IDX_MOBILE);
     }
 
     /**

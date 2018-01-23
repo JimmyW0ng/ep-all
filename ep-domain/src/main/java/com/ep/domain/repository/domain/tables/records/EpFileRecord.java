@@ -111,27 +111,6 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
-     */
-    public String getFileName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Getter for <code>ep.ep_file.sort</code>. 排序
-     */
-    public Integer getSort() {
-        return (Integer) get(5);
-    }
-
-    /**
      * Getter for <code>ep.ep_file.source_id</code>. 业务ID
      */
     public Long getSourceId() {
@@ -147,11 +126,17 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_file.id</code>. 主键
      */
-    public EpFileRecord setUpdateAt(Timestamp value) {
-        set(7, value);
-        return this;
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
+     */
+    public String getFileName() {
+        return (String) get(1);
     }
 
     /**
@@ -159,6 +144,21 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(6);
+    }
+
+    /**
+     * Getter for <code>ep.ep_file.sort</code>. 排序
+     */
+    public Integer getSort() {
+        return (Integer) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_file.create_at</code>. 创建时间
+     */
+    public EpFileRecord setCreateAt(Timestamp value) {
+        set(6, value);
+        return this;
     }
 
     /**
@@ -177,11 +177,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Setter for <code>ep.ep_file.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
      */
-    public EpFileRecord setCreateAt(Timestamp value) {
-        set(6, value);
-        return this;
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -192,10 +191,11 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_file.update_at</code>. 更新时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
+    public EpFileRecord setUpdateAt(Timestamp value) {
+        set(7, value);
+        return this;
     }
 
     /**

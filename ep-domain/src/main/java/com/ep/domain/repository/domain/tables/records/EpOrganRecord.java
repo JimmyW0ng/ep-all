@@ -242,31 +242,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.organ_url</code>. 机构官方网址
-     */
-    public String getOrganUrl() {
-        return (String) get(10);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ.organ_introduce</code>. 机构简介
-     */
-    public String getOrganIntroduce() {
-        return (String) get(11);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ.market_weight</code>. 营销权重
      */
     public Byte getMarketWeight() {
         return (Byte) get(12);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ.together_score</code>. 综合得分
-     */
-    public Byte getTogetherScore() {
-        return (Byte) get(13);
     }
 
     /**
@@ -278,10 +257,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.total_participate</code>.
+     * Getter for <code>ep.ep_organ.organ_url</code>. 机构官方网址
      */
-    public Integer getTotalParticipate() {
-        return (Integer) get(14);
+    public String getOrganUrl() {
+        return (String) get(10);
     }
 
     /**
@@ -293,10 +272,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_organ.organ_introduce</code>. 机构简介
      */
-    public EpOrganStatus getStatus() {
-        return (EpOrganStatus) get(15);
+    public String getOrganIntroduce() {
+        return (String) get(11);
     }
 
     /**
@@ -308,10 +287,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ.together_score</code>. 综合得分
      */
-    public String getRemark() {
-        return (String) get(16);
+    public Byte getTogetherScore() {
+        return (Byte) get(13);
     }
 
     /**
@@ -323,10 +302,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ.total_participate</code>.
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(17);
+    public Integer getTotalParticipate() {
+        return (Integer) get(14);
     }
 
     /**
@@ -338,10 +317,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(18);
+    public EpOrganStatus getStatus() {
+        return (EpOrganStatus) get(15);
     }
 
     /**
@@ -353,10 +332,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ.remark</code>. 备注信息
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(19);
+    public String getRemark() {
+        return (String) get(16);
     }
 
     /**
@@ -365,6 +344,27 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     public EpOrganRecord setDelFlag(Boolean value) {
         set(19, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(17);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(18);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -506,22 +506,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public Row21<Long, String, String, Long, String, String, String, Timestamp, String, String, String, String, Byte, Byte, Integer, EpOrganStatus, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
-        return (Row21) super.fieldsRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row21<Long, String, String, Long, String, String, String, Timestamp, String, String, String, String, Byte, Byte, Integer, EpOrganStatus, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
-        return (Row21) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<Byte> field14() {
         return EpOrgan.EP_ORGAN.TOGETHER_SCORE;
     }
@@ -564,6 +548,22 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     @Override
     public Field<Timestamp> field19() {
         return EpOrgan.EP_ORGAN.UPDATE_AT;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row21<Long, String, String, Long, String, String, String, Timestamp, String, String, String, String, Byte, Byte, Integer, EpOrganStatus, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
+        return (Row21) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row21<Long, String, String, Long, String, String, String, Timestamp, String, String, String, String, Byte, Byte, Integer, EpOrganStatus, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
+        return (Row21) super.valuesRow();
     }
 
     /**
@@ -674,22 +674,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field20() {
-        return EpOrgan.EP_ORGAN.DEL_FLAG;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field21() {
-        return EpOrgan.EP_ORGAN.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Byte value14() {
         return getTogetherScore();
     }
@@ -732,6 +716,22 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     @Override
     public Timestamp value19() {
         return getUpdateAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Boolean> field20() {
+        return EpOrgan.EP_ORGAN.DEL_FLAG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field21() {
+        return EpOrgan.EP_ORGAN.VERSION;
     }
 
     /**
@@ -855,22 +855,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public Boolean value20() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value21() {
-        return getVersion();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpOrganRecord value14(Byte value) {
         setTogetherScore(value);
         return this;
@@ -930,10 +914,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -970,5 +950,25 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
         value20(value20);
         value21(value21);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean value20() {
+        return getDelFlag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value21() {
+        return getVersion();
     }
 }

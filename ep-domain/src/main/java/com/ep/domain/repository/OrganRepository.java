@@ -94,7 +94,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN.fields());
         fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.ID).as("catalogIds"));
         fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.LABEL).as("catalogLabels"));
-        fieldList.add(DSL.groupConcat(EP_FILE.FILE_URL).as("fileUrl"));
+        fieldList.add(EP_FILE.FILE_URL.as("fileUrl"));
         List<OrganBo> pList = dslContext.select(fieldList)
                 .from(EP_ORGAN)
                 .leftJoin(EP_FILE)

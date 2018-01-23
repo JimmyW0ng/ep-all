@@ -32,7 +32,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMember extends TableImpl<EpMemberRecord> {
 
-    private static final long serialVersionUID = 249341137;
+    private static final long serialVersionUID = 454578222;
 
     /**
      * The reference instance of <code>ep.ep_member</code>
@@ -86,11 +86,6 @@ public class EpMember extends TableImpl<EpMemberRecord> {
      * The column <code>ep.ep_member.type</code>. 类型：会员；机构账户
      */
     public final TableField<EpMemberRecord, EpMemberType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberType.class), this, "类型：会员；机构账户");
-
-    /**
-     * The column <code>ep.ep_member.role</code>. 会员角色
-     */
-    public final TableField<EpMemberRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("app_client_basic", org.jooq.impl.SQLDataType.VARCHAR)), this, "会员角色");
 
     /**
      * The column <code>ep.ep_member.create_at</code>. 创建时间

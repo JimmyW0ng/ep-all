@@ -6,6 +6,7 @@ package com.ep.domain.pojo.po;
 
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,17 +23,25 @@ import java.sql.Timestamp;
 public class EpOrganAccountPo extends AbstractBasePojo {
 
     private Long id;
-    private Long memberId;
-    private String inOrganName;
+    @JsonIgnore
+    private String accountName;
+    private String nickName;
+    @JsonIgnore
+    private Long userId;
     private String introduce;
-    private String role;
     private Long ognId;
     private EpOrganAccountStatus status;
+    @JsonIgnore
     private Long referMobile;
+    @JsonIgnore
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }

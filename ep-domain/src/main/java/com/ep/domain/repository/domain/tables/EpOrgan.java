@@ -37,6 +37,7 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
      * The reference instance of <code>ep.ep_organ</code>
      */
     public static final EpOrgan EP_ORGAN = new EpOrgan();
+
     /**
      * The column <code>ep.ep_organ.together_score</code>. 综合得分
      */
@@ -106,10 +107,6 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
      * The column <code>ep.ep_organ.market_weight</code>. 营销权重
      */
     public final TableField<EpOrganRecord, Byte> MARKET_WEIGHT = createField("market_weight", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.TINYINT)), this, "营销权重");
-    /**
-     * The column <code>ep.ep_organ.total_participate</code>.
-     */
-    public final TableField<EpOrganRecord, Integer> TOTAL_PARTICIPATE = createField("total_participate", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The class holding records for this type
@@ -118,6 +115,11 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
     public Class<EpOrganRecord> getRecordType() {
         return EpOrganRecord.class;
     }
+
+    /**
+     * The column <code>ep.ep_organ.total_participate</code>.
+     */
+    public final TableField<EpOrganRecord, Integer> TOTAL_PARTICIPATE = createField("total_participate", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；

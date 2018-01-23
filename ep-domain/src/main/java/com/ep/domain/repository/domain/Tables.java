@@ -78,7 +78,7 @@ public class Tables {
     public static final EpOrgan EP_ORGAN = com.ep.domain.repository.domain.tables.EpOrgan.EP_ORGAN;
 
     /**
-     * 机构后台账户
+     * 机构账户关联信息表
      */
     public static final EpOrganAccount EP_ORGAN_ACCOUNT = com.ep.domain.repository.domain.tables.EpOrganAccount.EP_ORGAN_ACCOUNT;
 

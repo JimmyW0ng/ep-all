@@ -35,8 +35,6 @@ public class EpMemberPo extends AbstractBasePojo {
     @JsonIgnore
     private EpMemberType type;
     @JsonIgnore
-    private String role;
-    @JsonIgnore
     private Timestamp createAt;
     @JsonIgnore
     private Timestamp updateAt;

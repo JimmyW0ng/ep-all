@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 状态：待审核；正常；已冻结；已注销；
+ * 状态：待激活；正常；已冻结；已注销；
  */
 @Generated(
         value = {
@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpOrganAccountStatus implements EnumType {
 
-    wait_verify("wait_verify"),
+    wait_active("wait_active"),
 
     normal("normal"),
 

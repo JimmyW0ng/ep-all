@@ -64,6 +64,7 @@ public class OrganCourseService {
         EpOrganPo organPo = organRepository.getById(ognCourseBo.getOgnId());
         ognCourseBo.setOrganName(organPo.getOrganName());
         ognCourseBo.setOrganPhone(organPo.getOrganPhone());
+        //
         // 封装返回dto
         OrganCourseDto courseDto = new OrganCourseDto();
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();

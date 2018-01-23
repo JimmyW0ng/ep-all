@@ -8,10 +8,10 @@ import com.ep.domain.pojo.bo.ApiCredentialBo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpSystemClientPo;
-import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.SystemClientRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpSystemClientLoginSource;
+import com.ep.domain.service.MemberService;
 import com.ep.domain.service.MessageCaptchaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class ApiSecurityAuthComponent {
     private SystemClientRepository systemClientRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
     @Autowired
     private MessageCaptchaService messageCaptchaService;
@@ -144,7 +144,7 @@ public class ApiSecurityAuthComponent {
      * @param principalBo
      */
     public void loadCurrentUserInfo(ApiPrincipalBo principalBo) {
-        EpMemberPo mbrInfoPo = memberRepository.getByMobile(Long.parseLong(principalBo.getUserName()));
+        EpMemberPo mbrInfoPo = memberService.getByMobile(Long.parseLong(principalBo.getUserName()));
         WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_USER, mbrInfoPo);
     }
 
@@ -179,14 +179,8 @@ public class ApiSecurityAuthComponent {
         // 校验验证码
         messageCaptchaService.checkAndHandleCaptcha(mobile, principalBo.getCaptchaCode(), credentialBo.getPassword());
         // 校验会员
-        EpMemberPo mbrInfoPo = memberRepository.getByMobile(mobile);
-        if (mbrInfoPo == null) {
-            // 保存用户
-            EpMemberPo insertPo = new EpMemberPo();
-            insertPo.setMobile(mobile);
-            insertPo.setStatus(EpMemberStatus.normal);
-            memberRepository.insert(insertPo);
-        } else if (mbrInfoPo.getStatus().equals(EpMemberStatus.cancel)) {
+        EpMemberPo mbrInfoPo = memberService.checkExistAndType(mobile);
+        if (mbrInfoPo.getStatus().equals(EpMemberStatus.cancel)) {
             throw new UsernameNotFoundException("账号已被注销");
         } else if (mbrInfoPo.getStatus().equals(EpMemberStatus.freeze)) {
             throw new LockedException("账号已被锁定");
