@@ -6,7 +6,6 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import static com.ep.domain.repository.domain.Tables.EP_MEMBER;
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_USER;
 
 
@@ -15,7 +14,7 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
 
     @Autowired
     public SystemUserRepository(DSLContext dslContext) {
-        super(dslContext, EP_SYSTEM_USER, EP_MEMBER.ID, EpSystemUserPo.class);
+        super(dslContext, EP_SYSTEM_USER, EP_SYSTEM_USER.ID, EpSystemUserPo.class);
     }
 
     /**

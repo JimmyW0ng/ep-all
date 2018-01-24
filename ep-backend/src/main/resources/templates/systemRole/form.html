@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+    <header>
+        <th:block layout:fragment="links">
+            <link th:href="@{/css/zTreeStyle/zTreeStyle.css}" rel="stylesheet">
+        </th:block>
+
+    </header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 th:text="${systemRolePo.id} eq null ? '新增角色' : '修改角色'"></h5>
+
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="roleFrm">
+                <input type="hidden" id="id" name="id">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色名称：</label>
+                    <div class="col-sm-3">
+                        <input id="roleName" name="roleName" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">目标：</label>
+                    <div class="col-sm-3">
+                        <select id="target" name="target" class="form-control" required="true" aria-required="true">
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemRoleTarget).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpSystemRoleTarget.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色标识：</label>
+                    <div class="col-sm-3">
+                        <input id="roleCode" name="roleCode" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-3">
+                        <textarea id="remark" name="remark" type="text" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">菜单：</label>
+                    <div class="col-sm-6">
+                        <ul id="treeDemo" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-2">
+                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.excheck.js}"></script>
+<script th:src="@{/js/jquery.ztree.exedit.js}"></script>
+<script th:inline="javascript">
+    var setting = {
+
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {}
+
+
+    };
+    var zNodes = [
+        [
+    #
+    th:each = "menuPojo :${@systemMenuService.getAll()}"
+    ]
+    {
+        id: [[${menuPojo.id}]], pId
+    :
+        [[${menuPojo.parentId}]], name
+    :
+        [[${menuPojo.menuName}]], open
+    :
+        false, authority
+    :
+        [[${menuPojo.permission}]]
+    }
+    ,
+    [ /
+    ]
+
+
+    ]
+    ;
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    })
+    function frmSubmit() {
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+        var authority = []
+        for (var i = 0; i < nodes.length; i++) {
+            authority.push(nodes[i].authority);
+        }
+        console.log(authority)
+        if (nodes.length == 0) {
+            return;
+        }
+        console.log(nodes)
+//        if (! $("#roleFrm").valid()) {
+//            return;
+//        }
+
+        $.ajax({
+            type: "POST",
+            url: "/auth/role/create",
+            data: {
+                id: $("#id").val(),
+                roleName: $("#roleName").val(),
+                target: $("#target").val(),
+                roleCode: $("#roleCode").val(),
+                remark: $("#remark").val(),
+                authority: authority
+            },
+            success: function (data) {
+                if (data.success) {
+                    window.location.href = "/auth/role/index";
+                }
+            }
+        })
+
+    }
+</script>
+</body>
+</html>

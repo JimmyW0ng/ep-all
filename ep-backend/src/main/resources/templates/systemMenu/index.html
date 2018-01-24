@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+<header>
+    <th:block layout:fragment="links">
+        <link th:href="@{/css/zTreeStyle/zTreeStyle.css}" rel="stylesheet">
+    </th:block>
+</header>
+<body>
+
+<div>
+    <div class="col-sm-12 gray-bg">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>系统功能</h5>
+                        <div class="ibox-tools">
+
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <ul id="treeDemo" class="ztree"></ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7 row">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+
+                        <p id="buttonBox">
+                            <button type="button" class="btn btn-w-m btn-primary" onclick="creatMenuShow()">新增菜单
+                            </button>
+                            <button style="display: none" type="button" class="btn btn-w-m btn-success" data-id=""
+                                    onclick="updateMenuShow(this)">修改菜单
+                            </button>
+
+                            <button style="display: none" type="button" class="btn btn-w-m btn-danger" data-id=""
+                                    onclick="delMenuShow(this)">删除菜单
+                            </button>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="ibox float-e-margins" id="menuBox" style="display: none">
+                    <div class="ibox-title">
+                        <input type="hidden" id="act_type"><!--对树的单击事件不同操作-->
+                        <h5 class="r_act">查看详情</h5>
+                        <h5 class="c_act">新增详情</h5>
+                        <h5 class="u_act">编辑详情</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t" id="menuFrm">
+
+                            <input type="hidden" id="id" name="id">
+                            <input type="hidden" id="parentId" name="parentId">
+                            <div class="form-group">
+
+                                <label class="col-sm-3 control-label">父级菜单：</label>
+                                <div class="col-sm-8">
+                                    <input id="parentName" type="text" class="form-control" name="parentName"
+                                           required="true" aria-required="true" readonly="true" placeholder="点击菜单选择">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">目标：</label>
+                                <div class="col-sm-8">
+                                    <select id="target" type="" class="form-control" name="target" required="true"
+                                            aria-required="true">
+                                        <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemMenuTarget).values()}"
+                                                th:value="${state}"
+                                                th:text="#{EpSystemMenuTarget.+${state.literal}}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名称：</label>
+                                <div class="col-sm-8">
+                                    <input id="menuName" type="" class="form-control" name="menuName" required="true"
+                                           aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">类型：</label>
+                                <div class="col-sm-8">
+                                    <select id="menuType" type="" class="form-control" name="menuType" required="true"
+                                            aria-required="true">
+                                        <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemMenuMenuType).values()}"
+                                                th:value="${state}"
+                                                th:text="#{EpSystemMenuMenuType.+${state.literal}}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">链接：</label>
+                                <div class="col-sm-8">
+                                    <input id="href" type="text" class="form-control" name="href" required="true"
+                                           aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">排序：</label>
+                                <div class="col-sm-8">
+                                    <input id="sort" type="number" class="form-control" name="sort" value="0"
+                                           required="true" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">权限标识：</label>
+                                <div class="col-sm-8">
+                                    <input id="permission" type="text" name="permission" class="form-control"
+                                           required="true" aria-required="true"></input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">状态：</label>
+                                <div class="col-sm-8">
+                                    <select id="status" type="" class="form-control" name="status" required="true"
+                                            aria-required="true">
+                                        <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemMenuStatus).values()}"
+                                                th:value="${state}"
+                                                th:text="#{EpSystemMenuStatus.+${state.literal}}"
+                                        >
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="remark" name="remark" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-3">
+                                    <button class="btn btn-primary" id="saveBtn" type="button" onclick="saveSubmit()">
+                                        保存
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script th:replace="~{fragments/scripts}"></script>
+<!--<th:block layout:fragment="scripts">-->
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.excheck.js}"></script>
+<script th:src="@{/js/jquery.ztree.exedit.js}"></script>
+
+
+<script th:inline="javascript">
+    //
+    var setting = {
+        view: {
+            addHoverDom: nodeBeforeAdd,
+
+        },
+
+        check: {
+            enable: true
+        },
+//            edit: {
+//                enable: true
+//            },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            beforeRemove: nodeBeforeRemove,
+//                beforeRename: nodeBeforeRename,
+            beforeEditName: beforeEditName,
+            onClick: zTreeOnClick,
+            onDblClick: zTreeOnDbClick,
+//                onRename: zTreeOnRename
+        }
+
+
+    };
+    var zNodes = [
+        [
+    #
+    th:each = "menuPojo :${@systemMenuService.getAll()}"
+    ]
+    {
+        id: [[${menuPojo.id}]], pId
+    :
+        [[${menuPojo.parentId}]], name
+    :
+        [[${menuPojo.menuName}]], open
+    :
+        true
+    }
+    ,
+    [ /
+    ]
+
+
+    ]
+    ;
+
+
+    //        var newCount = 1;
+    function nodeBeforeAdd(treeId, treeNode) {
+//            var sObj = $("#" + treeNode.tId + "_span");
+//            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+//            var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+//                + "' title='add node' onfocus='this.blur();'></span>";
+//            sObj.after(addStr);
+//            var btn = $("#addBtn_"+treeNode.tId);
+//            if (btn) btn.bind("click", function(){
+//                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+//                zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+//                return false;
+//            });
+    }
+
+    function nodeBeforeRename() {
+        alert(1)
+        return false
+    }
+
+    function beforeEditName() {
+        //获取鼠标点击的标签（单个）START
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getSelectedNodes();
+        //获取鼠标点击的标签（单个）END
+
+        console.log(nodes)
+
+//            $("#updateBox").show()
+//            $.ajax({
+//                type:"GET",
+//                url:"",
+//            })
+        return false;
+
+    }
+
+
+    function nodeBeforeRemove() {
+        parent.layer.alert('内容', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+//               delMenuDo();
+                parent.layer.close(index);
+            })
+        return false
+    }
+
+    function nodeBeforeRename() {
+
+    }
+
+    function zTreeOnClick() {
+        if ($("#act_type").val() == 'c_act') {
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getSelectedNodes();
+            console.log(nodes[0])
+            $("#parentId").val(nodes[0].id)
+            $("#parentName").val(nodes[0].name)
+        } else {
+            //获取鼠标点击的标签（单个）START
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getSelectedNodes();
+            //获取鼠标点击的标签（单个）END
+            $("#buttonBox").find("button").data("id", nodes[0].id).show()
+        }
+
+
+    }
+
+    function resetFrmField() {
+        $("#menuBox").find("input").val("");
+    }
+
+    function readMenuShow(id) {
+        resetFrmField();
+        menuBoxTitle("r_act")
+        $("#saveBtn").hide();
+        $.ajax({
+            type: 'GET',
+            url: '/auth/menu/view/' + id,
+            success: function (data) {
+                if (data.success) {
+                    console.log(data.result)
+                    var menu = data.result
+                    $("#id").val(menu.id)
+                    $("#parentId").val(menu.parentId)
+                    $("#parentName").val(menu.parentName)
+                    $("#menuName").val(menu.menuName)
+                    $("#href").val(menu.href)
+                    $("#sort").val(menu.sort)
+                    $("#target").val(menu.target)
+                    $("#permission").val(menu.permission)
+
+                    $("#status").val(menu.status)
+                    $("#remark").val(menu.remark)
+
+                }
+
+            }
+
+        })
+    }
+    /**
+     * 新增菜单初始化
+     */
+    function creatMenuShow() {
+        resetFrmField();
+        menuBoxTitle("c_act")
+    }
+    function menuBoxTitle(titleClazz) {
+        $("#menuBox").show()
+        $("#act_type").val(titleClazz)
+        var clazz = $("#act_type").val()
+        console.log($("#act_type").parent())
+        $("#act_type").parent().children().hide()
+        $("#act_type").parent().find("." + clazz).show()
+    }
+    function updateMenuShow(ele) {
+        resetFrmField();
+        menuBoxTitle("u_act")
+        console.log($(ele).data("id"));
+        var id = $(ele).data("id")
+        $.ajax({
+            type: 'GET',
+            url: '/auth/menu/view/' + id,
+            success: function (data) {
+                if (data.success) {
+                    console.log(data.result)
+                    var menu = data.result
+                    $("#id").val(menu.id)
+                    $("#parentId").val(menu.parentId)
+                    $("#parentName").val(menu.parentName)
+                    $("#menuName").val(menu.menuName)
+                    $("#href").val(menu.href)
+                    $("#sort").val(menu.sort)
+                    $("#target").val(menu.target)
+                    $("#permission").val(menu.permission)
+
+                    $("#status").val(menu.status)
+                    $("#remark").val(menu.remark)
+
+                }
+
+            }
+
+        })
+    }
+
+    function delMenuShow(ele) {
+
+        console.log($(ele).data("id"));
+    }
+
+    /**
+     * 新增菜单
+     */
+    function saveSubmit() {
+        if (!$("#menuFrm").valid()) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/auth/menu/create",
+            data: $("#menuFrm").serialize(),
+            success: function (data) {
+                if (data.success) {
+                    toastr.success("操作成功")
+                    window.location = '/auth/menu/index'
+                }
+            }
+        })
+
+
+    }
+
+    /**
+     * 查看菜单详情
+     */
+    function zTreeOnDbClick() {
+        //获取鼠标点击的标签（单个）START
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getSelectedNodes();
+        //获取鼠标点击的标签（单个）END
+
+        console.log(nodes[0].id)
+        readMenuShow(nodes[0].id);
+
+
+    }
+
+    function testIt() {
+        toastr.info("你有新消息了!");
+    }
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+//            $("#menuFrm").validate({
+//                rules: {
+//                    target: {
+//                        require: true,
+//                    },
+//                },
+//                messages:{
+//                    target: {
+//                        require: "11111",
+//                    },
+//                }
+//            });
+    });
+
+
+</script>
+<!--</th:block>-->
+
+<style type="text/css">
+    .ztree li span.button.add {
+        margin-left: 2px;
+        margin-right: -1px;
+        background-position: -144px 0;
+        vertical-align: top;
+        *vertical-align: middle
+    }
+</style>
+</body>
+</html>

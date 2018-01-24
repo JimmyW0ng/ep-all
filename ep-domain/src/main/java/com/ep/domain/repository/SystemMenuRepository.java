@@ -1,6 +1,6 @@
 package com.ep.domain.repository;
 
-import com.ep.domain.pojo.dto.SystemMenuDto;
+import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
 import org.jooq.DSLContext;
@@ -27,11 +27,17 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .fetchOneInto(EpSystemMenuPo.class);
     }
 
-    public List<SystemMenuDto> getAllMenu(Long parentId) {
+    public List<EpSystemMenuPo> getAll() {
+        return dslContext.selectFrom(EP_SYSTEM_MENU)
+                .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                .fetchInto(EpSystemMenuPo.class);
+    }
+
+    public List<SystemMenuBo> getAllMenu(Long parentId) {
         return dslContext.selectFrom(EP_SYSTEM_MENU)
                 .where(EP_SYSTEM_MENU.PARENT_ID.equal(parentId))
                 .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
-                .fetchInto(SystemMenuDto.class);
+                .fetchInto(SystemMenuBo.class);
     }
 }
 

@@ -1,6 +1,7 @@
 package com.ep.backend;
 
 import com.ep.backend.config.SecurityConfig;
+import com.ep.backend.config.ThymeleafConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,6 +27,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //        JsonConfig.class,
 //        // swagger
 //        Swagger2Config.class
+        ThymeleafConfig.class
 })
 @ComponentScan(basePackages = {"com.ep"})
 @EnableScheduling

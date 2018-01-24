@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
-import com.ep.domain.pojo.dto.SystemMenuDto;
+import com.ep.common.tool.DateTools;
+import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.repository.SystemMenuRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,24 @@ public class SystemMenuService {
 
     }
 
+    public List<EpSystemMenuPo> getAll() {
+        return systemMenuRepository.getAll();
+    }
 
-    public List<SystemMenuDto> getAllMenu() {
-        List<SystemMenuDto> list = systemMenuRepository.getAllMenu(0L);
+    public List<SystemMenuBo> getLeftMenu() {
+        List<SystemMenuBo> list = systemMenuRepository.getAllMenu(1L);
         list.forEach(p -> {
             p.setChildList(systemMenuRepository.getAllMenu(p.getId()));
         });
         return list;
     }
 
+    public EpSystemMenuPo insert(EpSystemMenuPo po) {
+        return systemMenuRepository.create(po);
+    }
+
+    public void update(EpSystemMenuPo po) {
+        po.setUpdateAt(DateTools.getCurrentDateTime());
+        systemMenuRepository.update(po);
+    }
 }

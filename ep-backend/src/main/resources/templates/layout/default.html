@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+>
 <head th:replace="~{fragments/header :: common_header}">
 
 </head>
@@ -48,8 +48,8 @@
 
 
                 </li>
-
-                <li th:each="item:${@systemMenuService.getAllMenu()}">
+                <!--左侧菜单-->
+                <li th:each="item:${@systemMenuService.getLeftMenu()}">
                     <a href="javascript:void(0)">
                         <i class="fa fa fa-bar-chart-o"></i>
                         <span class="nav-label" th:text="${item.menuName}"></span>
@@ -57,7 +57,8 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li th:each="child:${item.childList}">
-                            <a class="J_menuItem" href="javascript:void(0)" th:text="${child.menuName}"></a>
+                            <a class="J_menuItem" th:href="'/auth'+${child.href}" th:value="${child.href}"
+                               th:text="${child.menuName}"></a>
                         </li>
 
                     </ul>
@@ -175,7 +176,7 @@
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
+                    <a href="javascript:;" class="active J_menuTab">首页</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -197,11 +198,15 @@
             <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <!--<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="@{../layout/index_v148b2.html?v=4.0}" frameborder="0" data-id="index_v1.html" seamless></iframe>-->
-            <div class="row" layout:fragment="main-content">
-
-            </div>
+            <iframe id="mainContentIframe" class="J_iframe" name="iframe0" width="100%" height="100%" src=""
+                    frameborder="0" data-id="" seamless></iframe>
         </div>
+        <!--<div style="height:calc(100% - 140px);overflow-y:auto;">-->
+        <!--<div  layout:fragment="main-content">-->
+
+        <!--</div>-->
+
+        <!--</div>-->
         <div class="footer">
             <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>
             </div>
@@ -377,7 +382,7 @@
                         <div class="sidebar-message">
                             <a href="#">
                                 <div class="pull-left text-center">
-                                    <img alt="image" class="img-circle message-avatar" src="img/a8.jpg">
+                                    <img alt="image" class="img-circle message-avatar" th:src="@{/img/a8.jpg}">
                                 </div>
                                 <div class="media-body">
 
@@ -390,7 +395,7 @@
                         <div class="sidebar-message">
                             <a href="#">
                                 <div class="pull-left text-center">
-                                    <img alt="image" class="img-circle message-avatar" src="img/a7.jpg">
+                                    <img alt="image" class="img-circle message-avatar" th:src="@{/img/a7.jpg}">
                                 </div>
                                 <div class="media-body">
                                     这哥们的新视频又来了，创意杠杠滴，帅炸了！
@@ -402,7 +407,7 @@
                         <div class="sidebar-message">
                             <a href="#">
                                 <div class="pull-left text-center">
-                                    <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+                                    <img alt="image" class="img-circle message-avatar" th:src="@{/img/a3.jpg}">
 
                                     <div class="m-t-xs">
                                         <i class="fa fa-star text-warning"></i>
@@ -420,7 +425,7 @@
                         <div class="sidebar-message">
                             <a href="#">
                                 <div class="pull-left text-center">
-                                    <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                    <img alt="image" class="img-circle message-avatar" th:src="@{/img/a4.jpg}">
                                 </div>
                                 <div class="media-body">
                                     我发起了一个投票 【你认为下午大盘会翻红吗？】
@@ -630,44 +635,10 @@
 
 <script th:replace="~{fragments/scripts}">
 </script>
+<script th:inline="javascript">
 
+</script>
 </body>
-
-<!--<body>-->
-<!--<section id="container">-->
-<!--<section id="main-content">-->
-<!--<section class="wrapper">-->
-<!--<div class="row">-->
-<!--<div class="col-lg-12">-->
-<!--&lt;!&ndash;breadcrumbs start &ndash;&gt;-->
-<!--<ul class="breadcrumb">-->
-<!--<li>-->
-<!--<a href="/index"><i class="fa fa-home"></i>主页</a>-->
-<!--<span></span>-->
-<!--</li>-->
-<!--&lt;!&ndash;<li><a href="#">Library</a></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="active">Data11</li>&ndash;&gt;-->
-<!--</ul>-->
-<!--&lt;!&ndash;breadcrumbs end &ndash;&gt;-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="row" layout:fragment="main-content">-->
-
-<!--</div>-->
-<!--</section>-->
-<!--</section>-->
-<!--</section>-->
-
-<!--&lt;!&ndash;footer start&ndash;&gt;-->
-<!--<footer th:replace="~{fragments/footer :: footer}">-->
-
-<!--</footer>-->
-
-<!--<script th:replace="~{fragments/scripts}">-->
-<!--</script>-->
-
-
-<!--</body>-->
 
 </html>
 

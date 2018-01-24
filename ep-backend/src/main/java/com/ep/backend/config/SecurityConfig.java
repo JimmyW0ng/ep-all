@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.headers().frameOptions().sameOrigin();//该页面可以在相同域名页面的 frame 中展示
         httpSecurity
                 // 不需要csrf
                 .csrf().disable()
