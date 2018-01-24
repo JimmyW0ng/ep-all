@@ -1,2 +1,4 @@
-http://wiki.jikexueyuan.com/project/spring-security/  Spring Security
-部署机器teamview密码：wqu299
+# Spring Security
+http://wiki.jikexueyuan.com/project/spring-security/
+# thymeleaf spring-data 分页组件
+https://github.com/jpenren/thymeleaf-spring-data-dialect
