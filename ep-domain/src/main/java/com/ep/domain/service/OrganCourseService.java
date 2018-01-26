@@ -1,5 +1,6 @@
 package com.ep.domain.service;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -14,6 +15,8 @@ import com.ep.domain.repository.OrganCourseRepository;
 import com.ep.domain.repository.OrganRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -64,7 +67,6 @@ public class OrganCourseService {
         EpOrganPo organPo = organRepository.getById(ognCourseBo.getOgnId());
         ognCourseBo.setOrganName(organPo.getOrganName());
         ognCourseBo.setOrganPhone(organPo.getOrganPhone());
-        //
         // 封装返回dto
         OrganCourseDto courseDto = new OrganCourseDto();
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();
@@ -72,4 +74,23 @@ public class OrganCourseService {
         return resultDo;
     }
 
+    /**
+     * 查询机构课程列表-分页
+     *
+     * @param pageable
+     * @param ognId
+     * @return
+     */
+    public Page<OrganCourseBo> queryCourseByOgnIdForPage(Pageable pageable, Long ognId) {
+        Page<OrganCourseBo> ognCourses = organCourseRepository.queryCourseByOgnIdForPage(pageable, ognId);
+        if (CollectionsTools.isNotEmpty(ognCourses.getContent())) {
+            for (OrganCourseBo courseBo : ognCourses.getContent()) {
+                Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseBo.getId());
+                if (optional.isPresent()) {
+                    courseBo.setMainPicUrl(optional.get().getFileUrl());
+                }
+            }
+        }
+        return ognCourses;
+    }
 }

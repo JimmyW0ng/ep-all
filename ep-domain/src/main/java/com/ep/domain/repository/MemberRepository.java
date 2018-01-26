@@ -70,12 +70,13 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
      *
      * @param id
      */
-    public void changeTypeToOrganAccount(Long id) {
-        dslContext.update(EP_MEMBER)
+    public int changeTypeToOrganAccount(Long id) {
+        return dslContext.update(EP_MEMBER)
                 .set(EP_MEMBER.TYPE, EpMemberType.organ_account)
                 .where(EP_MEMBER.ID.eq(id))
                 .and(EP_MEMBER.TYPE.eq(EpMemberType.member))
-                .and(EP_MEMBER.DEL_FLAG.eq(false));
+                .and(EP_MEMBER.DEL_FLAG.eq(false))
+                .execute();
 
     }
 

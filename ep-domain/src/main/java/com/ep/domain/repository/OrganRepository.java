@@ -86,11 +86,20 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
         return Optional.ofNullable(ognPo);
     }
 
+    /**
+     * 分页查询机构列表
+     *
+     * @param pageable
+     * @return
+     */
     public Page<OrganBo> queryOgnPage(Pageable pageable) {
         long count = dslContext.selectCount().from(EP_ORGAN)
                 .where(EP_ORGAN.STATUS.eq(EpOrganStatus.normal))
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
+        if (count == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, count);
+        }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN.fields());
         fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.ID).as("catalogIds"));
         fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.LABEL).as("catalogLabels"));

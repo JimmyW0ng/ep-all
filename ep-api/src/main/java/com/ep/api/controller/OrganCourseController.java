@@ -1,12 +1,16 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.service.OrganCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +29,15 @@ public class OrganCourseController extends ApiController {
 
     @Autowired
     private OrganCourseService organCourseService;
+
+    @ApiOperation(value = "课程分页列表")
+    @PostMapping("/page")
+    public ResultDo<Page<OrganCourseBo>> getCourseInfo(@PageableDefault Pageable pageable,
+                                                       @RequestParam("organId") Long ognId) {
+        Page<OrganCourseBo> data = organCourseService.queryCourseByOgnIdForPage(pageable, ognId);
+        ResultDo<Page<OrganCourseBo>> resultDo = ResultDo.build();
+        return resultDo.setResult(data);
+    }
 
     @ApiOperation(value = "课程详情")
     @PostMapping("/detail")

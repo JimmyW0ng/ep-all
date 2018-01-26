@@ -1,11 +1,9 @@
 package com.ep.domain.service;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganBo;
-import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
@@ -51,17 +49,7 @@ public class OrganService {
         }
         // 机构banner列表
         List<EpFilePo> ognBanners = fileRepository.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_BANNER, id);
-        // 机构课程列表
-        List<OrganCourseBo> ognCourses = ognCourseRepository.getDetailByOgnId(id);
-        if (CollectionsTools.isNotEmpty(ognCourses)) {
-            for (OrganCourseBo courseBo : ognCourses) {
-                Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseBo.getId());
-                if (optional.isPresent()) {
-                    courseBo.setMainPicUrl(optional.get().getFileUrl());
-                }
-            }
-        }
-        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), ognBanners, ognCourses);
+        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), ognBanners);
         return resultDo.setResult(ognInfoDto);
     }
 
