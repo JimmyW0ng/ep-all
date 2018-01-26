@@ -39,5 +39,12 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                 .fetchInto(SystemMenuBo.class);
     }
+
+    public int deleteLogical(Long id){
+        return dslContext.update(EP_SYSTEM_MENU)
+                .set(EP_SYSTEM_MENU.DEL_FLAG,true)
+                .where(EP_SYSTEM_MENU.ID.equal(id))
+                .execute();
+    }
 }
 

@@ -25,7 +25,16 @@ public class SystemRoleRepository extends AbstractCRUDRepository<EpSystemRoleRec
      */
     public EpSystemRolePo getById(Long id) {
         return dslContext.selectFrom(EP_SYSTEM_ROLE)
-                .where(EP_SYSTEM_ROLE.DEL_FLAG.equal(false)).fetchOneInto(EpSystemRolePo.class);
+                .where(EP_SYSTEM_ROLE.DEL_FLAG.equal(false))
+                .and(EP_SYSTEM_ROLE.ID.equal(id))
+                .fetchOneInto(EpSystemRolePo.class);
+    }
+
+    public int deleteLogical(Long id){
+        return dslContext.update(EP_SYSTEM_ROLE)
+                .set(EP_SYSTEM_ROLE.DEL_FLAG,true)
+                .where(EP_SYSTEM_ROLE.ID.eq(id))
+                .execute();
     }
 }
 

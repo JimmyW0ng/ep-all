@@ -24,10 +24,10 @@ public class IndexController extends BackendController {
      */
     @ApiOperation(value = "首页")
     @GetMapping("/index")
-    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String index(Model model, HttpServletRequest request) {
-        EpSystemUserPo currentUser = getCurrentUser(request).get();
-        return "index";
+//        EpSystemUserPo currentUser = getCurrentUser(request).get();
+        return "layout/default";
     }
 
 }

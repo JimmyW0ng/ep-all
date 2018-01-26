@@ -22,29 +22,34 @@
                         class="glyphicon glyphicon-plus"></i> 新增</a>
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
-                <form class="form-inline" id="query-form" role="form">
+                <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input type="text" class="form-control " name="title"
-                               placeholder="标题">
+                        <input type="text" class="form-control " name="roleName" th:value="${map.get('roleName')}"
+                               placeholder="角色名称">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="roleCode" th:value="${map['roleCode']}"
+                               placeholder="角色标识">
                     </div>
                     <div class="form-group ">
-                        <select class="form-control" name="categoryId" id="categoryId" style="width:182px;">
-                            <option value>栏目</option>
-                            <!--<option th:each="category : ${categoryMap.keySet()}"-->
-                            <!--th:value="${category}"-->
-                            <!--th:text="${categoryMap.get(category)}">-->
-                            <!--</option>-->
+                        <select class="form-control" name="target" id="target" style="width:182px;" >
+                            <option value>目标</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemRoleTarget).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,map.get('target'))}"
+                                    th:text="#{EpSystemRoleTarget.+${state.literal}}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
-                            <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
+                            <input type="text" class="form-control  startTime" name="crTimeStart" id="crTimeStart"
                                    th:placeholder="创建时间从"
-                                   th:value=" ${#request.getParameter('crStartTime')}">
+                                   >
                             <span class="input-group-addon">到</span>
-                            <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
+                            <input type="text" class="form-control  endTime" name="crTimeEnd" id="crTimeEnd"
                                    th:placeholder="到"
-                                   th:value=" ${#request.getParameter('crEndTime')}">
+                                   >
                         </div>
                     </div>
 
@@ -84,9 +89,9 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info">查看</a>
-                                <a class="btn btn-xs btn-primary">修改</a>
-                                <a class="btn btn-xs btn-danger">删除</a>
+                                <a class="btn btn-xs btn-info" th:href="@{/auth/role/view/}+${bo.id}">查看</a>
+                                <a class="btn btn-xs btn-primary" th:href="@{/auth/role/updateInit/}+${bo.id}">修改</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteRoleBox('+${bo.id}+')'">删除</a>
                             </td>
 
                         </tr>
@@ -118,7 +123,30 @@
 </div>
 <script th:replace="~{fragments/scripts}"></script>
 
-<script>
+<script th:inline="javascript">
+    function deleteRoleBox(id) {
+        parent.layer.alert('确认删除菜单', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+               delRoleDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function delRoleDo(id) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/role/delete/"+id,
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/role/index');
+                }
+            }
+        })
+        
+    }
     //    $(document).ready(
     //        function() {
     //            $(".dataTables-example").dataTable();

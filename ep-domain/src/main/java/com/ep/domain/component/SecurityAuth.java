@@ -1,6 +1,6 @@
 package com.ep.domain.component;
 
-import com.ep.domain.repository.SysRoleAuthorityRepository;
+import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +19,7 @@ import java.util.List;
 public class SecurityAuth {
 
     @Autowired
-    private SysRoleAuthorityRepository sysRoleAuthorityRepository;
+    private SystemRoleAuthorityRepository systemRoleAuthorityRepository;
 
     /**
      * 加载用户的权限
@@ -28,7 +28,7 @@ public class SecurityAuth {
      * @return
      */
     public Collection<GrantedAuthority> loadCurrentUserGrantedAuthorities(String... role) {
-        List<String> auths = sysRoleAuthorityRepository.getAuthoritesByRole(role);
+        List<String> auths = systemRoleAuthorityRepository.getAuthoritesByRole(role);
         Collection<GrantedAuthority> authorities = Lists.newArrayList();
         auths.forEach(item -> authorities.add(new SimpleGrantedAuthority(item)));
         return authorities;

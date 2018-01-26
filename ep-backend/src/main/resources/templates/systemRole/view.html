@@ -13,7 +13,7 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5 th:text="${systemRolePo.id} eq null ? '新增角色' : '修改角色'"></h5>
+            <h5 th:text="${systemRolePo.id} eq null ? '查看角色' : '查看角色'"></h5>
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="roleFrm" th:object="${systemRolePo}">
@@ -55,11 +55,11 @@
                         <ul id="treeDemo" class="ztree"></ul>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-3 col-sm-offset-2">
-                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<div class="col-sm-3 col-sm-offset-2">-->
+                        <!--<button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>-->
+                    <!--</div>-->
+                <!--</div>-->
             </form>
         </div>
     </div>
@@ -90,9 +90,9 @@
     };
     var zNodes = [
         [# th:each="menuPojo :${@systemMenuService.getAll()}"]
-            {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]]
-            },
-        [/]
+    {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]]
+    },
+    [/]
     ];
 
     $(document).ready(function () {
@@ -104,7 +104,7 @@
                 [# th:each="id :${menuIds}"]
             {id: [[${id}]], open: true},
             [/]
-            ];
+        ];
         }
         console.log(menuIds)
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
@@ -114,49 +114,49 @@
             treeObj.checkNode(node, true, false,false);
         }
     })
-    function frmSubmit() {
-        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        var nodes = treeObj.getCheckedNodes(true);
-        var authority = []
-        for (var i = 0; i < nodes.length; i++) {
-            authority.push({menuId:nodes[i].id,authority:nodes[i].authority});
-        }
-        console.log(authority)
-        if (nodes.length == 0) {
-            return;
-        }
-        console.log(nodes)
-//        if (! $("#roleFrm").valid()) {
+//    function frmSubmit() {
+//        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+//        var nodes = treeObj.getCheckedNodes(true);
+//        var authority = []
+//        for (var i = 0; i < nodes.length; i++) {
+//            authority.push({menuId:nodes[i].id,authority:nodes[i].authority});
+//        }
+//        console.log(authority)
+//        if (nodes.length == 0) {
 //            return;
 //        }
-
-        var params={
-                id: $("#id").val(),
-                roleName: $("#roleName").val(),
-                target: $("#target").val(),
-                roleCode: $("#roleCode").val(),
-                remark: $("#remark").val(),
-                systemRoleAuthorityPos: authority
-            }
-            var url;
-            if($("#id").val()){
-                url="/auth/role/update"
-            }else{
-                url="/auth/role/create"
-            }
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: JSON.stringify(params),
-            contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                if (data.success) {
-                    window.location.href = "/auth/role/index";
-                }
-            }
-        })
-
-    }
+//        console.log(nodes)
+////        if (! $("#roleFrm").valid()) {
+////            return;
+////        }
+//
+//        var params={
+//            id: $("#id").val(),
+//            roleName: $("#roleName").val(),
+//            target: $("#target").val(),
+//            roleCode: $("#roleCode").val(),
+//            remark: $("#remark").val(),
+//            systemRoleAuthorityPos: authority
+//        }
+//        var url;
+//        if($("#id").val()){
+//            url="/auth/role/update"
+//        }else{
+//            url="/auth/role/create"
+//        }
+//        $.ajax({
+//            type: "POST",
+//            url: url,
+//            data: JSON.stringify(params),
+//            contentType: "application/json;charset=utf-8",
+//            success: function (data) {
+//                if (data.success) {
+//                    window.location.href = "/auth/role/index";
+//                }
+//            }
+//        })
+//
+//    }
 </script>
 </body>
 </html>

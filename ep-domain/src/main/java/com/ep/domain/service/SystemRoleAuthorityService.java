@@ -22,4 +22,8 @@ public class SystemRoleAuthorityService {
     public void insertPos(List<EpSystemRoleAuthorityPo> pos) {
         systemRoleAuthorityRepository.insert(pos);
     }
+
+    public List<Long> getMenuIdByRole(Long roleId){
+        return systemRoleAuthorityRepository.getMenuIdByRole(roleId);
+    }
 }

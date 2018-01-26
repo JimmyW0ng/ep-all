@@ -5,6 +5,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
+import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.service.SystemMenuService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 public class SystemMenuController {
     @Autowired
     private SystemMenuService systemMenuService;
+    @Autowired
+    private SystemRoleAuthorityRepository systemRoleAuthorityRepository;
+
 
     /**
      * 菜单首页
@@ -38,12 +42,13 @@ public class SystemMenuController {
     public ResultDo<String> create(EpSystemMenuPo po) {
         ResultDo<String> resultDo = ResultDo.build();
         if (po.getId() == null) {
+            //新增菜单
             EpSystemMenuPo insertPo = systemMenuService.insert(po);
             return insertPo != null ? resultDo : ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-        EpSystemMenuPo updatePo = new EpSystemMenuPo();
+//        EpSystemMenuPo updatePo = new EpSystemMenuPo();
+        //更新菜单
         systemMenuService.update(po);
-
 
         return resultDo;
     }
@@ -65,6 +70,22 @@ public class SystemMenuController {
         resultDo.setResult(bo);
         return resultDo;
 
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResultDo delete(@RequestParam("ids[]") Long[] ids) {
+        ResultDo resultDo = ResultDo.build();
+        for(int i=0;i<ids.length;i++){
+            ResultDo res=systemMenuService.delete(ids[i]);
+            if(!res.isSuccess()){
+                resultDo.setSuccess(false);
+                resultDo.setErrorDescription(res.getErrorDescription());
+                break;
+            }
+        }
+
+        return resultDo;
     }
 
 

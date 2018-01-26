@@ -42,7 +42,7 @@
                             </button>
 
                             <button style="display: none" type="button" class="btn btn-w-m btn-danger" data-id=""
-                                    onclick="delMenuShow(this)">删除菜单
+                                    onclick="delMenuShow()">删除菜单
                             </button>
                         </p>
                     </div>
@@ -159,7 +159,6 @@
     </div>
 </div>
 <script th:replace="~{fragments/scripts}"></script>
-<!--<th:block layout:fragment="scripts">-->
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
@@ -169,9 +168,7 @@
 <script th:src="@{/js/jquery.ztree.excheck.js}"></script>
 <script th:src="@{/js/jquery.ztree.exedit.js}"></script>
 
-
 <script th:inline="javascript">
-    //
     var setting = {
         view: {
             addHoverDom: nodeBeforeAdd,
@@ -179,7 +176,9 @@
         },
 
         check: {
-            enable: true
+            enable: true,
+            chkStyle: "checkbox",//勾选 checkbox 对于父子节点的关联关系
+            chkboxType: { "Y": "s", "N": "ps" }//勾选 checkbox 对于父子节点的关联关系
         },
 //            edit: {
 //                enable: true
@@ -201,26 +200,10 @@
 
     };
     var zNodes = [
-        [
-    #
-    th:each = "menuPojo :${@systemMenuService.getAll()}"
-    ]
-    {
-        id: [[${menuPojo.id}]], pId
-    :
-        [[${menuPojo.parentId}]], name
-    :
-        [[${menuPojo.menuName}]], open
-    :
-        true
-    }
-    ,
-    [ /
-    ]
-
-
-    ]
-    ;
+        [# th:each="menuPojo :${@systemMenuService.getAll()}"]
+        {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:true},
+        [/]
+    ];
 
 
     //        var newCount = 1;
@@ -375,9 +358,42 @@
         })
     }
 
-    function delMenuShow(ele) {
+    function delMenuShow() {
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+        console.log(nodes)
+        var ids=[];
 
-        console.log($(ele).data("id"));
+        if(nodes.length==0){
+            toastr.error("请勾选需要删除的菜单")
+            return;
+        }else{
+            for(var i=0;i<nodes.length;i++){
+                ids.push(nodes[i].id)
+            }
+        }
+        parent.layer.alert('内容', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+               delMenuDo(ids);
+                parent.layer.close(index);
+            })
+
+    }
+    
+    function delMenuDo(ids) {
+        console.log(ids)
+        $.ajax({
+            type:"POST",
+            url:"/auth/menu/delete",
+            data:{ids:ids},
+            success:function (data) {
+
+            }
+        })
     }
 
     /**
@@ -387,9 +403,10 @@
         if (!$("#menuFrm").valid()) {
             return;
         }
+        var url="/auth/menu/create";
         $.ajax({
             type: "POST",
-            url: "/auth/menu/create",
+            url: url,
             data: $("#menuFrm").serialize(),
             success: function (data) {
                 if (data.success) {
