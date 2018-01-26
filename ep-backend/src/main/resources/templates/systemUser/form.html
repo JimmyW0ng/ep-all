@@ -18,11 +18,11 @@
             <h5 th:text="${systemUserPo.id} eq null ? '新增用户' : '修改用户'"></h5>
         </div>
         <div class="ibox-content">
-            <form class="form-horizontal m-t" id="userFrm">
+            <form class="form-horizontal m-t" id="userFrm" th:object="${systemUserPo}">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">手机号：</label>
                     <div class="col-sm-3">
-                        <input id="mobile" name="mobile" type="text" class="form-control" required="true"
+                        <input id="mobile" name="mobile" type="text" class="form-control" required="true" th:field="*{mobile}"
                                aria-required="true">
                     </div>
                 </div>
@@ -51,7 +51,8 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">类型：</label>
                     <div class="col-sm-3">
-                        <select id="type" name="type" class="form-control" required="true" aria-required="true" >
+                        <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">
+                            <option value="">请选择</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
                                     th:value="${state}"
                                     th:text="#{EpSystemUserType.+${state.literal}}">
@@ -70,6 +71,7 @@
                     <label class="col-sm-2 control-label">状态：</label>
                     <div class="col-sm-3">
                         <select id="status" name="status" class="form-control" required="true" aria-required="true" >
+
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"
                                     th:value="${state}"
                                     th:text="#{EpSystemUserStatus.+${state.literal}}">
@@ -120,14 +122,13 @@
 //        }
         var roles = []
         $("#role_tb_body tr").each(function () {
-            console.log($(this).html())
-            var id=$(this).find("input[name='id']").eq(0).val()
-            var roleCode=$(this).find("input[name='roleCode']").eq(0).val()
-            roles.push({id:id,roleCode:roleCode});
+            if($(this).find("input[name='id']").eq(0).is(":checked")){
+                var id=$(this).find("input[name='id']").eq(0).val()
+                var roleCode=$(this).find("input[name='roleCode']").eq(0).val()
+                roles.push({id:id,roleCode:roleCode});
+            }
         })
-//        for (var i = 0; i < nodes.length; i++) {
-//            roles.push({menuId:nodes[i].id,authority:nodes[i].authority});
-//        }
+
         var params={
             id: $("#id").val(),
             mobile: $("#mobile").val(),
@@ -150,27 +151,62 @@
         })
     }
     
+    function changeType(ele) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/user/getRoleByUserType/"+$(ele).val(),
+            success:function (data) {
+                if(data.success){
+                    var res=data.result;
+                    var htmls="";
+                    for(var i=0;i<res.length;i++){
+                        htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
+                            "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
+                            "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+
+                    }
+                    $("#role_tb_body").html(htmls)
+                }
+            }
+        })
+    }
+    
     $(function () {
         var type=$("#type").val();
-        if(type){
-            $.ajax({
-                type:"GET",
-                url:"/auth/user/getRoleByUserType/"+type,
-                success:function (data) {
-                    if(data.success){
-                        var res=data.result;
-                        var htmls="";
-                        for(var i=0;i<res.length;i++){
-                            htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
-                                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
-                                "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+        var res=[[${roleList}]];
+        var roleIds=[[${roleIds}]];
+        console.log(roleIds)
+        var htmls="";
+        for(var i=0;i<res.length;i++){
+            htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
+                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
+                "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
 
-                        }
-                        $("#role_tb_body").html(htmls)
-                    }
-                }
-            })
         }
+        $("#role_tb_body").html(htmls)
+        for(var i=0;i<roleIds.length;i++){
+            console.log($("#role_tb_body").find("input[name='id']").find("input[value="+roleIds[i]+"]"))
+        }
+
+//        if(type){
+//            $.ajax({
+//                type:"GET",
+//                url:"/auth/user/getRoleByUserType/"+type,
+//                success:function (data) {
+//                    if(data.success){
+//                        var res=data.result;
+//                        var htmls="";
+//                        for(var i=0;i<res.length;i++){
+//                            htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
+//                                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
+//                                "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+//
+//                        }
+//                        $("#role_tb_body").html(htmls)
+//                    }
+//                }
+//            })
+//        }
     })
 
 </script>

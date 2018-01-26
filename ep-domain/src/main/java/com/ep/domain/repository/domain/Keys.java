@@ -4,13 +4,72 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.*;
-import com.ep.domain.repository.domain.tables.records.*;
+import com.ep.domain.repository.domain.tables.EpConstantCatalog;
+import com.ep.domain.repository.domain.tables.EpConstantRegion;
+import com.ep.domain.repository.domain.tables.EpFile;
+import com.ep.domain.repository.domain.tables.EpMember;
+import com.ep.domain.repository.domain.tables.EpMemberChild;
+import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
+import com.ep.domain.repository.domain.tables.EpMemberChildSign;
+import com.ep.domain.repository.domain.tables.EpMemberChildTag;
+import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
+import com.ep.domain.repository.domain.tables.EpOrder;
+import com.ep.domain.repository.domain.tables.EpOrgan;
+import com.ep.domain.repository.domain.tables.EpOrganAccount;
+import com.ep.domain.repository.domain.tables.EpOrganCatalog;
+import com.ep.domain.repository.domain.tables.EpOrganClass;
+import com.ep.domain.repository.domain.tables.EpOrganClassCatelog;
+import com.ep.domain.repository.domain.tables.EpOrganClassChild;
+import com.ep.domain.repository.domain.tables.EpOrganClassComment;
+import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
+import com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment;
+import com.ep.domain.repository.domain.tables.EpOrganCourse;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
+import com.ep.domain.repository.domain.tables.EpSystemClient;
+import com.ep.domain.repository.domain.tables.EpSystemDict;
+import com.ep.domain.repository.domain.tables.EpSystemMenu;
+import com.ep.domain.repository.domain.tables.EpSystemRole;
+import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
+import com.ep.domain.repository.domain.tables.EpSystemUser;
+import com.ep.domain.repository.domain.tables.EpSystemUserRole;
+import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
+import com.ep.domain.repository.domain.tables.records.EpConstantCatalogRecord;
+import com.ep.domain.repository.domain.tables.records.EpConstantRegionRecord;
+import com.ep.domain.repository.domain.tables.records.EpFileRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildHonorRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildSignRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberRecord;
+import com.ep.domain.repository.domain.tables.records.EpMessageCaptchaRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCatalogRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassCatelogRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleCommentRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCourseTagRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCourseTeamRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemClientRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemDictRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemRoleAuthorityRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemUserRoleRecord;
+import com.ep.domain.repository.domain.tables.records.EpWechatSessionTokenRecord;
+
+import javax.annotation.Generated;
+
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
-
-import javax.annotation.Generated;
 
 
 /**

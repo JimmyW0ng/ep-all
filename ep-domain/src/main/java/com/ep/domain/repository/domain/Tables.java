@@ -4,7 +4,36 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.*;
+import com.ep.domain.repository.domain.tables.EpConstantCatalog;
+import com.ep.domain.repository.domain.tables.EpConstantRegion;
+import com.ep.domain.repository.domain.tables.EpFile;
+import com.ep.domain.repository.domain.tables.EpMember;
+import com.ep.domain.repository.domain.tables.EpMemberChild;
+import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
+import com.ep.domain.repository.domain.tables.EpMemberChildSign;
+import com.ep.domain.repository.domain.tables.EpMemberChildTag;
+import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
+import com.ep.domain.repository.domain.tables.EpOrder;
+import com.ep.domain.repository.domain.tables.EpOrgan;
+import com.ep.domain.repository.domain.tables.EpOrganAccount;
+import com.ep.domain.repository.domain.tables.EpOrganCatalog;
+import com.ep.domain.repository.domain.tables.EpOrganClass;
+import com.ep.domain.repository.domain.tables.EpOrganClassCatelog;
+import com.ep.domain.repository.domain.tables.EpOrganClassChild;
+import com.ep.domain.repository.domain.tables.EpOrganClassComment;
+import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
+import com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment;
+import com.ep.domain.repository.domain.tables.EpOrganCourse;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
+import com.ep.domain.repository.domain.tables.EpSystemClient;
+import com.ep.domain.repository.domain.tables.EpSystemDict;
+import com.ep.domain.repository.domain.tables.EpSystemMenu;
+import com.ep.domain.repository.domain.tables.EpSystemRole;
+import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
+import com.ep.domain.repository.domain.tables.EpSystemUser;
+import com.ep.domain.repository.domain.tables.EpSystemUserRole;
+import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
 
 import javax.annotation.Generated;
 

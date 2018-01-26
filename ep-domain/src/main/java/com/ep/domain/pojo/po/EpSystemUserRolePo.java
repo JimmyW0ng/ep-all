@@ -35,7 +35,7 @@ public class EpSystemUserRolePo extends AbstractBasePojo {
     private Long      id;
     private Long      userId;
     private Long      roleId;
-    private Long      roleCode;
+    private String    roleCode;
     private Timestamp createAt;
     private Timestamp updateAt;
     private Boolean   delFlag;
