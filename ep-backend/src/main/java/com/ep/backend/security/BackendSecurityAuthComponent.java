@@ -1,10 +1,12 @@
 package com.ep.backend.security;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.WebTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.SystemUserRepository;
+import com.ep.domain.repository.SystemUserRoleRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description: 鉴权组件（Spring Security）
@@ -27,6 +31,8 @@ public class BackendSecurityAuthComponent {
 
     @Autowired
     private SystemUserRepository systemUserRepository;
+    @Autowired
+    private SystemUserRoleRepository systemUserRoleRepository;
 
     /**
      * 登录校验
@@ -64,7 +70,13 @@ public class BackendSecurityAuthComponent {
         } else if (!systemUserPo.getPassword().equals(pwdEncode)) {
             throw new BadCredentialsException("密码错误！");
         }
-        //TODO 定位角色
-        return new String[]{"admin_all"};
+        //定位角色
+        List<String> roles = systemUserRoleRepository.getRoleCodesByUserId(systemUserPo.getId());
+        if(CollectionsTools.isNotEmpty(roles)){
+            return (String[])roles.toArray();
+        }else{
+            return new String[]{};
+        }
+
     }
 }

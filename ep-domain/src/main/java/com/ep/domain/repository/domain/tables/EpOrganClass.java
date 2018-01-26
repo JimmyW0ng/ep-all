@@ -7,14 +7,21 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
-import org.jooq.*;
-import org.jooq.impl.TableImpl;
 
-import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Schema;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -30,7 +37,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = 1150442029;
+    private static final long serialVersionUID = 1810528877;
 
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
@@ -104,6 +111,11 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The column <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
     public final TableField<EpOrganClassRecord, Integer> COURSE_NUM = createField("course_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.INTEGER)), this, "总计课时");
+
+    /**
+     * The column <code>ep.ep_organ_class.sort</code>. 排序
+     */
+    public final TableField<EpOrganClassRecord, Long> SORT = createField("sort", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "排序");
 
     /**
      * The column <code>ep.ep_organ_class.remark</code>. 备注信息

@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemUserRole extends TableImpl<EpSystemUserRoleRecord> {
 
-    private static final long serialVersionUID = -469498147;
+    private static final long serialVersionUID = -754597674;
 
     /**
      * The reference instance of <code>ep.ep_system_user_role</code>
@@ -69,7 +69,7 @@ public class EpSystemUserRole extends TableImpl<EpSystemUserRoleRecord> {
     /**
      * The column <code>ep.ep_system_user_role.role_code</code>. 角色code
      */
-    public final TableField<EpSystemUserRoleRecord, Long> ROLE_CODE = createField("role_code", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "角色code");
+    public final TableField<EpSystemUserRoleRecord, String> ROLE_CODE = createField("role_code", org.jooq.impl.SQLDataType.VARCHAR.length(50).nullable(false), this, "角色code");
 
     /**
      * The column <code>ep.ep_system_user_role.create_at</code>. 创建时间

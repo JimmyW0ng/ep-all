@@ -7,15 +7,17 @@ package com.ep.domain.repository.domain.tables.records;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.repository.domain.tables.EpOrganCourse;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import javax.annotation.Generated;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record21;
 import org.jooq.Row21;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import javax.annotation.Generated;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 
 /**
@@ -274,42 +276,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Create a detached, initialised EpOrganCourseRecord
-     */
-    public EpOrganCourseRecord(Long id, Long ognId, EpOrganCourseCourseType courseType, Long courseCatalogId, String courseName, String courseIntroduce, String courseContent, String courseNote, BigDecimal prizeMin, String courseAddress, String addressLng, String addressLat, EpOrganCourseCourseStatus courseStatus, Timestamp onlineTime, Timestamp enterTimeStart, Timestamp enterTimeEnd, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpOrganCourse.EP_ORGAN_COURSE);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, courseType);
-        set(3, courseCatalogId);
-        set(4, courseName);
-        set(5, courseIntroduce);
-        set(6, courseContent);
-        set(7, courseNote);
-        set(8, prizeMin);
-        set(9, courseAddress);
-        set(10, addressLng);
-        set(11, addressLat);
-        set(12, courseStatus);
-        set(13, onlineTime);
-        set(14, enterTimeStart);
-        set(15, enterTimeEnd);
-        set(16, remark);
-        set(17, createAt);
-        set(18, updateAt);
-        set(19, delFlag);
-        set(20, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course.remark</code>. 备注信息
-     */
-    public String getRemark() {
-        return (String) get(16);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_course.remark</code>. 备注信息
      */
     public EpOrganCourseRecord setRemark(String value) {
@@ -318,10 +284,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_course.remark</code>. 备注信息
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(17);
+    public String getRemark() {
+        return (String) get(16);
     }
 
     /**
@@ -333,10 +299,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_course.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(18);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(17);
     }
 
     /**
@@ -348,10 +314,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ_course.update_at</code>. 更新时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(19);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(18);
     }
 
     /**
@@ -359,6 +325,21 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
      */
     public EpOrganCourseRecord setDelFlag(Boolean value) {
         set(19, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(19);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course.version</code>.
+     */
+    public EpOrganCourseRecord setVersion(Long value) {
+        set(20, value);
         return this;
     }
 
@@ -386,19 +367,19 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>ep.ep_organ_course.version</code>.
+     * {@inheritDoc}
      */
-    public EpOrganCourseRecord setVersion(Long value) {
-        set(20, value);
-        return this;
+    @Override
+    public Row21<Long, Long, EpOrganCourseCourseType, Long, String, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
+        return (Row21) super.fieldsRow();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row21<Long, Long, EpOrganCourseCourseType, Long, String, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
-        return (Row21) super.fieldsRow();
+    public Row21<Long, Long, EpOrganCourseCourseType, Long, String, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
+        return (Row21) super.valuesRow();
     }
 
     /**
@@ -533,14 +514,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
      * {@inheritDoc}
      */
     @Override
-    public Row21<Long, Long, EpOrganCourseCourseType, Long, String, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
-        return (Row21) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<String> field17() {
         return EpOrganCourse.EP_ORGAN_COURSE.REMARK;
     }
@@ -567,6 +540,14 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     @Override
     public Field<Boolean> field20() {
         return EpOrganCourse.EP_ORGAN_COURSE.DEL_FLAG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field21() {
+        return EpOrganCourse.EP_ORGAN_COURSE.VERSION;
     }
 
     /**
@@ -701,14 +682,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field21() {
-        return EpOrganCourse.EP_ORGAN_COURSE.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String value17() {
         return getRemark();
     }
@@ -735,6 +708,14 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     @Override
     public Boolean value20() {
         return getDelFlag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value21() {
+        return getVersion();
     }
 
     /**
@@ -885,14 +866,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
      * {@inheritDoc}
      */
     @Override
-    public Long value21() {
-        return getVersion();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpOrganCourseRecord value17(String value) {
         setRemark(value);
         return this;
@@ -934,17 +907,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganCourseRecord
-     */
-    public EpOrganCourseRecord() {
-        super(EpOrganCourse.EP_ORGAN_COURSE);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -972,5 +934,45 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
         value20(value20);
         value21(value21);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpOrganCourseRecord
+     */
+    public EpOrganCourseRecord() {
+        super(EpOrganCourse.EP_ORGAN_COURSE);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganCourseRecord
+     */
+    public EpOrganCourseRecord(Long id, Long ognId, EpOrganCourseCourseType courseType, Long courseCatalogId, String courseName, String courseIntroduce, String courseContent, String courseNote, BigDecimal prizeMin, String courseAddress, String addressLng, String addressLat, EpOrganCourseCourseStatus courseStatus, Timestamp onlineTime, Timestamp enterTimeStart, Timestamp enterTimeEnd, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpOrganCourse.EP_ORGAN_COURSE);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, courseType);
+        set(3, courseCatalogId);
+        set(4, courseName);
+        set(5, courseIntroduce);
+        set(6, courseContent);
+        set(7, courseNote);
+        set(8, prizeMin);
+        set(9, courseAddress);
+        set(10, addressLng);
+        set(11, addressLat);
+        set(12, courseStatus);
+        set(13, onlineTime);
+        set(14, enterTimeStart);
+        set(15, enterTimeEnd);
+        set(16, remark);
+        set(17, createAt);
+        set(18, updateAt);
+        set(19, delFlag);
+        set(20, version);
     }
 }

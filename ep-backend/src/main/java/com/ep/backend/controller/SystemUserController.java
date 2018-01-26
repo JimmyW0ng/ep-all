@@ -1,6 +1,9 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.BeanTools;
+import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemRoleBo;
 import com.ep.domain.pojo.bo.SystemUserBo;
@@ -8,6 +11,7 @@ import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.service.SystemRoleService;
+import com.ep.domain.service.SystemUserRoleService;
 import com.ep.domain.service.SystemUserService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -15,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +29,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.GeneralSecurityException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +42,16 @@ import static com.ep.domain.repository.domain.Ep.EP;
 @RequestMapping("/auth/user")
 @Controller
 @Api(value = "后管用户")
-public class SystemUserController {
+public class SystemUserController extends BackendController {
 
     @Autowired
     private SystemUserService systemUserService;
     @Autowired
     private SystemRoleService systemRoleService;
+    @Autowired
+    private SystemUserRoleService systemUserRoleService;
+    @Value("${password.salt.key}")
+    private String passwordSaltKey;
 
     /**
      * 列表
@@ -106,6 +116,24 @@ public class SystemUserController {
     }
 
     /**
+     * 修改用户初始化
+     *
+     * @return
+     */
+    @ApiOperation(value = "修改用户初始化")
+    @GetMapping("/updateInit/{id}")
+//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    public String updateInit(Model model,@PathVariable("id") Long id) {
+        EpSystemUserPo systemUserPo = systemUserService.getById(id);
+        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
+        List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
+        model.addAttribute("systemUserPo", systemUserPo);
+        model.addAttribute("roleList", lists);
+        model.addAttribute("roleIds", roleIds);
+        return "/systemUser/form";
+    }
+
+    /**
      * 新增用户
      *
      * @return
@@ -115,9 +143,20 @@ public class SystemUserController {
     @ResponseBody
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public ResultDo create(HttpServletRequest request,
-                         @RequestBody SystemUserBo bo
-        ) {
-        ResultDo resultDo= ResultDo.build();
+                           @RequestBody SystemUserBo bo
+    ) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        ResultDo resultDo = ResultDo.build();
+        EpSystemUserPo epSystemUserPo = new EpSystemUserPo();
+        BeanTools.copyPropertiesIgnoreNull(bo, epSystemUserPo);
+        epSystemUserPo.setSalt(StringTools.generateShortUrl(epSystemUserPo.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
+        try {
+            epSystemUserPo.setPassword(CryptTools.aesEncrypt(epSystemUserPo.getPassword(), epSystemUserPo.getSalt()));
+            systemUserService.createUser(epSystemUserPo,bo.getSystemRolePos());
+        } catch (Exception e) {
+            resultDo.setSuccess(false);
+            return resultDo;
+        }
 
         return resultDo;
     }
@@ -137,6 +176,11 @@ public class SystemUserController {
         return "/systemUser/view";
     }
 
+    /**
+     * 根据用户类型获得角色列表
+     * @param type
+     * @return
+     */
     @GetMapping("/getRoleByUserType/{type}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     @ResponseBody
