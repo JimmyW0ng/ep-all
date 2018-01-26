@@ -6,6 +6,7 @@ package com.ep.domain.pojo.po;
 
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
+import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,8 @@ public class EpSystemUserPo extends AbstractBasePojo {
     private String password;
     private String role;
     private String email;
+    private EpSystemUserType type;
+    private Long organId;
     private EpSystemUserStatus status;
     private Timestamp createAt;
     private Timestamp updateAt;

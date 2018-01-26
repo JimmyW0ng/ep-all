@@ -31,16 +31,16 @@
                         <!--<input type="text" class="form-control " name="roleCode" th:value="${map['roleCode']}"-->
                                <!--placeholder="角色标识">-->
                     <!--</div>-->
-                    <!--<div class="form-group ">-->
-                        <!--<select class="form-control" name="target" id="target" style="width:182px;" >-->
-                            <!--<option value>目标</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemRoleTarget).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:selected="${#stringTools.equals(state,map.get('target'))}"-->
-                                    <!--th:text="#{EpSystemRoleTarget.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
+                    <div class="form-group ">
+                        <select class="form-control" name="type" id="type" style="width:182px;" >
+                            <option value>类型</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,map.get('type'))}"
+                                    th:text="#{EpSystemUserType.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crTimeStart" id="crTimeStart"
@@ -95,7 +95,11 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td>
-                             </td>
+                                <a class="btn btn-xs btn-info" th:href="@{/auth/user/view/}+${bo.id}">查看</a>
+                                <a class="btn btn-xs btn-primary" th:href="@{/auth/user/updateInit/}+${bo.id}">修改</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteUserBox('+${bo.id}+')'">删除</a>
+
+                            </td>
 
                         </tr>
                         </tbody>

@@ -12,58 +12,98 @@
     </th:block>
 </header>
 <body>
-<div>
-    <div class="col-sm-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>简单示例</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="form_basic.html#">选项1</a>
-                        </li>
-                        <li><a href="form_basic.html#">选项2</a>
-                        </li>
-                    </ul>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 th:text="${systemUserPo.id} eq null ? '新增用户' : '修改用户'"></h5>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="userFrm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">手机号：</label>
+                    <div class="col-sm-3">
+                        <input id="mobile" name="mobile" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
                 </div>
-            </div>
-            <div class="ibox-content">
-                <form class="form-horizontal m-t" id="commentForm">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">姓名：</label>
-                        <div class="col-sm-8">
-                            <input id="userName" name="userName" type="text" class="form-control" required="true"
-                                   aria-required="true">
-                        </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">用户名：</label>
+                    <div class="col-sm-3">
+                        <input id="userName" name="userName" type="text" class="form-control" required="true"
+                               aria-required="true">
                     </div>
-                    <!--<div class="form-group">-->
-                    <!--<label class="col-sm-3 control-label">E-mail：</label>-->
-                    <!--<div class="col-sm-8">-->
-                    <!--<input id="cemail" type="email" class="form-control" name="email" required="" aria-required="true">-->
-                    <!--</div>-->
-                    <!--</div>-->
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">密码：</label>
+                    <div class="col-sm-3">
+                        <input id="password" name="password" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
 
-                    <!--<div class="form-group">-->
-                    <!--<label class="col-sm-3 control-label">说明：</label>-->
-                    <!--<div class="col-sm-8">-->
-                    <!--<textarea id="ccomment" name="comment" class="form-control" required="" aria-required="true"></textarea>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-3">
-                            <button class="btn btn-primary" type="button" onclick="createUserDo()">提交</button>
-                        </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">邮箱：</label>
+                    <div class="col-sm-3">
+                        <input id="email" name="email" type="text" class="form-control" required="true"
+                               aria-required="true">
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">类型：</label>
+                    <div class="col-sm-3">
+                        <select id="type" name="type" class="form-control" required="true" aria-required="true" >
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpSystemUserType.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商户id：</label>
+                    <div class="col-sm-3">
+                        <input id="organId" name="organId" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态：</label>
+                    <div class="col-sm-3">
+                        <select id="status" name="status" class="form-control" required="true" aria-required="true" >
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpSystemUserStatus.+${state.literal}}">
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色：</label>
+                    <div class="col-sm-4">
+                        <table class="table table-striped table-hover table-bordered dataTable" id="editable"
+                               aria-describedby="editable_info">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>角色</th>
+
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody id="role_tb_body">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                        <button class="btn btn-primary" type="button" onclick="userFrmSubmit()">提交</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -73,36 +113,65 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
-    function createUserDo() {
-        if (!$("#commentForm").valid()) {
-            console.log("valid fail")
-            return;
+    function userFrmSubmit() {
+//        if (!$("#userFrm").valid()) {
+//            console.log("valid fail")
+//            return;
+//        }
+        var roles = []
+        $("#role_tb_body tr").each(function () {
+            console.log($(this).html())
+            var id=$(this).find("input[name='id']").eq(0).val()
+            var roleCode=$(this).find("input[name='roleCode']").eq(0).val()
+            roles.push({id:id,roleCode:roleCode});
+        })
+//        for (var i = 0; i < nodes.length; i++) {
+//            roles.push({menuId:nodes[i].id,authority:nodes[i].authority});
+//        }
+        var params={
+            id: $("#id").val(),
+            mobile: $("#mobile").val(),
+            userName: $("#userName").val(),
+            password: $("#password").val(),
+            type: $("#type").val(),
+            status: $("#status").val(),
+            remark: $("#remark").val(),
+            systemRolePos: roles
         }
-        alert(0)
         $.ajax({
             type: 'POST',
             url: '/auth/user/create',
-            data: $("#commentForm").serialize(),
+            data:JSON.stringify(params),
+            contentType: "application/json;charset=utf-8",
             success: function (data) {
 
             }
 
         })
     }
-    $(document).ready(function () {
-//        $("#commentForm").validate({
-//            rules: {
-//                userName: {
-//                    require: true,
-//                },
-//            },
-//            messages: {
-//                userName : {
-//                    required : "请输入用户名",
-//                },
-//            }
-//        });
-    });
+    
+    $(function () {
+        var type=$("#type").val();
+        if(type){
+            $.ajax({
+                type:"GET",
+                url:"/auth/user/getRoleByUserType/"+type,
+                success:function (data) {
+                    if(data.success){
+                        var res=data.result;
+                        var htmls="";
+                        for(var i=0;i<res.length;i++){
+                            htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
+                                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
+                                "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+
+                        }
+                        $("#role_tb_body").html(htmls)
+                    }
+                }
+            })
+        }
+    })
 
 </script>
 </body>

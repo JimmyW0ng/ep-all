@@ -1,5 +1,6 @@
 package com.ep.domain.pojo.dto;
 
+import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;

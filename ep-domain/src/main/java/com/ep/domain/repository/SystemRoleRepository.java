@@ -1,10 +1,14 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.pojo.po.EpSystemRolePo;
+import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
+import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_ROLE;
 
@@ -35,6 +39,13 @@ public class SystemRoleRepository extends AbstractCRUDRepository<EpSystemRoleRec
                 .set(EP_SYSTEM_ROLE.DEL_FLAG,true)
                 .where(EP_SYSTEM_ROLE.ID.eq(id))
                 .execute();
+    }
+
+    public List<EpSystemRolePo> getAllRoleByTarget(EpSystemRoleTarget target){
+        return dslContext.selectFrom(EP_SYSTEM_ROLE)
+                    .where(EP_SYSTEM_ROLE.TARGET.eq(target))
+                .and(EP_SYSTEM_ROLE.DEL_FLAG.eq(false))
+                .fetchInto(EpSystemRolePo.class);
     }
 }
 

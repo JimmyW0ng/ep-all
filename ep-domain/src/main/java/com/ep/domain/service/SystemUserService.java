@@ -22,10 +22,10 @@ public class SystemUserService {
     @Autowired
     private SystemUserRepository systemUserRepository;
 
-//    public EpSystemMenuPo getById(Long id) {
-//        return systemMenuRepository.findById(id);
-//
-//    }
+    public EpSystemUserPo getById(Long id) {
+        return systemUserRepository.getById(id);
+
+    }
 
     public Page<EpSystemUserPo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return systemUserRepository.findByPageable(pageable, condition);

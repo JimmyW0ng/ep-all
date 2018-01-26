@@ -26,7 +26,8 @@ public class IndexController extends BackendController {
     @GetMapping("/index")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String index(Model model, HttpServletRequest request) {
-//        EpSystemUserPo currentUser = getCurrentUser(request).get();
+        EpSystemUserPo currentUser = getCurrentUser(request).get();
+        model.addAttribute("currentUser",currentUser);
         return "layout/default";
     }
 

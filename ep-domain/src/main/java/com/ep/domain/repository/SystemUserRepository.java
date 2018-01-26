@@ -17,6 +17,13 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
         super(dslContext, EP_SYSTEM_USER, EP_SYSTEM_USER.ID, EpSystemUserPo.class);
     }
 
+    public EpSystemUserPo getById(Long id){
+        return dslContext.selectFrom(EP_SYSTEM_USER)
+                .where(EP_SYSTEM_USER.ID.equal(id))
+                .and(EP_SYSTEM_USER.DEL_FLAG.equal(false))
+                .fetchOneInto(EpSystemUserPo.class);
+    }
+
     /**
      * 根据手机号获取用户
      *

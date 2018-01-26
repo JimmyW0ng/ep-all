@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+    <header>
+        <th:block layout:fragment="links">
+        </th:block>
+
+    </header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 th:text="${systemUserPo.id} eq null ? '查看用户' : '查看用户'"></h5>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="userFrm" th:object="${systemUserPo}">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">手机号：</label>
+                    <div class="col-sm-3">
+                        <input id="mobile" name="mobile" type="text" class="form-control" required="true" th:field="*{mobile}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">用户名：</label>
+                    <div class="col-sm-3">
+                        <input id="userName" name="userName" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">密码：</label>
+                    <div class="col-sm-3">
+                        <input id="password" name="password" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色：</label>
+                    <div class="col-sm-3">
+                        <input id="role" name="role" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">邮箱：</label>
+                    <div class="col-sm-3">
+                        <input id="email" name="email" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">类型：</label>
+                    <div class="col-sm-3">
+                        <input id="type" name="type" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商户id：</label>
+                    <div class="col-sm-3">
+                        <input id="organId" name="organId" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态：</label>
+                    <div class="col-sm-3">
+                        <select id="status" name="status" class="form-control" required="true" aria-required="true" >
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpSystemUserStatus.+${state.literal}}">
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.excheck.js}"></script>
+<script th:src="@{/js/jquery.ztree.exedit.js}"></script>
+<script th:inline="javascript">
+    var setting = {
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {}
+
+
+    };
+    var zNodes = [
+        [# th:each="menuPojo :${@systemMenuService.getAll()}"]
+    {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]]
+    },
+    [/]
+    ];
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        var id= [[${systemRolePo.id}]]
+        console.log("id="+id)
+        if(id){
+            var menuIds= [
+                [# th:each="id :${menuIds}"]
+            {id: [[${id}]], open: true},
+            [/]
+        ];
+        }
+        console.log(menuIds)
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        for (var i = 0; i < menuIds.length; i++) {
+            var node = treeObj.getNodeByParam("id", menuIds[i].id, null);
+            console.log(node)
+            treeObj.checkNode(node, true, false,false);
+        }
+    })
+//    function frmSubmit() {
+//        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+//        var nodes = treeObj.getCheckedNodes(true);
+//        var authority = []
+//        for (var i = 0; i < nodes.length; i++) {
+//            authority.push({menuId:nodes[i].id,authority:nodes[i].authority});
+//        }
+//        console.log(authority)
+//        if (nodes.length == 0) {
+//            return;
+//        }
+//        console.log(nodes)
+////        if (! $("#roleFrm").valid()) {
+////            return;
+////        }
+//
+//        var params={
+//            id: $("#id").val(),
+//            roleName: $("#roleName").val(),
+//            target: $("#target").val(),
+//            roleCode: $("#roleCode").val(),
+//            remark: $("#remark").val(),
+//            systemRoleAuthorityPos: authority
+//        }
+//        var url;
+//        if($("#id").val()){
+//            url="/auth/role/update"
+//        }else{
+//            url="/auth/role/create"
+//        }
+//        $.ajax({
+//            type: "POST",
+//            url: url,
+//            data: JSON.stringify(params),
+//            contentType: "application/json;charset=utf-8",
+//            success: function (data) {
+//                if (data.success) {
+//                    window.location.href = "/auth/role/index";
+//                }
+//            }
+//        })
+//
+//    }
+</script>
+</body>
+</html>

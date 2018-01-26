@@ -4,6 +4,8 @@ import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.repository.SystemRoleRepository;
+import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
+import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -36,6 +38,17 @@ public class SystemRoleService {
 
     public Page<EpSystemRolePo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return systemRoleRepository.findByPageable(pageable, condition);
+    }
+
+    public List<EpSystemRolePo> getAllRoleByUserType(EpSystemUserType type){
+        if(type.equals(EpSystemUserType.merchant)){
+            return systemRoleRepository.getAllRoleByTarget(EpSystemRoleTarget.backend);
+        }else if(type.equals(EpSystemUserType.platform)){
+            return systemRoleRepository.getAllRoleByTarget(EpSystemRoleTarget.admin);
+
+        }else{
+            return systemRoleRepository.getAllRoleByTarget(null);
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)

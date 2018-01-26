@@ -18,6 +18,11 @@ public class BizConstant {
     public static String CURENT_USER = "CURENT_USER";
 
     /**
+     * 用户信息生成密码盐的方法generateShortUrl()的入参minlength
+     */
+    public static int PASSWORD_SALT_MINLENGTH = 4;
+
+    /**
      * 后台用户信息
      */
     public static String CURENT_BACKEND_USER = "CURENT_BACKEND_USER";
