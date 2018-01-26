@@ -4,15 +4,15 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
 
+import javax.annotation.Generated;
+
 
 /**
- * 行程状态：正常；迟到；缺席
+ * 行程状态：带开课；正常；迟到；缺席；请假
  */
 @Generated(
     value = {
@@ -24,11 +24,15 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum EpOrganClassScheduleScheduleStatus implements EnumType {
 
+    wait("wait"),
+
     normal("normal"),
 
     late("late"),
 
-    absent("absent");
+    absent("absent"),
+
+    leave("leave");
 
     private final String literal;
 

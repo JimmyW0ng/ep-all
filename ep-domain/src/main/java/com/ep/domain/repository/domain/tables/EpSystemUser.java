@@ -9,20 +9,13 @@ import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -38,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemUser extends TableImpl<EpSystemUserRecord> {
 
-    private static final long serialVersionUID = -258955642;
+    private static final long serialVersionUID = 617346966;
 
     /**
      * The reference instance of <code>ep.ep_system_user</code>
@@ -77,11 +70,6 @@ public class EpSystemUser extends TableImpl<EpSystemUserRecord> {
      * The column <code>ep.ep_system_user.password</code>. 密码
      */
     public final TableField<EpSystemUserRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "密码");
-
-    /**
-     * The column <code>ep.ep_system_user.role</code>. 角色
-     */
-    public final TableField<EpSystemUserRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "角色");
 
     /**
      * The column <code>ep.ep_system_user.email</code>. 邮箱

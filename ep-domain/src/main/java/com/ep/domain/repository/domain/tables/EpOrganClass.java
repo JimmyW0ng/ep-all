@@ -7,24 +7,18 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
-
 
 /**
- * 机构课程分班表
+ * 机构课程班次表
  */
 @Generated(
     value = {
@@ -36,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = 2070239393;
+    private static final long serialVersionUID = 1150442029;
 
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
@@ -57,34 +51,64 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
     public final TableField<EpOrganClassRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
 
     /**
-     * The column <code>ep.ep_organ_class.ogn_id</code>. 机构id
+     * The column <code>ep.ep_organ_class.ogn_id</code>. 机构ID
      */
-    public final TableField<EpOrganClassRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+    public final TableField<EpOrganClassRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构ID");
 
     /**
-     * The column <code>ep.ep_organ_class.course_id</code>. 课程id
+     * The column <code>ep.ep_organ_class.course_id</code>. 课程ID
      */
-    public final TableField<EpOrganClassRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
+    public final TableField<EpOrganClassRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程ID");
 
     /**
-     * The column <code>ep.ep_organ_class.sku_id</code>. sku.id
+     * The column <code>ep.ep_organ_class.class_name</code>. sku名称
      */
-    public final TableField<EpOrganClassRecord, Long> SKU_ID = createField("sku_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "sku.id");
+    public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "sku名称");
 
     /**
-     * The column <code>ep.ep_organ_class.class_name</code>. 班级名称
+     * The column <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
      */
-    public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "班级名称");
+    public final TableField<EpOrganClassRecord, Long> OGN_ACCOUNT_ID = createField("ogn_account_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程负责人账户id");
 
     /**
-     * The column <code>ep.ep_organ_class.class_desc</code>. 班级描述
+     * The column <code>ep.ep_organ_class.class_prize</code>. 价格
      */
-    public final TableField<EpOrganClassRecord, String> CLASS_DESC = createField("class_desc", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "班级描述");
+    public final TableField<EpOrganClassRecord, BigDecimal> CLASS_PRIZE = createField("class_prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false), this, "价格");
 
     /**
-     * The column <code>ep.ep_organ_class.class_leader_id</code>. 班级负责人
+     * The column <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
      */
-    public final TableField<EpOrganClassRecord, Long> CLASS_LEADER_ID = createField("class_leader_id", org.jooq.impl.SQLDataType.BIGINT, this, "班级负责人");
+    public final TableField<EpOrganClassRecord, BigDecimal> DISCOUNT_AMOUNT = createField("discount_amount", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "折扣优惠");
+
+    /**
+     * The column <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     */
+    public final TableField<EpOrganClassRecord, Boolean> ENTER_LIMIT_FLAG = createField("enter_limit_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否限制报名人数");
+
+    /**
+     * The column <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
+     */
+    public final TableField<EpOrganClassRecord, Integer> ENTER_REQUIRE_NUM = createField("enter_require_num", org.jooq.impl.SQLDataType.INTEGER, this, "要求报名人数");
+
+    /**
+     * The column <code>ep.ep_organ_class.ordered_num</code>. 下单人数
+     */
+    public final TableField<EpOrganClassRecord, Integer> ORDERED_NUM = createField("ordered_num", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "下单人数");
+
+    /**
+     * The column <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
+     */
+    public final TableField<EpOrganClassRecord, Integer> ENTERED_NUM = createField("entered_num", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "已报名成功人数");
+
+    /**
+     * The column <code>ep.ep_organ_class.course_num</code>. 总计课时
+     */
+    public final TableField<EpOrganClassRecord, Integer> COURSE_NUM = createField("course_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.INTEGER)), this, "总计课时");
+
+    /**
+     * The column <code>ep.ep_organ_class.remark</code>. 备注信息
+     */
+    public final TableField<EpOrganClassRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
 
     /**
      * The column <code>ep.ep_organ_class.create_at</code>. 创建时间
@@ -97,14 +121,9 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
     public final TableField<EpOrganClassRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
 
     /**
-     * The column <code>ep.ep_organ_class.remark</code>. 备注
+     * The column <code>ep.ep_organ_class.del_flag</code>. 删除标志
      */
-    public final TableField<EpOrganClassRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
-
-    /**
-     * The column <code>ep.ep_organ_class.del_flag</code>. 删除标记
-     */
-    public final TableField<EpOrganClassRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+    public final TableField<EpOrganClassRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
 
     /**
      * The column <code>ep.ep_organ_class.version</code>.
@@ -130,7 +149,7 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
     }
 
     private EpOrganClass(String alias, Table<EpOrganClassRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, "机构课程分班表");
+        super(alias, null, aliased, parameters, "机构课程班次表");
     }
 
     /**

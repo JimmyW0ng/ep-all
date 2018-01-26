@@ -65,6 +65,6 @@ public class BackendSecurityAuthComponent {
             throw new BadCredentialsException("密码错误！");
         }
         //TODO 定位角色
-        return new String[]{systemUserPo.getRole()};
+        return new String[]{"admin_all"};
     }
 }

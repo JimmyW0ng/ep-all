@@ -9,21 +9,14 @@ import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -39,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
 
-    private static final long serialVersionUID = -1878369252;
+    private static final long serialVersionUID = 871780671;
 
     /**
      * The reference instance of <code>ep.ep_organ_course</code>
@@ -133,11 +126,6 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      * The column <code>ep.ep_organ_course.enter_time_end</code>. 报名结束时间
      */
     public final TableField<EpOrganCourseRecord, Timestamp> ENTER_TIME_END = createField("enter_time_end", org.jooq.impl.SQLDataType.TIMESTAMP, this, "报名结束时间");
-
-    /**
-     * The column <code>ep.ep_organ_course.open_time</code>. 开班时间
-     */
-    public final TableField<EpOrganCourseRecord, Timestamp> OPEN_TIME = createField("open_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "开班时间");
 
     /**
      * The column <code>ep.ep_organ_course.remark</code>. 备注信息

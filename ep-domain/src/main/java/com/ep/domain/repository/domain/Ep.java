@@ -4,48 +4,15 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.EpConstantCatalog;
-import com.ep.domain.repository.domain.tables.EpConstantRegion;
-import com.ep.domain.repository.domain.tables.EpFile;
-import com.ep.domain.repository.domain.tables.EpMember;
-import com.ep.domain.repository.domain.tables.EpMemberChild;
-import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
-import com.ep.domain.repository.domain.tables.EpMemberChildSign;
-import com.ep.domain.repository.domain.tables.EpMemberChildTag;
-import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
-import com.ep.domain.repository.domain.tables.EpOrder;
-import com.ep.domain.repository.domain.tables.EpOrgan;
-import com.ep.domain.repository.domain.tables.EpOrganAccount;
-import com.ep.domain.repository.domain.tables.EpOrganCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClass;
-import com.ep.domain.repository.domain.tables.EpOrganClassChild;
-import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
-import com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment;
-import com.ep.domain.repository.domain.tables.EpOrganClassScheduleConfig;
-import com.ep.domain.repository.domain.tables.EpOrganCourse;
-import com.ep.domain.repository.domain.tables.EpOrganCourseComment;
-import com.ep.domain.repository.domain.tables.EpOrganCourseSku;
-import com.ep.domain.repository.domain.tables.EpOrganCourseSkuCatelog;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
-import com.ep.domain.repository.domain.tables.EpSystemClient;
-import com.ep.domain.repository.domain.tables.EpSystemDict;
-import com.ep.domain.repository.domain.tables.EpSystemMenu;
-import com.ep.domain.repository.domain.tables.EpSystemRole;
-import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
-import com.ep.domain.repository.domain.tables.EpSystemUser;
-import com.ep.domain.repository.domain.tables.EpSystemUserRole;
-import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Generated;
-
+import com.ep.domain.repository.domain.tables.*;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -61,7 +28,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 1176203408;
+    private static final long serialVersionUID = 2082222489;
 
     /**
      * The reference instance of <code>ep</code>
@@ -134,9 +101,14 @@ public class Ep extends SchemaImpl {
     public final EpOrganCatalog EP_ORGAN_CATALOG = com.ep.domain.repository.domain.tables.EpOrganCatalog.EP_ORGAN_CATALOG;
 
     /**
-     * 机构课程分班表
+     * 机构课程班次表
      */
     public final EpOrganClass EP_ORGAN_CLASS = com.ep.domain.repository.domain.tables.EpOrganClass.EP_ORGAN_CLASS;
+
+    /**
+     * 班次课程内容目录表
+     */
+    public final EpOrganClassCatelog EP_ORGAN_CLASS_CATELOG = com.ep.domain.repository.domain.tables.EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG;
 
     /**
      * 机构班级孩子表
@@ -154,11 +126,6 @@ public class Ep extends SchemaImpl {
     public final EpOrganClassScheduleComment EP_ORGAN_CLASS_SCHEDULE_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT;
 
     /**
-     * 机构班级行程配置表
-     */
-    public final EpOrganClassScheduleConfig EP_ORGAN_CLASS_SCHEDULE_CONFIG = com.ep.domain.repository.domain.tables.EpOrganClassScheduleConfig.EP_ORGAN_CLASS_SCHEDULE_CONFIG;
-
-    /**
      * 机构课程表
      */
     public final EpOrganCourse EP_ORGAN_COURSE = com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
@@ -167,16 +134,6 @@ public class Ep extends SchemaImpl {
      * 机构课程评分表
      */
     public final EpOrganCourseComment EP_ORGAN_COURSE_COMMENT = com.ep.domain.repository.domain.tables.EpOrganCourseComment.EP_ORGAN_COURSE_COMMENT;
-
-    /**
-     * 机构课程sku表
-     */
-    public final EpOrganCourseSku EP_ORGAN_COURSE_SKU = com.ep.domain.repository.domain.tables.EpOrganCourseSku.EP_ORGAN_COURSE_SKU;
-
-    /**
-     * 机构课程sku目录表
-     */
-    public final EpOrganCourseSkuCatelog EP_ORGAN_COURSE_SKU_CATELOG = com.ep.domain.repository.domain.tables.EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG;
 
     /**
      * 课程标签表
@@ -267,14 +224,12 @@ public class Ep extends SchemaImpl {
             EpOrganAccount.EP_ORGAN_ACCOUNT,
             EpOrganCatalog.EP_ORGAN_CATALOG,
             EpOrganClass.EP_ORGAN_CLASS,
+                EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG,
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
             EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE,
             EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT,
-            EpOrganClassScheduleConfig.EP_ORGAN_CLASS_SCHEDULE_CONFIG,
             EpOrganCourse.EP_ORGAN_COURSE,
             EpOrganCourseComment.EP_ORGAN_COURSE_COMMENT,
-            EpOrganCourseSku.EP_ORGAN_COURSE_SKU,
-            EpOrganCourseSkuCatelog.EP_ORGAN_COURSE_SKU_CATELOG,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,
             EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM,
             EpSystemClient.EP_SYSTEM_CLIENT,

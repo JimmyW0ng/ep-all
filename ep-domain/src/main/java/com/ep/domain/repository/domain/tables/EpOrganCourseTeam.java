@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseTeamRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseTeam extends TableImpl<EpOrganCourseTeamRecord> {
 
-    private static final long serialVersionUID = 1255349492;
+    private static final long serialVersionUID = 170947810;
 
     /**
      * The reference instance of <code>ep.ep_organ_course_team</code>
@@ -62,9 +55,9 @@ public class EpOrganCourseTeam extends TableImpl<EpOrganCourseTeamRecord> {
     public final TableField<EpOrganCourseTeamRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
 
     /**
-     * The column <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构成员id
+     * The column <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
      */
-    public final TableField<EpOrganCourseTeamRecord, Long> OGN_ACCOUNT_ID = createField("ogn_account_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构成员id");
+    public final TableField<EpOrganCourseTeamRecord, Long> OGN_ACCOUNT_ID = createField("ogn_account_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构账户id");
 
     /**
      * The column <code>ep.ep_organ_course_team.sort</code>. 排序

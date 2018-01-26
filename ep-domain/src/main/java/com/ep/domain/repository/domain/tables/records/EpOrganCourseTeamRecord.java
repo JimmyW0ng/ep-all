@@ -5,16 +5,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record9;
 import org.jooq.Row9;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -30,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTeamRecord> implements Record9<Long, Long, Long, Integer, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 907911781;
+    private static final long serialVersionUID = 1976407863;
 
     /**
      * Setter for <code>ep.ep_organ_course_team.id</code>. 主键
@@ -63,18 +61,18 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构成员id
+     * Getter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
+     */
+    public Long getOgnAccountId() {
+        return (Long) get(2);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
      */
     public EpOrganCourseTeamRecord setOgnAccountId(Long value) {
         set(2, value);
         return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构成员id
-     */
-    public Long getOgnAccountId() {
-        return (Long) get(2);
     }
 
     /**

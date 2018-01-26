@@ -40,7 +40,6 @@ public class EpOrganCoursePo extends AbstractBasePojo {
     private Timestamp onlineTime;
     private Timestamp enterTimeStart;
     private Timestamp enterTimeEnd;
-    private Timestamp openTime;
     @JsonIgnore
     private String remark;
     @JsonIgnore
