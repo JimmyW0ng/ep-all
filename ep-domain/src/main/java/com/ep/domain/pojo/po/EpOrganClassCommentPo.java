@@ -5,7 +5,7 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,27 +14,36 @@ import java.sql.Timestamp;
 
 
 /**
- * 订单表
+ * 机构课程班次评分表
  */
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class EpOrderPo extends AbstractBasePojo {
+@NoArgsConstructor
+@AllArgsConstructor
+public class EpOrganClassCommentPo extends AbstractBasePojo {
 
+    @JsonIgnore
     private Long id;
-    private Long memberId;
-    private Long childId;
+    @JsonIgnore
     private Long ognId;
+    @JsonIgnore
     private Long courseId;
+    @JsonIgnore
     private Long classId;
-    private EpOrderStatus status;
-    private Timestamp authTime;
-    private Timestamp cancelTime;
-    private Long childVersion;
+    private Byte score;
+    @JsonIgnore
+    private Long childId;
+    private String content;
+    @JsonIgnore
+    private Long orderId;
+    private Boolean chosenFlag;
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }

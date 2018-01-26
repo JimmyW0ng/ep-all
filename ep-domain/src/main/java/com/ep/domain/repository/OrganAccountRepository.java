@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE_TEAM;
 
 /**
  * @Description:机构后台账户表Repository
@@ -36,12 +37,24 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .fetchInto(EpOrganAccountPo.class);
     }
 
-//    public List<EpOrganAccountPo> getTeamIntroduceByCourseId(Long courseId) {
-//        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_ACCOUNT.fields());
-//        return dslContext.select(fieldList).from(EP_ORGAN_ACCOUNT)
-//                .
-//                .where()
-//    }
+
+    /**
+     * 获取课程班次
+     *
+     * @param courseId
+     * @return
+     */
+    public List<EpOrganAccountPo> getByCourseId(Long courseId) {
+        return dslContext.select(EP_ORGAN_ACCOUNT.fields())
+                .from(EP_ORGAN_ACCOUNT)
+                .innerJoin(EP_ORGAN_COURSE_TEAM)
+                .on(EP_ORGAN_ACCOUNT.ID.eq(EP_ORGAN_COURSE_TEAM.OGN_ACCOUNT_ID))
+                .and(EP_ORGAN_COURSE_TEAM.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_COURSE_TEAM.DEL_FLAG.eq(false))
+                .where(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_COURSE_TEAM.SORT.desc(), EP_ORGAN_COURSE_TEAM.ID.asc())
+                .fetchInto(EpOrganAccountPo.class);
+    }
 
 }
 

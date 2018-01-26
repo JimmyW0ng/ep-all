@@ -8,20 +8,13 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrder extends TableImpl<EpOrderRecord> {
 
-    private static final long serialVersionUID = 202975742;
+    private static final long serialVersionUID = 1236138361;
 
     /**
      * The reference instance of <code>ep.ep_order</code>
@@ -78,9 +71,9 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
     public final TableField<EpOrderRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
 
     /**
-     * The column <code>ep.ep_order.sku_id</code>. sku.id
+     * The column <code>ep.ep_order.class_id</code>. sku.id
      */
-    public final TableField<EpOrderRecord, Long> SKU_ID = createField("sku_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "sku.id");
+    public final TableField<EpOrderRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "sku.id");
 
     /**
      * The column <code>ep.ep_order.status</code>. 订单状态:保存；成功；拒绝；取消；

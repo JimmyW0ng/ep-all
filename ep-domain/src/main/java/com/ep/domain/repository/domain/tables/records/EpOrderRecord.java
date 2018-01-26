@@ -6,16 +6,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.EpOrder;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record15;
 import org.jooq.Row15;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -31,7 +29,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements Record15<Long, Long, Long, Long, Long, Long, EpOrderStatus, Timestamp, Timestamp, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 140035760;
+    private static final long serialVersionUID = -198451317;
 
     /**
      * Setter for <code>ep.ep_order.id</code>. 主键
@@ -109,17 +107,32 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_order.sku_id</code>. sku.id
+     * Create a detached, initialised EpOrderRecord
      */
-    public EpOrderRecord setSkuId(Long value) {
-        set(5, value);
-        return this;
+    public EpOrderRecord(Long id, Long memberId, Long childId, Long ognId, Long courseId, Long classId, EpOrderStatus status, Timestamp authTime, Timestamp cancelTime, Long childVersion, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrder.EP_ORDER);
+
+        set(0, id);
+        set(1, memberId);
+        set(2, childId);
+        set(3, ognId);
+        set(4, courseId);
+        set(5, classId);
+        set(6, status);
+        set(7, authTime);
+        set(8, cancelTime);
+        set(9, childVersion);
+        set(10, createAt);
+        set(11, updateAt);
+        set(12, remark);
+        set(13, delFlag);
+        set(14, version);
     }
 
     /**
-     * Getter for <code>ep.ep_order.sku_id</code>. sku.id
+     * Getter for <code>ep.ep_order.class_id</code>. sku.id
      */
-    public Long getSkuId() {
+    public Long getClassId() {
         return (Long) get(5);
     }
 
@@ -331,11 +344,11 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for <code>ep.ep_order.class_id</code>. sku.id
      */
-    @Override
-    public Field<Long> field6() {
-        return EpOrder.EP_ORDER.SKU_ID;
+    public EpOrderRecord setClassId(Long value) {
+        set(5, value);
+        return this;
     }
 
     /**
@@ -454,8 +467,8 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public Long value6() {
-        return getSkuId();
+    public Field<Long> field6() {
+        return EpOrder.EP_ORDER.CLASS_ID;
     }
 
     /**
@@ -579,9 +592,8 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public EpOrderRecord value6(Long value) {
-        setSkuId(value);
-        return this;
+    public Long value6() {
+        return getClassId();
     }
 
     /**
@@ -700,25 +712,11 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Create a detached, initialised EpOrderRecord
+     * {@inheritDoc}
      */
-    public EpOrderRecord(Long id, Long memberId, Long childId, Long ognId, Long courseId, Long skuId, EpOrderStatus status, Timestamp authTime, Timestamp cancelTime, Long childVersion, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrder.EP_ORDER);
-
-        set(0, id);
-        set(1, memberId);
-        set(2, childId);
-        set(3, ognId);
-        set(4, courseId);
-        set(5, skuId);
-        set(6, status);
-        set(7, authTime);
-        set(8, cancelTime);
-        set(9, childVersion);
-        set(10, createAt);
-        set(11, updateAt);
-        set(12, remark);
-        set(13, delFlag);
-        set(14, version);
+    @Override
+    public EpOrderRecord value6(Long value) {
+        setClassId(value);
+        return this;
     }
 }

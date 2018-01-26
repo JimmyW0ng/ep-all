@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = 1150442029;
+    private static final long serialVersionUID = 1810528877;
 
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
@@ -104,6 +104,11 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The column <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
     public final TableField<EpOrganClassRecord, Integer> COURSE_NUM = createField("course_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.INTEGER)), this, "总计课时");
+
+    /**
+     * The column <code>ep.ep_organ_class.sort</code>. 排序
+     */
+    public final TableField<EpOrganClassRecord, Long> SORT = createField("sort", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "排序");
 
     /**
      * The column <code>ep.ep_organ_class.remark</code>. 备注信息

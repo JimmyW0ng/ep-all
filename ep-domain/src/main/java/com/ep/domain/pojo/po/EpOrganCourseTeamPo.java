@@ -5,7 +5,6 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,23 +13,17 @@ import java.sql.Timestamp;
 
 
 /**
- * 订单表
+ * 机构课程团队信息表
  */
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class EpOrderPo extends AbstractBasePojo {
+@NoArgsConstructor
+@AllArgsConstructor
+public class EpOrganCourseTeamPo extends AbstractBasePojo {
 
     private Long id;
-    private Long memberId;
-    private Long childId;
-    private Long ognId;
     private Long courseId;
-    private Long classId;
-    private EpOrderStatus status;
-    private Timestamp authTime;
-    private Timestamp cancelTime;
-    private Long childVersion;
+    private Long ognAccountId;
+    private Long sort;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

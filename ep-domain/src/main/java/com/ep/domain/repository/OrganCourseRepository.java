@@ -48,7 +48,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .where(EP_ORGAN_COURSE.ID.eq(courseId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
-                        EpOrganCourseCourseStatus.online,
+                        EpOrganCourseCourseStatus.opening,
                         EpOrganCourseCourseStatus.offline))
                 .fetchOneInto(OrganCourseBo.class);
     }
@@ -64,7 +64,9 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
         long count = dslContext.selectCount().from(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online, EpOrganCourseCourseStatus.online))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.opening,
+                        EpOrganCourseCourseStatus.online,
+                        EpOrganCourseCourseStatus.offline))
                 .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, count);

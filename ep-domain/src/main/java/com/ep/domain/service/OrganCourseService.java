@@ -4,19 +4,21 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpOrganAccountPo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.OrganCourseRepository;
-import com.ep.domain.repository.OrganRepository;
+import com.ep.domain.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,6 +36,14 @@ public class OrganCourseService {
     private OrganRepository organRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
+    @Autowired
+    private OrganClassCommentRepository organClassCommentRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     /**
      * 前提－课程明细
@@ -55,8 +65,16 @@ public class OrganCourseService {
         EpOrganPo organPo = organRepository.getById(ognCourseBo.getOgnId());
         ognCourseBo.setOrganName(organPo.getOrganName());
         ognCourseBo.setOrganPhone(organPo.getOrganPhone());
+        // 获取班次信息
+        List<EpOrganClassPo> classes = organClassRepository.getByCourseId(courseId);
+        // 老师介绍
+        List<EpOrganAccountPo> team = organAccountRepository.getByCourseId(courseId);
+        // 评论
+        List<OrganClassCommentBo> commenets = organClassCommentRepository.getChosenByCourseId(courseId);
+        // 报名成功数
+        Long successOrders = orderRepository.getSuccessByCourseId(courseId);
         // 封装返回dto
-        OrganCourseDto courseDto = new OrganCourseDto();
+        OrganCourseDto courseDto = new OrganCourseDto(ognCourseBo, classes, team, commenets, successOrders);
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();
         resultDo.setResult(courseDto);
         return resultDo;

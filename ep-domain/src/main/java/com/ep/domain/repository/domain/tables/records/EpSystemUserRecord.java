@@ -108,6 +108,29 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Setter for <code>ep.ep_system_user.email</code>. 邮箱
+     */
+    public EpSystemUserRecord setEmail(String value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Create a detached EpSystemUserRecord
+     */
+    public EpSystemUserRecord() {
+        super(EpSystemUser.EP_SYSTEM_USER);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.type</code>. 商户；平台
+     */
+    public EpSystemUserRecord setType(EpSystemUserType value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpSystemUserRecord
      */
     public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long organId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -130,43 +153,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
-     */
-    public String getEmail() {
-        return (String) get(5);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.email</code>. 邮箱
-     */
-    public EpSystemUserRecord setEmail(String value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
-     */
-    public EpSystemUserType getType() {
-        return (EpSystemUserType) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.type</code>. 商户；平台
-     */
-    public EpSystemUserRecord setType(EpSystemUserType value) {
-        set(6, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.organ_id</code>. 商户id
-     */
-    public Long getOrganId() {
-        return (Long) get(7);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_user.organ_id</code>. 商户id
      */
     public EpSystemUserRecord setOrganId(Long value) {
@@ -175,10 +161,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
-    public EpSystemUserStatus getStatus() {
-        return (EpSystemUserStatus) get(8);
+    public String getEmail() {
+        return (String) get(5);
     }
 
     /**
@@ -190,10 +176,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public EpSystemUserType getType() {
+        return (EpSystemUserType) get(6);
     }
 
     /**
@@ -205,10 +191,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_user.organ_id</code>. 商户id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Long getOrganId() {
+        return (Long) get(7);
     }
 
     /**
@@ -220,10 +206,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
      */
-    public String getRemark() {
-        return (String) get(11);
+    public EpSystemUserStatus getStatus() {
+        return (EpSystemUserStatus) get(8);
     }
 
     /**
@@ -235,10 +221,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -247,6 +233,20 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     public EpSystemUserRecord setDelFlag(Boolean value) {
         set(12, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(11);
     }
 
     /**
@@ -273,19 +273,18 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>ep.ep_system_user.version</code>.
-     */
-    public EpSystemUserRecord setVersion(Long value) {
-        set(13, value);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public Row14<Long, Long, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
         return (Row14) super.fieldsRow();
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
 
     /**
@@ -334,14 +333,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     @Override
     public Field<String> field6() {
         return EpSystemUser.EP_SYSTEM_USER.EMAIL;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row14<Long, Long, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row14) super.valuesRow();
     }
 
     /**
@@ -401,6 +392,14 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Setter for <code>ep.ep_system_user.version</code>.
+     */
+    public EpSystemUserRecord setVersion(Long value) {
+        set(13, value);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -446,14 +445,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     @Override
     public String value6() {
         return getEmail();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field14() {
-        return EpSystemUser.EP_SYSTEM_USER.VERSION;
     }
 
     /**
@@ -516,6 +507,14 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
+    public Row14<Long, Long, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row14) super.valuesRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public EpSystemUserRecord value1(Long value) {
         setId(value);
         return this;
@@ -564,14 +563,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     public EpSystemUserRecord value6(String value) {
         setEmail(value);
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value14() {
-        return getVersion();
     }
 
     /**
@@ -646,17 +637,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemUserRecord
-     */
-    public EpSystemUserRecord() {
-        super(EpSystemUser.EP_SYSTEM_USER);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -677,5 +657,25 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         value13(value13);
         value14(value14);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field14() {
+        return EpSystemUser.EP_SYSTEM_USER.VERSION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value14() {
+        return getVersion();
     }
 }

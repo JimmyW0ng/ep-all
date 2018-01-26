@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 2082222489;
+    private static final long serialVersionUID = 1223134676;
 
     /**
      * The reference instance of <code>ep</code>
@@ -116,6 +116,11 @@ public class Ep extends SchemaImpl {
     public final EpOrganClassChild EP_ORGAN_CLASS_CHILD = com.ep.domain.repository.domain.tables.EpOrganClassChild.EP_ORGAN_CLASS_CHILD;
 
     /**
+     * 机构课程班次评分表
+     */
+    public final EpOrganClassComment EP_ORGAN_CLASS_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassComment.EP_ORGAN_CLASS_COMMENT;
+
+    /**
      * 机构行程信息表
      */
     public final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = com.ep.domain.repository.domain.tables.EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE;
@@ -129,11 +134,6 @@ public class Ep extends SchemaImpl {
      * 机构课程表
      */
     public final EpOrganCourse EP_ORGAN_COURSE = com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
-
-    /**
-     * 机构课程评分表
-     */
-    public final EpOrganCourseComment EP_ORGAN_COURSE_COMMENT = com.ep.domain.repository.domain.tables.EpOrganCourseComment.EP_ORGAN_COURSE_COMMENT;
 
     /**
      * 课程标签表
@@ -226,10 +226,10 @@ public class Ep extends SchemaImpl {
             EpOrganClass.EP_ORGAN_CLASS,
                 EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG,
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
+                EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
             EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE,
             EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT,
             EpOrganCourse.EP_ORGAN_COURSE,
-            EpOrganCourseComment.EP_ORGAN_COURSE_COMMENT,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,
             EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM,
             EpSystemClient.EP_SYSTEM_CLIENT,

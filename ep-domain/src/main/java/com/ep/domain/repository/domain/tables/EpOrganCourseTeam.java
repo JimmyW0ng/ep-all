@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseTeam extends TableImpl<EpOrganCourseTeamRecord> {
 
-    private static final long serialVersionUID = 170947810;
+    private static final long serialVersionUID = -2024624682;
 
     /**
      * The reference instance of <code>ep.ep_organ_course_team</code>
@@ -62,7 +62,7 @@ public class EpOrganCourseTeam extends TableImpl<EpOrganCourseTeamRecord> {
     /**
      * The column <code>ep.ep_organ_course_team.sort</code>. 排序
      */
-    public final TableField<EpOrganCourseTeamRecord, Integer> SORT = createField("sort", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "排序");
+    public final TableField<EpOrganCourseTeamRecord, Long> SORT = createField("sort", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "排序");
 
     /**
      * The column <code>ep.ep_organ_course_team.create_at</code>. 创建时间
