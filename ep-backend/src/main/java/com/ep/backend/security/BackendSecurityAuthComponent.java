@@ -73,7 +73,7 @@ public class BackendSecurityAuthComponent {
         //定位角色
         List<String> roles = systemUserRoleRepository.getRoleCodesByUserId(systemUserPo.getId());
         if(CollectionsTools.isNotEmpty(roles)){
-            return (String[])roles.toArray();
+            return roles.toArray(new String[0]);
         }else{
             return new String[]{};
         }

@@ -162,6 +162,34 @@ public class SystemUserController extends BackendController {
     }
 
     /**
+     * 修改用户
+     *
+     * @return
+     */
+    @ApiOperation(value = "修改用户")
+    @PostMapping("/update")
+    @ResponseBody
+//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    public ResultDo update(HttpServletRequest request,
+                           @RequestBody SystemUserBo bo
+    ) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        ResultDo resultDo = ResultDo.build();
+        EpSystemUserPo epSystemUserPo = new EpSystemUserPo();
+        BeanTools.copyPropertiesIgnoreNull(bo, epSystemUserPo);
+        epSystemUserPo.setSalt(StringTools.generateShortUrl(epSystemUserPo.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
+        try {
+            epSystemUserPo.setPassword(CryptTools.aesEncrypt(epSystemUserPo.getPassword(), epSystemUserPo.getSalt()));
+            systemUserService.createUser(epSystemUserPo,bo.getSystemRolePos());
+        } catch (Exception e) {
+            resultDo.setSuccess(false);
+            return resultDo;
+        }
+
+        return resultDo;
+    }
+
+    /**
      * 查看用户
      *
      * @return
