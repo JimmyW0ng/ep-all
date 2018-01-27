@@ -143,7 +143,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-3">
-                                    <button class="btn btn-primary" id="saveBtn" type="button" onclick="saveSubmit()">
+                                    <button class="btn btn-primary c_act u_act" id="saveBtn" type="button" onclick="saveSubmit()">
                                         保存
                                     </button>
                                 </div>
@@ -171,7 +171,6 @@
 <script th:inline="javascript">
     var setting = {
         view: {
-            addHoverDom: nodeBeforeAdd,
 
         },
 
@@ -190,11 +189,9 @@
         },
         callback: {
             beforeRemove: nodeBeforeRemove,
-//                beforeRename: nodeBeforeRename,
             beforeEditName: beforeEditName,
             onClick: zTreeOnClick,
             onDblClick: zTreeOnDbClick,
-//                onRename: zTreeOnRename
         }
 
 
@@ -205,27 +202,6 @@
         [/]
     ];
 
-
-    //        var newCount = 1;
-    function nodeBeforeAdd(treeId, treeNode) {
-//            var sObj = $("#" + treeNode.tId + "_span");
-//            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-//            var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-//                + "' title='add node' onfocus='this.blur();'></span>";
-//            sObj.after(addStr);
-//            var btn = $("#addBtn_"+treeNode.tId);
-//            if (btn) btn.bind("click", function(){
-//                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-//                zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
-//                return false;
-//            });
-    }
-
-    function nodeBeforeRename() {
-        alert(1)
-        return false
-    }
-
     function beforeEditName() {
         //获取鼠标点击的标签（单个）START
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
@@ -234,11 +210,6 @@
 
         console.log(nodes)
 
-//            $("#updateBox").show()
-//            $.ajax({
-//                type:"GET",
-//                url:"",
-//            })
         return false;
 
     }
@@ -257,9 +228,6 @@
         return false
     }
 
-    function nodeBeforeRename() {
-
-    }
 
     function zTreeOnClick() {
         if ($("#act_type").val() == 'c_act') {
@@ -268,6 +236,7 @@
             console.log(nodes[0])
             $("#parentId").val(nodes[0].id)
             $("#parentName").val(nodes[0].name)
+            $("#buttonBox").find("button").data("id", nodes[0].id).show()
         } else {
             //获取鼠标点击的标签（单个）START
             var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
@@ -280,6 +249,7 @@
     }
 
     function resetFrmField() {
+        $("#menuFrm").validate({}).resetForm()
         $("#menuBox").find("input").val("");
     }
 
@@ -326,6 +296,9 @@
         console.log($("#act_type").parent())
         $("#act_type").parent().children().hide()
         $("#act_type").parent().find("." + clazz).show()
+        if($("#saveBtn").hasClass(titleClazz)){
+            $("#saveBtn").show()
+        }
     }
     function updateMenuShow(ele) {
         resetFrmField();
@@ -372,7 +345,7 @@
                 ids.push(nodes[i].id)
             }
         }
-        parent.layer.alert('内容', {
+        parent.layer.alert('确认删除勾选菜单？', {
                 icon: 1,
                 skin: 'layer-ext-moon',
 
@@ -391,13 +364,15 @@
             url:"/auth/menu/delete",
             data:{ids:ids},
             success:function (data) {
-
+                if(data.success){
+                    toastr_success(null,'/auth/menu/index')
+                }
             }
         })
     }
 
     /**
-     * 新增菜单
+     * 新增/修改菜单
      */
     function saveSubmit() {
         if (!$("#menuFrm").valid()) {
@@ -410,8 +385,7 @@
             data: $("#menuFrm").serialize(),
             success: function (data) {
                 if (data.success) {
-                    toastr.success("操作成功")
-                    window.location = '/auth/menu/index'
+                    toastr_success(null,'/auth/menu/index')
                 }
             }
         })

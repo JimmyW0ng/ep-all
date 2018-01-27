@@ -1,10 +1,13 @@
 package com.ep.domain.service;
 
+import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.pojo.po.EpSystemUserRolePo;
 import com.ep.domain.repository.SystemUserRepository;
 import com.ep.domain.repository.SystemUserRoleRepository;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -14,10 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Description: 用户服务类
@@ -47,7 +47,7 @@ public class SystemUserService {
      * @param list
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createUser(EpSystemUserPo po, List<EpSystemRolePo> list) throws Exception {
+    public EpSystemUserPo createUser(EpSystemUserPo po, List<EpSystemRolePo> list) {
         EpSystemUserPo insertPo = systemUserRepository.insertNew(po);
         if(null!=insertPo){
             list.forEach(p->{
@@ -58,6 +58,7 @@ public class SystemUserService {
                 systemUserRoleRepository.insert(systemUserRolePo);
             });
         }
+        return insertPo;
     }
 
     /**
@@ -66,7 +67,7 @@ public class SystemUserService {
      * @param list
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateUser(EpSystemUserPo po, List<EpSystemRolePo> list) throws Exception {
+    public void updateUser(EpSystemUserPo po, List<EpSystemRolePo> list) {
         int count = systemUserRepository.updateReturnEffRowsCount(po);
         if(1==count){
             List<Long> roleOldList=systemUserRoleRepository.getRoleIdsByUserId(po.getId());
@@ -82,15 +83,32 @@ public class SystemUserService {
             diffDel.forEach(p->{
                 systemUserRoleRepository.deleteByUserIdAndRoleId(po.getId(),p);
             });
-//            list.forEach(p->{
-//                EpSystemUserRolePo systemUserRolePo = new EpSystemUserRolePo();
-//                systemUserRolePo.setUserId(insertPo.getId());
-//                systemUserRolePo.setRoleId(p.getId());
-//                systemUserRolePo.setRoleCode(p.getRoleCode());
-//                systemUserRoleRepository.insert(systemUserRolePo);
-//            });
 
+            Map map= Maps.newHashMap();
+            list.forEach(p->{
+                map.put(p.getId(),p);
+            });
+
+            List<EpSystemUserRolePo> systemUserRolePoNew= Lists.newArrayList();
+            diffAdd.forEach(p->{
+                EpSystemUserRolePo systemUserRolePoAdd=(EpSystemUserRolePo)map.get(p);
+                systemUserRolePoAdd.setUserId(po.getId());
+                systemUserRolePoNew.add(systemUserRolePoAdd);
+            });
+            //插入  roleNewSet有， roleOldSet无
+            systemUserRoleRepository.insert(systemUserRolePoNew);
         }
+    }
+
+    /**
+     * 删除用户
+     * @param userId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteUser(Long userId){
+        systemUserRoleRepository.deleteByUserId(userId);
+        return systemUserRepository.deleteLogical(userId);
     }
 
 }

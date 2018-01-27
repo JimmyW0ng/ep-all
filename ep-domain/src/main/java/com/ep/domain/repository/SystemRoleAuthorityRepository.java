@@ -56,6 +56,12 @@ public class SystemRoleAuthorityRepository extends AbstractCRUDRepository<EpSyst
                 .execute();
     }
 
+    public void deleteByMenuId(Long menuId) {
+        dslContext.delete(EP_SYSTEM_ROLE_AUTHORITY)
+                .where(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.eq(menuId))
+                .execute();
+    }
+
     public boolean isMenuUseByMenu(Long menuId) {
         return dslContext.selectCount().from(EP_SYSTEM_ROLE_AUTHORITY)
                 .where(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.eq(menuId))

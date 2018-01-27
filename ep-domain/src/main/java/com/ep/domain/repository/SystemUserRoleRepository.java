@@ -44,4 +44,15 @@ public class SystemUserRoleRepository extends AbstractCRUDRepository<EpSystemUse
                 .execute();
     }
 
+    public void deleteByUserId(Long userId){
+        dslContext.delete(EP_SYSTEM_USER_ROLE)
+                .where(EP_SYSTEM_USER_ROLE.USER_ID.eq(userId))
+                .execute();
+    }
+
+    public void deleteByRoleId(Long roleId){
+        dslContext.delete(EP_SYSTEM_USER_ROLE)
+                .where(EP_SYSTEM_USER_ROLE.ROLE_ID.eq(roleId))
+                .execute();
+    }
 }

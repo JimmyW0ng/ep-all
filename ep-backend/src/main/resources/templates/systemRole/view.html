@@ -13,7 +13,8 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5 th:text="${systemRolePo.id} eq null ? '查看角色' : '查看角色'"></h5>
+            <h5 style="display: inline-block" th:text="${systemRolePo.id} eq null ? '查看角色' : '查看角色'"></h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/role/index" >返回</a>
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="roleFrm" th:object="${systemRolePo}">

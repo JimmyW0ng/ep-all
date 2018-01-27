@@ -5,22 +5,28 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.service.SystemMenuService;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 /**
  * @Description: 菜单管理控制器
  * @Author: CC.F
  * @Date: 16:31 2018/1/20
  */
+@Slf4j
 @RequestMapping("auth/menu")
 @Controller
 @Api(value = "菜单", description = "菜单")
-public class SystemMenuController {
+public class SystemMenuController extends BackendController {
     @Autowired
     private SystemMenuService systemMenuService;
     @Autowired
@@ -39,18 +45,21 @@ public class SystemMenuController {
 
     @PostMapping("/create")
     @ResponseBody
-    public ResultDo<String> create(EpSystemMenuPo po) {
+    public ResultDo<String> create(HttpServletRequest request,EpSystemMenuPo po) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         ResultDo<String> resultDo = ResultDo.build();
         if (po.getId() == null) {
             //新增菜单
-            EpSystemMenuPo insertPo = systemMenuService.insert(po);
-            return insertPo != null ? resultDo : ResultDo.build(MessageCode.ERROR_SYSTEM);
+            EpSystemMenuPo insertPo=systemMenuService.insert(po);
+            log.info("[菜单]，新增菜单成功，菜单id={},currentUserId={}。", insertPo.getId(),currentUser.getId());
+            return resultDo;
+
         }
-//        EpSystemMenuPo updatePo = new EpSystemMenuPo();
         //更新菜单
         systemMenuService.update(po);
-
+        log.info("[菜单]，修改菜单成功，菜单id={},currentUserId={}。", po.getId(),currentUser.getId());
         return resultDo;
+
     }
 
     /**
@@ -74,15 +83,12 @@ public class SystemMenuController {
 
     @PostMapping("/delete")
     @ResponseBody
-    public ResultDo delete(@RequestParam("ids[]") Long[] ids) {
+    public ResultDo delete(HttpServletRequest request, @RequestParam("ids[]") Long[] ids) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         ResultDo resultDo = ResultDo.build();
         for(int i=0;i<ids.length;i++){
-            ResultDo res=systemMenuService.delete(ids[i]);
-            if(!res.isSuccess()){
-                resultDo.setSuccess(false);
-                resultDo.setErrorDescription(res.getErrorDescription());
-                break;
-            }
+            systemMenuService.delete(ids[i]);
+            log.info("[菜单]，删除菜单成功，菜单id={},currentUserId={}。", ids[i].toString(),currentUser.getId());
         }
 
         return resultDo;

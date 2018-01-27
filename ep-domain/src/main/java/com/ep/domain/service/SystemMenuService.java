@@ -10,6 +10,7 @@ import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,25 +48,29 @@ public class SystemMenuService {
         return systemMenuRepository.create(po);
     }
 
-    public void update(EpSystemMenuPo po) {
+    public int update(EpSystemMenuPo po) {
         po.setUpdateAt(DateTools.getCurrentDateTime());
-        systemMenuRepository.update(po);
+        return systemMenuRepository.updateReturnEffRowsCount(po);
     }
 
-    public ResultDo delete(Long id) {
-        ResultDo resultDo=ResultDo.build();
-        if(systemRoleAuthorityRepository.isMenuUseByMenu(id)){
-            List<EpSystemRolePo> systemRolePos=systemRoleAuthorityRepository.getRoleByUseMenu(id);
-            StringBuffer sb=new StringBuffer("存在以下角色：");
-            systemRolePos.forEach(p->{
-                sb.append(p.getRoleName());
-            });
-            sb.append("正在使用此菜单");
-            resultDo.setSuccess(false);
-            resultDo.setErrorDescription(sb.toString());
-        }else{
-            systemMenuRepository.deleteLogical(id);
-        }
-        return resultDo;
+    @Transactional(rollbackFor = Exception.class)
+    public int delete(Long id) {
+        systemRoleAuthorityRepository.deleteByMenuId(id);
+        return systemMenuRepository.deleteLogical(id);
+//        ResultDo resultDo=ResultDo.build();
+//        if(systemRoleAuthorityRepository.isMenuUseByMenu(id)){
+//            List<EpSystemRolePo> systemRolePos=systemRoleAuthorityRepository.getRoleByUseMenu(id);
+//            StringBuffer sb=new StringBuffer("存在以下角色：");
+//            systemRolePos.forEach(p->{
+//                sb.append(p.getRoleName());
+//            });
+//            sb.append("正在使用此菜单");
+//            resultDo.setSuccess(false);
+//            resultDo.setErrorDescription(sb.toString());
+//        }else{
+//            systemMenuRepository.deleteLogical(id);
+//        }
+//        return resultDo;
     }
+
 }

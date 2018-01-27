@@ -5,7 +5,7 @@
 <head th:replace="~{fragments/header :: common_header}">
     <header>
         <th:block layout:fragment="links">
-            <!--<link th:href="@{/css/zTreeStyle/zTreeStyle.css}" rel="stylesheet">-->
+            <link th:href="@{/css/zTreeStyle/zTreeStyle.css}" rel="stylesheet">
         </th:block>
 
     </header>
@@ -14,6 +14,7 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text="${systemRolePo.id} eq null ? '新增角色' : '修改角色'"></h5>
+
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="roleFrm" th:object="${systemRolePo}">
@@ -108,11 +109,14 @@
         }
         console.log(menuIds)
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        for (var i = 0; i < menuIds.length; i++) {
-            var node = treeObj.getNodeByParam("id", menuIds[i].id, null);
-            console.log(node)
-            treeObj.checkNode(node, true, false,false);
+        if(menuIds!=undefined){
+            for (var i = 0; i < menuIds.length; i++) {
+                var node = treeObj.getNodeByParam("id", menuIds[i].id, null);
+                console.log(node)
+                treeObj.checkNode(node, true, false,false);
+            }
         }
+
     })
     function frmSubmit() {
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
@@ -126,9 +130,9 @@
             return;
         }
         console.log(nodes)
-//        if (! $("#roleFrm").valid()) {
-//            return;
-//        }
+        if (! $("#roleFrm").valid()) {
+            return;
+        }
 
         var params={
                 id: $("#id").val(),

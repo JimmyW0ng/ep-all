@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,7 @@ import static com.ep.domain.repository.domain.Ep.EP;
 /**
  * Created by fcc on 2018/1/10.
  */
+@Slf4j
 @RequestMapping("/auth/user")
 @Controller
 @Api(value = "后管用户")
@@ -107,7 +109,7 @@ public class SystemUserController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "新增用户")
+    @ApiOperation(value = "新增用户初始化")
     @GetMapping("/createInit")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String createInit(Model model) {
@@ -152,11 +154,13 @@ public class SystemUserController extends BackendController {
         epSystemUserPo.setSalt(StringTools.generateShortUrl(epSystemUserPo.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         try {
             epSystemUserPo.setPassword(CryptTools.aesEncrypt(epSystemUserPo.getPassword(), epSystemUserPo.getSalt()));
-            systemUserService.createUser(epSystemUserPo,bo.getSystemRolePos());
+
         } catch (Exception e) {
             resultDo.setSuccess(false);
             return resultDo;
         }
+        EpSystemUserPo insertPo=systemUserService.createUser(epSystemUserPo,bo.getSystemRolePos());
+        log.info("[用户]，新增用户成功，用户id={},currentUserId={}。", insertPo.getId(),currentUser.getId());
 
         return resultDo;
     }
@@ -180,11 +184,13 @@ public class SystemUserController extends BackendController {
         epSystemUserPo.setSalt(StringTools.generateShortUrl(epSystemUserPo.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         try {
             epSystemUserPo.setPassword(CryptTools.aesEncrypt(epSystemUserPo.getPassword(), epSystemUserPo.getSalt()));
-            systemUserService.createUser(epSystemUserPo,bo.getSystemRolePos());
+
         } catch (Exception e) {
             resultDo.setSuccess(false);
             return resultDo;
         }
+        systemUserService.updateUser(epSystemUserPo,bo.getSystemRolePos());
+        log.info("[用户]，修改用户成功，用户id={},currentUserId={}。", bo.getId(),currentUser.getId());
 
         return resultDo;
     }
@@ -202,6 +208,24 @@ public class SystemUserController extends BackendController {
 //        systemRoleService.getAllRoleByUserType
         model.addAttribute("systemUserPo", systemUserPo);
         return "/systemUser/view";
+    }
+
+    /**
+     * 删除用户
+     *
+     * @return
+     */
+    @ApiOperation(value = "删除用户")
+    @GetMapping("/delete/{id}")
+//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @ResponseBody
+    public ResultDo delete(HttpServletRequest request,@PathVariable("id") Long id) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        ResultDo resultDo=ResultDo.build();
+        systemUserService.deleteUser(id);
+        log.info("[用户]，删除用户成功，用户id={},currentUserId={}。", id,currentUser.getId());
+
+        return resultDo;
     }
 
     /**

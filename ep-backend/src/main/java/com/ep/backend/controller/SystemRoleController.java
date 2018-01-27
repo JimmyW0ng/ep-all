@@ -7,6 +7,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemRoleBo;
 import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.service.SystemRoleAuthorityService;
 import com.ep.domain.service.SystemRoleService;
@@ -125,18 +126,15 @@ public class SystemRoleController extends BackendController {
 //            ,
 //                           EpSystemRolePo po, @RequestParam(value = "systemRoleAuthorityPos[]", required = false) EpSystemRoleAuthorityPo[] array
     ) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         ResultDo resultDo = ResultDo.build();
-        bo.setCreateBy(super.getCurrentUser(request).get().getId());
+        bo.setCreateBy(currentUser.getId());
         List<EpSystemRoleAuthorityPo> systemRoleAuthorityPos=bo.getSystemRoleAuthorityPos();
         EpSystemRolePo systemRolePo=new EpSystemRolePo();
         BeanTools.copyPropertiesIgnoreNull(bo,systemRolePo);
 
-        try {
-            systemRoleService.createSystemRole(systemRolePo, systemRoleAuthorityPos);
-
-        } catch (Exception e) {
-            resultDo.setSuccess(false);
-        }
+        EpSystemRolePo insertPo=systemRoleService.createSystemRole(systemRolePo, systemRoleAuthorityPos);
+        log.info("[角色]，角色新增成功，角色id={},currentUserId={}。", insertPo.getId(),currentUser.getId());
 
         return resultDo;
 
@@ -152,6 +150,7 @@ public class SystemRoleController extends BackendController {
     public ResultDo update(HttpServletRequest request,
                            @RequestBody SystemRoleBo bo
     ) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         ResultDo resultDo = ResultDo.build();
         bo.setUpdateAt(DateTools.getCurrentDateTime());
         bo.setUpdateBy(super.getCurrentUser(request).get().getId());
@@ -159,12 +158,8 @@ public class SystemRoleController extends BackendController {
         EpSystemRolePo systemRolePo=new EpSystemRolePo();
         BeanTools.copyPropertiesIgnoreNull(bo,systemRolePo);
 
-        try {
-            systemRoleService.updateSystemRole(systemRolePo, systemRoleAuthorityPos);
-
-        } catch (Exception e) {
-            resultDo.setSuccess(false);
-        }
+        systemRoleService.updateSystemRole(systemRolePo, systemRoleAuthorityPos);
+        log.info("[角色]，角色修改成功，角色id={},currentUserId={}。", bo.getId(),currentUser.getId());
 
         return resultDo;
 
@@ -192,14 +187,12 @@ public class SystemRoleController extends BackendController {
      */
     @GetMapping("delete/{id}")
     @ResponseBody
-    public ResultDo deleteRole(@PathVariable("id") Long id){
+    public ResultDo deleteRole(HttpServletRequest request,@PathVariable("id") Long id){
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         ResultDo resultDo = ResultDo.build();
-//        try{
-//            systemRoleService.delete(id);
-//        }catch(Exception e){
-//            resultDo.setSuccess(false);
-//            return resultDo;
-//        }
+        systemRoleService.delete(id);
+        log.info("[角色]，角色删除成功，角色id={},currentUserId={}。", id,currentUser.getId());
+
         return resultDo;
     }
 

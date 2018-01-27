@@ -4,6 +4,7 @@ import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.repository.SystemRoleRepository;
+import com.ep.domain.repository.SystemUserRoleRepository;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.google.common.collect.Lists;
@@ -31,6 +32,8 @@ public class SystemRoleService {
     private SystemRoleRepository systemRoleRepository;
     @Autowired
     private SystemRoleAuthorityRepository systemRoleAuthorityRepository;
+    @Autowired
+    private SystemUserRoleRepository systemUserRoleRepository;
 
     public EpSystemRolePo getById(Long id){
         return systemRoleRepository.getById(id);
@@ -52,17 +55,18 @@ public class SystemRoleService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void createSystemRole(EpSystemRolePo po, List<EpSystemRoleAuthorityPo> list) throws Exception {
+    public EpSystemRolePo createSystemRole(EpSystemRolePo po, List<EpSystemRoleAuthorityPo> list) {
         EpSystemRolePo insertPo=systemRoleRepository.insertNew(po);
         list.forEach(p->{
             p.setRoleId(insertPo.getId());
             p.setRole(insertPo.getRoleCode());
         });
         systemRoleAuthorityRepository.insert(list);
+        return insertPo;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateSystemRole(EpSystemRolePo po, List<EpSystemRoleAuthorityPo> list) throws Exception {
+    public void updateSystemRole(EpSystemRolePo po, List<EpSystemRoleAuthorityPo> list) {
         int count=systemRoleRepository.updateReturnEffRowsCount(po);
         List<Long> menuOldList=systemRoleAuthorityRepository.getMenuIdByRole(po.getId());
         Set<Long> menuOldSet= new HashSet<>(menuOldList);
@@ -88,15 +92,16 @@ public class SystemRoleService {
             EpSystemRoleAuthorityPo systemRoleAuthorityPoAdd=(EpSystemRoleAuthorityPo)map.get(p);
             systemRoleAuthorityPoAdd.setRoleId(po.getId());
             systemRoleAuthorityPoAdd.setRole(po.getRoleCode());
-            systemRoleAuthorityPoNew.add((EpSystemRoleAuthorityPo)map.get(p));
+            systemRoleAuthorityPoNew.add(systemRoleAuthorityPoAdd);
         });
         //插入  menuNewSet有， menuOldSet无
         systemRoleAuthorityRepository.insert(systemRoleAuthorityPoNew);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int delete(Long id) throws Exception{
+    public int delete(Long id) {
         systemRoleAuthorityRepository.deleteByRoleId(id);
+        systemUserRoleRepository.deleteByRoleId(id);
         return systemRoleRepository.deleteLogical(id);
     }
 

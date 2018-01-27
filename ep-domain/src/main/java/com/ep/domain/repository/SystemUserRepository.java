@@ -1,8 +1,10 @@
 package com.ep.domain.repository;
 
+import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,6 +35,14 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
     public EpSystemUserPo getByMobile(Long mobile) {
         return dslContext.selectFrom(EP_SYSTEM_USER)
                 .where(EP_SYSTEM_USER.MOBILE.equal(mobile)).fetchOneInto(EpSystemUserPo.class);
+    }
+
+    public int deleteLogical(Long userId){
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.DEL_FLAG,true)
+                .where(EP_SYSTEM_USER.ID.eq(userId))
+                .execute();
+
     }
 }
 
