@@ -77,15 +77,7 @@ public class SystemUserController extends BackendController {
             conditions.add(EP.EP_SYSTEM_USER.TYPE.eq(EpSystemUserType.valueOf(type)));
         }
         map.put("type", type);
-//        collections.add(Changfu.CHANGFU.CMS_ARTICLE.DEL_FLAG.eq(false));
-//        if (StringUtils.isNotBlank(name)) {
-//            Condition condition = Changfu.CHANGFU.CMS_ARTICLE.TITLE.like("%" + name + "%");
-//            collections.add(condition);
-//        }
-//        if (null != categoryId) {
-//            Condition condition = Changfu.CHANGFU.CMS_ARTICLE.CATEGORY_ID.eq(categoryId);
-//            collections.add(condition);
-//        }
+
 //        if (null != crStartTime) {
 //
 //            Condition condition = Changfu.CHANGFU.CMS_ARTICLE.CREATE_AT.greaterOrEqual(crStartTime);
@@ -129,6 +121,15 @@ public class SystemUserController extends BackendController {
         EpSystemUserPo systemUserPo = systemUserService.getById(id);
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
+        try{
+            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
+
+        }catch(Exception e){
+            model.addAttribute("systemUserPo", systemUserPo);
+            model.addAttribute("roleList", lists);
+            model.addAttribute("roleIds", roleIds);
+            return "/systemUser/form";
+        }
         model.addAttribute("systemUserPo", systemUserPo);
         model.addAttribute("roleList", lists);
         model.addAttribute("roleIds", roleIds);
@@ -205,8 +206,20 @@ public class SystemUserController extends BackendController {
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String view(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo systemUserPo = systemUserService.getById(id);
-//        systemRoleService.getAllRoleByUserType
+        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
+        List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
+        try{
+            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
+
+        }catch(Exception e){
+            model.addAttribute("systemUserPo", systemUserPo);
+            model.addAttribute("roleList", lists);
+            model.addAttribute("roleIds", roleIds);
+            return "/systemUser/view";
+        }
         model.addAttribute("systemUserPo", systemUserPo);
+        model.addAttribute("roleList", lists);
+        model.addAttribute("roleIds", roleIds);
         return "/systemUser/view";
     }
 

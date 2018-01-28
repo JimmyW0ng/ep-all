@@ -256,6 +256,7 @@
     function readMenuShow(id) {
         resetFrmField();
         menuBoxTitle("r_act")
+        $("#permission").attr("readonly",false)
         $("#saveBtn").hide();
         $.ajax({
             type: 'GET',
@@ -288,6 +289,7 @@
     function creatMenuShow() {
         resetFrmField();
         menuBoxTitle("c_act")
+        $("#permission").attr("readonly",false)
     }
     function menuBoxTitle(titleClazz) {
         $("#menuBox").show()
@@ -303,6 +305,7 @@
     function updateMenuShow(ele) {
         resetFrmField();
         menuBoxTitle("u_act")
+        $("#permission").attr("readonly",true)
         console.log($(ele).data("id"));
         var id = $(ele).data("id")
         $.ajax({

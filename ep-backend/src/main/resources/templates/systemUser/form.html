@@ -16,6 +16,8 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text="${systemUserPo.id} eq null ? '新增用户' : '修改用户'"></h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/user/index" >返回</a>
+
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="userFrm" th:object="${systemUserPo}">
@@ -37,7 +39,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">密码：</label>
                     <div class="col-sm-3">
-                        <input id="password" name="password" type="text" class="form-control" required="true"
+                        <input id="password" name="password" type="text" class="form-control" required="true" th:field="*{password}"
                                aria-required="true">
                     </div>
                 </div>
@@ -64,8 +66,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商户id：</label>
                     <div class="col-sm-3">
-                        <input id="organId" name="organId" type="text" class="form-control" required="true"
-                               aria-required="true">
+                        <input id="organId" name="organId" type="text" class="form-control" th:field="*{organId}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -102,7 +103,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-3">
+                    <div class="col-sm-3 col-sm-offset-2">
                         <button class="btn btn-primary" type="button" onclick="userFrmSubmit()">提交</button>
                     </div>
                 </div>
@@ -117,10 +118,10 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
     function userFrmSubmit() {
-//        if (!$("#userFrm").valid()) {
-//            console.log("valid fail")
-//            return;
-//        }
+        if (!$("#userFrm").valid()) {
+            console.log("valid fail")
+            return;
+        }
         var roles = []
         $("#role_tb_body tr").each(function () {
             if($(this).find("input[name='id']").eq(0).is(":checked")){
@@ -135,6 +136,7 @@
             mobile: $("#mobile").val(),
             userName: $("#userName").val(),
             password: $("#password").val(),
+            email: $("#email").val(),
             type: $("#type").val(),
             status: $("#status").val(),
             remark: $("#remark").val(),
@@ -152,7 +154,9 @@
             data:JSON.stringify(params),
             contentType: "application/json;charset=utf-8",
             success: function (data) {
-
+                if(data.success){
+                    toastr_success(null,'/auth/user/index')
+                }
             }
 
         })
@@ -184,15 +188,17 @@
         var roleIds=[[${roleIds}]];
         console.log(roleIds)
         var htmls="";
-        for(var i=0;i<res.length;i++){
-            htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
-                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
-                "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+        if(res!=undefined&&res.length>0) {
+            for (var i = 0; i < res.length; i++) {
+                htmls = htmls + "<tr><td><input name='id' type='checkbox'value='" + res[i].id + "'/>" +
+                    "<input name='roleCode' type='hidden' value='" + res[i].roleCode + "'/>" +
+                    "</td><td>" + res[i].roleName + "</td><td>" + (res[i].remark == null ? '' : res[i].remark) + "</td></tr>"
 
-        }
-        $("#role_tb_body").html(htmls)
-        for(var i=0;i<roleIds.length;i++){
-            $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
+            }
+            $("#role_tb_body").html(htmls)
+            for (var i = 0; i < roleIds.length; i++) {
+                $("#role_tb_body").find("input[value=" + roleIds[i] + "]").attr("checked", true)
+            }
         }
 
 //        if(type){

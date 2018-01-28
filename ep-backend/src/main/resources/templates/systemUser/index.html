@@ -86,7 +86,7 @@
                             <td th:text="${bo.id}"></td>
                             <td th:text="${bo.mobile}"></td>
                             <td th:text="${bo.userName}"></td>
-                            <td th:text="${bo.type}"></td>
+                            <td th:text="#{EpSystemUserType.+${bo.type}}"></td>
                             <td th:text="${bo.organId}"></td>
                             <td th:text="#{EpSystemUserStatus.+${bo.status}}"></td>
 

@@ -14,6 +14,8 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text="${systemRolePo.id} eq null ? '新增角色' : '修改角色'"></h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/role/index" >返回</a>
+
 
         </div>
         <div class="ibox-content">
@@ -106,6 +108,7 @@
             {id: [[${id}]], open: true},
             [/]
             ];
+            $("#roleCode").attr("readonly",true)
         }
         console.log(menuIds)
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
@@ -155,7 +158,7 @@
             contentType: "application/json;charset=utf-8",
             success: function (data) {
                 if (data.success) {
-                    window.location.href = "/auth/role/index";
+                    toastr_success(null,"/auth/role/index")
                 }
             }
         })

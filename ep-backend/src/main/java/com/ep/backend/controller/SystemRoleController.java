@@ -80,6 +80,8 @@ public class SystemRoleController extends BackendController {
 //            Condition condition = Changfu.CHANGFU.SYS_ROLE.CREATE_AT.lessOrEqual(crEndTime);
 //            collections.add(condition);
 //        }
+        conditions.add(EP.EP_SYSTEM_ROLE.DEL_FLAG.eq(false));
+
         Page<EpSystemRolePo> page = systemRoleService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);

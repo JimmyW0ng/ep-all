@@ -13,6 +13,8 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text="${systemUserPo.id} eq null ? '查看用户' : '查看用户'"></h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/user/index" >返回</a>
+
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="userFrm" th:object="${systemUserPo}">
@@ -26,42 +28,41 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">用户名：</label>
                     <div class="col-sm-3">
-                        <input id="userName" name="userName" type="text" class="form-control" required="true"
+                        <input id="userName" name="userName" type="text" class="form-control" required="true" th:field="*{userName}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">密码：</label>
                     <div class="col-sm-3">
-                        <input id="password" name="password" type="text" class="form-control" required="true"
+                        <input id="password" name="password" type="text" class="form-control" required="true" th:field="*{password}"
                                aria-required="true">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">角色：</label>
-                    <div class="col-sm-3">
-                        <input id="role" name="role" type="text" class="form-control" required="true"
-                               aria-required="true">
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-3">
-                        <input id="email" name="email" type="text" class="form-control" required="true"
+                        <input id="email" name="email" type="text" class="form-control" required="true" th:field="*{email}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">类型：</label>
                     <div class="col-sm-3">
-                        <input id="type" name="type" type="text" class="form-control" required="true"
-                               aria-required="true">
+                        <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">
+                            <option value="">请选择</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpSystemUserType.+${state.literal}}">
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商户id：</label>
                     <div class="col-sm-3">
-                        <input id="organId" name="organId" type="text" class="form-control" required="true"
+                        <input id="organId" name="organId" type="text" class="form-control" required="true" th:field="*{organId}"
                                aria-required="true">
                     </div>
                 </div>
@@ -78,7 +79,26 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色：</label>
+                    <div class="col-sm-4">
+                        <table class="table table-striped table-hover table-bordered dataTable" id="editable"
+                               aria-describedby="editable_info">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>角色</th>
 
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody id="role_tb_body">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -94,88 +114,26 @@
 <script th:src="@{/js/jquery.ztree.excheck.js}"></script>
 <script th:src="@{/js/jquery.ztree.exedit.js}"></script>
 <script th:inline="javascript">
-    var setting = {
-        check: {
-            enable: true
-        },
-        data: {
-            simpleData: {
-                enable: true
+    $(function () {
+        var type=$("#type").val();
+        var res=[[${roleList}]];
+        var roleIds=[[${roleIds}]];
+        console.log(roleIds)
+        var htmls="";
+        if(res!=undefined&&res.length>0){
+            for(var i=0;i<res.length;i++){
+                htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
+                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
+                    "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+
             }
-        },
-        callback: {}
-
-
-    };
-    var zNodes = [
-        [# th:each="menuPojo :${@systemMenuService.getAll()}"]
-    {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]]
-    },
-    [/]
-    ];
-
-    $(document).ready(function () {
-        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-        var id= [[${systemRolePo.id}]]
-        console.log("id="+id)
-        if(id){
-            var menuIds= [
-                [# th:each="id :${menuIds}"]
-            {id: [[${id}]], open: true},
-            [/]
-        ];
+            $("#role_tb_body").html(htmls)
+            for(var i=0;i<roleIds.length;i++){
+                $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
+            }
         }
-        console.log(menuIds)
-        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        for (var i = 0; i < menuIds.length; i++) {
-            var node = treeObj.getNodeByParam("id", menuIds[i].id, null);
-            console.log(node)
-            treeObj.checkNode(node, true, false,false);
-        }
+
     })
-//    function frmSubmit() {
-//        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-//        var nodes = treeObj.getCheckedNodes(true);
-//        var authority = []
-//        for (var i = 0; i < nodes.length; i++) {
-//            authority.push({menuId:nodes[i].id,authority:nodes[i].authority});
-//        }
-//        console.log(authority)
-//        if (nodes.length == 0) {
-//            return;
-//        }
-//        console.log(nodes)
-////        if (! $("#roleFrm").valid()) {
-////            return;
-////        }
-//
-//        var params={
-//            id: $("#id").val(),
-//            roleName: $("#roleName").val(),
-//            target: $("#target").val(),
-//            roleCode: $("#roleCode").val(),
-//            remark: $("#remark").val(),
-//            systemRoleAuthorityPos: authority
-//        }
-//        var url;
-//        if($("#id").val()){
-//            url="/auth/role/update"
-//        }else{
-//            url="/auth/role/create"
-//        }
-//        $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: JSON.stringify(params),
-//            contentType: "application/json;charset=utf-8",
-//            success: function (data) {
-//                if (data.success) {
-//                    window.location.href = "/auth/role/index";
-//                }
-//            }
-//        })
-//
-//    }
 </script>
 </body>
 </html>
