@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,9 @@ public class SystemRoleController extends BackendController {
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "roleName", required = false) String roleName,
                         @RequestParam(value = "roleCode", required = false) String roleCode,
-                        @RequestParam(value = "target", required = false) String target
+                        @RequestParam(value = "target", required = false) String target,
+                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
         Map map= Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
@@ -71,15 +74,14 @@ public class SystemRoleController extends BackendController {
             conditions.add(EP.EP_SYSTEM_ROLE.TARGET.eq(EpSystemRoleTarget.valueOf(target)));
         }
         map.put("target",target);
-//        if (null != crTimeStart) {
-//
-//            Condition condition = Changfu.CHANGFU.SYS_ROLE.CREATE_AT.greaterOrEqual(crStartTime);
-//            collections.add(condition);
-//        }
-//        if (null != crEndTime) {
-//            Condition condition = Changfu.CHANGFU.SYS_ROLE.CREATE_AT.lessOrEqual(crEndTime);
-//            collections.add(condition);
-//        }
+        if (null != crStartTime) {
+            conditions.add(EP.EP_SYSTEM_ROLE.CREATE_AT.greaterOrEqual(crStartTime));
+        }
+        map.put("crStartTime",crStartTime);
+        if (null != crEndTime) {
+            conditions.add(EP.EP_SYSTEM_ROLE.CREATE_AT.lessOrEqual(crEndTime));
+        }
+        map.put("crEndTime",crEndTime);
         conditions.add(EP.EP_SYSTEM_ROLE.DEL_FLAG.eq(false));
 
         Page<EpSystemRolePo> page = systemRoleService.findbyPageAndCondition(pageable, conditions);

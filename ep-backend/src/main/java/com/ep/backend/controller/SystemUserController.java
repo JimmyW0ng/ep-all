@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,9 @@ public class SystemUserController extends BackendController {
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
-                        @RequestParam(value = "type", required = false) String type
+                        @RequestParam(value = "type", required = false) String type,
+                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
         Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
@@ -78,16 +81,14 @@ public class SystemUserController extends BackendController {
         }
         map.put("type", type);
 
-//        if (null != crStartTime) {
-//
-//            Condition condition = Changfu.CHANGFU.CMS_ARTICLE.CREATE_AT.greaterOrEqual(crStartTime);
-//            collections.add(condition);
-//        }
-//        if (null != crEndTime) {
-//            Condition condition = Changfu.CHANGFU.CMS_ARTICLE.CREATE_AT.lessOrEqual(crEndTime);
-//            collections.add(condition);
-//        }
-
+        if (null != crStartTime) {
+            conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.greaterOrEqual(crStartTime));
+        }
+        map.put("crStartTime", crStartTime);
+        if (null != crEndTime) {
+            conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.lessOrEqual(crEndTime));
+        }
+        map.put("crEndTime", crEndTime);
         Page<EpSystemUserPo> page = systemUserService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);

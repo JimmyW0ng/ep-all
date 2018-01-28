@@ -142,24 +142,24 @@ function toastr_success(msg,url) {
 
 $(function () {
 
-    // // 日历组件,最小单位为秒
-    // $('.datetimepicker').datetimepicker({
-    //     locale: 'zh-CN',
-    //     format: 'YYYY-MM-DD HH:mm:ss'
-    // });
-    //
-    // // 日历组件,最小单位为分
-    // $('.datetimepicker_min').datetimepicker({
-    //     locale: 'zh-CN',
-    //     format: 'YYYY-MM-DD HH:mm:00'
-    // });
-    //
-    // //日历组件,最小单位为日
-    // $(".datetimepicker_date").datetimepicker({
-    //     viewMode: 'years',
-    //     locale: 'zh-CN',
-    //     format: 'YYYY-MM-DD'
-    // });
+    // 日历组件,最小单位为秒
+    $('.datetimepicker').datetimepicker({
+        locale: 'zh-CN',
+        format: 'YYYY-MM-DD HH:mm:ss'
+    });
+
+    // 日历组件,最小单位为分
+    $('.datetimepicker_min').datetimepicker({
+        locale: 'zh-CN',
+        format: 'YYYY-MM-DD HH:mm:00'
+    });
+
+    //日历组件,最小单位为日
+    $(".datetimepicker_date").datetimepicker({
+        viewMode: 'years',
+        locale: 'zh-CN',
+        format: 'YYYY-MM-DD'
+    });
 
     // 查询相关
     $("#query-button").click(function () {
@@ -224,26 +224,26 @@ $(function () {
     //     toastr.clear();
     // });
     //
-    // //datetimepicker时间区间START
-    // $('.startTime').datetimepicker({
-    //     locale: 'zh-CN',
-    //     format: 'YYYY-MM-DD HH:mm:ss'
-    // });
-    // $('.endTime').datetimepicker({
-    //     locale: 'zh-CN',
-    //     format: 'YYYY-MM-DD HH:mm:ss',
-    //     useCurrent: false
-    // });
-    // $(".startTime").on("dp.change", function (e) {
-    //     if ($(this).parent().find(".endTime").length) {
-    //         $('.endTime').eq(0).data("DateTimePicker").minDate(e.date);
-    //     }
-    // });
-    // $(".endTime").on("dp.change", function (e) {
-    //     if ($(this).parent().find(".startTime").length) {
-    //         $('.startTime').eq(0).data("DateTimePicker").maxDate(e.date);
-    //     }
-    // });
+    //datetimepicker时间区间START
+    $('.startTime').datetimepicker({
+        locale: 'zh-CN',
+        format: 'YYYY-MM-DD HH:mm:ss'
+    });
+    $('.endTime').datetimepicker({
+        locale: 'zh-CN',
+        format: 'YYYY-MM-DD HH:mm:ss',
+        useCurrent: false
+    });
+    $(".startTime").on("dp.change", function (e) {
+        if ($(this).parent().find(".endTime").length) {
+            $('.endTime').eq(0).data("DateTimePicker").minDate(e.date);
+        }
+    });
+    $(".endTime").on("dp.change", function (e) {
+        if ($(this).parent().find(".startTime").length) {
+            $('.startTime').eq(0).data("DateTimePicker").maxDate(e.date);
+        }
+    });
     // $('.startTime1').datetimepicker({
     //     locale: 'zh-CN',
     //     format: 'YYYY-MM-DD HH:mm:ss'
