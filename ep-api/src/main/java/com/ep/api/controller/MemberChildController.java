@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 孩子api控制类
@@ -123,8 +124,8 @@ public class MemberChildController extends ApiController {
     @ApiOperation(value = "孩子更新签名", notes = "如果存在，则覆盖")
     @PostMapping("/sign")
     public ResultDo sign(@RequestParam("childId") Long childId, @RequestParam("content") String content) {
-        memberChildSignService.sign(childId, content);
-        return ResultDo.build();
+        Optional<EpMemberPo> optional = super.getCurrentUser();
+        return memberChildSignService.sign(optional.get().getId(), childId, content);
     }
 
 }

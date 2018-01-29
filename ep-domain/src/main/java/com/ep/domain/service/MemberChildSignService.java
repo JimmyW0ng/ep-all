@@ -1,6 +1,10 @@
 package com.ep.domain.service;
 
+import com.ep.domain.constant.MessageCode;
+import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberChildSignPo;
+import com.ep.domain.repository.MemberChildRepository;
 import com.ep.domain.repository.MemberChildSignRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class MemberChildSignService {
 
     @Autowired
+    private MemberChildRepository memberChildRepository;
+    @Autowired
     private MemberChildSignRepository memberChildSignRepository;
 
     /**
@@ -25,7 +31,16 @@ public class MemberChildSignService {
      * @param content
      * @return
      */
-    public void sign(Long childId, String content) {
+    public ResultDo sign(Long memberId, Long childId, String content) {
+        ResultDo resultDo = ResultDo.build();
+        EpMemberChildPo childPo = memberChildRepository.getById(childId);
+        if (childPo == null
+                || !childPo.getMemberId().equals(memberId)
+                || childPo.getDelFlag()) {
+            log.error("下单失败，孩子信息不存在或已删除！");
+            resultDo.setError(MessageCode.ERROR_CHILD_NOT_EXISTS);
+            return resultDo;
+        }
         EpMemberChildSignPo signPo = memberChildSignRepository.getByChildId(childId);
         if (signPo == null) {
             EpMemberChildSignPo insertPo = new EpMemberChildSignPo();
@@ -35,5 +50,6 @@ public class MemberChildSignService {
         } else {
             memberChildSignRepository.updateSign(childId, content);
         }
+        return resultDo;
     }
 }
