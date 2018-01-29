@@ -9,6 +9,7 @@ import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import com.ep.domain.service.FileService;
 import com.ep.domain.service.MemberChildService;
+import com.ep.domain.service.MemberChildSignService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,8 @@ public class MemberChildController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
-
+    @Autowired
+    private MemberChildSignService memberChildSignService;
     @Autowired
     private FileService fileService;
 
@@ -115,6 +117,13 @@ public class MemberChildController extends ApiController {
                 BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR,
                 childId,
                 BizConstant.DB_NUM_ONE);
+        return ResultDo.build();
+    }
+
+    @ApiOperation(value = "孩子更新签名", notes = "如果存在，则覆盖")
+    @PostMapping("/sign")
+    public ResultDo sign(@RequestParam("childId") Long childId, @RequestParam("sign") String sign) {
+        memberChildSignService.sign(childId, sign);
         return ResultDo.build();
     }
 

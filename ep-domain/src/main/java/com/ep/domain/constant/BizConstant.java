@@ -11,6 +11,7 @@ public class BizConstant {
      * 通用常量
      */
     public static String KEY_SPLIT = "KEY_SPLIT";
+    public static String STRING_SPLIT = ",";
 
     /**
      * 用户信息
@@ -81,4 +82,9 @@ public class BizConstant {
     public static short FILE_BIZ_TYPE_CODE_MEMBER_AVATAR = 120;
     public static short FILE_BIZ_TYPE_CODE_CHILD_AVATAR = 130;
     public static short FILE_BIZ_TYPE_CODE_TEACHER_AVATAR = 140;
+
+    /**
+     * 数量控制
+     */
+    public static int ORDER_BEYOND_NUM = 10;
 }

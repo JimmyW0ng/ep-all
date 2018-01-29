@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
 import org.jooq.DSLContext;
@@ -35,6 +36,37 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS.SORT.desc(), EP_ORGAN_CLASS.ID.asc())
                 .fetchInto(EpOrganClassPo.class);
+    }
+
+    /**
+     * 下单（没有报名限制）
+     *
+     * @param classId
+     * @return
+     */
+    public int orderWithNoLimit(Long classId) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.ORDERED_NUM, EP_ORGAN_CLASS.ORDERED_NUM.add(BizConstant.DB_NUM_ONE))
+                .where(EP_ORGAN_CLASS.ID.eq(classId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 下单（有报名限制）
+     *
+     * @param classId
+     * @return
+     */
+    public int orderWithLimit(Long classId) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.ORDERED_NUM, EP_ORGAN_CLASS.ORDERED_NUM.add(BizConstant.DB_NUM_ONE))
+                .where(EP_ORGAN_CLASS.ID.eq(classId))
+                .and(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG.eq(true))
+                .and(EP_ORGAN_CLASS.ENTERED_NUM.lessThan(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM))
+                .and(EP_ORGAN_CLASS.ORDERED_NUM.lessThan(BizConstant.ORDER_BEYOND_NUM))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
     }
 
 }

@@ -46,5 +46,11 @@ public class MessageCode {
     public static final String ERROR_COURSE_ENTER_NOT_START = "ERROR_COURSE_ENTER_NOT_START";
     public static final String ERROR_COURSE_ENTER_END = "ERROR_COURSE_ENTER_END";
     public static final String ERROR_COURSE_DUPLICATE = "ERROR_COURSE_DUPLICATE";
+    /**
+     * 订单
+     */
+    public static final String ERROR_ORDER = "ERROR_ORDER";
+    public static final String ERROR_ORDER_ENTERED_FULL = "ERROR_ORDER_ENTERED_FULL";
+    public static final String ERROR_ORDER_ORDERED_NUM_FULL = "ERROR_ORDER_ORDERED_NUM_FULL";
 
 }
