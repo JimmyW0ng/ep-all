@@ -23,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 @RequestMapping("auth/order")
 @RestController
-@Api(value = "api-auth-member", description = "会员接口")
+@Api(value = "api-auth-order", description = "订单接口")
 public class OrderController extends ApiController {
 
     @Autowired

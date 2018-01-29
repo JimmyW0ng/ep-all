@@ -122,8 +122,8 @@ public class MemberChildController extends ApiController {
 
     @ApiOperation(value = "孩子更新签名", notes = "如果存在，则覆盖")
     @PostMapping("/sign")
-    public ResultDo sign(@RequestParam("childId") Long childId, @RequestParam("sign") String sign) {
-        memberChildSignService.sign(childId, sign);
+    public ResultDo sign(@RequestParam("childId") Long childId, @RequestParam("content") String content) {
+        memberChildSignService.sign(childId, content);
         return ResultDo.build();
     }
 
