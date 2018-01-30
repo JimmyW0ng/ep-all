@@ -3,6 +3,8 @@ package com.ep.domain.repository;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.repository.domain.enums.EpSystemMenuStatus;
+import com.ep.domain.repository.domain.enums.EpSystemMenuTarget;
+import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,18 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .fetchOneInto(EpSystemMenuPo.class);
     }
 
-    public List<EpSystemMenuPo> getAll() {
-        return dslContext.selectFrom(EP_SYSTEM_MENU)
-                .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
-                .fetchInto(EpSystemMenuPo.class);
+    public List<EpSystemMenuPo> getAllByUserType(EpSystemUserType type) {
+        if(type.equals(EpSystemUserType.platform)){
+            return dslContext.selectFrom(EP_SYSTEM_MENU)
+                    .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                    .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.admin))
+                    .fetchInto(EpSystemMenuPo.class);
+        }else{
+            return dslContext.selectFrom(EP_SYSTEM_MENU)
+                    .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                    .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.backend))
+                    .fetchInto(EpSystemMenuPo.class);
+        }
     }
 
     public List<SystemMenuBo> getAllMenu(Long parentId) {

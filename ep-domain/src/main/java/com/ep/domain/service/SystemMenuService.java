@@ -7,6 +7,7 @@ import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.SystemMenuRepository;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
+import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,12 +33,18 @@ public class SystemMenuService {
 
     }
 
-    public List<EpSystemMenuPo> getAll() {
-        return systemMenuRepository.getAll();
+    public List<EpSystemMenuPo> getAllByUserType(EpSystemUserType type) {
+        return systemMenuRepository.getAllByUserType(type);
     }
 
-    public List<SystemMenuBo> getLeftMenu() {
-        List<SystemMenuBo> list = systemMenuRepository.getAllMenu(1L);
+    public List<SystemMenuBo> getLeftMenuByUserType(EpSystemUserType type) {
+        List<SystemMenuBo> list = null;
+        if(type.equals(EpSystemUserType.platform)){
+            list = systemMenuRepository.getAllMenu(1L);
+        }else{
+            list = systemMenuRepository.getAllMenu(3L);
+        }
+
         list.forEach(p -> {
             p.setChildList(systemMenuRepository.getAllMenu(p.getId()));
         });

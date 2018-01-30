@@ -18,25 +18,25 @@
         <div class="panel">
             <div class="panel-heading">
                 <a class="btn btn-success" type="button" th:href="@{/auth/systemOrgan/createInit}"><i
-                        class="glyphicon glyphicon-plus"></i> 新增</a>
+                        class="glyphicon glyphicon-plus"></i> 注册</a>
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
-                    <div class="form-group">
-                        <input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"
-                               placeholder="手机号">
-                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"-->
+                               <!--placeholder="手机号">-->
+                    <!--</div>-->
 
-                    <div class="form-group ">
-                        <select class="form-control" name="type" id="type" style="width:182px;" >
-                            <option value>类型</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
-                                    th:value="${state}"
-                                    th:selected="${#stringTools.equals(state,map.get('type'))}"
-                                    th:text="#{EpSystemUserType.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
+                    <!--<div class="form-group ">-->
+                        <!--<select class="form-control" name="type" id="type" style="width:182px;" >-->
+                            <!--<option value>类型</option>-->
+                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
+                                    <!--th:value="${state}"-->
+                                    <!--th:selected="${#stringTools.equals(state,map.get('type'))}"-->
+                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
+                            <!--</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"
@@ -67,10 +67,11 @@
                         <thead>
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
-                            <th>手机号</th>
-                            <th>用户名</th>
-                            <th>类型</th>
-                            <th>商户id</th>
+                            <th>机构名称</th>
+                            <th>官方电话</th>
+                            <th>官方邮箱</th>
+                            <th>官方网址</th>
+                            <th>综合得分</th>
                             <th>状态</th>
                             <th>备注</th>
                             <th>创建时间</th>
@@ -78,20 +79,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="bo:${page.content}">
-                            <td th:text="${bo.id}"></td>
-                            <td th:text="${bo.mobile}"></td>
-                            <td th:text="${bo.userName}"></td>
-                            <td th:text="#{EpSystemUserType.+${bo.type}}"></td>
-                            <td th:text="${bo.organId}"></td>
-                            <td th:text="#{EpSystemUserStatus.+${bo.status}}"></td>
+                        <tr th:each="po:${page.content}">
+                            <td th:text="${po.id}"></td>
+                            <td th:text="${po.organName}"></td>
 
-                            <td th:text="${bo.remark}"></td>
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${po.organPhone}"></td>
+                            <td th:text="${po.organEmail}"></td>
+                            <td th:text="${po.organUrl}"></td>
+                            <td th:text="${po.togetherScore}"></td>
+                            <td th:text="#{EpOrganStatus.+${po.status}}"></td>
+
+                            <td th:text="${po.remark}"></td>
+                            <td th:text="${po.createAt}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info" th:href="@{/auth/user/view/}+${bo.id}">查看</a>
-                                <a class="btn btn-xs btn-primary" th:href="@{/auth/user/updateInit/}+${bo.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteUserBox('+${bo.id}+')'">删除</a>
+                                <a class="btn btn-xs btn-info" th:href="@{/auth/user/view/}+${po.id}">查看</a>
+                                <a class="btn btn-xs btn-primary" th:href="@{/auth/user/updateInit/}+${po.id}">修改</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" >删除</a>
 
                             </td>
 

@@ -33,6 +33,11 @@ public class SystemRoleRepository extends AbstractCRUDRepository<EpSystemRoleRec
                 .fetchOneInto(EpSystemRolePo.class);
     }
 
+    /**
+     * 根据id逻辑删除角色
+     * @param id
+     * @return
+     */
     public int deleteLogical(Long id){
         return dslContext.update(EP_SYSTEM_ROLE)
                 .set(EP_SYSTEM_ROLE.DEL_FLAG,true)
