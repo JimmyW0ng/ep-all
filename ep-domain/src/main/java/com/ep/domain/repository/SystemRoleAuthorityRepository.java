@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_MENU;
-import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_ROLE_AUTHORITY;
+import static com.ep.domain.repository.domain.Tables.*;
 import static com.ep.domain.repository.domain.tables.EpSystemRole.EP_SYSTEM_ROLE;
 
 /**
@@ -29,15 +27,17 @@ public class SystemRoleAuthorityRepository extends AbstractCRUDRepository<EpSyst
         super(dslContext, EP_SYSTEM_ROLE_AUTHORITY, EP_SYSTEM_ROLE_AUTHORITY.ID, EpSystemRoleAuthorityPo.class);
     }
 
-    public List<String> getAuthoritesByRoleIds(Long... roleIds) {
-        List<Long> list=dslContext.selectDistinct(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID)
-                .from(EP_SYSTEM_ROLE_AUTHORITY)
-                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE_ID.in(roleIds))
-                .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.eq(false))
-                .fetchInto(Long.class);
-        return dslContext.select(EP_SYSTEM_MENU.PERMISSION)
-                .from(EP_SYSTEM_MENU)
-                .where(EP_SYSTEM_MENU.ID.in(list))
+    public List<String> getAuthoritesByPrincipal(String principal) {
+        Long userId=dslContext.select(EP_SYSTEM_USER.ID)
+                .from(EP_SYSTEM_USER)
+                .where(EP_SYSTEM_USER.MOBILE.eq(Long.parseLong(principal)))
+                .fetchOneInto(Long.class);
+       return dslContext.select(EP_SYSTEM_MENU.PERMISSION).from(EP_SYSTEM_ROLE_AUTHORITY)
+                .leftJoin(EP_SYSTEM_MENU).on(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.eq(EP_SYSTEM_MENU.ID))
+                .leftJoin(EP_SYSTEM_USER_ROLE).on(EP_SYSTEM_ROLE_AUTHORITY.ROLE_ID.eq(EP_SYSTEM_USER_ROLE.ROLE_ID))
+                .where(EP_SYSTEM_USER_ROLE.USER_ID.eq(userId))
+                .and(EP_SYSTEM_MENU.PERMISSION.isNotNull())
+                .groupBy(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID)
                 .fetchInto(String.class);
     }
 

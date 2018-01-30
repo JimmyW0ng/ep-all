@@ -1,23 +1,26 @@
 package com.ep.backend.security;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.WebTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpSystemUserPo;
+import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.repository.SystemUserRepository;
 import com.ep.domain.repository.SystemUserRoleRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,7 +35,7 @@ public class BackendSecurityAuthComponent {
     @Autowired
     private SystemUserRepository systemUserRepository;
     @Autowired
-    private SystemUserRoleRepository systemUserRoleRepository;
+    private SystemRoleAuthorityRepository systemRoleAuthorityRepository;
 
     /**
      * 登录校验
@@ -41,7 +44,7 @@ public class BackendSecurityAuthComponent {
      * @param credential
      * @throws AuthenticationException
      */
-    public Long[] checkLogin(String principal, String credential, String captchaCode) throws AuthenticationException {
+    public void checkLogin(String principal, String credential, String captchaCode) throws AuthenticationException {
         // 校验图形验证码
         Object captcha = WebTools.getCurrentRequest().getSession().getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
         if (captcha == null || captchaCode == null) {
@@ -70,13 +73,19 @@ public class BackendSecurityAuthComponent {
         } else if (!systemUserPo.getPassword().equals(pwdEncode)) {
             throw new BadCredentialsException("密码错误！");
         }
-        //定位角色
-        List<Long> roleIds = systemUserRoleRepository.getRoleIdsByUserId(systemUserPo.getId());
-        if(CollectionsTools.isNotEmpty(roleIds)){
-            return roleIds.toArray(new Long[0]);
-        }else{
-            return new Long[]{};
-        }
+    }
 
+    /**
+     * 加载用户的权限
+     *
+     * @param principal
+     * @return
+     */
+    public Collection<GrantedAuthority> loadCurrentUserGrantedAuthorities(String principal) {
+        List<String> auths = systemRoleAuthorityRepository.getAuthoritesByPrincipal(principal);
+        Collection<GrantedAuthority> authorities = Lists.newArrayList();
+
+        auths.forEach(item -> authorities.add(new SimpleGrantedAuthority(item)));
+        return authorities;
     }
 }
