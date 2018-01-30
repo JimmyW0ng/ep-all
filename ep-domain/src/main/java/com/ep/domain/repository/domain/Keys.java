@@ -4,72 +4,13 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.EpConstantCatalog;
-import com.ep.domain.repository.domain.tables.EpConstantRegion;
-import com.ep.domain.repository.domain.tables.EpFile;
-import com.ep.domain.repository.domain.tables.EpMember;
-import com.ep.domain.repository.domain.tables.EpMemberChild;
-import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
-import com.ep.domain.repository.domain.tables.EpMemberChildSign;
-import com.ep.domain.repository.domain.tables.EpMemberChildTag;
-import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
-import com.ep.domain.repository.domain.tables.EpOrder;
-import com.ep.domain.repository.domain.tables.EpOrgan;
-import com.ep.domain.repository.domain.tables.EpOrganAccount;
-import com.ep.domain.repository.domain.tables.EpOrganCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClass;
-import com.ep.domain.repository.domain.tables.EpOrganClassCatelog;
-import com.ep.domain.repository.domain.tables.EpOrganClassChild;
-import com.ep.domain.repository.domain.tables.EpOrganClassComment;
-import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
-import com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment;
-import com.ep.domain.repository.domain.tables.EpOrganCourse;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
-import com.ep.domain.repository.domain.tables.EpSystemClient;
-import com.ep.domain.repository.domain.tables.EpSystemDict;
-import com.ep.domain.repository.domain.tables.EpSystemMenu;
-import com.ep.domain.repository.domain.tables.EpSystemRole;
-import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
-import com.ep.domain.repository.domain.tables.EpSystemUser;
-import com.ep.domain.repository.domain.tables.EpSystemUserRole;
-import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
-import com.ep.domain.repository.domain.tables.records.EpConstantCatalogRecord;
-import com.ep.domain.repository.domain.tables.records.EpConstantRegionRecord;
-import com.ep.domain.repository.domain.tables.records.EpFileRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildHonorRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildSignRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberRecord;
-import com.ep.domain.repository.domain.tables.records.EpMessageCaptchaRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCatalogRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassCatelogRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleCommentRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCourseTagRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCourseTeamRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemClientRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemDictRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemRoleAuthorityRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemUserRoleRecord;
-import com.ep.domain.repository.domain.tables.records.EpWechatSessionTokenRecord;
-
-import javax.annotation.Generated;
-
+import com.ep.domain.repository.domain.tables.*;
+import com.ep.domain.repository.domain.tables.records.*;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -156,6 +97,7 @@ public class Keys {
     public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_SYS_DICT_GROUPNAME_KEY = UniqueKeys0.KEY_EP_SYSTEM_DICT_SYS_DICT_GROUPNAME_KEY;
     public static final UniqueKey<EpSystemMenuRecord> KEY_EP_SYSTEM_MENU_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_MENU_PRIMARY;
     public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_ROLE_PRIMARY;
+    public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE = UniqueKeys0.KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE;
     public static final UniqueKey<EpSystemRoleAuthorityRecord> KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY;
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_PRIMARY;
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_IDX_MOBILE = UniqueKeys0.KEY_EP_SYSTEM_USER_IDX_MOBILE;
@@ -236,6 +178,7 @@ public class Keys {
         public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_SYS_DICT_GROUPNAME_KEY = createUniqueKey(EpSystemDict.EP_SYSTEM_DICT, "KEY_ep_system_dict_sys_dict_groupname_key", EpSystemDict.EP_SYSTEM_DICT.GROUP_NAME, EpSystemDict.EP_SYSTEM_DICT.KEY);
         public static final UniqueKey<EpSystemMenuRecord> KEY_EP_SYSTEM_MENU_PRIMARY = createUniqueKey(EpSystemMenu.EP_SYSTEM_MENU, "KEY_ep_system_menu_PRIMARY", EpSystemMenu.EP_SYSTEM_MENU.ID);
         public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_PRIMARY = createUniqueKey(EpSystemRole.EP_SYSTEM_ROLE, "KEY_ep_system_role_PRIMARY", EpSystemRole.EP_SYSTEM_ROLE.ID);
+        public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE = createUniqueKey(EpSystemRole.EP_SYSTEM_ROLE, "KEY_ep_system_role_UNIQUE_ROLE_CODE", EpSystemRole.EP_SYSTEM_ROLE.ROLE_CODE);
         public static final UniqueKey<EpSystemRoleAuthorityRecord> KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY = createUniqueKey(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY, "KEY_ep_system_role_authority_PRIMARY", EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ID);
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_PRIMARY", EpSystemUser.EP_SYSTEM_USER.ID);
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_IDX_MOBILE = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_IDX_MOBILE", EpSystemUser.EP_SYSTEM_USER.MOBILE);

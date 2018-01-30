@@ -6,10 +6,12 @@ package com.ep.domain.pojo.po;
 
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 
@@ -27,13 +29,16 @@ public class EpOrderPo extends AbstractBasePojo {
     private Long ognId;
     private Long courseId;
     private Long classId;
+    private BigDecimal prize;
     private EpOrderStatus status;
     private Timestamp authTime;
     private Timestamp cancelTime;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }

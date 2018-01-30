@@ -12,6 +12,7 @@ import org.jooq.*;
 import org.jooq.impl.TableImpl;
 
 import javax.annotation.Generated;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrder extends TableImpl<EpOrderRecord> {
 
-    private static final long serialVersionUID = -1250531234;
+    private static final long serialVersionUID = 1073726255;
 
     /**
      * The reference instance of <code>ep.ep_order</code>
@@ -71,9 +72,14 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
     public final TableField<EpOrderRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
 
     /**
-     * The column <code>ep.ep_order.class_id</code>. sku.id
+     * The column <code>ep.ep_order.class_id</code>. 班次id
      */
-    public final TableField<EpOrderRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "sku.id");
+    public final TableField<EpOrderRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
+
+    /**
+     * The column <code>ep.ep_order.prize</code>. 价格
+     */
+    public final TableField<EpOrderRecord, BigDecimal> PRIZE = createField("prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "价格");
 
     /**
      * The column <code>ep.ep_order.status</code>. 订单状态:保存；成功；拒绝；取消；

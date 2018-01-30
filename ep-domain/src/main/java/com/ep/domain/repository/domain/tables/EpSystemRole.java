@@ -8,20 +8,13 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemRole extends TableImpl<EpSystemRoleRecord> {
 
-    private static final long serialVersionUID = 146464595;
+    private static final long serialVersionUID = -929868734;
 
     /**
      * The reference instance of <code>ep.ep_system_role</code>
@@ -158,7 +151,7 @@ public class EpSystemRole extends TableImpl<EpSystemRoleRecord> {
      */
     @Override
     public List<UniqueKey<EpSystemRoleRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpSystemRoleRecord>>asList(Keys.KEY_EP_SYSTEM_ROLE_PRIMARY);
+        return Arrays.<UniqueKey<EpSystemRoleRecord>>asList(Keys.KEY_EP_SYSTEM_ROLE_PRIMARY, Keys.KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE);
     }
 
     /**

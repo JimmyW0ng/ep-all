@@ -61,6 +61,29 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
+     * Setter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
+     */
+    public EpSystemRoleAuthorityRecord setMenuId(Long value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Create a detached EpSystemRoleAuthorityRecord
+     */
+    public EpSystemRoleAuthorityRecord() {
+        super(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
+     */
+    public EpSystemRoleAuthorityRecord setCreateAt(Timestamp value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpSystemRoleAuthorityRecord
      */
     public EpSystemRoleAuthorityRecord(Long id, Long roleId, Long menuId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -77,43 +100,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
-     */
-    public Long getMenuId() {
-        return (Long) get(2);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
-     */
-    public EpSystemRoleAuthorityRecord setMenuId(Long value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(3);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
-     */
-    public EpSystemRoleAuthorityRecord setCreateAt(Timestamp value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
      */
     public EpSystemRoleAuthorityRecord setUpdateAt(Timestamp value) {
@@ -122,10 +108,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     * Getter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
      */
-    public String getRemark() {
-        return (String) get(5);
+    public Long getMenuId() {
+        return (Long) get(2);
     }
 
     /**
@@ -137,10 +123,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(3);
     }
 
     /**
@@ -149,6 +135,20 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     public EpSystemRoleAuthorityRecord setDelFlag(Boolean value) {
         set(6, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(5);
     }
 
     /**
@@ -175,19 +175,18 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>ep.ep_system_role_authority.version</code>.
-     */
-    public EpSystemRoleAuthorityRecord setVersion(Long value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public Row8<Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
         return (Row8) super.fieldsRow();
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
     }
 
     /**
@@ -204,14 +203,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     @Override
     public Field<Long> field2() {
         return EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ROLE_ID;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row8<Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row8) super.valuesRow();
     }
 
     /**
@@ -255,6 +246,14 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
+     * Setter for <code>ep.ep_system_role_authority.version</code>.
+     */
+    public EpSystemRoleAuthorityRecord setVersion(Long value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -268,14 +267,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     @Override
     public Long value2() {
         return getRoleId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field8() {
-        return EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.VERSION;
     }
 
     /**
@@ -322,6 +313,14 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
      * {@inheritDoc}
      */
     @Override
+    public Row8<Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row8) super.valuesRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public EpSystemRoleAuthorityRecord value1(Long value) {
         setId(value);
         return this;
@@ -334,14 +333,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     public EpSystemRoleAuthorityRecord value2(Long value) {
         setRoleId(value);
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value8() {
-        return getVersion();
     }
 
     /**
@@ -398,17 +389,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemRoleAuthorityRecord
-     */
-    public EpSystemRoleAuthorityRecord() {
-        super(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -423,5 +403,25 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         value7(value7);
         value8(value8);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field8() {
+        return EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.VERSION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value8() {
+        return getVersion();
     }
 }

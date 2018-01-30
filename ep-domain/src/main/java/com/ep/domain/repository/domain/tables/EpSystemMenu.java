@@ -10,20 +10,13 @@ import com.ep.domain.repository.domain.enums.EpSystemMenuMenuType;
 import com.ep.domain.repository.domain.enums.EpSystemMenuStatus;
 import com.ep.domain.repository.domain.enums.EpSystemMenuTarget;
 import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -39,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemMenu extends TableImpl<EpSystemMenuRecord> {
 
-    private static final long serialVersionUID = -1707129205;
+    private static final long serialVersionUID = -221030836;
 
     /**
      * The reference instance of <code>ep.ep_system_menu</code>
@@ -102,7 +95,7 @@ public class EpSystemMenu extends TableImpl<EpSystemMenuRecord> {
     /**
      * The column <code>ep.ep_system_menu.permission</code>. 权限标识
      */
-    public final TableField<EpSystemMenuRecord, String> PERMISSION = createField("permission", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "权限标识");
+    public final TableField<EpSystemMenuRecord, String> PERMISSION = createField("permission", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "权限标识");
 
     /**
      * The column <code>ep.ep_system_menu.create_at</code>. 创建时间
