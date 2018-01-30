@@ -55,5 +55,20 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .orderBy(EP_ORDER.ID.desc())
                 .fetchInto(EpOrderPo.class);
     }
+
+    /**
+     * 根据孩子查询成功的
+     *
+     * @param childId
+     * @return
+     */
+    public List<EpOrderPo> getSuccessByChildId(Long childId) {
+        return dslContext.selectFrom(EP_ORDER)
+                .where(EP_ORDER.CHILD_ID.eq(childId))
+                .and(EP_ORDER.STATUS.in(EpOrderStatus.success))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .orderBy(EP_ORDER.ID.desc())
+                .fetchInto(EpOrderPo.class);
+    }
 }
 

@@ -136,7 +136,6 @@ public class OrderService {
         orderPo.setCourseId(classPo.getCourseId());
         orderPo.setClassId(classId);
         orderPo.setStatus(EpOrderStatus.save);
-        orderPo.setChildVersion(childPo.getVersion());
         orderRepository.insert(orderPo);
         return resultDo;
     }

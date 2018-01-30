@@ -9,9 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -34,9 +33,7 @@ public class EpSystemRoleAuthorityPo extends AbstractBasePojo {
 
     private Long      id;
     private Long      roleId;
-    private String    role;
     private Long      menuId;
-    private String    authority;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String    remark;

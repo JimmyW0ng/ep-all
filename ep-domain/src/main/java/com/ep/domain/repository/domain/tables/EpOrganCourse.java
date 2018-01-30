@@ -9,21 +9,14 @@ import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -39,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
 
-    private static final long serialVersionUID = 871780671;
+    private static final long serialVersionUID = -1670407781;
 
     /**
      * The reference instance of <code>ep.ep_organ_course</code>
@@ -115,9 +108,9 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
     public final TableField<EpOrganCourseRecord, String> ADDRESS_LAT = createField("address_lat", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "上课地址纬度");
 
     /**
-     * The column <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已审核；已上线；进行中；已下线；
+     * The column <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
      */
-    public final TableField<EpOrganCourseRecord, EpOrganCourseCourseStatus> COURSE_STATUS = createField("course_status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus.class), this, "课状态：已保存；已审核；已上线；进行中；已下线；");
+    public final TableField<EpOrganCourseRecord, EpOrganCourseCourseStatus> COURSE_STATUS = createField("course_status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus.class), this, "课状态：已保存；已上线；进行中；已下线；");
 
     /**
      * The column <code>ep.ep_organ_course.online_time</code>. 上线时间

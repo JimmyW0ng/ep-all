@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord> implements Record21<Long, Long, EpOrganCourseCourseType, Long, String, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, String, Timestamp, Timestamp, Boolean, Long> {
 
-    private static final long serialVersionUID = 506414372;
+    private static final long serialVersionUID = 423990144;
 
     /**
      * Setter for <code>ep.ep_organ_course.id</code>. 主键
@@ -214,18 +214,39 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已审核；已上线；进行中；已下线；
+     * Create a detached EpOrganCourseRecord
      */
-    public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
-        set(12, value);
-        return this;
+    public EpOrganCourseRecord() {
+        super(EpOrganCourse.EP_ORGAN_COURSE);
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已审核；已上线；进行中；已下线；
+     * Create a detached, initialised EpOrganCourseRecord
      */
-    public EpOrganCourseCourseStatus getCourseStatus() {
-        return (EpOrganCourseCourseStatus) get(12);
+    public EpOrganCourseRecord(Long id, Long ognId, EpOrganCourseCourseType courseType, Long courseCatalogId, String courseName, String courseIntroduce, String courseContent, String courseNote, BigDecimal prizeMin, String courseAddress, String addressLng, String addressLat, EpOrganCourseCourseStatus courseStatus, Timestamp onlineTime, Timestamp enterTimeStart, Timestamp enterTimeEnd, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpOrganCourse.EP_ORGAN_COURSE);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, courseType);
+        set(3, courseCatalogId);
+        set(4, courseName);
+        set(5, courseIntroduce);
+        set(6, courseContent);
+        set(7, courseNote);
+        set(8, prizeMin);
+        set(9, courseAddress);
+        set(10, addressLng);
+        set(11, addressLat);
+        set(12, courseStatus);
+        set(13, onlineTime);
+        set(14, enterTimeStart);
+        set(15, enterTimeEnd);
+        set(16, remark);
+        set(17, createAt);
+        set(18, updateAt);
+        set(19, delFlag);
+        set(20, version);
     }
 
     /**
@@ -282,10 +303,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Create a detached EpOrganCourseRecord
+     * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
      */
-    public EpOrganCourseRecord() {
-        super(EpOrganCourse.EP_ORGAN_COURSE);
+    public EpOrganCourseCourseStatus getCourseStatus() {
+        return (EpOrganCourseCourseStatus) get(12);
     }
 
     /**
@@ -297,32 +318,11 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Create a detached, initialised EpOrganCourseRecord
+     * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
      */
-    public EpOrganCourseRecord(Long id, Long ognId, EpOrganCourseCourseType courseType, Long courseCatalogId, String courseName, String courseIntroduce, String courseContent, String courseNote, BigDecimal prizeMin, String courseAddress, String addressLng, String addressLat, EpOrganCourseCourseStatus courseStatus, Timestamp onlineTime, Timestamp enterTimeStart, Timestamp enterTimeEnd, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpOrganCourse.EP_ORGAN_COURSE);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, courseType);
-        set(3, courseCatalogId);
-        set(4, courseName);
-        set(5, courseIntroduce);
-        set(6, courseContent);
-        set(7, courseNote);
-        set(8, prizeMin);
-        set(9, courseAddress);
-        set(10, addressLng);
-        set(11, addressLat);
-        set(12, courseStatus);
-        set(13, onlineTime);
-        set(14, enterTimeStart);
-        set(15, enterTimeEnd);
-        set(16, remark);
-        set(17, createAt);
-        set(18, updateAt);
-        set(19, delFlag);
-        set(20, version);
+    public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
+        set(12, value);
+        return this;
     }
 
     /**

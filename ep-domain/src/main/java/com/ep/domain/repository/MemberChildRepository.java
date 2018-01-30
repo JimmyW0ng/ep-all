@@ -1,7 +1,6 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.DateTools;
-import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
@@ -42,19 +41,11 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
                 .set(EP_MEMBER_CHILD.CHILD_TRUE_NAME, updatePo.getChildTrueName())
                 .set(EP_MEMBER_CHILD.CHILD_SEX, updatePo.getChildSex())
                 .set(EP_MEMBER_CHILD.CHILD_BIRTHDAY, updatePo.getChildBirthday())
-                .set(EP_MEMBER_CHILD.SHOW_AT, DateTools.getCurrentDateTime());
-        if (StringTools.isNotBlank(updatePo.getChildNickName())) {
-            step = step.set(EP_MEMBER_CHILD.CHILD_NICK_NAME, updatePo.getChildNickName());
-        }
-        if (StringTools.isNotBlank(updatePo.getChildIdentity())) {
-            step = step.set(EP_MEMBER_CHILD.CHILD_IDENTITY, updatePo.getChildIdentity());
-        }
-        if (StringTools.isNotBlank(updatePo.getCurrentSchool())) {
-            step = step.set(EP_MEMBER_CHILD.CURRENT_SCHOOL, updatePo.getCurrentSchool());
-        }
-        if (StringTools.isNotBlank(updatePo.getCurrentClass())) {
-            step = step.set(EP_MEMBER_CHILD.CURRENT_CLASS, updatePo.getCurrentClass());
-        }
+                .set(EP_MEMBER_CHILD.SHOW_AT, DateTools.getCurrentDateTime())
+                .set(EP_MEMBER_CHILD.CHILD_NICK_NAME, updatePo.getChildNickName())
+                .set(EP_MEMBER_CHILD.CHILD_IDENTITY, updatePo.getChildIdentity())
+                .set(EP_MEMBER_CHILD.CURRENT_SCHOOL, updatePo.getCurrentSchool())
+                .set(EP_MEMBER_CHILD.CURRENT_CLASS, updatePo.getCurrentClass());
         return step.where(EP_MEMBER_CHILD.ID.eq(updatePo.getId()))
                 .and(EP_MEMBER_CHILD.MEMBER_ID.eq(updatePo.getMemberId()))
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false)).execute();

@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrder extends TableImpl<EpOrderRecord> {
 
-    private static final long serialVersionUID = 1236138361;
+    private static final long serialVersionUID = -1250531234;
 
     /**
      * The reference instance of <code>ep.ep_order</code>
@@ -89,11 +89,6 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
      * The column <code>ep.ep_order.cancel_time</code>. 订单取消时间
      */
     public final TableField<EpOrderRecord, Timestamp> CANCEL_TIME = createField("cancel_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "订单取消时间");
-
-    /**
-     * The column <code>ep.ep_order.child_version</code>. 孩子信息版本号
-     */
-    public final TableField<EpOrderRecord, Long> CHILD_VERSION = createField("child_version", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子信息版本号");
 
     /**
      * The column <code>ep.ep_order.create_at</code>. 创建时间

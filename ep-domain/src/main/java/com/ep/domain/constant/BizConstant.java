@@ -84,7 +84,12 @@ public class BizConstant {
     public static short FILE_BIZ_TYPE_CODE_TEACHER_AVATAR = 140;
 
     /**
-     * 数量控制
+     * 订单数量控制
      */
     public static int ORDER_BEYOND_NUM = 10;
+
+    /**
+     * 孩子数量控制
+     */
+    public static int CHILD_LIMIT_NUM = 3;
 }

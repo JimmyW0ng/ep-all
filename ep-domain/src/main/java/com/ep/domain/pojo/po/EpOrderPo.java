@@ -30,7 +30,6 @@ public class EpOrderPo extends AbstractBasePojo {
     private EpOrderStatus status;
     private Timestamp authTime;
     private Timestamp cancelTime;
-    private Long childVersion;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

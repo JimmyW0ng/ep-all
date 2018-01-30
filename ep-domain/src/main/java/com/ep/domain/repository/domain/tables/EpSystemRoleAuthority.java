@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpSystemRoleAuthorityRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemRoleAuthority extends TableImpl<EpSystemRoleAuthorityRecord> {
 
-    private static final long serialVersionUID = 83975199;
+    private static final long serialVersionUID = -898190196;
 
     /**
      * The reference instance of <code>ep.ep_system_role_authority</code>
@@ -62,19 +55,9 @@ public class EpSystemRoleAuthority extends TableImpl<EpSystemRoleAuthorityRecord
     public final TableField<EpSystemRoleAuthorityRecord, Long> ROLE_ID = createField("role_id", org.jooq.impl.SQLDataType.BIGINT, this, "角色id");
 
     /**
-     * The column <code>ep.ep_system_role_authority.role</code>. 角色名称
-     */
-    public final TableField<EpSystemRoleAuthorityRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "角色名称");
-
-    /**
      * The column <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
      */
     public final TableField<EpSystemRoleAuthorityRecord, Long> MENU_ID = createField("menu_id", org.jooq.impl.SQLDataType.BIGINT, this, "菜单id");
-
-    /**
-     * The column <code>ep.ep_system_role_authority.authority</code>. 权限
-     */
-    public final TableField<EpSystemRoleAuthorityRecord, String> AUTHORITY = createField("authority", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "权限");
 
     /**
      * The column <code>ep.ep_system_role_authority.create_at</code>. 创建时间

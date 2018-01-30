@@ -39,6 +39,7 @@ public class MessageCode {
      */
     public static final String ERROR_CHILD_TRUE_NAME_EXISTS = "ERROR_CHILD_TRUE_NAME_EXISTS";
     public static final String ERROR_CHILD_NOT_EXISTS = "ERROR_CHILD_NOT_EXISTS";
+    public static final String ERROR_CHILD_CAN_NOT_DEL = "ERROR_CHILD_CAN_NOT_DEL";
     /**
      * 课程
      */

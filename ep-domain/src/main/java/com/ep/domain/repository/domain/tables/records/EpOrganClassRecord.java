@@ -224,31 +224,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
-     */
-    public Integer getOrderedNum() {
-        return (Integer) get(9);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
-     */
-    public Integer getEnteredNum() {
-        return (Integer) get(10);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
     public Integer getCourseNum() {
         return (Integer) get(11);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.sort</code>. 排序
-     */
-    public Long getSort() {
-        return (Long) get(12);
     }
 
     /**
@@ -260,10 +239,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
-    public String getRemark() {
-        return (String) get(13);
+    public Integer getOrderedNum() {
+        return (Integer) get(9);
     }
 
     /**
@@ -275,10 +254,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(14);
+    public Integer getEnteredNum() {
+        return (Integer) get(10);
     }
 
     /**
@@ -290,10 +269,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_class.sort</code>. 排序
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(15);
+    public Long getSort() {
+        return (Long) get(12);
     }
 
     /**
@@ -305,10 +284,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ_class.remark</code>. 备注信息
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(16);
+    public String getRemark() {
+        return (String) get(13);
     }
 
     /**
@@ -317,6 +296,27 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     public EpOrganClassRecord setDelFlag(Boolean value) {
         set(16, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(14);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(15);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(16);
     }
 
     // -------------------------------------------------------------------------
@@ -450,22 +450,6 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
-        return (Row18) super.fieldsRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
-        return (Row18) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<Long> field13() {
         return EpOrganClass.EP_ORGAN_CLASS.SORT;
     }
@@ -492,6 +476,22 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     @Override
     public Field<Timestamp> field16() {
         return EpOrganClass.EP_ORGAN_CLASS.UPDATE_AT;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
+        return (Row18) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
+        return (Row18) super.valuesRow();
     }
 
     /**
@@ -594,22 +594,6 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field17() {
-        return EpOrganClass.EP_ORGAN_CLASS.DEL_FLAG;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field18() {
-        return EpOrganClass.EP_ORGAN_CLASS.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Long value13() {
         return getSort();
     }
@@ -636,6 +620,22 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     @Override
     public Timestamp value16() {
         return getUpdateAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Boolean> field17() {
+        return EpOrganClass.EP_ORGAN_CLASS.DEL_FLAG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field18() {
+        return EpOrganClass.EP_ORGAN_CLASS.VERSION;
     }
 
     /**
@@ -750,22 +750,6 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Boolean value17() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value18() {
-        return getVersion();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpOrganClassRecord value13(Long value) {
         setSort(value);
         return this;
@@ -807,10 +791,6 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -844,5 +824,25 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
         value17(value17);
         value18(value18);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean value17() {
+        return getDelFlag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value18() {
+        return getVersion();
     }
 }

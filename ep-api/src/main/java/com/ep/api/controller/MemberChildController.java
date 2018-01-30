@@ -100,8 +100,7 @@ public class MemberChildController extends ApiController {
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo delChild(@RequestParam("childId") Long childId) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
-        memberChildService.delChild(currentMbr.getId(), childId);
-        return ResultDo.build();
+        return memberChildService.delChild(currentMbr.getId(), childId);
     }
 
     @ApiOperation(value = "孩子上传头像", notes = "如果存在，则覆盖")

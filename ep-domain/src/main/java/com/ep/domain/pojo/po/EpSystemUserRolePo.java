@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.annotation.Generated;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 
@@ -35,7 +34,6 @@ public class EpSystemUserRolePo extends AbstractBasePojo {
     private Long      id;
     private Long      userId;
     private Long      roleId;
-    private String    roleCode;
     private Timestamp createAt;
     private Timestamp updateAt;
     private Boolean   delFlag;

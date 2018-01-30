@@ -8,8 +8,10 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
+import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildRepository;
+import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class MemberChildService {
     private MemberChildRepository memberChildRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     /**
      * 新增孩子信息
@@ -54,6 +58,8 @@ public class MemberChildService {
                              String childIdentity,
                              String currentSchool,
                              String currentClass) {
+        // 校验孩子数量
+
         // 前置校验
         Optional<?> optional = this.getByMemberIdAndTrueName(memberId, childTrueName);
         if (optional.isPresent()) {
@@ -124,8 +130,17 @@ public class MemberChildService {
      * @param id
      * @return
      */
-    public int delChild(Long memberId, Long id) {
-        return memberChildRepository.delChild(memberId, id);
+    public ResultDo delChild(Long memberId, Long id) {
+        EpMemberChildPo child = memberChildRepository.getById(id);
+        if (child == null || !child.getMemberId().equals(memberId)) {
+            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+        }
+        List<EpOrderPo> successOrders = orderRepository.getSuccessByChildId(id);
+        if (CollectionsTools.isNotEmpty(successOrders)) {
+            return ResultDo.build(MessageCode.ERROR_CHILD_CAN_NOT_DEL);
+        }
+        memberChildRepository.delChild(memberId, id);
+        return ResultDo.build();
     }
 
     /**
