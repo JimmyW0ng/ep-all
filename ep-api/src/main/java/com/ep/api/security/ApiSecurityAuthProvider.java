@@ -1,6 +1,5 @@
 package com.ep.api.security;
 
-import com.ep.domain.component.SecurityAuth;
 import com.ep.domain.pojo.bo.ApiCredentialBo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +25,13 @@ public class ApiSecurityAuthProvider implements AuthenticationProvider {
     @Autowired
     private ApiSecurityAuthComponent securityAuthComponent;
 
-    @Autowired
-    private SecurityAuth securityAuth;
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
         ApiPrincipalBo principalBo = (ApiPrincipalBo) token.getPrincipal();
         ApiCredentialBo credentialsBo = (ApiCredentialBo) token.getCredentials();
         securityAuthComponent.checkLogin(principalBo, credentialsBo);
-        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(principalBo.getRole());
+        Collection<GrantedAuthority> authorities = securityAuthComponent.getPermissionByRoleCode(principalBo.getRole());
         //授权
         return new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
     }

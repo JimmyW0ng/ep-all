@@ -8,11 +8,15 @@ import com.ep.domain.pojo.bo.ApiCredentialBo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpSystemClientPo;
+import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.SystemClientRepository;
+import com.ep.domain.repository.SystemMenuRepository;
+import com.ep.domain.repository.SystemRoleRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpSystemClientLoginSource;
 import com.ep.domain.service.MemberService;
 import com.ep.domain.service.MessageCaptchaService;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,12 +26,16 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.GeneralSecurityException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 鉴权组件（Spring Security）
@@ -46,15 +54,16 @@ public class ApiSecurityAuthComponent {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private SystemClientRepository systemClientRepository;
-
     @Autowired
     private MemberService memberService;
-
     @Autowired
     private MessageCaptchaService messageCaptchaService;
+    @Autowired
+    private SystemRoleRepository systemRoleRepository;
+    @Autowired
+    private SystemMenuRepository systemMenuRepository;
 
     /**
      * 会员登录获取token
@@ -218,6 +227,22 @@ public class ApiSecurityAuthComponent {
             return ResultDo.build(MessageCode.ERROR_PRINCIPAL_CHECK);
         }
         return ResultDo.build();
+    }
+
+    /**
+     * 根据角色编码
+     *
+     * @param roleCode
+     * @return
+     */
+    public Collection<GrantedAuthority> getPermissionByRoleCode(String roleCode) throws AuthenticationException {
+        EpSystemRolePo rolePo = systemRoleRepository.getByCode(roleCode);
+        List<String> permissions = systemMenuRepository.getByRoleId(rolePo.getId());
+        Collection<GrantedAuthority> authorities = Lists.newArrayList();
+        if (CollectionsTools.isNotEmpty(permissions)) {
+            permissions.forEach(item -> authorities.add(new SimpleGrantedAuthority(item)));
+        }
+        return authorities;
     }
 
     /**

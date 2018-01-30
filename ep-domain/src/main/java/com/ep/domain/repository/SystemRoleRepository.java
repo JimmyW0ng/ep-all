@@ -2,7 +2,6 @@ package com.ep.domain.repository;
 
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
-import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,19 @@ public class SystemRoleRepository extends AbstractCRUDRepository<EpSystemRoleRec
                     .where(EP_SYSTEM_ROLE.TARGET.eq(target))
                 .and(EP_SYSTEM_ROLE.DEL_FLAG.eq(false))
                 .fetchInto(EpSystemRolePo.class);
+    }
+
+    /**
+     * 根据角色编码获取角色
+     *
+     * @param roleCode
+     * @return
+     */
+    public EpSystemRolePo getByCode(String roleCode) {
+        return dslContext.selectFrom(EP_SYSTEM_ROLE)
+                .where(EP_SYSTEM_ROLE.DEL_FLAG.equal(false))
+                .and(EP_SYSTEM_ROLE.ROLE_CODE.equal(roleCode))
+                .fetchOneInto(EpSystemRolePo.class);
     }
 }
 

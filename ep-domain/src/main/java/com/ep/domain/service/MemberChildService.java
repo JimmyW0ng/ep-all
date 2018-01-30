@@ -59,7 +59,9 @@ public class MemberChildService {
                              String currentSchool,
                              String currentClass) {
         // 校验孩子数量
-
+        if (memberChildRepository.countChildNum(memberId) >= BizConstant.CHILD_LIMIT_NUM) {
+            return ResultDo.build(MessageCode.ERROR_CHILD_LIMIT_NUM);
+        }
         // 前置校验
         Optional<?> optional = this.getByMemberIdAndTrueName(memberId, childTrueName);
         if (optional.isPresent()) {

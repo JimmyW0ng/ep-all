@@ -2,7 +2,6 @@ package com.ep.api.filter;
 
 import com.ep.api.security.ApiSecurityAuthComponent;
 import com.ep.common.tool.StringTools;
-import com.ep.domain.component.SecurityAuth;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +39,6 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
     @Autowired
     private ApiSecurityAuthComponent securityAuthComponent;
 
-    @Autowired
-    private SecurityAuth securityAuth;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader(this.tokenHeaderName);
@@ -56,7 +52,6 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
             log.error("token格式错误！");
             chain.doFilter(request, response);
             return;
-            // throw new ServletException("token格式错误！");
         }
         authHeader = authHeader.substring(tokenHeaderPrefix.length() + 1);
         // 解析token
@@ -70,7 +65,7 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
         // 加载当前用户信息
         securityAuthComponent.loadCurrentUserInfo(principalBo);
         // 加载当前用户权限
-        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(principalBo.getRole());
+        Collection<GrantedAuthority> authorities = securityAuthComponent.getPermissionByRoleCode(principalBo.getRole());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
