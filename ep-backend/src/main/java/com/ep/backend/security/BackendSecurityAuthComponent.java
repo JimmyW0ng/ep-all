@@ -41,7 +41,7 @@ public class BackendSecurityAuthComponent {
      * @param credential
      * @throws AuthenticationException
      */
-    public String[] checkLogin(String principal, String credential, String captchaCode) throws AuthenticationException {
+    public Long[] checkLogin(String principal, String credential, String captchaCode) throws AuthenticationException {
         // 校验图形验证码
         Object captcha = WebTools.getCurrentRequest().getSession().getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
         if (captcha == null || captchaCode == null) {
@@ -71,11 +71,11 @@ public class BackendSecurityAuthComponent {
             throw new BadCredentialsException("密码错误！");
         }
         //定位角色
-        List<String> roles = systemUserRoleRepository.getRoleCodesByUserId(systemUserPo.getId());
-        if(CollectionsTools.isNotEmpty(roles)){
-            return roles.toArray(new String[0]);
+        List<Long> roleIds = systemUserRoleRepository.getRoleIdsByUserId(systemUserPo.getId());
+        if(CollectionsTools.isNotEmpty(roleIds)){
+            return roleIds.toArray(new Long[0]);
         }else{
-            return new String[]{};
+            return new Long[]{};
         }
 
     }

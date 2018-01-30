@@ -128,6 +128,7 @@
                                             aria-required="true">
                                         <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemMenuStatus).values()}"
                                                 th:value="${state}"
+                                                th:selected="${#stringTools.equals(state,'enable')}"
                                                 th:text="#{EpSystemMenuStatus.+${state.literal}}"
                                         >
                                         </option>

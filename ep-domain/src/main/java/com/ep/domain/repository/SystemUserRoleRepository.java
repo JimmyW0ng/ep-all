@@ -23,12 +23,6 @@ public class SystemUserRoleRepository extends AbstractCRUDRepository<EpSystemUse
             super(dslContext, EP_SYSTEM_USER_ROLE, EP_SYSTEM_USER_ROLE.ID, EpSystemUserRolePo.class);
     }
 
-    public List<String> getRoleCodesByUserId(Long id){
-        return dslContext.select(EP_SYSTEM_USER_ROLE.ROLE_CODE)
-                .from(EP_SYSTEM_USER_ROLE)
-                .where(EP_SYSTEM_USER_ROLE.USER_ID.eq(id))
-                .fetchInto(String.class);
-    }
 
     public List<Long> getRoleIdsByUserId(Long userId){
         return dslContext.select(EP_SYSTEM_USER_ROLE.ROLE_ID)

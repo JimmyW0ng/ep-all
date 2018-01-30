@@ -11,11 +11,13 @@ import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrganCourseRepository;
 import com.ep.domain.repository.OrganRepository;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,4 +75,8 @@ public class OrganService {
         return organRepository.queryOgnPage(pageable);
     }
 
+
+    public Page<EpOrganPo> findByPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return organRepository.findByPageable(pageable, condition);
+    }
 }

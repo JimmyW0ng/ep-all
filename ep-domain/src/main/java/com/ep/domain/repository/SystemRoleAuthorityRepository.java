@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_MENU;
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_ROLE_AUTHORITY;
 import static com.ep.domain.repository.domain.tables.EpSystemRole.EP_SYSTEM_ROLE;
 
@@ -28,11 +29,15 @@ public class SystemRoleAuthorityRepository extends AbstractCRUDRepository<EpSyst
         super(dslContext, EP_SYSTEM_ROLE_AUTHORITY, EP_SYSTEM_ROLE_AUTHORITY.ID, EpSystemRoleAuthorityPo.class);
     }
 
-    public List<String> getAuthoritesByRole(String... role) {
-        return dslContext.selectDistinct(EP_SYSTEM_ROLE_AUTHORITY.AUTHORITY)
+    public List<String> getAuthoritesByRoleIds(Long... roleIds) {
+        List<Long> list=dslContext.selectDistinct(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID)
                 .from(EP_SYSTEM_ROLE_AUTHORITY)
-                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE.in(role))
+                .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE_ID.in(roleIds))
                 .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.eq(false))
+                .fetchInto(Long.class);
+        return dslContext.select(EP_SYSTEM_MENU.PERMISSION)
+                .from(EP_SYSTEM_MENU)
+                .where(EP_SYSTEM_MENU.ID.in(list))
                 .fetchInto(String.class);
     }
 

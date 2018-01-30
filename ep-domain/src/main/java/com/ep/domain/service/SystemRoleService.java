@@ -59,7 +59,6 @@ public class SystemRoleService {
         EpSystemRolePo insertPo=systemRoleRepository.insertNew(po);
         list.forEach(p->{
             p.setRoleId(insertPo.getId());
-            p.setRole(insertPo.getRoleCode());
         });
         systemRoleAuthorityRepository.insert(list);
         return insertPo;
@@ -91,7 +90,6 @@ public class SystemRoleService {
         diffAdd.forEach(p->{
             EpSystemRoleAuthorityPo systemRoleAuthorityPoAdd=(EpSystemRoleAuthorityPo)map.get(p);
             systemRoleAuthorityPoAdd.setRoleId(po.getId());
-            systemRoleAuthorityPoAdd.setRole(po.getRoleCode());
             systemRoleAuthorityPoNew.add(systemRoleAuthorityPoAdd);
         });
         //插入  menuNewSet有， menuOldSet无

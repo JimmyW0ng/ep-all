@@ -5,7 +5,6 @@ import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.SystemRoleBo;
 import com.ep.domain.pojo.bo.SystemUserBo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
@@ -57,7 +56,7 @@ public class SystemUserController extends BackendController {
     private String passwordSaltKey;
 
     /**
-     * 列表
+     * 用户列表
      *
      * @return
      */

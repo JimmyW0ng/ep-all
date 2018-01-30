@@ -31,8 +31,8 @@ public class BackendSecurityAuthProvider implements AuthenticationProvider {
         String principal = authentication.getPrincipal().toString();
         String credentials = authentication.getCredentials().toString();
         String captchaCode = ((BackendAuthenticationDetails) authentication.getDetails()).getCaptchaCode();
-        String[] roles = securityAuthComponent.checkLogin(principal, credentials, captchaCode);
-        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(roles);
+        Long[] roleIds = securityAuthComponent.checkLogin(principal, credentials, captchaCode);
+        Collection<GrantedAuthority> authorities = securityAuth.loadCurrentUserGrantedAuthorities(roleIds);
         //授权
         return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), null, authorities);
     }

@@ -24,11 +24,11 @@ public class SecurityAuth {
     /**
      * 加载用户的权限
      *
-     * @param role
+     * @param roleIds
      * @return
      */
-    public Collection<GrantedAuthority> loadCurrentUserGrantedAuthorities(String... role) {
-        List<String> auths = systemRoleAuthorityRepository.getAuthoritesByRole(role);
+    public Collection<GrantedAuthority> loadCurrentUserGrantedAuthorities(Long... roleIds) {
+        List<String> auths = systemRoleAuthorityRepository.getAuthoritesByRoleIds(roleIds);
         Collection<GrantedAuthority> authorities = Lists.newArrayList();
         auths.forEach(item -> authorities.add(new SimpleGrantedAuthority(item)));
         return authorities;
