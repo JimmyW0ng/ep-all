@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+<header>
+    <th:block layout:fragment="links">
+
+
+    </th:block>
+</header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 >查看商家</h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="history.back()">返回</a>
+
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="organFrm" th:object="${organPo}">
+                <input type="hidden" id="id" name="id" th:field="*{id}"/>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构名称：</label>
+                    <div class="col-sm-3">
+                        <input id="organName" name="organName" type="text" class="form-control" required="true" th:field="*{organName}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构地址：</label>
+                    <div class="col-sm-3">
+                        <input id="organAddress" name="organAddress" type="text" class="form-control" required="true" th:field="*{organAddress}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">地区经度：</label>
+                    <div class="col-sm-3">
+                        <input  name="" type="text" class="form-control" required="true"
+                                aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">地区纬度：</label>
+                    <div class="col-sm-3">
+                        <input  name="" type="text" class="form-control" required="true"
+                                aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构简介：</label>
+                    <div class="col-sm-3">
+                        <textarea id="organShortIntroduce"  name="organShortIntroduce" type="text" class="form-control" required="true" th:field="*{organShortIntroduce}"
+                                  aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构成立日期：</label>
+                    <div class="col-sm-3">
+                        <input id="organCreateDate" name="organCreateDate" type="text" class="form-control" required="true" th:field="*{organCreateDate}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构官方电话：</label>
+                    <div class="col-sm-3">
+                        <input id="organPhone" name="organPhone" type="text" class="form-control" required="true" th:field="*{organPhone}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构官方邮箱：</label>
+                    <div class="col-sm-3">
+                        <input id="organEmail" name="organEmail" type="text" class="form-control" required="true" th:field="*{organEmail}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构官方网址：</label>
+                    <div class="col-sm-3">
+                        <input id="organUrl" name="organUrl" type="text" class="form-control" required="true" th:field="*{organUrl}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构介绍：</label>
+                    <div class="col-sm-3">
+                        <textarea id="organIntroduce" name="organIntroduce" type="text" class="form-control" required="true" th:field="*{organIntroduce}"
+                                  aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">营销权重：</label>
+                    <div class="col-sm-3">
+                        <input id="marketWeight" name="marketWeight" type="text" class="form-control" required="true" th:field="*{marketWeight}"
+                               aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">综合得分：</label>
+                    <div class="col-sm-3">
+                        <input id="togetherScore" name="togetherScore" type="text" class="form-control" required="true" th:field="*{togetherScore}"
+                               aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">分享：</label>
+                    <div class="col-sm-3">
+                        <input id="totalParticipate" name="totalParticipate" type="text" class="form-control" required="true" th:field="*{totalParticipate}"
+                               aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态：</label>
+                    <div class="col-sm-3">
+                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
+                                aria-required="true">
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganStatus).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpOrganStatus.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-3">
+                        <textarea id="remark" name="remark" type="text" class="form-control" required="true" th:field="*{remark}"
+                                  aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">创建时间：</label>
+                    <div class="col-sm-3">
+                        <input  type="text" class="form-control" required="true" th:field="*{createAt}"
+                                aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">更新时间：</label>
+                    <div class="col-sm-3">
+                        <input  type="text" class="form-control" required="true" th:field="*{updateAt}"
+                                aria-required="true"/>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:inline="javascript">
+
+    $(function () {
+        $("#organFrm").find("input").attr("readonly",true)
+        $("#organFrm").find("textarea").attr("readonly",true)
+        $("#organFrm").find("select").attr("disabled",true)
+    })
+
+</script>
+</body>
+</html>

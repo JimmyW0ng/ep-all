@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
+import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.pojo.po.EpOrganPo;
+import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -12,14 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 
@@ -34,6 +35,8 @@ public class SystemOrganController extends BackendController {
 
     @Autowired
     private OrganService organService;
+    @Autowired
+    private ConstantRegionComponent constantRegionComponent;
 
 
     @GetMapping("index")
@@ -67,10 +70,57 @@ public class SystemOrganController extends BackendController {
         return "/systemOrgan/index";
     }
 
-//    @GetMapping("createInit/{id}")
-//    public String index(Model model,@PathVariable
-//    ) {
-//
-//    }
+    /**
+     * 注册初始化
+     * @param model
+     * @return
+     */
+    @GetMapping("createInit")
+    public String index(Model model
+    ) {
+        model.addAttribute("organPo",new EpOrganPo());
+        model.addAttribute("province",constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
+        return "systemOrgan/form";
+    }
 
+    /**
+     * 新增/修改机构
+     * @param model
+     * @param request
+     * @return
+     */
+    @GetMapping("create")
+    public String index(Model model,HttpServletRequest request
+    ) {
+
+        return "systemOrgan/form";
+    }
+
+    /**
+     * 修改机构初始化
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping("updateInit/{id}")
+    public String updateInit(Model model,@PathVariable("id") Long id
+    ) {
+        EpOrganPo po=organService.getById(id).get();
+        model.addAttribute("organPo",po);
+        return "systemOrgan/form";
+    }
+
+    /**
+     * 查看机构
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping("view/{id}")
+    public String view(Model model,@PathVariable("id") Long id
+    ) {
+        EpOrganPo po=organService.getById(id).get();
+        model.addAttribute("organPo",po);
+        return "systemOrgan/view";
+    }
 }
