@@ -40,4 +40,17 @@ public class ConstantRegionComponent extends AbstractCRUDRepository<EpConstantRe
         });
         return map;
     }
+
+    public Map<Long,String> getMapByParentId(Long parentId){
+        List<EpConstantRegionPo> list=dslContext.select(EP_CONSTANT_REGION.ID,EP_CONSTANT_REGION.REGION_NAME)
+                .from(EP_CONSTANT_REGION)
+                .where(EP_CONSTANT_REGION.PARENT_ID.eq(parentId))
+                .and(EP_CONSTANT_REGION.DEL_FLAG.eq(false))
+                .fetchInto(EpConstantRegionPo.class);
+        Map<Long,String> map= Maps.newHashMap();
+        list.forEach(p->{
+            map.put(p.getId(),p.getRegionName());
+        });
+        return map;
+    }
 }

@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构地区：</label>
                     <div class="col-sm-1">
-                        <select name="organRegion" type="text" class="form-control" required="true" th:field="*{organRegion}"
+                        <select id="province" name="province" type="text" class="form-control" required="true" onchange="getCityByProvince()"
                                aria-required="true">
                             <option value="">省</option>
                             <option th:each="state : ${province.keySet()}"
@@ -42,14 +42,15 @@
                         </select>
                     </div>
                     <div class="col-sm-1">
-                        <select name="organRegion" type="text" class="form-control" required="true" th:field="*{organRegion}"
-                               aria-required="true">
+                        <select id="city" name="city" type="text" class="form-control" required="true"
+                             onchange="getDistrictByCity()"  aria-required="true">
                             <option value="">市</option>
+
                         </select>
                     </div>
                     <div class="col-sm-1">
                         <select id="organRegion" name="organRegion" type="text" class="form-control" required="true" th:field="*{organRegion}"
-                               aria-required="true">
+                                aria-required="true">
                             <option value="">区</option>
                         </select>
                     </div>
@@ -85,7 +86,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构成立日期：</label>
                     <div class="col-sm-3">
-                        <input id="organCreateDate" name="organCreateDate" type="text" class="form-control" required="true" th:field="*{organCreateDate}"
+                        <input id="organCreateDateStr" name="organCreateDateStr" type="text" class="form-control datetimepicker_date" required="true" th:field="*{organCreateDate}"
                                 aria-required="true">
                     </div>
                 </div>
@@ -157,50 +158,11 @@
                                aria-required="true"/>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">创建时间：</label>
-                    <div class="col-sm-3">
-                        <input  type="text" class="form-control" required="true" th:field="*{createAt}"
-                                  aria-required="true"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">更新时间：</label>
-                    <div class="col-sm-3">
-                        <input  type="text" class="form-control" required="true" th:field="*{updateAt}"
-                                aria-required="true"/>
-                    </div>
-                </div>
-                <!--<div class="form-group">-->
-                    <!--<label class="col-sm-2 control-label">类型：</label>-->
-                    <!--<div class="col-sm-3">-->
-                        <!--<select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">-->
-                            <!--<option value="">请选择</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
 
-                <!--<div class="form-group">-->
-                    <!--<label class="col-sm-2 control-label">状态：</label>-->
-                    <!--<div class="col-sm-3">-->
-                        <!--<select id="status" name="status" class="form-control" required="true" aria-required="true" th:fiele="*{status}">-->
-
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:text="#{EpSystemUserStatus.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-
-                    <!--</div>-->
-                <!--</div>-->
 
                 <div class="form-group">
                     <div class="col-sm-3 col-sm-offset-2">
-                        <button class="btn btn-primary" type="button" onclick="userFrmSubmit()">提交</button>
+                        <button class="btn btn-primary" type="button" onclick="organFrmSubmit()">提交</button>
                     </div>
                 </div>
             </form>
@@ -213,51 +175,73 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
-//    function userFrmSubmit() {
-//        if (!$("#userFrm").valid()) {
+    function getCityByProvince() {
+        var provinceId=$("#province").val();
+        if(provinceId){
+            $.ajax({
+                type:"GET",
+                url:"/auth/systemOrgan/getCityByProvince/"+provinceId,
+                success:function (data) {
+                    if(data.success){
+                        console.log(data.result)
+                        var res=data.result;
+                        var htmls="<option value=''>市</option>";
+                        for(var key in res){
+                            htmls=htmls+"<option value='"+key+"'>"+res[key]+"</option>"
+                        }
+                        $("#city").html(htmls)
+                    }
+                }
+            })
+        }
+
+    }
+    function getDistrictByCity() {
+        var cityId=$("#city").val()
+        if(cityId){
+            $.ajax({
+                type:"GET",
+                url:"/auth/systemOrgan/getDistrictByCity/"+cityId,
+                success:function (data) {
+                    if(data.success){
+                        console.log(data.result)
+                        var res=data.result;
+                        var htmls="<option value=''>区</option>";
+                        for(var key in res){
+                            htmls=htmls+"<option value='"+key+"'>"+res[key]+"</option>"
+                        }
+                        $("#organRegion").html(htmls)
+                    }
+                }
+            })
+        }
+
+    }
+    function organFrmSubmit() {
+//        if (!$("#organFrm").valid()) {
 //            console.log("valid fail")
 //            return;
 //        }
-//        var roles = []
-//        $("#role_tb_body tr").each(function () {
-//            if($(this).find("input[name='id']").eq(0).is(":checked")){
-//                var id=$(this).find("input[name='id']").eq(0).val()
-//                var roleCode=$(this).find("input[name='roleCode']").eq(0).val()
-//                roles.push({id:id,roleCode:roleCode});
-//            }
-//        })
-//
-//        var params={
-//            id: $("#id").val(),
-//            mobile: $("#mobile").val(),
-//            userName: $("#userName").val(),
-//            password: $("#password").val(),
-//            email: $("#email").val(),
-//            type: $("#type").val(),
-//            status: $("#status").val(),
-//            remark: $("#remark").val(),
-//            systemRolePos: roles
-//        }
-//        var url;
-//        if($("#id").val()){
-//            url='/auth/user/update'
-//        }else{
-//            url='/auth/user/create'
-//        }
-//        $.ajax({
-//            type: 'POST',
-//            url: url,
-//            data:JSON.stringify(params),
-//            contentType: "application/json;charset=utf-8",
-//            success: function (data) {
-//                if(data.success){
-//                    toastr_success(null,'/auth/user/index')
-//                }
-//            }
-//
-//        })
-//    }
-//
+
+        var url;
+        if($("#id").val()){
+            url='/auth/systemOrgan/update'
+        }else{
+            url='/auth/systemOrgan/create'
+        }
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:$("#organFrm").serialize(),
+            success: function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/systemOrgan/index')
+                }
+            }
+
+        })
+    }
+
 //    function changeType(ele) {
 //        $.ajax({
 //            type:"GET",

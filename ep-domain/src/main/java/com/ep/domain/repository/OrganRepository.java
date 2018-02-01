@@ -124,5 +124,33 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .fetchInto(OrganBo.class);
         return new PageImpl<>(pList, pageable, count);
     }
+
+
+    /**
+     * 系统后台修改商家
+     * @param po
+     * @return
+     */
+    public int updateSystemOrgan(EpOrganPo po){
+        return dslContext.update(EP_ORGAN)
+            .set(EP_ORGAN.ORGAN_NAME, po.getOrganName())
+            .set(EP_ORGAN.ORGAN_ADDRESS, po.getOrganAddress())
+            .set(EP_ORGAN.ORGAN_REGION, po.getOrganRegion())
+            .set(EP_ORGAN.ORGAN_LNG, po.getOrganLng())
+            .set(EP_ORGAN.ORGAN_LAT, po.getOrganLat())
+            .set(EP_ORGAN.ORGAN_SHORT_INTRODUCE, po.getOrganShortIntroduce())
+            .set(EP_ORGAN.ORGAN_CREATE_DATE, po.getOrganCreateDate())
+            .set(EP_ORGAN.ORGAN_PHONE, po.getOrganPhone())
+            .set(EP_ORGAN.ORGAN_EMAIL, po.getOrganEmail())
+            .set(EP_ORGAN.ORGAN_URL, po.getOrganUrl())
+            .set(EP_ORGAN.ORGAN_INTRODUCE, po.getOrganIntroduce())
+            .set(EP_ORGAN.MARKET_WEIGHT, po.getMarketWeight())
+            .set(EP_ORGAN.TOGETHER_SCORE, po.getTogetherScore())
+            .set(EP_ORGAN.TOTAL_PARTICIPATE, po.getTotalParticipate())
+            .set(EP_ORGAN.STATUS, po.getStatus())
+            .set(EP_ORGAN.REMARK, po.getRemark())
+            .set(EP_ORGAN.UPDATE_AT, DSL.currentTimestamp())
+            .where(EP_ORGAN.ID.eq(po.getId())).and(EP_ORGAN.DEL_FLAG.eq(false)).execute();
+    }
 }
 

@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.DateTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
@@ -40,9 +41,9 @@ public class SystemMenuService {
     public List<SystemMenuBo> getLeftMenuByUserType(EpSystemUserType type) {
         List<SystemMenuBo> list = null;
         if(type.equals(EpSystemUserType.platform)){
-            list = systemMenuRepository.getAllMenu(1L);
+            list = systemMenuRepository.getAllMenu(BizConstant.ADMIN_MENU_PARENT_ID);
         }else{
-            list = systemMenuRepository.getAllMenu(3L);
+            list = systemMenuRepository.getAllMenu(BizConstant.BACKEND_MENU_PARENT_ID);
         }
 
         list.forEach(p -> {
