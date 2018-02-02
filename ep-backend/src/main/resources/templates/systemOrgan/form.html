@@ -35,7 +35,7 @@
                         <select id="province" name="province" type="text" class="form-control" required="true" onchange="getCityByProvince()"
                                aria-required="true">
                             <option value="">省</option>
-                            <option th:each="state : ${province.keySet()}"
+                            <option th:if="${province!=null}" th:each="state : ${province.keySet()}"
                                     th:value="${state}"
                                     th:text="${province.get(state)}">
                             </option>
@@ -65,14 +65,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区经度：</label>
                     <div class="col-sm-3">
-                        <input  name="" type="text" class="form-control" required="true"
+                        <input id="organLng" name="organLng" type="text" class="form-control" required="true" th:field="*{organLng}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区纬度：</label>
                     <div class="col-sm-3">
-                        <input  name="" type="text" class="form-control" required="true"
+                        <input id="organLat" name="organLat" type="text" class="form-control" required="true" th:field="*{organLat}"
                                aria-required="true">
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构成立日期：</label>
                     <div class="col-sm-3">
-                        <input id="organCreateDateStr" name="organCreateDateStr" type="text" class="form-control datetimepicker_date" required="true" th:field="*{organCreateDate}"
+                        <input id="organCreateDateStr" name="organCreateDateStr" type="text" class="form-control datetimepicker_date" required="true" th:text="${organPo.organCreateDate}"
                                 aria-required="true">
                     </div>
                 </div>
@@ -262,25 +262,29 @@
 //        })
 //    }
 //
-//    $(function () {
-//        var type=$("#type").val();
-//        var res=[[${roleList}]];
-//        var roleIds=[[${roleIds}]];
-//        console.log(roleIds)
-//        var htmls="";
-//        if(res!=undefined&&res.length>0) {
-//            for (var i = 0; i < res.length; i++) {
-//                htmls = htmls + "<tr><td><input name='id' type='checkbox'value='" + res[i].id + "'/>" +
-//                    "<input name='roleCode' type='hidden' value='" + res[i].roleCode + "'/>" +
-//                    "</td><td>" + res[i].roleName + "</td><td>" + (res[i].remark == null ? '' : res[i].remark) + "</td></tr>"
-//
-//            }
-//            $("#role_tb_body").html(htmls)
-//            for (var i = 0; i < roleIds.length; i++) {
-//                $("#role_tb_body").find("input[value=" + roleIds[i] + "]").attr("checked", true)
-//            }
-//        }
-//    })
+    $(function () {
+        var district=[[${district}]]
+        var districtId=[[${districtId}]]
+        var htmls_district="<option value=''>区</option>";
+        for(var key in district){
+            htmls_district=htmls_district+"<option value='"+key+"'>"+district[key]+"</option>"
+        }
+        $("#organRegion").html(htmls_district).val(districtId)
+
+        var city=[[${city}]]
+        var cityId=[[${cityId}]]
+        var htmls_city="<option value=''>区</option>";
+        for(var key in city){
+            htmls_city=htmls_city+"<option value='"+key+"'>"+city[key]+"</option>"
+        }
+        $("#city").html(htmls_city).val(cityId)
+
+//        var province=[[${province}]]
+        var provinceId=[[${provinceId}]]
+        $("#province").val(provinceId)
+//        console.log(district)
+//        console.log(districtId)
+    })
 
 </script>
 </body>

@@ -1,11 +1,14 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
+import com.ep.common.tool.DateTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
+import com.ep.domain.pojo.po.EpConstantRegionPo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
+import com.ep.domain.repository.domain.tables.EpConstantRegion;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -83,10 +86,12 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("createInit")
-    public String index(Model model
+    public String createInit(Model model
     ) {
         model.addAttribute("organPo", new EpOrganPo());
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
+        model.addAttribute("district",null);
+        model.addAttribute("city",null);
         return "systemOrgan/form";
     }
 
@@ -129,12 +134,32 @@ public class SystemOrganController extends BackendController {
      */
     @PostMapping("create")
     @ResponseBody
-    public ResultDo index(HttpServletRequest request, SystemOrganBo bo
+    public ResultDo create(HttpServletRequest request, SystemOrganBo bo
     ) {
         ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
-//        organService
+        po.setOrganCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(),"yyyy-MM-dd"));
+        organService.insertSystemOrgan(po);
+        return resultDo;
+    }
+
+    /**
+     * 修改机构
+     *
+     * @param bo
+     * @param request
+     * @return
+     */
+    @PostMapping("update")
+    @ResponseBody
+    public ResultDo update(HttpServletRequest request, SystemOrganBo bo
+    ) {
+        ResultDo resultDo = ResultDo.build();
+        EpOrganPo po = new EpOrganPo();
+        BeanTools.copyPropertiesIgnoreNull(bo, po);
+        po.setOrganCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(),"yyyy-MM-dd"));
+        organService.updateSystemOrgan(po);
         return resultDo;
     }
 
@@ -149,6 +174,16 @@ public class SystemOrganController extends BackendController {
     public String updateInit(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
+        EpConstantRegionPo  constantRegionPoDistrict = constantRegionComponent.getById(po.getOrganRegion());
+        Long cityId=constantRegionPoDistrict.getParentId();
+        EpConstantRegionPo constantRegionPoCity = constantRegionComponent.getById(cityId);
+        Long provinceId=constantRegionPoCity.getParentId();
+        model.addAttribute("district",constantRegionComponent.getMapByParentId(cityId));
+        model.addAttribute("districtId",constantRegionPoDistrict.getId());
+        model.addAttribute("city",constantRegionComponent.getMapByParentId(provinceId));
+        model.addAttribute("cityId",cityId);
+        model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
+        model.addAttribute("provinceId", provinceId);
         model.addAttribute("organPo", po);
         return "systemOrgan/form";
     }
@@ -164,7 +199,30 @@ public class SystemOrganController extends BackendController {
     public String view(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
+        EpConstantRegionPo  constantRegionPoDistrict = constantRegionComponent.getById(po.getOrganRegion());
+        model.addAttribute("district", constantRegionPoDistrict.getRegionName());
+        Long cityId=constantRegionPoDistrict.getParentId();
+
+        EpConstantRegionPo constantRegionPoCity = constantRegionComponent.getById(cityId);
+        model.addAttribute("city", constantRegionPoCity.getRegionName());
+        Long provinceId=constantRegionPoCity.getParentId();
+        EpConstantRegionPo constantRegionPoProvince = constantRegionComponent.getById(provinceId);
+        model.addAttribute("province", constantRegionPoProvince.getRegionName());
         model.addAttribute("organPo", po);
         return "systemOrgan/view";
+    }
+
+    /**
+     * 删除机构
+     *
+     * @return
+     */
+    @GetMapping("delete/{id}")
+    @ResponseBody
+    public ResultDo delete( @PathVariable("id") Long id
+    ) {
+        ResultDo resultDo=ResultDo.build();
+        organService.delete(id);
+        return resultDo;
     }
 }

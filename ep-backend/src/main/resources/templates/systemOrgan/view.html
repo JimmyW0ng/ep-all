@@ -30,6 +30,27 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">机构地区：</label>
+                    <div class="col-sm-1">
+                        <input id="province" name="province" type="text" class="form-control" required="true" th:value="${province}"
+                                aria-required="true">
+
+                        </input>
+                    </div>
+                    <div class="col-sm-1">
+                        <input id="city" name="city" type="text" class="form-control" required="true"
+                                th:value="${city}"  aria-required="true">
+
+                        </input>
+                    </div>
+                    <div class="col-sm-1">
+                        <input id="organRegion" name="organRegion" type="text" class="form-control" required="true" th:value="${district}"
+                                aria-required="true">
+
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label">机构地址：</label>
                     <div class="col-sm-3">
                         <input id="organAddress" name="organAddress" type="text" class="form-control" required="true" th:field="*{organAddress}"
@@ -39,14 +60,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区经度：</label>
                     <div class="col-sm-3">
-                        <input  name="" type="text" class="form-control" required="true"
+                        <input  name="organLng" type="text" class="form-control" required="true" th:field="*{organLng}"
                                 aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区纬度：</label>
                     <div class="col-sm-3">
-                        <input  name="" type="text" class="form-control" required="true"
+                        <input  name="organLat" type="text" class="form-control" required="true" th:field="*{organLat}"
                                 aria-required="true">
                     </div>
                 </div>
@@ -132,21 +153,6 @@
                                   aria-required="true"/>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">创建时间：</label>
-                    <div class="col-sm-3">
-                        <input  type="text" class="form-control" required="true" th:field="*{createAt}"
-                                aria-required="true"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">更新时间：</label>
-                    <div class="col-sm-3">
-                        <input  type="text" class="form-control" required="true" th:field="*{updateAt}"
-                                aria-required="true"/>
-                    </div>
-                </div>
-
 
             </form>
         </div>
