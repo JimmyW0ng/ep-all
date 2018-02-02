@@ -31,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrder extends TableImpl<EpOrderRecord> {
 
-    private static final long serialVersionUID = 1073726255;
+    private static final long serialVersionUID = -483939818;
 
     /**
      * The reference instance of <code>ep.ep_order</code>
@@ -79,12 +79,12 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
     /**
      * The column <code>ep.ep_order.prize</code>. 价格
      */
-    public final TableField<EpOrderRecord, BigDecimal> PRIZE = createField("prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "价格");
+    public final TableField<EpOrderRecord, BigDecimal> PRIZE = createField("prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false), this, "价格");
 
     /**
-     * The column <code>ep.ep_order.status</code>. 订单状态:保存；成功；拒绝；取消；
+     * The column <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
      */
-    public final TableField<EpOrderRecord, EpOrderStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderStatus.class), this, "订单状态:保存；成功；拒绝；取消；");
+    public final TableField<EpOrderRecord, EpOrderStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderStatus.class), this, "订单状态:保存；成功；已开班；结束；拒绝；取消；");
 
     /**
      * The column <code>ep.ep_order.auth_time</code>. 机构审核订单时间

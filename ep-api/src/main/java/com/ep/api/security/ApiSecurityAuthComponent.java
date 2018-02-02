@@ -6,6 +6,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ApiCredentialBo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
+import com.ep.domain.pojo.dto.ApiLoginDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpSystemClientPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
@@ -75,12 +76,11 @@ public class ApiSecurityAuthComponent {
      * @param clientSecret
      * @return
      */
-    public ResultDo<String> loginFromApi(String userName,
-                                         String captchaCode,
-                                         String captchaContent,
-                                         String clientId,
-                                         String clientSecret) {
-        ResultDo<String> resultDo = ResultDo.build();
+    public ResultDo<ApiLoginDto> loginFromApi(String userName,
+                                              String captchaCode,
+                                              String captchaContent,
+                                              String clientId,
+                                              String clientSecret) {
         if (StringTools.isBlank(userName)
                 || StringTools.isBlank(captchaCode)
                 || StringTools.isBlank(captchaContent)
@@ -100,11 +100,14 @@ public class ApiSecurityAuthComponent {
         final Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         try {
+            ResultDo<ApiLoginDto> resultDo = ResultDo.build();
             // 生成token
-            String accessToken = this.buildAccessToken((ApiPrincipalBo) authToken.getPrincipal());
-            return resultDo.setResult(accessToken);
+            ApiPrincipalBo principalBo = (ApiPrincipalBo) authToken.getPrincipal();
+            String accessToken = this.buildAccessToken(principalBo);
+            ApiLoginDto loginDto = new ApiLoginDto(accessToken, principalBo.getMemberType());
+            return resultDo.setResult(loginDto);
         } catch (GeneralSecurityException e) {
-            return resultDo.setError(MessageCode.ERROR_ENCODE);
+            return ResultDo.build(MessageCode.ERROR_ENCODE);
         }
     }
 
@@ -196,7 +199,7 @@ public class ApiSecurityAuthComponent {
         }
         // 定位角色
         principalBo.setRole(sysClientPo.getRole());
-
+        principalBo.setMemberType(mbrInfoPo.getType());
     }
 
     /**

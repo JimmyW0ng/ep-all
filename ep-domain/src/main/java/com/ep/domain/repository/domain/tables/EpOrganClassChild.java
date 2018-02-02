@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
 
-    private static final long serialVersionUID = -314434124;
+    private static final long serialVersionUID = 304472122;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_child</code>
@@ -70,6 +63,26 @@ public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
      * The column <code>ep.ep_organ_class_child.order_id</code>. 订单id
      */
     public final TableField<EpOrganClassChildRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "订单id");
+
+    /**
+     * The column <code>ep.ep_organ_class_child.honor_num</code>. 获得的荣誉数
+     */
+    public final TableField<EpOrganClassChildRecord, Integer> HONOR_NUM = createField("honor_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "获得的荣誉数");
+
+    /**
+     * The column <code>ep.ep_organ_class_child.schedule_comment_num</code>. 获得的老师评价数
+     */
+    public final TableField<EpOrganClassChildRecord, Integer> SCHEDULE_COMMENT_NUM = createField("schedule_comment_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "获得的老师评价数");
+
+    /**
+     * The column <code>ep.ep_organ_class_child.course_comment_flag</code>. 是否评论课程
+     */
+    public final TableField<EpOrganClassChildRecord, Boolean> COURSE_COMMENT_FLAG = createField("course_comment_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否评论课程");
+
+    /**
+     * The column <code>ep.ep_organ_class_child.last_catelog_index</code>. 最近参加的课时目录
+     */
+    public final TableField<EpOrganClassChildRecord, Integer> LAST_CATELOG_INDEX = createField("last_catelog_index", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "最近参加的课时目录");
 
     /**
      * The column <code>ep.ep_organ_class_child.create_at</code>. 创建时间

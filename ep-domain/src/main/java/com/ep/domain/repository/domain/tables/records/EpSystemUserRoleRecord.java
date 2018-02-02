@@ -122,6 +122,13 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
+     * Getter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(5);
+    }
+
+    /**
      * Getter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
@@ -133,13 +140,6 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
      */
     public Timestamp getUpdateAt() {
         return (Timestamp) get(4);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(5);
     }
 
     // -------------------------------------------------------------------------

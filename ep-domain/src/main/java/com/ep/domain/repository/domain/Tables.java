@@ -4,36 +4,7 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.EpConstantCatalog;
-import com.ep.domain.repository.domain.tables.EpConstantRegion;
-import com.ep.domain.repository.domain.tables.EpFile;
-import com.ep.domain.repository.domain.tables.EpMember;
-import com.ep.domain.repository.domain.tables.EpMemberChild;
-import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
-import com.ep.domain.repository.domain.tables.EpMemberChildSign;
-import com.ep.domain.repository.domain.tables.EpMemberChildTag;
-import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
-import com.ep.domain.repository.domain.tables.EpOrder;
-import com.ep.domain.repository.domain.tables.EpOrgan;
-import com.ep.domain.repository.domain.tables.EpOrganAccount;
-import com.ep.domain.repository.domain.tables.EpOrganCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClass;
-import com.ep.domain.repository.domain.tables.EpOrganClassCatelog;
-import com.ep.domain.repository.domain.tables.EpOrganClassChild;
-import com.ep.domain.repository.domain.tables.EpOrganClassComment;
-import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
-import com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment;
-import com.ep.domain.repository.domain.tables.EpOrganCourse;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
-import com.ep.domain.repository.domain.tables.EpSystemClient;
-import com.ep.domain.repository.domain.tables.EpSystemDict;
-import com.ep.domain.repository.domain.tables.EpSystemMenu;
-import com.ep.domain.repository.domain.tables.EpSystemRole;
-import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
-import com.ep.domain.repository.domain.tables.EpSystemUser;
-import com.ep.domain.repository.domain.tables.EpSystemUserRole;
-import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
+import com.ep.domain.repository.domain.tables.*;
 
 import javax.annotation.Generated;
 
@@ -75,6 +46,11 @@ public class Tables {
      * 孩子信息表
      */
     public static final EpMemberChild EP_MEMBER_CHILD = com.ep.domain.repository.domain.tables.EpMemberChild.EP_MEMBER_CHILD;
+
+    /**
+     * 孩子上课评论表
+     */
+    public static final EpMemberChildComment EP_MEMBER_CHILD_COMMENT = com.ep.domain.repository.domain.tables.EpMemberChildComment.EP_MEMBER_CHILD_COMMENT;
 
     /**
      * 孩子荣誉表
@@ -140,11 +116,6 @@ public class Tables {
      * 机构行程信息表
      */
     public static final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = com.ep.domain.repository.domain.tables.EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE;
-
-    /**
-     * 机构行程评论表
-     */
-    public static final EpOrganClassScheduleComment EP_ORGAN_CLASS_SCHEDULE_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT;
 
     /**
      * 机构课程表

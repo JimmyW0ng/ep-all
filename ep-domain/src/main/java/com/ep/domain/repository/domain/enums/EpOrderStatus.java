@@ -4,15 +4,15 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
 
+import javax.annotation.Generated;
+
 
 /**
- * 订单状态:保存；成功；拒绝；取消；
+ * 订单状态:保存；成功；已开班；结束；拒绝；取消；
  */
 @Generated(
     value = {
@@ -27,6 +27,10 @@ public enum EpOrderStatus implements EnumType {
     save("save"),
 
     success("success"),
+
+    opening("opening"),
+
+    end("end"),
 
     refuse("refuse"),
 

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @Description:孩子业务接口
+ * @Description: 孩子业务接口
  * @Author: J.W
  * @Date: 上午10:33 2017/11/27
  */
@@ -133,11 +133,11 @@ public class MemberChildService {
      * @return
      */
     public ResultDo delChild(Long memberId, Long id) {
-        EpMemberChildPo child = memberChildRepository.getById(id);
-        if (child == null || !child.getMemberId().equals(memberId)) {
-            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+        ResultDo<EpMemberChildPo> checkedChild = getCheckedMemberChild(memberId, id);
+        if (checkedChild.isError()) {
+            return checkedChild;
         }
-        List<EpOrderPo> successOrders = orderRepository.getSuccessByChildId(id);
+        List<EpOrderPo> successOrders = orderRepository.findSuccessByChildId(id);
         if (CollectionsTools.isNotEmpty(successOrders)) {
             return ResultDo.build(MessageCode.ERROR_CHILD_CAN_NOT_DEL);
         }
@@ -187,18 +187,20 @@ public class MemberChildService {
     }
 
     /**
-     * 根据主键获取孩子信息
+     * 判断孩子信息是否为空 && 是否属于某个会员
      *
      * @param memberId
      * @param childId
      * @return
      */
-    public ResultDo<EpMemberChildPo> getById(Long memberId, Long childId) {
+    public ResultDo<EpMemberChildPo> getCheckedMemberChild(Long memberId, Long childId) {
+        ResultDo<EpMemberChildPo> resultDo = ResultDo.build();
         EpMemberChildPo child = memberChildRepository.getById(childId);
         if (child == null || !child.getMemberId().equals(memberId)) {
-            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+            return resultDo.setError(MessageCode.ERROR_DATA_MISS);
         }
-        ResultDo<EpMemberChildPo> resultDo = ResultDo.build();
-        return resultDo.setResult(child);
+        resultDo.setResult(child);
+        return resultDo;
     }
+
 }

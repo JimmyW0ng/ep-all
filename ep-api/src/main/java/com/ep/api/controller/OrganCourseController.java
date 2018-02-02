@@ -32,7 +32,7 @@ public class OrganCourseController extends ApiController {
 
     @ApiOperation(value = "课程分页列表")
     @PostMapping("/page")
-    public ResultDo<Page<OrganCourseBo>> getCourseInfo(@PageableDefault Pageable pageable,
+    public ResultDo<Page<OrganCourseBo>> getCoursePage(@PageableDefault Pageable pageable,
                                                        @RequestParam("organId") Long ognId) {
         Page<OrganCourseBo> data = organCourseService.queryCourseByOgnIdForPage(pageable, ognId);
         ResultDo<Page<OrganCourseBo>> resultDo = ResultDo.build();

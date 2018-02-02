@@ -4,7 +4,9 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
+import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
@@ -17,6 +19,8 @@ import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,8 +139,21 @@ public class OrderService {
         orderPo.setOgnId(classPo.getOgnId());
         orderPo.setCourseId(classPo.getCourseId());
         orderPo.setClassId(classId);
+        orderPo.setPrize(classPo.getClassPrize());
         orderPo.setStatus(EpOrderStatus.save);
         orderRepository.insert(orderPo);
         return resultDo;
+    }
+
+    /**
+     * 分页查询孩子的订单和课程班次
+     *
+     * @param pageable
+     * @param childId
+     * @param statusEnum
+     * @return
+     */
+    public Page<MemberChildClassBo> findChildClassPage(Pageable pageable, Long childId, ChildClassStatusEnum statusEnum) {
+        return orderRepository.findChildClassPage(pageable, childId, statusEnum);
     }
 }

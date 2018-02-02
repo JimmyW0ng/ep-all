@@ -35,7 +35,7 @@ import java.util.Optional;
 @RequestMapping("auth/child")
 @RestController
 @Api(value = "api-auth-child", description = "孩子接口")
-public class MemberChildController extends ApiController {
+public class ChildController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
@@ -92,7 +92,7 @@ public class MemberChildController extends ApiController {
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<EpMemberChildPo> getChild(@RequestParam("childId") Long childId) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
-        return memberChildService.getById(currentMbr.getId(), childId);
+        return memberChildService.getCheckedMemberChild(currentMbr.getId(), childId);
     }
 
     @ApiOperation(value = "删除孩子档案")
@@ -108,7 +108,7 @@ public class MemberChildController extends ApiController {
     public ResultDo uploadAvatar(@RequestParam(value = "file") MultipartFile file,
                                  @RequestParam("childId") Long childId) throws IOException {
         EpMemberPo currentMbr = super.getCurrentUser().get();
-        ResultDo resultDo = memberChildService.getById(currentMbr.getId(), childId);
+        ResultDo resultDo = memberChildService.getCheckedMemberChild(currentMbr.getId(), childId);
         if (resultDo.isError()) {
             return resultDo;
         }

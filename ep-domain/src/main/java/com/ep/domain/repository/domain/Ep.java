@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 1223134676;
+    private static final long serialVersionUID = -771181897;
 
     /**
      * The reference instance of <code>ep</code>
@@ -59,6 +59,11 @@ public class Ep extends SchemaImpl {
      * 孩子信息表
      */
     public final EpMemberChild EP_MEMBER_CHILD = com.ep.domain.repository.domain.tables.EpMemberChild.EP_MEMBER_CHILD;
+
+    /**
+     * 孩子上课评论表
+     */
+    public final EpMemberChildComment EP_MEMBER_CHILD_COMMENT = com.ep.domain.repository.domain.tables.EpMemberChildComment.EP_MEMBER_CHILD_COMMENT;
 
     /**
      * 孩子荣誉表
@@ -124,11 +129,6 @@ public class Ep extends SchemaImpl {
      * 机构行程信息表
      */
     public final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = com.ep.domain.repository.domain.tables.EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE;
-
-    /**
-     * 机构行程评论表
-     */
-    public final EpOrganClassScheduleComment EP_ORGAN_CLASS_SCHEDULE_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT;
 
     /**
      * 机构课程表
@@ -215,6 +215,7 @@ public class Ep extends SchemaImpl {
             EpFile.EP_FILE,
             EpMember.EP_MEMBER,
             EpMemberChild.EP_MEMBER_CHILD,
+                EpMemberChildComment.EP_MEMBER_CHILD_COMMENT,
             EpMemberChildHonor.EP_MEMBER_CHILD_HONOR,
             EpMemberChildSign.EP_MEMBER_CHILD_SIGN,
             EpMemberChildTag.EP_MEMBER_CHILD_TAG,
@@ -228,7 +229,6 @@ public class Ep extends SchemaImpl {
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
                 EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
             EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE,
-            EpOrganClassScheduleComment.EP_ORGAN_CLASS_SCHEDULE_COMMENT,
             EpOrganCourse.EP_ORGAN_COURSE,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,
             EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM,
