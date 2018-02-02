@@ -79,4 +79,22 @@ public class OrganService {
     public Page<EpOrganPo> findByPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return organRepository.findByPageable(pageable, condition);
     }
+
+    /**
+     * 系统后台新增商家
+     * @param po
+     * @return
+     */
+    public EpOrganPo insertSystemOrgan(EpOrganPo po){
+        return organRepository.insertNew(po);
+    }
+
+    /**
+     * 系统后台修改商家
+     * @param po
+     * @return
+     */
+    public int updateSystemOrgan(EpOrganPo po){
+        return organRepository.updateSystemOrgan(po);
+    }
 }

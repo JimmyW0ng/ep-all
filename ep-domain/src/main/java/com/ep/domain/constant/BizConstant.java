@@ -34,6 +34,16 @@ public class BizConstant {
     public static String CAPTCHA_SESSION_KEY = "CAPTCHA_SESSION_KEY";
 
     /**
+     * 后台菜单树顶点id
+     */
+    public static Long ADMIN_MENU_PARENT_ID = 1L;
+
+    /**
+     * 商户菜单树顶点id
+     */
+    public static Long BACKEND_MENU_PARENT_ID = 3L;
+
+    /**
      * 数据常量
      */
     public static int DB_NUM_ZERO = 0;
