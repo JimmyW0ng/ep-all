@@ -3,12 +3,16 @@ package com.ep.backend.controller;
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.component.ConstantRegionComponent;
+import com.ep.domain.component.DictComponent;
+import com.ep.domain.component.QiNiuComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
 import com.ep.domain.pojo.po.EpOrganPo;
+import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
 import com.ep.domain.repository.domain.tables.EpConstantRegion;
+import com.ep.domain.service.FileService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -46,6 +51,12 @@ public class SystemOrganController extends BackendController {
     private OrganService organService;
     @Autowired
     private ConstantRegionComponent constantRegionComponent;
+    @Autowired
+    private QiNiuComponent qiNiuComponent;
+    @Autowired
+    private DictComponent dictComponent;
+    @Autowired
+    private FileService fileService;
 
 
     @GetMapping("index")
@@ -223,6 +234,17 @@ public class SystemOrganController extends BackendController {
     ) {
         ResultDo resultDo=ResultDo.build();
         organService.delete(id);
+        return resultDo;
+    }
+
+    @PostMapping("uploadBanner")
+    @ResponseBody
+    public ResultDo uploadBanner(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
+        ResultDo resultDo=ResultDo.build();
+        Short bizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_BANNER").getValue());
+
+//        fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),bizTypeCode,sourceId,null);
+//        qiNiuComponent.uploadPublicByByte(file.getName(),file.getBytes());
         return resultDo;
     }
 }
