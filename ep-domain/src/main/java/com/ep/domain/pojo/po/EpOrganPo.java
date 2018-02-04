@@ -23,17 +23,17 @@ import java.sql.Timestamp;
 public class EpOrganPo extends AbstractBasePojo {
 
     private Long id;
-    private String organName;
-    private String organAddress;
-    private Long organRegion;
-    private String organLng;
-    private String organLat;
-    private String organShortIntroduce;
-    private Timestamp organCreateDate;
-    private String organPhone;
-    private String organEmail;
-    private String organUrl;
-    private String organIntroduce;
+    private String ognName;
+    private String ognAddress;
+    private Long ognRegion;
+    private String ognLng;
+    private String ognLat;
+    private String ognShortIntroduce;
+    private Timestamp ognCreateDate;
+    private String ognPhone;
+    private String ognEmail;
+    private String ognUrl;
+    private String ognIntroduce;
     private Byte marketWeight;
     private EpOrganStatus status;
     private Byte togetherScore;

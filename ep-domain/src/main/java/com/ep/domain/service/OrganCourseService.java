@@ -4,11 +4,11 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.EpFilePo;
-import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.*;
@@ -42,8 +42,6 @@ public class OrganCourseService {
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private OrganClassCommentRepository organClassCommentRepository;
-    @Autowired
-    private OrderRepository orderRepository;
 
     /**
      * 前提－课程明细
@@ -63,18 +61,23 @@ public class OrganCourseService {
         }
         // 获取机构信息
         EpOrganPo organPo = organRepository.getById(ognCourseBo.getOgnId());
-        ognCourseBo.setOrganName(organPo.getOrganName());
-        ognCourseBo.setOrganPhone(organPo.getOrganPhone());
+        ognCourseBo.setOgnName(organPo.getOgnName());
+        ognCourseBo.setOgnPhone(organPo.getOgnPhone());
         // 获取班次信息
         List<EpOrganClassPo> classes = organClassRepository.getByCourseId(courseId);
         // 老师介绍
-        List<EpOrganAccountPo> team = organAccountRepository.getByCourseId(courseId);
+        List<OrganAccountBo> team = organAccountRepository.getByCourseId(courseId);
+        if (CollectionsTools.isNotEmpty(team)) {
+            for (OrganAccountBo accountBo : team) {
+                Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, accountBo.getId());
+                String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
+                accountBo.setAvatar(avatar);
+            }
+        }
         // 评论
-        List<OrganClassCommentBo> commenets = organClassCommentRepository.getChosenByCourseId(courseId);
-        // 报名成功数
-        Long successOrders = orderRepository.getSuccessByCourseId(courseId);
+        List<OrganClassCommentBo> comments = organClassCommentRepository.getChosenByCourseId(courseId);
         // 封装返回dto
-        OrganCourseDto courseDto = new OrganCourseDto(ognCourseBo, classes, team, commenets, successOrders);
+        OrganCourseDto courseDto = new OrganCourseDto(ognCourseBo, classes, team, comments);
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();
         resultDo.setResult(courseDto);
         return resultDo;

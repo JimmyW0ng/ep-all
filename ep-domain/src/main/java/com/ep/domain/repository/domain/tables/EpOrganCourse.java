@@ -32,7 +32,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
 
-    private static final long serialVersionUID = -1670407781;
+    private static final long serialVersionUID = -779272266;
 
     /**
      * The reference instance of <code>ep.ep_organ_course</code>
@@ -126,6 +126,11 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      * The column <code>ep.ep_organ_course.enter_time_end</code>. 报名结束时间
      */
     public final TableField<EpOrganCourseRecord, Timestamp> ENTER_TIME_END = createField("enter_time_end", org.jooq.impl.SQLDataType.TIMESTAMP, this, "报名结束时间");
+
+    /**
+     * The column <code>ep.ep_organ_course.total_participate</code>. 总参与人数
+     */
+    public final TableField<EpOrganCourseRecord, Integer> TOTAL_PARTICIPATE = createField("total_participate", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "总参与人数");
 
     /**
      * The column <code>ep.ep_organ_course.remark</code>. 备注信息

@@ -9,7 +9,7 @@ public class OrganCourseBo extends EpOrganCoursePo {
 
     private String label;
     private String mainPicUrl;
-    private String organName;
-    private String organPhone;
+    private String ognName;
+    private String ognPhone;
 
 }

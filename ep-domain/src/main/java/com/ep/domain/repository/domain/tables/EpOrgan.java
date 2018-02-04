@@ -8,21 +8,14 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
+import org.jooq.*;
+import org.jooq.impl.DateAsTimestampBinding;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.DateAsTimestampBinding;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -38,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrgan extends TableImpl<EpOrganRecord> {
 
-    private static final long serialVersionUID = 300023347;
+    private static final long serialVersionUID = 1304988305;
 
     /**
      * The reference instance of <code>ep.ep_organ</code>
@@ -59,59 +52,59 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
     public final TableField<EpOrganRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
 
     /**
-     * The column <code>ep.ep_organ.organ_name</code>. 机构名称
+     * The column <code>ep.ep_organ.ogn_name</code>. 机构名称
      */
-    public final TableField<EpOrganRecord, String> ORGAN_NAME = createField("organ_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "机构名称");
+    public final TableField<EpOrganRecord, String> OGN_NAME = createField("ogn_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构名称");
 
     /**
-     * The column <code>ep.ep_organ.organ_address</code>. 机构地址
+     * The column <code>ep.ep_organ.ogn_address</code>. 机构地址
      */
-    public final TableField<EpOrganRecord, String> ORGAN_ADDRESS = createField("organ_address", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构地址");
+    public final TableField<EpOrganRecord, String> OGN_ADDRESS = createField("ogn_address", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构地址");
 
     /**
-     * The column <code>ep.ep_organ.organ_region</code>. 机构地区
+     * The column <code>ep.ep_organ.ogn_region</code>. 机构地区
      */
-    public final TableField<EpOrganRecord, Long> ORGAN_REGION = createField("organ_region", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构地区");
+    public final TableField<EpOrganRecord, Long> OGN_REGION = createField("ogn_region", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构地区");
 
     /**
-     * The column <code>ep.ep_organ.organ_lng</code>. 地区经度
+     * The column <code>ep.ep_organ.ogn_lng</code>. 地区经度
      */
-    public final TableField<EpOrganRecord, String> ORGAN_LNG = createField("organ_lng", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "地区经度");
+    public final TableField<EpOrganRecord, String> OGN_LNG = createField("ogn_lng", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "地区经度");
 
     /**
-     * The column <code>ep.ep_organ.organ_lat</code>. 地区纬度
+     * The column <code>ep.ep_organ.ogn_lat</code>. 地区纬度
      */
-    public final TableField<EpOrganRecord, String> ORGAN_LAT = createField("organ_lat", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "地区纬度");
+    public final TableField<EpOrganRecord, String> OGN_LAT = createField("ogn_lat", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "地区纬度");
 
     /**
-     * The column <code>ep.ep_organ.organ_short_introduce</code>. 机构简介
+     * The column <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
      */
-    public final TableField<EpOrganRecord, String> ORGAN_SHORT_INTRODUCE = createField("organ_short_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
+    public final TableField<EpOrganRecord, String> OGN_SHORT_INTRODUCE = createField("ogn_short_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
 
     /**
-     * The column <code>ep.ep_organ.organ_create_date</code>. 机构成立日期
+     * The column <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
      */
-    public final TableField<EpOrganRecord, Timestamp> ORGAN_CREATE_DATE = createField("organ_create_date", org.jooq.impl.SQLDataType.TIMESTAMP, this, "机构成立日期", new DateAsTimestampBinding());
+    public final TableField<EpOrganRecord, Timestamp> OGN_CREATE_DATE = createField("ogn_create_date", org.jooq.impl.SQLDataType.TIMESTAMP, this, "机构成立日期", new DateAsTimestampBinding());
 
     /**
-     * The column <code>ep.ep_organ.organ_phone</code>. 机构官方电话
+     * The column <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
      */
-    public final TableField<EpOrganRecord, String> ORGAN_PHONE = createField("organ_phone", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方电话");
+    public final TableField<EpOrganRecord, String> OGN_PHONE = createField("ogn_phone", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方电话");
 
     /**
-     * The column <code>ep.ep_organ.organ_email</code>. 机构官方邮箱
+     * The column <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
      */
-    public final TableField<EpOrganRecord, String> ORGAN_EMAIL = createField("organ_email", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方邮箱");
+    public final TableField<EpOrganRecord, String> OGN_EMAIL = createField("ogn_email", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方邮箱");
 
     /**
-     * The column <code>ep.ep_organ.organ_url</code>. 机构官方网址
+     * The column <code>ep.ep_organ.ogn_url</code>. 机构官方网址
      */
-    public final TableField<EpOrganRecord, String> ORGAN_URL = createField("organ_url", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方网址");
+    public final TableField<EpOrganRecord, String> OGN_URL = createField("ogn_url", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "机构官方网址");
 
     /**
-     * The column <code>ep.ep_organ.organ_introduce</code>. 机构简介
+     * The column <code>ep.ep_organ.ogn_introduce</code>. 机构简介
      */
-    public final TableField<EpOrganRecord, String> ORGAN_INTRODUCE = createField("organ_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
+    public final TableField<EpOrganRecord, String> OGN_INTRODUCE = createField("ogn_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
 
     /**
      * The column <code>ep.ep_organ.market_weight</code>. 营销权重
@@ -121,12 +114,12 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
     /**
      * The column <code>ep.ep_organ.together_score</code>. 综合得分
      */
-    public final TableField<EpOrganRecord, Byte> TOGETHER_SCORE = createField("together_score", org.jooq.impl.SQLDataType.TINYINT, this, "综合得分");
+    public final TableField<EpOrganRecord, Byte> TOGETHER_SCORE = createField("together_score", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "综合得分");
 
     /**
-     * The column <code>ep.ep_organ.total_participate</code>.
+     * The column <code>ep.ep_organ.total_participate</code>. 总参与人数
      */
-    public final TableField<EpOrganRecord, Integer> TOTAL_PARTICIPATE = createField("total_participate", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<EpOrganRecord, Integer> TOTAL_PARTICIPATE = createField("total_participate", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "总参与人数");
 
     /**
      * The column <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；

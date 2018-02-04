@@ -16,5 +16,6 @@ public class OrganInfoDto extends AbstractBasePojo {
 
     private EpOrganPo ognInfo;
     private List<EpFilePo> ognBanners;
+    private EpFilePo ognLogo;
 
 }

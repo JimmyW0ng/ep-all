@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberChildClassBo extends EpOrderPo {
 
-    private String organName;
+    private String ognName;
     private String courseName;
     private Integer courseNum;
     private Integer honorNum;

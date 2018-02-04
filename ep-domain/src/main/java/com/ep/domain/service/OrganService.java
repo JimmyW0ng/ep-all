@@ -51,7 +51,10 @@ public class OrganService {
         }
         // 机构banner列表
         List<EpFilePo> ognBanners = fileRepository.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_BANNER, id);
-        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), ognBanners);
+        // 机构Logo
+        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
+        EpFilePo logo = optional.isPresent() ? optional.get() : null;
+        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), ognBanners, logo);
         return resultDo.setResult(ognInfoDto);
     }
 

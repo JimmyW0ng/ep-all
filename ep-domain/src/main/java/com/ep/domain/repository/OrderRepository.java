@@ -34,21 +34,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
-     * 获取课程总下单成功数
-     *
-     * @param courseId
-     * @return
-     */
-    public Long getSuccessByCourseId(Long courseId) {
-        return dslContext.selectCount()
-                .from(EP_ORDER)
-                .where(EP_ORDER.COURSE_ID.eq(courseId))
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .fetchOneInto(Long.class);
-    }
-
-    /**
      * 根据孩子id和班次id查询订单
      *
      * @param childId
@@ -109,7 +94,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
             return new PageImpl(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER.fields());
-        fieldList.add(EP_ORGAN.ORGAN_NAME);
+        fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
         fieldList.add(EP_ORGAN_CLASS_CHILD.HONOR_NUM);

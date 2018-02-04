@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
 import org.jooq.DSLContext;
@@ -39,12 +40,12 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
 
 
     /**
-     * 获取课程班次
+     * 获取课程团队
      *
      * @param courseId
      * @return
      */
-    public List<EpOrganAccountPo> getByCourseId(Long courseId) {
+    public List<OrganAccountBo> getByCourseId(Long courseId) {
         return dslContext.select(EP_ORGAN_ACCOUNT.fields())
                 .from(EP_ORGAN_ACCOUNT)
                 .innerJoin(EP_ORGAN_COURSE_TEAM)
@@ -53,7 +54,7 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .and(EP_ORGAN_COURSE_TEAM.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_COURSE_TEAM.SORT.desc(), EP_ORGAN_COURSE_TEAM.ID.asc())
-                .fetchInto(EpOrganAccountPo.class);
+                .fetchInto(OrganAccountBo.class);
     }
 
 }
