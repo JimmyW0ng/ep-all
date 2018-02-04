@@ -231,14 +231,68 @@ public class SystemOrganController extends BackendController {
         return resultDo;
     }
 
+    /**
+     * 上传商家banner
+     * @param file
+     * @param sourceId
+     * @return
+     */
     @PostMapping("uploadBanner")
     @ResponseBody
     public ResultDo uploadBanner(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
         ResultDo resultDo=ResultDo.build();
         Short bizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_BANNER").getValue());
+        try{
+            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),bizTypeCode,sourceId,null);
+        }catch(Exception e){
+            resultDo.setSuccess(false);
+            return resultDo;
+        }
 
-//        fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),bizTypeCode,sourceId,null);
-//        qiNiuComponent.uploadPublicByByte(file.getName(),file.getBytes());
+        return resultDo;
+    }
+
+    /**
+     * 上传商家logo
+     * @param file
+     * @param sourceId
+     * @return
+     */
+    @PostMapping("uploadLogo")
+    @ResponseBody
+    public ResultDo uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
+        ResultDo resultDo=ResultDo.build();
+        Short bizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_LOGO").getValue());
+        try{
+            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),bizTypeCode,sourceId,null);
+        }catch(Exception e){
+            resultDo.setSuccess(false);
+            return resultDo;
+        }
+
+        return resultDo;
+    }
+
+    /**
+     * 设置图片模态框初始化
+     * @param id
+     * @return
+     */
+    @GetMapping("uploadInit/{id}")
+    @ResponseBody
+    public ResultDo<Map<String,String>> uploadInit(@PathVariable("id") Long id){
+        ResultDo<Map<String,String>> resultDo=ResultDo.build();
+        Map<String,String> map=Maps.newHashMap();
+        //商家banner
+        Short bannerBizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_BANNER").getValue());
+        String bannerImgUrl=fileService.getByBizTypeAndSourceId(bannerBizTypeCode,id).get(0).getFileUrl();
+        map.put("bannerImgUrl", bannerImgUrl);
+        //商家logo
+        Short logoBizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_LOGO").getValue());
+        String logoImgUrl=fileService.getByBizTypeAndSourceId(logoBizTypeCode,id).get(0).getFileUrl();
+
+        map.put("logoImgUrl",logoImgUrl);
+        resultDo.setResult(map);
         return resultDo;
     }
 }
