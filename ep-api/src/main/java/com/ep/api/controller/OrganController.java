@@ -32,7 +32,7 @@ public class OrganController extends ApiController {
 
     @ApiOperation(value = "机构详情")
     @PostMapping("/detail")
-    public ResultDo<OrganInfoDto> getOgnInfo(@RequestParam("organId") Long ognId) {
+    public ResultDo<OrganInfoDto> getOgnInfo(@RequestParam("ognId") Long ognId) {
         return organService.getOgnDetail(ognId);
     }
 

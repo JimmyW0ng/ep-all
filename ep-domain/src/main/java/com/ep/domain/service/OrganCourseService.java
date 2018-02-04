@@ -76,6 +76,13 @@ public class OrganCourseService {
         }
         // 评论
         List<OrganClassCommentBo> comments = organClassCommentRepository.getChosenByCourseId(courseId);
+        if (CollectionsTools.isNotEmpty(comments)) {
+            for (OrganClassCommentBo classCommentBo : comments) {
+                Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, classCommentBo.getChildId());
+                String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
+                classCommentBo.setChildAvatar(avatar);
+            }
+        }
         // 封装返回dto
         OrganCourseDto courseDto = new OrganCourseDto(ognCourseBo, classes, team, comments);
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();

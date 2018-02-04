@@ -8,5 +8,6 @@ public class OrganClassCommentBo extends EpOrganClassCommentPo {
 
     private String childNickName;
     private String className;
+    private String childAvatar;
 
 }
