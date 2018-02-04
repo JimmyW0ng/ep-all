@@ -100,4 +100,12 @@ public class OrganService {
     public int updateSystemOrgan(EpOrganPo po){
         return organRepository.updateSystemOrgan(po);
     }
+
+    /**
+     * 删除商家
+     * @param id
+     */
+    public void delete(Long id){
+        organRepository.deleteLogical(id);
+    }
 }

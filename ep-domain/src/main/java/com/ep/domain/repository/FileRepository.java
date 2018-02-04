@@ -78,7 +78,7 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
      * @param sourceId
      * @return
      */
-    public int logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId) {
+    public int  logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId) {
         EpFilePo filePo = dslContext.selectFrom(EP_FILE)
                 .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))

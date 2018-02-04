@@ -152,5 +152,17 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
             .set(EP_ORGAN.UPDATE_AT, DSL.currentTimestamp())
             .where(EP_ORGAN.ID.eq(po.getId())).and(EP_ORGAN.DEL_FLAG.eq(false)).execute();
     }
+
+    /**
+     * 删除商家
+     * @param id
+     * @return
+     */
+    public int deleteLogical(Long id){
+        return dslContext.update(EP_ORGAN)
+                .set(EP_ORGAN.DEL_FLAG,true)
+                .where(EP_ORGAN.ID.eq(id))
+                .execute();
+    }
 }
 

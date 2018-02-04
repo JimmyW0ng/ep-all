@@ -22,21 +22,7 @@
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"-->
-                               <!--placeholder="手机号">-->
-                    <!--</div>-->
 
-                    <!--<div class="form-group ">-->
-                        <!--<select class="form-control" name="type" id="type" style="width:182px;" >-->
-                            <!--<option value>类型</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:selected="${#stringTools.equals(state,map.get('type'))}"-->
-                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"
@@ -94,7 +80,10 @@
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/systemOrgan/view/}+${po.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" >删除</a>
+                                <a class="btn btn-xs btn-danger"  href="javascript:void(0)" th:onclick="'deleteOrganBox('+${po.id}+')'" >删除</a>
+                                <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" th:onclick="'modelShow('+${po.id}+');'">
+                                    上传相关图片
+                                </button>
 
                             </td>
 
@@ -121,19 +110,125 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal inmodal" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content animated bounceInRight">
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">地区纬度：</label>-->
+                                <!--<div class="col-sm-3">-->
+                                    <!--<input id="" name="" type="text" class="form-control" required="true"-->
+                                           <!--aria-required="true">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <input type="hidden" id="sourceId">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                                </button>
+                                <h4 class="modal-title">设置图片</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!--<p><strong>H+</strong> 是一个完全响应式，基于Bootstrap3.3.6最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术，她提供了诸多的强大的可以重新组合的UI组件，并集成了最新的jQuery版本(v2.1.1)，当然，也集成了很多功能强大，用途广泛的jQuery插件，她可以用于所有的Web应用程序，如网站管理后台，网站会员中心，CMS，CRM，OA等等，当然，您也可以对她进行深度定制，以做出更强系统。</p>-->
+                                <div class="form-group"><label>商家banner</label>
+                                    <button style="float:right;" type="button" class="btn btn-info" id="banner_img_btn" onclick="$('#banner_img').click()">
+                                        <span>选择图片</span>
+
+                                    </button>
+                                    <input style="display:none" id="banner_img" type="file" onchange="uploadBannerImg($('#banner_img_btn'),this)"/>
+                                </div>
+                                <div style="border:3px dashed #e6e6e6">
+                                    <img style="margin: 10px" th:src="@{/img/a1.jpg}"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>商家logo</label>
+                                    <button  style="float:right" class="btn btn-info">
+                                        <span>选择图片</span>
+                                        <input style="display: none" id="logo_img" type="file"/>
+
+                                    </button>
+                                </div>
+                                <div style="border:3px dashed #e6e6e6">
+                                    <img style="margin: 10px" th:src="@{/img/a1.jpg}"/>
+                                </div>
+
+                            </div>
+                            <!--<div class="modal-footer">-->
+                                <!--<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>-->
+                                <!--<button type="button" class="btn btn-primary">保存</button>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
 <script th:replace="~{fragments/scripts}"></script>
 
-<script>
-    //    $(document).ready(
-    //        function() {
-    //            $(".dataTables-example").dataTable();
-    //            // var oTable = $("#editable").dataTable();
-    //        }
-    //    )
+<script type="text/javascript">
+    function deleteOrganBox(id) {
+        parent.layer.alert('确认删除此机构', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+                delOrganDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function delOrganDo(id) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/systemOrgan/delete/"+id,
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/systemOrgan/index');
+                }
+            }
+        })
+
+    }
+    
+    function modelShow() {
+        $("#uploadModal").modal("show")
+    }
+
+    function uploadBannerImg(ele) {
+
+        $(ele).attr("disabled", true);
+//        $("#qiniuBtnName").text("上传中...");
+        data = new FormData();
+        data.append("file", $("#banner_img")[0].files[0]);
+        data.append("sourceId", $("#banner_img")[0].files[0]);
+        // var params={file:$(ele)};
+        $.ajax({
+            type: "POST",
+            url: "/auth/systemOrgan/uploadBanner",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(1)
+//                //add by feicongcong session失效跳登录页面start
+//                ajaxSessionCheck(data);
+//                //add by feicongcong session失效跳登录页面end
+//                console.log(data);
+//                $('#imgShow').show();
+//                $('#imgShow img').attr("src", data.result.fileUrl + "?" + [[#{thumbnail}]]);
+//                $("#href").val(data.result.fileUrl);
+//                $(ele).attr("disabled", false);
+//                $("#qiniuBtnName").text("上传");
+            }
+        })
+    }
+//    $(function () {
+//        console.log($('#banner_img'))
+//        $('#banner_img').click()
+//        $("#banner_img").trigger("click");
+//    })
 </script>
 </body>
 </html>
