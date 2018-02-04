@@ -9,32 +9,26 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
-import com.ep.domain.repository.domain.tables.EpConstantRegion;
 import com.ep.domain.service.FileService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 
@@ -150,7 +144,7 @@ public class SystemOrganController extends BackendController {
         ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
-        po.setOrganCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(),"yyyy-MM-dd"));
+        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(), "yyyy-MM-dd"));
         organService.insertSystemOrgan(po);
         return resultDo;
     }
@@ -169,7 +163,7 @@ public class SystemOrganController extends BackendController {
         ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
-        po.setOrganCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(),"yyyy-MM-dd"));
+        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(), "yyyy-MM-dd"));
         organService.updateSystemOrgan(po);
         return resultDo;
     }
@@ -185,7 +179,7 @@ public class SystemOrganController extends BackendController {
     public String updateInit(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
-        EpConstantRegionPo  constantRegionPoDistrict = constantRegionComponent.getById(po.getOrganRegion());
+        EpConstantRegionPo constantRegionPoDistrict = constantRegionComponent.getById(po.getOgnRegion());
         Long cityId=constantRegionPoDistrict.getParentId();
         EpConstantRegionPo constantRegionPoCity = constantRegionComponent.getById(cityId);
         Long provinceId=constantRegionPoCity.getParentId();
@@ -210,7 +204,7 @@ public class SystemOrganController extends BackendController {
     public String view(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
-        EpConstantRegionPo  constantRegionPoDistrict = constantRegionComponent.getById(po.getOrganRegion());
+        EpConstantRegionPo constantRegionPoDistrict = constantRegionComponent.getById(po.getOgnRegion());
         model.addAttribute("district", constantRegionPoDistrict.getRegionName());
         Long cityId=constantRegionPoDistrict.getParentId();
 
