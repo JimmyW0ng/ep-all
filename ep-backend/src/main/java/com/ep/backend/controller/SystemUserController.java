@@ -88,6 +88,7 @@ public class SystemUserController extends BackendController {
             conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.lessOrEqual(crEndTime));
         }
         map.put("crEndTime", crEndTime);
+        conditions.add(EP.EP_SYSTEM_USER.DEL_FLAG.eq(false));
         Page<EpSystemUserPo> page = systemUserService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);

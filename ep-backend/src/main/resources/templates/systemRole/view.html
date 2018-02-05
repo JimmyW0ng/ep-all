@@ -89,14 +89,15 @@
 
 
     };
-    var zNodes = [
-        [# th:each="menuPojo :${@systemMenuService.getAll()}"]
-    {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]]
-    },
-    [/]
-    ];
+
 
     $(document).ready(function () {
+        var zNodes = [
+            [# th:each="menuPojo :${menuList}"]
+        {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]],},
+        [/]
+        ];
+
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         var id= [[${systemRolePo.id}]]
         console.log("id="+id)

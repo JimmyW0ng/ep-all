@@ -5,10 +5,12 @@ import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemRoleBo;
+import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
+import com.ep.domain.service.SystemMenuService;
 import com.ep.domain.service.SystemRoleAuthorityService;
 import com.ep.domain.service.SystemRoleService;
 import com.google.common.collect.Lists;
@@ -49,6 +51,9 @@ public class SystemRoleController extends BackendController {
 
     @Autowired
     private SystemRoleAuthorityService systemRoleAuthorityService;
+
+    @Autowired
+    private SystemMenuService systemMenuService;
 
     @GetMapping("index")
     public String index(Model model,
@@ -96,12 +101,15 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("view/{id}")
-    public String read(Model model,@PathVariable("id") Long id) {
+    public String read(HttpServletRequest request,Model model,@PathVariable("id") Long id) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         EpSystemRolePo systemRolePo = systemRoleService.getById(id);
 
         List<Long> menuIds=systemRoleAuthorityService.getMenuIdByRole(systemRolePo.getId());
         model.addAttribute("systemRolePo", systemRolePo);
         model.addAttribute("menuIds", menuIds);
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
+        model.addAttribute("menuList",menuList);
         return "/systemRole/view";
 
     }
@@ -112,8 +120,11 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("createInit")
-    public String createInit(Model model) {
+    public String createInit(HttpServletRequest request,Model model) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         model.addAttribute("systemRolePo", new EpSystemRolePo());
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
+        model.addAttribute("menuList",menuList);
         return "/systemRole/form";
 
     }
@@ -175,12 +186,15 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("updateInit/{id}")
-    public String updateInit(Model model,@PathVariable("id") Long id) {
+    public String updateInit(HttpServletRequest request,Model model,@PathVariable("id") Long id) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         EpSystemRolePo systemRolePo = systemRoleService.getById(id);
 
         List<Long> menuIds=systemRoleAuthorityService.getMenuIdByRole(systemRolePo.getId());
         model.addAttribute("systemRolePo", systemRolePo);
         model.addAttribute("menuIds", menuIds);
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
+        model.addAttribute("menuList",menuList);
         return "/systemRole/form";
 
     }
