@@ -77,6 +77,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
+     * Setter for <code>ep.ep_organ_class.class_name</code>. 班次名称
+     */
+    public EpOrganClassRecord setClassName(String value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpOrganClassRecord
      */
     public EpOrganClassRecord(Long id, Long ognId, Long courseId, String className, Long ognAccountId, BigDecimal classPrize, BigDecimal discountAmount, Boolean enterLimitFlag, Integer enterRequireNum, Integer orderedNum, Integer enteredNum, Integer courseNum, Long sort, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
@@ -103,33 +111,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
-     */
-    public String getClassName() {
-        return (String) get(3);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
      */
     public Long getOgnId() {
         return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.class_name</code>. 班次名称
-     */
-    public EpOrganClassRecord setClassName(String value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.class_prize</code>. 价格
-     */
-    public EpOrganClassRecord setClassPrize(BigDecimal value) {
-        set(5, value);
-        return this;
     }
 
     /**
@@ -140,11 +125,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
-    public EpOrganClassRecord setDiscountAmount(BigDecimal value) {
-        set(6, value);
-        return this;
+    public String getClassName() {
+        return (String) get(3);
     }
 
     /**
@@ -156,10 +140,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     * Setter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
      */
-    public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
-        set(7, value);
+    public EpOrganClassRecord setDiscountAmount(BigDecimal value) {
+        set(6, value);
         return this;
     }
 
@@ -168,6 +152,22 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      */
     public BigDecimal getClassPrize() {
         return (BigDecimal) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     */
+    public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.class_prize</code>. 价格
+     */
+    public EpOrganClassRecord setClassPrize(BigDecimal value) {
+        set(5, value);
+        return this;
     }
 
     /**

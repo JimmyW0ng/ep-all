@@ -9,20 +9,13 @@ import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -38,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemUser extends TableImpl<EpSystemUserRecord> {
 
-    private static final long serialVersionUID = 617346966;
+    private static final long serialVersionUID = -922633243;
 
     /**
      * The reference instance of <code>ep.ep_system_user</code>
@@ -89,9 +82,9 @@ public class EpSystemUser extends TableImpl<EpSystemUserRecord> {
     public final TableField<EpSystemUserRecord, EpSystemUserType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpSystemUserType.class), this, "商户；平台");
 
     /**
-     * The column <code>ep.ep_system_user.organ_id</code>. 商户id
+     * The column <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public final TableField<EpSystemUserRecord, Long> ORGAN_ID = createField("organ_id", org.jooq.impl.SQLDataType.BIGINT, this, "商户id");
+    public final TableField<EpSystemUserRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT, this, "商户id");
 
     /**
      * The column <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；

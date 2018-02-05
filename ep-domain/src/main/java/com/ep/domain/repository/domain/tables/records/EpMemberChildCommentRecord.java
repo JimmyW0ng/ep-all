@@ -267,6 +267,13 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
+     * Getter for <code>ep.ep_member_child_comment.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
+    }
+
+    /**
      * Getter for <code>ep.ep_member_child_comment.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
@@ -278,13 +285,6 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     public String getRemark() {
         return (String) get(13);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_comment.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
     }
 
     // -------------------------------------------------------------------------

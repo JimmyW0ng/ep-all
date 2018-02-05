@@ -319,6 +319,13 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
+     * Getter for <code>ep.ep_organ_course.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(17);
+    }
+
+    /**
      * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
      */
     public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
@@ -331,13 +338,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
      */
     public Integer getTotalParticipate() {
         return (Integer) get(16);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course.remark</code>. 备注信息
-     */
-    public String getRemark() {
-        return (String) get(17);
     }
 
     /**

@@ -30,7 +30,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> implements Record14<Long, Long, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 1348676499;
+    private static final long serialVersionUID = 105438082;
 
     /**
      * Setter for <code>ep.ep_system_user.id</code>. 主键
@@ -133,7 +133,7 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     /**
      * Create a detached, initialised EpSystemUserRecord
      */
-    public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long organId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
         super(EpSystemUser.EP_SYSTEM_USER);
 
         set(0, id);
@@ -143,7 +143,7 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         set(4, password);
         set(5, email);
         set(6, type);
-        set(7, organId);
+        set(7, ognId);
         set(8, status);
         set(9, createAt);
         set(10, updateAt);
@@ -153,18 +153,17 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.organ_id</code>. 商户id
-     */
-    public EpSystemUserRecord setOrganId(Long value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
     public String getEmail() {
         return (String) get(5);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
+     */
+    public EpSystemUserType getType() {
+        return (EpSystemUserType) get(6);
     }
 
     /**
@@ -176,10 +175,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
+     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public EpSystemUserType getType() {
-        return (EpSystemUserType) get(6);
+    public Long getOgnId() {
+        return (Long) get(7);
     }
 
     /**
@@ -191,10 +190,11 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.organ_id</code>. 商户id
+     * Setter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public Long getOrganId() {
-        return (Long) get(7);
+    public EpSystemUserRecord setOgnId(Long value) {
+        set(7, value);
+        return this;
     }
 
     /**
@@ -344,11 +344,11 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for <code>ep.ep_system_user.version</code>.
      */
-    @Override
-    public Field<Long> field8() {
-        return EpSystemUser.EP_SYSTEM_USER.ORGAN_ID;
+    public EpSystemUserRecord setVersion(Long value) {
+        set(13, value);
+        return this;
     }
 
     /**
@@ -392,11 +392,11 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.version</code>.
+     * {@inheritDoc}
      */
-    public EpSystemUserRecord setVersion(Long value) {
-        set(13, value);
-        return this;
+    @Override
+    public Row14<Long, Long, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row14) super.valuesRow();
     }
 
     /**
@@ -459,8 +459,8 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Long value8() {
-        return getOrganId();
+    public Field<Long> field8() {
+        return EpSystemUser.EP_SYSTEM_USER.OGN_ID;
     }
 
     /**
@@ -507,8 +507,8 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Row14<Long, Long, String, String, String, String, EpSystemUserType, Long, EpSystemUserStatus, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row14) super.valuesRow();
+    public Field<Long> field14() {
+        return EpSystemUser.EP_SYSTEM_USER.VERSION;
     }
 
     /**
@@ -578,9 +578,8 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public EpSystemUserRecord value8(Long value) {
-        setOrganId(value);
-        return this;
+    public Long value8() {
+        return getOgnId();
     }
 
     /**
@@ -667,15 +666,16 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field14() {
-        return EpSystemUser.EP_SYSTEM_USER.VERSION;
+    public Long value14() {
+        return getVersion();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Long value14() {
-        return getVersion();
+    public EpSystemUserRecord value8(Long value) {
+        setOgnId(value);
+        return this;
     }
 }
