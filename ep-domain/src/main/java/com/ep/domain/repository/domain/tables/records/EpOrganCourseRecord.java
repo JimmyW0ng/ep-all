@@ -296,6 +296,14 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
+     * Setter for <code>ep.ep_organ_course.total_participate</code>. 总参与人数
+     */
+    public EpOrganCourseRecord setTotalParticipate(Integer value) {
+        set(16, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
      */
     public EpOrganCourseCourseStatus getCourseStatus() {
@@ -303,10 +311,11 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.total_participate</code>. 总参与人数
+     * Setter for <code>ep.ep_organ_course.remark</code>. 备注信息
      */
-    public Integer getTotalParticipate() {
-        return (Integer) get(16);
+    public EpOrganCourseRecord setRemark(String value) {
+        set(17, value);
+        return this;
     }
 
     /**
@@ -318,26 +327,17 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
+     * Getter for <code>ep.ep_organ_course.total_participate</code>. 总参与人数
+     */
+    public Integer getTotalParticipate() {
+        return (Integer) get(16);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_course.remark</code>. 备注信息
      */
     public String getRemark() {
         return (String) get(17);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course.total_participate</code>. 总参与人数
-     */
-    public EpOrganCourseRecord setTotalParticipate(Integer value) {
-        set(16, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course.remark</code>. 备注信息
-     */
-    public EpOrganCourseRecord setRemark(String value) {
-        set(17, value);
-        return this;
     }
 
     /**
@@ -364,6 +364,13 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
+     * Getter for <code>ep.ep_organ_course.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(20);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_course.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
@@ -376,13 +383,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     public EpOrganCourseRecord setCreateAt(Timestamp value) {
         set(18, value);
         return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course.del_flag</code>. 删除标志
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(20);
     }
 
     // -------------------------------------------------------------------------

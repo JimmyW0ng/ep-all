@@ -146,6 +146,21 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
+     * Getter for <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
+     */
+    public EpOrderStatus getStatus() {
+        return (EpOrderStatus) get(7);
+    }
+
+    /**
+     * Setter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
+     */
+    public EpOrderRecord setAuthTime(Timestamp value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpOrderRecord
      */
     public EpOrderRecord(Long id, Long memberId, Long childId, Long ognId, Long courseId, Long classId, BigDecimal prize, EpOrderStatus status, Timestamp authTime, Timestamp cancelTime, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -176,36 +191,6 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
-     */
-    public Timestamp getAuthTime() {
-        return (Timestamp) get(8);
-    }
-
-    /**
-     * Getter for <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
-     */
-    public EpOrderStatus getStatus() {
-        return (EpOrderStatus) get(7);
-    }
-
-    /**
-     * Setter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
-     */
-    public EpOrderRecord setAuthTime(Timestamp value) {
-        set(8, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_order.create_at</code>. 创建时间
-     */
-    public EpOrderRecord setCreateAt(Timestamp value) {
-        set(10, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_order.cancel_time</code>. 订单取消时间
      */
     public Timestamp getCancelTime() {
@@ -213,11 +198,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_order.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */
-    public EpOrderRecord setUpdateAt(Timestamp value) {
-        set(11, value);
-        return this;
+    public Timestamp getAuthTime() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -229,10 +213,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_order.remark</code>. 备注
+     * Setter for <code>ep.ep_order.update_at</code>. 更新时间
      */
-    public EpOrderRecord setRemark(String value) {
-        set(12, value);
+    public EpOrderRecord setUpdateAt(Timestamp value) {
+        set(11, value);
         return this;
     }
 
@@ -241,6 +225,22 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(10);
+    }
+
+    /**
+     * Setter for <code>ep.ep_order.remark</code>. 备注
+     */
+    public EpOrderRecord setRemark(String value) {
+        set(12, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_order.create_at</code>. 创建时间
+     */
+    public EpOrderRecord setCreateAt(Timestamp value) {
+        set(10, value);
+        return this;
     }
 
     /**

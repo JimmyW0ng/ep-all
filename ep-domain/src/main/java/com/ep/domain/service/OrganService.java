@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,12 +48,13 @@ public class OrganService {
         if (!ognInfoPojo.isPresent() || !EpOrganStatus.normal.equals(ognInfoPojo.get().getStatus())) {
             return ResultDo.build(MessageCode.ERROR_DATA_MISS);
         }
-        // 机构banner列表
-        List<EpFilePo> ognBanners = fileRepository.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_BANNER, id);
+        // 机构主图
+        Optional<EpFilePo> mainPicOpt = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, id);
+        String mainPic = mainPicOpt.isPresent() ? mainPicOpt.get().getFileUrl() : null;
         // 机构Logo
-        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
-        EpFilePo logo = optional.isPresent() ? optional.get() : null;
-        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), ognBanners, logo);
+        Optional<EpFilePo> logoOpt = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
+        String logo = logoOpt.isPresent() ? logoOpt.get().getFileUrl() : null;
+        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), mainPic, logo);
         return resultDo.setResult(ognInfoDto);
     }
 

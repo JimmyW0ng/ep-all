@@ -212,17 +212,17 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
-     */
-    public String getOgnEmail() {
-        return (String) get(9);
-    }
-
-    /**
      * Getter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
      */
     public String getOgnUrl() {
         return (String) get(10);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     */
+    public String getOgnEmail() {
+        return (String) get(9);
     }
 
     /**

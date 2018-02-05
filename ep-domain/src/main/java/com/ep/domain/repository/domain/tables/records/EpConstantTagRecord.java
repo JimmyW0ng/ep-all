@@ -31,10 +31,26 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     private static final long serialVersionUID = 1354384936;
 
     /**
+     * Setter for <code>ep.ep_constant_tag.id</code>.
+     */
+    public EpConstantTagRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpConstantTagRecord
      */
     public EpConstantTagRecord() {
         super(EpConstantTag.EP_CONSTANT_TAG);
+    }
+
+    /**
+     * Setter for <code>ep.ep_constant_tag.catalog_id</code>. 课程类目id
+     */
+    public EpConstantTagRecord setCatalogId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -58,43 +74,6 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_constant_tag.id</code>.
-     */
-    public EpConstantTagRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_tag.catalog_id</code>. 课程类目id
-     */
-    public Long getCatalogId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_constant_tag.catalog_id</code>. 课程类目id
-     */
-    public EpConstantTagRecord setCatalogId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_tag.tag_name</code>. 标签名称
-     */
-    public String getTagName() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_constant_tag.tag_name</code>. 标签名称
      */
     public EpConstantTagRecord setTagName(String value) {
@@ -103,10 +82,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.tag_level</code>. 标签等级
+     * Getter for <code>ep.ep_constant_tag.id</code>.
      */
-    public Byte getTagLevel() {
-        return (Byte) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -118,10 +97,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.sort</code>. 排序
+     * Getter for <code>ep.ep_constant_tag.catalog_id</code>. 课程类目id
      */
-    public Long getSort() {
-        return (Long) get(4);
+    public Long getCatalogId() {
+        return (Long) get(1);
     }
 
     /**
@@ -133,10 +112,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.ogn_flag</code>. 是否机构私有标签
+     * Getter for <code>ep.ep_constant_tag.tag_name</code>. 标签名称
      */
-    public Boolean getOgnFlag() {
-        return (Boolean) get(5);
+    public String getTagName() {
+        return (String) get(2);
     }
 
     /**
@@ -148,10 +127,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_constant_tag.tag_level</code>. 标签等级
      */
-    public Long getOgnId() {
-        return (Long) get(6);
+    public Byte getTagLevel() {
+        return (Byte) get(3);
     }
 
     /**
@@ -163,10 +142,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_constant_tag.sort</code>. 排序
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(7);
+    public Long getSort() {
+        return (Long) get(4);
     }
 
     /**
@@ -178,10 +157,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_constant_tag.ogn_flag</code>. 是否机构私有标签
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
+    public Boolean getOgnFlag() {
+        return (Boolean) get(5);
     }
 
     /**
@@ -193,10 +172,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.remark</code>. 备注
+     * Getter for <code>ep.ep_constant_tag.ogn_id</code>. 机构id
      */
-    public String getRemark() {
-        return (String) get(9);
+    public Long getOgnId() {
+        return (Long) get(6);
     }
 
     /**
@@ -208,10 +187,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     /**
-     * Getter for <code>ep.ep_constant_tag.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_constant_tag.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(10);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -222,9 +201,19 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_constant_tag.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
+    }
+
+    /**
+     * Getter for <code>ep.ep_constant_tag.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(9);
+    }
 
     /**
      * Getter for <code>ep.ep_constant_tag.version</code>.
@@ -234,16 +223,8 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     }
 
     // -------------------------------------------------------------------------
-    // Record12 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_constant_tag.version</code>.
-     */
-    public EpConstantTagRecord setVersion(Long value) {
-        set(11, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -252,6 +233,10 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record12 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -560,10 +545,6 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -590,6 +571,25 @@ public class EpConstantTagRecord extends UpdatableRecordImpl<EpConstantTagRecord
         value10(value10);
         value11(value11);
         value12(value12);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_constant_tag.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>ep.ep_constant_tag.version</code>.
+     */
+    public EpConstantTagRecord setVersion(Long value) {
+        set(11, value);
         return this;
     }
 }
