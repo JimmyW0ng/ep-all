@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> {
 
-    private static final long serialVersionUID = -829838994;
+    private static final long serialVersionUID = -357335435;
 
     /**
      * The reference instance of <code>ep.ep_member_child_comment</code>
@@ -56,9 +56,29 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
     public final TableField<EpMemberChildCommentRecord, Long> P_ID = createField("p_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）");
 
     /**
-     * The column <code>ep.ep_member_child_comment.class_schedule_id</code>. 行程id
+     * The column <code>ep.ep_member_child_comment.child_id</code>. 孩子id
      */
-    public final TableField<EpMemberChildCommentRecord, Long> CLASS_SCHEDULE_ID = createField("class_schedule_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "行程id");
+    public final TableField<EpMemberChildCommentRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
+
+    /**
+     * The column <code>ep.ep_member_child_comment.ogn_id</code>. 机构id
+     */
+    public final TableField<EpMemberChildCommentRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+
+    /**
+     * The column <code>ep.ep_member_child_comment.course_id</code>. 课程id
+     */
+    public final TableField<EpMemberChildCommentRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
+
+    /**
+     * The column <code>ep.ep_member_child_comment.class_id</code>. 班次id
+     */
+    public final TableField<EpMemberChildCommentRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
+
+    /**
+     * The column <code>ep.ep_member_child_comment.class_catelog_id</code>. 课程内容目录id
+     */
+    public final TableField<EpMemberChildCommentRecord, Long> CLASS_CATELOG_ID = createField("class_catelog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程内容目录id");
 
     /**
      * The column <code>ep.ep_member_child_comment.type</code>. 评论类型: 评论；回复

@@ -33,6 +33,7 @@ public class Keys {
 
     public static final Identity<EpConstantCatalogRecord, Long> IDENTITY_EP_CONSTANT_CATALOG = Identities0.IDENTITY_EP_CONSTANT_CATALOG;
     public static final Identity<EpConstantRegionRecord, Long> IDENTITY_EP_CONSTANT_REGION = Identities0.IDENTITY_EP_CONSTANT_REGION;
+    public static final Identity<EpConstantTagRecord, Long> IDENTITY_EP_CONSTANT_TAG = Identities0.IDENTITY_EP_CONSTANT_TAG;
     public static final Identity<EpFileRecord, Long> IDENTITY_EP_FILE = Identities0.IDENTITY_EP_FILE;
     public static final Identity<EpMemberRecord, Long> IDENTITY_EP_MEMBER = Identities0.IDENTITY_EP_MEMBER;
     public static final Identity<EpMemberChildRecord, Long> IDENTITY_EP_MEMBER_CHILD = Identities0.IDENTITY_EP_MEMBER_CHILD;
@@ -68,6 +69,7 @@ public class Keys {
 
     public static final UniqueKey<EpConstantCatalogRecord> KEY_EP_CONSTANT_CATALOG_PRIMARY = UniqueKeys0.KEY_EP_CONSTANT_CATALOG_PRIMARY;
     public static final UniqueKey<EpConstantRegionRecord> KEY_EP_CONSTANT_REGION_PRIMARY = UniqueKeys0.KEY_EP_CONSTANT_REGION_PRIMARY;
+    public static final UniqueKey<EpConstantTagRecord> KEY_EP_CONSTANT_TAG_PRIMARY = UniqueKeys0.KEY_EP_CONSTANT_TAG_PRIMARY;
     public static final UniqueKey<EpFileRecord> KEY_EP_FILE_PRIMARY = UniqueKeys0.KEY_EP_FILE_PRIMARY;
     public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_PRIMARY;
     public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = UniqueKeys0.KEY_EP_MEMBER_UNIQUE_MOBILE;
@@ -116,6 +118,7 @@ public class Keys {
     private static class Identities0 extends AbstractKeys {
         public static Identity<EpConstantCatalogRecord, Long> IDENTITY_EP_CONSTANT_CATALOG = createIdentity(EpConstantCatalog.EP_CONSTANT_CATALOG, EpConstantCatalog.EP_CONSTANT_CATALOG.ID);
         public static Identity<EpConstantRegionRecord, Long> IDENTITY_EP_CONSTANT_REGION = createIdentity(EpConstantRegion.EP_CONSTANT_REGION, EpConstantRegion.EP_CONSTANT_REGION.ID);
+        public static Identity<EpConstantTagRecord, Long> IDENTITY_EP_CONSTANT_TAG = createIdentity(EpConstantTag.EP_CONSTANT_TAG, EpConstantTag.EP_CONSTANT_TAG.ID);
         public static Identity<EpFileRecord, Long> IDENTITY_EP_FILE = createIdentity(EpFile.EP_FILE, EpFile.EP_FILE.ID);
         public static Identity<EpMemberRecord, Long> IDENTITY_EP_MEMBER = createIdentity(EpMember.EP_MEMBER, EpMember.EP_MEMBER.ID);
         public static Identity<EpMemberChildRecord, Long> IDENTITY_EP_MEMBER_CHILD = createIdentity(EpMemberChild.EP_MEMBER_CHILD, EpMemberChild.EP_MEMBER_CHILD.ID);
@@ -149,6 +152,7 @@ public class Keys {
     private static class UniqueKeys0 extends AbstractKeys {
         public static final UniqueKey<EpConstantCatalogRecord> KEY_EP_CONSTANT_CATALOG_PRIMARY = createUniqueKey(EpConstantCatalog.EP_CONSTANT_CATALOG, "KEY_ep_constant_catalog_PRIMARY", EpConstantCatalog.EP_CONSTANT_CATALOG.ID);
         public static final UniqueKey<EpConstantRegionRecord> KEY_EP_CONSTANT_REGION_PRIMARY = createUniqueKey(EpConstantRegion.EP_CONSTANT_REGION, "KEY_ep_constant_region_PRIMARY", EpConstantRegion.EP_CONSTANT_REGION.ID);
+        public static final UniqueKey<EpConstantTagRecord> KEY_EP_CONSTANT_TAG_PRIMARY = createUniqueKey(EpConstantTag.EP_CONSTANT_TAG, "KEY_ep_constant_tag_PRIMARY", EpConstantTag.EP_CONSTANT_TAG.ID);
         public static final UniqueKey<EpFileRecord> KEY_EP_FILE_PRIMARY = createUniqueKey(EpFile.EP_FILE, "KEY_ep_file_PRIMARY", EpFile.EP_FILE.ID);
         public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_PRIMARY = createUniqueKey(EpMember.EP_MEMBER, "KEY_ep_member_PRIMARY", EpMember.EP_MEMBER.ID);
         public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = createUniqueKey(EpMember.EP_MEMBER, "KEY_ep_member_UNIQUE_MOBILE", EpMember.EP_MEMBER.MOBILE);

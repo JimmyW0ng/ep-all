@@ -1,8 +1,10 @@
 package com.ep.domain.repository;
 
+import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
+import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -114,6 +117,50 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(MemberChildClassBo.class);
+        return new PageImpl(data, pageable, count);
+    }
+
+    /**
+     * 分页查询孩子的行程
+     *
+     * @param pageable
+     * @param childId
+     * @return
+     */
+    public Page<MemberChildScheduleBo> findChildSchedulePage(Pageable pageable, Long childId) {
+        // 封装条件
+        Timestamp time = DateTools.zerolizedTime(DateTools.getCurrentDateTime());
+        Condition condition = EP_ORDER.CHILD_ID.eq(childId)
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_CLASS_CATELOG.START_TIME.greaterOrEqual(time))
+                .and(EP_ORGAN_CLASS_CATELOG.DEL_FLAG.eq(false));
+        Long count = dslContext.selectCount()
+                .from(EP_ORDER)
+                .leftJoin(EP_ORGAN_CLASS_CATELOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATELOG.CLASS_ID))
+                .where(condition)
+                .fetchOneInto(Long.class);
+        if (count == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl(Lists.newArrayList(), pageable, count);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
+        fieldList.add(EP_ORGAN_CLASS_CATELOG.START_TIME);
+        fieldList.add(EP_CONSTANT_CATALOG.LABEL);
+        List<MemberChildScheduleBo> data = dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_ORGAN_CLASS_CATELOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATELOG.CLASS_ID))
+                .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                .where(condition)
+                .orderBy(EP_ORGAN_CLASS_CATELOG.START_TIME.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(MemberChildScheduleBo.class);
         return new PageImpl(data, pageable, count);
     }
 

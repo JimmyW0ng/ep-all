@@ -47,6 +47,14 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
+     * Setter for <code>ep.ep_organ.ogn_name</code>. 机构名称
+     */
+    public EpOrganRecord setOgnName(String value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpOrganRecord
      */
     public EpOrganRecord(Long id, String ognName, String ognAddress, Long ognRegion, String ognLng, String ognLat, String ognShortIntroduce, Timestamp ognCreateDate, String ognPhone, String ognEmail, String ognUrl, String ognIntroduce, Byte marketWeight, Byte togetherScore, Integer totalParticipate, EpOrganStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
@@ -76,28 +84,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_name</code>. 机构名称
-     */
-    public String getOgnName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ.ogn_name</code>. 机构名称
-     */
-    public EpOrganRecord setOgnName(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ.ogn_address</code>. 机构地址
-     */
-    public String getOgnAddress() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ.ogn_address</code>. 机构地址
      */
     public EpOrganRecord setOgnAddress(String value) {
@@ -106,10 +92,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_region</code>. 机构地区
+     * Getter for <code>ep.ep_organ.ogn_name</code>. 机构名称
      */
-    public Long getOgnRegion() {
-        return (Long) get(3);
+    public String getOgnName() {
+        return (String) get(1);
     }
 
     /**
@@ -121,10 +107,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_lng</code>. 地区经度
+     * Getter for <code>ep.ep_organ.ogn_address</code>. 机构地址
      */
-    public String getOgnLng() {
-        return (String) get(4);
+    public String getOgnAddress() {
+        return (String) get(2);
     }
 
     /**
@@ -136,10 +122,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_lat</code>. 地区纬度
+     * Getter for <code>ep.ep_organ.ogn_region</code>. 机构地区
      */
-    public String getOgnLat() {
-        return (String) get(5);
+    public Long getOgnRegion() {
+        return (Long) get(3);
     }
 
     /**
@@ -151,10 +137,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
+     * Getter for <code>ep.ep_organ.ogn_lng</code>. 地区经度
      */
-    public String getOgnShortIntroduce() {
-        return (String) get(6);
+    public String getOgnLng() {
+        return (String) get(4);
     }
 
     /**
@@ -166,10 +152,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
+     * Getter for <code>ep.ep_organ.ogn_lat</code>. 地区纬度
      */
-    public Timestamp getOgnCreateDate() {
-        return (Timestamp) get(7);
+    public String getOgnLat() {
+        return (String) get(5);
     }
 
     /**
@@ -181,10 +167,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
+     * Getter for <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
      */
-    public String getOgnPhone() {
-        return (String) get(8);
+    public String getOgnShortIntroduce() {
+        return (String) get(6);
     }
 
     /**
@@ -196,10 +182,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     * Getter for <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
      */
-    public String getOgnEmail() {
-        return (String) get(9);
+    public Timestamp getOgnCreateDate() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -211,10 +197,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
+     * Getter for <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
      */
-    public String getOgnUrl() {
-        return (String) get(10);
+    public String getOgnPhone() {
+        return (String) get(8);
     }
 
     /**
@@ -223,6 +209,20 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     public EpOrganRecord setOgnUrl(String value) {
         set(10, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     */
+    public String getOgnEmail() {
+        return (String) get(9);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
+     */
+    public String getOgnUrl() {
+        return (String) get(10);
     }
 
     /**
@@ -408,14 +408,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.total_participate</code>. 总参与人数
-     */
-    public EpOrganRecord setTotalParticipate(Integer value) {
-        set(14, value);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -493,6 +485,14 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     @Override
     public Field<String> field11() {
         return EpOrgan.EP_ORGAN.OGN_URL;
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ.total_participate</code>. 总参与人数
+     */
+    public EpOrganRecord setTotalParticipate(Integer value) {
+        set(14, value);
+        return this;
     }
 
     /**
@@ -579,14 +579,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public Field<String> field12() {
-        return EpOrgan.EP_ORGAN.OGN_INTRODUCE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String value2() {
         return getOgnName();
     }
@@ -661,6 +653,14 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     @Override
     public String value11() {
         return getOgnUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<String> field12() {
+        return EpOrgan.EP_ORGAN.OGN_INTRODUCE;
     }
 
     /**
@@ -742,14 +742,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     public EpOrganRecord value1(Long value) {
         setId(value);
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String value12() {
-        return getOgnIntroduce();
     }
 
     /**
@@ -840,6 +832,14 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     public EpOrganRecord value11(String value) {
         setOgnUrl(value);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String value12() {
+        return getOgnIntroduce();
     }
 
     /**

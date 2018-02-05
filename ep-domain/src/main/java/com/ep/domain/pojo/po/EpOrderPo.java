@@ -34,6 +34,7 @@ public class EpOrderPo extends AbstractBasePojo {
     private Timestamp authTime;
     private Timestamp cancelTime;
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
     private String remark;
     @JsonIgnore

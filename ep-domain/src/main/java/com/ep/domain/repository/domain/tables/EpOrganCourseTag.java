@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseTagRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseTag extends TableImpl<EpOrganCourseTagRecord> {
 
-    private static final long serialVersionUID = -352209495;
+    private static final long serialVersionUID = -309000114;
 
     /**
      * The reference instance of <code>ep.ep_organ_course_tag</code>
@@ -57,19 +50,14 @@ public class EpOrganCourseTag extends TableImpl<EpOrganCourseTagRecord> {
     public final TableField<EpOrganCourseTagRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
+     * The column <code>ep.ep_organ_course_tag.tag_id</code>. 标签id
+     */
+    public final TableField<EpOrganCourseTagRecord, Long> TAG_ID = createField("tag_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "标签id");
+
+    /**
      * The column <code>ep.ep_organ_course_tag.course_id</code>. 课程id
      */
     public final TableField<EpOrganCourseTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
-
-    /**
-     * The column <code>ep.ep_organ_course_tag.tag_name</code>. 标签名称
-     */
-    public final TableField<EpOrganCourseTagRecord, String> TAG_NAME = createField("tag_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "标签名称");
-
-    /**
-     * The column <code>ep.ep_organ_course_tag.tag_level</code>. 标签等级
-     */
-    public final TableField<EpOrganCourseTagRecord, Byte> TAG_LEVEL = createField("tag_level", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.TINYINT)), this, "标签等级");
 
     /**
      * The column <code>ep.ep_organ_course_tag.sort</code>. 排序

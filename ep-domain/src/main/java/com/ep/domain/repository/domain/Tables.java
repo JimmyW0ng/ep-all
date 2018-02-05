@@ -33,6 +33,11 @@ public class Tables {
     public static final EpConstantRegion EP_CONSTANT_REGION = com.ep.domain.repository.domain.tables.EpConstantRegion.EP_CONSTANT_REGION;
 
     /**
+     * 标签表
+     */
+    public static final EpConstantTag EP_CONSTANT_TAG = com.ep.domain.repository.domain.tables.EpConstantTag.EP_CONSTANT_TAG;
+
+    /**
      * 文件表
      */
     public static final EpFile EP_FILE = com.ep.domain.repository.domain.tables.EpFile.EP_FILE;

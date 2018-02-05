@@ -29,7 +29,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> implements Record18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> {
 
-    private static final long serialVersionUID = -1112431109;
+    private static final long serialVersionUID = 1324530611;
 
     /**
      * Setter for <code>ep.ep_organ_class.id</code>. 主键
@@ -96,18 +96,17 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.class_name</code>. sku名称
-     */
-    public EpOrganClassRecord setClassName(String value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
      */
     public Long getOgnId() {
         return (Long) get(1);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.course_id</code>. 课程ID
+     */
+    public Long getCourseId() {
+        return (Long) get(2);
     }
 
     /**
@@ -119,10 +118,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.course_id</code>. 课程ID
+     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
-    public Long getCourseId() {
-        return (Long) get(2);
+    public String getClassName() {
+        return (String) get(3);
     }
 
     /**
@@ -134,10 +133,11 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.class_name</code>. sku名称
+     * Setter for <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
-    public String getClassName() {
-        return (String) get(3);
+    public EpOrganClassRecord setClassName(String value) {
+        set(3, value);
+        return this;
     }
 
     /**

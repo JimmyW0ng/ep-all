@@ -3,6 +3,7 @@ package com.ep.api.controller;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
+import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.service.MemberChildService;
 import com.ep.domain.service.OrderService;
 import io.swagger.annotations.Api;
@@ -35,9 +36,9 @@ public class ChildClassController extends ApiController {
 
     @ApiOperation(value = "孩子全部课程分页列表")
     @PostMapping("/page")
-    public ResultDo<Page<MemberChildClassBo>> getChildClassPage(@PageableDefault Pageable pageable,
-                                                                @RequestParam("childId") Long childId,
-                                                                @RequestParam("status") ChildClassStatusEnum statusEnum) {
+    public ResultDo<Page<MemberChildClassBo>> findChildClassPage(@PageableDefault Pageable pageable,
+                                                                 @RequestParam("childId") Long childId,
+                                                                 @RequestParam("status") ChildClassStatusEnum statusEnum) {
         ResultDo<Page<MemberChildClassBo>> resultDo = ResultDo.build();
         Long memberId = super.getCurrentUser().get().getId();
         ResultDo checkedChild = memberChildService.getCheckedMemberChild(memberId, childId);
@@ -45,6 +46,20 @@ public class ChildClassController extends ApiController {
             return resultDo.setError(checkedChild.getError());
         }
         Page<MemberChildClassBo> data = orderService.findChildClassPage(pageable, childId, statusEnum);
+        return resultDo.setResult(data);
+    }
+
+    @ApiOperation(value = "孩子行程")
+    @PostMapping("/schedule")
+    public ResultDo<Page<MemberChildScheduleBo>> findChildSchedulePage(@PageableDefault Pageable pageable,
+                                                                       @RequestParam("childId") Long childId) {
+        ResultDo<Page<MemberChildScheduleBo>> resultDo = ResultDo.build();
+        Long memberId = super.getCurrentUser().get().getId();
+        ResultDo checkedChild = memberChildService.getCheckedMemberChild(memberId, childId);
+        if (checkedChild.isError()) {
+            return resultDo.setError(checkedChild.getError());
+        }
+        Page<MemberChildScheduleBo> data = orderService.findChildSchedulePage(pageable, childId);
         return resultDo.setResult(data);
     }
 

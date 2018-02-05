@@ -19,6 +19,7 @@ public class MemberChildClassBo extends EpOrderPo {
     private Boolean courseCommentFlag;
     private Integer lastCatelogIndex;
     private String label;
+    private String mainPicUrl;
 
     /**
      * 返回金额格式化

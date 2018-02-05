@@ -7,21 +7,14 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = 1810528877;
+    private static final long serialVersionUID = -860900879;
 
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
@@ -68,9 +61,9 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
     public final TableField<EpOrganClassRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程ID");
 
     /**
-     * The column <code>ep.ep_organ_class.class_name</code>. sku名称
+     * The column <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
-    public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "sku名称");
+    public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "班次名称");
 
     /**
      * The column <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id

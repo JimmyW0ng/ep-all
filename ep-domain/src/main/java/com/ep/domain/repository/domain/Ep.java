@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = -771181897;
+    private static final long serialVersionUID = -1750362288;
 
     /**
      * The reference instance of <code>ep</code>
@@ -44,6 +44,11 @@ public class Ep extends SchemaImpl {
      * 地区表
      */
     public final EpConstantRegion EP_CONSTANT_REGION = com.ep.domain.repository.domain.tables.EpConstantRegion.EP_CONSTANT_REGION;
+
+    /**
+     * 标签表
+     */
+    public final EpConstantTag EP_CONSTANT_TAG = com.ep.domain.repository.domain.tables.EpConstantTag.EP_CONSTANT_TAG;
 
     /**
      * 文件表
@@ -212,6 +217,7 @@ public class Ep extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             EpConstantCatalog.EP_CONSTANT_CATALOG,
             EpConstantRegion.EP_CONSTANT_REGION,
+                EpConstantTag.EP_CONSTANT_TAG,
             EpFile.EP_FILE,
             EpMember.EP_MEMBER,
             EpMemberChild.EP_MEMBER_CHILD,

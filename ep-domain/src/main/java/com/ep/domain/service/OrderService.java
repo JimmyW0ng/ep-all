@@ -7,16 +7,12 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
-import com.ep.domain.pojo.po.EpMemberChildPo;
-import com.ep.domain.pojo.po.EpOrderPo;
-import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.pojo.po.EpOrganCoursePo;
-import com.ep.domain.repository.MemberChildRepository;
-import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.OrganClassRepository;
-import com.ep.domain.repository.OrganCourseRepository;
+import com.ep.domain.pojo.bo.MemberChildScheduleBo;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Description: 订单服务类
@@ -44,7 +42,8 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrganCourseRepository organCourseRepository;
-
+    @Autowired
+    private FileRepository fileRepository;
 
     /**
      * 下单接口
@@ -154,6 +153,46 @@ public class OrderService {
      * @return
      */
     public Page<MemberChildClassBo> findChildClassPage(Pageable pageable, Long childId, ChildClassStatusEnum statusEnum) {
-        return orderRepository.findChildClassPage(pageable, childId, statusEnum);
+        Page<MemberChildClassBo> page = orderRepository.findChildClassPage(pageable, childId, statusEnum);
+        if (CollectionsTools.isNotEmpty(page.getContent())) {
+            Map<Long, String> courseIdMap = Maps.newHashMap();
+            for (MemberChildClassBo bo : page.getContent()) {
+                String mainPicUrl;
+                if (!courseIdMap.containsKey(bo.getCourseId())) {
+                    Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
+                    mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;
+                } else {
+                    mainPicUrl = courseIdMap.get(bo.getCourseId());
+                }
+                bo.setMainPicUrl(mainPicUrl);
+            }
+        }
+        return page;
     }
+
+    /**
+     * 分页查询孩子行程
+     *
+     * @param pageable
+     * @param childId
+     * @return
+     */
+    public Page<MemberChildScheduleBo> findChildSchedulePage(Pageable pageable, Long childId) {
+        Page<MemberChildScheduleBo> page = orderRepository.findChildSchedulePage(pageable, childId);
+        if (CollectionsTools.isNotEmpty(page.getContent())) {
+            Map<Long, String> courseIdMap = Maps.newHashMap();
+            for (MemberChildScheduleBo bo : page.getContent()) {
+                String mainPicUrl;
+                if (!courseIdMap.containsKey(bo.getCourseId())) {
+                    Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
+                    mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;
+                } else {
+                    mainPicUrl = courseIdMap.get(bo.getCourseId());
+                }
+                bo.setMainPicUrl(mainPicUrl);
+            }
+        }
+        return page;
+    }
+
 }
