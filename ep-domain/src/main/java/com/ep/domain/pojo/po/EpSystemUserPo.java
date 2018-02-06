@@ -29,7 +29,7 @@ public class EpSystemUserPo extends AbstractBasePojo {
     private String password;
     private String email;
     private EpSystemUserType type;
-    private Long organId;
+    private Long ognId;
     private EpSystemUserStatus status;
     private Timestamp createAt;
     private Timestamp updateAt;

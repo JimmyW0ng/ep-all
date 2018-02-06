@@ -87,7 +87,7 @@
                             <td th:text="${bo.mobile}"></td>
                             <td th:text="${bo.userName}"></td>
                             <td th:text="#{EpSystemUserType.+${bo.type}}"></td>
-                            <td th:text="${bo.organId}"></td>
+                            <td th:text="${bo.ognId}"></td>
                             <td th:text="#{EpSystemUserStatus.+${bo.status}}"></td>
 
                             <td th:text="${bo.remark}"></td>
@@ -129,12 +129,29 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script>
-    //    $(document).ready(
-    //        function() {
-    //            $(".dataTables-example").dataTable();
-    //            // var oTable = $("#editable").dataTable();
-    //        }
-    //    )
+    function deleteUserBox(id) {
+        parent.layer.alert('确认删除用户', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+                delUserDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function delUserDo(id) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/user/delete/"+id,
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/user/index');
+                }
+            }
+        })
+
+    }
 </script>
 </body>
 </html>

@@ -54,7 +54,8 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">类型：</label>
                     <div class="col-sm-3">
-                        <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">
+                        <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}"
+                       th:disabled="${systemUserPo!=null}">
                             <option value="">请选择</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
                                     th:value="${state}"
@@ -63,10 +64,10 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="organIdBox" style="display: none">
                     <label class="col-sm-2 control-label">商户id：</label>
                     <div class="col-sm-3">
-                        <input id="organId" name="organId" type="text" class="form-control" th:field="*{organId}">
+                        <input id="organId" name="ognId" type="text" class="form-control" required="true" aria-required="true" th:field="*{ognId}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -163,6 +164,11 @@
     }
     
     function changeType(ele) {
+        if($(ele).val()=='merchant'){
+            $("#organIdBox").show();
+        }else{
+            $("#organIdBox").hide();
+        }
         $.ajax({
             type:"GET",
             url:"/auth/user/getRoleByUserType/"+$(ele).val(),

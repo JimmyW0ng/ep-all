@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+<header>
+    <th:block layout:fragment="links">
+        <link th:href="@{/css/zTreeStyle/zTreeStyle.css}" rel="stylesheet">
+    </th:block>
+</header>
+<body>
+
+<div>
+    <div class="col-sm-12 gray-bg">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>课程类目</h5>
+                        <div class="ibox-tools">
+
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <ul id="treeDemo" class="ztree"></ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7 row">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+
+                        <p id="buttonBox">
+                            <button type="button" class="btn btn-w-m btn-primary" onclick="createShow()">
+                                新增类目
+                            </button>
+                            <button style="display: none" type="button" class="btn btn-w-m btn-success" data-id=""
+                                    onclick="updateShow(this)">修改类目
+                            </button>
+
+                            <button style="display: none" type="button" class="btn btn-w-m btn-danger" data-id=""
+                                    onclick="delShow()">删除菜单
+                            </button>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="ibox float-e-margins" id="menuBox" style="display: none">
+                    <div class="ibox-title">
+                        <input type="hidden" id="act_type"><!--对树的单击事件不同操作-->
+                        <h5 class="r_act">查看详情</h5>
+                        <h5 class="c_act">新增详情</h5>
+                        <h5 class="u_act">编辑详情</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal m-t" id="frm">
+
+                            <input type="hidden" id="id" name="id">
+                            <input type="hidden" id="parentId" name="parentId">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">父级菜单：</label>
+                                <div class="col-sm-8">
+                                    <input id="parentName" type="text" class="form-control" name="parentName"
+                                           required="true" aria-required="true" readonly="true" placeholder="点击菜单选择">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">标签：</label>
+                                <div class="col-sm-8">
+                                    <input id="label" type="" class="form-control" name="label" required="true"
+                                           aria-required="true">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-8">
+                                    <textarea id="remark" name="remark" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-3">
+                                    <button class="btn btn-primary c_act u_act" id="saveBtn" type="button" onclick="saveSubmit()">
+                                        保存
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/js/jquery.ztree.excheck.js}"></script>
+<script th:src="@{/js/jquery.ztree.exedit.js}"></script>
+
+<script th:inline="javascript">
+    var setting = {
+        view: {
+
+        },
+
+        check: {
+            enable: true,
+            chkStyle: "checkbox",//勾选 checkbox 对于父子节点的关联关系
+            chkboxType: { "Y": "s", "N": "ps" }//勾选 checkbox 对于父子节点的关联关系
+        },
+//            edit: {
+//                enable: true
+//            },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+
+            onClick: zTreeOnClick,
+            onDblClick: zTreeOnDbClick,
+        }
+
+
+    };
+    var zNodes = [
+        [# th:each="catalogPojo :${catalogList}"]
+    {id: [[${catalogPojo.id}]], pId:[[${catalogPojo.parentId}]], name:[[${catalogPojo.label}]], open:true},
+    [/]
+    ];
+
+
+
+
+
+
+    function zTreeOnClick() {
+        if ($("#act_type").val() == 'c_act') {
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getSelectedNodes();
+            console.log(nodes[0])
+            $("#parentId").val(nodes[0].id)
+            $("#parentName").val(nodes[0].name)
+            $("#buttonBox").find("button").data("id", nodes[0].id).show()
+        } else {
+            //获取鼠标点击的标签（单个）START
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getSelectedNodes();
+            //获取鼠标点击的标签（单个）END
+            $("#buttonBox").find("button").data("id", nodes[0].id).show()
+        }
+
+
+    }
+
+    function frmField() {
+        $("#frm").validate({}).resetForm()
+        $("#menuBox").find("input").val("");
+    }
+
+    function readShow(id) {
+        frmField();
+        boxTitle("r_act")
+        $("#saveBtn").hide();
+        $.ajax({
+            type: 'GET',
+            url: '/auth/catalog/view/' + id,
+            success: function (data) {
+                if (data.success) {
+                    var catalog = data.result
+                    $("#id").val(catalog.id)
+                    $("#parentId").val(catalog.parentId)
+                    $("#parentName").val(catalog.parentName)
+                    $("#label").val(catalog.label)
+                    $("#remark").val(catalog.remark)
+                }
+            }
+        })
+    }
+
+    /**
+     * 新增初始化
+     */
+    function createShow() {
+        frmField();
+        boxTitle("c_act")
+//        $("#permission").attr("readonly",false)
+    }
+    function boxTitle(titleClazz) {
+        $("#menuBox").show()
+        $("#act_type").val(titleClazz)
+        var clazz = $("#act_type").val()
+        console.log($("#act_type").parent())
+        $("#act_type").parent().children().hide()
+        $("#act_type").parent().find("." + clazz).show()
+        if($("#saveBtn").hasClass(titleClazz)){
+            $("#saveBtn").show()
+        }
+    }
+    function updateShow(ele) {
+        frmField();
+        boxTitle("u_act")
+        console.log($(ele).data("id"));
+        var id = $(ele).data("id")
+        $.ajax({
+            type: 'GET',
+            url: '/auth/catalog/view/' + id,
+            success: function (data) {
+                if (data.success) {
+                    console.log(data.result)
+                    var catalog = data.result
+                    $("#id").val(catalog.id)
+                    $("#parentId").val(catalog.parentId)
+                    $("#parentName").val(catalog.parentName)
+                    $("#label").val(catalog.label)
+
+
+                    $("#remark").val(catalog.remark)
+
+                }
+            }
+        })
+    }
+
+    function delShow() {
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+        console.log(nodes)
+        var ids=[];
+
+        if(nodes.length==0){
+            toastr.error("请勾选需要删除的菜单")
+            return;
+        }else{
+            for(var i=0;i<nodes.length;i++){
+                ids.push(nodes[i].id)
+            }
+        }
+        parent.layer.alert('确认删除勾选菜单？', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+                delDo(ids);
+                parent.layer.close(index);
+            })
+
+    }
+
+    function delDo(ids) {
+        console.log(ids)
+        $.ajax({
+            type:"POST",
+            url:"/auth/catalog/delete",
+            data:{ids:ids},
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/catalog/index')
+                }
+            }
+        })
+    }
+
+    /**
+     * 新增/修改
+     */
+    function saveSubmit() {
+        if (!$("#frm").valid()) {
+            return;
+        }
+        var url="/auth/catalog/create";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#frm").serialize(),
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null,'/auth/catalog/index')
+                }
+            }
+        })
+
+    }
+
+    /**
+     * 查看菜单详情
+     */
+    function zTreeOnDbClick() {
+        //获取鼠标点击的标签（单个）START
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getSelectedNodes();
+        //获取鼠标点击的标签（单个）END
+
+        console.log(nodes[0].id)
+        readShow(nodes[0].id);
+
+
+    }
+
+
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+    });
+
+
+</script>
+
+
+
+</body>
+</html>

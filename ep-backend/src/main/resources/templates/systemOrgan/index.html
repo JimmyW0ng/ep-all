@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sd="http://www.thymeleaf.org/spring-data"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 >
 <head th:replace="~{fragments/header :: common_header}">
@@ -11,6 +12,7 @@
 
     </th:block>
 </header>
+
 <body>
 <div>
     <div class="col-lg-12">
@@ -143,7 +145,7 @@
 
                                 </div>
                                 <div style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
-                                    <img id="logo_img_url" style="margin: 10px;height:140px;width: 140px" />
+                                    <img id="logo_img_url" style="margin: 10px;height:140px;width: 140px;border-radius:50%" />
                                 </div>
 
                             </div>
