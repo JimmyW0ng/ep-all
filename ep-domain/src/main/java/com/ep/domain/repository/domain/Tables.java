@@ -73,6 +73,11 @@ public class Tables {
     public static final EpMemberChildTag EP_MEMBER_CHILD_TAG = com.ep.domain.repository.domain.tables.EpMemberChildTag.EP_MEMBER_CHILD_TAG;
 
     /**
+     * 会员消息表
+     */
+    public static final EpMemberMessage EP_MEMBER_MESSAGE = com.ep.domain.repository.domain.tables.EpMemberMessage.EP_MEMBER_MESSAGE;
+
+    /**
      * 验证码表
      */
     public static final EpMessageCaptcha EP_MESSAGE_CAPTCHA = com.ep.domain.repository.domain.tables.EpMessageCaptcha.EP_MESSAGE_CAPTCHA;

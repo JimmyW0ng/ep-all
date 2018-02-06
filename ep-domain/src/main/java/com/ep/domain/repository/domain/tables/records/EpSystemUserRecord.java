@@ -131,6 +131,13 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
+     */
+    public EpSystemUserType getType() {
+        return (EpSystemUserType) get(6);
+    }
+
+    /**
      * Create a detached, initialised EpSystemUserRecord
      */
     public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -153,28 +160,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
-     */
-    public String getEmail() {
-        return (String) get(5);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
-     */
-    public EpSystemUserType getType() {
-        return (EpSystemUserType) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
-     */
-    public EpSystemUserRecord setStatus(EpSystemUserStatus value) {
-        set(8, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
     public Long getOgnId() {
@@ -182,11 +167,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
-    public EpSystemUserRecord setCreateAt(Timestamp value) {
-        set(9, value);
-        return this;
+    public String getEmail() {
+        return (String) get(5);
     }
 
     /**
@@ -198,10 +182,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public EpSystemUserRecord setUpdateAt(Timestamp value) {
-        set(10, value);
+    public EpSystemUserRecord setCreateAt(Timestamp value) {
+        set(9, value);
         return this;
     }
 
@@ -210,6 +194,22 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      */
     public EpSystemUserStatus getStatus() {
         return (EpSystemUserStatus) get(8);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     */
+    public EpSystemUserRecord setUpdateAt(Timestamp value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     */
+    public EpSystemUserRecord setStatus(EpSystemUserStatus value) {
+        set(8, value);
+        return this;
     }
 
     /**

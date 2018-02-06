@@ -61,7 +61,7 @@ public class MemberService {
     public EpMemberPo checkExistAndType(Long mobile) {
         EpMemberPo memberPo = this.getByMobile(mobile);
         // 判断是否是机构账户
-        boolean isOrganMan = false;
+        boolean isOrganMan;
         List<EpOrganAccountPo> accounts = organAccountRepository.getByMobile(mobile);
         isOrganMan = CollectionsTools.isNotEmpty(accounts);
         if (memberPo != null) {

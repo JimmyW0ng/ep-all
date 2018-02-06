@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = -1750362288;
+    private static final long serialVersionUID = 1509094166;
 
     /**
      * The reference instance of <code>ep</code>
@@ -84,6 +84,11 @@ public class Ep extends SchemaImpl {
      * 孩子标签记录表
      */
     public final EpMemberChildTag EP_MEMBER_CHILD_TAG = com.ep.domain.repository.domain.tables.EpMemberChildTag.EP_MEMBER_CHILD_TAG;
+
+    /**
+     * 会员消息表
+     */
+    public final EpMemberMessage EP_MEMBER_MESSAGE = com.ep.domain.repository.domain.tables.EpMemberMessage.EP_MEMBER_MESSAGE;
 
     /**
      * 验证码表
@@ -225,6 +230,7 @@ public class Ep extends SchemaImpl {
             EpMemberChildHonor.EP_MEMBER_CHILD_HONOR,
             EpMemberChildSign.EP_MEMBER_CHILD_SIGN,
             EpMemberChildTag.EP_MEMBER_CHILD_TAG,
+                EpMemberMessage.EP_MEMBER_MESSAGE,
             EpMessageCaptcha.EP_MESSAGE_CAPTCHA,
             EpOrder.EP_ORDER,
             EpOrgan.EP_ORGAN,
