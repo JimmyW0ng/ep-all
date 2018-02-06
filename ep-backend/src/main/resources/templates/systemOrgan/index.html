@@ -199,8 +199,8 @@
             url:"/auth/systemOrgan/uploadInit/"+id,
             success:function (data) {
                 if(data.success){
-                    $("#banner_img_url").attr("src",data.result.bannerImgUrl)
-                    $("#logo_img_url").attr("src",data.result.logoImgUrl)
+                    $("#banner_img_url").attr("src",data.result.bannerImgUrl==undefined?"":data.result.bannerImgUrl)
+                    $("#logo_img_url").attr("src",data.result.logoImgUrl==undefined?"":data.result.logoImgUrl)
                 }
             }
         })
@@ -208,7 +208,7 @@
     }
 
     /**
-     * 上传商家banner
+     * 上传商家主图
      */
     function uploadBannerImg($btn,sourceId,ele) {
 
@@ -218,7 +218,7 @@
         data.append("sourceId", sourceId);
         $.ajax({
             type: "POST",
-            url: "/auth/systemOrgan/uploadBanner",
+            url: "/auth/systemOrgan/uploadMainpic",
             data: data,
             contentType: false,
             processData: false,

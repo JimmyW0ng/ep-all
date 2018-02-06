@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -107,5 +108,14 @@ public class OrganService {
      */
     public void delete(Long id){
         organRepository.deleteLogical(id);
+    }
+
+    /**
+     *
+     * @param status
+     * @return
+     */
+    public List<EpOrganPo> getByStatus(EpOrganStatus status){
+        return organRepository.getByStatus(status);
     }
 }

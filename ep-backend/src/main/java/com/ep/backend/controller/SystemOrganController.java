@@ -1,13 +1,16 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.component.DictComponent;
 import com.ep.domain.component.QiNiuComponent;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
+import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
 import com.ep.domain.service.FileService;
@@ -28,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
@@ -45,8 +49,7 @@ public class SystemOrganController extends BackendController {
     private OrganService organService;
     @Autowired
     private ConstantRegionComponent constantRegionComponent;
-    @Autowired
-    private QiNiuComponent qiNiuComponent;
+
     @Autowired
     private DictComponent dictComponent;
     @Autowired
@@ -71,13 +74,14 @@ public class SystemOrganController extends BackendController {
 //        map.put("type", type);
 
         if (null != crStartTime) {
-            conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.greaterOrEqual(crStartTime));
+            conditions.add(EP.EP_ORGAN.CREATE_AT.greaterOrEqual(crStartTime));
         }
         map.put("crStartTime", crStartTime);
         if (null != crEndTime) {
-            conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.lessOrEqual(crEndTime));
+            conditions.add(EP.EP_ORGAN.CREATE_AT.lessOrEqual(crEndTime));
         }
         map.put("crEndTime", crEndTime);
+        conditions.add(EP.EP_ORGAN.DEL_FLAG.eq(false));
         Page<EpOrganPo> page = organService.findByPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);
@@ -232,18 +236,17 @@ public class SystemOrganController extends BackendController {
     }
 
     /**
-     * 上传商家banner
+     * 上传商家主图
      * @param file
      * @param sourceId
      * @return
      */
-    @PostMapping("uploadBanner")
+    @PostMapping("uploadMainpic")
     @ResponseBody
-    public ResultDo uploadBanner(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
+    public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
         ResultDo resultDo=ResultDo.build();
-        Short bizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_BANNER").getValue());
         try{
-            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),bizTypeCode,sourceId,null);
+            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC,sourceId,null);
         }catch(Exception e){
             resultDo.setSuccess(false);
             return resultDo;
@@ -262,9 +265,8 @@ public class SystemOrganController extends BackendController {
     @ResponseBody
     public ResultDo uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
         ResultDo resultDo=ResultDo.build();
-        Short bizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_LOGO").getValue());
         try{
-            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),bizTypeCode,sourceId,null);
+            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO,sourceId,null);
         }catch(Exception e){
             resultDo.setSuccess(false);
             return resultDo;
@@ -283,15 +285,21 @@ public class SystemOrganController extends BackendController {
     public ResultDo<Map<String,String>> uploadInit(@PathVariable("id") Long id){
         ResultDo<Map<String,String>> resultDo=ResultDo.build();
         Map<String,String> map=Maps.newHashMap();
-        //商家banner
-        Short bannerBizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_BANNER").getValue());
-        String bannerImgUrl=fileService.getByBizTypeAndSourceId(bannerBizTypeCode,id).get(0).getFileUrl();
-        map.put("bannerImgUrl", bannerImgUrl);
-        //商家logo
-        Short logoBizTypeCode=Short.parseShort(dictComponent.getByGroupNameAndKey("FILE_BIZ_TYPE","ORGAN_LOGO").getValue());
-        String logoImgUrl=fileService.getByBizTypeAndSourceId(logoBizTypeCode,id).get(0).getFileUrl();
+        //商家主图
+        List<EpFilePo> mainpics=fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC,id);
+        if(CollectionsTools.isNotEmpty(mainpics)){
+            String bannerImgUrl=mainpics.get(0).getFileUrl();
+            map.put("bannerImgUrl", bannerImgUrl);
+        }
 
-        map.put("logoImgUrl",logoImgUrl);
+        //商家logo
+        List<EpFilePo> logos=fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO,id);
+
+        if(CollectionsTools.isNotEmpty(logos)){
+            String logoImgUrl=logos.get(0).getFileUrl();
+            map.put("logoImgUrl",logoImgUrl);
+        }
+
         resultDo.setResult(map);
         return resultDo;
     }
