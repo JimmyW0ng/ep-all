@@ -5,6 +5,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.component.QiNiuComponent;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,24 +37,29 @@ public class FileService {
      * @param sort
      * @return
      */
-    public ResultDo<String> addFileByBizType(String fileName,
-                                             byte[] bytes,
-                                             Short bizTypeCode,
-                                             Integer sort) {
+    public ResultDo<FileDto> addFileByBizType(String fileName,
+                                              byte[] bytes,
+                                              Short bizTypeCode,
+                                              Integer sort) {
+        ResultDo<FileDto> resultDo = ResultDo.build();
         // 上传七牛云
         String saveName = StringTools.getUUID() + FileTools.POINT + FileTools.getFileExt(fileName);
-        ResultDo<String> resultDo = qiNiuComponent.uploadPublicByByte(saveName, bytes);
-        if (resultDo.isError()) {
+        ResultDo<String> qiniuResult = qiNiuComponent.uploadPublicByByte(saveName, bytes);
+        if (qiniuResult.isError()) {
+            resultDo.setError(qiniuResult.getError()).setErrorDescription(qiniuResult.getErrorDescription());
             return resultDo;
         }
         // 创建预授权码
         String preCode = StringTools.getUUID();
-        resultDo.setResult(preCode);
+        FileDto fileDto = new FileDto();
+        fileDto.setPreCode(preCode);
+        fileDto.setFileUrl(qiniuResult.getResult());
+        resultDo.setResult(fileDto);
         // 保存到文件表
         EpFilePo filePo = new EpFilePo();
         filePo.setPreCode(preCode);
         filePo.setFileName(saveName);
-        filePo.setFileUrl(resultDo.getResult());
+        filePo.setFileUrl(qiniuResult.getResult());
         filePo.setBizTypeCode(bizTypeCode);
         filePo.setSort(sort);
         fileRepository.insert(filePo);
