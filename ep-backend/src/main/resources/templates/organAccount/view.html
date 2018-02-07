@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+<header>
+    <th:block layout:fragment="links">
+
+
+    </th:block>
+</header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 th:text=" '查看教师'"></h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="history.back()">返回</a>
+
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="frm" th:object="${organAccountPo}">
+                <input type="hidden" id="id" name="id" th:field="*{id}"/>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">机构内部名称：</label>
+                    <div class="col-sm-3">
+                        <input id="accountName" name="accountName" type="text" class="form-control" required="true" th:field="*{accountName}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">对外昵称：</label>
+                    <div class="col-sm-3">
+                        <input id="nickName" name="nickName" type="text" class="form-control" required="true" th:field="*{nickName}"
+                                aria-required="true">
+
+                        </input>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">介绍：</label>
+                    <div class="col-sm-3">
+                        <textarea id="introduce" name="introduce" type="text" class="form-control" required="true" th:field="*{introduce}"
+                               aria-required="true">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属机构：</label>
+                    <div class="col-sm-3">
+                        <select id="ognId" name="ognId" type="text" class="form-control" required="true" th:field="*{ognId}"
+                               aria-required="true">
+                            <option value="">请选择</option>
+                            <option  th:each="state : ${organMap.keySet()}"
+                                    th:value="${state}"
+                                    th:text="${organMap.get(state)}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态：</label>
+                    <div class="col-sm-3">
+                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
+                                aria-required="true">
+                            <option value="">请选择</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganAccountStatus).values()}"
+                                    th:value="${state}"
+                                    th:text="#{EpOrganAccountStatus.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">关联手机号：</label>
+                    <div class="col-sm-3">
+                        <input id="referMobile" name="referMobile" type="text" class="form-control" required="true" th:field="*{referMobile}"
+                                aria-required="true">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-3">
+                        <textarea id="remark" name="remark" type="text" class="form-control" required="true" th:field="*{remark}"
+                               aria-required="true">
+                        </textarea>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/scripts}"></script>
+
+<script th:inline="javascript">
+
+    $(function () {
+
+    })
+
+</script>
+</body>
+</html>

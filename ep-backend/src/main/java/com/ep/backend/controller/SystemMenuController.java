@@ -51,6 +51,19 @@ public class SystemMenuController extends BackendController {
     }
 
     /**
+     * 商家菜单首页
+     *
+     * @return
+     */
+    @GetMapping("/merchantIndex")
+    public String merchantIndex(HttpServletRequest request,Model model) {
+//        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(EpSystemUserType.merchant);
+        model.addAttribute("menuList",menuList);
+        return "systemMenu/merchantIndex";
+    }
+
+    /**
      * 新增/修改菜单
      * @param request
      * @param po
@@ -60,10 +73,8 @@ public class SystemMenuController extends BackendController {
     @ResponseBody
     public ResultDo<String> create(HttpServletRequest request,EpSystemMenuPo po) {
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
-        if(currentUser.getType().equals(EpSystemUserType.platform)){
+        if(currentUser.getType().equals(EpSystemUserType.platform)&&po.getTarget()==null){
             po.setTarget(EpSystemMenuTarget.admin);
-        }else{
-            po.setTarget(EpSystemMenuTarget.backend);
         }
         ResultDo<String> resultDo = ResultDo.build();
         if (po.getId() == null) {//新增菜单

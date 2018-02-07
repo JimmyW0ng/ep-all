@@ -3,12 +3,8 @@ package com.ep.backend.controller;
 import com.ep.common.tool.BeanTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ConstantCatalogBo;
-import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
-import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
-import com.ep.domain.repository.domain.enums.EpSystemMenuTarget;
-import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.service.ConstantCatalogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +23,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("auth/catalog")
-public class CatalogController extends BackendController {
+public class ConstantCatalogController extends BackendController {
     @Autowired
     private ConstantCatalogService constantCatalogService;
 

@@ -13,11 +13,13 @@ import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,5 +110,15 @@ public class OrganCourseService {
             }
         }
         return ognCourses;
+    }
+
+    /**
+     * 后台机构课程分页列表
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrganCourseBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return organCourseRepository.findbyPageAndCondition(pageable, condition);
     }
 }

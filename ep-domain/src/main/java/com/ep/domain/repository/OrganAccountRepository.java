@@ -3,12 +3,19 @@ package com.ep.domain.repository;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
-import org.jooq.DSLContext;
+import com.google.common.collect.Lists;
+import org.jooq.*;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE_TEAM;
 
@@ -57,5 +64,60 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .fetchInto(OrganAccountBo.class);
     }
 
+    /**
+     * 获取后台教师分页列表
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrganAccountBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_ACCOUNT.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME.as("ognName"));
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList).from(EP_ORGAN_ACCOUNT).
+                leftJoin(EP_ORGAN).on(EP_ORGAN_ACCOUNT.OGN_ID.eq(EP_ORGAN.ID)).where(condition);
+
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORGAN_ACCOUNT)
+                .leftJoin(EP_ORGAN).on(EP_ORGAN_ACCOUNT.OGN_ID.eq(EP_ORGAN.ID))
+                .where(condition).fetchOne(0, Long.class);
+
+        List<OrganAccountBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganAccountBo.class);
+        PageImpl<OrganAccountBo> pPage = new PageImpl<OrganAccountBo>(list, pageable, totalCount);
+        return pPage;
+    }
+
+    /**
+     * 更新教师
+     * @param po
+     * @return
+     */
+    public int updateById( EpOrganAccountPo po){
+        return dslContext.update(EP_ORGAN_ACCOUNT)
+                .set(EP_ORGAN_ACCOUNT.ACCOUNT_NAME,po.getAccountName())
+                .set(EP_ORGAN_ACCOUNT.NICK_NAME,po.getNickName())
+                .set(EP_ORGAN_ACCOUNT.INTRODUCE,po.getIntroduce())
+                .set(EP_ORGAN_ACCOUNT.REFER_MOBILE,po.getReferMobile())
+                .set(EP_ORGAN_ACCOUNT.STATUS,po.getStatus())
+                .set(EP_ORGAN_ACCOUNT.REMARK,po.getRemark())
+                .set(EP_ORGAN_ACCOUNT.UPDATE_AT, DSL.currentTimestamp())
+                .where(EP_ORGAN_ACCOUNT.ID.eq(po.getId()))
+                .execute();
+    }
+
+    /**
+     * 删除教师
+     * @param id
+     * @return
+     */
+    public int deleteLogical(Long id){
+        return dslContext.update(EP_ORGAN_ACCOUNT)
+                .set(EP_ORGAN_ACCOUNT.DEL_FLAG,true)
+                .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .execute();
+    }
 }
 

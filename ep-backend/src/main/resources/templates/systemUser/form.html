@@ -55,7 +55,7 @@
                     <label class="col-sm-2 control-label">类型：</label>
                     <div class="col-sm-3">
                         <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}"
-                       th:disabled="${systemUserPo!=null}">
+                       th:disabled="${systemUserPo.id!=null} ">
                             <option value="">请选择</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
                                     th:value="${state}"
@@ -189,6 +189,7 @@
     }
     
     $(function () {
+        console.log([[${systemUserPo}]])
         var type=$("#type").val();
         var res=[[${roleList}]];
         var roleIds=[[${roleIds}]];

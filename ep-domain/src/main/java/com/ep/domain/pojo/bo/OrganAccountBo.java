@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 public class OrganAccountBo extends EpOrganAccountPo {
 
     private String avatar;
+    private String ognName;
 
 }

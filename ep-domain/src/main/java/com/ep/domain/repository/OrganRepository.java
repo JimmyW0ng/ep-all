@@ -164,5 +164,12 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .where(EP_ORGAN.ID.eq(id))
                 .execute();
     }
+
+    public List<EpOrganPo> getByStatus(EpOrganStatus status){
+        return dslContext.selectFrom(EP_ORGAN)
+                .where(EP_ORGAN.DEL_FLAG.eq(false))
+                .and(EP_ORGAN.STATUS.eq(status))
+                .fetchInto(EpOrganPo.class);
+    }
 }
 

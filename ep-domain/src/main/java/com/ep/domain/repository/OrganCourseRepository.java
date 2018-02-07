@@ -1,23 +1,25 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.po.EpOrganCoursePo;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_CATALOG;
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE;
+import static com.ep.domain.repository.domain.Tables.*;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
 
 /**
  * @Description:机构课程表Repository
@@ -90,5 +92,39 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .fetchInto(OrganCourseBo.class);
         return new PageImpl<>(pList, pageable, count);
     }
+
+    /**
+     * 后台机构课程分页列表
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrganCourseBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORGAN_COURSE)
+                .leftJoin(EP_ORGAN).on(EP_ORGAN_COURSE.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME.as("ognName"));
+        fieldList.add(EP_CONSTANT_CATALOG.LABEL.as("courseCatalogName"));
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORGAN_COURSE)
+                .leftJoin(EP_ORGAN).on(EP_ORGAN_COURSE.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                .where(condition);
+
+        List<OrganCourseBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganCourseBo.class);
+        PageImpl<OrganCourseBo> pPage = new PageImpl<OrganCourseBo>(list, pageable, totalCount);
+        return pPage;
+    }
+
 }
 
