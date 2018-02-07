@@ -138,6 +138,14 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Setter for <code>ep.ep_system_user.ogn_id</code>. 商户id
+     */
+    public EpSystemUserRecord setOgnId(Long value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpSystemUserRecord
      */
     public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -160,33 +168,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
-     */
-    public Long getOgnId() {
-        return (Long) get(7);
-    }
-
-    /**
      * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
     public String getEmail() {
         return (String) get(5);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.ogn_id</code>. 商户id
-     */
-    public EpSystemUserRecord setOgnId(Long value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
-     */
-    public EpSystemUserRecord setCreateAt(Timestamp value) {
-        set(9, value);
-        return this;
     }
 
     /**
@@ -197,11 +182,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public EpSystemUserRecord setUpdateAt(Timestamp value) {
-        set(10, value);
-        return this;
+    public Long getOgnId() {
+        return (Long) get(7);
     }
 
     /**
@@ -213,10 +197,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.remark</code>. 备注
+     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
      */
-    public EpSystemUserRecord setRemark(String value) {
-        set(11, value);
+    public EpSystemUserRecord setUpdateAt(Timestamp value) {
+        set(10, value);
         return this;
     }
 
@@ -225,6 +209,22 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(9);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.remark</code>. 备注
+     */
+    public EpSystemUserRecord setRemark(String value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     */
+    public EpSystemUserRecord setCreateAt(Timestamp value) {
+        set(9, value);
+        return this;
     }
 
     /**

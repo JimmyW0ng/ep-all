@@ -8,20 +8,13 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
 
-    private static final long serialVersionUID = 1342938237;
+    private static final long serialVersionUID = 1179445405;
 
     /**
      * The reference instance of <code>ep.ep_organ_account</code>
@@ -78,9 +71,9 @@ public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
     public final TableField<EpOrganAccountRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "所属机构id");
 
     /**
-     * The column <code>ep.ep_organ_account.status</code>. 状态：待激活；正常；已冻结；已注销；
+     * The column <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
      */
-    public final TableField<EpOrganAccountRecord, EpOrganAccountStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganAccountStatus.class), this, "状态：待激活；正常；已冻结；已注销；");
+    public final TableField<EpOrganAccountRecord, EpOrganAccountStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganAccountStatus.class), this, "状态：正常；已冻结；已注销；");
 
     /**
      * The column <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号

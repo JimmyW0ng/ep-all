@@ -6,16 +6,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.tables.EpOrganAccount;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record12;
 import org.jooq.Row12;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -31,7 +29,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountRecord> implements Record12<Long, String, String, String, Long, EpOrganAccountStatus, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 1847926626;
+    private static final long serialVersionUID = -1439138686;
 
     /**
      * Setter for <code>ep.ep_organ_account.id</code>. 主键
@@ -109,18 +107,18 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.status</code>. 状态：待激活；正常；已冻结；已注销；
+     * Getter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
+     */
+    public EpOrganAccountStatus getStatus() {
+        return (EpOrganAccountStatus) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
      */
     public EpOrganAccountRecord setStatus(EpOrganAccountStatus value) {
         set(5, value);
         return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_account.status</code>. 状态：待激活；正常；已冻结；已注销；
-     */
-    public EpOrganAccountStatus getStatus() {
-        return (EpOrganAccountStatus) get(5);
     }
 
     /**

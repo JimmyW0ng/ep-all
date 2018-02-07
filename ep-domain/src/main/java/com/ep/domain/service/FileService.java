@@ -3,6 +3,7 @@ package com.ep.domain.service;
 import com.ep.common.tool.FileTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.QiNiuComponent;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.repository.FileRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 文件服务类
@@ -24,6 +26,39 @@ public class FileService {
 
     @Autowired
     private QiNiuComponent qiNiuComponent;
+
+    /**
+     * 根据业务类型预添加文件
+     *
+     * @param fileName
+     * @param bytes
+     * @param bizTypeCode
+     * @param sort
+     * @return
+     */
+    public ResultDo<String> addFileByBizType(String fileName,
+                                             byte[] bytes,
+                                             Short bizTypeCode,
+                                             Integer sort) {
+        // 上传七牛云
+        String saveName = StringTools.getUUID() + FileTools.POINT + FileTools.getFileExt(fileName);
+        ResultDo<String> resultDo = qiNiuComponent.uploadPublicByByte(saveName, bytes);
+        if (resultDo.isError()) {
+            return resultDo;
+        }
+        // 创建预授权码
+        String preCode = StringTools.getUUID();
+        resultDo.setResult(preCode);
+        // 保存到文件表
+        EpFilePo filePo = new EpFilePo();
+        filePo.setPreCode(preCode);
+        filePo.setFileName(saveName);
+        filePo.setFileUrl(resultDo.getResult());
+        filePo.setBizTypeCode(bizTypeCode);
+        filePo.setSort(sort);
+        fileRepository.insert(filePo);
+        return resultDo;
+    }
 
     /**
      * 根据业务类型和业务来源替换文件
@@ -46,6 +81,11 @@ public class FileService {
         if (resultDo.isError()) {
             return resultDo;
         }
+        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(bizTypeCode, sourceId);
+        if (!optional.isPresent()) {
+            resultDo.setError(MessageCode.ERROR_DATA_MISS);
+            return resultDo;
+        }
         // 保存到文件表
         EpFilePo filePo = new EpFilePo();
         filePo.setFileName(saveName);
@@ -55,7 +95,7 @@ public class FileService {
         filePo.setSort(sort);
         fileRepository.insert(filePo);
         // 逻辑删除被替换文件
-        fileRepository.logicDelByBizTypeAndSourceId(bizTypeCode, sourceId);
+        fileRepository.logicDelByBizTypeAndSourceId(bizTypeCode, sourceId, filePo.getId());
         return resultDo;
     }
 

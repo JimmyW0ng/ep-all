@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpFileRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpFile extends TableImpl<EpFileRecord> {
 
-    private static final long serialVersionUID = 79463222;
+    private static final long serialVersionUID = 1514736865;
 
     /**
      * The reference instance of <code>ep.ep_file</code>
@@ -57,6 +50,11 @@ public class EpFile extends TableImpl<EpFileRecord> {
     public final TableField<EpFileRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
 
     /**
+     * The column <code>ep.ep_file.pre_code</code>. 预授码
+     */
+    public final TableField<EpFileRecord, String> PRE_CODE = createField("pre_code", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "预授码");
+
+    /**
      * The column <code>ep.ep_file.file_name</code>. 文件名字
      */
     public final TableField<EpFileRecord, String> FILE_NAME = createField("file_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "文件名字");
@@ -74,7 +72,7 @@ public class EpFile extends TableImpl<EpFileRecord> {
     /**
      * The column <code>ep.ep_file.source_id</code>. 业务ID
      */
-    public final TableField<EpFileRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "业务ID");
+    public final TableField<EpFileRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT, this, "业务ID");
 
     /**
      * The column <code>ep.ep_file.sort</code>. 排序

@@ -54,7 +54,7 @@ public class OrganService {
         // 机构Logo
         Optional<EpFilePo> logoOpt = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
         String logo = logoOpt.isPresent() ? logoOpt.get().getFileUrl() : null;
-        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), mainPic, logo);
+        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), logo, mainPic);
         return resultDo.setResult(ognInfoDto);
     }
 

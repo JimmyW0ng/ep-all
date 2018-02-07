@@ -48,6 +48,8 @@ public class MemberChildService {
      * @param childIdentity
      * @param currentSchool
      * @param currentClass
+     * @param avatar
+     * @param sign
      * @return
      */
     public ResultDo addChild(Long memberId,
@@ -57,7 +59,9 @@ public class MemberChildService {
                              Date childBirthday,
                              String childIdentity,
                              String currentSchool,
-                             String currentClass) {
+                             String currentClass,
+                             String avatar,
+                             String sign) {
         // 校验孩子数量
         if (memberChildRepository.countChildNum(memberId) >= BizConstant.CHILD_LIMIT_NUM) {
             return ResultDo.build(MessageCode.ERROR_CHILD_LIMIT_NUM);
@@ -83,6 +87,7 @@ public class MemberChildService {
     /**
      * 更新孩子信息
      *
+     * @param memberId
      * @param childId
      * @param childNickName
      * @param childTrueName
@@ -91,6 +96,8 @@ public class MemberChildService {
      * @param childIdentity
      * @param currentSchool
      * @param currentClass
+     * @param avatar
+     * @param sign
      * @return
      */
     public ResultDo editChild(Long memberId,
@@ -101,7 +108,9 @@ public class MemberChildService {
                               Date childBirthday,
                               String childIdentity,
                               String currentSchool,
-                              String currentClass) {
+                              String currentClass,
+                              String avatar,
+                              String sign) {
         // 前置校验
         Optional<?> optional = memberChildRepository.getOtherSameNameChild(childId, memberId, childTrueName);
         if (optional.isPresent()) {

@@ -63,11 +63,13 @@ public class ChildController extends ApiController {
                              @RequestParam("childBirthday") String childBirthday,
                              @RequestParam(value = "childIdentity", required = false) String childIdentity,
                              @RequestParam(value = "currentSchool", required = false) String currentSchool,
-                             @RequestParam(value = "currentClass", required = false) String currentClass
+                             @RequestParam(value = "currentClass", required = false) String currentClass,
+                             @RequestParam(value = "avatar", required = false) String avatar,
+                             @RequestParam(value = "sign", required = false) String sign
     ) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
         Date birthday = DateTools.stringToDate(childBirthday, DateTools.DATE_FMT_3);
-        return memberChildService.addChild(currentMbr.getId(), childNickName, childTrueName, childSex, birthday, childIdentity, currentSchool, currentClass);
+        return memberChildService.addChild(currentMbr.getId(), childNickName, childTrueName, childSex, birthday, childIdentity, currentSchool, currentClass, avatar, sign);
     }
 
     @ApiOperation(value = "编辑孩子档案")
@@ -80,11 +82,13 @@ public class ChildController extends ApiController {
                               @RequestParam("childBirthday") String childBirthday,
                               @RequestParam(value = "childIdentity", required = false) String childIdentity,
                               @RequestParam(value = "currentSchool", required = false) String currentSchool,
-                              @RequestParam(value = "currentClass", required = false) String currentClass
+                              @RequestParam(value = "currentClass", required = false) String currentClass,
+                              @RequestParam(value = "avatar", required = false) String avatar,
+                              @RequestParam(value = "sign", required = false) String sign
     ) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
         Date birthday = DateTools.stringToDate(childBirthday, DateTools.DATE_FMT_3);
-        return memberChildService.editChild(currentMbr.getId(), childId, childNickName, childTrueName, childSex, birthday, childIdentity, currentSchool, currentClass);
+        return memberChildService.editChild(currentMbr.getId(), childId, childNickName, childTrueName, childSex, birthday, childIdentity, currentSchool, currentClass, avatar, sign);
     }
 
     @ApiOperation(value = "查看孩子档案")
@@ -103,7 +107,17 @@ public class ChildController extends ApiController {
         return memberChildService.delChild(currentMbr.getId(), childId);
     }
 
-    @ApiOperation(value = "孩子上传头像", notes = "如果存在，则覆盖")
+    @ApiOperation(value = "新增孩子头像")
+    @PostMapping("/upload/avatar")
+    public ResultDo addAvatar(@RequestParam(value = "file") MultipartFile file) throws IOException {
+        fileService.addFileByBizType(file.getOriginalFilename(),
+                file.getBytes(),
+                BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR,
+                BizConstant.DB_NUM_ONE);
+        return ResultDo.build();
+    }
+
+    @ApiOperation(value = "替换孩子头像")
     @PostMapping("/upload/avatar")
     public ResultDo uploadAvatar(@RequestParam(value = "file") MultipartFile file,
                                  @RequestParam("childId") Long childId) throws IOException {

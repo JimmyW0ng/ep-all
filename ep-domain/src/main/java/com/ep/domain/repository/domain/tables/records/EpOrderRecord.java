@@ -191,6 +191,21 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
+     * Getter for <code>ep.ep_order.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(10);
+    }
+
+    /**
+     * Setter for <code>ep.ep_order.update_at</code>. 更新时间
+     */
+    public EpOrderRecord setUpdateAt(Timestamp value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpOrderRecord
      */
     public EpOrderRecord(Long id, Long memberId, Long childId, Long ognId, Long courseId, Long classId, BigDecimal prize, EpOrderStatus status, Timestamp authTime, Timestamp cancelTime, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -225,21 +240,6 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
      */
     public Timestamp getUpdateAt() {
         return (Timestamp) get(11);
-    }
-
-    /**
-     * Getter for <code>ep.ep_order.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(10);
-    }
-
-    /**
-     * Setter for <code>ep.ep_order.update_at</code>. 更新时间
-     */
-    public EpOrderRecord setUpdateAt(Timestamp value) {
-        set(11, value);
-        return this;
     }
 
     /**

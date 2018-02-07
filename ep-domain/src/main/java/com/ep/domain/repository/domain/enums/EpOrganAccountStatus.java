@@ -4,15 +4,15 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
 
+import javax.annotation.Generated;
+
 
 /**
- * 状态：待激活；正常；已冻结；已注销；
+ * 状态：正常；已冻结；已注销；
  */
 @Generated(
     value = {
@@ -23,8 +23,6 @@ import org.jooq.Schema;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum EpOrganAccountStatus implements EnumType {
-
-    wait_active("wait_active"),
 
     normal("normal"),
 

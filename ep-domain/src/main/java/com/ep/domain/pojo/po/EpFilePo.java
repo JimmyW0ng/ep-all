@@ -23,6 +23,7 @@ public class EpFilePo extends AbstractBasePojo {
 
     @JsonIgnore
     private Long id;
+    private String preCode;
     private String fileName;
     private String fileUrl;
     @JsonIgnore

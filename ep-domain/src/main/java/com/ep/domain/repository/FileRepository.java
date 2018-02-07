@@ -1,6 +1,5 @@
 package com.ep.domain.repository;
 
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.repository.domain.tables.records.EpFileRecord;
 import org.jooq.DSLContext;
@@ -76,24 +75,15 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
      *
      * @param bizTypeCode
      * @param sourceId
+     * @param currentId
      * @return
      */
-    public int  logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId) {
-        EpFilePo filePo = dslContext.selectFrom(EP_FILE)
-                .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
-                .and(EP_FILE.SOURCE_ID.eq(sourceId))
-                .and(EP_FILE.DEL_FLAG.eq(false))
-                .orderBy(EP_FILE.ID.desc())
-                .limit(DSL.one())
-                .fetchOneInto(EpFilePo.class);
-        if (filePo == null) {
-            return BizConstant.DB_NUM_ZERO;
-        }
+    public int logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId, Long currentId) {
         return dslContext.update(EP_FILE).set(EP_FILE.DEL_FLAG, true)
                 .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
                 .and(EP_FILE.DEL_FLAG.eq(false))
-                .and(EP_FILE.ID.lessThan(filePo.getId()))
+                .and(EP_FILE.ID.lessThan(currentId))
                 .execute();
     }
 
