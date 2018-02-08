@@ -4,6 +4,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
+import com.ep.domain.service.OrganClassCommentService;
 import com.ep.domain.service.OrganCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,8 @@ public class OrganCourseController extends ApiController {
 
     @Autowired
     private OrganCourseService organCourseService;
+    @Autowired
+    private OrganClassCommentService organClassCommentService;
 
     @ApiOperation(value = "课程分页列表")
     @PostMapping("/page")
@@ -50,7 +53,7 @@ public class OrganCourseController extends ApiController {
     @PostMapping("/comment/page")
     public Page<OrganClassCommentBo> findCourseCommentForPage(@PageableDefault Pageable pageable,
                                                               @RequestParam("courseId") Long courseId) {
-        return organCourseService.findCourseCommentForPage(pageable, courseId);
+        return organClassCommentService.findCourseCommentForPage(pageable, courseId);
     }
 
 }

@@ -122,24 +122,4 @@ public class OrganCourseService {
         return organCourseRepository.findbyPageAndCondition(pageable, condition);
     }
 
-    /**
-     * 分页查询课程全部评论
-     *
-     * @param pageable
-     * @param courseId
-     * @return
-     */
-    public Page<OrganClassCommentBo> findCourseCommentForPage(Pageable pageable, Long courseId) {
-        Page<OrganClassCommentBo> page = organClassCommentRepository.findCourseCommentForPage(pageable, courseId);
-        List<OrganClassCommentBo> data = page.getContent();
-        if (CollectionsTools.isEmpty(data)) {
-            return page;
-        }
-        for (OrganClassCommentBo classCommentBo : data) {
-            Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, classCommentBo.getChildId());
-            String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
-            classCommentBo.setChildAvatar(avatar);
-        }
-        return page;
-    }
 }

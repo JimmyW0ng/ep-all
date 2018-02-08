@@ -92,6 +92,7 @@ public class BizConstant {
     public static short FILE_BIZ_TYPE_CODE_MEMBER_AVATAR = 120;
     public static short FILE_BIZ_TYPE_CODE_CHILD_AVATAR = 130;
     public static short FILE_BIZ_TYPE_CODE_TEACHER_AVATAR = 140;
+    public static short FILE_BIZ_TYPE_CODE_COURSE_CLASS_COMMENT_PIC = 150;
 
     /**
      * 订单数量控制

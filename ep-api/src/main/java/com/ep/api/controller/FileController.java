@@ -32,12 +32,22 @@ public class FileController extends ApiController {
     private FileService fileService;
 
     @ApiOperation(value = "上传孩子头像")
-    @PostMapping("/upload/child/avatar")
+    @PostMapping("/child/avatar")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<FileDto> uploadChildAvatar(@RequestParam(value = "file") MultipartFile file) throws IOException {
         return fileService.addFileByBizType(file.getOriginalFilename(),
                 file.getBytes(),
                 BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR,
+                BizConstant.DB_NUM_ONE);
+    }
+
+    @ApiOperation(value = "上传班次评论图片")
+    @PostMapping("/child/class/comment/pic")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<FileDto> uploadChildClassCommentPic(@RequestParam(value = "file") MultipartFile file) throws IOException {
+        return fileService.addFileByBizType(file.getOriginalFilename(),
+                file.getBytes(),
+                BizConstant.FILE_BIZ_TYPE_CODE_COURSE_CLASS_COMMENT_PIC,
                 BizConstant.DB_NUM_ONE);
     }
 

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Description: 孩子课程班次控制类
  * @Author: J.W
@@ -61,6 +63,15 @@ public class ChildClassController extends ApiController {
         }
         Page<MemberChildScheduleBo> data = orderService.findChildSchedulePage(pageable, childId);
         return resultDo.setResult(data);
+    }
+
+    @ApiOperation(value = "班次评价")
+    @PostMapping("/add/comment")
+    public ResultDo addClassComment(@RequestParam("orderId") Long orderId,
+                                    @RequestParam("score") Byte score,
+                                    @RequestParam("content") String content,
+                                    @RequestParam("pic") List<String> picList) {
+        return null;
     }
 
 }
