@@ -1,15 +1,12 @@
 package com.ep.api.controller;
 
 import com.ep.common.tool.DateTools;
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
-import com.ep.domain.service.FileService;
 import com.ep.domain.service.MemberChildService;
-import com.ep.domain.service.MemberChildSignService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Description: 孩子api控制类
@@ -39,10 +33,6 @@ public class ChildController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
-    @Autowired
-    private MemberChildSignService memberChildSignService;
-    @Autowired
-    private FileService fileService;
 
     @ApiOperation(value = "获取当前用户孩子列表")
     @PostMapping("/list")
@@ -105,40 +95,6 @@ public class ChildController extends ApiController {
     public ResultDo delChild(@RequestParam("childId") Long childId) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
         return memberChildService.delChild(currentMbr.getId(), childId);
-    }
-
-    @ApiOperation(value = "新增孩子头像")
-    @PostMapping("/upload/avatar")
-    public ResultDo addAvatar(@RequestParam(value = "file") MultipartFile file) throws IOException {
-        fileService.addFileByBizType(file.getOriginalFilename(),
-                file.getBytes(),
-                BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR,
-                BizConstant.DB_NUM_ONE);
-        return ResultDo.build();
-    }
-
-    @ApiOperation(value = "替换孩子头像")
-    @PostMapping("/upload/avatar")
-    public ResultDo uploadAvatar(@RequestParam(value = "file") MultipartFile file,
-                                 @RequestParam("childId") Long childId) throws IOException {
-        EpMemberPo currentMbr = super.getCurrentUser().get();
-        ResultDo resultDo = memberChildService.getCheckedMemberChild(currentMbr.getId(), childId);
-        if (resultDo.isError()) {
-            return resultDo;
-        }
-        fileService.replaceFileByBizTypeAndSourceId(file.getOriginalFilename(),
-                file.getBytes(),
-                BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR,
-                childId,
-                BizConstant.DB_NUM_ONE);
-        return ResultDo.build();
-    }
-
-    @ApiOperation(value = "孩子更新签名", notes = "如果存在，则覆盖")
-    @PostMapping("/sign")
-    public ResultDo sign(@RequestParam("childId") Long childId, @RequestParam("content") String content) {
-        Optional<EpMemberPo> optional = super.getCurrentUser();
-        return memberChildSignService.sign(optional.get().getId(), childId, content);
     }
 
 }

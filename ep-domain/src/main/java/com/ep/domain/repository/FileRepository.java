@@ -75,16 +75,44 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
      *
      * @param bizTypeCode
      * @param sourceId
-     * @param currentId
      * @return
      */
-    public int logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId, Long currentId) {
+    public int logicDelByBizTypeAndSourceId(Short bizTypeCode, Long sourceId) {
         return dslContext.update(EP_FILE).set(EP_FILE.DEL_FLAG, true)
                 .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
                 .and(EP_FILE.DEL_FLAG.eq(false))
-                .and(EP_FILE.ID.lessThan(currentId))
                 .execute();
+    }
+
+    /**
+     * 根据预授权码更新业务ID
+     *
+     * @param preCode
+     * @param id
+     * @return
+     */
+    public int updateSourceIdByPreCode(String preCode, Long id) {
+        return dslContext.update(EP_FILE).set(EP_FILE.SOURCE_ID, id)
+                .where(EP_FILE.PRE_CODE.eq(preCode))
+                .and(EP_FILE.SOURCE_ID.isNull())
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据预授权码获取记录
+     *
+     * @param preCode
+     * @return
+     */
+    public Optional<EpFilePo> getByPreCode(String preCode) {
+        EpFilePo filePo = dslContext.selectFrom(EP_FILE)
+                .where(EP_FILE.PRE_CODE.eq(preCode))
+                .and(EP_FILE.SOURCE_ID.isNull())
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .fetchOneInto(EpFilePo.class);
+        return Optional.ofNullable(filePo);
     }
 
 }

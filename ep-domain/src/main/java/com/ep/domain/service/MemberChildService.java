@@ -1,21 +1,26 @@
 package com.ep.domain.service;
 
+import com.ep.common.exception.ServiceRuntimeException;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
+import com.ep.domain.pojo.po.EpMemberChildSignPo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildRepository;
+import com.ep.domain.repository.MemberChildSignRepository;
 import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +41,8 @@ public class MemberChildService {
     private FileRepository fileRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private MemberChildSignRepository memberChildSignRepository;
 
     /**
      * 新增孩子信息
@@ -52,6 +59,7 @@ public class MemberChildService {
      * @param sign
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo addChild(Long memberId,
                              String childNickName,
                              String childTrueName,
@@ -71,16 +79,30 @@ public class MemberChildService {
         if (optional.isPresent()) {
             return ResultDo.build(MessageCode.ERROR_CHILD_TRUE_NAME_EXISTS);
         }
-        EpMemberChildPo addPo = new EpMemberChildPo();
-        addPo.setMemberId(memberId);
-        addPo.setChildNickName(childNickName);
-        addPo.setChildTrueName(childTrueName);
-        addPo.setChildSex(childSex);
-        addPo.setChildBirthday(DateTools.dateToTimestamp(childBirthday));
-        addPo.setChildIdentity(childIdentity);
-        addPo.setCurrentSchool(currentSchool);
-        addPo.setCurrentClass(currentClass);
-        memberChildRepository.insert(addPo);
+        EpMemberChildPo addChildPo = new EpMemberChildPo();
+        addChildPo.setMemberId(memberId);
+        addChildPo.setChildNickName(childNickName);
+        addChildPo.setChildTrueName(childTrueName);
+        addChildPo.setChildSex(childSex);
+        addChildPo.setChildBirthday(DateTools.dateToTimestamp(childBirthday));
+        addChildPo.setChildIdentity(childIdentity);
+        addChildPo.setCurrentSchool(currentSchool);
+        addChildPo.setCurrentClass(currentClass);
+        memberChildRepository.insert(addChildPo);
+        // 获取头像预授权码
+        if (StringTools.isNotEmpty(avatar)) {
+            Optional<EpFilePo> optOfFile = fileRepository.getByPreCode(avatar);
+            if (!optOfFile.isPresent()) {
+                log.error("新增孩子档案保存头像预授权码不能存在，preCode=()", avatar);
+                throw new ServiceRuntimeException("新增孩子档案保存头像预授权码不能存在");
+            }
+            fileRepository.updateSourceIdByPreCode(avatar, addChildPo.getId());
+        }
+        // 更新孩子签名
+        EpMemberChildSignPo signPo = new EpMemberChildSignPo();
+        signPo.setChildId(addChildPo.getId());
+        signPo.setContent(sign);
+        memberChildSignRepository.insert(signPo);
         return ResultDo.build();
     }
 
@@ -100,6 +122,7 @@ public class MemberChildService {
      * @param sign
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo editChild(Long memberId,
                               Long childId,
                               String childNickName,
@@ -112,6 +135,10 @@ public class MemberChildService {
                               String avatar,
                               String sign) {
         // 前置校验
+        ResultDo existResult = this.getCheckedMemberChild(memberId, childId);
+        if (existResult.isError()) {
+            return existResult;
+        }
         Optional<?> optional = memberChildRepository.getOtherSameNameChild(childId, memberId, childTrueName);
         if (optional.isPresent()) {
             return ResultDo.build(MessageCode.ERROR_CHILD_TRUE_NAME_EXISTS);
@@ -126,12 +153,20 @@ public class MemberChildService {
         updatePo.setChildIdentity(childIdentity);
         updatePo.setCurrentSchool(currentSchool);
         updatePo.setCurrentClass(currentClass);
-        int updateNum = memberChildRepository.editChild(updatePo);
-        if (updateNum == BizConstant.DB_NUM_ONE) {
-            return ResultDo.build();
-        } else {
-            return ResultDo.build(MessageCode.ERROR_SAVE_MISS);
+        memberChildRepository.editChild(updatePo);
+        // 获取头像预授权码
+        if (StringTools.isNotEmpty(avatar)) {
+            Optional<EpFilePo> optOfFile = fileRepository.getByPreCode(avatar);
+            if (!optOfFile.isPresent()) {
+                log.error("新增孩子档案保存头像预授权码不能存在，preCode=()", avatar);
+                throw new ServiceRuntimeException("新增孩子档案保存头像预授权码不能存在");
+            }
+            fileRepository.logicDelByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childId);
+            fileRepository.updateSourceIdByPreCode(avatar, childId);
         }
+        // 更新孩子签名
+        memberChildSignRepository.updateSign(childId, sign);
+        return ResultDo.build();
     }
 
     /**
@@ -171,16 +206,6 @@ public class MemberChildService {
      * @param memberId
      * @return
      */
-    public List<EpMemberChildPo> getChildrenByMemberId(Long memberId) {
-        return memberChildRepository.getChildrenByMemberId(memberId);
-    }
-
-    /**
-     * 查询会员的所有孩子的综合信息
-     *
-     * @param memberId
-     * @return
-     */
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
         List<MemberChildBo> data = memberChildRepository.queryAllByMemberId(memberId);
         if (CollectionsTools.isEmpty(data)) {
@@ -206,7 +231,7 @@ public class MemberChildService {
         ResultDo<EpMemberChildPo> resultDo = ResultDo.build();
         EpMemberChildPo child = memberChildRepository.getById(childId);
         if (child == null || !child.getMemberId().equals(memberId)) {
-            return resultDo.setError(MessageCode.ERROR_DATA_MISS);
+            return resultDo.setError(MessageCode.ERROR_CHILD_NOT_EXISTS);
         }
         resultDo.setResult(child);
         return resultDo;

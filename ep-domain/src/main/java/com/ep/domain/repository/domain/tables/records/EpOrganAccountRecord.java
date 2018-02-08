@@ -107,18 +107,18 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
-     */
-    public EpOrganAccountStatus getStatus() {
-        return (EpOrganAccountStatus) get(5);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
      */
     public EpOrganAccountRecord setStatus(EpOrganAccountStatus value) {
         set(5, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
+     */
+    public EpOrganAccountStatus getStatus() {
+        return (EpOrganAccountStatus) get(5);
     }
 
     /**

@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildSignRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildSign extends TableImpl<EpMemberChildSignRecord> {
 
-    private static final long serialVersionUID = 441367084;
+    private static final long serialVersionUID = -241136883;
 
     /**
      * The reference instance of <code>ep.ep_member_child_sign</code>
@@ -64,7 +57,7 @@ public class EpMemberChildSign extends TableImpl<EpMemberChildSignRecord> {
     /**
      * The column <code>ep.ep_member_child_sign.content</code>. 签名内容
      */
-    public final TableField<EpMemberChildSignRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.VARCHAR.length(3000).nullable(false), this, "签名内容");
+    public final TableField<EpMemberChildSignRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.VARCHAR.length(3000), this, "签名内容");
 
     /**
      * The column <code>ep.ep_member_child_sign.create_at</code>. 创建时间

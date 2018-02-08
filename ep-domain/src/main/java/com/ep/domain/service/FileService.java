@@ -3,7 +3,6 @@ package com.ep.domain.service;
 import com.ep.common.tool.FileTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.QiNiuComponent;
-import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.EpFilePo;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Description: 文件服务类
@@ -63,45 +61,6 @@ public class FileService {
         filePo.setBizTypeCode(bizTypeCode);
         filePo.setSort(sort);
         fileRepository.insert(filePo);
-        return resultDo;
-    }
-
-    /**
-     * 根据业务类型和业务来源替换文件
-     *
-     * @param fileName
-     * @param bytes
-     * @param bizTypeCode
-     * @param sourceId
-     * @param sort
-     * @return
-     */
-    public ResultDo<String> replaceFileByBizTypeAndSourceId(String fileName,
-                                                            byte[] bytes,
-                                                            Short bizTypeCode,
-                                                            Long sourceId,
-                                                            Integer sort) {
-        // 上传七牛云
-        String saveName = StringTools.getUUID() + FileTools.POINT + FileTools.getFileExt(fileName);
-        ResultDo<String> resultDo = qiNiuComponent.uploadPublicByByte(saveName, bytes);
-        if (resultDo.isError()) {
-            return resultDo;
-        }
-        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(bizTypeCode, sourceId);
-        if (!optional.isPresent()) {
-            resultDo.setError(MessageCode.ERROR_DATA_MISS);
-            return resultDo;
-        }
-        // 保存到文件表
-        EpFilePo filePo = new EpFilePo();
-        filePo.setFileName(saveName);
-        filePo.setFileUrl(resultDo.getResult());
-        filePo.setBizTypeCode(bizTypeCode);
-        filePo.setSourceId(sourceId);
-        filePo.setSort(sort);
-        fileRepository.insert(filePo);
-        // 逻辑删除被替换文件
-        fileRepository.logicDelByBizTypeAndSourceId(bizTypeCode, sourceId, filePo.getId());
         return resultDo;
     }
 

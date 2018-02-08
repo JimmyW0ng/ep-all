@@ -41,6 +41,7 @@ public class MessageCode {
     public static final String ERROR_CHILD_NOT_EXISTS = "ERROR_CHILD_NOT_EXISTS";
     public static final String ERROR_CHILD_CAN_NOT_DEL = "ERROR_CHILD_CAN_NOT_DEL";
     public static final String ERROR_CHILD_LIMIT_NUM = "ERROR_CHILD_LIMIT_NUM";
+    public static final String ERROR_CHILD_UPLOAD_AVATAR = "ERROR_CHILD_UPLOAD_AVATAR";
     /**
      * 课程
      */
