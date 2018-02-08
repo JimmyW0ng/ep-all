@@ -130,6 +130,21 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     */
+    public BigDecimal getDiscountAmount() {
+        return (BigDecimal) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     */
+    public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpOrganClassRecord
      */
     public EpOrganClassRecord(Long id, Long ognId, Long courseId, String className, Long ognAccountId, BigDecimal classPrize, BigDecimal discountAmount, Boolean enterLimitFlag, Integer enterRequireNum, Integer orderedNum, Integer enteredNum, Integer courseNum, Long sort, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
@@ -163,6 +178,13 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
+     */
+    public Integer getEnterRequireNum() {
+        return (Integer) get(8);
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
      */
     public Boolean getEnterLimitFlag() {
@@ -170,33 +192,11 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     * Setter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
      */
-    public BigDecimal getDiscountAmount() {
-        return (BigDecimal) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
-     */
-    public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
-        set(7, value);
+    public EpOrganClassRecord setEnterRequireNum(Integer value) {
+        set(8, value);
         return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
-     */
-    public EpOrganClassRecord setOrderedNum(Integer value) {
-        set(9, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
-     */
-    public Integer getEnterRequireNum() {
-        return (Integer) get(8);
     }
 
     /**
@@ -208,11 +208,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
+     * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
-    public EpOrganClassRecord setEnterRequireNum(Integer value) {
-        set(8, value);
-        return this;
+    public Integer getOrderedNum() {
+        return (Integer) get(9);
     }
 
     /**
@@ -239,10 +238,11 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
+     * Setter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
-    public Integer getOrderedNum() {
-        return (Integer) get(9);
+    public EpOrganClassRecord setOrderedNum(Integer value) {
+        set(9, value);
+        return this;
     }
 
     /**

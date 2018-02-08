@@ -74,10 +74,17 @@ public class MemberChildService {
         if (memberChildRepository.countChildNum(memberId) >= BizConstant.CHILD_LIMIT_NUM) {
             return ResultDo.build(MessageCode.ERROR_CHILD_LIMIT_NUM);
         }
-        // 前置校验
-        Optional<?> optional = this.getByMemberIdAndTrueName(memberId, childTrueName);
-        if (optional.isPresent()) {
-            return ResultDo.build(MessageCode.ERROR_CHILD_TRUE_NAME_EXISTS);
+        // 校验昵称
+        Optional<?> existNickName = memberChildRepository.getByMemberIdAndNickName(memberId, childNickName);
+        if (existNickName.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_CHILD_NICK_NAME_EXISTS);
+        }
+        // 校验姓名
+        if (StringTools.isNotEmpty(childTrueName)) {
+            Optional<?> existTrueName = memberChildRepository.getByMemberIdAndTrueName(memberId, childTrueName);
+            if (existTrueName.isPresent()) {
+                return ResultDo.build(MessageCode.ERROR_CHILD_TRUE_NAME_EXISTS);
+            }
         }
         EpMemberChildPo addChildPo = new EpMemberChildPo();
         addChildPo.setMemberId(memberId);
@@ -139,9 +146,17 @@ public class MemberChildService {
         if (existResult.isError()) {
             return existResult;
         }
-        Optional<?> optional = memberChildRepository.getOtherSameNameChild(childId, memberId, childTrueName);
-        if (optional.isPresent()) {
-            return ResultDo.build(MessageCode.ERROR_CHILD_TRUE_NAME_EXISTS);
+        // 校验昵称
+        Optional<?> existNickName = memberChildRepository.getOtherSameNickNameChild(childId, memberId, childNickName);
+        if (existNickName.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_CHILD_NICK_NAME_EXISTS);
+        }
+        // 校验姓名
+        if (StringTools.isNotEmpty(childTrueName)) {
+            Optional<?> existTrueName = memberChildRepository.getOtherSameTrueNameChild(childId, memberId, childTrueName);
+            if (existTrueName.isPresent()) {
+                return ResultDo.build(MessageCode.ERROR_CHILD_TRUE_NAME_EXISTS);
+            }
         }
         EpMemberChildPo updatePo = new EpMemberChildPo();
         updatePo.setId(childId);
@@ -190,17 +205,6 @@ public class MemberChildService {
     }
 
     /**
-     * 根据会员ID和孩子姓名查询
-     *
-     * @param memberId
-     * @param childTrueName
-     * @return
-     */
-    public Optional<EpMemberChildPo> getByMemberIdAndTrueName(Long memberId, String childTrueName) {
-        return memberChildRepository.getByMemberIdAndTrueName(memberId, childTrueName);
-    }
-
-    /**
      * 查询会员的所有孩子的综合信息
      *
      * @param memberId
@@ -235,6 +239,27 @@ public class MemberChildService {
         }
         resultDo.setResult(child);
         return resultDo;
+    }
+
+    /**
+     * 查询会员孩子的综合信息
+     *
+     * @param memberId
+     * @param childId
+     * @return
+     */
+    public ResultDo<MemberChildBo> getAllByMemberIdAndChildId(Long memberId, Long childId) {
+        ResultDo<MemberChildBo> resultDo = ResultDo.build();
+        Optional<MemberChildBo> optional = memberChildRepository.getAllByMemberIdAndChildId(memberId, childId);
+        if (!optional.isPresent()) {
+            return resultDo.setError(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        MemberChildBo childBo = optional.get();
+        Optional<EpFilePo> existAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childBo.getId());
+        if (existAvatar.isPresent()) {
+            childBo.setAvatar(existAvatar.get().getFileUrl());
+        }
+        return resultDo.setResult(childBo);
     }
 
 }

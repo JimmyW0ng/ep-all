@@ -68,6 +68,22 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
     }
 
     /**
+     * 根据会员ID和孩子昵称查询
+     *
+     * @param memberId
+     * @param childNickName
+     * @return
+     */
+    public Optional<EpMemberChildPo> getByMemberIdAndNickName(Long memberId, String childNickName) {
+        EpMemberChildPo childPo = dslContext.selectFrom(EP_MEMBER_CHILD)
+                .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
+                .and(EP_MEMBER_CHILD.CHILD_NICK_NAME.eq(childNickName))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildPo.class);
+        return Optional.ofNullable(childPo);
+    }
+
+    /**
      * 根据会员ID和孩子姓名查询
      *
      * @param memberId
@@ -84,6 +100,24 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
     }
 
     /**
+     * 查询用户下其他重复昵称的孩子
+     *
+     * @param id
+     * @param memberId
+     * @param childNickName
+     * @return
+     */
+    public Optional<EpMemberChildPo> getOtherSameNickNameChild(Long id, Long memberId, String childNickName) {
+        EpMemberChildPo childPo = dslContext.selectFrom(EP_MEMBER_CHILD)
+                .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
+                .and(EP_MEMBER_CHILD.CHILD_NICK_NAME.eq(childNickName))
+                .and(EP_MEMBER_CHILD.ID.notEqual(id))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildPo.class);
+        return Optional.ofNullable(childPo);
+    }
+
+    /**
      * 查询用户下其他重名的孩子
      *
      * @param id
@@ -91,7 +125,7 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      * @param childTrueName
      * @return
      */
-    public Optional<EpMemberChildPo> getOtherSameNameChild(Long id, Long memberId, String childTrueName) {
+    public Optional<EpMemberChildPo> getOtherSameTrueNameChild(Long id, Long memberId, String childTrueName) {
         EpMemberChildPo childPo = dslContext.selectFrom(EP_MEMBER_CHILD)
                 .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
                 .and(EP_MEMBER_CHILD.CHILD_TRUE_NAME.eq(childTrueName))
@@ -132,6 +166,28 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
                 .orderBy(EP_MEMBER_CHILD.SHOW_AT.desc())
                 .fetchInto(MemberChildBo.class);
+    }
+
+    /**
+     * 查询会员孩子综合信息
+     *
+     * @param memberId
+     * @param id
+     * @return
+     */
+    public Optional<MemberChildBo> getAllByMemberIdAndChildId(Long memberId, Long id) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.fields());
+        fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("signContent"));
+        MemberChildBo childBo = dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD)
+                .leftJoin(EP_MEMBER_CHILD_SIGN)
+                .on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_SIGN.CHILD_ID))
+                .and(EP_MEMBER_CHILD_SIGN.DEL_FLAG.eq(false))
+                .where(EP_MEMBER_CHILD.ID.eq(id))
+                .and(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .fetchOneInto(MemberChildBo.class);
+        return Optional.ofNullable(childBo);
     }
 
 }

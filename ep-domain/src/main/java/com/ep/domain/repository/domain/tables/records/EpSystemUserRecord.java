@@ -161,6 +161,21 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     */
+    public EpSystemUserStatus getStatus() {
+        return (EpSystemUserStatus) get(8);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     */
+    public EpSystemUserRecord setCreateAt(Timestamp value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpSystemUserRecord
      */
     public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -190,36 +205,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
-     */
-    public EpSystemUserStatus getStatus() {
-        return (EpSystemUserStatus) get(8);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
-     */
-    public EpSystemUserRecord setCreateAt(Timestamp value) {
-        set(9, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.remark</code>. 备注
-     */
-    public EpSystemUserRecord setRemark(String value) {
-        set(11, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
@@ -227,11 +212,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public EpSystemUserRecord setDelFlag(Boolean value) {
-        set(12, value);
-        return this;
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -243,10 +227,26 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Setter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     */
+    public EpSystemUserRecord setDelFlag(Boolean value) {
+        set(12, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_system_user.remark</code>. 备注
      */
     public String getRemark() {
         return (String) get(11);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.remark</code>. 备注
+     */
+    public EpSystemUserRecord setRemark(String value) {
+        set(11, value);
+        return this;
     }
 
     /**

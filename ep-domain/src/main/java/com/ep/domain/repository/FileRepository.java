@@ -64,7 +64,7 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
                 .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
                 .and(EP_FILE.DEL_FLAG.eq(false))
-                .orderBy(EP_FILE.SORT.desc(), EP_FILE.CREATE_AT.desc())
+                .orderBy(EP_FILE.CREATE_AT.desc())
                 .limit(DSL.one())
                 .fetchOneInto(EpFilePo.class);
         return Optional.ofNullable(data);

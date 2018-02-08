@@ -3,7 +3,6 @@ package com.ep.api.controller;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
-import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import com.ep.domain.service.MemberChildService;
@@ -47,8 +46,8 @@ public class ChildController extends ApiController {
     @ApiOperation(value = "新增孩子档案")
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo addChild(@RequestParam(value = "childNickName", required = false) String childNickName,
-                             @RequestParam("childTrueName") String childTrueName,
+    public ResultDo addChild(@RequestParam(value = "childNickName") String childNickName,
+                             @RequestParam(value = "childTrueName", required = false) String childTrueName,
                              @RequestParam("childSex") EpMemberChildChildSex childSex,
                              @RequestParam("childBirthday") String childBirthday,
                              @RequestParam(value = "childIdentity", required = false) String childIdentity,
@@ -84,9 +83,9 @@ public class ChildController extends ApiController {
     @ApiOperation(value = "查看孩子档案")
     @PostMapping("/get")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<EpMemberChildPo> getChild(@RequestParam("childId") Long childId) {
+    public ResultDo<MemberChildBo> getChild(@RequestParam("childId") Long childId) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
-        return memberChildService.getCheckedMemberChild(currentMbr.getId(), childId);
+        return memberChildService.getAllByMemberIdAndChildId(currentMbr.getId(), childId);
     }
 
     @ApiOperation(value = "删除孩子档案")

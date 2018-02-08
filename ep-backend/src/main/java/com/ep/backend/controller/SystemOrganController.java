@@ -5,7 +5,6 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.component.DictComponent;
-import com.ep.domain.component.QiNiuComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
@@ -246,7 +245,7 @@ public class SystemOrganController extends BackendController {
     public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
         ResultDo resultDo=ResultDo.build();
         try{
-            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC,sourceId,null);
+            // resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC,sourceId,null);
         }catch(Exception e){
             resultDo.setSuccess(false);
             return resultDo;
@@ -266,7 +265,7 @@ public class SystemOrganController extends BackendController {
     public ResultDo uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId){
         ResultDo resultDo=ResultDo.build();
         try{
-            resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO,sourceId,null);
+            // resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO,sourceId,null);
         }catch(Exception e){
             resultDo.setSuccess(false);
             return resultDo;
