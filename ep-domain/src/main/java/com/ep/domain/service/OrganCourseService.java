@@ -99,8 +99,8 @@ public class OrganCourseService {
      * @param ognId
      * @return
      */
-    public Page<OrganCourseBo> queryCourseByOgnIdForPage(Pageable pageable, Long ognId) {
-        Page<OrganCourseBo> ognCourses = organCourseRepository.queryCourseByOgnIdForPage(pageable, ognId);
+    public Page<OrganCourseBo> findCourseByOgnIdForPage(Pageable pageable, Long ognId) {
+        Page<OrganCourseBo> ognCourses = organCourseRepository.findCourseByOgnIdForPage(pageable, ognId);
         if (CollectionsTools.isNotEmpty(ognCourses.getContent())) {
             for (OrganCourseBo courseBo : ognCourses.getContent()) {
                 Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseBo.getId());
@@ -120,5 +120,26 @@ public class OrganCourseService {
      */
     public Page<OrganCourseBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return organCourseRepository.findbyPageAndCondition(pageable, condition);
+    }
+
+    /**
+     * 分页查询课程全部评论
+     *
+     * @param pageable
+     * @param courseId
+     * @return
+     */
+    public Page<OrganClassCommentBo> findCourseCommentForPage(Pageable pageable, Long courseId) {
+        Page<OrganClassCommentBo> page = organClassCommentRepository.findCourseCommentForPage(pageable, courseId);
+        List<OrganClassCommentBo> data = page.getContent();
+        if (CollectionsTools.isEmpty(data)) {
+            return page;
+        }
+        for (OrganClassCommentBo classCommentBo : data) {
+            Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, classCommentBo.getChildId());
+            String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
+            classCommentBo.setChildAvatar(avatar);
+        }
+        return page;
     }
 }

@@ -1,6 +1,7 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.service.OrganCourseService;
@@ -32,9 +33,9 @@ public class OrganCourseController extends ApiController {
 
     @ApiOperation(value = "课程分页列表")
     @PostMapping("/page")
-    public ResultDo<Page<OrganCourseBo>> getCoursePage(@PageableDefault Pageable pageable,
-                                                       @RequestParam("ognId") Long ognId) {
-        Page<OrganCourseBo> data = organCourseService.queryCourseByOgnIdForPage(pageable, ognId);
+    public ResultDo<Page<OrganCourseBo>> findCourseForPage(@PageableDefault Pageable pageable,
+                                                           @RequestParam("ognId") Long ognId) {
+        Page<OrganCourseBo> data = organCourseService.findCourseByOgnIdForPage(pageable, ognId);
         ResultDo<Page<OrganCourseBo>> resultDo = ResultDo.build();
         return resultDo.setResult(data);
     }
@@ -43,6 +44,13 @@ public class OrganCourseController extends ApiController {
     @PostMapping("/detail")
     public ResultDo<OrganCourseDto> getCourseInfo(@RequestParam("courseId") Long courseId) {
         return organCourseService.getCourseDetail(courseId);
+    }
+
+    @ApiOperation(value = "分页查询课程全部评论")
+    @PostMapping("/comment/page")
+    public Page<OrganClassCommentBo> findCourseCommentForPage(@PageableDefault Pageable pageable,
+                                                              @RequestParam("courseId") Long courseId) {
+        return organCourseService.findCourseCommentForPage(pageable, courseId);
     }
 
 }

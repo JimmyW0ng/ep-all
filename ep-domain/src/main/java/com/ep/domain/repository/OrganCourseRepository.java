@@ -1,7 +1,6 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
-import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.po.EpOrganCoursePo;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
@@ -18,8 +17,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.*;
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
 
 /**
  * @Description:机构课程表Repository
@@ -62,7 +59,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * @param ognId
      * @return
      */
-    public Page<OrganCourseBo> queryCourseByOgnIdForPage(Pageable pageable, Long ognId) {
+    public Page<OrganCourseBo> findCourseByOgnIdForPage(Pageable pageable, Long ognId) {
         long count = dslContext.selectCount().from(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))

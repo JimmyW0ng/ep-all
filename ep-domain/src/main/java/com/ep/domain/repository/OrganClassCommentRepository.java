@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
@@ -7,6 +8,9 @@ import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,5 +53,37 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .fetchInto(OrganClassCommentBo.class);
     }
 
+    /**
+     * 分页查询课程全部评论
+     *
+     * @param pageable
+     * @param courseId
+     * @return
+     */
+    public Page<OrganClassCommentBo> findCourseCommentForPage(Pageable pageable, Long courseId) {
+        long count = dslContext.selectCount().from(EP_ORGAN_CLASS_COMMENT)
+                .where(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+        if (count == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, count);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_COMMENT.fields());
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        List<OrganClassCommentBo> pList = dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .leftJoin(EP_MEMBER_CHILD)
+                .on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .leftJoin(EP_ORGAN_CLASS)
+                .on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .where(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_COMMENT.CREATE_AT.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganClassCommentBo.class);
+        return new PageImpl<>(pList, pageable, count);
+    }
 }
 
