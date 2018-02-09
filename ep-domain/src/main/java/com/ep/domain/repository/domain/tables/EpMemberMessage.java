@@ -31,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
 
-    private static final long serialVersionUID = -2086834039;
+    private static final long serialVersionUID = 1106860995;
 
     /**
      * The reference instance of <code>ep.ep_member_message</code>
@@ -50,6 +50,16 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
      * The column <code>ep.ep_member_message.id</code>.
      */
     public final TableField<EpMemberMessageRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>ep.ep_member_message.sender_name</code>. 发件人姓名
+     */
+    public final TableField<EpMemberMessageRecord, String> SENDER_NAME = createField("sender_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "发件人姓名");
+
+    /**
+     * The column <code>ep.ep_member_message.sender_desc</code>. 发件人描述
+     */
+    public final TableField<EpMemberMessageRecord, String> SENDER_DESC = createField("sender_desc", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "发件人描述");
 
     /**
      * The column <code>ep.ep_member_message.member_id</code>. 会员id
@@ -75,6 +85,16 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
      * The column <code>ep.ep_member_message.content</code>. 消息内容
      */
     public final TableField<EpMemberMessageRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.VARCHAR.length(3000).nullable(false), this, "消息内容");
+
+    /**
+     * The column <code>ep.ep_member_message.source_id</code>. 业务id
+     */
+    public final TableField<EpMemberMessageRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "业务id");
+
+    /**
+     * The column <code>ep.ep_member_message.sourse_desc</code>. 业务来源描述
+     */
+    public final TableField<EpMemberMessageRecord, String> SOURSE_DESC = createField("sourse_desc", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "业务来源描述");
 
     /**
      * The column <code>ep.ep_member_message.create_at</code>. 创建时间

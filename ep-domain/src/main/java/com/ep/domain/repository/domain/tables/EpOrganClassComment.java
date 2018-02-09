@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassComment extends TableImpl<EpOrganClassCommentRecord> {
 
-    private static final long serialVersionUID = -2084350518;
+    private static final long serialVersionUID = -1959366091;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_comment</code>
@@ -165,7 +165,7 @@ public class EpOrganClassComment extends TableImpl<EpOrganClassCommentRecord> {
      */
     @Override
     public List<UniqueKey<EpOrganClassCommentRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpOrganClassCommentRecord>>asList(Keys.KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY);
+        return Arrays.<UniqueKey<EpOrganClassCommentRecord>>asList(Keys.KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY, Keys.KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID);
     }
 
     /**

@@ -6,6 +6,7 @@ import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.service.MemberChildService;
 import com.ep.domain.service.OrderService;
+import com.ep.domain.service.OrganClassCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class ChildClassController extends ApiController {
     private MemberChildService memberChildService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrganClassCommentService organClassCommentService;
 
     @ApiOperation(value = "孩子全部课程分页列表")
     @PostMapping("/page")
@@ -69,9 +72,10 @@ public class ChildClassController extends ApiController {
     @PostMapping("/add/comment")
     public ResultDo addClassComment(@RequestParam("orderId") Long orderId,
                                     @RequestParam("score") Byte score,
-                                    @RequestParam("content") String content,
-                                    @RequestParam("pic") List<String> picList) {
-        return null;
+                                    @RequestParam(value = "content", required = false) String content,
+                                    @RequestParam(value = "pic", required = false) List<String> picList) {
+        Long memberId = super.getCurrentUser().get().getId();
+        return organClassCommentService.addClassComment(memberId, orderId, score, content, picList);
     }
 
 }

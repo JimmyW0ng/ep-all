@@ -176,6 +176,21 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     */
+    public EpSystemUserRecord setUpdateAt(Timestamp value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
      * Create a detached, initialised EpSystemUserRecord
      */
     public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
@@ -205,40 +220,17 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
-     */
-    public EpSystemUserRecord setUpdateAt(Timestamp value) {
-        set(10, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.del_flag</code>. 删除标记
-     */
-    public EpSystemUserRecord setDelFlag(Boolean value) {
-        set(12, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_system_user.remark</code>. 备注
      */
     public String getRemark() {
         return (String) get(11);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -247,6 +239,13 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     public EpSystemUserRecord setRemark(String value) {
         set(11, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
 
     /**
@@ -281,10 +280,11 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_system_user.del_flag</code>. 删除标记
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public EpSystemUserRecord setDelFlag(Boolean value) {
+        set(12, value);
+        return this;
     }
 
     /**

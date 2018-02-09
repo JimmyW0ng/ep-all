@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpFile extends TableImpl<EpFileRecord> {
 
-    private static final long serialVersionUID = 1514736865;
+    private static final long serialVersionUID = 1018614691;
 
     /**
      * The reference instance of <code>ep.ep_file</code>
@@ -155,7 +155,7 @@ public class EpFile extends TableImpl<EpFileRecord> {
      */
     @Override
     public List<UniqueKey<EpFileRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpFileRecord>>asList(Keys.KEY_EP_FILE_PRIMARY);
+        return Arrays.<UniqueKey<EpFileRecord>>asList(Keys.KEY_EP_FILE_PRIMARY, Keys.KEY_EP_FILE_UNIQUE_PRE_CODE);
     }
 
     /**

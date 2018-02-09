@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -84,6 +85,20 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .offset(pageable.getOffset())
                 .fetchInto(OrganClassCommentBo.class);
         return new PageImpl<>(pList, pageable, count);
+    }
+
+    /**
+     * 根据订单获取记录
+     *
+     * @param orderId
+     * @return
+     */
+    public Optional<EpOrganClassCommentPo> getByOrderId(Long orderId) {
+        EpOrganClassCommentPo commentPo = dslContext.selectFrom(EP_ORGAN_CLASS_COMMENT)
+                .where(EP_ORGAN_CLASS_COMMENT.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganClassCommentPo.class);
+        return Optional.ofNullable(commentPo);
     }
 }
 

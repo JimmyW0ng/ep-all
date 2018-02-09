@@ -54,9 +54,14 @@ public class MessageCode {
     /**
      * 订单
      */
+    public static final String ERROR_ORDER_NOT_EXISTS = "ERROR_ORDER_NOT_EXISTS";
     public static final String ERROR_ORDER_DUPLICATE = "ERROR_ORDER_DUPLICATE";
     public static final String ERROR_ORDER = "ERROR_ORDER";
     public static final String ERROR_ORDER_ENTERED_FULL = "ERROR_ORDER_ENTERED_FULL";
     public static final String ERROR_ORDER_ORDERED_NUM_FULL = "ERROR_ORDER_ORDERED_NUM_FULL";
-
+    public static final String ERROR_ORDER_NOT_END = "ERROR_ORDER_NOT_END";
+    /**
+     * 课程评论
+     */
+    public static final String ERROR_COURSE_COMMENT_DUPLICATE = "ERROR_COURSE_COMMENT_DUPLICATE";
 }

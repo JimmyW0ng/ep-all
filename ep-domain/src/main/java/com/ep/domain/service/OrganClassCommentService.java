@@ -2,14 +2,20 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.OrganClassCommentRepository;
+import com.ep.domain.pojo.po.EpMemberChildPo;
+import com.ep.domain.pojo.po.EpOrderPo;
+import com.ep.domain.pojo.po.EpOrganClassCommentPo;
+import com.ep.domain.repository.*;
+import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +29,13 @@ import java.util.Optional;
 public class OrganClassCommentService {
 
     @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private MemberChildRepository memberChildRepository;
+    @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private OrganClassChildRepository organClassChildRepository;
     @Autowired
     private OrganClassCommentRepository organClassCommentRepository;
 
@@ -48,4 +60,51 @@ public class OrganClassCommentService {
         return page;
     }
 
+    /**
+     * 班次评价
+     *
+     * @param memberId
+     * @param orderId
+     * @param score
+     * @param content
+     * @param picList
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo addClassComment(Long memberId, Long orderId, Byte score, String content, List<String> picList) {
+        // 校验订单
+        EpOrderPo orderPo = orderRepository.getById(orderId);
+        if (orderPo == null || orderPo.getDelFlag()) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        if (!orderPo.getStatus().equals(EpOrderStatus.end)) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_END);
+        }
+        EpMemberChildPo childPo = memberChildRepository.getById(orderPo.getChildId());
+        if (childPo == null || !childPo.getMemberId().equals(memberId)) {
+            return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        // 校验重复评论课程
+        Optional<EpOrganClassCommentPo> optional = organClassCommentRepository.getByOrderId(orderId);
+        if (optional.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_COURSE_COMMENT_DUPLICATE);
+        }
+        // 保存评论
+        EpOrganClassCommentPo addPo = new EpOrganClassCommentPo();
+        addPo.setOgnId(orderPo.getOgnId());
+        addPo.setCourseId(orderPo.getCourseId());
+        addPo.setClassId(orderPo.getClassId());
+        addPo.setScore(score);
+        addPo.setChildId(orderPo.getChildId());
+        addPo.setContent(content);
+        addPo.setOrderId(orderId);
+        organClassCommentRepository.insert(addPo);
+        // 更新评论幅图业务id
+        if (CollectionsTools.isNotEmpty(picList)) {
+            fileRepository.updateSourceIdInPreCodes(picList, addPo.getId());
+        }
+        // 更新评论标志
+        organClassChildRepository.updateCourseCommentFlagByOrderId(orderId);
+        return ResultDo.build();
+    }
 }

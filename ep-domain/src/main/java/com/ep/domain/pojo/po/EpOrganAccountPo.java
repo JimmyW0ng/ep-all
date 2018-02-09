@@ -26,8 +26,6 @@ public class EpOrganAccountPo extends AbstractBasePojo {
     @JsonIgnore
     private String accountName;
     private String nickName;
-    @JsonIgnore
-    private Long userId;
     private String introduce;
     private Long ognId;
     private EpOrganAccountStatus status;

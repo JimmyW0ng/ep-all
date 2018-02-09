@@ -7,6 +7,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.repository.FileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @Author: J.W
  * @Date: 下午2:19 2018/1/22
  */
+@Slf4j
 @Service
 public class FileService {
 
@@ -49,6 +51,7 @@ public class FileService {
         }
         // 创建预授权码
         String preCode = StringTools.getUUID();
+        log.info("文件上传生成预授权码: {}", preCode);
         FileDto fileDto = new FileDto();
         fileDto.setPreCode(preCode);
         fileDto.setFileUrl(qiniuResult.getResult());

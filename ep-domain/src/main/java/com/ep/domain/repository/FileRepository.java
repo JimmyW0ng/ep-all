@@ -101,6 +101,21 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
     }
 
     /**
+     * 根据预授权码更新业务ID
+     *
+     * @param preCodes
+     * @param id
+     * @return
+     */
+    public int updateSourceIdInPreCodes(List<String> preCodes, Long id) {
+        return dslContext.update(EP_FILE).set(EP_FILE.SOURCE_ID, id)
+                .where(EP_FILE.PRE_CODE.in(preCodes))
+                .and(EP_FILE.SOURCE_ID.isNull())
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
      * 根据预授权码获取记录
      *
      * @param preCode

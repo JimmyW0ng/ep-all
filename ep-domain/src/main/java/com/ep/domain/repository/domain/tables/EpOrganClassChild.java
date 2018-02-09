@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
 
-    private static final long serialVersionUID = 304472122;
+    private static final long serialVersionUID = 363058242;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_child</code>
@@ -160,7 +160,7 @@ public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
      */
     @Override
     public List<UniqueKey<EpOrganClassChildRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpOrganClassChildRecord>>asList(Keys.KEY_EP_ORGAN_CLASS_CHILD_PRIMARY);
+        return Arrays.<UniqueKey<EpOrganClassChildRecord>>asList(Keys.KEY_EP_ORGAN_CLASS_CHILD_PRIMARY, Keys.KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID);
     }
 
     /**
