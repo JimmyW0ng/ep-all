@@ -108,6 +108,10 @@ public class OrganAccountService {
         return organAccountRepository.deleteLogical(id);
     }
 
+    public List<EpOrganAccountPo> findByOgnId(Long ognId) {
+        return organAccountRepository.findByOgnId(ognId);
+    }
+
     /**
      * 根据账户id获取今日课程
      *
@@ -130,9 +134,6 @@ public class OrganAccountService {
         }
         resultDo.setResult(todayClasses);
         return resultDo;
-    }
-    public List<EpOrganAccountPo> findByOgnId(Long ognId){
-        return organAccountRepository.findByOgnId(ognId);
     }
 
 }
