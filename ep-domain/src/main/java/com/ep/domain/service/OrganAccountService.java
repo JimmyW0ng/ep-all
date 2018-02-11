@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Description: 机构账户关联信息服务
@@ -61,6 +62,10 @@ public class OrganAccountService {
      */
     public int delete(Long id){
         return organAccountRepository.deleteLogical(id);
+    }
+
+    public List<EpOrganAccountPo> findByOgnId(Long ognId){
+        return organAccountRepository.findByOgnId(ognId);
     }
 
 }

@@ -100,7 +100,7 @@
 
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         var id= [[${systemRolePo.id}]]
-        console.log("id="+id)
+//        console.log("id="+id)
         if(id){
             var menuIds= [
                 [# th:each="id :${menuIds}"]
@@ -108,57 +108,19 @@
             [/]
         ];
         }
-        console.log(menuIds)
+//        console.log(menuIds)
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
         for (var i = 0; i < menuIds.length; i++) {
             var node = treeObj.getNodeByParam("id", menuIds[i].id, null);
             console.log(node)
             treeObj.checkNode(node, true, false,false);
         }
+
+        $("#roleFrm").find("input").attr("disabled",true)
+        $("#roleFrm").find("select").attr("disabled",true)
+        $("#roleFrm").find("textarea").attr("disabled",true)
     })
-//    function frmSubmit() {
-//        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-//        var nodes = treeObj.getCheckedNodes(true);
-//        var authority = []
-//        for (var i = 0; i < nodes.length; i++) {
-//            authority.push({menuId:nodes[i].id,authority:nodes[i].authority});
-//        }
-//        console.log(authority)
-//        if (nodes.length == 0) {
-//            return;
-//        }
-//        console.log(nodes)
-////        if (! $("#roleFrm").valid()) {
-////            return;
-////        }
-//
-//        var params={
-//            id: $("#id").val(),
-//            roleName: $("#roleName").val(),
-//            target: $("#target").val(),
-//            roleCode: $("#roleCode").val(),
-//            remark: $("#remark").val(),
-//            systemRoleAuthorityPos: authority
-//        }
-//        var url;
-//        if($("#id").val()){
-//            url="/auth/role/update"
-//        }else{
-//            url="/auth/role/create"
-//        }
-//        $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: JSON.stringify(params),
-//            contentType: "application/json;charset=utf-8",
-//            success: function (data) {
-//                if (data.success) {
-//                    window.location.href = "/auth/role/index";
-//                }
-//            }
-//        })
-//
-//    }
+
 </script>
 </body>
 </html>

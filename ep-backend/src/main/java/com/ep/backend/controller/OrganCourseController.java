@@ -1,7 +1,13 @@
 package com.ep.backend.controller;
 
-import com.ep.domain.pojo.bo.OrganAccountBo;
+import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.EpOrganClassBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
+import com.ep.domain.pojo.dto.CreateOrganCourseDto;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.service.ConstantCatalogService;
+import com.ep.domain.service.ConstantTagService;
+import com.ep.domain.service.OrganAccountService;
 import com.ep.domain.service.OrganCourseService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -13,10 +19,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
@@ -31,6 +38,12 @@ import static com.ep.domain.repository.domain.Ep.EP;
 public class OrganCourseController extends BackendController {
     @Autowired
     private OrganCourseService organCourseService;
+    @Autowired
+    private ConstantCatalogService constantCatalogService;
+    @Autowired
+    private OrganAccountService organAccountService;
+    @Autowired
+    private ConstantTagService constantTagService;
 
     @GetMapping("index")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -63,5 +76,79 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("page", page);
         model.addAttribute("map", map);
         return "/organCourse/index";
+    }
+
+    /**
+     * 商家后台课程列表
+     *
+     * @return
+     */
+    @GetMapping("/merchantIndex")
+    public String merchantIndex() {
+        return "organCourse/merchantIndex";
+    }
+
+    /**
+     * 商家后台新增课程
+     *
+     * @return
+     */
+    @GetMapping("/merchantCreateInit")
+    public String merchantCreateInit(Model model, HttpServletRequest request) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
+        Map<Long, String> constantCatalogMap = Maps.newHashMap();
+        constantCatalogList.forEach(p -> {
+            constantCatalogMap.put(p.getId(), p.getLabel());
+        });
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        Map<Long, String> organAccountMap = Maps.newHashMap();
+        organAccountList.forEach(p -> {
+            organAccountMap.put(p.getId(), p.getAccountName());
+        });
+        model.addAttribute("constantCatalogMap", constantCatalogMap);
+        model.addAttribute("organAccountMap", organAccountMap);
+        return "organCourse/merchantForm";
+    }
+
+    /**
+     * 根据课程类目获得标签
+     *
+     * @param catalogId
+     * @return
+     */
+    @GetMapping("findTagsByCatalog/{catalogId}")
+    @ResponseBody
+    public ResultDo findTagsByConstantCatalog(@PathVariable("catalogId") Long catalogId, HttpServletRequest request) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        ResultDo resultDo = ResultDo.build();
+
+        List<EpConstantTagPo> list = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        Map<Long, String> tagMap = Maps.newHashMap();
+        list.forEach(p -> {
+            tagMap.put(p.getId(), p.getTagName());
+        });
+        resultDo.setResult(tagMap);
+        return resultDo;
+    }
+
+
+    /**
+     * 商家后台新增课程
+     *
+     * @return
+     */
+    @PostMapping("/merchantCreate")
+    @ResponseBody
+    public ResultDo merchantCreate(HttpServletRequest request,CreateOrganCourseDto dto) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId=currentUser.getOgnId();
+        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        List<EpOrganClassBo> organClassBos = dto.getOrganClassBos();
+        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+        organCoursePo.setOgnId(ognId);
+        organCourseService.createOrganCourseByMerchant(organCoursePo,organClassBos,constantTagPos);
+        ResultDo resultDo = ResultDo.build();
+        return resultDo;
     }
 }

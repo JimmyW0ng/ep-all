@@ -99,7 +99,9 @@
 <script th:inline="javascript">
 
     $(function () {
-
+        $("#frm").find("input").attr("disabled",true)
+        $("#frm").find("select").attr("disabled",true)
+        $("#frm").find("textarea").attr("disabled",true)
     })
 
 </script>

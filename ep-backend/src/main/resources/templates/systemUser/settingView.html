@@ -12,8 +12,7 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5 th:text="${systemUserPo.id} eq null ? '查看用户' : '查看用户'"></h5>
-            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/user/index" >返回</a>
+            <h5 th:text="'个人信息'"></h5>
 
         </div>
         <div class="ibox-content">
@@ -47,18 +46,18 @@
                                aria-required="true">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">类型：</label>
-                    <div class="col-sm-3">
-                        <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">
-                            <option value="">请选择</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpSystemUserType.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-2 control-label">类型：</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">-->
+                            <!--<option value="">请选择</option>-->
+                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
+                                    <!--th:value="${state}"-->
+                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
+                            <!--</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商户id：</label>
                     <div class="col-sm-3">
@@ -66,18 +65,18 @@
                                aria-required="true">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" class="form-control" required="true" aria-required="true" >
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpSystemUserStatus.+${state.literal}}">
-                            </option>
-                        </select>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-2 control-label">状态：</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<select id="status" name="status" class="form-control" required="true" aria-required="true" >-->
+                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"-->
+                                    <!--th:value="${state}"-->
+                                    <!--th:text="#{EpSystemUserStatus.+${state.literal}}">-->
+                            <!--</option>-->
+                        <!--</select>-->
 
-                    </div>
-                </div>
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">角色：</label>
@@ -132,8 +131,7 @@
                 $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
             }
         }
-        $("#userFrm").find("input").attr("readonly",true)
-        $("#userFrm").find("select").attr("disabled",true)
+        $("#userFrm").find("input").attr("readonly","true")
     })
 </script>
 </body>

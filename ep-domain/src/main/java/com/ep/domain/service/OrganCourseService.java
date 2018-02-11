@@ -1,16 +1,16 @@
 package com.ep.domain.service;
 
+import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.EpOrganClassBo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
-import com.ep.domain.pojo.po.EpFilePo;
-import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.pojo.po.EpOrganPo;
+import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -122,4 +123,24 @@ public class OrganCourseService {
         return organCourseRepository.findbyPageAndCondition(pageable, condition);
     }
 
+    /**
+     * 商户后台创建课程
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<EpOrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos){
+        EpOrganCoursePo insertOrganCoursePo = organCourseRepository.insertNew(organCoursePo);
+        Long insertOrganCourseId = insertOrganCoursePo.getId();
+        organClassBos.forEach(organClassBo->{
+            EpOrganClassPo organClassPo = new EpOrganClassPo();
+            BeanTools.copyPropertiesIgnoreNull(organClassBo,organClassPo);
+            organClassPo.setCourseId(insertOrganCourseId);
+            EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
+            Long insertOrganClassId = insertOrganClassPo.getId();
+            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+            organClassCatelogPos.forEach(organClassCatelogPo->{
+                organClassCatelogPo.setClassId(insertOrganClassId);
+            });
+        });
+
+    }
 }

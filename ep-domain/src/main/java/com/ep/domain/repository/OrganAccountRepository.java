@@ -66,6 +66,7 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
 
     /**
      * 获取后台教师分页列表
+     *
      * @param pageable
      * @param condition
      * @return
@@ -92,17 +93,18 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
 
     /**
      * 更新教师
+     *
      * @param po
      * @return
      */
-    public int updateById( EpOrganAccountPo po){
+    public int updateById(EpOrganAccountPo po) {
         return dslContext.update(EP_ORGAN_ACCOUNT)
-                .set(EP_ORGAN_ACCOUNT.ACCOUNT_NAME,po.getAccountName())
-                .set(EP_ORGAN_ACCOUNT.NICK_NAME,po.getNickName())
-                .set(EP_ORGAN_ACCOUNT.INTRODUCE,po.getIntroduce())
-                .set(EP_ORGAN_ACCOUNT.REFER_MOBILE,po.getReferMobile())
-                .set(EP_ORGAN_ACCOUNT.STATUS,po.getStatus())
-                .set(EP_ORGAN_ACCOUNT.REMARK,po.getRemark())
+                .set(EP_ORGAN_ACCOUNT.ACCOUNT_NAME, po.getAccountName())
+                .set(EP_ORGAN_ACCOUNT.NICK_NAME, po.getNickName())
+                .set(EP_ORGAN_ACCOUNT.INTRODUCE, po.getIntroduce())
+                .set(EP_ORGAN_ACCOUNT.REFER_MOBILE, po.getReferMobile())
+                .set(EP_ORGAN_ACCOUNT.STATUS, po.getStatus())
+                .set(EP_ORGAN_ACCOUNT.REMARK, po.getRemark())
                 .set(EP_ORGAN_ACCOUNT.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN_ACCOUNT.ID.eq(po.getId()))
                 .execute();
@@ -110,14 +112,22 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
 
     /**
      * 删除教师
+     *
      * @param id
      * @return
      */
-    public int deleteLogical(Long id){
+    public int deleteLogical(Long id) {
         return dslContext.update(EP_ORGAN_ACCOUNT)
-                .set(EP_ORGAN_ACCOUNT.DEL_FLAG,true)
+                .set(EP_ORGAN_ACCOUNT.DEL_FLAG, true)
                 .where(EP_ORGAN_ACCOUNT.ID.eq(id))
                 .execute();
+    }
+
+    public List<EpOrganAccountPo> findByOgnId(Long ognId){
+        return dslContext.selectFrom(EP_ORGAN_ACCOUNT)
+                .where(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganAccountPo.class);
     }
 }
 

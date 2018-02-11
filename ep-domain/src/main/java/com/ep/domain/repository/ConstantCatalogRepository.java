@@ -7,7 +7,9 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_CATALOG;
 
@@ -44,6 +46,13 @@ public class ConstantCatalogRepository extends AbstractCRUDRepository<EpConstant
                 .set(EP_CONSTANT_CATALOG.DEL_FLAG,true)
                 .where(EP_CONSTANT_CATALOG.ID.eq(id))
                 .execute();
+    }
+
+    public List<EpConstantCatalogPo> findSecondCatalog() {
+        return dslContext.selectFrom(EP_CONSTANT_CATALOG)
+                .where(EP_CONSTANT_CATALOG.PARENT_ID.notEqual(0L))
+                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .fetchInto(EpConstantCatalogPo.class);
     }
 
 }
