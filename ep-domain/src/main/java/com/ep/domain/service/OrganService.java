@@ -1,5 +1,6 @@
 package com.ep.domain.service;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -75,8 +76,19 @@ public class OrganService {
      * @param pageable
      * @return
      */
-    public Page<OrganBo> queryOgnPage(Pageable pageable) {
-        return organRepository.queryOgnPage(pageable);
+    public ResultDo<Page<OrganBo>> queryOgnPage(Pageable pageable) {
+        Page<OrganBo> page = organRepository.queryOgnPage(pageable);
+        List<OrganBo> data = page.getContent();
+        if (CollectionsTools.isNotEmpty(data)) {
+            for (OrganBo organ : data) {
+                Optional<EpFilePo> organMainPic = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, organ.getId());
+                String mainPic = organMainPic.isPresent() ? organMainPic.get().getFileUrl() : null;
+                organ.setFileUrl(mainPic);
+            }
+        }
+        ResultDo<Page<OrganBo>> resultDo = ResultDo.build();
+        resultDo.setResult(page);
+        return resultDo;
     }
 
 

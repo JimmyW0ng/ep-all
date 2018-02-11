@@ -1,15 +1,19 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description:机构课程班次表Repository
@@ -69,5 +73,30 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .execute();
     }
 
+    /**
+     * 根据课程负责人获取今日班次
+     *
+     * @param ognAccountId
+     * @return
+     */
+    public List<OrganAccountClassBo> findClassByOgnAccountId(Long ognAccountId, Timestamp startTime, Timestamp endTime) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS)
+                .leftJoin(EP_ORGAN)
+                .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE)
+                .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS_CATELOG)
+                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATELOG.CLASS_ID))
+                .and(EP_ORGAN_CLASS_CATELOG.DEL_FLAG.eq(false))
+                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                .and(EP_ORGAN_CLASS_CATELOG.START_TIME.between(startTime, endTime))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_CATELOG.START_TIME.asc())
+                .fetchInto(OrganAccountClassBo.class);
+    }
 }
 

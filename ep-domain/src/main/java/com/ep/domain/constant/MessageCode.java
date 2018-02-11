@@ -64,4 +64,8 @@ public class MessageCode {
      * 课程评论
      */
     public static final String ERROR_COURSE_COMMENT_DUPLICATE = "ERROR_COURSE_COMMENT_DUPLICATE";
+    /**
+     * 机构账户
+     */
+    public static final String ERROR_ORGAN_ACCOUNT_NOT_EXISTS = "ERROR_ORGAN_ACCOUNT_NOT_EXISTS";
 }

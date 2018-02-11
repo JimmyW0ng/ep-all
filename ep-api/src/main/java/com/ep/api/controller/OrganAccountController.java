@@ -1,13 +1,19 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganAccountBo;
+import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.po.EpMemberPo;
+import com.ep.domain.service.OrganAccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Description: 机构账户控制类
@@ -20,11 +26,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "api-auth-organ-account", description = "机构账户接口")
 public class OrganAccountController extends ApiController {
 
+    @Autowired
+    private OrganAccountService organAccountService;
+
     @ApiOperation(value = "机构账户信息")
     @PostMapping("/info")
-    public ResultDo getOrganAccountInfo() {
+    public ResultDo<OrganAccountBo> getOrganAccountInfo() {
         EpMemberPo memberPo = super.getCurrentUser().get();
-        return null;
+        return organAccountService.getOrganAccountInfo(memberPo.getMobile());
+    }
+
+    @ApiOperation(value = "今日课时")
+    @PostMapping("/today/class")
+    public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount() {
+        EpMemberPo memberPo = super.getCurrentUser().get();
+        return organAccountService.findClassByOrganAccount(memberPo.getId());
     }
 
 }

@@ -53,7 +53,7 @@ public class ChildController extends ApiController {
                              @RequestParam(value = "childIdentity", required = false) String childIdentity,
                              @RequestParam(value = "currentSchool", required = false) String currentSchool,
                              @RequestParam(value = "currentClass", required = false) String currentClass,
-                             @RequestParam(value = "avatar", required = false) String avatar,
+                             @RequestParam(value = "avatarCode", required = false) String avatar,
                              @RequestParam(value = "sign", required = false) String sign
     ) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
@@ -72,7 +72,7 @@ public class ChildController extends ApiController {
                               @RequestParam(value = "childIdentity", required = false) String childIdentity,
                               @RequestParam(value = "currentSchool", required = false) String currentSchool,
                               @RequestParam(value = "currentClass", required = false) String currentClass,
-                              @RequestParam(value = "avatar", required = false) String avatar,
+                              @RequestParam(value = "avatarCode", required = false) String avatar,
                               @RequestParam(value = "sign", required = false) String sign
     ) {
         EpMemberPo currentMbr = super.getCurrentUser().get();

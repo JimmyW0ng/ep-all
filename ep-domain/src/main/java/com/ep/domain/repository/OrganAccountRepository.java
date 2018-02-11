@@ -15,9 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE_TEAM;
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description:机构后台账户表Repository
@@ -42,6 +40,7 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
         return dslContext.selectFrom(EP_ORGAN_ACCOUNT)
                 .where(EP_ORGAN_ACCOUNT.REFER_MOBILE.eq(mobile))
                 .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_ACCOUNT.CREATE_AT.asc())
                 .fetchInto(EpOrganAccountPo.class);
     }
 
