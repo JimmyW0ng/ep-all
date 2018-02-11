@@ -189,8 +189,6 @@
             }
         },
         callback: {
-            beforeRemove: nodeBeforeRemove,
-            beforeEditName: beforeEditName,
             onClick: zTreeOnClick,
             onDblClick: zTreeOnDbClick,
         }
@@ -202,32 +200,6 @@
         {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:true},
         [/]
     ];
-
-    function beforeEditName() {
-        //获取鼠标点击的标签（单个）START
-        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        var nodes = treeObj.getSelectedNodes();
-        //获取鼠标点击的标签（单个）END
-
-        console.log(nodes)
-
-        return false;
-
-    }
-
-
-    function nodeBeforeRemove() {
-        parent.layer.alert('内容', {
-                icon: 1,
-                skin: 'layer-ext-moon',
-
-            },
-            function (index) {
-//               delMenuDo();
-                parent.layer.close(index);
-            })
-        return false
-    }
 
 
     function zTreeOnClick() {
@@ -301,6 +273,15 @@
         $("#act_type").parent().find("." + clazz).show()
         if($("#saveBtn").hasClass(titleClazz)){
             $("#saveBtn").show()
+        }
+        if(titleClazz=='r_act'){
+            $("#menuFrm").find("input").attr("disabled",true)
+            $("#menuFrm").find("select").attr("disabled",true)
+            $("#menuFrm").find("textarea").attr("disabled",true)
+        }else{
+            $("#menuFrm").find("input").attr("disabled",false)
+            $("#menuFrm").find("select").attr("disabled",false)
+            $("#menuFrm").find("textarea").attr("disabled",false)
         }
     }
     function updateMenuShow(ele) {
@@ -408,7 +389,6 @@
 
         console.log(nodes[0].id)
         readMenuShow(nodes[0].id);
-
 
     }
 

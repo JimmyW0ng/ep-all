@@ -3,13 +3,17 @@ package com.ep.backend.controller;
 import com.ep.common.captcha.Captcha;
 import com.ep.common.captcha.GifCaptcha;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -82,4 +86,10 @@ public class LoginSecurityController extends BackendController {
         }
     }
 
+    @PostMapping("/merchantCreate")
+    @ResponseBody
+    public ResultDo merchantCreate(CreateOrganCourseDto dto) {
+        ResultDo resultDo = ResultDo.build();
+        return resultDo;
+    }
 }

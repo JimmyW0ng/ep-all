@@ -5,7 +5,9 @@ import com.ep.domain.repository.ConstantCatalogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 /**
  * @Description:课程类目服务
@@ -36,4 +38,9 @@ public class ConstantCatalogService {
     public void delete(Long id){
         constantCatalogRepository.deleteById(id);
     }
+
+    public List<EpConstantCatalogPo> findSecondCatalog(){
+        return constantCatalogRepository.findSecondCatalog();
+    }
+
 }

@@ -131,4 +131,8 @@ public class OrganAccountService {
         resultDo.setResult(todayClasses);
         return resultDo;
     }
+    public List<EpOrganAccountPo> findByOgnId(Long ognId){
+        return organAccountRepository.findByOgnId(ognId);
+    }
+
 }
