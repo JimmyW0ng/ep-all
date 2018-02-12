@@ -156,7 +156,7 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      */
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.fields());
-        fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("signContent"));
+        fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("sign"));
         return dslContext.select(fieldList)
                 .from(EP_MEMBER_CHILD)
                 .leftJoin(EP_MEMBER_CHILD_SIGN)
@@ -177,7 +177,7 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      */
     public Optional<MemberChildBo> getAllByMemberIdAndChildId(Long memberId, Long id) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.fields());
-        fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("signContent"));
+        fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("sign"));
         MemberChildBo childBo = dslContext.select(fieldList)
                 .from(EP_MEMBER_CHILD)
                 .leftJoin(EP_MEMBER_CHILD_SIGN)
