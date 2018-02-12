@@ -102,5 +102,5 @@ public class BizConstant {
     /**
      * 孩子数量控制
      */
-    public static int CHILD_LIMIT_NUM = 6;
+    public static int CHILD_LIMIT_NUM = 4;
 }

@@ -115,15 +115,20 @@ public class OrganAccountService {
     /**
      * 根据账户id获取今日课程
      *
-     * @param id
+     * @param mobile
      * @return
      */
-    public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount(Long id) {
+    public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount(Long mobile) {
         ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
         Timestamp now = DateTools.getCurrentDateTime();
         Timestamp startTime = DateTools.zerolizedTime(now);
         Timestamp endTime = DateTools.getEndTime(now);
-        List<OrganAccountClassBo> todayClasses = organClassRepository.findClassByOgnAccountId(id, startTime, endTime);
+        List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
+        if (CollectionsTools.isEmpty(accountList)) {
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        }
+        EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
+        List<OrganAccountClassBo> todayClasses = organClassRepository.findClassByOgnAccountId(accountPo.getId(), startTime, endTime);
         if (CollectionsTools.isNotEmpty(todayClasses)) {
             for (OrganAccountClassBo classBo : todayClasses) {
                 // 加载课程图片

@@ -5,16 +5,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpMemberChildTag;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record9;
 import org.jooq.Row9;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -30,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTagRecord> implements Record9<Long, Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 191494265;
+    private static final long serialVersionUID = -1887724669;
 
     /**
      * Setter for <code>ep.ep_member_child_tag.id</code>. 主键
@@ -63,17 +61,26 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.class_schedule_id</code>. 行程_id
+     * Create a detached, initialised EpMemberChildTagRecord
      */
-    public EpMemberChildTagRecord setClassScheduleId(Long value) {
-        set(2, value);
-        return this;
+    public EpMemberChildTagRecord(Long id, Long childId, Long classCatelogId, Long tagId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberChildTag.EP_MEMBER_CHILD_TAG);
+
+        set(0, id);
+        set(1, childId);
+        set(2, classCatelogId);
+        set(3, tagId);
+        set(4, createAt);
+        set(5, updateAt);
+        set(6, remark);
+        set(7, delFlag);
+        set(8, version);
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_tag.class_schedule_id</code>. 行程_id
+     * Getter for <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
      */
-    public Long getClassScheduleId() {
+    public Long getClassCatelogId() {
         return (Long) get(2);
     }
 
@@ -216,11 +223,11 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
      */
-    @Override
-    public Field<Long> field3() {
-        return EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID;
+    public EpMemberChildTagRecord setClassCatelogId(Long value) {
+        set(2, value);
+        return this;
     }
 
     /**
@@ -291,8 +298,8 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      * {@inheritDoc}
      */
     @Override
-    public Long value3() {
-        return getClassScheduleId();
+    public Field<Long> field3() {
+        return EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_CATELOG_ID;
     }
 
     /**
@@ -365,9 +372,8 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      * {@inheritDoc}
      */
     @Override
-    public EpMemberChildTagRecord value3(Long value) {
-        setClassScheduleId(value);
-        return this;
+    public Long value3() {
+        return getClassCatelogId();
     }
 
     /**
@@ -453,19 +459,11 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Create a detached, initialised EpMemberChildTagRecord
+     * {@inheritDoc}
      */
-    public EpMemberChildTagRecord(Long id, Long childId, Long classScheduleId, Long tagId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMemberChildTag.EP_MEMBER_CHILD_TAG);
-
-        set(0, id);
-        set(1, childId);
-        set(2, classScheduleId);
-        set(3, tagId);
-        set(4, createAt);
-        set(5, updateAt);
-        set(6, remark);
-        set(7, delFlag);
-        set(8, version);
+    @Override
+    public EpMemberChildTagRecord value3(Long value) {
+        setClassCatelogId(value);
+        return this;
     }
 }

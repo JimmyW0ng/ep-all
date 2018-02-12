@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = -860900879;
+    private static final long serialVersionUID = 896450054;
 
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
@@ -78,7 +78,7 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
     /**
      * The column <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
      */
-    public final TableField<EpOrganClassRecord, BigDecimal> DISCOUNT_AMOUNT = createField("discount_amount", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "折扣优惠");
+    public final TableField<EpOrganClassRecord, BigDecimal> DISCOUNT_AMOUNT = createField("discount_amount", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).defaultValue(org.jooq.impl.DSL.inline("0.00", org.jooq.impl.SQLDataType.DECIMAL)), this, "折扣优惠");
 
     /**
      * The column <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数

@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCatelogRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassCatelog extends TableImpl<EpOrganClassCatelogRecord> {
 
-    private static final long serialVersionUID = -1502677985;
+    private static final long serialVersionUID = -1500290911;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_catelog</code>
@@ -85,6 +78,11 @@ public class EpOrganClassCatelog extends TableImpl<EpOrganClassCatelogRecord> {
      * The column <code>ep.ep_organ_class_catelog.end_time</code>. 结束时间
      */
     public final TableField<EpOrganClassCatelogRecord, Timestamp> END_TIME = createField("end_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "结束时间");
+
+    /**
+     * The column <code>ep.ep_organ_class_catelog.child_evaluated_num</code>. 已经评价过的孩子数量
+     */
+    public final TableField<EpOrganClassCatelogRecord, Integer> CHILD_EVALUATED_NUM = createField("child_evaluated_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "已经评价过的孩子数量");
 
     /**
      * The column <code>ep.ep_organ_class_catelog.remark</code>. 备注信息

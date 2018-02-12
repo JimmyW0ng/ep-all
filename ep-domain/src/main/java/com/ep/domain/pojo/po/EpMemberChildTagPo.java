@@ -22,7 +22,7 @@ public class EpMemberChildTagPo extends AbstractBasePojo {
 
     private Long id;
     private Long childId;
-    private Long classScheduleId;
+    private Long classCatelogId;
     private Long tagId;
     private Timestamp createAt;
     private Timestamp updateAt;

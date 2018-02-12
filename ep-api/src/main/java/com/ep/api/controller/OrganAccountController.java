@@ -40,7 +40,7 @@ public class OrganAccountController extends ApiController {
     @PostMapping("/today/class")
     public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount() {
         EpMemberPo memberPo = super.getCurrentUser().get();
-        return organAccountService.findClassByOrganAccount(memberPo.getId());
+        return organAccountService.findClassByOrganAccount(memberPo.getMobile());
     }
 
 }

@@ -12,7 +12,12 @@ public class OrganAccountClassBo extends EpOrganClassPo {
 
     private String ognName;
     private String courseName;
-    private Integer scheduleCommentNum;
+    private Integer childEvaluatedNum;
     private String mainPicUrl;
+    private Long classCatelogId;
+
+    public Boolean getViewCommentFlag() {
+        return this.childEvaluatedNum >= super.getEnteredNum();
+    }
 
 }
