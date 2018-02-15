@@ -7,7 +7,6 @@
 </head>
 <header>
     <th:block layout:fragment="links">
-        <!--<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">-->
         <link th:href="@{/css/plugins/steps/jquery.steps.css}" rel="stylesheet">
     </th:block>
 </header>
@@ -20,18 +19,18 @@
         </div>
         <div class="ibox-content">
 
-            <form id="frm">
+            <form id="frm" >
                 <div>
                     <h3>创建课程</h3>
-                    <section style="position: static">
+                    <section style="position: static" th:object="${organCoursePo}">
                         <div class="form-group">
                             <label for="courseName">课程名称 *</label>
-                            <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px"
+                            <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px" th:field="*{courseName}"
                                    class=" form-control ">
                         </div>
                         <div class="form-group">
                             <label for="courseType">课程类型 *</label>
-                            <select id="courseType" name="organCoursePo.courseType" type="text" style="width: 300px"
+                            <select id="courseType" name="organCoursePo.courseType" type="text" style="width: 300px" th:field="*{courseType}"
                                     class=" form-control ">
                                 <option value="">请选择</option>
                                 <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
@@ -42,8 +41,8 @@
                         </div>
                         <div class="form-group">
                             <label for="courseCatalogId">课程所属目录 *</label>
-                            <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text" style="width: 300px"
-                                    class="form-control" onchange="changeGetTags(this)">
+                            <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text" style="width: 300px" th:field="*{courseCatalogId}"
+                                    class="form-control" >
                                 <option value="">请选择</option>
                                 <option th:each="state : ${constantCatalogMap.keySet()}"
                                         th:value="${state}"

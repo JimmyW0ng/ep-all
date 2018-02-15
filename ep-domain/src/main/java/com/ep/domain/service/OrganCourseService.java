@@ -12,6 +12,8 @@ import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,21 @@ public class OrganCourseService {
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private OrganClassCommentRepository organClassCommentRepository;
+    @Autowired
+    private OrganClassCatelogRepository organClassCatelogRepository;
+    @Autowired
+    private ConstantTagPepository constantTagPepository;
+    @Autowired
+    private OrganCourseTagRepository organCourseTagRepository;
+
+    /**
+     * 根据id获取机构课程
+     * @param id
+     * @return
+     */
+    public EpOrganCoursePo getById(Long id){
+        return organCourseRepository.getById(id);
+    }
 
     /**
      * 前提－课程明细
@@ -115,6 +132,7 @@ public class OrganCourseService {
 
     /**
      * 后台机构课程分页列表
+     *
      * @param pageable
      * @param condition
      * @return
@@ -127,20 +145,40 @@ public class OrganCourseService {
      * 商户后台创建课程
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<EpOrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos){
+    public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<EpOrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
+        //机构课程表插入数据
+        organCoursePo.setCourseStatus(EpOrganCourseCourseStatus.save);
         EpOrganCoursePo insertOrganCoursePo = organCourseRepository.insertNew(organCoursePo);
         Long insertOrganCourseId = insertOrganCoursePo.getId();
-        organClassBos.forEach(organClassBo->{
+        organClassBos.forEach(organClassBo -> {
             EpOrganClassPo organClassPo = new EpOrganClassPo();
-            BeanTools.copyPropertiesIgnoreNull(organClassBo,organClassPo);
+            BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
+            organClassPo.setOgnId(organCoursePo.getOgnId());
             organClassPo.setCourseId(insertOrganCourseId);
+            //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
             List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
-            organClassCatelogPos.forEach(organClassCatelogPo->{
-                organClassCatelogPo.setClassId(insertOrganClassId);
-            });
+            for(int i=0;i<organClassCatelogPos.size();i++){
+                organClassCatelogPos.get(i).setClassId(insertOrganClassId);
+                organClassCatelogPos.get(i).setCatelogIndex(i+1);
+            }
+            //班次课程内容目录表插入数据
+            organClassCatelogRepository.insert(organClassCatelogPos);
         });
 
+        List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
+        constantTagPos.forEach(constantTagPo -> {
+            if (constantTagPo.getId() == null) {
+                constantTagPo.setOgnFlag(true);
+                constantTagPo.setCatalogId(insertOrganCoursePo.getCourseCatalogId());
+                EpConstantTagPo insertPo = constantTagPepository.insertNew(constantTagPo);
+                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,insertPo.getId(),insertOrganCourseId,null,null,null,null,null,null));
+            }else{
+                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,constantTagPo.getId(),insertOrganCourseId,null,null,null,null,null,null));
+            }
+        });
+        //课程标签表插入数据
+        organCourseTagRepository.insert(insertOrganCourseTagPos);
     }
 }

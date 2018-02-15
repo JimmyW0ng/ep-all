@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Description: 机构课程班次Service
  * @Author: CC.F
@@ -16,6 +18,10 @@ import org.springframework.stereotype.Service;
 public class OrganClassService {
     @Autowired
     private OrganClassRepository organClassRepository;
+
+    public List<EpOrganClassPo> findByCourseId(Long courseId){
+        return organClassRepository.getByCourseId(courseId);
+    }
 
     public EpOrganClassPo insertOrganClassPo(EpOrganClassPo organClassPo){
         return organClassRepository.insertNew(organClassPo);
