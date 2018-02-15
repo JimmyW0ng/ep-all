@@ -1,9 +1,11 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.EpOrganClassBo;
+import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
+import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
@@ -46,6 +48,10 @@ public class OrganCourseController extends BackendController {
     private OrganAccountService organAccountService;
     @Autowired
     private ConstantTagService constantTagService;
+    @Autowired
+    private OrganCourseTagService organCourseTagService;
+    @Autowired
+    private OrganClassCatelogService organClassCatelogService;
 
     @GetMapping("index")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -157,7 +163,7 @@ public class OrganCourseController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         Long ognId = currentUser.getOgnId();
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
-        List<EpOrganClassBo> organClassBos = dto.getOrganClassBos();
+        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         organCoursePo.setOgnId(ognId);
         organCourseService.createOrganCourseByMerchant(organCoursePo, organClassBos, constantTagPos);
@@ -170,18 +176,37 @@ public class OrganCourseController extends BackendController {
      *
      * @return
      */
-    @GetMapping("/merchantview/{id}")
-    public String merchantview(Model model,@PathVariable(value = "id") Long id) {
-        EpOrganCoursePo organCoursePo = organCourseService.getById(id);
-        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(id);
+    @GetMapping("/merchantview/{courseId}")
+    public String merchantview(Model model,@PathVariable(value = "courseId") Long courseId) {
+        //机构课程
+        EpOrganCoursePo organCoursePo = organCourseService.getById(courseId);
         model.addAttribute("organCoursePo",organCoursePo);
 
+        //课程类目
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
         constantCatalogList.forEach(p -> {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
         model.addAttribute("constantCatalogMap", constantCatalogMap);
+
+        //标签
+        List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
+        model.addAttribute("organCourseTagBos", organCourseTagBos);
+
+        //班次
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
+        List<OrganClassBo> organClassBos = Lists.newArrayList();
+        organClassPos.forEach(po->{
+            OrganClassBo organClassBo = new OrganClassBo();
+            BeanTools.copyPropertiesIgnoreNull(po,organClassBo);
+            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassCatelogService.findByClassId(po.getId());
+            organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
+            organClassBos.add(organClassBo);
+        });
+        model.addAttribute("organClassBos", organClassBos);
+
+
         return "organCourse/merchantView";
     }
 }

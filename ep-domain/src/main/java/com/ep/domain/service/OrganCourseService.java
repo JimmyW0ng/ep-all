@@ -5,7 +5,7 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.EpOrganClassBo;
+import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
@@ -145,7 +145,7 @@ public class OrganCourseService {
      * 商户后台创建课程
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<EpOrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
+    public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<OrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
         //机构课程表插入数据
         organCoursePo.setCourseStatus(EpOrganCourseCourseStatus.save);
         EpOrganCoursePo insertOrganCoursePo = organCourseRepository.insertNew(organCoursePo);

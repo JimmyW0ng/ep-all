@@ -21,7 +21,7 @@
 
             <form id="frm" >
                 <div>
-                    <h3>创建课程</h3>
+                    <h3>课程</h3>
                     <section style="position: static" th:object="${organCoursePo}">
                         <div class="form-group">
                             <label for="courseName">课程名称 *</label>
@@ -52,76 +52,114 @@
                         </div>
                         <div class="form-group">
                             <label for="courseIntroduce">课程简介 *</label>
-                            <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text" style="width: 300px"
+                            <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text" style="width: 300px" th:field="*{courseIntroduce}"
                                       class="form-control "></textarea>
                         </div>
                         <div class="form-group">
                             <label for="courseContent">课程内容 *</label>
-                            <textarea id="courseContent" name="organCoursePo.courseContent" type="text" style="width: 300px"
+                            <textarea id="courseContent" name="organCoursePo.courseContent" type="text" style="width: 300px" th:field="*{courseContent}"
                                       class="form-control "></textarea>
                         </div>
                         <div class="form-group">
                             <label for="courseNote">课程须知 *</label>
-                            <textarea id="courseNote" name="organCoursePo.courseNote" type="text" style="width: 300px"
+                            <textarea id="courseNote" name="organCoursePo.courseNote" type="text" style="width: 300px" th:field="*{courseNote}"
                                       class="form-control "></textarea>
                         </div>
                         <div class="form-group">
                             <label for="prizeMin">最低价格 *</label>
-                            <input id="prizeMin" name="organCoursePo.prizeMin" type="text" style="width: 300px" class="form-control ">
+                            <input id="prizeMin" name="organCoursePo.prizeMin" type="text" style="width: 300px" class="form-control" th:field="*{prizeMin}">
                         </div>
                         <div class="form-group">
                             <label for="courseAddress">上课地址 *</label>
                             <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text" style="width: 300px"
-                                      class="form-control ">
+                                      class="form-control" th:field="*{courseAddress}">
                             </textarea>
                         </div>
                         <div class="form-group">
                             <label for="onlineTime">上线时间 *</label>
-                            <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px"
+                            <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px" th:field="*{onlineTime}"
                                    class="form-control datetimepicker">
                         </div>
                         <div class="form-group">
                             <label for="enterTimeStart">报名开始时间 *</label>
-                            <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text" style="width: 300px"
+                            <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text" style="width: 300px" th:field="*{enterTimeStart}"
                                    class="form-control datetimepicker">
                         </div>
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 *</label>
-                            <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" style="width: 300px"
+                            <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" style="width: 300px" th:field="*{enterTimeEnd}"
                                    class="form-control datetimepicker">
                         </div>
                     </section>
-                    <h3>创建班次</h3>
+                    <h3>班次</h3>
                     <section style="position: static">
-                        <a class="btn btn-success" type="button" onclick="createClassBox()"><i
-                                class="glyphicon glyphicon-plus"></i> 添加班次</a>
+                        <!--<a class="btn btn-success" type="button" onclick="createClassBox()"><i-->
+                                <!--class="glyphicon glyphicon-plus"></i> 添加班次</a>-->
                         <div class="panel-group" id="accordion">
+                            <div name="organClassBosBox"  class="panel panel-default" th:each="po:${organClassBos}">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
+                                        <a name="boxTitle" data-toggle="collapse" data-parent="#accordion"
+                                           th:href="'#collapse'+${po.id}" th:text="${po.className}"></a>
 
+                                    </h5>
+                                </div>
+                                <div th:id="'collapse'+${po.id}" class="panel-collapse collapse">
+                                    <div class="panel-body " >
+                                        <div name="organClassBos" class="form-group col-sm-4" >
+
+                                            <label>班次名称 *</label>
+                                            <input name="className" type="text"  class=" form-control " th:value="${po.className}"
+                                                   onblur="setClassBoxTitle(this)">
+                                            <label>课程负责人 *</label>
+                                            <select name="ognAccountId" type="text"  class=" form-control ">
+
+                                            </select>
+                                            <label>价格 *</label>
+                                            <input name="classPrize" type="text"  class=" form-control " th:value="${po.classPrize}">
+                                            <label>折扣优惠 *</label>
+                                            <input name="discountAmount" type="text"  class=" form-control " th:value="${po.discountAmount}">
+                                            <label>是否限制报名人数 *</label>
+                                            <input name="enterLimitFlag" type="text"  class=" form-control " th:value="${po.enterLimitFlag}">
+                                            <label>要求报名人数 *</label>
+                                            <input name="enterRequireNum" type="text" class=" form-control " th:value="${po.enterRequireNum}">
+                                            <label>总计课时 *</label>
+                                            <input name="courseNum" type="Number" class=" form-control " th:value="${po.courseNum}">
+                                        </div>
+                                        <div name="organClassCatelogPosBox" class="form-group col-sm-8 well" >
+                                            <div name="organClassCatelogPos" th:each="organClassCatelogPo:${po.organClassCatelogPos}">
+                                                <div name="" class="form-group col-sm-6">
+                                                    <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">课时</label>
+                                                    <div class=" col-sm-8">
+                                                        <input name="catelogTitle" class="form-control" th:value="${organClassCatelogPo.catelogTitle}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">开始时间</label>
+                                                    <div class=" col-sm-8">
+                                                        <input name="startTime" class="form-control datetimepicker" th:value="${organClassCatelogPo.startTime}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
-                    <h3>创建标签</h3>
+                    <h3>标签</h3>
                     <section style="position: static">
                         <div id="constantTagBox" class="col-sm-12">
-
-                        </div>
-                        <div class="col-sm-12"><label>标签名</label></div>
-
-                        <div class="col-sm-3">
-                            <input id="createTag" name="" type="text" class=" form-control ">
-                        </div>
-                        <div class="col-sm-3">
-                            <button class="btn btn-primary " type="button" onclick="createTagBox()">创 建</button>
+                            <div class="col-sm-2" th:each="bo:${organCourseTagBos}">
+                                <!--<input name="tagName" value=${tagName} type="hidden"/>-->
+                                <!--<input type="checkbox" name="id" value="${id}">-->
+                                <span class="label" th:text="${bo.tagName}"></span>
+                            </div>
                         </div>
 
-                        <div id="createTagBox"  class="col-sm-12" style="margin-top: 20px">
-
-                        </div>
                     </section>
-                    <h3>Finish</h3>
-                    <section style="position: static">
-                        <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label
-                            for="acceptTerms">I agree with the Terms and Conditions.</label>
-                    </section>
+
                 </div>
             </form>
 
@@ -163,44 +201,44 @@
                                                                       aria-hidden="true"></span></a>
     </div>
 </script>
-<script type="text/template" id='classTmpl'>
-    <div name="organClassBosBox"  class="panel panel-default">
-        <div class="panel-heading">
-            <h5 class="panel-title">
-                <a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>标题</a>
-                <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                        aria-hidden="true"
-                                                                        onclick="removeClassBox(this)"></span></a>
-            </h5>
-        </div>
-        <div id=${collapse} class="panel-collapse collapse in">
-            <div class="panel-body " >
-                <div name="organClassBos" class="form-group col-sm-4" >
-                    <label>班次名称 *</label>
-                    <input name="className" type="text"  class=" form-control "
-                           onblur="setClassBoxTitle(this)">
-                    <label>课程负责人 *</label>
-                    <select name="ognAccountId" type="text"  class=" form-control ">
+<!--<script type="text/template" id='classTmpl'>-->
+    <!--<div name="organClassBosBox"  class="panel panel-default">-->
+        <!--<div class="panel-heading">-->
+            <!--<h5 class="panel-title">-->
+                <!--<a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>标题</a>-->
+                <!--<a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"-->
+                                                                        <!--aria-hidden="true"-->
+                                                                        <!--onclick="removeClassBox(this)"></span></a>-->
+            <!--</h5>-->
+        <!--</div>-->
+        <!--<div id=${collapse} class="panel-collapse collapse in">-->
+            <!--<div class="panel-body " >-->
+                <!--<div name="organClassBos" class="form-group col-sm-4" >-->
+                    <!--<label>班次名称 *</label>-->
+                    <!--<input name="className" type="text"  class=" form-control "-->
+                           <!--onblur="setClassBoxTitle(this)">-->
+                    <!--<label>课程负责人 *</label>-->
+                    <!--<select name="ognAccountId" type="text"  class=" form-control ">-->
 
-                    </select>
-                    <label>价格 *</label>
-                    <input name="classPrize" type="text"  class=" form-control ">
-                    <label>折扣优惠 *</label>
-                    <input name="discountAmount" type="text"  class=" form-control ">
-                    <label>是否限制报名人数 *</label>
-                    <input name="enterLimitFlag" type="text"  class=" form-control ">
-                    <label>要求报名人数 *</label>
-                    <input name="enterRequireNum" type="text" class=" form-control ">
-                    <label>总计课时 *</label>
-                    <input name="courseNum" type="Number" class=" form-control " onblur="addClassCatalogBox(this)">
-                </div>
-                <div name="organClassCatelogPosBox" class="form-group col-sm-8 well">
+                    <!--</select>-->
+                    <!--<label>价格 *</label>-->
+                    <!--<input name="classPrize" type="text"  class=" form-control ">-->
+                    <!--<label>折扣优惠 *</label>-->
+                    <!--<input name="discountAmount" type="text"  class=" form-control ">-->
+                    <!--<label>是否限制报名人数 *</label>-->
+                    <!--<input name="enterLimitFlag" type="text"  class=" form-control ">-->
+                    <!--<label>要求报名人数 *</label>-->
+                    <!--<input name="enterRequireNum" type="text" class=" form-control ">-->
+                    <!--<label>总计课时 *</label>-->
+                    <!--<input name="courseNum" type="Number" class=" form-control " onblur="addClassCatalogBox(this)">-->
+                <!--</div>-->
+                <!--<div name="organClassCatelogPosBox" class="form-group col-sm-8 well">-->
 
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</script>-->
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
@@ -211,6 +249,8 @@
 <script th:inline="javascript">
     //教师map
     var organAccountMap = [[${organAccountMap}]]
+    //班次目录
+    var organClassCatelogPos = [[${organClassCatelogPos}]]
     //表单是否提交过
     var isFrmSubmit=false
 
@@ -319,86 +359,92 @@
                 form.validate().settings.ignore = ":disabled,:hidden";
                 return form.valid();
             },
-            onFinishing: function (event, currentIndex) {
-                form.validate().settings.ignore = ":disabled";
-                return form.valid();
-            },
+//            onFinishing: function (event, currentIndex) {
+//                form.validate().settings.ignore = ":disabled";
+//                return form.valid();
+//            },
             onCanceled: function () {
                 window.location.href = "/auth/organCourse/merchantIndex"
 
             },
-            onFinished: function (event, currentIndex) {
-                if(!isFrmSubmit){
-                    var $organClassBos=$("#accordion").find("div[name='organClassBos']")
-                    for(var i=0;i<$organClassBos.length;i++){
-                        $organClassBos.eq(i).attr("name","organClassBos["+i+"]")
-                        $organClassBos.eq(i).find("input").each(function () {
-                            var oldName=$(this).attr("name")
-                            $(this).attr("name",$organClassBos.eq(i).attr("name")+"."+oldName)
-                        })
-                        $organClassBos.eq(i).find("select").each(function () {
-                            var oldName=$(this).attr("name")
-                            $(this).attr("name",$organClassBos.eq(i).attr("name")+"."+oldName)
-                        })
-                    }
-
-                    var $organClassCatelogPosBox=$("#accordion").find("div[name='organClassCatelogPosBox']")
-                    console.log($organClassCatelogPosBox.length)
-                    for(var j=0;j<$organClassCatelogPosBox.length;j++){
-                        console.log($organClassCatelogPosBox.eq(j))
-                        var $organClassCatelogPos=$organClassCatelogPosBox.eq(j).find("div[name='organClassCatelogPos']")
-                        console.log($organClassCatelogPos)
-                        for(var i=0;i<$organClassCatelogPos.length;i++){
-                            var parentName=$organClassCatelogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
-                            $organClassCatelogPos.eq(i).attr("name",parentName+".organClassCatelogPos["+i+"]")
-                            $organClassCatelogPos.eq(i).find("input").each(function () {
-                                var oldName=$(this).attr("name")
-                                $(this).attr("name",$organClassCatelogPos.eq(i).attr("name")+"."+oldName)
-                            })
-                        }
-                    }
-
-                    var $constantTags=$("#constantTagBox").find("div")
-                    var $ognTags=$("#createTagBox").find("div")
-                    var tagCount=0
-                    for(var i=0;i<$constantTags.length;i++){
-                        if($constantTags.eq(i).find("input[type='checkbox']").length>0
-                            &&!$constantTags.eq(i).find("input[type='checkbox']").eq(0).is(':checked')){
-                            $constantTags.eq(i).find("input").each(function () {
-                                $(this).attr("name","")
-                            })
-                        }else{
-                            $constantTags.eq(i).find("input").each(function () {
-                                var oldName= $(this).attr("name");
-                                $(this).attr("name","constantTagPos["+i+"]."+oldName)
-                                alert($(this).attr("name"))
-                            })
-                            tagCount++;
-                        }
-                    }
-                    for(var i=0;i<$ognTags.length;i++){
-                        $ognTags.eq(i).find("input").each(function () {
-                            var oldName= $(this).attr("name");
-                            $(this).attr("name","constantTagPos["+(i+tagCount)+"]."+oldName)
-                        })
-                    }
-
-                    isFrmSubmit=true
-                }
-
-
-                $.ajax({
-                    type: "POST",
-                    data: $("#frm").serialize(),
-                    url: "/auth/organCourse/merchantCreate",
-                    success: function (data) {
-                        if (data.success) {
-                            alert("success!");
-                        }
-                    }
-                })
-            }
+//            onFinished: function (event, currentIndex) {
+//                if(!isFrmSubmit){
+//                    var $organClassBos=$("#accordion").find("div[name='organClassBos']")
+//                    for(var i=0;i<$organClassBos.length;i++){
+//                        $organClassBos.eq(i).attr("name","organClassBos["+i+"]")
+//                        $organClassBos.eq(i).find("input").each(function () {
+//                            var oldName=$(this).attr("name")
+//                            $(this).attr("name",$organClassBos.eq(i).attr("name")+"."+oldName)
+//                        })
+//                        $organClassBos.eq(i).find("select").each(function () {
+//                            var oldName=$(this).attr("name")
+//                            $(this).attr("name",$organClassBos.eq(i).attr("name")+"."+oldName)
+//                        })
+//                    }
+//
+//                    var $organClassCatelogPosBox=$("#accordion").find("div[name='organClassCatelogPosBox']")
+//                    console.log($organClassCatelogPosBox.length)
+//                    for(var j=0;j<$organClassCatelogPosBox.length;j++){
+//                        console.log($organClassCatelogPosBox.eq(j))
+//                        var $organClassCatelogPos=$organClassCatelogPosBox.eq(j).find("div[name='organClassCatelogPos']")
+//                        console.log($organClassCatelogPos)
+//                        for(var i=0;i<$organClassCatelogPos.length;i++){
+//                            var parentName=$organClassCatelogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
+//                            $organClassCatelogPos.eq(i).attr("name",parentName+".organClassCatelogPos["+i+"]")
+//                            $organClassCatelogPos.eq(i).find("input").each(function () {
+//                                var oldName=$(this).attr("name")
+//                                $(this).attr("name",$organClassCatelogPos.eq(i).attr("name")+"."+oldName)
+//                            })
+//                        }
+//                    }
+//
+//                    var $constantTags=$("#constantTagBox").find("div")
+//                    var $ognTags=$("#createTagBox").find("div")
+//                    var tagCount=0
+//                    for(var i=0;i<$constantTags.length;i++){
+//                        if($constantTags.eq(i).find("input[type='checkbox']").length>0
+//                            &&!$constantTags.eq(i).find("input[type='checkbox']").eq(0).is(':checked')){
+//                            $constantTags.eq(i).find("input").each(function () {
+//                                $(this).attr("name","")
+//                            })
+//                        }else{
+//                            $constantTags.eq(i).find("input").each(function () {
+//                                var oldName= $(this).attr("name");
+//                                $(this).attr("name","constantTagPos["+i+"]."+oldName)
+//                                alert($(this).attr("name"))
+//                            })
+//                            tagCount++;
+//                        }
+//                    }
+//                    for(var i=0;i<$ognTags.length;i++){
+//                        $ognTags.eq(i).find("input").each(function () {
+//                            var oldName= $(this).attr("name");
+//                            $(this).attr("name","constantTagPos["+(i+tagCount)+"]."+oldName)
+//                        })
+//                    }
+//
+//                    isFrmSubmit=true
+//                }
+//
+//
+//                $.ajax({
+//                    type: "POST",
+//                    data: $("#frm").serialize(),
+//                    url: "/auth/organCourse/merchantCreate",
+//                    success: function (data) {
+//                        if (data.success) {
+//                            alert("success!");
+//                        }
+//                    }
+//                })
+//            }
         });
+
+        $("ul[role='menu'] li").eq(2).remove()//去除完成按钮
+
+
+        $("div[name='organClassCatelogPos']")
+
         // 日历组件,最小单位为秒
         $('.datetimepicker').datetimepicker({
             locale: 'zh-CN',
