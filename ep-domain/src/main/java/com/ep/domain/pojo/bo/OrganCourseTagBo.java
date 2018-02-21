@@ -16,4 +16,5 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 public class OrganCourseTagBo extends EpOrganCourseTagPo {
     private String tagName;
+    private Boolean ognFlag;
 }

@@ -35,6 +35,7 @@ public class OrganCourseTagRepository extends AbstractCRUDRepository<EpOrganCour
     public List<OrganCourseTagBo> findBosByCourseId(Long courseId){
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE_TAG.fields());
         fieldList.add(EP_CONSTANT_TAG.TAG_NAME.as("TAG_NAME"));
+        fieldList.add(EP_CONSTANT_TAG.OGN_FLAG.as("OGN_FLAG"));
         return dslContext.select(fieldList).from(EP_ORGAN_COURSE_TAG)
                 .leftJoin(EP_CONSTANT_TAG)
                 .on(EP_ORGAN_COURSE_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))

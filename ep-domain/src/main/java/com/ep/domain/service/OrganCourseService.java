@@ -171,6 +171,7 @@ public class OrganCourseService {
         constantTagPos.forEach(constantTagPo -> {
             if (constantTagPo.getId() == null) {
                 constantTagPo.setOgnFlag(true);
+                constantTagPo.setOgnId(organCoursePo.getOgnId());
                 constantTagPo.setCatalogId(insertOrganCoursePo.getCourseCatalogId());
                 EpConstantTagPo insertPo = constantTagPepository.insertNew(constantTagPo);
                 insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,insertPo.getId(),insertOrganCourseId,null,null,null,null,null,null));

@@ -251,98 +251,7 @@
     var organAccountMap = [[${organAccountMap}]]
     //班次目录
     var organClassCatelogPos = [[${organClassCatelogPos}]]
-    //表单是否提交过
-    var isFrmSubmit=false
 
-    /**
-     * 点击班次目录
-     * @param ele
-     */
-    function addClassCatalogBox(ele) {
-        var len=$(ele).val()
-        if(len&&parseInt(len)>0){
-            var $box=$(ele).parent().siblings("div[name='organClassCatelogPosBox']").eq(0)
-            $box.html("")
-            var catalog=[]
-            for(var i=0;i<len;i++){
-                catalog.push({len:i+1})
-
-            }
-            $box.append($("#classCatalogTmpl").tmpl(catalog))
-            // 日历组件,最小单位为秒
-            $('.datetimepicker').datetimepicker({
-                locale: 'zh-CN',
-                format: 'YYYY-MM-DD HH:mm:ss'
-            });
-        }
-    }
-
-    /**
-     * 通过课程类目获得公用标签
-     * @param ele
-     */
-    function changeGetTags(ele) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/organCourse/findTagsByCatalog/" + $(ele).val(),
-            success: function (data) {
-                if (data.success) {
-                    var res = data.result
-                    var constantTag = []
-                    for (key in res) {
-                        constantTag.push({id: key, tagName: res[key]})
-                    }
-                    console.log(constantTag)
-                    $("#constantTagBox").html($("#constantTagTmpl").tmpl(constantTag));
-                }
-            }
-        })
-    }
-    /**
-     * 删除标签
-     * @param ele
-     */
-    function removeTag(ele) {
-        $(ele).parent().parent().remove();
-    }
-    function createTagBox() {
-        var label = $('#createTag').val()
-        if (label == "" || label == undefined) {
-            return
-        }
-        var tag = [{label: label}]
-        $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
-    }
-    /**
-     * 增加班次
-     */
-    function createClassBox() {
-//        console.log($("#accordion").find("div[name='organClassBos']").length)
-        var len = $("#accordion").find("div[name='organClassBosBox']").length
-
-        var classes = [{href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1)}]
-        $("#accordion").append($("#classTmpl").tmpl(classes));
-//        console.log($("#accordion").find("div[name='organClassBos']:last-child").find("select[name='ognAccountId']"))
-        var htmls = '<option value="">请选择</option>';
-        for (key in organAccountMap) {
-            htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
-        }
-        $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
-    }
-    /**
-     * 删除班次
-     * @param ele
-     */
-    function removeClassBox(ele) {
-        $(ele).parents("div[name='organClassBosBox']").remove();
-    }
-    /**
-     * 设置班次名称
-     * @param ele
-     */
-    function setClassBoxTitle(ele) {
-        $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
-    }
     $(document).ready(function () {
         var form = $("#frm");
         form.validate({
@@ -442,14 +351,9 @@
 
         $("ul[role='menu'] li").eq(2).remove()//去除完成按钮
 
+        $("#frm").find("input,select,textarea").attr("disabled",true)
 
-        $("div[name='organClassCatelogPos']")
 
-        // 日历组件,最小单位为秒
-        $('.datetimepicker').datetimepicker({
-            locale: 'zh-CN',
-            format: 'YYYY-MM-DD HH:mm:ss'
-        });
 
     });
 

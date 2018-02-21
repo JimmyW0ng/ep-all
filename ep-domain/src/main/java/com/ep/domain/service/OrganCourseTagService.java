@@ -17,6 +17,11 @@ public class OrganCourseTagService {
     @Autowired
     private OrganCourseTagRepository organCourseTagRepository;
 
+    /**
+     * 根据课程id获取课程标签
+     * @param id
+     * @return
+     */
     public List<OrganCourseTagBo> findBosByCourseId(Long id){
         return organCourseTagRepository.findBosByCourseId(id);
     }

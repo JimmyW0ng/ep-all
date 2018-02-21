@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
@@ -125,8 +126,12 @@ public class OrganCourseController extends BackendController {
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
         });
+        //课程目录下拉框
         model.addAttribute("constantCatalogMap", constantCatalogMap);
+        //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
+        //课程对象
+        model.addAttribute("organCoursePo", new EpOrganCoursePo());
         return "organCourse/merchantForm";
     }
 
@@ -136,18 +141,31 @@ public class OrganCourseController extends BackendController {
      * @param catalogId
      * @return
      */
-    @GetMapping("findTagsByCatalog/{catalogId}")
+    @GetMapping("findTagsByCatalogAndCourseId/{catalogId}&{courseId}")
     @ResponseBody
-    public ResultDo findTagsByConstantCatalog(@PathVariable("catalogId") Long catalogId, HttpServletRequest request) {
+    public ResultDo findTagsByConstantCatalog(
+            @PathVariable("catalogId") Long catalogId,
+            @PathVariable("courseId") Long courseId,
+            HttpServletRequest request) {
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         ResultDo resultDo = ResultDo.build();
 
-        List<EpConstantTagPo> list = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
-        Map<Long, String> tagMap = Maps.newHashMap();
-        list.forEach(p -> {
-            tagMap.put(p.getId(), p.getTagName());
+        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        Map<String, Object> map = Maps.newHashMap();
+        Map<Long, String> constantTagMap = Maps.newHashMap();
+        constantTagList.forEach(p -> {
+            constantTagMap.put(p.getId(), p.getTagName());
         });
-        resultDo.setResult(tagMap);
+        //公用标签
+        map.put("constantTagMap", constantTagMap);
+        //课程私有标签
+//        if (null != courseId) {
+//            List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
+//
+//            map.put("organCourseTagBos", organCourseTagBos);
+//        }
+
+        resultDo.setResult(map);
         return resultDo;
     }
 
@@ -177,10 +195,10 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantview/{courseId}")
-    public String merchantview(Model model,@PathVariable(value = "courseId") Long courseId) {
+    public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
         //机构课程
         EpOrganCoursePo organCoursePo = organCourseService.getById(courseId);
-        model.addAttribute("organCoursePo",organCoursePo);
+        model.addAttribute("organCoursePo", organCoursePo);
 
         //课程类目
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
@@ -197,16 +215,74 @@ public class OrganCourseController extends BackendController {
         //班次
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<OrganClassBo> organClassBos = Lists.newArrayList();
-        organClassPos.forEach(po->{
+        organClassPos.forEach(po -> {
             OrganClassBo organClassBo = new OrganClassBo();
-            BeanTools.copyPropertiesIgnoreNull(po,organClassBo);
+            BeanTools.copyPropertiesIgnoreNull(po, organClassBo);
+            //班次目录
             List<EpOrganClassCatelogPo> organClassCatelogPos = organClassCatelogService.findByClassId(po.getId());
             organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
             organClassBos.add(organClassBo);
         });
         model.addAttribute("organClassBos", organClassBos);
 
-
         return "organCourse/merchantView";
+    }
+
+
+    /**
+     * 商家后台修改课程初始化
+     *
+     * @return
+     */
+    @GetMapping("/merchantUpdateInit/{courseId}")
+    public String merchantUpdateInit(HttpServletRequest request, Model model, @PathVariable(value = "courseId") Long courseId) {
+
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
+        Map<Long, String> constantCatalogMap = Maps.newHashMap();
+        constantCatalogList.forEach(p -> {
+            constantCatalogMap.put(p.getId(), p.getLabel());
+        });
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        Map<Long, String> organAccountMap = Maps.newHashMap();
+        organAccountList.forEach(p -> {
+            organAccountMap.put(p.getId(), p.getAccountName());
+        });
+        //课程目录下拉框
+        model.addAttribute("constantCatalogMap", constantCatalogMap);
+        //教师下拉框
+        model.addAttribute("organAccountMap", organAccountMap);
+
+        EpOrganCoursePo organCoursePo = organCourseService.getById(courseId);
+        //课程对象
+        model.addAttribute("organCoursePo", organCoursePo);
+        Long catalogId = organCoursePo.getCourseCatalogId();
+
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
+        List<OrganClassBo> organClassBos = Lists.newArrayList();
+        organClassPos.forEach(p -> {
+            OrganClassBo organClassBo = new OrganClassBo();
+            BeanTools.copyPropertiesIgnoreNull(p, organClassBo);
+            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassCatelogService.findByClassId(p.getId());
+            if (CollectionsTools.isNotEmpty(organClassCatelogPos)) {
+                organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
+            }
+            organClassBos.add(organClassBo);
+
+        });
+        //班次
+        model.addAttribute("organClassBos", organClassBos);
+
+        //公用标签
+        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        Map<Long, String> constantTagMap = Maps.newHashMap();
+        constantTagList.forEach(p -> {
+            constantTagMap.put(p.getId(), p.getTagName());
+        });
+        model.addAttribute("constantTagMap", constantTagMap);
+        //课程标签
+        List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
+        model.addAttribute("organCourseTagBos", organCourseTagBos);
+        return "organCourse/merchantForm";
     }
 }
