@@ -190,43 +190,54 @@ public class OrganCourseService {
 //        organCourseRepository.updateById(organCoursePo);
         Long organCourseId = organCoursePo.getId();
         organClassBos.forEach(organClassBo -> {
-            EpOrganClassPo newOrganClassPo = new EpOrganClassPo();
-            BeanTools.copyPropertiesIgnoreNull(organClassBo, newOrganClassPo);
-            EpOrganClassPo oldOrganClassPo = organClassRepository.getById(newOrganClassPo.getId());
-            if(!this.isClassEq4MerchUpdateCourse(newOrganClassPo,oldOrganClassPo)){
-                organClassRepository.updateOrganClassPo(newOrganClassPo);
-            }
-            List<EpOrganClassCatelogPo> newOrganClassCatelogPos=organClassBo.getOrganClassCatelogPos();
-            List<EpOrganClassCatelogPo> oldOrganClassCatelogPos=organClassCatelogRepository.findByClassId(organClassBo.getId());
+            if(organClassBo.getId()!=null){
+                EpOrganClassPo newOrganClassPo = new EpOrganClassPo();
+                BeanTools.copyPropertiesIgnoreNull(organClassBo, newOrganClassPo);
+                EpOrganClassPo oldOrganClassPo = organClassRepository.getById(newOrganClassPo.getId());
+                if(!this.isClassEq4MerchUpdateCourse(newOrganClassPo,oldOrganClassPo)){
+                    organClassRepository.updateOrganClassPo(newOrganClassPo);
+                }
+                List<EpOrganClassCatelogPo> newOrganClassCatelogPos=organClassBo.getOrganClassCatelogPos();
+                List<EpOrganClassCatelogPo> oldOrganClassCatelogPos=organClassCatelogRepository.findByClassId(organClassBo.getId());
 
-            Set<Long> classCatelogNewSet= new HashSet<>();
-            Set<Long> classCatelogOldSet= new HashSet<>();
-            newOrganClassCatelogPos.forEach(p->{
-                classCatelogNewSet.add(p.getId());
-            });
-            oldOrganClassCatelogPos.forEach(p->{
-                classCatelogOldSet.add(p.getId());
-            });
-            Set<Long> classCatelogdiffAdd = Sets.difference(classCatelogNewSet, classCatelogOldSet);//差集，classCatelogNewSet有, classCatelogOldSet无
-            Set<Long> classCatelogdiffDel = Sets.difference(classCatelogOldSet, classCatelogNewSet);//差集，classCatelogOldSet有, classCatelogNewSet无
-            Set<Long> classCatelogInter= Sets.intersection(classCatelogNewSet, classCatelogOldSet);//交集
-            //批量删除 constantTagOldSet有, constantTagNewSet无
-            organClassCatelogRepository.deleteByIds(new ArrayList<>(classCatelogdiffDel));
-// organClassPo.setOgnId(organCoursePo.getOgnId());
-//            organClassPo.setCourseId(insertOrganCourseId);
-            //机构课程班次表更新数据
-//            EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
-//            Long insertOrganClassId = insertOrganClassPo.getId();
-//            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
-//            for(int i=0;i<organClassCatelogPos.size();i++){
-//                organClassCatelogPos.get(i).setClassId(insertOrganClassId);
-//                organClassCatelogPos.get(i).setCatelogIndex(i+1);
-//            }
-//            //班次课程内容目录表插入数据
-//            organClassCatelogRepository.insert(organClassCatelogPos);
+                Set<Long> classCatelogNewSet= new HashSet<>();
+                Set<Long> classCatelogOldSet= new HashSet<>();
+                newOrganClassCatelogPos.forEach(p->{
+                    if(null!=p.getId()){
+                        classCatelogNewSet.add(p.getId());
+                        EpOrganClassCatelogPo oldOrganClassCatelogPo=organClassCatelogRepository.findById(p.getId());
+                        if(!this.isClassCatelogEq4MerchUpdateCourse(p,oldOrganClassCatelogPo)){
+                            organClassCatelogRepository.updateEpOrganClassCatelogPo(p);
+                        }
+                    }else{
+                        p.setClassId(organClassBo.getId());
+                        organClassCatelogRepository.insert(p);
+                    }
+                });
+                oldOrganClassCatelogPos.forEach(p->{
+                    classCatelogOldSet.add(p.getId());
+                });
+                Set<Long> classCatelogdiffDel = Sets.difference(classCatelogOldSet, classCatelogNewSet);//差集，classCatelogOldSet有, classCatelogNewSet无
+//                Set<Long> classCatelogInter= Sets.intersection(classCatelogNewSet, classCatelogOldSet);//交集
+                //批量删除 constantTagOldSet有, constantTagNewSet无
+                organClassCatelogRepository.deleteByIds(new ArrayList<>(classCatelogdiffDel));
+            }else{
+                EpOrganClassPo newOrganClassPo = new EpOrganClassPo();
+                BeanTools.copyPropertiesIgnoreNull(organClassBo, newOrganClassPo);
+                newOrganClassPo.setOgnId(organCoursePo.getOgnId());
+                newOrganClassPo.setCourseId(organCourseId);
+                EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(newOrganClassPo);
+                Long insertOrganClassId = insertOrganClassPo.getId();
+                List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+                for(int i=0;i<organClassCatelogPos.size();i++){
+                    organClassCatelogPos.get(i).setClassId(insertOrganClassId);
+                    organClassCatelogPos.get(i).setCatelogIndex(i+1);
+                }
+                //班次课程内容目录表插入数据
+                organClassCatelogRepository.insert(organClassCatelogPos);
+            }
+
         });
-//
-//        List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
 
         //标签start
         List<EpOrganCourseTagPo> insertOrganCourseTagPos= Lists.newArrayList();
@@ -260,20 +271,6 @@ public class OrganCourseService {
         });
         organCourseTagRepository.insert(insertOrganCourseTagPos);
         //标签end
-
-        constantTagPos.forEach(constantTagPo -> {
-//            if (constantTagPo.getId() == null) {
-//                constantTagPo.setOgnFlag(true);
-//                constantTagPo.setOgnId(organCoursePo.getOgnId());
-//                constantTagPo.setCatalogId(insertOrganCoursePo.getCourseCatalogId());
-//                EpConstantTagPo insertPo = constantTagPepository.insertNew(constantTagPo);
-//                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,insertPo.getId(),insertOrganCourseId,null,null,null,null,null,null));
-//            }else{
-//                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,constantTagPo.getId(),insertOrganCourseId,null,null,null,null,null,null));
-//            }
-        });
-//        //课程标签表插入数据
-//        organCourseTagRepository.insert(insertOrganCourseTagPos);
     }
 
     /**
@@ -317,6 +314,9 @@ public class OrganCourseService {
      */
     private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatelogPo newPo, EpOrganClassCatelogPo oldPo){
         if (!newPo.getCatelogTitle().equals(oldPo.getCatelogTitle())) {
+            return false;
+        }
+        if (!newPo.getCatelogIndex().equals(oldPo.getCatelogIndex())) {
             return false;
         }
         if (!newPo.getCatelogDesc().equals(oldPo.getCatelogDesc())) {

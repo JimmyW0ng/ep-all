@@ -7,6 +7,7 @@ import com.ep.domain.repository.domain.tables.records.EpOrganClassCatelogRecord;
 import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,36 @@ public class OrganClassCatelogRepository extends AbstractCRUDRepository<EpOrganC
         super(dslContext, EP_ORGAN_CLASS_CATELOG, EP_ORGAN_CLASS_CATELOG.ID, EpOrganClassCatelogPo.class);
     }
 
+    /**
+     * 更新EpOrganClassCatelogPo
+     * @param po
+     */
+    public void updateEpOrganClassCatelogPo(EpOrganClassCatelogPo po){
+        dslContext.update(EP_ORGAN_CLASS_CATELOG)
+                .set(EP_ORGAN_CLASS_CATELOG.CATELOG_TITLE,po.getCatelogTitle())
+                .set(EP_ORGAN_CLASS_CATELOG.CATELOG_INDEX,po.getCatelogIndex())
+                .set(EP_ORGAN_CLASS_CATELOG.CATELOG_DESC,po.getCatelogDesc())
+                .set(EP_ORGAN_CLASS_CATELOG.START_TIME,po.getStartTime())
+                .set(EP_ORGAN_CLASS_CATELOG.UPDATE_AT, DSL.currentTimestamp())
+                .execute();
+    }
+
+    /**
+     * 根据id获取EpOrganClassCatelogPo
+     * @param id
+     * @return
+     */
+    public EpOrganClassCatelogPo findById(Long id){
+        return dslContext.selectFrom(EP_ORGAN_CLASS_CATELOG)
+                .where(EP_ORGAN_CLASS_CATELOG.ID.eq(id))
+                .fetchOneInto(EpOrganClassCatelogPo.class);
+    }
+
+    /**
+     * 根据课程id获取EpOrganClassCatelogPo
+     * @param courseId
+     * @return
+     */
     public List<EpOrganClassCatelogPo> findByCourseId(Long courseId){
         List<Long> classId=dslContext.select(EP_ORGAN_CLASS.ID)
                 .from(EP_ORGAN_CLASS)
@@ -39,6 +70,11 @@ public class OrganClassCatelogRepository extends AbstractCRUDRepository<EpOrganC
                 .fetchInto(EpOrganClassCatelogPo.class);
     }
 
+    /**
+     * 根据班次id获取EpOrganClassCatelogPo
+     * @param classId
+     * @return
+     */
     public List<EpOrganClassCatelogPo> findByClassId(Long classId){
         return dslContext.selectFrom(EP_ORGAN_CLASS_CATELOG)
                 .where(EP_ORGAN_CLASS_CATELOG.CLASS_ID.eq(classId))

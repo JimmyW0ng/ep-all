@@ -161,9 +161,7 @@
                 <textarea name="catelogDesc" class="form-control">${catelogDesc}</textarea>
             </div>
         </div>
-
     </div>
-
 </script>
 <script type="text/template" id='constantTagTmpl'>
     <div class="col-sm-2">
@@ -393,6 +391,9 @@
                             var parentName=$organClassCatelogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
                             $organClassCatelogPos.eq(i).attr("name",parentName+".organClassCatelogPos["+i+"]")
                             $organClassCatelogPos.eq(i).find("input").each(function () {
+                                if($(this).attr("name")=="catelogIndex"){
+                                    $(this).val(i+1)
+                                }
                                 var oldName=$(this).attr("name")
                                 $(this).attr("name",$organClassCatelogPos.eq(i).attr("name")+"."+oldName)
                             })
