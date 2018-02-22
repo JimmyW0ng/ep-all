@@ -137,8 +137,8 @@
 
 </div>
 <script type="text/template" id='classCatalogTmpl'>
-    <div name="organClassCatelogPos">
-        <div name="" class="form-group col-sm-6">
+    <div name="organClassCatelogPos" style="padding: 40px 0px;" >
+        <div name="" class="form-group col-sm-5">
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">课时</label>
             <div class=" col-sm-8">
                 <input name="id" type="hidden" value=${id}>
@@ -152,19 +152,32 @@
                 <input name="startTime" class="form-control datetimepicker" value="${startTime}"/>
             </div>
         </div>
+        <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+                                                                aria-hidden="true"
+                                                                onclick="removeClassCatelogBox(this)"></span></a>
+        <div class="form-group col-sm-11">
+            <label class="col-sm-2 control-label" style="text-align: right;padding: 8px">目录描述</label>
+            <div class="col-sm-10">
+                <textarea name="catelogDesc" class="form-control">${catelogDesc}</textarea>
+            </div>
+        </div>
+
     </div>
 
 </script>
 <script type="text/template" id='constantTagTmpl'>
     <div class="col-sm-2">
         <input name="tagName" value=${tagName} type="hidden"/>
-        <input type="checkbox" name="id" value="${id}"><span class="label">${tagName}</span>
+        <input type="checkbox" name="id" value="${id}">
+        <input name="ognFlag" value=false type="hidden"/>
+        <span class="label">${tagName}</span>
     </div>
 </script>
 <script type="text/template" id='ognTagTmpl'>
     <div class="col-sm-2">
-        <input name="id"  type="hidden"/>
+        <input name="id" value=${id} type="hidden" />
         <input name="tagName" value=${label} type="hidden"/>
+        <input name="ognFlag" value=true type="hidden"/>
         <span class="label">${label}</span>
         <a href="javascript:void(0);" onclick="removeTag(this)"><span class="glyphicon glyphicon-remove"
                                                                       aria-hidden="true"></span></a>
@@ -203,10 +216,11 @@
                     <label>要求报名人数 *</label>
                     <input name="enterRequireNum" type="text" class=" form-control " value="${enterRequireNum}">
                     <label>总计课时 *</label>
-                    <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" onblur="addClassCatalogBox(this)">
+                    <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
                 <div name="organClassCatelogPosBox" class="form-group col-sm-8 well">
-
+                    <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
+                            class="glyphicon glyphicon-plus"></i> 添加课时</a>
                 </div>
             </div>
         </div>
@@ -226,25 +240,34 @@
     var isFrmSubmit=false
 
     /**
-     * 新增班次目录
+     * 新增班次课时目录
      * @param ele
      */
     function addClassCatalogBox(ele) {
-        var len=$(ele).val()
-        if(len&&parseInt(len)>0){
-            var $box=$(ele).parent().siblings("div[name='organClassCatelogPosBox']").eq(0)
-            $box.html("")
-            var catalog=[]
-            for(var i=0;i<len;i++){
-                catalog.push({catelogTitle:"课时"+(i+1),len:i+1})
+        var len=$(ele).parent().find("div[name='organClassCatelogPos']").length
+        var $box=$(ele).parent()
+        var catalog=[{catelogTitle:"课时"+(len+1),len:len+1}]
 
-            }
-            $box.append($("#classCatalogTmpl").tmpl(catalog))
-            // 日历组件,最小单位为秒
-            $('.datetimepicker').datetimepicker({
-                locale: 'zh-CN',
-                format: 'YYYY-MM-DD HH:mm:ss'
-            });
+        $box.append($("#classCatalogTmpl").tmpl(catalog))
+        $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len+1)
+
+        // 日历组件,最小单位为秒
+        $('.datetimepicker').datetimepicker({
+            locale: 'zh-CN',
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+    }
+
+    /**
+     * 删除课时
+     */
+    function removeClassCatelogBox(ele){
+        var len =$(ele).parent().parent().parent().find("div[name='organClassCatelogPos']").length
+        if(len==1){
+            return
+        }else{
+            console.log($(ele).parents("div[name='organClassBosBox']").find("input[name='courseNum']").eq(0).val(len-1))
+            $(ele).parent().parent().remove()
         }
     }
 
@@ -287,7 +310,7 @@
         if (label == "" || label == undefined) {
             return
         }
-        var tag = [{label: label}]
+        var tag = [{id:"",label: label}]
         $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
     }
     /**
@@ -450,7 +473,8 @@
                 $box.html("")
                 var catalog=[]
                 for(var i=0;i<organClassCatelogPos.length;i++){
-                    catalog.push({id:organClassCatelogPos[i].id,len:i+1,startTime:organClassCatelogPos[i].startTime,catelogTitle:organClassCatelogPos[i].catelogTitle})
+                    catalog.push({id:organClassCatelogPos[i].id,len:i+1,startTime:organClassCatelogPos[i].startTime,
+                        catelogTitle:organClassCatelogPos[i].catelogTitle,catelogDesc:organClassCatelogPos[i].catelogDesc})
                 }
                 $box.append($("#classCatalogTmpl").tmpl(catalog))
             }
@@ -468,7 +492,7 @@
             var organCourseTagBos=[[${organCourseTagBos}]]
             for(item in organCourseTagBos){
                 if(organCourseTagBos[item].ognFlag){
-                    var tag = [{label: organCourseTagBos[item].tagName}]
+                    var tag = [{id:organCourseTagBos[item].tagId,label: organCourseTagBos[item].tagName}]
                     $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
                 }else{
                     $("#constantTagBox").find("input[name='id']").each(function () {

@@ -303,7 +303,7 @@ public class OrganCourseController extends BackendController {
         //标签
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         organCoursePo.setOgnId(ognId);
-        organCourseService.updateOrganCourseByMerchant(organCoursePo, organClassBos, constantTagPos);
+//        organCourseService.updateOrganCourseByMerchant(organCoursePo, organClassBos, constantTagPos);
         ResultDo resultDo = ResultDo.build();
         return resultDo;
     }

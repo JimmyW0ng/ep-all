@@ -68,4 +68,15 @@ public class OrganClassCatelogRepository extends AbstractCRUDRepository<EpOrganC
                          .orderBy(EP_ORGAN_CLASS_CHILD.CREATE_AT.asc())
                          .fetchInto(MemberChildTagAndCommentBo.class);
     }
+
+    /**
+     * 根据ids批量逻辑删除
+     * @param ids
+     */
+    public void deleteByIds(List<Long> ids){
+        dslContext.update(EP_ORGAN_CLASS_CATELOG)
+                .set(EP_ORGAN_CLASS_CATELOG.DEL_FLAG,true)
+                .where(EP_ORGAN_CLASS_CATELOG.ID.in(ids))
+                .execute();
+    }
 }
