@@ -50,6 +50,7 @@ public class MessageCode {
     public static final String ERROR_COURSE_ENTER_NOT_START = "ERROR_COURSE_ENTER_NOT_START";
     public static final String ERROR_COURSE_ENTER_END = "ERROR_COURSE_ENTER_END";
     public static final String ERROR_COURSE_NOT_ONLINE = "ERROR_COURSE_NOT_ONLINE";
+    public static final String ERROR_COURSE_NOT_OPENING = "ERROR_COURSE_NOT_OPENING";
     public static final String ERROR_COURSE_IS_OFF = "ERROR_COURSE_IS_OFF";
     public static final String ERROR_CLASS_NOT_EXISTS = "ERROR_CLASS_NOT_EXISTS";
     public static final String ERROR_CLASS_CATELOG_NOT_EXISTS = "ERROR_CLASS_CATELOG_NOT_EXISTS";

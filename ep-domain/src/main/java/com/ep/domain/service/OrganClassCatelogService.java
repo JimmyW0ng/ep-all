@@ -10,6 +10,7 @@ import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.dto.OrganClassCatelogCommentDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class OrganClassCatelogService {
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
+    private OrganCourseRepository organCourseRepository;
+    @Autowired
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
@@ -56,6 +59,21 @@ public class OrganClassCatelogService {
             log.error("课时信息不存在, classCatelogId={}", classCatelogId);
             return resultDo.setError(MessageCode.ERROR_CLASS_CATELOG_NOT_EXISTS);
         }
+        // 校验课程
+        EpOrganClassPo classPo = organClassRepository.getById(classCatelogPo.getClassId());
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", classCatelogPo.getClassId());
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
+        }
+        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
+        if (coursePo == null || coursePo.getDelFlag()) {
+            log.error("课程不存在, courseId={}", classPo.getCourseId());
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
+        }
+        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)) {
+            log.error("课程状态不是进行中, courseId={}, status={}", classPo.getCourseId(), coursePo.getCourseStatus());
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_OPENING);
+        }
         // 孩子信息
         List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classCatelogPo.getClassId());
         if (CollectionsTools.isNotEmpty(childList)) {
@@ -71,17 +89,12 @@ public class OrganClassCatelogService {
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
         // 校验班次负责人
-        EpOrganClassPo classPo = organClassRepository.getById(classCatelogPo.getClassId());
         Optional<EpOrganAccountPo> optional = accountList.stream().filter(item -> item.getId().equals(classPo.getOgnAccountId())).findFirst();
         if (!optional.isPresent()) {
             log.error("当前用户不是班次负责人, mobile={}", mobile);
             return resultDo.setError(MessageCode.ERROR_CLASS_ACCOUNT_NOT_MATCH);
         }
         // 课程标签
-        if (classPo == null || classPo.getDelFlag()) {
-            log.error("班次不存在, classId={}", classCatelogPo.getClassId());
-            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
-        }
         List<OrganCourseTagBo> courseTagList = organCourseTagRepository.findBosByCourseId(classPo.getCourseId());
         // 孩子评论信息
         List<MemberChildTagAndCommentBo> childTagAndCommentList = organClassCatelogRepository.findChildComments(classPo.getId(), classCatelogId);
