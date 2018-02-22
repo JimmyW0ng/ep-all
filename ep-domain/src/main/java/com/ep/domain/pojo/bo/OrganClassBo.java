@@ -16,6 +16,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EpOrganClassBo extends EpOrganClassPo {
+public class OrganClassBo extends EpOrganClassPo {
     private List<EpOrganClassCatelogPo> organClassCatelogPos;
 }

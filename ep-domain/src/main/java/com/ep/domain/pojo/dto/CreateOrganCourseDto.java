@@ -1,7 +1,7 @@
 package com.ep.domain.pojo.dto;
 
 import com.ep.domain.pojo.AbstractBasePojo;
-import com.ep.domain.pojo.bo.EpOrganClassBo;
+import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.pojo.po.EpOrganCoursePo;
 import lombok.AllArgsConstructor;
@@ -20,6 +20,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateOrganCourseDto extends AbstractBasePojo {
     private EpOrganCoursePo organCoursePo;
-    private List<EpOrganClassBo> organClassBos;
+    private List<OrganClassBo> organClassBos;
     private List<EpConstantTagPo> constantTagPos;
 }

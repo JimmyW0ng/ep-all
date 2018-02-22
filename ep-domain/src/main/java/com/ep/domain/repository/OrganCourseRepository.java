@@ -7,6 +7,7 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -121,6 +122,24 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .fetchInto(OrganCourseBo.class);
         PageImpl<OrganCourseBo> pPage = new PageImpl<OrganCourseBo>(list, pageable, totalCount);
         return pPage;
+    }
+
+    /**
+     * 根据id更新课程对象
+     * @param po
+     */
+    public void updateById(EpOrganCoursePo po){
+        dslContext.update(EP_ORGAN_COURSE)
+                .set(EP_ORGAN_COURSE.COURSE_NAME,po.getCourseName())
+                .set(EP_ORGAN_COURSE.COURSE_INTRODUCE,po.getCourseIntroduce())
+                .set(EP_ORGAN_COURSE.COURSE_CONTENT,po.getCourseContent())
+                .set(EP_ORGAN_COURSE.COURSE_NOTE,po.getCourseNote())
+                .set(EP_ORGAN_COURSE.PRIZE_MIN,po.getPrizeMin())
+                .set(EP_ORGAN_COURSE.COURSE_ADDRESS,po.getCourseAddress())
+                .set(EP_ORGAN_COURSE.UPDATE_AT, DSL.currentTimestamp())
+                .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
+                .execute();
+
     }
 
 }
