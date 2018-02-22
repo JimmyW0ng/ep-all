@@ -182,4 +182,47 @@ public class OrganCourseService {
         //课程标签表插入数据
         organCourseTagRepository.insert(insertOrganCourseTagPos);
     }
+
+    /**
+     * 商户后台更新课程
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<OrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
+        //机构课程表更新数据
+//        organCoursePo.setCourseStatus(EpOrganCourseCourseStatus.save);
+        organCourseRepository.updateById(organCoursePo);
+//        Long insertOrganCourseId = insertOrganCoursePo.getId();
+        organClassBos.forEach(organClassBo -> {
+            EpOrganClassPo newOrganClassPo = new EpOrganClassPo();
+            BeanTools.copyPropertiesIgnoreNull(organClassBo, newOrganClassPo);
+            EpOrganClassPo oldOrganClassPo = organClassRepository.getById(newOrganClassPo.getId());
+//            organClassPo.setOgnId(organCoursePo.getOgnId());
+//            organClassPo.setCourseId(insertOrganCourseId);
+            //机构课程班次表插入数据
+//            EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
+//            Long insertOrganClassId = insertOrganClassPo.getId();
+//            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+//            for(int i=0;i<organClassCatelogPos.size();i++){
+//                organClassCatelogPos.get(i).setClassId(insertOrganClassId);
+//                organClassCatelogPos.get(i).setCatelogIndex(i+1);
+//            }
+//            //班次课程内容目录表插入数据
+//            organClassCatelogRepository.insert(organClassCatelogPos);
+        });
+//
+//        List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
+//        constantTagPos.forEach(constantTagPo -> {
+//            if (constantTagPo.getId() == null) {
+//                constantTagPo.setOgnFlag(true);
+//                constantTagPo.setOgnId(organCoursePo.getOgnId());
+//                constantTagPo.setCatalogId(insertOrganCoursePo.getCourseCatalogId());
+//                EpConstantTagPo insertPo = constantTagPepository.insertNew(constantTagPo);
+//                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,insertPo.getId(),insertOrganCourseId,null,null,null,null,null,null));
+//            }else{
+//                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,constantTagPo.getId(),insertOrganCourseId,null,null,null,null,null,null));
+//            }
+//        });
+//        //课程标签表插入数据
+//        organCourseTagRepository.insert(insertOrganCourseTagPos);
+    }
 }

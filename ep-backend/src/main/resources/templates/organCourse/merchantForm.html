@@ -24,11 +24,11 @@
                 <div>
                     <h3>创建课程</h3>
                     <section style="position: static" th:object="${organCoursePo}">
-                        <input id="courseId" type="hidden" th:field="*{id}">
-                        <input id="ognId" type="hidden" th:field="*{ognId}">
+                        <input id="courseId" name="organCoursePo.id" type="hidden" th:value="${organCoursePo.id}">
+                        <input id="ognId" type="hidden" th:value="${organCoursePo.ognId}">
                         <div class="form-group">
                             <label for="courseName">课程名称 *</label>
-                            <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px" th:field="*{courseName}"
+                            <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px" th:value="${organCoursePo.courseName}"
                                    class=" form-control ">
                         </div>
                         <div class="form-group">
@@ -57,44 +57,44 @@
                         <div class="form-group">
                             <label for="courseIntroduce">课程简介 *</label>
                             <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text" style="width: 300px"
-                                      class="form-control " th:field="*{courseIntroduce}"></textarea>
+                                      class="form-control " th:text="${organCoursePo.courseIntroduce}"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="courseContent">课程内容 *</label>
                             <textarea id="courseContent" name="organCoursePo.courseContent" type="text" style="width: 300px"
-                                      class="form-control " th:field="*{courseContent}"></textarea>
+                                      class="form-control " th:text="${organCoursePo.courseContent}"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="courseNote">课程须知 *</label>
                             <textarea id="courseNote" name="organCoursePo.courseNote" type="text" style="width: 300px"
-                                      class="form-control " th:field="*{courseNote}"></textarea>
+                                      class="form-control " th:text="${organCoursePo.courseNote}"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="prizeMin">最低价格 *</label>
                             <input id="prizeMin" name="organCoursePo.prizeMin" type="text" style="width: 300px" class="form-control "
-                                   th:field="*{prizeMin}">
+                                   th:value="${organCoursePo.prizeMin}">
                             <!--<span class="input-group-addon">元</span>-->
                         </div>
                         <div class="form-group">
                             <label for="courseAddress">上课地址 *</label>
                             <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text" style="width: 300px"
-                                      class="form-control " th:field="*{courseAddress}">
+                                      class="form-control " th:text="${organCoursePo.courseAddress}">
                             </textarea>
                         </div>
                         <div class="form-group">
                             <label for="onlineTime">上线时间 *</label>
                             <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px"
-                                   class="form-control datetimepicker" th:field="*{onlineTime}">
+                                   class="form-control datetimepicker" th:value="${organCoursePo.onlineTime}">
                         </div>
                         <div class="form-group">
                             <label for="enterTimeStart">报名开始时间 *</label>
                             <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text" style="width: 300px"
-                                   class="form-control datetimepicker" th:field="*{enterTimeStart}">
+                                   class="form-control datetimepicker" th:value="${organCoursePo.enterTimeStart}">
                         </div>
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 *</label>
                             <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" style="width: 300px"
-                                   class="form-control datetimepicker" th:field="*{enterTimeEnd}">
+                                   class="form-control datetimepicker" th:value="${organCoursePo.enterTimeEnd}">
                         </div>
                     </section>
                     <h3>创建班次</h3>
@@ -141,6 +141,7 @@
         <div name="" class="form-group col-sm-6">
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">课时</label>
             <div class=" col-sm-8">
+                <input name="id" type="hidden" value=${id}>
                 <input name="catelogTitle" class="form-control" value="${catelogTitle}"/>
                 <input name="catelogIndex" type="hidden" value=${len}>
             </div>
@@ -182,6 +183,7 @@
         <div id=${collapse} class="panel-collapse collapse in">
             <div class="panel-body " >
                 <div name="organClassBos" class="form-group col-sm-4" >
+                    <input name="id" type="hidden" value="${id}">
                     <label>班次名称 *</label>
                     <input name="className" type="text"  class=" form-control " value="${className}"
                            onblur="setClassBoxTitle(this)">
@@ -194,7 +196,10 @@
                     <label>折扣优惠 *</label>
                     <input name="discountAmount" type="text"  class=" form-control " value="${discountAmount}">
                     <label>是否限制报名人数 *</label>
-                    <input name="enterLimitFlag" type="text"  class=" form-control " value="${enterLimitFlag}">
+                    <select name="enterLimitFlag" type="text"  class=" form-control " value="${enterLimitFlag}">
+                        <option value=true>是</option>
+                        <option value=false>否</option>
+                    </select>
                     <label>要求报名人数 *</label>
                     <input name="enterRequireNum" type="text" class=" form-control " value="${enterRequireNum}">
                     <label>总计课时 *</label>
@@ -384,7 +389,7 @@
                             $constantTags.eq(i).find("input").each(function () {
                                 var oldName= $(this).attr("name");
                                 $(this).attr("name","constantTagPos["+i+"]."+oldName)
-                                alert($(this).attr("name"))
+//                                alert($(this).attr("name"))
                             })
                             tagCount++;
                         }
@@ -399,11 +404,14 @@
                     isFrmSubmit=true
                 }
 
-
+                var url="/auth/organCourse/merchantCreate"
+                if($("#courseId").val()){
+                    url="/auth/organCourse/merchantUpdate"
+                }
                 $.ajax({
                     type: "POST",
                     data: $("#frm").serialize(),
-                    url: "/auth/organCourse/merchantCreate",
+                    url: url,
                     success: function (data) {
                         if (data.success) {
                             alert("success!");
@@ -423,7 +431,7 @@
             var organClassBos=[[${organClassBos}]]
             var len = $("#accordion").find("div[name='organClassBosBox']").length
             for(var i=0;i<organClassBos.length;i++){
-                var classes = [{href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),
+                var classes = [{id:organClassBos[i].id,href:"#collapse" + (len + 1), collapse: "collapse" + (len + 1),
                     className:organClassBos[i].className,classPrize:organClassBos[i].classPrize,
                     discountAmount:organClassBos[i].discountAmount,
                     courseNum:organClassBos[i].courseNum}]
@@ -442,7 +450,7 @@
                 $box.html("")
                 var catalog=[]
                 for(var i=0;i<organClassCatelogPos.length;i++){
-                    catalog.push({len:i+1,startTime:organClassCatelogPos[i].startTime,catelogTitle:organClassCatelogPos[i].catelogTitle})
+                    catalog.push({id:organClassCatelogPos[i].id,len:i+1,startTime:organClassCatelogPos[i].startTime,catelogTitle:organClassCatelogPos[i].catelogTitle})
                 }
                 $box.append($("#classCatalogTmpl").tmpl(catalog))
             }

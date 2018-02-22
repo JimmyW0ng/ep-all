@@ -285,4 +285,26 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         return "organCourse/merchantForm";
     }
+
+    /**
+     * 商家后台修改课程
+     *
+     * @return
+     */
+    @PostMapping("/merchantUpdate")
+    @ResponseBody
+    public ResultDo merchantUpdate(HttpServletRequest request, CreateOrganCourseDto dto) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId = currentUser.getOgnId();
+        //课程对象
+        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        //班次
+        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
+        //标签
+        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+        organCoursePo.setOgnId(ognId);
+        organCourseService.updateOrganCourseByMerchant(organCoursePo, organClassBos, constantTagPos);
+        ResultDo resultDo = ResultDo.build();
+        return resultDo;
+    }
 }
