@@ -57,6 +57,11 @@ public class OrderService {
     public ResultDo order(Long memberId, Long childId, Long classId) {
         ResultDo<?> resultDo = ResultDo.build();
         log.info("下单开始: memberId={}, childId={}, classId={}", memberId, childId, classId);
+        if (childId == null) {
+            log.error("下单失败，孩子id为空！");
+            resultDo.setError(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+            return resultDo;
+        }
         // 查询孩子信息
         EpMemberChildPo childPo = memberChildRepository.getById(childId);
         if (childPo == null

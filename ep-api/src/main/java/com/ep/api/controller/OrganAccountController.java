@@ -49,7 +49,7 @@ public class OrganAccountController extends ApiController {
     }
 
     @ApiOperation(value = "课时评价初始化")
-    @PostMapping("/class/catelog/comment")
+    @PostMapping("/class/catelog/init")
     public ResultDo<OrganClassCatelogCommentDto> getClassCatelogCommentView(@RequestParam("classCatelogId") Long classCatelogId) {
         EpMemberPo memberPo = super.getCurrentUser().get();
         return organClassCatelogService.getClassCatelogCommentView(memberPo.getMobile(), classCatelogId);

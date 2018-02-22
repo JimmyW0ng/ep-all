@@ -14,8 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
-import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_SIGN;
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description:孩子信息表Repository
@@ -190,5 +189,21 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
         return Optional.ofNullable(childBo);
     }
 
+    /**
+     * 获取班次孩子信息
+     *
+     * @param classId
+     * @return
+     */
+    public List<MemberChildBo> queryAllByClassId(Long classId) {
+        return dslContext.select(EP_MEMBER_CHILD.ID, EP_MEMBER_CHILD.CHILD_NICK_NAME)
+                         .from(EP_MEMBER_CHILD)
+                         .innerJoin(EP_ORGAN_CLASS_CHILD)
+                         .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                         .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
+                         .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                         .where(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                         .fetchInto(MemberChildBo.class);
+    }
 }
 

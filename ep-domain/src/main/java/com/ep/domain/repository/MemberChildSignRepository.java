@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_SIGN;
 
 /**
- * @Description:孩子签名表Repository
+ * @Description: 孩子签名表Repository
  * @Author: J.W
  * @Date: 上午10:35 2017/11/27
  */

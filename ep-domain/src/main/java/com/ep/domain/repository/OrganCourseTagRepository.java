@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.*;
+import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_TAG;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE_TAG;
 
 
 /**
@@ -34,13 +35,15 @@ public class OrganCourseTagRepository extends AbstractCRUDRepository<EpOrganCour
      */
     public List<OrganCourseTagBo> findBosByCourseId(Long courseId){
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE_TAG.fields());
-        fieldList.add(EP_CONSTANT_TAG.TAG_NAME.as("TAG_NAME"));
-        fieldList.add(EP_CONSTANT_TAG.OGN_FLAG.as("OGN_FLAG"));
+        fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
+        fieldList.add(EP_CONSTANT_TAG.OGN_FLAG);
         return dslContext.select(fieldList).from(EP_ORGAN_COURSE_TAG)
-                .leftJoin(EP_CONSTANT_TAG)
-                .on(EP_ORGAN_COURSE_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
-                .where(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
-                .and(EP_ORGAN_COURSE_TAG.DEL_FLAG.eq(false))
-                .fetchInto(OrganCourseTagBo.class);
+                         .innerJoin(EP_CONSTANT_TAG)
+                         .on(EP_ORGAN_COURSE_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
+                         .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                         .where(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
+                         .and(EP_ORGAN_COURSE_TAG.DEL_FLAG.eq(false))
+                         .fetchInto(OrganCourseTagBo.class);
     }
+
 }
