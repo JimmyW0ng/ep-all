@@ -3,14 +3,17 @@ package com.ep.api.controller;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
+import com.ep.domain.pojo.dto.OrganClassCatelogCommentDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.OrganAccountService;
+import com.ep.domain.service.OrganClassCatelogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,6 +31,8 @@ public class OrganAccountController extends ApiController {
 
     @Autowired
     private OrganAccountService organAccountService;
+    @Autowired
+    private OrganClassCatelogService organClassCatelogService;
 
     @ApiOperation(value = "机构账户信息")
     @PostMapping("/info")
@@ -41,6 +46,13 @@ public class OrganAccountController extends ApiController {
     public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount() {
         EpMemberPo memberPo = super.getCurrentUser().get();
         return organAccountService.findClassByOrganAccount(memberPo.getMobile());
+    }
+
+    @ApiOperation(value = "课时评价初始化")
+    @PostMapping("/class/catelog/comment")
+    public ResultDo<OrganClassCatelogCommentDto> getClassCatelogCommentView(@RequestParam("classCatelogId") Long classCatelogId) {
+        EpMemberPo memberPo = super.getCurrentUser().get();
+        return organClassCatelogService.getClassCatelogCommentView(memberPo.getMobile(), classCatelogId);
     }
 
 }
