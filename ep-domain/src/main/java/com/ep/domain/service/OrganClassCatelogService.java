@@ -6,8 +6,8 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.OrganClassCatelogCommentDto;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
-import com.ep.domain.repository.OrganAccountRepository;
 import com.ep.domain.pojo.po.EpOrganClassCatelogPo;
+import com.ep.domain.repository.OrganAccountRepository;
 import com.ep.domain.repository.OrganClassCatelogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,8 @@ import java.util.List;
 @Service
 public class OrganClassCatelogService {
 
+    @Autowired
+    private OrganClassCatelogRepository organClassCatelogRepository;
     @Autowired
     private OrganAccountRepository organAccountRepository;
 
@@ -41,14 +43,7 @@ public class OrganClassCatelogService {
         }
         EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
         return resultDo;
- * @Description: 班次课程内容目录Service
- * @Author: CC.F
- * @Date: 22:32 2018/2/15
- */
-@Service
-public class OrganClassCatelogService {
-    @Autowired
-    private OrganClassCatelogRepository organClassCatelogRepository;
+    }
 
     public List<EpOrganClassCatelogPo> findByCourseId(Long courseId){
         return organClassCatelogRepository.findByCourseId(courseId);
