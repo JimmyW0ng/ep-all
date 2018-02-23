@@ -32,26 +32,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     private static final long serialVersionUID = -366287997;
 
     /**
-     * Setter for <code>ep.ep_organ.id</code>. 主键
+     * Create a detached EpOrganRecord
      */
-    public EpOrganRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ.ogn_name</code>. 机构名称
-     */
-    public EpOrganRecord setOgnName(String value) {
-        set(1, value);
-        return this;
+    public EpOrganRecord() {
+        super(EpOrgan.EP_ORGAN);
     }
 
     /**
@@ -84,10 +68,17 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_address</code>. 机构地址
+     * Getter for <code>ep.ep_organ.id</code>. 主键
      */
-    public EpOrganRecord setOgnAddress(String value) {
-        set(2, value);
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ.id</code>. 主键
+     */
+    public EpOrganRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -99,10 +90,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_region</code>. 机构地区
+     * Setter for <code>ep.ep_organ.ogn_name</code>. 机构名称
      */
-    public EpOrganRecord setOgnRegion(Long value) {
-        set(3, value);
+    public EpOrganRecord setOgnName(String value) {
+        set(1, value);
         return this;
     }
 
@@ -114,10 +105,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_lng</code>. 地区经度
+     * Setter for <code>ep.ep_organ.ogn_address</code>. 机构地址
      */
-    public EpOrganRecord setOgnLng(String value) {
-        set(4, value);
+    public EpOrganRecord setOgnAddress(String value) {
+        set(2, value);
         return this;
     }
 
@@ -129,10 +120,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_lat</code>. 地区纬度
+     * Setter for <code>ep.ep_organ.ogn_region</code>. 机构地区
      */
-    public EpOrganRecord setOgnLat(String value) {
-        set(5, value);
+    public EpOrganRecord setOgnRegion(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -144,10 +135,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
+     * Setter for <code>ep.ep_organ.ogn_lng</code>. 地区经度
      */
-    public EpOrganRecord setOgnShortIntroduce(String value) {
-        set(6, value);
+    public EpOrganRecord setOgnLng(String value) {
+        set(4, value);
         return this;
     }
 
@@ -159,10 +150,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
+     * Setter for <code>ep.ep_organ.ogn_lat</code>. 地区纬度
      */
-    public EpOrganRecord setOgnCreateDate(Timestamp value) {
-        set(7, value);
+    public EpOrganRecord setOgnLat(String value) {
+        set(5, value);
         return this;
     }
 
@@ -174,10 +165,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
+     * Setter for <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
      */
-    public EpOrganRecord setOgnPhone(String value) {
-        set(8, value);
+    public EpOrganRecord setOgnShortIntroduce(String value) {
+        set(6, value);
         return this;
     }
 
@@ -189,10 +180,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     * Setter for <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
      */
-    public EpOrganRecord setOgnEmail(String value) {
-        set(9, value);
+    public EpOrganRecord setOgnCreateDate(Timestamp value) {
+        set(7, value);
         return this;
     }
 
@@ -204,10 +195,25 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
+     * Setter for <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
      */
-    public EpOrganRecord setOgnUrl(String value) {
-        set(10, value);
+    public EpOrganRecord setOgnPhone(String value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     */
+    public String getOgnEmail() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     */
+    public EpOrganRecord setOgnEmail(String value) {
+        set(9, value);
         return this;
     }
 
@@ -219,10 +225,11 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     * Setter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
      */
-    public String getOgnEmail() {
-        return (String) get(9);
+    public EpOrganRecord setOgnUrl(String value) {
+        set(10, value);
+        return this;
     }
 
     /**
@@ -230,36 +237,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      */
     public String getOgnIntroduce() {
         return (String) get(11);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ.market_weight</code>. 营销权重
-     */
-    public EpOrganRecord setMarketWeight(Byte value) {
-        set(12, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ.market_weight</code>. 营销权重
-     */
-    public Byte getMarketWeight() {
-        return (Byte) get(12);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ.together_score</code>. 综合得分
-     */
-    public EpOrganRecord setTogetherScore(Byte value) {
-        set(13, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ.together_score</code>. 综合得分
-     */
-    public Byte getTogetherScore() {
-        return (Byte) get(13);
     }
 
     /**
@@ -271,6 +248,36 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
+     * Getter for <code>ep.ep_organ.market_weight</code>. 营销权重
+     */
+    public Byte getMarketWeight() {
+        return (Byte) get(12);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ.market_weight</code>. 营销权重
+     */
+    public EpOrganRecord setMarketWeight(Byte value) {
+        set(12, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ.together_score</code>. 综合得分
+     */
+    public Byte getTogetherScore() {
+        return (Byte) get(13);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ.together_score</code>. 综合得分
+     */
+    public EpOrganRecord setTogetherScore(Byte value) {
+        set(13, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ.total_participate</code>. 总参与人数
      */
     public Integer getTotalParticipate() {
@@ -278,10 +285,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
+     * Setter for <code>ep.ep_organ.total_participate</code>. 总参与人数
      */
-    public EpOrganRecord setStatus(EpOrganStatus value) {
-        set(15, value);
+    public EpOrganRecord setTotalParticipate(Integer value) {
+        set(14, value);
         return this;
     }
 
@@ -293,10 +300,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.remark</code>. 备注信息
+     * Setter for <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
      */
-    public EpOrganRecord setRemark(String value) {
-        set(16, value);
+    public EpOrganRecord setStatus(EpOrganStatus value) {
+        set(15, value);
         return this;
     }
 
@@ -308,10 +315,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ.remark</code>. 备注信息
      */
-    public EpOrganRecord setCreateAt(Timestamp value) {
-        set(17, value);
+    public EpOrganRecord setRemark(String value) {
+        set(16, value);
         return this;
     }
 
@@ -323,10 +330,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ.create_at</code>. 创建时间
      */
-    public EpOrganRecord setUpdateAt(Timestamp value) {
-        set(18, value);
+    public EpOrganRecord setCreateAt(Timestamp value) {
+        set(17, value);
         return this;
     }
 
@@ -338,10 +345,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_organ.update_at</code>. 更新时间
      */
-    public EpOrganRecord setDelFlag(Boolean value) {
-        set(19, value);
+    public EpOrganRecord setUpdateAt(Timestamp value) {
+        set(18, value);
         return this;
     }
 
@@ -353,12 +360,16 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.version</code>.
+     * Setter for <code>ep.ep_organ.del_flag</code>. 删除标志
      */
-    public EpOrganRecord setVersion(Long value) {
-        set(20, value);
+    public EpOrganRecord setDelFlag(Boolean value) {
+        set(19, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ.version</code>.
@@ -368,8 +379,16 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record21 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ.version</code>.
+     */
+    public EpOrganRecord setVersion(Long value) {
+        set(20, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -378,10 +397,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record21 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -488,11 +503,11 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_organ.total_participate</code>. 总参与人数
+     * {@inheritDoc}
      */
-    public EpOrganRecord setTotalParticipate(Integer value) {
-        set(14, value);
-        return this;
+    @Override
+    public Field<String> field12() {
+        return EpOrgan.EP_ORGAN.OGN_INTRODUCE;
     }
 
     /**
@@ -659,8 +674,8 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public Field<String> field12() {
-        return EpOrgan.EP_ORGAN.OGN_INTRODUCE;
+    public String value12() {
+        return getOgnIntroduce();
     }
 
     /**
@@ -838,8 +853,9 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
      * {@inheritDoc}
      */
     @Override
-    public String value12() {
-        return getOgnIntroduce();
+    public EpOrganRecord value12(String value) {
+        setOgnIntroduce(value);
+        return this;
     }
 
     /**
@@ -914,6 +930,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -949,26 +969,6 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
         value19(value19);
         value20(value20);
         value21(value21);
-        return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganRecord
-     */
-    public EpOrganRecord() {
-        super(EpOrgan.EP_ORGAN);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EpOrganRecord value12(String value) {
-        setOgnIntroduce(value);
         return this;
     }
 }

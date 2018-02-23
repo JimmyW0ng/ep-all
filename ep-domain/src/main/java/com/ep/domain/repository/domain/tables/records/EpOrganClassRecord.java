@@ -32,146 +32,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     private static final long serialVersionUID = 1324530611;
 
     /**
-     * Setter for <code>ep.ep_organ_class.id</code>. 主键
-     */
-    public EpOrganClassRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
-     */
-    public EpOrganClassRecord setOgnId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
      * Create a detached EpOrganClassRecord
      */
     public EpOrganClassRecord() {
         super(EpOrganClass.EP_ORGAN_CLASS);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.course_id</code>. 课程ID
-     */
-    public EpOrganClassRecord setCourseId(Long value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.course_id</code>. 课程ID
-     */
-    public Long getCourseId() {
-        return (Long) get(2);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.class_name</code>. 班次名称
-     */
-    public EpOrganClassRecord setClassName(String value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
-     */
-    public String getClassName() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
-     */
-    public EpOrganClassRecord setOgnAccountId(Long value) {
-        set(4, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
-     */
-    public Long getOgnAccountId() {
-        return (Long) get(4);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.class_prize</code>. 价格
-     */
-    public EpOrganClassRecord setClassPrize(BigDecimal value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.class_prize</code>. 价格
-     */
-    public BigDecimal getClassPrize() {
-        return (BigDecimal) get(5);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
-     */
-    public EpOrganClassRecord setDiscountAmount(BigDecimal value) {
-        set(6, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
-     */
-    public BigDecimal getDiscountAmount() {
-        return (BigDecimal) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
-     */
-    public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
-     */
-    public Boolean getEnterLimitFlag() {
-        return (Boolean) get(7);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
-     */
-    public EpOrganClassRecord setEnterRequireNum(Integer value) {
-        set(8, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
-     */
-    public Integer getEnterRequireNum() {
-        return (Integer) get(8);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
-     */
-    public EpOrganClassRecord setOrderedNum(Integer value) {
-        set(9, value);
-        return this;
     }
 
     /**
@@ -201,10 +65,138 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class.id</code>. 主键
+     */
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.id</code>. 主键
+     */
+    public EpOrganClassRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
      */
     public Long getOgnId() {
         return (Long) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
+     */
+    public EpOrganClassRecord setOgnId(Long value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.course_id</code>. 课程ID
+     */
+    public Long getCourseId() {
+        return (Long) get(2);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.course_id</code>. 课程ID
+     */
+    public EpOrganClassRecord setCourseId(Long value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
+     */
+    public String getClassName() {
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.class_name</code>. 班次名称
+     */
+    public EpOrganClassRecord setClassName(String value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
+     */
+    public Long getOgnAccountId() {
+        return (Long) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
+     */
+    public EpOrganClassRecord setOgnAccountId(Long value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.class_prize</code>. 价格
+     */
+    public BigDecimal getClassPrize() {
+        return (BigDecimal) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.class_prize</code>. 价格
+     */
+    public EpOrganClassRecord setClassPrize(BigDecimal value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     */
+    public BigDecimal getDiscountAmount() {
+        return (BigDecimal) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     */
+    public EpOrganClassRecord setDiscountAmount(BigDecimal value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     */
+    public Boolean getEnterLimitFlag() {
+        return (Boolean) get(7);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     */
+    public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
+     */
+    public Integer getEnterRequireNum() {
+        return (Integer) get(8);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
+     */
+    public EpOrganClassRecord setEnterRequireNum(Integer value) {
+        set(8, value);
+        return this;
     }
 
     /**
@@ -215,25 +207,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.course_num</code>. 总计课时
+     * Setter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
-    public EpOrganClassRecord setCourseNum(Integer value) {
-        set(11, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.course_num</code>. 总计课时
-     */
-    public Integer getCourseNum() {
-        return (Integer) get(11);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class.sort</code>. 排序
-     */
-    public EpOrganClassRecord setSort(Long value) {
-        set(12, value);
+    public EpOrganClassRecord setOrderedNum(Integer value) {
+        set(9, value);
         return this;
     }
 
@@ -245,14 +222,6 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.remark</code>. 备注信息
-     */
-    public EpOrganClassRecord setRemark(String value) {
-        set(13, value);
-        return this;
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
      */
     public EpOrganClassRecord setEnteredNum(Integer value) {
@@ -261,10 +230,17 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
-    public EpOrganClassRecord setCreateAt(Timestamp value) {
-        set(14, value);
+    public Integer getCourseNum() {
+        return (Integer) get(11);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.course_num</code>. 总计课时
+     */
+    public EpOrganClassRecord setCourseNum(Integer value) {
+        set(11, value);
         return this;
     }
 
@@ -276,10 +252,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_class.sort</code>. 排序
      */
-    public EpOrganClassRecord setUpdateAt(Timestamp value) {
-        set(15, value);
+    public EpOrganClassRecord setSort(Long value) {
+        set(12, value);
         return this;
     }
 
@@ -291,10 +267,40 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_organ_class.remark</code>. 备注信息
      */
-    public EpOrganClassRecord setDelFlag(Boolean value) {
-        set(16, value);
+    public EpOrganClassRecord setRemark(String value) {
+        set(13, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(14);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     */
+    public EpOrganClassRecord setCreateAt(Timestamp value) {
+        set(14, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(15);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     */
+    public EpOrganClassRecord setUpdateAt(Timestamp value) {
+        set(15, value);
         return this;
     }
 
@@ -306,33 +312,15 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(14);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(15);
+    public EpOrganClassRecord setDelFlag(Boolean value) {
+        set(16, value);
+        return this;
     }
 
     // -------------------------------------------------------------------------
     // Primary key information
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Record1<Long> key() {
-        return (Record1) super.key();
-    }
-
-    // -------------------------------------------------------------------------
-    // Record18 type implementation
     // -------------------------------------------------------------------------
 
     /**
@@ -342,12 +330,40 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
         return (Long) get(17);
     }
 
+    // -------------------------------------------------------------------------
+    // Record18 type implementation
+    // -------------------------------------------------------------------------
+
     /**
      * Setter for <code>ep.ep_organ_class.version</code>.
      */
     public EpOrganClassRecord setVersion(Long value) {
         set(17, value);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Record1<Long> key() {
+        return (Record1) super.key();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
+        return (Row18) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
+        return (Row18) super.valuesRow();
     }
 
     /**
@@ -482,16 +498,16 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
-        return (Row18) super.fieldsRow();
+    public Field<Boolean> field17() {
+        return EpOrganClass.EP_ORGAN_CLASS.DEL_FLAG;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row18<Long, Long, Long, String, Long, BigDecimal, BigDecimal, Boolean, Integer, Integer, Integer, Integer, Long, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
-        return (Row18) super.valuesRow();
+    public Field<Long> field18() {
+        return EpOrganClass.EP_ORGAN_CLASS.VERSION;
     }
 
     /**
@@ -626,16 +642,16 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field17() {
-        return EpOrganClass.EP_ORGAN_CLASS.DEL_FLAG;
+    public Boolean value17() {
+        return getDelFlag();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field18() {
-        return EpOrganClass.EP_ORGAN_CLASS.VERSION;
+    public Long value18() {
+        return getVersion();
     }
 
     /**
@@ -791,6 +807,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -824,25 +844,5 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
         value17(value17);
         value18(value18);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean value17() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value18() {
-        return getVersion();
     }
 }

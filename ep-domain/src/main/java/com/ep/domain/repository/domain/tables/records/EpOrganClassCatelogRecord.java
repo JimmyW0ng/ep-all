@@ -31,26 +31,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     private static final long serialVersionUID = -2039079426;
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.id</code>. 主键
-     */
-    public EpOrganClassCatelogRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
      * Create a detached EpOrganClassCatelogRecord
      */
     public EpOrganClassCatelogRecord() {
         super(EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_catelog.class_id</code>. 班次id
-     */
-    public EpOrganClassCatelogRecord setClassId(Long value) {
-        set(1, value);
-        return this;
     }
 
     /**
@@ -75,14 +59,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.catelog_title</code>. 目录标题
-     */
-    public EpOrganClassCatelogRecord setCatelogTitle(String value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class_catelog.id</code>. 主键
      */
     public Long getId() {
@@ -90,10 +66,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.catelog_desc</code>. 目录描述
+     * Setter for <code>ep.ep_organ_class_catelog.id</code>. 主键
      */
-    public EpOrganClassCatelogRecord setCatelogDesc(String value) {
-        set(3, value);
+    public EpOrganClassCatelogRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -105,10 +81,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.catelog_index</code>. 目录索引（第几个课时）
+     * Setter for <code>ep.ep_organ_class_catelog.class_id</code>. 班次id
      */
-    public EpOrganClassCatelogRecord setCatelogIndex(Integer value) {
-        set(4, value);
+    public EpOrganClassCatelogRecord setClassId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -120,10 +96,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.start_time</code>. 开始时间
+     * Setter for <code>ep.ep_organ_class_catelog.catelog_title</code>. 目录标题
      */
-    public EpOrganClassCatelogRecord setStartTime(Timestamp value) {
-        set(5, value);
+    public EpOrganClassCatelogRecord setCatelogTitle(String value) {
+        set(2, value);
         return this;
     }
 
@@ -135,10 +111,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.end_time</code>. 结束时间
+     * Setter for <code>ep.ep_organ_class_catelog.catelog_desc</code>. 目录描述
      */
-    public EpOrganClassCatelogRecord setEndTime(Timestamp value) {
-        set(6, value);
+    public EpOrganClassCatelogRecord setCatelogDesc(String value) {
+        set(3, value);
         return this;
     }
 
@@ -150,6 +126,14 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
+     * Setter for <code>ep.ep_organ_class_catelog.catelog_index</code>. 目录索引（第几个课时）
+     */
+    public EpOrganClassCatelogRecord setCatelogIndex(Integer value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_catelog.start_time</code>. 开始时间
      */
     public Timestamp getStartTime() {
@@ -157,10 +141,26 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
+     * Setter for <code>ep.ep_organ_class_catelog.start_time</code>. 开始时间
+     */
+    public EpOrganClassCatelogRecord setStartTime(Timestamp value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_catelog.end_time</code>. 结束时间
      */
     public Timestamp getEndTime() {
         return (Timestamp) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_catelog.end_time</code>. 结束时间
+     */
+    public EpOrganClassCatelogRecord setEndTime(Timestamp value) {
+        set(6, value);
+        return this;
     }
 
     /**
@@ -194,14 +194,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catelog.update_at</code>. 更新时间
-     */
-    public EpOrganClassCatelogRecord setUpdateAt(Timestamp value) {
-        set(10, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class_catelog.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
@@ -224,6 +216,14 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
+     * Setter for <code>ep.ep_organ_class_catelog.update_at</code>. 更新时间
+     */
+    public EpOrganClassCatelogRecord setUpdateAt(Timestamp value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_catelog.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
@@ -243,11 +243,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     // -------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * Getter for <code>ep.ep_organ_class_catelog.version</code>.
      */
-    @Override
-    public Record1<Long> key() {
-        return (Record1) super.key();
+    public Long getVersion() {
+        return (Long) get(12);
     }
 
     // -------------------------------------------------------------------------
@@ -255,18 +254,35 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.version</code>.
-     */
-    public Long getVersion() {
-        return (Long) get(12);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_class_catelog.version</code>.
      */
     public EpOrganClassCatelogRecord setVersion(Long value) {
         set(12, value);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Record1<Long> key() {
+        return (Record1) super.key();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row13<Long, Long, String, String, Integer, Timestamp, Timestamp, Integer, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
+        return (Row13) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row13<Long, Long, String, String, Integer, Timestamp, Timestamp, Integer, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
+        return (Row13) super.valuesRow();
     }
 
     /**
@@ -329,22 +345,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
      * {@inheritDoc}
      */
     @Override
-    public Row13<Long, Long, String, String, Integer, Timestamp, Timestamp, Integer, String, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
-        return (Row13) super.fieldsRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row13<Long, Long, String, String, Integer, Timestamp, Timestamp, Integer, String, Timestamp, Timestamp, Boolean, Long> valuesRow() {
-        return (Row13) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<Integer> field8() {
         return EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.CHILD_EVALUATED_NUM;
     }
@@ -371,6 +371,22 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     @Override
     public Field<Timestamp> field11() {
         return EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.UPDATE_AT;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Boolean> field12() {
+        return EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.DEL_FLAG;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field<Long> field13() {
+        return EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.VERSION;
     }
 
     /**
@@ -433,22 +449,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field12() {
-        return EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.DEL_FLAG;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field13() {
-        return EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Integer value8() {
         return getChildEvaluatedNum();
     }
@@ -475,6 +475,22 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     @Override
     public Timestamp value11() {
         return getUpdateAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean value12() {
+        return getDelFlag();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value13() {
+        return getVersion();
     }
 
     /**
@@ -538,22 +554,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     public EpOrganClassCatelogRecord value7(Timestamp value) {
         setEndTime(value);
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean value12() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value13() {
-        return getVersion();
     }
 
     /**

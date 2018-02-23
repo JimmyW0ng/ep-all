@@ -5,16 +5,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record9;
 import org.jooq.Row9;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -33,11 +31,27 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     private static final long serialVersionUID = 1152533887;
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.id</code>. 主键
+     * Create a detached EpWechatSessionTokenRecord
      */
-    public EpWechatSessionTokenRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpWechatSessionTokenRecord() {
+        super(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
+    }
+
+    /**
+     * Create a detached, initialised EpWechatSessionTokenRecord
+     */
+    public EpWechatSessionTokenRecord(Long id, String sessionToken, String openId, String sessionKey, String remarks, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
+
+        set(0, id);
+        set(1, sessionToken);
+        set(2, openId);
+        set(3, sessionKey);
+        set(4, remarks);
+        set(5, createAt);
+        set(6, updateAt);
+        set(7, delFlag);
+        set(8, version);
     }
 
     /**
@@ -48,10 +62,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.session_token</code>. 平台会话token
+     * Setter for <code>ep.ep_wechat_session_token.id</code>. 主键
      */
-    public EpWechatSessionTokenRecord setSessionToken(String value) {
-        set(1, value);
+    public EpWechatSessionTokenRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -63,10 +77,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.open_id</code>. 微信用户唯一标识
+     * Setter for <code>ep.ep_wechat_session_token.session_token</code>. 平台会话token
      */
-    public EpWechatSessionTokenRecord setOpenId(String value) {
-        set(2, value);
+    public EpWechatSessionTokenRecord setSessionToken(String value) {
+        set(1, value);
         return this;
     }
 
@@ -78,10 +92,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.session_key</code>. 微信会话密钥
+     * Setter for <code>ep.ep_wechat_session_token.open_id</code>. 微信用户唯一标识
      */
-    public EpWechatSessionTokenRecord setSessionKey(String value) {
-        set(3, value);
+    public EpWechatSessionTokenRecord setOpenId(String value) {
+        set(2, value);
         return this;
     }
 
@@ -93,10 +107,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.remarks</code>. 备注信息
+     * Setter for <code>ep.ep_wechat_session_token.session_key</code>. 微信会话密钥
      */
-    public EpWechatSessionTokenRecord setRemarks(String value) {
-        set(4, value);
+    public EpWechatSessionTokenRecord setSessionKey(String value) {
+        set(3, value);
         return this;
     }
 
@@ -108,10 +122,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_wechat_session_token.remarks</code>. 备注信息
      */
-    public EpWechatSessionTokenRecord setCreateAt(Timestamp value) {
-        set(5, value);
+    public EpWechatSessionTokenRecord setRemarks(String value) {
+        set(4, value);
         return this;
     }
 
@@ -123,10 +137,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_wechat_session_token.create_at</code>. 创建时间
      */
-    public EpWechatSessionTokenRecord setUpdateAt(Timestamp value) {
-        set(6, value);
+    public EpWechatSessionTokenRecord setCreateAt(Timestamp value) {
+        set(5, value);
         return this;
     }
 
@@ -138,10 +152,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_wechat_session_token.update_at</code>. 更新时间
      */
-    public EpWechatSessionTokenRecord setDelFlag(Boolean value) {
-        set(7, value);
+    public EpWechatSessionTokenRecord setUpdateAt(Timestamp value) {
+        set(6, value);
         return this;
     }
 
@@ -153,12 +167,16 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_session_token.version</code>.
+     * Setter for <code>ep.ep_wechat_session_token.del_flag</code>. 删除标志
      */
-    public EpWechatSessionTokenRecord setVersion(Long value) {
-        set(8, value);
+    public EpWechatSessionTokenRecord setDelFlag(Boolean value) {
+        set(7, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_wechat_session_token.version</code>.
@@ -168,8 +186,16 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record9 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_wechat_session_token.version</code>.
+     */
+    public EpWechatSessionTokenRecord setVersion(Long value) {
+        set(8, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -178,10 +204,6 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -415,6 +437,10 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -439,33 +465,5 @@ public class EpWechatSessionTokenRecord extends UpdatableRecordImpl<EpWechatSess
         value8(value8);
         value9(value9);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpWechatSessionTokenRecord
-     */
-    public EpWechatSessionTokenRecord() {
-        super(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
-    }
-
-    /**
-     * Create a detached, initialised EpWechatSessionTokenRecord
-     */
-    public EpWechatSessionTokenRecord(Long id, String sessionToken, String openId, String sessionKey, String remarks, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
-
-        set(0, id);
-        set(1, sessionToken);
-        set(2, openId);
-        set(3, sessionKey);
-        set(4, remarks);
-        set(5, createAt);
-        set(6, updateAt);
-        set(7, delFlag);
-        set(8, version);
     }
 }

@@ -8,16 +8,14 @@ import com.ep.domain.repository.domain.enums.EpSystemMenuMenuType;
 import com.ep.domain.repository.domain.enums.EpSystemMenuStatus;
 import com.ep.domain.repository.domain.enums.EpSystemMenuTarget;
 import com.ep.domain.repository.domain.tables.EpSystemMenu;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record15;
 import org.jooq.Row15;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -36,11 +34,33 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     private static final long serialVersionUID = -672555051;
 
     /**
-     * Setter for <code>ep.ep_system_menu.id</code>. 编号
+     * Create a detached EpSystemMenuRecord
      */
-    public EpSystemMenuRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpSystemMenuRecord() {
+        super(EpSystemMenu.EP_SYSTEM_MENU);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemMenuRecord
+     */
+    public EpSystemMenuRecord(Long id, Long parentId, EpSystemMenuTarget target, EpSystemMenuMenuType menuType, String menuName, String href, String icon, Integer sort, EpSystemMenuStatus status, String permission, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemMenu.EP_SYSTEM_MENU);
+
+        set(0, id);
+        set(1, parentId);
+        set(2, target);
+        set(3, menuType);
+        set(4, menuName);
+        set(5, href);
+        set(6, icon);
+        set(7, sort);
+        set(8, status);
+        set(9, permission);
+        set(10, createAt);
+        set(11, updateAt);
+        set(12, remark);
+        set(13, delFlag);
+        set(14, version);
     }
 
     /**
@@ -51,10 +71,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.parent_id</code>. 父级编号
+     * Setter for <code>ep.ep_system_menu.id</code>. 编号
      */
-    public EpSystemMenuRecord setParentId(Long value) {
-        set(1, value);
+    public EpSystemMenuRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -66,10 +86,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.target</code>. 目标：前台，商户后台，系统后台
+     * Setter for <code>ep.ep_system_menu.parent_id</code>. 父级编号
      */
-    public EpSystemMenuRecord setTarget(EpSystemMenuTarget value) {
-        set(2, value);
+    public EpSystemMenuRecord setParentId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -81,10 +101,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.menu_type</code>. 菜单类型：分组，动作
+     * Setter for <code>ep.ep_system_menu.target</code>. 目标：前台，商户后台，系统后台
      */
-    public EpSystemMenuRecord setMenuType(EpSystemMenuMenuType value) {
-        set(3, value);
+    public EpSystemMenuRecord setTarget(EpSystemMenuTarget value) {
+        set(2, value);
         return this;
     }
 
@@ -96,10 +116,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.menu_name</code>. 菜单名称
+     * Setter for <code>ep.ep_system_menu.menu_type</code>. 菜单类型：分组，动作
      */
-    public EpSystemMenuRecord setMenuName(String value) {
-        set(4, value);
+    public EpSystemMenuRecord setMenuType(EpSystemMenuMenuType value) {
+        set(3, value);
         return this;
     }
 
@@ -111,10 +131,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.href</code>. 链接
+     * Setter for <code>ep.ep_system_menu.menu_name</code>. 菜单名称
      */
-    public EpSystemMenuRecord setHref(String value) {
-        set(5, value);
+    public EpSystemMenuRecord setMenuName(String value) {
+        set(4, value);
         return this;
     }
 
@@ -126,10 +146,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.icon</code>. 图标
+     * Setter for <code>ep.ep_system_menu.href</code>. 链接
      */
-    public EpSystemMenuRecord setIcon(String value) {
-        set(6, value);
+    public EpSystemMenuRecord setHref(String value) {
+        set(5, value);
         return this;
     }
 
@@ -141,10 +161,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.sort</code>. 排序（升序）
+     * Setter for <code>ep.ep_system_menu.icon</code>. 图标
      */
-    public EpSystemMenuRecord setSort(Integer value) {
-        set(7, value);
+    public EpSystemMenuRecord setIcon(String value) {
+        set(6, value);
         return this;
     }
 
@@ -156,10 +176,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.status</code>. 状态
+     * Setter for <code>ep.ep_system_menu.sort</code>. 排序（升序）
      */
-    public EpSystemMenuRecord setStatus(EpSystemMenuStatus value) {
-        set(8, value);
+    public EpSystemMenuRecord setSort(Integer value) {
+        set(7, value);
         return this;
     }
 
@@ -171,10 +191,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.permission</code>. 权限标识
+     * Setter for <code>ep.ep_system_menu.status</code>. 状态
      */
-    public EpSystemMenuRecord setPermission(String value) {
-        set(9, value);
+    public EpSystemMenuRecord setStatus(EpSystemMenuStatus value) {
+        set(8, value);
         return this;
     }
 
@@ -186,10 +206,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_system_menu.permission</code>. 权限标识
      */
-    public EpSystemMenuRecord setCreateAt(Timestamp value) {
-        set(10, value);
+    public EpSystemMenuRecord setPermission(String value) {
+        set(9, value);
         return this;
     }
 
@@ -201,10 +221,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_menu.create_at</code>. 创建时间
      */
-    public EpSystemMenuRecord setUpdateAt(Timestamp value) {
-        set(11, value);
+    public EpSystemMenuRecord setCreateAt(Timestamp value) {
+        set(10, value);
         return this;
     }
 
@@ -216,10 +236,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.remark</code>. 备注信息
+     * Setter for <code>ep.ep_system_menu.update_at</code>. 更新时间
      */
-    public EpSystemMenuRecord setRemark(String value) {
-        set(12, value);
+    public EpSystemMenuRecord setUpdateAt(Timestamp value) {
+        set(11, value);
         return this;
     }
 
@@ -231,10 +251,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_system_menu.remark</code>. 备注信息
      */
-    public EpSystemMenuRecord setDelFlag(Boolean value) {
-        set(13, value);
+    public EpSystemMenuRecord setRemark(String value) {
+        set(12, value);
         return this;
     }
 
@@ -246,12 +266,16 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_menu.version</code>.
+     * Setter for <code>ep.ep_system_menu.del_flag</code>. 删除标记
      */
-    public EpSystemMenuRecord setVersion(Long value) {
-        set(14, value);
+    public EpSystemMenuRecord setDelFlag(Boolean value) {
+        set(13, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_menu.version</code>.
@@ -261,8 +285,16 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record15 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_menu.version</code>.
+     */
+    public EpSystemMenuRecord setVersion(Long value) {
+        set(14, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -271,10 +303,6 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record15 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -658,6 +686,10 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -688,39 +720,5 @@ public class EpSystemMenuRecord extends UpdatableRecordImpl<EpSystemMenuRecord> 
         value14(value14);
         value15(value15);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemMenuRecord
-     */
-    public EpSystemMenuRecord() {
-        super(EpSystemMenu.EP_SYSTEM_MENU);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemMenuRecord
-     */
-    public EpSystemMenuRecord(Long id, Long parentId, EpSystemMenuTarget target, EpSystemMenuMenuType menuType, String menuName, String href, String icon, Integer sort, EpSystemMenuStatus status, String permission, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemMenu.EP_SYSTEM_MENU);
-
-        set(0, id);
-        set(1, parentId);
-        set(2, target);
-        set(3, menuType);
-        set(4, menuName);
-        set(5, href);
-        set(6, icon);
-        set(7, sort);
-        set(8, status);
-        set(9, permission);
-        set(10, createAt);
-        set(11, updateAt);
-        set(12, remark);
-        set(13, delFlag);
-        set(14, version);
     }
 }

@@ -31,26 +31,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     private static final long serialVersionUID = 433948697;
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.id</code>. 主键
-     */
-    public EpOrganClassCommentRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
      * Create a detached EpOrganClassCommentRecord
      */
     public EpOrganClassCommentRecord() {
         super(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_comment.ogn_id</code>. 机构id
-     */
-    public EpOrganClassCommentRecord setOgnId(Long value) {
-        set(1, value);
-        return this;
     }
 
     /**
@@ -76,14 +60,6 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.course_id</code>. 课程id
-     */
-    public EpOrganClassCommentRecord setCourseId(Long value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
      * Getter for <code>ep.ep_organ_class_comment.id</code>. 主键
      */
     public Long getId() {
@@ -91,10 +67,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.class_id</code>. 班次id
+     * Setter for <code>ep.ep_organ_class_comment.id</code>. 主键
      */
-    public EpOrganClassCommentRecord setClassId(Long value) {
-        set(3, value);
+    public EpOrganClassCommentRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -106,10 +82,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.score</code>. 评分（五分制）
+     * Setter for <code>ep.ep_organ_class_comment.ogn_id</code>. 机构id
      */
-    public EpOrganClassCommentRecord setScore(Byte value) {
-        set(4, value);
+    public EpOrganClassCommentRecord setOgnId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -121,10 +97,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.child_id</code>. 评论者id
+     * Setter for <code>ep.ep_organ_class_comment.course_id</code>. 课程id
      */
-    public EpOrganClassCommentRecord setChildId(Long value) {
-        set(5, value);
+    public EpOrganClassCommentRecord setCourseId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -136,10 +112,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.content</code>. 评论类型: 评论；回复
+     * Setter for <code>ep.ep_organ_class_comment.class_id</code>. 班次id
      */
-    public EpOrganClassCommentRecord setContent(String value) {
-        set(6, value);
+    public EpOrganClassCommentRecord setClassId(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -151,10 +127,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.order_id</code>. 关联订单id
+     * Setter for <code>ep.ep_organ_class_comment.score</code>. 评分（五分制）
      */
-    public EpOrganClassCommentRecord setOrderId(Long value) {
-        set(7, value);
+    public EpOrganClassCommentRecord setScore(Byte value) {
+        set(4, value);
         return this;
     }
 
@@ -166,10 +142,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.chosen_flag</code>. 精选标记
+     * Setter for <code>ep.ep_organ_class_comment.child_id</code>. 评论者id
      */
-    public EpOrganClassCommentRecord setChosenFlag(Boolean value) {
-        set(8, value);
+    public EpOrganClassCommentRecord setChildId(Long value) {
+        set(5, value);
         return this;
     }
 
@@ -181,10 +157,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_class_comment.content</code>. 评论类型: 评论；回复
      */
-    public EpOrganClassCommentRecord setCreateAt(Timestamp value) {
-        set(9, value);
+    public EpOrganClassCommentRecord setContent(String value) {
+        set(6, value);
         return this;
     }
 
@@ -196,10 +172,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_class_comment.order_id</code>. 关联订单id
      */
-    public EpOrganClassCommentRecord setUpdateAt(Timestamp value) {
-        set(10, value);
+    public EpOrganClassCommentRecord setOrderId(Long value) {
+        set(7, value);
         return this;
     }
 
@@ -211,10 +187,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_class_comment.chosen_flag</code>. 精选标记
      */
-    public EpOrganClassCommentRecord setRemark(String value) {
-        set(11, value);
+    public EpOrganClassCommentRecord setChosenFlag(Boolean value) {
+        set(8, value);
         return this;
     }
 
@@ -226,10 +202,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_class_comment.create_at</code>. 创建时间
      */
-    public EpOrganClassCommentRecord setDelFlag(Boolean value) {
-        set(12, value);
+    public EpOrganClassCommentRecord setCreateAt(Timestamp value) {
+        set(9, value);
         return this;
     }
 
@@ -241,11 +217,46 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
+     * Setter for <code>ep.ep_organ_class_comment.update_at</code>. 更新时间
+     */
+    public EpOrganClassCommentRecord setUpdateAt(Timestamp value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class_comment.remark</code>. 备注
      */
     public String getRemark() {
         return (String) get(11);
     }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_comment.remark</code>. 备注
+     */
+    public EpOrganClassCommentRecord setRemark(String value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class_comment.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_comment.del_flag</code>. 删除标记
+     */
+    public EpOrganClassCommentRecord setDelFlag(Boolean value) {
+        set(12, value);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_class_comment.version</code>.
@@ -255,8 +266,16 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record14 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_class_comment.version</code>.
+     */
+    public EpOrganClassCommentRecord setVersion(Long value) {
+        set(13, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -265,10 +284,6 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record14 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -627,6 +642,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -655,25 +674,6 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
         value12(value12);
         value13(value13);
         value14(value14);
-        return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Getter for <code>ep.ep_organ_class_comment.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_comment.version</code>.
-     */
-    public EpOrganClassCommentRecord setVersion(Long value) {
-        set(13, value);
         return this;
     }
 }

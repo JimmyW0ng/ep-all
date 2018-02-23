@@ -4,14 +4,13 @@
 package com.ep.domain.repository.domain;
 
 
+import org.jooq.Schema;
+import org.jooq.impl.CatalogImpl;
+
+import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Schema;
-import org.jooq.impl.CatalogImpl;
 
 
 /**
@@ -27,13 +26,11 @@ import org.jooq.impl.CatalogImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultCatalog extends CatalogImpl {
 
-    private static final long serialVersionUID = 675752951;
-
     /**
      * The reference instance of <code></code>
      */
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
-
+    private static final long serialVersionUID = 675752951;
     /**
      * The schema <code>ep</code>.
      */

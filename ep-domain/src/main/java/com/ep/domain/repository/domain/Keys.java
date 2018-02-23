@@ -77,6 +77,7 @@ public class Keys {
     public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = UniqueKeys0.KEY_EP_MEMBER_UNIQUE_MOBILE;
     public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_PRIMARY;
     public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY;
+    public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD = UniqueKeys0.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD;
     public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_HONOR_PRIMARY;
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_PRIMARY;
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID;
@@ -165,6 +166,7 @@ public class Keys {
         public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = createUniqueKey(EpMember.EP_MEMBER, "KEY_ep_member_UNIQUE_MOBILE", EpMember.EP_MEMBER.MOBILE);
         public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = createUniqueKey(EpMemberChild.EP_MEMBER_CHILD, "KEY_ep_member_child_PRIMARY", EpMemberChild.EP_MEMBER_CHILD.ID);
         public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_PRIMARY", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.ID);
+        public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_UNIQUE_CATELOG_CHILD", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_CATELOG_ID, EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CHILD_ID);
         public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = createUniqueKey(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR, "KEY_ep_member_child_honor_PRIMARY", EpMemberChildHonor.EP_MEMBER_CHILD_HONOR.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_PRIMARY", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_UNIQUE_CHILD_ID", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.CHILD_ID);

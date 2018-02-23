@@ -31,71 +31,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     private static final long serialVersionUID = -534667689;
 
     /**
-     * Setter for <code>ep.ep_system_user_role.id</code>.
-     */
-    public EpSystemUserRoleRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user_role.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user_role.user_id</code>. 用户id
-     */
-    public EpSystemUserRoleRecord setUserId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user_role.user_id</code>. 用户id
-     */
-    public Long getUserId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user_role.role_id</code>. 角色id
-     */
-    public EpSystemUserRoleRecord setRoleId(Long value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user_role.role_id</code>. 角色id
-     */
-    public Long getRoleId() {
-        return (Long) get(2);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
-     */
-    public EpSystemUserRoleRecord setCreateAt(Timestamp value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
      * Create a detached EpSystemUserRoleRecord
      */
     public EpSystemUserRoleRecord() {
         super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
-     */
-    public EpSystemUserRoleRecord setUpdateAt(Timestamp value) {
-        set(4, value);
-        return this;
     }
 
     /**
@@ -114,10 +53,77 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_system_user_role.id</code>.
      */
-    public EpSystemUserRoleRecord setDelFlag(Boolean value) {
-        set(5, value);
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user_role.id</code>.
+     */
+    public EpSystemUserRoleRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user_role.user_id</code>. 用户id
+     */
+    public Long getUserId() {
+        return (Long) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user_role.user_id</code>. 用户id
+     */
+    public EpSystemUserRoleRecord setUserId(Long value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user_role.role_id</code>. 角色id
+     */
+    public Long getRoleId() {
+        return (Long) get(2);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user_role.role_id</code>. 角色id
+     */
+    public EpSystemUserRoleRecord setRoleId(Long value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(3);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
+     */
+    public EpSystemUserRoleRecord setCreateAt(Timestamp value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
+     */
+    public EpSystemUserRoleRecord setUpdateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -129,33 +135,15 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Getter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(3);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
+    public EpSystemUserRoleRecord setDelFlag(Boolean value) {
+        set(5, value);
+        return this;
     }
 
     // -------------------------------------------------------------------------
     // Primary key information
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Record1<Long> key() {
-        return (Record1) super.key();
-    }
-
-    // -------------------------------------------------------------------------
-    // Record7 type implementation
     // -------------------------------------------------------------------------
 
     /**
@@ -165,12 +153,40 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
         return (Long) get(6);
     }
 
+    // -------------------------------------------------------------------------
+    // Record7 type implementation
+    // -------------------------------------------------------------------------
+
     /**
      * Setter for <code>ep.ep_system_user_role.version</code>.
      */
     public EpSystemUserRoleRecord setVersion(Long value) {
         set(6, value);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Record1<Long> key() {
+        return (Record1) super.key();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row7<Long, Long, Long, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
+        return (Row7) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row7<Long, Long, Long, Timestamp, Timestamp, Boolean, Long> valuesRow() {
+        return (Row7) super.valuesRow();
     }
 
     /**
@@ -217,16 +233,16 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
      * {@inheritDoc}
      */
     @Override
-    public Row7<Long, Long, Long, Timestamp, Timestamp, Boolean, Long> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Field<Boolean> field6() {
+        return EpSystemUserRole.EP_SYSTEM_USER_ROLE.DEL_FLAG;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Row7<Long, Long, Long, Timestamp, Timestamp, Boolean, Long> valuesRow() {
-        return (Row7) super.valuesRow();
+    public Field<Long> field7() {
+        return EpSystemUserRole.EP_SYSTEM_USER_ROLE.VERSION;
     }
 
     /**
@@ -273,16 +289,16 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
      * {@inheritDoc}
      */
     @Override
-    public Field<Boolean> field6() {
-        return EpSystemUserRole.EP_SYSTEM_USER_ROLE.DEL_FLAG;
+    public Boolean value6() {
+        return getDelFlag();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field7() {
-        return EpSystemUserRole.EP_SYSTEM_USER_ROLE.VERSION;
+    public Long value7() {
+        return getVersion();
     }
 
     /**
@@ -339,6 +355,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -361,25 +381,5 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
         value6(value6);
         value7(value7);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean value6() {
-        return getDelFlag();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value7() {
-        return getVersion();
     }
 }

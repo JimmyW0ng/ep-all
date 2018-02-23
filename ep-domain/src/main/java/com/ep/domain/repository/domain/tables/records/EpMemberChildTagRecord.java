@@ -31,33 +31,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     private static final long serialVersionUID = -1887724669;
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.id</code>. 主键
+     * Create a detached EpMemberChildTagRecord
      */
-    public EpMemberChildTagRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_tag.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_child_tag.child_id</code>. 孩子id
-     */
-    public EpMemberChildTagRecord setChildId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_tag.child_id</code>. 孩子id
-     */
-    public Long getChildId() {
-        return (Long) get(1);
+    public EpMemberChildTagRecord() {
+        super(EpMemberChildTag.EP_MEMBER_CHILD_TAG);
     }
 
     /**
@@ -78,6 +55,36 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
+     * Getter for <code>ep.ep_member_child_tag.id</code>. 主键
+     */
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_child_tag.id</code>. 主键
+     */
+    public EpMemberChildTagRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child_tag.child_id</code>. 孩子id
+     */
+    public Long getChildId() {
+        return (Long) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_child_tag.child_id</code>. 孩子id
+     */
+    public EpMemberChildTagRecord setChildId(Long value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
      */
     public Long getClassCatelogId() {
@@ -85,10 +92,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.tag_id</code>. 标签id
+     * Setter for <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
      */
-    public EpMemberChildTagRecord setTagId(Long value) {
-        set(3, value);
+    public EpMemberChildTagRecord setClassCatelogId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -100,10 +107,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_member_child_tag.tag_id</code>. 标签id
      */
-    public EpMemberChildTagRecord setCreateAt(Timestamp value) {
-        set(4, value);
+    public EpMemberChildTagRecord setTagId(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -115,10 +122,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_member_child_tag.create_at</code>. 创建时间
      */
-    public EpMemberChildTagRecord setUpdateAt(Timestamp value) {
-        set(5, value);
+    public EpMemberChildTagRecord setCreateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -130,10 +137,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.remark</code>. 备注
+     * Setter for <code>ep.ep_member_child_tag.update_at</code>. 更新时间
      */
-    public EpMemberChildTagRecord setRemark(String value) {
-        set(6, value);
+    public EpMemberChildTagRecord setUpdateAt(Timestamp value) {
+        set(5, value);
         return this;
     }
 
@@ -145,10 +152,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_member_child_tag.remark</code>. 备注
      */
-    public EpMemberChildTagRecord setDelFlag(Boolean value) {
-        set(7, value);
+    public EpMemberChildTagRecord setRemark(String value) {
+        set(6, value);
         return this;
     }
 
@@ -160,12 +167,16 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.version</code>.
+     * Setter for <code>ep.ep_member_child_tag.del_flag</code>. 删除标记
      */
-    public EpMemberChildTagRecord setVersion(Long value) {
-        set(8, value);
+    public EpMemberChildTagRecord setDelFlag(Boolean value) {
+        set(7, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_member_child_tag.version</code>.
@@ -175,8 +186,16 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record9 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_member_child_tag.version</code>.
+     */
+    public EpMemberChildTagRecord setVersion(Long value) {
+        set(8, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -185,10 +204,6 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -223,11 +238,11 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
+     * {@inheritDoc}
      */
-    public EpMemberChildTagRecord setClassCatelogId(Long value) {
-        set(2, value);
-        return this;
+    @Override
+    public Field<Long> field3() {
+        return EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_CATELOG_ID;
     }
 
     /**
@@ -298,8 +313,8 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field3() {
-        return EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_CATELOG_ID;
+    public Long value3() {
+        return getClassCatelogId();
     }
 
     /**
@@ -372,8 +387,9 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      * {@inheritDoc}
      */
     @Override
-    public Long value3() {
-        return getClassCatelogId();
+    public EpMemberChildTagRecord value3(Long value) {
+        setClassCatelogId(value);
+        return this;
     }
 
     /**
@@ -421,6 +437,10 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -444,26 +464,6 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
         value7(value7);
         value8(value8);
         value9(value9);
-        return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpMemberChildTagRecord
-     */
-    public EpMemberChildTagRecord() {
-        super(EpMemberChildTag.EP_MEMBER_CHILD_TAG);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EpMemberChildTagRecord value3(Long value) {
-        setClassCatelogId(value);
         return this;
     }
 }

@@ -5,16 +5,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpConstantCatalog;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record8;
 import org.jooq.Row8;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -33,11 +31,26 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     private static final long serialVersionUID = -1237592472;
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.id</code>. 主键
+     * Create a detached EpConstantCatalogRecord
      */
-    public EpConstantCatalogRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpConstantCatalogRecord() {
+        super(EpConstantCatalog.EP_CONSTANT_CATALOG);
+    }
+
+    /**
+     * Create a detached, initialised EpConstantCatalogRecord
+     */
+    public EpConstantCatalogRecord(Long id, Long parentId, String label, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpConstantCatalog.EP_CONSTANT_CATALOG);
+
+        set(0, id);
+        set(1, parentId);
+        set(2, label);
+        set(3, createAt);
+        set(4, updateAt);
+        set(5, remark);
+        set(6, delFlag);
+        set(7, version);
     }
 
     /**
@@ -48,10 +61,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.parent_id</code>. 父级id
+     * Setter for <code>ep.ep_constant_catalog.id</code>. 主键
      */
-    public EpConstantCatalogRecord setParentId(Long value) {
-        set(1, value);
+    public EpConstantCatalogRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -63,10 +76,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.label</code>. 标签
+     * Setter for <code>ep.ep_constant_catalog.parent_id</code>. 父级id
      */
-    public EpConstantCatalogRecord setLabel(String value) {
-        set(2, value);
+    public EpConstantCatalogRecord setParentId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -78,10 +91,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_constant_catalog.label</code>. 标签
      */
-    public EpConstantCatalogRecord setCreateAt(Timestamp value) {
-        set(3, value);
+    public EpConstantCatalogRecord setLabel(String value) {
+        set(2, value);
         return this;
     }
 
@@ -93,10 +106,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_constant_catalog.create_at</code>. 创建时间
      */
-    public EpConstantCatalogRecord setUpdateAt(Timestamp value) {
-        set(4, value);
+    public EpConstantCatalogRecord setCreateAt(Timestamp value) {
+        set(3, value);
         return this;
     }
 
@@ -108,10 +121,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.remark</code>. 备注信息
+     * Setter for <code>ep.ep_constant_catalog.update_at</code>. 更新时间
      */
-    public EpConstantCatalogRecord setRemark(String value) {
-        set(5, value);
+    public EpConstantCatalogRecord setUpdateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -123,10 +136,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_constant_catalog.remark</code>. 备注信息
      */
-    public EpConstantCatalogRecord setDelFlag(Boolean value) {
-        set(6, value);
+    public EpConstantCatalogRecord setRemark(String value) {
+        set(5, value);
         return this;
     }
 
@@ -138,12 +151,16 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Setter for <code>ep.ep_constant_catalog.version</code>.
+     * Setter for <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
      */
-    public EpConstantCatalogRecord setVersion(Long value) {
-        set(7, value);
+    public EpConstantCatalogRecord setDelFlag(Boolean value) {
+        set(6, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_constant_catalog.version</code>.
@@ -153,8 +170,16 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record8 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_constant_catalog.version</code>.
+     */
+    public EpConstantCatalogRecord setVersion(Long value) {
+        set(7, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -163,10 +188,6 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record8 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -375,6 +396,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -398,32 +423,5 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
         value7(value7);
         value8(value8);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpConstantCatalogRecord
-     */
-    public EpConstantCatalogRecord() {
-        super(EpConstantCatalog.EP_CONSTANT_CATALOG);
-    }
-
-    /**
-     * Create a detached, initialised EpConstantCatalogRecord
-     */
-    public EpConstantCatalogRecord(Long id, Long parentId, String label, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpConstantCatalog.EP_CONSTANT_CATALOG);
-
-        set(0, id);
-        set(1, parentId);
-        set(2, label);
-        set(3, createAt);
-        set(4, updateAt);
-        set(5, remark);
-        set(6, delFlag);
-        set(7, version);
     }
 }

@@ -31,56 +31,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     private static final long serialVersionUID = -154986307;
 
     /**
-     * Setter for <code>ep.ep_system_role_authority.id</code>. 主键
-     */
-    public EpSystemRoleAuthorityRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
-     */
-    public EpSystemRoleAuthorityRecord setRoleId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
-     */
-    public Long getRoleId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
-     */
-    public EpSystemRoleAuthorityRecord setMenuId(Long value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
      * Create a detached EpSystemRoleAuthorityRecord
      */
     public EpSystemRoleAuthorityRecord() {
         super(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
-     */
-    public EpSystemRoleAuthorityRecord setCreateAt(Timestamp value) {
-        set(3, value);
-        return this;
     }
 
     /**
@@ -100,10 +54,32 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Setter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_role_authority.id</code>. 主键
      */
-    public EpSystemRoleAuthorityRecord setUpdateAt(Timestamp value) {
-        set(4, value);
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.id</code>. 主键
+     */
+    public EpSystemRoleAuthorityRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
+     */
+    public Long getRoleId() {
+        return (Long) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
+     */
+    public EpSystemRoleAuthorityRecord setRoleId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -115,10 +91,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Setter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     * Setter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
      */
-    public EpSystemRoleAuthorityRecord setRemark(String value) {
-        set(5, value);
+    public EpSystemRoleAuthorityRecord setMenuId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -130,10 +106,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Setter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
      */
-    public EpSystemRoleAuthorityRecord setDelFlag(Boolean value) {
-        set(6, value);
+    public EpSystemRoleAuthorityRecord setCreateAt(Timestamp value) {
+        set(3, value);
         return this;
     }
 
@@ -145,11 +121,46 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
+     * Setter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
+     */
+    public EpSystemRoleAuthorityRecord setUpdateAt(Timestamp value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
      */
     public String getRemark() {
         return (String) get(5);
     }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     */
+    public EpSystemRoleAuthorityRecord setRemark(String value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     */
+    public EpSystemRoleAuthorityRecord setDelFlag(Boolean value) {
+        set(6, value);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_role_authority.version</code>.
@@ -159,8 +170,16 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record8 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.version</code>.
+     */
+    public EpSystemRoleAuthorityRecord setVersion(Long value) {
+        set(7, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -169,10 +188,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record8 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -183,10 +198,11 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     * {@inheritDoc}
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
+    @Override
+    public Row8<Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row8) super.valuesRow();
     }
 
     /**
@@ -246,11 +262,11 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Setter for <code>ep.ep_system_role_authority.version</code>.
+     * {@inheritDoc}
      */
-    public EpSystemRoleAuthorityRecord setVersion(Long value) {
-        set(7, value);
-        return this;
+    @Override
+    public Field<Long> field8() {
+        return EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.VERSION;
     }
 
     /**
@@ -313,8 +329,8 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
      * {@inheritDoc}
      */
     @Override
-    public Row8<Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row8) super.valuesRow();
+    public Long value8() {
+        return getVersion();
     }
 
     /**
@@ -380,6 +396,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -403,25 +423,5 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         value7(value7);
         value8(value8);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<Long> field8() {
-        return EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.VERSION;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value8() {
-        return getVersion();
     }
 }

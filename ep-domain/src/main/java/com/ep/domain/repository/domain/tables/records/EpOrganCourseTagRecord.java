@@ -31,41 +31,10 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     private static final long serialVersionUID = 1301703735;
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.id</code>.
-     */
-    public EpOrganCourseTagRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_tag.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_tag.tag_id</code>. 标签id
-     */
-    public EpOrganCourseTagRecord setTagId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
      * Create a detached EpOrganCourseTagRecord
      */
     public EpOrganCourseTagRecord() {
         super(EpOrganCourseTag.EP_ORGAN_COURSE_TAG);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_tag.course_id</code>. 课程id
-     */
-    public EpOrganCourseTagRecord setCourseId(Long value) {
-        set(2, value);
-        return this;
     }
 
     /**
@@ -86,10 +55,17 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.sort</code>. 排序
+     * Getter for <code>ep.ep_organ_course_tag.id</code>.
      */
-    public EpOrganCourseTagRecord setSort(Long value) {
-        set(3, value);
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_tag.id</code>.
+     */
+    public EpOrganCourseTagRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -101,10 +77,10 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_course_tag.tag_id</code>. 标签id
      */
-    public EpOrganCourseTagRecord setCreateAt(Timestamp value) {
-        set(4, value);
+    public EpOrganCourseTagRecord setTagId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -116,10 +92,10 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_course_tag.course_id</code>. 课程id
      */
-    public EpOrganCourseTagRecord setUpdateAt(Timestamp value) {
-        set(5, value);
+    public EpOrganCourseTagRecord setCourseId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -131,10 +107,10 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_course_tag.sort</code>. 排序
      */
-    public EpOrganCourseTagRecord setRemark(String value) {
-        set(6, value);
+    public EpOrganCourseTagRecord setSort(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -146,10 +122,10 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_course_tag.create_at</code>. 创建时间
      */
-    public EpOrganCourseTagRecord setDelFlag(Boolean value) {
-        set(7, value);
+    public EpOrganCourseTagRecord setCreateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -161,11 +137,46 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
+     * Setter for <code>ep.ep_organ_course_tag.update_at</code>. 更新时间
+     */
+    public EpOrganCourseTagRecord setUpdateAt(Timestamp value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_course_tag.remark</code>. 备注
      */
     public String getRemark() {
         return (String) get(6);
     }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_tag.remark</code>. 备注
+     */
+    public EpOrganCourseTagRecord setRemark(String value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_tag.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(7);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_tag.del_flag</code>. 删除标记
+     */
+    public EpOrganCourseTagRecord setDelFlag(Boolean value) {
+        set(7, value);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_course_tag.version</code>.
@@ -175,8 +186,16 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record9 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_course_tag.version</code>.
+     */
+    public EpOrganCourseTagRecord setVersion(Long value) {
+        set(8, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -185,10 +204,6 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -207,10 +222,11 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course_tag.del_flag</code>. 删除标记
+     * {@inheritDoc}
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(7);
+    @Override
+    public Field<Long> field1() {
+        return EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID;
     }
 
     /**
@@ -278,11 +294,11 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_tag.version</code>.
+     * {@inheritDoc}
      */
-    public EpOrganCourseTagRecord setVersion(Long value) {
-        set(8, value);
-        return this;
+    @Override
+    public Long value1() {
+        return getId();
     }
 
     /**
@@ -345,8 +361,8 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field1() {
-        return EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID;
+    public Long value9() {
+        return getVersion();
     }
 
     /**
@@ -421,6 +437,10 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -445,25 +465,5 @@ public class EpOrganCourseTagRecord extends UpdatableRecordImpl<EpOrganCourseTag
         value8(value8);
         value9(value9);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value1() {
-        return getId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value9() {
-        return getVersion();
     }
 }

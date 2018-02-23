@@ -4,11 +4,11 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -26,7 +26,7 @@ public enum EpMemberChildChildSex implements EnumType {
 
     man("man"),
 
-    women("women");
+    woman("woman");
 
     private final String literal;
 

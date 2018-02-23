@@ -31,161 +31,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     private static final long serialVersionUID = -1822138853;
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.id</code>. 主键
-     */
-    public EpOrganCourseTeamRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.course_id</code>. 课程id
-     */
-    public EpOrganCourseTeamRecord setCourseId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.course_id</code>. 课程id
-     */
-    public Long getCourseId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
-     */
-    public EpOrganCourseTeamRecord setOgnAccountId(Long value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
-     */
-    public Long getOgnAccountId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Create a detached EpOrganCourseTeamRecord
      */
     public EpOrganCourseTeamRecord() {
         super(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.sort</code>. 排序
-     */
-    public Long getSort() {
-        return (Long) get(3);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.create_at</code>. 创建时间
-     */
-    public EpOrganCourseTeamRecord setCreateAt(Timestamp value) {
-        set(4, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(4);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.update_at</code>. 更新时间
-     */
-    public EpOrganCourseTeamRecord setUpdateAt(Timestamp value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(5);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.remark</code>. 备注
-     */
-    public EpOrganCourseTeamRecord setRemark(String value) {
-        set(6, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.remark</code>. 备注
-     */
-    public String getRemark() {
-        return (String) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.del_flag</code>. 删除标记
-     */
-    public EpOrganCourseTeamRecord setDelFlag(Boolean value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(7);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_course_team.version</code>.
-     */
-    public EpOrganCourseTeamRecord setVersion(Long value) {
-        set(8, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course_team.version</code>.
-     */
-    public Long getVersion() {
-        return (Long) get(8);
-    }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Record1<Long> key() {
-        return (Record1) super.key();
-    }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row9<Long, Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
-        return (Row9) super.fieldsRow();
     }
 
     /**
@@ -203,6 +52,173 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
         set(6, remark);
         set(7, delFlag);
         set(8, version);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.id</code>. 主键
+     */
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.id</code>. 主键
+     */
+    public EpOrganCourseTeamRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.course_id</code>. 课程id
+     */
+    public Long getCourseId() {
+        return (Long) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.course_id</code>. 课程id
+     */
+    public EpOrganCourseTeamRecord setCourseId(Long value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
+     */
+    public Long getOgnAccountId() {
+        return (Long) get(2);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
+     */
+    public EpOrganCourseTeamRecord setOgnAccountId(Long value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.sort</code>. 排序
+     */
+    public Long getSort() {
+        return (Long) get(3);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.sort</code>. 排序
+     */
+    public EpOrganCourseTeamRecord setSort(Long value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.create_at</code>. 创建时间
+     */
+    public EpOrganCourseTeamRecord setCreateAt(Timestamp value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.update_at</code>. 更新时间
+     */
+    public EpOrganCourseTeamRecord setUpdateAt(Timestamp value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.remark</code>. 备注
+     */
+    public EpOrganCourseTeamRecord setRemark(String value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(7);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.del_flag</code>. 删除标记
+     */
+    public EpOrganCourseTeamRecord setDelFlag(Boolean value) {
+        set(7, value);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_organ_course_team.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(8);
+    }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.version</code>.
+     */
+    public EpOrganCourseTeamRecord setVersion(Long value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Record1<Long> key() {
+        return (Record1) super.key();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row9<Long, Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
+        return (Row9) super.fieldsRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Row9<Long, Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row9) super.valuesRow();
     }
 
     /**
@@ -230,11 +246,11 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.sort</code>. 排序
+     * {@inheritDoc}
      */
-    public EpOrganCourseTeamRecord setSort(Long value) {
-        set(3, value);
-        return this;
+    @Override
+    public Field<Long> field4() {
+        return EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.SORT;
     }
 
     /**
@@ -305,8 +321,8 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
      * {@inheritDoc}
      */
     @Override
-    public Row9<Long, Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row9) super.valuesRow();
+    public Long value4() {
+        return getSort();
     }
 
     /**
@@ -380,8 +396,9 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field4() {
-        return EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.SORT;
+    public EpOrganCourseTeamRecord value4(Long value) {
+        setSort(value);
+        return this;
     }
 
     /**
@@ -420,6 +437,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -443,27 +464,6 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
         value7(value7);
         value8(value8);
         value9(value9);
-        return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value4() {
-        return getSort();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EpOrganCourseTeamRecord value4(Long value) {
-        setSort(value);
         return this;
     }
 }
