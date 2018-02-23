@@ -10,7 +10,6 @@ import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
-import com.ep.domain.repository.domain.tables.EpOrganCourse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
@@ -187,41 +186,40 @@ public class OrganCourseService {
     @Transactional(rollbackFor = Exception.class)
     public void updateOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<OrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
         //机构课程表更新数据
-//        organCourseRepository.updateById(organCoursePo);
+        organCourseRepository.updateById(organCoursePo);
         Long organCourseId = organCoursePo.getId();
         organClassBos.forEach(organClassBo -> {
-            if(organClassBo.getId()!=null){
+            if (organClassBo.getId() != null) {
                 EpOrganClassPo newOrganClassPo = new EpOrganClassPo();
                 BeanTools.copyPropertiesIgnoreNull(organClassBo, newOrganClassPo);
                 EpOrganClassPo oldOrganClassPo = organClassRepository.getById(newOrganClassPo.getId());
-                if(!this.isClassEq4MerchUpdateCourse(newOrganClassPo,oldOrganClassPo)){
+                if (!this.isClassEq4MerchUpdateCourse(newOrganClassPo, oldOrganClassPo)) {
                     organClassRepository.updateOrganClassPo(newOrganClassPo);
                 }
-                List<EpOrganClassCatelogPo> newOrganClassCatelogPos=organClassBo.getOrganClassCatelogPos();
-                List<EpOrganClassCatelogPo> oldOrganClassCatelogPos=organClassCatelogRepository.findByClassId(organClassBo.getId());
+                List<EpOrganClassCatelogPo> newOrganClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+                List<EpOrganClassCatelogPo> oldOrganClassCatelogPos = organClassCatelogRepository.findByClassId(organClassBo.getId());
 
-                Set<Long> classCatelogNewSet= new HashSet<>();
-                Set<Long> classCatelogOldSet= new HashSet<>();
-                newOrganClassCatelogPos.forEach(p->{
-                    if(null!=p.getId()){
+                Set<Long> classCatelogNewSet = new HashSet<>();
+                Set<Long> classCatelogOldSet = new HashSet<>();
+                newOrganClassCatelogPos.forEach(p -> {
+                    if (null != p.getId()) {
                         classCatelogNewSet.add(p.getId());
-                        EpOrganClassCatelogPo oldOrganClassCatelogPo=organClassCatelogRepository.findById(p.getId());
-                        if(!this.isClassCatelogEq4MerchUpdateCourse(p,oldOrganClassCatelogPo)){
+                        EpOrganClassCatelogPo oldOrganClassCatelogPo = organClassCatelogRepository.findById(p.getId());
+                        if (!this.isClassCatelogEq4MerchUpdateCourse(p, oldOrganClassCatelogPo)) {
                             organClassCatelogRepository.updateEpOrganClassCatelogPo(p);
                         }
-                    }else{
+                    } else {
                         p.setClassId(organClassBo.getId());
                         organClassCatelogRepository.insert(p);
                     }
                 });
-                oldOrganClassCatelogPos.forEach(p->{
+                oldOrganClassCatelogPos.forEach(p -> {
                     classCatelogOldSet.add(p.getId());
                 });
                 Set<Long> classCatelogdiffDel = Sets.difference(classCatelogOldSet, classCatelogNewSet);//差集，classCatelogOldSet有, classCatelogNewSet无
-//                Set<Long> classCatelogInter= Sets.intersection(classCatelogNewSet, classCatelogOldSet);//交集
-                //批量删除 constantTagOldSet有, constantTagNewSet无
+                //批量删除 classCatelogOldSet有, classCatelogNewSet无
                 organClassCatelogRepository.deleteByIds(new ArrayList<>(classCatelogdiffDel));
-            }else{
+            } else {
                 EpOrganClassPo newOrganClassPo = new EpOrganClassPo();
                 BeanTools.copyPropertiesIgnoreNull(organClassBo, newOrganClassPo);
                 newOrganClassPo.setOgnId(organCoursePo.getOgnId());
@@ -229,9 +227,9 @@ public class OrganCourseService {
                 EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(newOrganClassPo);
                 Long insertOrganClassId = insertOrganClassPo.getId();
                 List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
-                for(int i=0;i<organClassCatelogPos.size();i++){
+                for (int i = 0; i < organClassCatelogPos.size(); i++) {
                     organClassCatelogPos.get(i).setClassId(insertOrganClassId);
-                    organClassCatelogPos.get(i).setCatelogIndex(i+1);
+                    organClassCatelogPos.get(i).setCatelogIndex(i + 1);
                 }
                 //班次课程内容目录表插入数据
                 organClassCatelogRepository.insert(organClassCatelogPos);
@@ -240,42 +238,93 @@ public class OrganCourseService {
         });
 
         //标签start
-        List<EpOrganCourseTagPo> insertOrganCourseTagPos= Lists.newArrayList();
-        Set<Long> constantTagNewSet= new HashSet<>();
-        Set<Long> constantTagOldSet= new HashSet<>();
-        constantTagPos.forEach(constantTagPo->{
-            if(constantTagPo.getId()==null){
+        List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
+        Set<Long> constantTagNewSet = new HashSet<>();
+        Set<Long> constantTagOldSet = new HashSet<>();
+        constantTagPos.forEach(constantTagPo -> {
+            if (constantTagPo.getId() == null) {
                 constantTagPo.setOgnFlag(true);
                 constantTagPo.setOgnId(organCoursePo.getOgnId());
                 constantTagPo.setCatalogId(organCoursePo.getCourseCatalogId());
                 EpConstantTagPo insertConstantTagPo = constantTagPepository.insertNew(constantTagPo);
-                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,insertConstantTagPo.getId(),organCourseId,null,null,null,null,null,null));
-            }else{
+                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null, insertConstantTagPo.getId(), organCourseId, null, null, null, null, null, null));
+            } else {
                 constantTagNewSet.add(constantTagPo.getId());
             }
         });
         List<OrganCourseTagBo> oldTagBos = organCourseTagRepository.findBosByCourseId(organCoursePo.getId());
 
-        oldTagBos.forEach(oldTagBo->{
+        oldTagBos.forEach(oldTagBo -> {
             constantTagOldSet.add(oldTagBo.getTagId());
         });
 
         Set<Long> diffAdd = Sets.difference(constantTagNewSet, constantTagOldSet);//差集，constantTagNewSet有, constantTagOldSet无
         Set<Long> diffDel = Sets.difference(constantTagOldSet, constantTagNewSet);//差集，constantTagOldSet有, constantTagNewSet无
         //批量删除 constantTagOldSet有, constantTagNewSet无
-        organCourseTagRepository.deleteByTagIdsAndCourseId(new ArrayList<>(diffDel),organCourseId);
-        constantTagPepository.deleteOgnTagByIds(new ArrayList<>(diffDel));
+        if (CollectionsTools.isNotEmpty(diffDel)) {
+            organCourseTagRepository.deleteByTagIdsAndCourseId(new ArrayList<>(diffDel), organCourseId);
+            constantTagPepository.deleteOgnTagByIds(new ArrayList<>(diffDel));
+
+        }
         //批量插入
-        diffAdd.forEach(p->{
-            insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null,p,organCourseId,null,null,null,null,null,null));
-        });
+        if (CollectionsTools.isNotEmpty(diffAdd)) {
+            diffAdd.forEach(p -> {
+                insertOrganCourseTagPos.add(new EpOrganCourseTagPo(null, p, organCourseId, null, null, null, null, null, null));
+            });
+        }
         organCourseTagRepository.insert(insertOrganCourseTagPos);
         //标签end
     }
 
     /**
+     * 商户后台更新课程时，比较两个EpOrganCoursePo对象是否相同
+     * 课程名称，课程类型，所属目录，课程简介，课程内容，课程须知，最低价格，上课地址，上线时间，报名开始时间，报名结束时间
+     *
+     * @param newPo
+     * @param oldPo
+     * @return
+     */
+    private Boolean isCourseEq4MerchUpdateCourse(EpOrganCoursePo newPo, EpOrganCoursePo oldPo) {
+        if (!newPo.getCourseName().equals(oldPo.getCourseName())) {
+            return false;
+        }
+        if (!newPo.getCourseType().equals(oldPo.getCourseType())) {
+            return false;
+        }
+        if (!newPo.getCourseCatalogId().equals(oldPo.getCourseCatalogId())) {
+            return false;
+        }
+        if (!newPo.getCourseIntroduce().equals(oldPo.getCourseIntroduce())) {
+            return false;
+        }
+        if (!newPo.getCourseContent().equals(oldPo.getCourseContent())) {
+            return false;
+        }
+        if (!newPo.getCourseNote().equals(oldPo.getCourseNote())) {
+            return false;
+        }
+        if (0 != newPo.getPrizeMin().compareTo(oldPo.getPrizeMin())) {
+            return false;
+        }
+        if (!newPo.getCourseAddress().equals(oldPo.getCourseAddress())) {
+            return false;
+        }
+        if (!newPo.getOnlineTime().equals(oldPo.getOnlineTime())) {
+            return false;
+        }
+        if (!newPo.getEnterTimeStart().equals(oldPo.getEnterTimeStart())) {
+            return false;
+        }
+        if (!newPo.getEnterTimeEnd().equals(oldPo.getEnterTimeEnd())) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 商户后台更新课程时，比较两个EpOrganClassPo对象是否相同
      * 班次名称，负责人，价格，折扣，是否限制报名人数，要求报名人数，总计课时
+     *
      * @param newPo
      * @param oldPo
      * @return
@@ -308,11 +357,12 @@ public class OrganCourseService {
     /**
      * 商户后台更新课程时，比较两个EpOrganClassCatelogPo对象是否相同
      * 班次名称，负责人，价格，折扣，是否限制报名人数，要求报名人数，总计课时
+     *
      * @param newPo
      * @param oldPo
      * @return
      */
-    private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatelogPo newPo, EpOrganClassCatelogPo oldPo){
+    private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatelogPo newPo, EpOrganClassCatelogPo oldPo) {
         if (!newPo.getCatelogTitle().equals(oldPo.getCatelogTitle())) {
             return false;
         }

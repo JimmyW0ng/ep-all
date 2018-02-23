@@ -165,17 +165,17 @@
 </script>
 <script type="text/template" id='constantTagTmpl'>
     <div class="col-sm-2">
-        <input name="tagName" value=${tagName} type="hidden"/>
+        <input name="tagName"  type="hidden" value=${tagName}>
         <input type="checkbox" name="id" value="${id}">
-        <input name="ognFlag" value=false type="hidden"/>
+        <input name="ognFlag" value=false type="hidden">
         <span class="label">${tagName}</span>
     </div>
 </script>
 <script type="text/template" id='ognTagTmpl'>
     <div class="col-sm-2">
-        <input name="id" value=${id} type="hidden" />
-        <input name="tagName" value=${label} type="hidden"/>
-        <input name="ognFlag" value=true type="hidden"/>
+        <input name="id" type="hidden" value=${id} >
+        <input name="tagName" type="hidden" value=${label}>
+        <input name="ognFlag" value=true type="hidden">
         <span class="label">${label}</span>
         <a href="javascript:void(0);" onclick="removeTag(this)"><span class="glyphicon glyphicon-remove"
                                                                       aria-hidden="true"></span></a>
@@ -297,7 +297,7 @@
      * @param ele
      */
     function removeTag(ele) {
-        $(ele).parent().parent().remove();
+        $(ele).parent().remove();
     }
 
     /**
@@ -384,13 +384,13 @@
                     var $organClassCatelogPosBox=$("#accordion").find("div[name='organClassCatelogPosBox']")
                     console.log($organClassCatelogPosBox.length)
                     for(var j=0;j<$organClassCatelogPosBox.length;j++){
-                        console.log($organClassCatelogPosBox.eq(j))
+//                        console.log($organClassCatelogPosBox.eq(j))
                         var $organClassCatelogPos=$organClassCatelogPosBox.eq(j).find("div[name='organClassCatelogPos']")
-                        console.log($organClassCatelogPos)
+//                        console.log($organClassCatelogPos)
                         for(var i=0;i<$organClassCatelogPos.length;i++){
                             var parentName=$organClassCatelogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
                             $organClassCatelogPos.eq(i).attr("name",parentName+".organClassCatelogPos["+i+"]")
-                            $organClassCatelogPos.eq(i).find("input").each(function () {
+                            $organClassCatelogPos.eq(i).find("input,textarea").each(function () {
                                 if($(this).attr("name")=="catelogIndex"){
                                     $(this).val(i+1)
                                 }
@@ -412,8 +412,7 @@
                         }else{
                             $constantTags.eq(i).find("input").each(function () {
                                 var oldName= $(this).attr("name");
-                                $(this).attr("name","constantTagPos["+i+"]."+oldName)
-//                                alert($(this).attr("name"))
+                                $(this).attr("name","constantTagPos["+tagCount+"]."+oldName)
                             })
                             tagCount++;
                         }
@@ -463,15 +462,17 @@
 
                 var htmls = '<option value="">请选择</option>';
                 for (key in organAccountMap) {
-                    htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
+                    if(key==organClassBos[i].ognAccountId){
+                        htmls = htmls + "<option selected value='" + key + "'>" + organAccountMap[key] + "</option>"
+                    }else{
+                        htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
+                    }
                 }
                 $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
                 var organClassCatelogPos=organClassBos[i].organClassCatelogPos
                 console.log(organClassCatelogPos)
 
-
                 var $box=$("#accordion").find("div[name='organClassCatelogPosBox']:last-child").eq(0)
-                $box.html("")
                 var catalog=[]
                 for(var i=0;i<organClassCatelogPos.length;i++){
                     catalog.push({id:organClassCatelogPos[i].id,len:i+1,startTime:organClassCatelogPos[i].startTime,
@@ -503,8 +504,6 @@
                     })
                 }
             }
-//            var tag = [{label: label}]
-//            $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
             //课程标签end
 
 
