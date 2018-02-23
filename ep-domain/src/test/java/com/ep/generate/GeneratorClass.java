@@ -29,7 +29,7 @@ public class GeneratorClass {
         Configuration configuration = new Configuration()
                 .withJdbc(new Jdbc()
                         .withDriver("com.mysql.jdbc.Driver")
-                        .withUrl("jdbc:mysql://122.225.218.26:9002/ep?useUnicode=true&amp;" +
+                        .withUrl("jdbc:mysql://127.0.0.1:3306/ep?useUnicode=true&amp;" +
                                 "characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true")
                         .withUser("root")
                         .withPassword("root"))

@@ -10,6 +10,8 @@ public class MemberChildBo extends EpMemberChildPo {
 
     private String avatar;
     private String sign;
+    private Integer totalOrder;
+    private Integer totalHonor;
 
     public String getChildBirthdayFormat() {
         return DateTools.dateToString(super.getChildBirthday(), DateTools.DATE_FMT_3);

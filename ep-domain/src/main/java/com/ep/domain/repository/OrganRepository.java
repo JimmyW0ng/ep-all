@@ -92,7 +92,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
      * @param pageable
      * @return
      */
-    public Page<OrganBo> queryOgnPage(Pageable pageable) {
+    public Page<OrganBo> queryOrganForPage(Pageable pageable) {
         long count = dslContext.selectCount().from(EP_ORGAN)
                 .where(EP_ORGAN.STATUS.eq(EpOrganStatus.normal))
                 .and(EP_ORGAN.DEL_FLAG.eq(false))

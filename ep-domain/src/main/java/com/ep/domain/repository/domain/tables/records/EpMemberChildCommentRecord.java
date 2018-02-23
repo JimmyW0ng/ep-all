@@ -29,7 +29,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChildCommentRecord> implements Record16<Long, Long, Long, Long, Long, Long, Long, EpMemberChildCommentType, String, Long, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 1545392794;
+    private static final long serialVersionUID = -282493920;
 
     /**
      * Create a detached EpMemberChildCommentRecord
@@ -41,7 +41,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     /**
      * Create a detached, initialised EpMemberChildCommentRecord
      */
-    public EpMemberChildCommentRecord(Long id, Long pId, Long childId, Long ognId, Long courseId, Long classId, Long classCatelogId, EpMemberChildCommentType type, String content, Long launchMemberId, Long replyMemberId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpMemberChildCommentRecord(Long id, Long pId, Long childId, Long ognId, Long courseId, Long classId, Long classCatelogId, EpMemberChildCommentType type, String content, Long ognAccountId, Long replyMemberId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
         super(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT);
 
         set(0, id);
@@ -53,7 +53,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
         set(6, classCatelogId);
         set(7, type);
         set(8, content);
-        set(9, launchMemberId);
+        set(9, ognAccountId);
         set(10, replyMemberId);
         set(11, createAt);
         set(12, updateAt);
@@ -198,16 +198,16 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.launch_member_id</code>. 发起评论者id
+     * Getter for <code>ep.ep_member_child_comment.ogn_account_id</code>. 发起评论者id
      */
-    public Long getLaunchMemberId() {
+    public Long getOgnAccountId() {
         return (Long) get(9);
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_comment.launch_member_id</code>. 发起评论者id
+     * Setter for <code>ep.ep_member_child_comment.ogn_account_id</code>. 发起评论者id
      */
-    public EpMemberChildCommentRecord setLaunchMemberId(Long value) {
+    public EpMemberChildCommentRecord setOgnAccountId(Long value) {
         set(9, value);
         return this;
     }
@@ -411,7 +411,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     @Override
     public Field<Long> field10() {
-        return EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.LAUNCH_MEMBER_ID;
+        return EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.OGN_ACCOUNT_ID;
     }
 
     /**
@@ -539,7 +539,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     @Override
     public Long value10() {
-        return getLaunchMemberId();
+        return getOgnAccountId();
     }
 
     /**
@@ -676,7 +676,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     @Override
     public EpMemberChildCommentRecord value10(Long value) {
-        setLaunchMemberId(value);
+        setOgnAccountId(value);
         return this;
     }
 

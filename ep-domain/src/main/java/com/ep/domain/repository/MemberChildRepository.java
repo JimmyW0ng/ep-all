@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.UpdateSetMoreStep;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -154,17 +155,25 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      * @return
      */
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
-        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.fields());
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.ID);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_MEMBER_CHILD_SIGN.CONTENT.as("sign"));
+        fieldList.add(DSL.count(EP_ORDER.ID).as("totalOrder"));
+        fieldList.add(DSL.count(EP_MEMBER_CHILD_HONOR.ID).as("totalHonor"));
         return dslContext.select(fieldList)
-                .from(EP_MEMBER_CHILD)
-                .leftJoin(EP_MEMBER_CHILD_SIGN)
-                .on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_SIGN.CHILD_ID))
-                .and(EP_MEMBER_CHILD_SIGN.DEL_FLAG.eq(false))
-                .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
-                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
-                .orderBy(EP_MEMBER_CHILD.SHOW_AT.desc())
-                .fetchInto(MemberChildBo.class);
+                         .from(EP_MEMBER_CHILD)
+                         .leftJoin(EP_MEMBER_CHILD_SIGN)
+                         .on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_SIGN.CHILD_ID))
+                         .and(EP_MEMBER_CHILD_SIGN.DEL_FLAG.eq(false))
+                         .leftJoin(EP_ORDER).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .leftJoin(EP_MEMBER_CHILD_HONOR).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_HONOR.CHILD_ID))
+                         .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
+                         .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
+                         .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                         .groupBy(EP_MEMBER_CHILD.ID)
+                         .orderBy(EP_MEMBER_CHILD.SHOW_AT.desc())
+                         .fetchInto(MemberChildBo.class);
     }
 
     /**

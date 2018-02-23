@@ -38,8 +38,8 @@ public class OrganController extends ApiController {
 
     @ApiOperation(value = "机构分页列表")
     @PostMapping("/page")
-    public ResultDo<Page<OrganBo>> queryOgnPage(@PageableDefault Pageable pageable) {
-        return organService.queryOgnPage(pageable);
+    public ResultDo<Page<OrganBo>> queryOrganForPage(@PageableDefault Pageable pageable) {
+        return organService.queryOrganForPage(pageable);
     }
 
 }

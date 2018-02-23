@@ -76,8 +76,8 @@ public class OrganService {
      * @param pageable
      * @return
      */
-    public ResultDo<Page<OrganBo>> queryOgnPage(Pageable pageable) {
-        Page<OrganBo> page = organRepository.queryOgnPage(pageable);
+    public ResultDo<Page<OrganBo>> queryOrganForPage(Pageable pageable) {
+        Page<OrganBo> page = organRepository.queryOrganForPage(pageable);
         List<OrganBo> data = page.getContent();
         if (CollectionsTools.isNotEmpty(data)) {
             for (OrganBo organ : data) {

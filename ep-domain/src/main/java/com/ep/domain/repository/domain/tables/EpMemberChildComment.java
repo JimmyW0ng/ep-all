@@ -34,7 +34,7 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      * The reference instance of <code>ep.ep_member_child_comment</code>
      */
     public static final EpMemberChildComment EP_MEMBER_CHILD_COMMENT = new EpMemberChildComment();
-    private static final long serialVersionUID = 917947685;
+    private static final long serialVersionUID = 65657219;
     /**
      * The column <code>ep.ep_member_child_comment.id</code>. 主键
      */
@@ -72,9 +72,9 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      */
     public final TableField<EpMemberChildCommentRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "评论内容");
     /**
-     * The column <code>ep.ep_member_child_comment.launch_member_id</code>. 发起评论者id
+     * The column <code>ep.ep_member_child_comment.ogn_account_id</code>. 发起评论者id
      */
-    public final TableField<EpMemberChildCommentRecord, Long> LAUNCH_MEMBER_ID = createField("launch_member_id", org.jooq.impl.SQLDataType.BIGINT, this, "发起评论者id");
+    public final TableField<EpMemberChildCommentRecord, Long> OGN_ACCOUNT_ID = createField("ogn_account_id", org.jooq.impl.SQLDataType.BIGINT, this, "发起评论者id");
     /**
      * The column <code>ep.ep_member_child_comment.reply_member_id</code>. 回复评论者id
      */
