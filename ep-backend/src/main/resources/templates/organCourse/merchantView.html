@@ -140,6 +140,12 @@
                                                         <input name="startTime" class="form-control datetimepicker" th:value="${organClassCatelogPo.startTime}"/>
                                                     </div>
                                                 </div>
+                                                <div class="form-group col-sm-12">
+                                                    <label class="col-sm-2 control-label" style="text-align: right;padding: 8px">目录描述</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea name="catelogDesc" class="form-control" th:text="${organClassCatelogPo.catelogDesc}"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         </div>
@@ -181,6 +187,12 @@
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">开始时间</label>
             <div class=" col-sm-8">
                 <input name="startTime" class="form-control datetimepicker"/>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label class="col-sm-2 control-label" style="text-align: right;padding: 8px">目录描述</label>
+            <div class="col-sm-10">
+                <textarea name="catelogDesc" class="form-control"></textarea>
             </div>
         </div>
     </div>

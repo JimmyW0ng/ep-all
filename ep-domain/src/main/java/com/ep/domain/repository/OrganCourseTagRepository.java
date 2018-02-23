@@ -46,4 +46,24 @@ public class OrganCourseTagRepository extends AbstractCRUDRepository<EpOrganCour
                          .fetchInto(OrganCourseTagBo.class);
     }
 
+    /**
+     * 根据课程id获取课程标签Po
+     * @param courseId
+     * @return
+     */
+    public List<EpOrganCourseTagPo> findPosByCourseId(Long courseId){
+        return dslContext.selectFrom(EP_ORGAN_COURSE_TAG)
+                .where(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_COURSE_TAG.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganCourseTagPo.class);
+    }
+
+    public void deleteByTagIdsAndCourseId(List<Long> tagId,Long courseId){
+        dslContext.update(EP_ORGAN_COURSE_TAG)
+                .set(EP_ORGAN_COURSE_TAG.DEL_FLAG,true)
+                .where(EP_ORGAN_COURSE_TAG.TAG_ID.in(tagId))
+                .and(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
+                .execute();
+    }
+
 }

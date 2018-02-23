@@ -37,4 +37,16 @@ public class ConstantTagPepository extends AbstractCRUDRepository<EpConstantTagR
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .fetchInto(EpConstantTagPo.class);
     }
+
+    /**
+     * 根据id删除课程私有标签
+     * @param id
+     */
+    public void deleteOgnTagByIds(List<Long> id){
+        dslContext.update(EP_CONSTANT_TAG)
+                .set(EP_CONSTANT_TAG.DEL_FLAG,true)
+                .where(EP_CONSTANT_TAG.OGN_FLAG.eq(true))
+                .and(EP_CONSTANT_TAG.ID.in(id))
+                .execute();
+    }
 }

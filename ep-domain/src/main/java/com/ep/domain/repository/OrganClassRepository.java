@@ -7,6 +7,7 @@ import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
 import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -99,6 +100,24 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS_CATELOG.START_TIME.asc())
                 .fetchInto(OrganAccountClassBo.class);
+    }
+
+    /**
+     * 更新班次EpOrganClassPo
+     * @param po
+     */
+    public void updateOrganClassPo(EpOrganClassPo po){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.CLASS_NAME,po.getClassName())
+                .set(EP_ORGAN_CLASS.OGN_ACCOUNT_ID,po.getOgnAccountId())
+                .set(EP_ORGAN_CLASS.CLASS_PRIZE,po.getClassPrize())
+                .set(EP_ORGAN_CLASS.DISCOUNT_AMOUNT,po.getDiscountAmount())
+                .set(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG,po.getEnterLimitFlag())
+                .set(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM,po.getEnteredNum())
+                .set(EP_ORGAN_CLASS.COURSE_NUM,po.getCourseNum())
+                .set(EP_ORGAN_CLASS.UPDATE_AT, DSL.currentTimestamp())
+                .where(EP_ORGAN_CLASS.ID.eq(po.getId()))
+                .execute();
     }
 }
 

@@ -125,17 +125,21 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
     }
 
     /**
-     * 根据id更新课程对象
+     * 根据id更新课程对象EpOrganCoursePo
      * @param po
      */
     public void updateById(EpOrganCoursePo po){
         dslContext.update(EP_ORGAN_COURSE)
                 .set(EP_ORGAN_COURSE.COURSE_NAME,po.getCourseName())
+                .set(EP_ORGAN_COURSE.COURSE_TYPE,po.getCourseType())
                 .set(EP_ORGAN_COURSE.COURSE_INTRODUCE,po.getCourseIntroduce())
                 .set(EP_ORGAN_COURSE.COURSE_CONTENT,po.getCourseContent())
                 .set(EP_ORGAN_COURSE.COURSE_NOTE,po.getCourseNote())
                 .set(EP_ORGAN_COURSE.PRIZE_MIN,po.getPrizeMin())
                 .set(EP_ORGAN_COURSE.COURSE_ADDRESS,po.getCourseAddress())
+                .set(EP_ORGAN_COURSE.ONLINE_TIME,po.getOnlineTime())
+                .set(EP_ORGAN_COURSE.ENTER_TIME_START,po.getEnterTimeStart())
+                .set(EP_ORGAN_COURSE.ENTER_TIME_END,po.getEnterTimeEnd())
                 .set(EP_ORGAN_COURSE.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
                 .execute();
