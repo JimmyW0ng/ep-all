@@ -22,6 +22,8 @@ public class MemberChildScheduleBo extends EpOrderPo {
     @JsonIgnore
     private Timestamp startTime;
     private String mainPicUrl;
+    private String nickName;
+    private String avatar;
 
     /**
      * 开课时间格式化

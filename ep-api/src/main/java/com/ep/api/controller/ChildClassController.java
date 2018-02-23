@@ -1,7 +1,9 @@
 package com.ep.api.controller;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.service.MemberChildService;
@@ -60,11 +62,19 @@ public class ChildClassController extends ApiController {
                                                                        @RequestParam("childId") Long childId) {
         ResultDo<Page<MemberChildScheduleBo>> resultDo = ResultDo.build();
         Long memberId = super.getCurrentUser().get().getId();
-        ResultDo checkedChild = memberChildService.getCheckedMemberChild(memberId, childId);
+        ResultDo<MemberChildBo> checkedChild = memberChildService.getAllByMemberIdAndChildId(memberId, childId);
         if (checkedChild.isError()) {
             return resultDo.setError(checkedChild.getError());
         }
         Page<MemberChildScheduleBo> data = orderService.findChildSchedulePage(pageable, childId);
+        List<MemberChildScheduleBo> schedules = data.getContent();
+        if (CollectionsTools.isNotEmpty(schedules)) {
+            MemberChildBo childBo = checkedChild.getResult();
+            for (MemberChildScheduleBo schedule : schedules) {
+                schedule.setNickName(childBo.getChildNickName());
+                schedule.setAvatar(childBo.getAvatar());
+            }
+        }
         return resultDo.setResult(data);
     }
 

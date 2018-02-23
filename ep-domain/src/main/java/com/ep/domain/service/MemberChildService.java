@@ -217,9 +217,8 @@ public class MemberChildService {
         }
         for (MemberChildBo childBo : data) {
             Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childBo.getId());
-            if (optional.isPresent()) {
-                childBo.setAvatar(optional.get().getFileUrl());
-            }
+            String avatar = optional.isPresent() ? optional.get().getFileUrl() : null;
+            childBo.setAvatar(avatar);
         }
         return data;
     }
