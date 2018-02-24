@@ -7,7 +7,7 @@
 </head>
 <header>
     <th:block layout:fragment="links">
-        <!--<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">-->
+
         <link th:href="@{/css/plugins/steps/jquery.steps.css}" rel="stylesheet">
     </th:block>
 </header>
@@ -28,73 +28,88 @@
                         <input id="ognId" type="hidden" th:value="${organCoursePo.ognId}">
                         <div class="form-group">
                             <label for="courseName">课程名称 *</label>
-                            <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px" th:value="${organCoursePo.courseName}"
-                                   class=" form-control ">
+                            <div class="input-group input-large col-sm-4">
+                                <input id="courseName" name="organCoursePo.courseName" type="text" th:value="${organCoursePo.courseName}"
+                                       required="true" class=" form-control ">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="courseType">课程类型 *</label>
-                            <select id="courseType" name="organCoursePo.courseType" type="text" style="width: 300px"
-                                    class=" form-control ">
-                                <option value="">请选择</option>
-                                <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
-                                        th:field="*{courseType}"
-                                        th:value="${state}"
-                                        th:text="#{EpOrganCourseCourseType.+${state.literal}}">
-                                </option>
-                            </select>
+                            <div class="input-group input-large col-sm-4">
+                                <select id="courseType" name="organCoursePo.courseType" type="text" required="true"
+                                        class=" form-control ">
+                                    <option value="">请选择</option>
+                                    <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
+                                            th:field="*{courseType}"
+                                            th:value="${state}"
+                                            th:text="#{EpOrganCourseCourseType.+${state.literal}}">
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="courseCatalogId">课程所属目录 *</label>
-                            <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text" style="width: 300px"
-                                    class="form-control" onchange="changeGetTags(this)">
-                                <option value="">请选择</option>
-                                <option th:each="state : ${constantCatalogMap.keySet()}" th:field="*{courseCatalogId}"
-                                        th:value="${state}"
-                                        th:text="${constantCatalogMap.get(state)}">
-                                </option>
-                            </select>
+                            <div class="input-group input-large col-sm-4">
+                                <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text" required="true"
+                                        class="form-control" onchange="changeGetTags(this)">
+                                    <option value="">请选择</option>
+                                    <option th:each="state : ${constantCatalogMap.keySet()}" th:field="*{courseCatalogId}"
+                                            th:value="${state}"
+                                            th:text="${constantCatalogMap.get(state)}">
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="courseIntroduce">课程简介 *</label>
-                            <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text" style="width: 300px"
-                                      class="form-control " th:text="${organCoursePo.courseIntroduce}"></textarea>
+                            <div class="input-group input-large col-sm-4">
+                                <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
+                                          class="form-control " th:text="${organCoursePo.courseIntroduce}"></textarea>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="courseContent">课程内容 *</label>
-                            <textarea id="courseContent" name="organCoursePo.courseContent" type="text" style="width: 300px"
-                                      class="form-control " th:text="${organCoursePo.courseContent}"></textarea>
+                            <div class="input-group input-large col-sm-4">
+                                <textarea id="courseContent" name="organCoursePo.courseContent" type="text"
+                                          required="true" class="form-control " th:text="${organCoursePo.courseContent}"></textarea>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="courseNote">课程须知 *</label>
-                            <textarea id="courseNote" name="organCoursePo.courseNote" type="text" style="width: 300px"
-                                      class="form-control " th:text="${organCoursePo.courseNote}"></textarea>
+                            <div class="input-group input-large col-sm-4">
+                                <textarea id="courseNote" name="organCoursePo.courseNote" type="text"
+                                          class="form-control " th:text="${organCoursePo.courseNote}"></textarea>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="prizeMin">最低价格 *</label>
-                            <input id="prizeMin" name="organCoursePo.prizeMin" type="text" style="width: 300px" class="form-control "
-                                   th:value="${organCoursePo.prizeMin}">
-                            <!--<span class="input-group-addon">元</span>-->
-                        </div>
+
                         <div class="form-group">
                             <label for="courseAddress">上课地址 *</label>
-                            <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text" style="width: 300px"
-                                      class="form-control " th:text="${organCoursePo.courseAddress}">
-                            </textarea>
+                            <div class="input-group input-large col-sm-4">
+                                <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
+                                          class="form-control " th:text="${organCoursePo.courseAddress}">
+                                </textarea>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="onlineTime">上线时间 *</label>
-                            <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px"
-                                   class="form-control datetimepicker" th:value="${organCoursePo.onlineTime}">
+                            <div class="input-group input-large col-sm-4">
+                                <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
+                                       required="true" class="form-control datetimepicker" th:value="${organCoursePo.onlineTime}">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="enterTimeStart">报名开始时间 *</label>
-                            <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text" style="width: 300px"
-                                   class="form-control datetimepicker" th:value="${organCoursePo.enterTimeStart}">
+                            <div class="input-group input-large col-sm-4">
+                                <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
+                                       required="true" class="form-control datetimepicker" th:value="${organCoursePo.enterTimeStart}">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 *</label>
-                            <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" style="width: 300px"
-                                   class="form-control datetimepicker" th:value="${organCoursePo.enterTimeEnd}">
+                            <div class="input-group input-large col-sm-4">
+                                <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
+                                       class="form-control datetimepicker" th:value="${organCoursePo.enterTimeEnd}">
+                            </div>
                         </div>
                     </section>
                     <h3>创建班次</h3>
@@ -105,17 +120,17 @@
 
                         </div>
                     </section>
-                    <h3>创建标签</h3>
+                    <h3>选择标签</h3>
                     <section style="position: static">
                         <div id="constantTagBox" class="col-sm-12">
 
                         </div>
-                        <div class="col-sm-12"><label>标签名</label></div>
+                        <div class="col-sm-12" style="display: none"><label>标签名</label></div>
 
-                        <div class="col-sm-3">
+                        <div class="col-sm-3" style="display: none">
                             <input id="createTag" name="" type="text" class=" form-control ">
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-3" style="display: none">
                             <button class="btn btn-primary " type="button" onclick="createTagBox()">创 建</button>
                         </div>
 
@@ -123,11 +138,11 @@
 
                         </div>
                     </section>
-                    <h3>Finish</h3>
-                    <section style="position: static">
-                        <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label
-                            for="acceptTerms">I agree with the Terms and Conditions.</label>
-                    </section>
+                    <!--<h3>Finish</h3>-->
+                    <!--<section style="position: static">-->
+                        <!--<input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label-->
+                            <!--for="acceptTerms">I agree with the Terms and Conditions.</label>-->
+                    <!--</section>-->
                 </div>
             </form>
 
@@ -167,8 +182,8 @@
     <div class="col-sm-2">
         <input name="tagName"  type="hidden" value=${tagName}>
         <input type="checkbox" name="id" value="${id}">
-        <input name="ognFlag" value=false type="hidden">
-        <span class="label">${tagName}</span>
+        <input name="ognFlag" type="hidden" value="${ognFlag}" >
+        <span class="label" >${tagName}</span>
     </div>
 </script>
 <script type="text/template" id='ognTagTmpl'>
@@ -185,7 +200,7 @@
     <div name="organClassBosBox"  class="panel panel-default">
         <div class="panel-heading">
             <h5 class="panel-title">
-                <a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>标题</a>
+                <a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>${className}</a>
                 <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
                                                                         aria-hidden="true"
                                                                         onclick="removeClassBox(this)"></span></a>
@@ -203,9 +218,15 @@
 
                     </select>
                     <label>价格 *</label>
-                    <input name="classPrize" type="text"  class=" form-control " value="${classPrize}">
+                    <div class="input-group input-large">
+                        <input name="classPrize" type="text"  class=" form-control " value="${classPrize}">
+                        <span class="input-group-addon">元</span>
+                    </div>
                     <label>折扣优惠 *</label>
-                    <input name="discountAmount" type="text"  class=" form-control " value="${discountAmount}">
+                    <div class="input-group input-large">
+                        <input name="discountAmount" type="text"  class=" form-control " value="${discountAmount}">
+                        <span class="input-group-addon">%</span>
+                    </div>
                     <label>是否限制报名人数 *</label>
                     <select name="enterLimitFlag" type="text"  class=" form-control " value="${enterLimitFlag}">
                         <option value=true>是</option>
@@ -277,15 +298,16 @@
         $("#constantTagBox").html("")
         $.ajax({
             type: "GET",
-            url: "/auth/organCourse/findTagsByCatalogAndCourseId/" + $(ele).val()+"&"+$("#courseId").val(),
+            url: "/auth/organCourse/findTagsByCatalog/" + $(ele).val(),
             success: function (data) {
                 if (data.success) {
-                    var res = data.result.constantTagMap
+                    var res = data.result.ognTagList
                     var constantTag = []
-                    for (key in res) {
-                        constantTag.push({id: key, tagName: res[key]})
+                    for (item in res) {
+//                        background-color#f8ac59
+                        constantTag.push({id: res[item].id, tagName: res[item].tagName,ognFlag:res[item].ognFlag})
                     }
-                    console.log(constantTag)
+//                    console.log(constantTag)
                     $("#constantTagBox").html($("#constantTagTmpl").tmpl(constantTag));
                 }
             }
@@ -318,7 +340,7 @@
 //        console.log($("#accordion").find("div[name='organClassBos']").length)
         var len = $("#accordion").find("div[name='organClassBosBox']").length
 
-        var classes = [{href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1)}]
+        var classes = [{href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),className:"班次"}]
         $("#accordion").append($("#classTmpl").tmpl(classes));
 //        console.log($("#accordion").find("div[name='organClassBos']:last-child").find("select[name='ognAccountId']"))
         var htmls = '<option value="">请选择</option>';
@@ -382,7 +404,6 @@
                     }
 
                     var $organClassCatelogPosBox=$("#accordion").find("div[name='organClassCatelogPosBox']")
-                    console.log($organClassCatelogPosBox.length)
                     for(var j=0;j<$organClassCatelogPosBox.length;j++){
 //                        console.log($organClassCatelogPosBox.eq(j))
                         var $organClassCatelogPos=$organClassCatelogPosBox.eq(j).find("div[name='organClassCatelogPos']")
@@ -437,7 +458,7 @@
                     url: url,
                     success: function (data) {
                         if (data.success) {
-                            alert("success!");
+                            toastr_success(null,"/auth/organCourse/merchantIndex")
                         }
                     }
                 })
@@ -450,14 +471,15 @@
         //修改页面初始化end
         if([[${organCoursePo.id}]]){
             //班次start
-            console.log([[${organClassBos}]])
+//            console.log([[${organClassBos}]])
             var organClassBos=[[${organClassBos}]]
-            var len = $("#accordion").find("div[name='organClassBosBox']").length
+//            console.log("length="+organClassBos.length)
             for(var i=0;i<organClassBos.length;i++){
+                var len = $("#accordion").find("div[name='organClassBosBox']").length
                 var classes = [{id:organClassBos[i].id,href:"#collapse" + (len + 1), collapse: "collapse" + (len + 1),
                     className:organClassBos[i].className,classPrize:organClassBos[i].classPrize,
-                    discountAmount:organClassBos[i].discountAmount,
-                    courseNum:organClassBos[i].courseNum}]
+                    discountAmount:organClassBos[i].discountAmount,enterLimitFlag:organClassBos[i].enterLimitFlag,
+                    enterRequireNum:organClassBos[i].enterRequireNum,courseNum:organClassBos[i].courseNum}]
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 
                 var htmls = '<option value="">请选择</option>';
@@ -468,41 +490,54 @@
                         htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
                     }
                 }
-                $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
+                $("#accordion").find("div[name='organClassBosBox']:last").find("select[name='ognAccountId']").eq(0).html(htmls);
                 var organClassCatelogPos=organClassBos[i].organClassCatelogPos
-                console.log(organClassCatelogPos)
+//                console.log(organClassCatelogPos)
 
-                var $box=$("#accordion").find("div[name='organClassCatelogPosBox']:last-child").eq(0)
+                var $box=$("#accordion").find("div[name='organClassCatelogPosBox']:last")
+                console.log("$box")
+                console.log($box)
                 var catalog=[]
-                for(var i=0;i<organClassCatelogPos.length;i++){
-                    catalog.push({id:organClassCatelogPos[i].id,len:i+1,startTime:organClassCatelogPos[i].startTime,
-                        catelogTitle:organClassCatelogPos[i].catelogTitle,catelogDesc:organClassCatelogPos[i].catelogDesc})
+                for(var j=0;j<organClassCatelogPos.length;j++){
+                    catalog.push({id:organClassCatelogPos[j].id,len:j+1,startTime:organClassCatelogPos[j].startTime,
+                        catelogTitle:organClassCatelogPos[j].catelogTitle,catelogDesc:organClassCatelogPos[j].catelogDesc})
                 }
                 $box.append($("#classCatalogTmpl").tmpl(catalog))
             }
+            $("#accordion").find("select[name='enterLimitFlag']").each(function () {
+                var val=$(this).attr("value")
+                $(this).val(val)
+            })
+            $("#accordion").find("div[id^='collapse']").removeClass("in");//选项卡折叠
 
             //班次end
             //公用标签start
-            var constantTagMap=[[${constantTagMap}]]
+            var ognTagList=[[${ognTagList}]]
             var constantTag = []
-            for (key in constantTagMap) {
-                constantTag.push({id: key, tagName: constantTagMap[key]})
+            for (item in ognTagList) {
+//                        background-color#f8ac59
+                constantTag.push({id: ognTagList[item].id, tagName: ognTagList[item].tagName,ognFlag:ognTagList[item].ognFlag})
             }
             $("#constantTagBox").html($("#constantTagTmpl").tmpl(constantTag));
             //公用标签end
             //课程标签start
             var organCourseTagBos=[[${organCourseTagBos}]]
             for(item in organCourseTagBos){
-                if(organCourseTagBos[item].ognFlag){
-                    var tag = [{id:organCourseTagBos[item].tagId,label: organCourseTagBos[item].tagName}]
-                    $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
-                }else{
-                    $("#constantTagBox").find("input[name='id']").each(function () {
-                        if($(this).val()==organCourseTagBos[item].tagId){
-                            $(this).attr("checked",true)
-                        }
-                    })
-                }
+                $("#constantTagBox").find("input[name='id']").each(function () {
+                    if($(this).val()==organCourseTagBos[item].tagId){
+                        $(this).attr("checked",true)
+                    }
+                })
+//                if(organCourseTagBos[item].ognFlag){
+//                    var tag = [{id:organCourseTagBos[item].tagId,label: organCourseTagBos[item].tagName}]
+//                    $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
+//                }else{
+//                    $("#constantTagBox").find("input[name='id']").each(function () {
+//                        if($(this).val()==organCourseTagBos[item].tagId){
+//                            $(this).attr("checked",true)
+//                        }
+//                    })
+//                }
             }
             //课程标签end
 

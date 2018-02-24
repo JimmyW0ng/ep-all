@@ -66,4 +66,14 @@ public class OrganCourseTagRepository extends AbstractCRUDRepository<EpOrganCour
                 .execute();
     }
 
+    /**
+     * 根据课程courseId批量物理删除
+     * @param courseId
+     */
+    public void deletePhysicByCourseId(Long courseId){
+        dslContext.delete(EP_ORGAN_COURSE_TAG)
+                .where(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
+                .execute();
+    }
+
 }

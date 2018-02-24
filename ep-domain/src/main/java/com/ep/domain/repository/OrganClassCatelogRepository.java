@@ -115,4 +115,25 @@ public class OrganClassCatelogRepository extends AbstractCRUDRepository<EpOrganC
                 .where(EP_ORGAN_CLASS_CATELOG.ID.in(ids))
                 .execute();
     }
+
+    /**
+     * 根据班次classIds批量逻辑删除记录
+     * @param classIds
+     */
+    public void deleteByClassIds(List<Long> classIds){
+        dslContext.update(EP_ORGAN_CLASS_CATELOG)
+                .set(EP_ORGAN_CLASS_CATELOG.DEL_FLAG,true)
+                .where(EP_ORGAN_CLASS_CATELOG.CLASS_ID.in(classIds))
+                .execute();
+    }
+
+    /**
+     * 根据班次classIds批量物理删除记录
+     * @param classIds
+     */
+    public void deletePhysicByClassIds(List<Long> classIds){
+        dslContext.delete(EP_ORGAN_CLASS_CATELOG)
+                .where(EP_ORGAN_CLASS_CATELOG.CLASS_ID.in(classIds))
+                .execute();
+    }
 }

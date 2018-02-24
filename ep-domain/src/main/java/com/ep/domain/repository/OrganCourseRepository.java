@@ -128,7 +128,10 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * 根据id更新课程对象EpOrganCoursePo
      * @param po
      */
-    public void updateById(EpOrganCoursePo po){
+    public void updateByIdLock(EpOrganCoursePo po){
+        dslContext.selectFrom(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false)).forUpdate();
         dslContext.update(EP_ORGAN_COURSE)
                 .set(EP_ORGAN_COURSE.COURSE_NAME,po.getCourseName())
                 .set(EP_ORGAN_COURSE.COURSE_TYPE,po.getCourseType())
