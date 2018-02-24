@@ -30,6 +30,15 @@ public class OrderController extends ApiController {
     @Autowired
     private OrderService orderService;
 
+    @ApiOperation(value = "立即订单初始化信息")
+    @PostMapping("/init")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo init(@RequestParam("courseId") Long childId,
+                         @RequestParam("classId") Long classId) {
+        Optional<EpMemberPo> optional = super.getCurrentUser();
+        return orderService.order(optional.get().getId(), childId, classId);
+    }
+
     @ApiOperation(value = "创建订单")
     @PostMapping("/new")
     @PreAuthorize("hasAnyAuthority('api:base')")
