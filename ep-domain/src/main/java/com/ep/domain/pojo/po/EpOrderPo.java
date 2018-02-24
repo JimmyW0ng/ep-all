@@ -52,9 +52,9 @@ public class EpOrderPo extends AbstractBasePojo {
         } else if (EpOrderStatus.end.equals(status)) {
             return "已结束";
         } else if (EpOrderStatus.cancel.equals(status)) {
-            return "用户已取消";
+            return "用户取消";
         } else if (EpOrderStatus.refuse.equals(status)) {
-            return "机构已取消";
+            return "机构拒绝";
         }
         return null;
     }
