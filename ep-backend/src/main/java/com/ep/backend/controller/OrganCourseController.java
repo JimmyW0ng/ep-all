@@ -141,29 +141,27 @@ public class OrganCourseController extends BackendController {
      * @param catalogId
      * @return
      */
-    @GetMapping("findTagsByCatalogAndCourseId/{catalogId}&{courseId}")
+    @GetMapping("findTagsByCatalog/{catalogId}")
     @ResponseBody
     public ResultDo findTagsByConstantCatalog(
             @PathVariable("catalogId") Long catalogId,
-            @PathVariable("courseId") Long courseId,
             HttpServletRequest request) {
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
 
-        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
-        Map<String, Object> map = Maps.newHashMap();
-        Map<Long, String> constantTagMap = Maps.newHashMap();
-        constantTagList.forEach(p -> {
-            constantTagMap.put(p.getId(), p.getTagName());
-        });
         //公用标签
-        map.put("constantTagMap", constantTagMap);
-        //课程私有标签
-//        if (null != courseId) {
-//            List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
-//
-//            map.put("organCourseTagBos", organCourseTagBos);
-//        }
+        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        //私有标签
+        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+        ognTagList.addAll(constantTagList);
+        Map<String, Object> map = Maps.newHashMap();
+//        Map<Long, String> constantTagMap = Maps.newHashMap();
+//        ognTagList.forEach(p -> {
+//            constantTagMap.put(p.getId(), p.getTagName());
+//        });
+        map.put("ognTagList", ognTagList);
+
 
         resultDo.setResult(map);
         return resultDo;
@@ -238,6 +236,7 @@ public class OrganCourseController extends BackendController {
     public String merchantUpdateInit(HttpServletRequest request, Model model, @PathVariable(value = "courseId") Long courseId) {
 
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId = currentUser.getOgnId();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
         constantCatalogList.forEach(p -> {
@@ -273,16 +272,19 @@ public class OrganCourseController extends BackendController {
         //班次
         model.addAttribute("organClassBos", organClassBos);
 
-        //公用标签
-        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
-        Map<Long, String> constantTagMap = Maps.newHashMap();
-        constantTagList.forEach(p -> {
-            constantTagMap.put(p.getId(), p.getTagName());
-        });
-        model.addAttribute("constantTagMap", constantTagMap);
         //课程标签
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
+
+        //公用标签
+        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        //私有标签
+        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+        ognTagList.addAll(constantTagList);
+
         model.addAttribute("organCourseTagBos", organCourseTagBos);
+        model.addAttribute("ognTagList", ognTagList);
+
+
         return "organCourse/merchantForm";
     }
 

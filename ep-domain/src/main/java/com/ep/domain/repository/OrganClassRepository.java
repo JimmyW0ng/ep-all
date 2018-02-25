@@ -119,5 +119,38 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .where(EP_ORGAN_CLASS.ID.eq(po.getId()))
                 .execute();
     }
+
+    /**
+     * 根据课程courseId获取班级ClassId
+     * @param courseId
+     * @return
+     */
+    public List<Long> findClassIdsByCourseId(Long courseId){
+        return dslContext.select(EP_ORGAN_CLASS.ID).from(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchInto(Long.class);
+    }
+
+    /**
+     * 根据ids批量逻辑删除记录
+     * @param ids
+     */
+    public void deleteByIds(List<Long> ids){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.DEL_FLAG,true)
+                .where(EP_ORGAN_CLASS.ID.in(ids))
+                .execute();
+    }
+
+    /**
+     * 根据课程courseId批量物理删除记录
+     * @param courseId
+     */
+    public void deletePhysicByCourseId(Long courseId){
+        dslContext.delete(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .execute();
+    }
 }
 

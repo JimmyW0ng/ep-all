@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sd="http://www.thymeleaf.org/spring-data"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+<header>
+    <th:block layout:fragment="links">
+
+    </th:block>
+</header>
+<body>
+<div>
+    <div class="col-lg-12">
+
+        <div class="panel">
+
+            <!--<div class="panel-heading">-->
+            <!--<a class="btn btn-success" type="button" th:href="@{/auth/user/createInit}"><i-->
+            <!--class="glyphicon glyphicon-plus"></i> 创建</a>-->
+            <!--</div>-->
+            <div class="panel-heading" style=" padding: 15px 15px 5px">
+                <form class="form-inline" id="query-form" role="form">
+
+                    <div class="form-group">
+                        <select type="text" class="form-control" name="catalogId" id="catalogId" style="width:182px;">
+                            <option value="">类目</option>
+                            <option th:each="po :${constantCatalogPos}" th:value="${po.id}" th:text="${po.label}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="vertical-align: top;">
+                        <button class="btn btn-primary" onclick="findTags()" type="button">查询</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+            <div class="panel-body">
+                <div style="background: #eee;min-height: 500px;padding: 20px 0px">
+                    <div class="col-sm-3">
+                        <input id="createTag" name="" type="text" class="form-control" placeholder="标签名">
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-primary " type="button" onclick="createTagBox()">创 建</button>
+                    </div>
+                    <div  class="col-sm-12" style="padding-top: 20px">
+                        <label class="col-sm-2" >公用标签：</label>
+                        <div id="constantTagBox"></div>
+                    </div>
+                    <div  class="col-sm-12" style="padding-top: 20px">
+                        <label class="col-sm-2" >我的标签：</label>
+                        <div id="createTagBox"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/template" id='ognTagTmpl'>
+    <div class="col-sm-2" style="margin-bottom: 20px">
+        <input name="id" type="hidden" value=${id} >
+        <input name="tagName" type="hidden" value=${tagName}>
+        <input name="ognFlag" value=true type="hidden">
+        <span class="label">${tagName}</span>
+        <a href="javascript:void(0);" onclick="removeTag(this)" value=${id}><span class="glyphicon glyphicon-remove"
+                                                                      aria-hidden="true"></span></a>
+    </div>
+</script>
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/jquery.tmpl.min.js}"></script>
+<script>
+    /**
+     * 新增课程标签
+     */
+    function createTagBox() {
+        var catalogId=$("#catalogId").val()
+        var tagName = $('#createTag').val()
+        if (catalogId == "" || catalogId == undefined) {
+            toastr.error("请选择类目")
+            return
+        }
+        if (tagName == "" || tagName == undefined) {
+            toastr.error("请填写标签名")
+            return
+        }
+        $.ajax({
+            type:"GET",
+            url:"/auth/constantTag/createOgnTag?"+"catalogId="+catalogId+"&tagName="+tagName,
+            success:function (data) {
+                if(data.success){
+                    var tag = [{id:"",tagName: data.result}]
+                    $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
+                }
+            }
+        })
+
+
+    }
+    /**
+     * 删除标签
+     * @param ele
+     */
+    function removeTag(ele) {
+        var id=$(ele).attr("value")
+        if(id){
+            $.ajax({
+                type:"GET",
+                url:"/auth/constantTag/deleteTag/"+id,
+                success:function (data) {
+                    if(data.success){
+                        $(ele).parent().remove();
+                    }
+                }
+            })
+
+        }
+
+    }
+
+    function findTags(){
+        var catalogId=$("#catalogId").val()
+        if(catalogId==""||catalogId==undefined){
+            return
+        }
+        $.ajax({
+            type:"GET",
+            url:"/auth/constantTag/findTags?"+"catalogId="+catalogId,
+            success:function (data) {
+                if(data.success){
+                    //公用标签
+                    var constantTag=data.result.constantTag
+                    $("#constantTagBox").html($("#ognTagTmpl").tmpl(constantTag))
+                    $("#constantTagBox").find("a").hide()
+                    //私有标签
+                    var ognTag=data.result.ognTag
+                    $("#createTagBox").html($("#ognTagTmpl").tmpl(ognTag))
+
+
+
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -16,10 +16,10 @@ import static com.ep.domain.repository.domain.tables.EpConstantTag.EP_CONSTANT_T
  * @Date: 13:46 2018/2/9
  */
 @Repository
-public class ConstantTagPepository extends AbstractCRUDRepository<EpConstantTagRecord, Long, EpConstantTagPo> {
+public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagRecord, Long, EpConstantTagPo> {
 
     @Autowired
-    public ConstantTagPepository(DSLContext dslContext) {
+    public ConstantTagRepository(DSLContext dslContext) {
         super(dslContext, EP_CONSTANT_TAG, EP_CONSTANT_TAG.ID, EpConstantTagPo.class);
     }
 
@@ -39,6 +39,18 @@ public class ConstantTagPepository extends AbstractCRUDRepository<EpConstantTagR
     }
 
     /**
+     * 根据机构id获取标签
+     * @param ognId
+     * @return
+     */
+    public List<EpConstantTagPo> findByOgnId(Long ognId) {
+        return dslContext.selectFrom(EP_CONSTANT_TAG)
+                .where(EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .fetchInto(EpConstantTagPo.class);
+    }
+
+    /**
      * 根据id删除课程私有标签
      * @param id
      */
@@ -47,6 +59,17 @@ public class ConstantTagPepository extends AbstractCRUDRepository<EpConstantTagR
                 .set(EP_CONSTANT_TAG.DEL_FLAG,true)
                 .where(EP_CONSTANT_TAG.OGN_FLAG.eq(true))
                 .and(EP_CONSTANT_TAG.ID.in(id))
+                .execute();
+    }
+
+    /**
+     * 根据id逻辑删除
+     * @param id
+     */
+    public void deleteById(Long id){
+        dslContext.update(EP_CONSTANT_TAG)
+                .set(EP_CONSTANT_TAG.DEL_FLAG,true)
+                .where(EP_CONSTANT_TAG.ID.eq(id))
                 .execute();
     }
 }
