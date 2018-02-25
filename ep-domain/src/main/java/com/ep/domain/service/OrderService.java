@@ -8,6 +8,7 @@ import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
+import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
@@ -44,6 +45,25 @@ public class OrderService {
     private OrganCourseRepository organCourseRepository;
     @Autowired
     private FileRepository fileRepository;
+
+    /**
+     * 加载会员下单需要的数据
+     *
+     * @param memberId
+     * @param courseId
+     * @return
+     */
+    public ResultDo<List<MemberCourseOrderInitBo>> initInfo(Long memberId, Long courseId) {
+        ResultDo<List<MemberCourseOrderInitBo>> resultDo = ResultDo.build();
+        EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
+        if (coursePo == null || coursePo.getDelFlag()) {
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
+        } else if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)) {
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
+        }
+        List<MemberCourseOrderInitBo> data = orderRepository.findChildrenAndOrders(memberId, courseId);
+        return resultDo.setResult(data);
+    }
 
     /**
      * 下单接口

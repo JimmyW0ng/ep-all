@@ -5,6 +5,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
+import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
@@ -12,6 +13,7 @@ import com.google.common.collect.Lists;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -165,5 +167,42 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return new PageImpl(data, pageable, count);
     }
 
+    /**
+     * 获取家长的所有孩子和报名数据
+     *
+     * @param memberId
+     * @param courseId
+     * @return
+     */
+    public List<MemberCourseOrderInitBo> findChildrenAndOrders(Long memberId, Long courseId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.ID.as("childId"));
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(DSL.groupConcat(EP_ORDER.CLASS_ID).as("joinedClasses"));
+        return dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD)
+                .leftJoin(EP_ORDER)
+                .on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .and(EP_ORDER.STATUS.notEqual(EpOrderStatus.cancel))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .groupBy(EP_MEMBER_CHILD.ID)
+                .orderBy(EP_MEMBER_CHILD.SHOW_AT.desc())
+                .fetchInto(MemberCourseOrderInitBo.class);
+    }
+
+    /**
+     * 根据孩子统计订单数
+     *
+     * @param childId
+     * @return
+     */
+    public Long countByChildId(Long childId) {
+        return dslContext.selectCount()
+                .from(EP_ORDER)
+                .where(EP_ORDER.CHILD_ID.eq(childId))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
 }
 

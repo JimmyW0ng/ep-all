@@ -7,15 +7,13 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.MemberChildAbstractBo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberChildSignPo;
 import com.ep.domain.pojo.po.EpOrderPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.MemberChildRepository;
-import com.ep.domain.repository.MemberChildSignRepository;
-import com.ep.domain.repository.OrderRepository;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +41,8 @@ public class MemberChildService {
     private OrderRepository orderRepository;
     @Autowired
     private MemberChildSignRepository memberChildSignRepository;
+    @Autowired
+    private MemberChildHonorRepository memberChildHonorRepository;
 
     /**
      * 新增孩子信息
@@ -261,4 +261,38 @@ public class MemberChildService {
         return resultDo.setResult(childBo);
     }
 
+    /**
+     * 查看孩子摘要信息
+     *
+     * @param memberId
+     * @param childId
+     * @return
+     */
+    public ResultDo<MemberChildAbstractBo> getChildAbstract(Long memberId, Long childId) {
+        ResultDo<MemberChildAbstractBo> resultDo = ResultDo.build();
+        ResultDo<EpMemberChildPo> checkChild = this.getCheckedMemberChild(memberId, childId);
+        // 校验
+        if (checkChild.isError()) {
+            return resultDo.setError(checkChild.getError());
+        }
+        EpMemberChildPo childPo = checkChild.getResult();
+        MemberChildAbstractBo abstractBo = new MemberChildAbstractBo();
+        abstractBo.setChildId(childPo.getId());
+        // 签名
+        Optional<EpMemberChildSignPo> optional = memberChildSignRepository.getByChildId(childPo.getId());
+        if (optional.isPresent()) {
+            abstractBo.setSign(optional.get().getContent());
+        }
+        // 订单数
+        Long totalOrder = orderRepository.countByChildId(childPo.getId());
+        abstractBo.setTotalOrder(totalOrder);
+        // 荣誉数
+        Long totalHonor = memberChildHonorRepository.countByChildId(childPo.getId());
+        abstractBo.setTotalHonor(totalHonor);
+        // 标签汇总
+
+        // 评价数
+
+        return resultDo.setResult(abstractBo);
+    }
 }

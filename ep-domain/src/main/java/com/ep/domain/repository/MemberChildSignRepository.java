@@ -6,6 +6,8 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_SIGN;
 
 /**
@@ -27,11 +29,12 @@ public class MemberChildSignRepository extends AbstractCRUDRepository<EpMemberCh
      * @param childId
      * @return
      */
-    public EpMemberChildSignPo getByChildId(Long childId) {
-        return dslContext.selectFrom(EP_MEMBER_CHILD_SIGN)
+    public Optional<EpMemberChildSignPo> getByChildId(Long childId) {
+        EpMemberChildSignPo signPo = dslContext.selectFrom(EP_MEMBER_CHILD_SIGN)
                 .where(EP_MEMBER_CHILD_SIGN.CHILD_ID.eq(childId))
                 .and(EP_MEMBER_CHILD_SIGN.DEL_FLAG.eq(false))
                 .fetchOneInto(EpMemberChildSignPo.class);
+        return Optional.ofNullable(signPo);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.ep.api.controller;
 
 import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.MemberChildAbstractBo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Description: 孩子api控制类
@@ -32,16 +32,6 @@ public class ChildController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
-
-    @ApiOperation(value = "获取当前用户孩子列表")
-    @PostMapping("/list")
-    @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<MemberChildBo>> children() {
-        EpMemberPo currentMbr = super.getCurrentUser().get();
-        List<MemberChildBo> children = memberChildService.queryAllByMemberId(currentMbr.getId());
-        ResultDo<List<MemberChildBo>> resultDo = ResultDo.build();
-        return resultDo.setResult(children);
-    }
 
     @ApiOperation(value = "新增孩子档案")
     @PostMapping("/add")
@@ -94,6 +84,14 @@ public class ChildController extends ApiController {
     public ResultDo delChild(@RequestParam("childId") Long childId) {
         EpMemberPo currentMbr = super.getCurrentUser().get();
         return memberChildService.delChild(currentMbr.getId(), childId);
+    }
+
+    @ApiOperation(value = "查看孩子摘要信息")
+    @PostMapping("/abstract")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<MemberChildAbstractBo> getChildAbstract(@RequestParam("childId") Long childId) {
+        EpMemberPo currentMbr = super.getCurrentUser().get();
+        return memberChildService.getChildAbstract(currentMbr.getId(), childId);
     }
 
 }
