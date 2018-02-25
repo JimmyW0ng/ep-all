@@ -58,7 +58,7 @@ public class OrderService {
         EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
         if (coursePo == null || coursePo.getDelFlag()) {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
-        } else if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)) {
+        } else if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.online)) {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
         }
         List<MemberCourseOrderInitBo> data = orderRepository.findChildrenAndOrders(memberId, courseId);
