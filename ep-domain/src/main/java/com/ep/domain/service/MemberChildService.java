@@ -9,6 +9,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildAbstractBo;
 import com.ep.domain.pojo.bo.MemberChildBo;
+import com.ep.domain.pojo.bo.MemberChildTagBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpMemberChildSignPo;
@@ -43,6 +44,8 @@ public class MemberChildService {
     private MemberChildSignRepository memberChildSignRepository;
     @Autowired
     private MemberChildHonorRepository memberChildHonorRepository;
+    @Autowired
+    private MemberChildTagRepository memberChildTagRepository;
 
     /**
      * 新增孩子信息
@@ -290,7 +293,8 @@ public class MemberChildService {
         Long totalHonor = memberChildHonorRepository.countByChildId(childPo.getId());
         abstractBo.setTotalHonor(totalHonor);
         // 标签汇总
-
+        List<MemberChildTagBo> tags = memberChildTagRepository.findTagsByChildId(childPo.getId());
+        abstractBo.setTags(tags);
         // 评价数
 
         return resultDo.setResult(abstractBo);

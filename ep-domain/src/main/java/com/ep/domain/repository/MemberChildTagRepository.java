@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.pojo.bo.MemberChildTagBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
 import org.jooq.DSLContext;
@@ -38,4 +39,14 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
                          .fetchInto(EpMemberChildTagPo.class);
     }
 
+    /**
+     * 分组获取孩子的标签数
+     *
+     * @param childId
+     * @return
+     */
+    public List<MemberChildTagBo> findTagsByChildId(Long childId) {
+
+        return null;
+    }
 }

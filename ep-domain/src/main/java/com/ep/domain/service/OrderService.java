@@ -62,6 +62,14 @@ public class OrderService {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
         }
         List<MemberCourseOrderInitBo> data = orderRepository.findChildrenAndOrders(memberId, courseId);
+        if (CollectionsTools.isNotEmpty(data)) {
+            for (MemberCourseOrderInitBo initBo : data) {
+                Optional<EpFilePo> existAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, initBo.getChildId());
+                if (existAvatar.isPresent()) {
+                    initBo.setAvatar(existAvatar.get().getFileUrl());
+                }
+            }
+        }
         return resultDo.setResult(data);
     }
 

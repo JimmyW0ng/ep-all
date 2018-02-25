@@ -182,6 +182,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .from(EP_MEMBER_CHILD)
                 .leftJoin(EP_ORDER)
                 .on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .and(EP_ORDER.COURSE_ID.eq(courseId))
                 .and(EP_ORDER.STATUS.notEqual(EpOrderStatus.cancel))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
