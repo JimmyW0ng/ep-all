@@ -6,13 +6,12 @@ import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
+import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
 import com.google.common.collect.Lists;
-import org.jooq.Condition;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -204,6 +204,85 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .where(EP_ORDER.CHILD_ID.eq(childId))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
+    }
+
+    /**
+     * 商户后台获取分页
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrderBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition){
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER.fields());
+        fieldList.add(EP_MEMBER.MOBILE);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .where(condition);
+//
+        List<OrderBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(),EP_ORGAN_CLASS.ID.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrderBo.class);
+        PageImpl<OrderBo> pPage = new PageImpl<OrderBo>(list, pageable, totalCount);
+        return pPage;
+    }
+
+    /**
+     * 订单报名成功
+     * @param id
+     */
+    public int orderSuccessById(Long id){
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS,EpOrderStatus.success)
+                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 订单拒绝
+     * @param id
+     */
+    public int orderRefuseById(Long id,String remark){
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS,EpOrderStatus.refuse)
+                .set(EP_ORDER.REMARK,remark)
+                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id获取EpOrderPo
+     * @param id
+     * @return
+     */
+    public EpOrderPo findById(Long id){
+        return dslContext.selectFrom(EP_ORDER)
+                .where(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrderPo.class);
+
     }
 }
 

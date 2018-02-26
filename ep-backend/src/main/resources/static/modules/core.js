@@ -88,8 +88,16 @@ function toastr_success(msg,url) {
     setTimeout(function () {
         window.location.href=url
     },2000)
-
-
+}
+function toastr_error(msg,url) {
+    if(msg!=null&&msg!=""){
+        toastr.error(msg);
+    }else{
+        toastr.error("操作失败");
+    }
+    setTimeout(function () {
+        window.location.href=url
+    },2000)
 }
 
 $(function () {
