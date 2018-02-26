@@ -9,22 +9,21 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
+import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @Description: 订单服务类
@@ -228,4 +227,49 @@ public class OrderService {
         return page;
     }
 
+    /**
+     * 商户后台获取分页
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<OrderBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+        return orderRepository.findbyPageAndCondition(pageable, conditions);
+    }
+
+    /**
+     * 订单报名成功
+     * @param id
+     */
+    public int orderSuccessById(Long id){
+        return orderRepository.orderSuccessById(id);
+    }
+
+    /**
+     * 订单拒绝
+     * @param id
+     */
+    public int orderRefuseById(Long id,String remark){
+        return orderRepository.orderRefuseById(id,remark);
+    }
+
+    /**
+     * 根据id获取EpOrderPo
+     * @param id
+     * @return
+     */
+    public EpOrderPo getById(Long id){
+        return orderRepository.findById(id);
+    }
+
+    /**
+     * 批量报名
+     * @param ids
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void batchOrderSuccess(Long[] ids){
+        for(int i= 0;i<ids.length;i++){
+            orderRepository.orderSuccessById(ids[i]);
+        }
+    }
 }
