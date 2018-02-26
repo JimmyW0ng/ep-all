@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemberChildCommentBo extends EpMemberChildCommentPo {
 
     private String nickName;
-    private String organName;
+    private String ognName;
     private String avatar;
 
     public String getCommentTimeFormat() {
