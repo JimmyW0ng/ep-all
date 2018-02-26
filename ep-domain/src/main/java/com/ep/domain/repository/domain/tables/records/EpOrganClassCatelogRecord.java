@@ -31,10 +31,26 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     private static final long serialVersionUID = -2039079426;
 
     /**
+     * Setter for <code>ep.ep_organ_class_catelog.id</code>. 主键
+     */
+    public EpOrganClassCatelogRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganClassCatelogRecord
      */
     public EpOrganClassCatelogRecord() {
         super(EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_catelog.class_id</code>. 班次id
+     */
+    public EpOrganClassCatelogRecord setClassId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -59,43 +75,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_catelog.id</code>. 主键
-     */
-    public EpOrganClassCatelogRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_catelog.class_id</code>. 班次id
-     */
-    public Long getClassId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_catelog.class_id</code>. 班次id
-     */
-    public EpOrganClassCatelogRecord setClassId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_catelog.catelog_title</code>. 目录标题
-     */
-    public String getCatelogTitle() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_class_catelog.catelog_title</code>. 目录标题
      */
     public EpOrganClassCatelogRecord setCatelogTitle(String value) {
@@ -104,10 +83,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.catelog_desc</code>. 目录描述
+     * Getter for <code>ep.ep_organ_class_catelog.id</code>. 主键
      */
-    public String getCatelogDesc() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -119,10 +98,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.catelog_index</code>. 目录索引（第几个课时）
+     * Getter for <code>ep.ep_organ_class_catelog.class_id</code>. 班次id
      */
-    public Integer getCatelogIndex() {
-        return (Integer) get(4);
+    public Long getClassId() {
+        return (Long) get(1);
     }
 
     /**
@@ -134,10 +113,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.start_time</code>. 开始时间
+     * Getter for <code>ep.ep_organ_class_catelog.catelog_title</code>. 目录标题
      */
-    public Timestamp getStartTime() {
-        return (Timestamp) get(5);
+    public String getCatelogTitle() {
+        return (String) get(2);
     }
 
     /**
@@ -149,10 +128,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.end_time</code>. 结束时间
+     * Getter for <code>ep.ep_organ_class_catelog.catelog_desc</code>. 目录描述
      */
-    public Timestamp getEndTime() {
-        return (Timestamp) get(6);
+    public String getCatelogDesc() {
+        return (String) get(3);
     }
 
     /**
@@ -164,10 +143,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.child_evaluated_num</code>. 已经评价过的孩子数量
+     * Getter for <code>ep.ep_organ_class_catelog.catelog_index</code>. 目录索引（第几个课时）
      */
-    public Integer getChildEvaluatedNum() {
-        return (Integer) get(7);
+    public Integer getCatelogIndex() {
+        return (Integer) get(4);
     }
 
     /**
@@ -179,10 +158,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ_class_catelog.start_time</code>. 开始时间
      */
-    public String getRemark() {
-        return (String) get(8);
+    public Timestamp getStartTime() {
+        return (Timestamp) get(5);
     }
 
     /**
@@ -194,10 +173,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class_catelog.end_time</code>. 结束时间
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public Timestamp getEndTime() {
+        return (Timestamp) get(6);
     }
 
     /**
@@ -209,10 +188,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_class_catelog.child_evaluated_num</code>. 已经评价过的孩子数量
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Integer getChildEvaluatedNum() {
+        return (Integer) get(7);
     }
 
     /**
@@ -224,10 +203,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catelog.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ_class_catelog.remark</code>. 备注信息
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(11);
+    public String getRemark() {
+        return (String) get(8);
     }
 
     /**
@@ -238,9 +217,19 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_class_catelog.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class_catelog.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_class_catelog.version</code>.
@@ -250,16 +239,8 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     // -------------------------------------------------------------------------
-    // Record13 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_class_catelog.version</code>.
-     */
-    public EpOrganClassCatelogRecord setVersion(Long value) {
-        set(12, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -268,6 +249,10 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record13 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -601,10 +586,6 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -632,6 +613,25 @@ public class EpOrganClassCatelogRecord extends UpdatableRecordImpl<EpOrganClassC
         value11(value11);
         value12(value12);
         value13(value13);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_organ_class_catelog.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(11);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_catelog.version</code>.
+     */
+    public EpOrganClassCatelogRecord setVersion(Long value) {
+        set(12, value);
         return this;
     }
 }

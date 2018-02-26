@@ -31,10 +31,26 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     private static final long serialVersionUID = -154986307;
 
     /**
+     * Setter for <code>ep.ep_system_role_authority.id</code>. 主键
+     */
+    public EpSystemRoleAuthorityRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpSystemRoleAuthorityRecord
      */
     public EpSystemRoleAuthorityRecord() {
         super(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
+     */
+    public EpSystemRoleAuthorityRecord setRoleId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -54,43 +70,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.id</code>. 主键
-     */
-    public EpSystemRoleAuthorityRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
-     */
-    public Long getRoleId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
-     */
-    public EpSystemRoleAuthorityRecord setRoleId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
-     */
-    public Long getMenuId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
      */
     public EpSystemRoleAuthorityRecord setMenuId(Long value) {
@@ -99,10 +78,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_role_authority.id</code>. 主键
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -114,10 +93,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_role_authority.role_id</code>. 角色id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
+    public Long getRoleId() {
+        return (Long) get(1);
     }
 
     /**
@@ -129,10 +108,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     * Getter for <code>ep.ep_system_role_authority.menu_id</code>. 菜单id
      */
-    public String getRemark() {
-        return (String) get(5);
+    public Long getMenuId() {
+        return (Long) get(2);
     }
 
     /**
@@ -144,10 +123,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     /**
-     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_role_authority.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(3);
     }
 
     /**
@@ -158,9 +137,19 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_system_role_authority.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(5);
+    }
 
     /**
      * Getter for <code>ep.ep_system_role_authority.version</code>.
@@ -170,16 +159,8 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     }
 
     // -------------------------------------------------------------------------
-    // Record8 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_system_role_authority.version</code>.
-     */
-    public EpSystemRoleAuthorityRecord setVersion(Long value) {
-        set(7, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -188,6 +169,10 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record8 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -396,10 +381,6 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -422,6 +403,25 @@ public class EpSystemRoleAuthorityRecord extends UpdatableRecordImpl<EpSystemRol
         value6(value6);
         value7(value7);
         value8(value8);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_system_role_authority.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_role_authority.version</code>.
+     */
+    public EpSystemRoleAuthorityRecord setVersion(Long value) {
+        set(7, value);
         return this;
     }
 }

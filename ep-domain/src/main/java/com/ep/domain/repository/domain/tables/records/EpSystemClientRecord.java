@@ -32,10 +32,26 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     private static final long serialVersionUID = -664313698;
 
     /**
+     * Setter for <code>ep.ep_system_client.id</code>. 主键
+     */
+    public EpSystemClientRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpSystemClientRecord
      */
     public EpSystemClientRecord() {
         super(EpSystemClient.EP_SYSTEM_CLIENT);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_client.client_id</code>. 客户端ID
+     */
+    public EpSystemClientRecord setClientId(String value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -62,43 +78,6 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_client.id</code>. 主键
-     */
-    public EpSystemClientRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_client.client_id</code>. 客户端ID
-     */
-    public String getClientId() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_client.client_id</code>. 客户端ID
-     */
-    public EpSystemClientRecord setClientId(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_client.client_secret</code>. 客户端秘钥
-     */
-    public String getClientSecret() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_client.client_secret</code>. 客户端秘钥
      */
     public EpSystemClientRecord setClientSecret(String value) {
@@ -107,10 +86,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.salt</code>. 盐
+     * Getter for <code>ep.ep_system_client.id</code>. 主键
      */
-    public String getSalt() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -122,10 +101,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.role</code>. 角色
+     * Getter for <code>ep.ep_system_client.client_id</code>. 客户端ID
      */
-    public String getRole() {
-        return (String) get(4);
+    public String getClientId() {
+        return (String) get(1);
     }
 
     /**
@@ -137,10 +116,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.access_token_validity</code>.
+     * Getter for <code>ep.ep_system_client.client_secret</code>. 客户端秘钥
      */
-    public Integer getAccessTokenValidity() {
-        return (Integer) get(5);
+    public String getClientSecret() {
+        return (String) get(2);
     }
 
     /**
@@ -152,10 +131,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.refresh_token_validity</code>.
+     * Getter for <code>ep.ep_system_client.salt</code>. 盐
      */
-    public Integer getRefreshTokenValidity() {
-        return (Integer) get(6);
+    public String getSalt() {
+        return (String) get(3);
     }
 
     /**
@@ -167,10 +146,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.description</code>.
+     * Getter for <code>ep.ep_system_client.role</code>. 角色
      */
-    public String getDescription() {
-        return (String) get(7);
+    public String getRole() {
+        return (String) get(4);
     }
 
     /**
@@ -182,10 +161,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.archived</code>. 是否激活
+     * Getter for <code>ep.ep_system_client.access_token_validity</code>.
      */
-    public Boolean getArchived() {
-        return (Boolean) get(8);
+    public Integer getAccessTokenValidity() {
+        return (Integer) get(5);
     }
 
     /**
@@ -197,10 +176,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.login_source</code>. 登录来源：微信小程序；机构后台；平台管理后台
+     * Getter for <code>ep.ep_system_client.refresh_token_validity</code>.
      */
-    public EpSystemClientLoginSource getLoginSource() {
-        return (EpSystemClientLoginSource) get(9);
+    public Integer getRefreshTokenValidity() {
+        return (Integer) get(6);
     }
 
     /**
@@ -212,10 +191,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_client.description</code>.
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(10);
+    public String getDescription() {
+        return (String) get(7);
     }
 
     /**
@@ -227,10 +206,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_client.archived</code>. 是否激活
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(11);
+    public Boolean getArchived() {
+        return (Boolean) get(8);
     }
 
     /**
@@ -242,10 +221,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.remark</code>. 备注信息
+     * Getter for <code>ep.ep_system_client.login_source</code>. 登录来源：微信小程序；机构后台；平台管理后台
      */
-    public String getRemark() {
-        return (String) get(12);
+    public EpSystemClientLoginSource getLoginSource() {
+        return (EpSystemClientLoginSource) get(9);
     }
 
     /**
@@ -257,10 +236,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     /**
-     * Getter for <code>ep.ep_system_client.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_client.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(13);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -271,9 +250,19 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_system_client.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(11);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_client.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(12);
+    }
 
     /**
      * Getter for <code>ep.ep_system_client.version</code>.
@@ -283,16 +272,8 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     }
 
     // -------------------------------------------------------------------------
-    // Record15 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_system_client.version</code>.
-     */
-    public EpSystemClientRecord setVersion(Long value) {
-        set(14, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -301,6 +282,10 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record15 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -684,10 +669,6 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -717,6 +698,25 @@ public class EpSystemClientRecord extends UpdatableRecordImpl<EpSystemClientReco
         value13(value13);
         value14(value14);
         value15(value15);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_system_client.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(13);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_client.version</code>.
+     */
+    public EpSystemClientRecord setVersion(Long value) {
+        set(14, value);
         return this;
     }
 }

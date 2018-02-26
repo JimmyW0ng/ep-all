@@ -29,43 +29,73 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
 
+    private static final long serialVersionUID = -1422808903;
+
     /**
      * The reference instance of <code>ep.ep_member_child_tag</code>
      */
     public static final EpMemberChildTag EP_MEMBER_CHILD_TAG = new EpMemberChildTag();
-    private static final long serialVersionUID = 768114691;
+    /**
+     * The column <code>ep.ep_member_child_tag.ogn_id</code>. 机构id
+     */
+    public final TableField<EpMemberChildTagRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "机构id");
+
     /**
      * The column <code>ep.ep_member_child_tag.id</code>. 主键
      */
     public final TableField<EpMemberChildTagRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_member_child_tag.child_id</code>. 孩子id
      */
     public final TableField<EpMemberChildTagRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
     /**
+     * The column <code>ep.ep_member_child_tag.course_id</code>. 课程id
+     */
+    public final TableField<EpMemberChildTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "课程id");
+    /**
+     * The column <code>ep.ep_member_child_tag.class_id</code>. 班次id
+     */
+    public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "班次id");
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpMemberChildTagRecord> getRecordType() {
+        return EpMemberChildTagRecord.class;
+    }
+
+    /**
      * The column <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
      */
     public final TableField<EpMemberChildTagRecord, Long> CLASS_CATELOG_ID = createField("class_catelog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程内容目录id");
+
     /**
      * The column <code>ep.ep_member_child_tag.tag_id</code>. 标签id
      */
     public final TableField<EpMemberChildTagRecord, Long> TAG_ID = createField("tag_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "标签id");
+
     /**
      * The column <code>ep.ep_member_child_tag.create_at</code>. 创建时间
      */
     public final TableField<EpMemberChildTagRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_member_child_tag.update_at</code>. 更新时间
      */
     public final TableField<EpMemberChildTagRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_member_child_tag.remark</code>. 备注
      */
     public final TableField<EpMemberChildTagRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_member_child_tag.del_flag</code>. 删除标记
      */
     public final TableField<EpMemberChildTagRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_member_child_tag.version</code>.
      */
@@ -91,14 +121,6 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
 
     private EpMemberChildTag(String alias, Table<EpMemberChildTagRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "孩子标签记录表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpMemberChildTagRecord> getRecordType() {
-        return EpMemberChildTagRecord.class;
     }
 
     /**

@@ -31,10 +31,26 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     private static final long serialVersionUID = -1237592472;
 
     /**
+     * Setter for <code>ep.ep_constant_catalog.id</code>. 主键
+     */
+    public EpConstantCatalogRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpConstantCatalogRecord
      */
     public EpConstantCatalogRecord() {
         super(EpConstantCatalog.EP_CONSTANT_CATALOG);
+    }
+
+    /**
+     * Setter for <code>ep.ep_constant_catalog.parent_id</code>. 父级id
+     */
+    public EpConstantCatalogRecord setParentId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -54,43 +70,6 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Getter for <code>ep.ep_constant_catalog.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_constant_catalog.id</code>. 主键
-     */
-    public EpConstantCatalogRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_catalog.parent_id</code>. 父级id
-     */
-    public Long getParentId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_constant_catalog.parent_id</code>. 父级id
-     */
-    public EpConstantCatalogRecord setParentId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_catalog.label</code>. 标签
-     */
-    public String getLabel() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_constant_catalog.label</code>. 标签
      */
     public EpConstantCatalogRecord setLabel(String value) {
@@ -99,10 +78,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Getter for <code>ep.ep_constant_catalog.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_constant_catalog.id</code>. 主键
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -114,10 +93,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Getter for <code>ep.ep_constant_catalog.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_constant_catalog.parent_id</code>. 父级id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
+    public Long getParentId() {
+        return (Long) get(1);
     }
 
     /**
@@ -129,10 +108,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Getter for <code>ep.ep_constant_catalog.remark</code>. 备注信息
+     * Getter for <code>ep.ep_constant_catalog.label</code>. 标签
      */
-    public String getRemark() {
-        return (String) get(5);
+    public String getLabel() {
+        return (String) get(2);
     }
 
     /**
@@ -144,10 +123,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     /**
-     * Getter for <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_constant_catalog.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(3);
     }
 
     /**
@@ -158,9 +137,19 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_constant_catalog.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
+    }
+
+    /**
+     * Getter for <code>ep.ep_constant_catalog.remark</code>. 备注信息
+     */
+    public String getRemark() {
+        return (String) get(5);
+    }
 
     /**
      * Getter for <code>ep.ep_constant_catalog.version</code>.
@@ -170,16 +159,8 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     }
 
     // -------------------------------------------------------------------------
-    // Record8 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_constant_catalog.version</code>.
-     */
-    public EpConstantCatalogRecord setVersion(Long value) {
-        set(7, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -188,6 +169,10 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record8 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -396,10 +381,6 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -422,6 +403,25 @@ public class EpConstantCatalogRecord extends UpdatableRecordImpl<EpConstantCatal
         value6(value6);
         value7(value7);
         value8(value8);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_constant_catalog.version</code>.
+     */
+    public EpConstantCatalogRecord setVersion(Long value) {
+        set(7, value);
         return this;
     }
 }

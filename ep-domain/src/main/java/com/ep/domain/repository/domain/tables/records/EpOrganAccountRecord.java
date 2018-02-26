@@ -32,10 +32,26 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     private static final long serialVersionUID = -1439138686;
 
     /**
+     * Setter for <code>ep.ep_organ_account.id</code>. 主键
+     */
+    public EpOrganAccountRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganAccountRecord
      */
     public EpOrganAccountRecord() {
         super(EpOrganAccount.EP_ORGAN_ACCOUNT);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_account.account_name</code>. 机构内部名称
+     */
+    public EpOrganAccountRecord setAccountName(String value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -59,43 +75,6 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_account.id</code>. 主键
-     */
-    public EpOrganAccountRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_account.account_name</code>. 机构内部名称
-     */
-    public String getAccountName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_account.account_name</code>. 机构内部名称
-     */
-    public EpOrganAccountRecord setAccountName(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_account.nick_name</code>. 对外昵称
-     */
-    public String getNickName() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_account.nick_name</code>. 对外昵称
      */
     public EpOrganAccountRecord setNickName(String value) {
@@ -104,10 +83,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.introduce</code>. 介绍
+     * Getter for <code>ep.ep_organ_account.id</code>. 主键
      */
-    public String getIntroduce() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -119,10 +98,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.ogn_id</code>. 所属机构id
+     * Getter for <code>ep.ep_organ_account.account_name</code>. 机构内部名称
      */
-    public Long getOgnId() {
-        return (Long) get(4);
+    public String getAccountName() {
+        return (String) get(1);
     }
 
     /**
@@ -134,10 +113,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_organ_account.nick_name</code>. 对外昵称
      */
-    public EpOrganAccountStatus getStatus() {
-        return (EpOrganAccountStatus) get(5);
+    public String getNickName() {
+        return (String) get(2);
     }
 
     /**
@@ -149,10 +128,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号
+     * Getter for <code>ep.ep_organ_account.introduce</code>. 介绍
      */
-    public Long getReferMobile() {
-        return (Long) get(6);
+    public String getIntroduce() {
+        return (String) get(3);
     }
 
     /**
@@ -164,10 +143,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_account.ogn_id</code>. 所属机构id
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(7);
+    public Long getOgnId() {
+        return (Long) get(4);
     }
 
     /**
@@ -179,10 +158,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
+    public EpOrganAccountStatus getStatus() {
+        return (EpOrganAccountStatus) get(5);
     }
 
     /**
@@ -194,10 +173,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号
      */
-    public String getRemark() {
-        return (String) get(9);
+    public Long getReferMobile() {
+        return (Long) get(6);
     }
 
     /**
@@ -209,10 +188,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Getter for <code>ep.ep_organ_account.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_organ_account.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(10);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -223,9 +202,19 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_account.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_account.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(9);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_account.version</code>.
@@ -235,16 +224,8 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     // -------------------------------------------------------------------------
-    // Record12 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_account.version</code>.
-     */
-    public EpOrganAccountRecord setVersion(Long value) {
-        set(11, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -253,6 +234,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record12 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -561,10 +546,6 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -591,6 +572,25 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
         value10(value10);
         value11(value11);
         value12(value12);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_organ_account.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_account.version</code>.
+     */
+    public EpOrganAccountRecord setVersion(Long value) {
+        set(11, value);
         return this;
     }
 }

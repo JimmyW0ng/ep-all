@@ -32,10 +32,26 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     private static final long serialVersionUID = 625364668;
 
     /**
+     * Setter for <code>ep.ep_constant_region.id</code>. 主键
+     */
+    public EpConstantRegionRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpConstantRegionRecord
      */
     public EpConstantRegionRecord() {
         super(EpConstantRegion.EP_CONSTANT_REGION);
+    }
+
+    /**
+     * Setter for <code>ep.ep_constant_region.region_name</code>. 地区名称
+     */
+    public EpConstantRegionRecord setRegionName(String value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -63,43 +79,6 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_constant_region.id</code>. 主键
-     */
-    public EpConstantRegionRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_region.region_name</code>. 地区名称
-     */
-    public String getRegionName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_constant_region.region_name</code>. 地区名称
-     */
-    public EpConstantRegionRecord setRegionName(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_constant_region.parent_id</code>. 父级id
-     */
-    public Long getParentId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_constant_region.parent_id</code>. 父级id
      */
     public EpConstantRegionRecord setParentId(Long value) {
@@ -108,10 +87,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.short_name</code>. 简称
+     * Getter for <code>ep.ep_constant_region.id</code>. 主键
      */
-    public String getShortName() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -123,10 +102,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.region_type</code>. 类型：国；省；市；区
+     * Getter for <code>ep.ep_constant_region.region_name</code>. 地区名称
      */
-    public EpConstantRegionRegionType getRegionType() {
-        return (EpConstantRegionRegionType) get(4);
+    public String getRegionName() {
+        return (String) get(1);
     }
 
     /**
@@ -138,10 +117,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.city_code</code>. 地区编码
+     * Getter for <code>ep.ep_constant_region.parent_id</code>. 父级id
      */
-    public String getCityCode() {
-        return (String) get(5);
+    public Long getParentId() {
+        return (Long) get(2);
     }
 
     /**
@@ -153,10 +132,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.zip_code</code>. 邮政编码
+     * Getter for <code>ep.ep_constant_region.short_name</code>. 简称
      */
-    public String getZipCode() {
-        return (String) get(6);
+    public String getShortName() {
+        return (String) get(3);
     }
 
     /**
@@ -168,10 +147,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.merger_name</code>. 全称
+     * Getter for <code>ep.ep_constant_region.region_type</code>. 类型：国；省；市；区
      */
-    public String getMergerName() {
-        return (String) get(7);
+    public EpConstantRegionRegionType getRegionType() {
+        return (EpConstantRegionRegionType) get(4);
     }
 
     /**
@@ -183,10 +162,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.region_lng</code>. 经度
+     * Getter for <code>ep.ep_constant_region.city_code</code>. 地区编码
      */
-    public String getRegionLng() {
-        return (String) get(8);
+    public String getCityCode() {
+        return (String) get(5);
     }
 
     /**
@@ -198,10 +177,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.region_lat</code>. 维度
+     * Getter for <code>ep.ep_constant_region.zip_code</code>. 邮政编码
      */
-    public String getRegionLat() {
-        return (String) get(9);
+    public String getZipCode() {
+        return (String) get(6);
     }
 
     /**
@@ -213,10 +192,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.pin_yin</code>. 拼音
+     * Getter for <code>ep.ep_constant_region.merger_name</code>. 全称
      */
-    public String getPinYin() {
-        return (String) get(10);
+    public String getMergerName() {
+        return (String) get(7);
     }
 
     /**
@@ -228,10 +207,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_constant_region.region_lng</code>. 经度
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(11);
+    public String getRegionLng() {
+        return (String) get(8);
     }
 
     /**
@@ -243,10 +222,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_constant_region.region_lat</code>. 维度
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(12);
+    public String getRegionLat() {
+        return (String) get(9);
     }
 
     /**
@@ -258,10 +237,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.remark</code>. 备注
+     * Getter for <code>ep.ep_constant_region.pin_yin</code>. 拼音
      */
-    public String getRemark() {
-        return (String) get(13);
+    public String getPinYin() {
+        return (String) get(10);
     }
 
     /**
@@ -273,10 +252,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     /**
-     * Getter for <code>ep.ep_constant_region.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_constant_region.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -287,9 +266,19 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_constant_region.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(12);
+    }
+
+    /**
+     * Getter for <code>ep.ep_constant_region.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(13);
+    }
 
     /**
      * Getter for <code>ep.ep_constant_region.version</code>.
@@ -299,16 +288,8 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     }
 
     // -------------------------------------------------------------------------
-    // Record16 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_constant_region.version</code>.
-     */
-    public EpConstantRegionRecord setVersion(Long value) {
-        set(15, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -317,6 +298,10 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record16 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -725,10 +710,6 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -759,6 +740,25 @@ public class EpConstantRegionRecord extends UpdatableRecordImpl<EpConstantRegion
         value14(value14);
         value15(value15);
         value16(value16);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_constant_region.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
+    }
+
+    /**
+     * Setter for <code>ep.ep_constant_region.version</code>.
+     */
+    public EpConstantRegionRecord setVersion(Long value) {
+        set(15, value);
         return this;
     }
 }

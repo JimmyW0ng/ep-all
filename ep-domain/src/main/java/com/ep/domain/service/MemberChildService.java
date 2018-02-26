@@ -295,8 +295,6 @@ public class MemberChildService {
         // 标签汇总
         List<MemberChildTagBo> tags = memberChildTagRepository.findTagsByChildId(childPo.getId());
         abstractBo.setTags(tags);
-        // 评价数
-
         return resultDo.setResult(abstractBo);
     }
 }
