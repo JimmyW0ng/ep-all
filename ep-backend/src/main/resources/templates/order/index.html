@@ -102,6 +102,7 @@
                             <td th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
                             <td th:text="${bo.courseName}"></td>
+                            <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
                             <td th:text="${bo.prize}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
@@ -110,10 +111,10 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
-                                <a name="success" class="btn btn-xs btn-info" style="display: none" th:onclick="'orderSuccess(this,'+${bo.id}+')'">报名</a>
+                                <a name="success" class="btn btn-xs btn-info" style="display: none" th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
                                 <a name="refuse" class="btn btn-xs btn-danger" style="display: none" href="javascript:void(0)" th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
-                                <a name="cancel" class="btn btn-xs btn-info" style="display: none" th:onclick="'orderSuccess(this,'+${bo.id}+')'">取消</a>
+                                <!--<a name="cancel" class="btn btn-xs btn-info" style="display: none" th:onclick="'orderRefuse(this,'+${bo.id}+')'">取消</a>-->
 
                             </td>
 
@@ -192,18 +193,22 @@
     function batchOrderSuccess() {
         var batchOrder=[]
         $("#tbody tr").find("input[type='checkbox']:checked").each(function () {
-            batchOrder.push($(this).attr("value"));
+            var id=$(this).attr("value")
+            var classId=$(this).parent().siblings("td[name='classId']").eq(0).html()
+            batchOrder.push({id:id,classId:classId});
         })
         if(batchOrder.length==0){
             toastr.error("请先勾选名单");
         }
+        console.log(batchOrder)
         $.ajax({
             type:"POST",
             url:"/auth/order/batchOrderSuccess",
-            data:{ids:batchOrder},
+            data: JSON.stringify(batchOrder),
+            contentType: "application/json;charset=utf-8",
             success:function () {
                 toastr_success(null,"/auth/order/index")
-                
+
             }
         })
     }
@@ -219,10 +224,11 @@
         }
         
     }
-    function orderSuccess(ele,id) {
+    function orderSuccess(ele,id,classId) {
         $.ajax({
-            type:"GET",
-            url:"/auth/order/orderSuccess/"+id,
+            type:"POST",
+            url:"/auth/order/orderSuccess",
+            data:{id:id,classId:classId},
             success:function (data) {
                 if(data.success){
                     $(ele).parents("tr").eq(0).find("td[name='status']").html(data.result)

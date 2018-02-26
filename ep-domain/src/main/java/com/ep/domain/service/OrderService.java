@@ -229,6 +229,7 @@ public class OrderService {
 
     /**
      * 商户后台获取分页
+     *
      * @param pageable
      * @param conditions
      * @return
@@ -239,37 +240,49 @@ public class OrderService {
 
     /**
      * 订单报名成功
+     *
      * @param id
      */
-    public int orderSuccessById(Long id){
-        return orderRepository.orderSuccessById(id);
-    }
-
-    /**
-     * 订单拒绝
-     * @param id
-     */
-    public int orderRefuseById(Long id,String remark){
-        return orderRepository.orderRefuseById(id,remark);
-    }
-
-    /**
-     * 根据id获取EpOrderPo
-     * @param id
-     * @return
-     */
-    public EpOrderPo getById(Long id){
-        return orderRepository.findById(id);
+    @Transactional(rollbackFor = Exception.class)
+    public int orderSuccessById(Long id,Long classId) {
+        int count = orderRepository.orderSuccessById(id);
+        organClassRepository.updateEnteredNumByorderSuccess(classId, count);
+        return count;
     }
 
     /**
      * 批量报名
-     * @param ids
+     *
+     * @param pos
      */
     @Transactional(rollbackFor = Exception.class)
-    public void batchOrderSuccess(Long[] ids){
-        for(int i= 0;i<ids.length;i++){
-            orderRepository.orderSuccessById(ids[i]);
-        }
+    public void batchOrderSuccess(List<EpOrderPo> pos) {
+
+//        int count = 0;
+//        for (int i = 0; i < ids.length; i++) {
+//            count = count + orderRepository.orderSuccessById(ids[i]);
+//        }
+//        organClassRepository.updateEnteredNumByorderSuccess(classId, count);
     }
+
+    /**
+     * 订单拒绝
+     *
+     * @param id
+     */
+    public int orderRefuseById(Long id, String remark) {
+        return orderRepository.orderRefuseById(id, remark);
+    }
+
+    /**
+     * 根据id获取EpOrderPo
+     *
+     * @param id
+     * @return
+     */
+    public EpOrderPo getById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+
 }

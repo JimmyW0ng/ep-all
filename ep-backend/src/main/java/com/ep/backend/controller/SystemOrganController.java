@@ -219,21 +219,25 @@ public class SystemOrganController extends BackendController {
     public String view(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
+        //区
         EpConstantRegionPo constantRegionPoDistrict = constantRegionComponent.getById(po.getOgnRegion());
         model.addAttribute("district", constantRegionPoDistrict.getRegionName());
         Long cityId=constantRegionPoDistrict.getParentId();
-
+        //市
         EpConstantRegionPo constantRegionPoCity = constantRegionComponent.getById(cityId);
         model.addAttribute("city", constantRegionPoCity.getRegionName());
         Long provinceId=constantRegionPoCity.getParentId();
+        //省
         EpConstantRegionPo constantRegionPoProvince = constantRegionComponent.getById(provinceId);
         model.addAttribute("province", constantRegionPoProvince.getRegionName());
         model.addAttribute("organPo", po);
+        //主图
         List<EpFilePo> mainpics=fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC,po.getId());
         String mainpicImgUrl =null;
         if(CollectionsTools.isNotEmpty(mainpics)){
             mainpicImgUrl = mainpics.get(mainpics.size()-1).getFileUrl();
         }
+        //logo
         List<EpFilePo> logos=fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO,po.getId());
         String logoImgUrl =null;
         if(CollectionsTools.isNotEmpty(logos)){

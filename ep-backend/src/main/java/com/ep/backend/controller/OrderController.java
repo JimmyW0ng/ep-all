@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
@@ -87,33 +88,33 @@ public class OrderController extends BackendController {
 
     /**
      * 批量报名
-     * @param ids
+     * @param pos
      * @return
      */
     @PostMapping("batchOrderSuccess")
     @ResponseBody
     public ResultDo batchOrderSuccess(
-            @RequestParam("ids[]") Long[] ids) {
+            @RequestBody List<EpOrderPo> pos) {
         ResultDo resultDo = ResultDo.build();
-        orderService.batchOrderSuccess(ids);
+        orderService.batchOrderSuccess(pos);
         return resultDo;
     }
     /**
      * 订单报名成功
      *
-     * @param id
+     * @param po
      */
-    @GetMapping("orderSuccess/{id}")
+    @PostMapping("orderSuccess")
     @ResponseBody
     public ResultDo orderSuccess(
-            @PathVariable("id") Long id) {
+            EpOrderPo po) {
         ResultDo resultDo = ResultDo.build();
-        if (orderService.orderSuccessById(id) == 1) {
+        if (orderService.orderSuccessById(po.getId(),po.getClassId()) == 1) {
             //报名成功
             resultDo.setResult(EpOrderStatus.success.getLiteral());
             return resultDo;
         } else {
-            EpOrderPo orderPo = orderService.getById(id);
+            EpOrderPo orderPo = orderService.getById(po.getId());
             if (null != orderPo && orderPo.getStatus().equals(EpOrderStatus.success)) {
                 //重复报名
                 return resultDo;
@@ -125,6 +126,7 @@ public class OrderController extends BackendController {
     }
 
     /**
+     * 报名拒绝
      * @param id
      */
     @GetMapping("orderRefuse")

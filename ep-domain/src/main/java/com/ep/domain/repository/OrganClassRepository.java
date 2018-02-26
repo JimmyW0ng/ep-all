@@ -104,17 +104,18 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
 
     /**
      * 更新班次EpOrganClassPo
+     *
      * @param po
      */
-    public void updateOrganClassPo(EpOrganClassPo po){
+    public void updateOrganClassPo(EpOrganClassPo po) {
         dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.CLASS_NAME,po.getClassName())
-                .set(EP_ORGAN_CLASS.OGN_ACCOUNT_ID,po.getOgnAccountId())
-                .set(EP_ORGAN_CLASS.CLASS_PRIZE,po.getClassPrize())
-                .set(EP_ORGAN_CLASS.DISCOUNT_AMOUNT,po.getDiscountAmount())
-                .set(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG,po.getEnterLimitFlag())
-                .set(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM,po.getEnteredNum())
-                .set(EP_ORGAN_CLASS.COURSE_NUM,po.getCourseNum())
+                .set(EP_ORGAN_CLASS.CLASS_NAME, po.getClassName())
+                .set(EP_ORGAN_CLASS.OGN_ACCOUNT_ID, po.getOgnAccountId())
+                .set(EP_ORGAN_CLASS.CLASS_PRIZE, po.getClassPrize())
+                .set(EP_ORGAN_CLASS.DISCOUNT_AMOUNT, po.getDiscountAmount())
+                .set(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG, po.getEnterLimitFlag())
+                .set(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM, po.getEnteredNum())
+                .set(EP_ORGAN_CLASS.COURSE_NUM, po.getCourseNum())
                 .set(EP_ORGAN_CLASS.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN_CLASS.ID.eq(po.getId()))
                 .execute();
@@ -122,10 +123,11 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
 
     /**
      * 根据课程courseId获取班级ClassId
+     *
      * @param courseId
      * @return
      */
-    public List<Long> findClassIdsByCourseId(Long courseId){
+    public List<Long> findClassIdsByCourseId(Long courseId) {
         return dslContext.select(EP_ORGAN_CLASS.ID).from(EP_ORGAN_CLASS)
                 .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
@@ -134,22 +136,42 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
 
     /**
      * 根据ids批量逻辑删除记录
+     *
      * @param ids
      */
-    public void deleteByIds(List<Long> ids){
+    public void deleteByIds(List<Long> ids) {
         dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.DEL_FLAG,true)
+                .set(EP_ORGAN_CLASS.DEL_FLAG, true)
                 .where(EP_ORGAN_CLASS.ID.in(ids))
                 .execute();
     }
 
     /**
      * 根据课程courseId批量物理删除记录
+     *
      * @param courseId
      */
-    public void deletePhysicByCourseId(Long courseId){
+    public void deletePhysicByCourseId(Long courseId) {
         dslContext.delete(EP_ORGAN_CLASS)
                 .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .execute();
+    }
+
+    /**
+     * 报名成功更新entered_num字段
+     *
+     * @param classId
+     * @param orderCount
+     */
+    public void updateEnteredNumByorderSuccess(Long classId, int orderCount) {
+        EpOrganClassPo updatePo = dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.ID.eq(classId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .forUpdate().fetchOneInto(EpOrganClassPo.class);
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.ENTERED_NUM, updatePo.getEnteredNum() + orderCount)
+                .where(EP_ORGAN_CLASS.ID.eq(classId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();
     }
 }
