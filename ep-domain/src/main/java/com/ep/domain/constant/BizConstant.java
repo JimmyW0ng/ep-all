@@ -103,4 +103,9 @@ public class BizConstant {
      * 孩子数量控制
      */
     public static int CHILD_LIMIT_NUM = 4;
+
+    /**
+     * 评分最小单位
+     */
+    public static final byte SCORE_UNIT = 5;
 }

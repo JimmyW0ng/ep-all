@@ -7,6 +7,7 @@ import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
 import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -99,6 +100,20 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .fetchOneInto(EpOrganClassCommentPo.class);
         return Optional.ofNullable(commentPo);
+    }
+
+    /**
+     * 统计机构平均分（取整）
+     *
+     * @param ognId
+     * @return
+     */
+    public Byte getAvgScoreByOgnId(Long ognId) {
+        return dslContext.select(DSL.floor(DSL.sum(EP_ORGAN_CLASS_COMMENT.SCORE).divide(DSL.count(EP_ORGAN_CLASS_COMMENT.ID))))
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .where(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(Byte.class);
     }
 }
 

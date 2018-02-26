@@ -166,5 +166,20 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.STATUS.eq(status))
                 .fetchInto(EpOrganPo.class);
     }
+
+    /**
+     * 更新课程平均分
+     *
+     * @param ognId
+     * @param avgScore
+     * @return
+     */
+    public int updateTogetherById(Long ognId, Byte avgScore) {
+        return dslContext.update(EP_ORGAN)
+                .set(EP_ORGAN.TOGETHER_SCORE, avgScore)
+                .where(EP_ORGAN.ID.eq(ognId))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

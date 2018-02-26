@@ -35,6 +35,8 @@ public class OrganClassCommentService {
     @Autowired
     private FileRepository fileRepository;
     @Autowired
+    private OrganRepository organRepository;
+    @Autowired
     private OrganClassChildRepository organClassChildRepository;
     @Autowired
     private OrganClassCommentRepository organClassCommentRepository;
@@ -105,6 +107,10 @@ public class OrganClassCommentService {
         }
         // 更新评论标志
         organClassChildRepository.updateCourseCommentFlagByOrderId(orderId);
+        // 更新课程平均分
+        Byte avgScore = organClassCommentRepository.getAvgScoreByOgnId(orderPo.getOgnId());
+        int avg = avgScore.intValue() - (avgScore.byteValue() % BizConstant.SCORE_UNIT);
+        organRepository.updateTogetherById(orderPo.getOgnId(), new Integer(avg).byteValue());
         return ResultDo.build();
     }
 }
