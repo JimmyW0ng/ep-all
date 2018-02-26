@@ -15,5 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SystemOrganBo extends EpOrganPo {
     private String organCreateDateStr;
+    private String mainpicUrlPreCode;
+    private String logoUrlPreCode;
 
 }

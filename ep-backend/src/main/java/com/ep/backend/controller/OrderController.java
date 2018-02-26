@@ -85,6 +85,11 @@ public class OrderController extends BackendController {
         return "order/index";
     }
 
+    /**
+     * 批量报名
+     * @param ids
+     * @return
+     */
     @PostMapping("batchOrderSuccess")
     @ResponseBody
     public ResultDo batchOrderSuccess(

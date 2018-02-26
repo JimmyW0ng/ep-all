@@ -153,6 +153,34 @@
                                   aria-required="true"/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商家mainpic:</label>
+                    <!--<button  type="button" class="btn btn-info" id="mainpic_img_btn" onclick="$('#mainpic_img').click()">-->
+                        <!--<span>选择图片</span>-->
+
+                    <!--</button>-->
+                    <!--<input style="display:none" id="mainpic_img" type="file" onchange="uploadBannerImg($('#mainpic_img_btn'),this)"/>-->
+                </div>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:200px;width: 500px">
+                    <img id="mainpic_img_url" style="margin: 10px;height:180px" th:src="${mainpicImgUrl}"/>
+                    <input type="hidden" name="mainpic_url" id="mainpic_url">
+                    <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
+                </div>
+
+                <div class="form-group" style="margin-top: 20px">
+                    <label class="col-sm-2 control-label">商家logo</label>
+                    <!--<button type="button"  class="btn btn-info" id="logo_img_btn" onclick="$('#logo_img').click()">-->
+                        <!--<span>选择图片</span>-->
+
+                    <!--</button>-->
+                    <!--<input style="display: none" id="logo_img" type="file" onchange="uploadLogoImg($('#logo_img_btn'),this)"/>-->
+
+                </div>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
+                    <img id="logo_img_url" style="margin: 10px;height:140px;width: 140px;border-radius:50%" th:src="${logoImgUrl}"/>
+                    <input type="hidden" name="logo_url" id="logo_url" >
+                    <input type="hidden" name="logoUrlPreCode" id="logo_url_preCode">
+                </div>
 
             </form>
         </div>
