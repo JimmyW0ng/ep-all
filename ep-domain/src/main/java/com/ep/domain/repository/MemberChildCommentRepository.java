@@ -39,11 +39,12 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      * @return
      */
     public Page<MemberChildCommentBo> queryRecentForPage(Pageable pageable, Long childId) {
-        Long count = dslContext.selectCount().from(EP_MEMBER_CHILD_COMMENT)
-                               .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
-                               .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
-                               .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                               .fetchOneInto(Long.class);
+        Long count = dslContext.selectCount()
+                .from(EP_MEMBER_CHILD_COMMENT)
+                .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
             return new PageImpl(Lists.newArrayList(), pageable, count);
         }
@@ -52,18 +53,21 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         fieldList.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT);
         fieldList.add(EP_ORGAN_ACCOUNT.NICK_NAME);
         fieldList.add(EP_ORGAN.OGN_NAME);
-        List<MemberChildCommentBo> data = dslContext.select(fieldList).from(EP_MEMBER_CHILD_COMMENT)
-                                                    .leftJoin(EP_ORGAN_ACCOUNT)
-                                                    .on(EP_MEMBER_CHILD_COMMENT.OGN_ACCOUNT_ID.eq(EP_ORGAN_ACCOUNT.ID))
-                                                    .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                                                    .leftJoin(EP_ORGAN)
-                                                    .on(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(EP_ORGAN.ID))
-                                                    .and(EP_ORGAN.DEL_FLAG.eq(false))
-                                                    .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
-                                                    .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
-                                                    .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                                                    .orderBy(EP_MEMBER_CHILD_COMMENT.CREATE_AT.desc())
-                                                    .fetchInto(MemberChildCommentBo.class);
+        List<MemberChildCommentBo> data = dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_COMMENT)
+                .leftJoin(EP_ORGAN_ACCOUNT)
+                .on(EP_MEMBER_CHILD_COMMENT.OGN_ACCOUNT_ID.eq(EP_ORGAN_ACCOUNT.ID))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .leftJoin(EP_ORGAN)
+                .on(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(EP_ORGAN.ID))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .orderBy(EP_MEMBER_CHILD_COMMENT.CREATE_AT.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(MemberChildCommentBo.class);
         return new PageImpl(data, pageable, count);
     }
 }

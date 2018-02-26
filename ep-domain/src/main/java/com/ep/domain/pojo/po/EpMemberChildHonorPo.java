@@ -25,7 +25,7 @@ public class EpMemberChildHonorPo extends AbstractBasePojo {
     private Long ognId;
     private Long courseId;
     private Long classId;
-    private String honorName;
+    private String content;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

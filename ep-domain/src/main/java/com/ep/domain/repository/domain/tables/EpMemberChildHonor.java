@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildHonor extends TableImpl<EpMemberChildHonorRecord> {
 
-    private static final long serialVersionUID = 1377992930;
+    private static final long serialVersionUID = -1080237321;
 
     /**
      * The reference instance of <code>ep.ep_member_child_honor</code>
@@ -70,9 +70,9 @@ public class EpMemberChildHonor extends TableImpl<EpMemberChildHonorRecord> {
     public final TableField<EpMemberChildHonorRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT, this, "班级id");
 
     /**
-     * The column <code>ep.ep_member_child_honor.honor_name</code>. 荣誉名称
+     * The column <code>ep.ep_member_child_honor.content</code>. 荣誉内容
      */
-    public final TableField<EpMemberChildHonorRecord, String> HONOR_NAME = createField("honor_name", org.jooq.impl.SQLDataType.VARCHAR.length(3000).nullable(false), this, "荣誉名称");
+    public final TableField<EpMemberChildHonorRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.VARCHAR.length(3000).nullable(false), this, "荣誉内容");
 
     /**
      * The column <code>ep.ep_member_child_honor.create_at</code>. 创建时间

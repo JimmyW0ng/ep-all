@@ -1,0 +1,19 @@
+package com.ep.domain.pojo.bo;
+
+import com.ep.common.tool.DateTools;
+import com.ep.domain.pojo.po.EpMemberChildHonorPo;
+import lombok.Data;
+
+@Data
+public class MemberChildHonorBo extends EpMemberChildHonorPo {
+
+    private Long courseId;
+    private String courseName;
+    private String coursePic;
+    private String ognName;
+    private String childNickName;
+
+    public String getAwardTimeFormat() {
+        return DateTools.dateToString(super.getCreateAt(), DateTools.DATE_FMT_4);
+    }
+}

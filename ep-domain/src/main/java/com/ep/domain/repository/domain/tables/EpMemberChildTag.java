@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
 
-    private static final long serialVersionUID = -1422808903;
+    private static final long serialVersionUID = -1856311750;
 
     /**
      * The reference instance of <code>ep.ep_member_child_tag</code>
@@ -38,7 +38,7 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
     /**
      * The column <code>ep.ep_member_child_tag.ogn_id</code>. 机构id
      */
-    public final TableField<EpMemberChildTagRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "机构id");
+    public final TableField<EpMemberChildTagRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
 
     /**
      * The column <code>ep.ep_member_child_tag.id</code>. 主键
@@ -52,11 +52,11 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
     /**
      * The column <code>ep.ep_member_child_tag.course_id</code>. 课程id
      */
-    public final TableField<EpMemberChildTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "课程id");
+    public final TableField<EpMemberChildTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
     /**
      * The column <code>ep.ep_member_child_tag.class_id</code>. 班次id
      */
-    public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "班次id");
+    public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
 
     /**
      * The class holding records for this type
