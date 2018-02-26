@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -101,8 +102,11 @@ public class OrganService {
      * @param po
      * @return
      */
-    public EpOrganPo insertSystemOrgan(EpOrganPo po){
-        return organRepository.insertNew(po);
+    @Transactional(rollbackFor = Exception.class)
+    public void createSystemOrgan(EpOrganPo po,String mainpicUrlPreCode,String logoUrlPreCode){
+        EpOrganPo insertPo = organRepository.insertNew(po);
+        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode,insertPo.getId());
+        fileRepository.updateSourceIdByPreCode(logoUrlPreCode,insertPo.getId());
     }
 
     /**
@@ -110,8 +114,11 @@ public class OrganService {
      * @param po
      * @return
      */
-    public int updateSystemOrgan(EpOrganPo po){
-        return organRepository.updateSystemOrgan(po);
+    @Transactional(rollbackFor = Exception.class)
+    public void updateSystemOrgan(EpOrganPo po,String mainpicUrlPreCode,String logoUrlPreCode){
+        organRepository.updateSystemOrgan(po);
+        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode,po.getId());
+        fileRepository.updateSourceIdByPreCode(logoUrlPreCode,po.getId());
     }
 
     /**
