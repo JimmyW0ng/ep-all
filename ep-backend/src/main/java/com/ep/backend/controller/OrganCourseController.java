@@ -52,7 +52,7 @@ public class OrganCourseController extends BackendController {
     @Autowired
     private OrganCourseTagService organCourseTagService;
     @Autowired
-    private OrganClassCatelogService organClassCatelogService;
+    private OrganClassCatalogService organClassCatalogService;
 
     @GetMapping("index")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -217,8 +217,8 @@ public class OrganCourseController extends BackendController {
             OrganClassBo organClassBo = new OrganClassBo();
             BeanTools.copyPropertiesIgnoreNull(po, organClassBo);
             //班次目录
-            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassCatelogService.findByClassId(po.getId());
-            organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassCatalogService.findByClassId(po.getId());
+            organClassBo.setOrganClassCatalogPos(organClassCatalogPos);
             organClassBos.add(organClassBo);
         });
         model.addAttribute("organClassBos", organClassBos);
@@ -262,9 +262,9 @@ public class OrganCourseController extends BackendController {
         organClassPos.forEach(p -> {
             OrganClassBo organClassBo = new OrganClassBo();
             BeanTools.copyPropertiesIgnoreNull(p, organClassBo);
-            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassCatelogService.findByClassId(p.getId());
-            if (CollectionsTools.isNotEmpty(organClassCatelogPos)) {
-                organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassCatalogService.findByClassId(p.getId());
+            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
+                organClassBo.setOrganClassCatalogPos(organClassCatalogPos);
             }
             organClassBos.add(organClassBo);
 

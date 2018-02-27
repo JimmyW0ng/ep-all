@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class OrganClassCatelogService {
+public class OrganClassCatalogService {
 
     @Autowired
     private OrganClassCatalogRepository organClassCatalogRepository;

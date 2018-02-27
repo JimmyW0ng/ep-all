@@ -6,7 +6,7 @@ import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.dto.OrganClassCatelogCommentDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.OrganAccountService;
-import com.ep.domain.service.OrganClassCatelogService;
+import com.ep.domain.service.OrganClassCatalogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class OrganAccountController extends ApiController {
     @Autowired
     private OrganAccountService organAccountService;
     @Autowired
-    private OrganClassCatelogService organClassCatelogService;
+    private OrganClassCatalogService organClassCatalogService;
 
     @ApiOperation(value = "机构账户信息")
     @PostMapping("/info")
@@ -52,7 +52,7 @@ public class OrganAccountController extends ApiController {
     @PostMapping("/class/catelog/init")
     public ResultDo<OrganClassCatelogCommentDto> getClassCatelogCommentView(@RequestParam("classCatelogId") Long classCatelogId) {
         EpMemberPo memberPo = super.getCurrentUser().get();
-        return organClassCatelogService.getClassCatelogCommentView(memberPo.getMobile(), classCatelogId);
+        return organClassCatalogService.getClassCatelogCommentView(memberPo.getMobile(), classCatelogId);
     }
 
 }

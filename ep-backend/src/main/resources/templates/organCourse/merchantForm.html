@@ -152,13 +152,13 @@
 
 </div>
 <script type="text/template" id='classCatalogTmpl'>
-    <div name="organClassCatelogPos" style="padding: 40px 0px;" >
+    <div name="organClassCatalogPos" style="padding: 40px 0px;">
         <div name="" class="form-group col-sm-5">
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">课时</label>
             <div class=" col-sm-8">
                 <input name="id" type="hidden" value=${id}>
-                <input name="catelogTitle" class="form-control" value="${catelogTitle}"/>
-                <input name="catelogIndex" type="hidden" value=${len}>
+                <input name="catalogTitle" class="form-control" value="${catalogTitle}"/>
+                <input name="catalogIndex" type="hidden" value=${len}>
             </div>
         </div>
         <div class="form-group col-sm-6">
@@ -169,11 +169,11 @@
         </div>
         <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
                                                                 aria-hidden="true"
-                                                                onclick="removeClassCatelogBox(this)"></span></a>
+                                                                onclick="removeClassCatalogBox(this)"></span></a>
         <div class="form-group col-sm-11">
             <label class="col-sm-2 control-label" style="text-align: right;padding: 8px">目录描述</label>
             <div class="col-sm-10">
-                <textarea name="catelogDesc" class="form-control">${catelogDesc}</textarea>
+                <textarea name="catalogDesc" class="form-control">${catalogDesc}</textarea>
             </div>
         </div>
     </div>
@@ -237,7 +237,7 @@
                     <label>总计课时 *</label>
                     <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
-                <div name="organClassCatelogPosBox" class="form-group col-sm-8 well">
+                <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
                     <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
                             class="glyphicon glyphicon-plus"></i> 添加课时</a>
                 </div>
@@ -263,9 +263,9 @@
      * @param ele
      */
     function addClassCatalogBox(ele) {
-        var len=$(ele).parent().find("div[name='organClassCatelogPos']").length
+        var len = $(ele).parent().find("div[name='organClassCatalogPos']").length
         var $box=$(ele).parent()
-        var catalog=[{catelogTitle:"课时"+(len+1),len:len+1}]
+        var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1}]
 
         $box.append($("#classCatalogTmpl").tmpl(catalog))
         $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len+1)
@@ -280,8 +280,8 @@
     /**
      * 删除课时
      */
-    function removeClassCatelogBox(ele){
-        var len =$(ele).parent().parent().parent().find("div[name='organClassCatelogPos']").length
+    function removeClassCatalogBox(ele) {
+        var len = $(ele).parent().parent().parent().find("div[name='organClassCatalogPos']").length
         if(len==1){
             return
         }else{
@@ -403,20 +403,20 @@
                         })
                     }
 
-                    var $organClassCatelogPosBox=$("#accordion").find("div[name='organClassCatelogPosBox']")
-                    for(var j=0;j<$organClassCatelogPosBox.length;j++){
-//                        console.log($organClassCatelogPosBox.eq(j))
-                        var $organClassCatelogPos=$organClassCatelogPosBox.eq(j).find("div[name='organClassCatelogPos']")
-//                        console.log($organClassCatelogPos)
-                        for(var i=0;i<$organClassCatelogPos.length;i++){
-                            var parentName=$organClassCatelogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
-                            $organClassCatelogPos.eq(i).attr("name",parentName+".organClassCatelogPos["+i+"]")
-                            $organClassCatelogPos.eq(i).find("input,textarea").each(function () {
-                                if($(this).attr("name")=="catelogIndex"){
+                    var $organClassCatalogPosBox = $("#accordion").find("div[name='organClassCatalogPosBox']")
+                    for (var j = 0; j < $organClassCatalogPosBox.length; j++) {
+//                        console.log($organClassCatalogPosBox.eq(j))
+                        var $organClassCatalogPos = $organClassCatalogPosBox.eq(j).find("div[name='organClassCatalogPos']")
+//                        console.log($organClassCatalogPos)
+                        for (var i = 0; i < $organClassCatalogPos.length; i++) {
+                            var parentName = $organClassCatalogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
+                            $organClassCatalogPos.eq(i).attr("name", parentName + ".organClassCatalogPos[" + i + "]")
+                            $organClassCatalogPos.eq(i).find("input,textarea").each(function () {
+                                if ($(this).attr("name") == "catalogIndex") {
                                     $(this).val(i+1)
                                 }
                                 var oldName=$(this).attr("name")
-                                $(this).attr("name",$organClassCatelogPos.eq(i).attr("name")+"."+oldName)
+                                $(this).attr("name", $organClassCatalogPos.eq(i).attr("name") + "." + oldName)
                             })
                         }
                     }
@@ -491,16 +491,21 @@
                     }
                 }
                 $("#accordion").find("div[name='organClassBosBox']:last").find("select[name='ognAccountId']").eq(0).html(htmls);
-                var organClassCatelogPos=organClassBos[i].organClassCatelogPos
-//                console.log(organClassCatelogPos)
+                var organClassCatalogPos = organClassBos[i].organClassCatalogPos
+//                console.log(organClassCatalogPos)
 
-                var $box=$("#accordion").find("div[name='organClassCatelogPosBox']:last")
+                var $box = $("#accordion").find("div[name='organClassCatalogPosBox']:last")
                 console.log("$box")
                 console.log($box)
                 var catalog=[]
-                for(var j=0;j<organClassCatelogPos.length;j++){
-                    catalog.push({id:organClassCatelogPos[j].id,len:j+1,startTime:organClassCatelogPos[j].startTime,
-                        catelogTitle:organClassCatelogPos[j].catelogTitle,catelogDesc:organClassCatelogPos[j].catelogDesc})
+                for (var j = 0; j < organClassCatalogPos.length; j++) {
+                    catalog.push({
+                        id: organClassCatalogPos[j].id,
+                        len: j + 1,
+                        startTime: organClassCatalogPos[j].startTime,
+                        catalogTitle: organClassCatalogPos[j].catalogTitle,
+                        catalogDesc: organClassCatalogPos[j].catalogDesc
+                    })
                 }
                 $box.append($("#classCatalogTmpl").tmpl(catalog))
             }

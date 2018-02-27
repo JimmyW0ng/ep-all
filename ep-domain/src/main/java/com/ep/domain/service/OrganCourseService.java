@@ -5,7 +5,10 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.*;
+import com.ep.domain.pojo.bo.OrganAccountBo;
+import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.bo.OrganClassCommentBo;
+import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -20,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 机构课程服务类
@@ -170,7 +175,7 @@ public class OrganCourseService {
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
-            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatalogPos();
             for (int i = 0; i < organClassCatelogPos.size(); i++) {
                 organClassCatelogPos.get(i).setClassId(insertOrganClassId);
 //                organClassCatelogPos.get(i).setCatelogIndex(i + 1);
@@ -231,7 +236,7 @@ public class OrganCourseService {
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
-            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatalogPos();
             for (int i = 0; i < organClassCatelogPos.size(); i++) {
                 organClassCatelogPos.get(i).setClassId(insertOrganClassId);
                 organClassCatelogPos.get(i).setId(null);
@@ -252,106 +257,4 @@ public class OrganCourseService {
         organCourseTagRepository.insert(insertOrganCourseTagPos);
 
     }
-
-    /**
-     * 商户后台更新课程时，比较两个EpOrganCoursePo对象是否相同
-     * 课程名称，课程类型，所属目录，课程简介，课程内容，课程须知，最低价格，上课地址，上线时间，报名开始时间，报名结束时间
-     *
-     * @param newPo
-     * @param oldPo
-     * @return
-     */
-    private Boolean isCourseEq4MerchUpdateCourse(EpOrganCoursePo newPo, EpOrganCoursePo oldPo) {
-        if (!newPo.getCourseName().equals(oldPo.getCourseName())) {
-            return false;
-        }
-        if (!newPo.getCourseType().equals(oldPo.getCourseType())) {
-            return false;
-        }
-        if (!newPo.getCourseCatalogId().equals(oldPo.getCourseCatalogId())) {
-            return false;
-        }
-        if (!newPo.getCourseIntroduce().equals(oldPo.getCourseIntroduce())) {
-            return false;
-        }
-        if (!newPo.getCourseContent().equals(oldPo.getCourseContent())) {
-            return false;
-        }
-        if (!newPo.getCourseNote().equals(oldPo.getCourseNote())) {
-            return false;
-        }
-        if (0 != newPo.getPrizeMin().compareTo(oldPo.getPrizeMin())) {
-            return false;
-        }
-        if (!newPo.getCourseAddress().equals(oldPo.getCourseAddress())) {
-            return false;
-        }
-        if (!newPo.getOnlineTime().equals(oldPo.getOnlineTime())) {
-            return false;
-        }
-        if (!newPo.getEnterTimeStart().equals(oldPo.getEnterTimeStart())) {
-            return false;
-        }
-        if (!newPo.getEnterTimeEnd().equals(oldPo.getEnterTimeEnd())) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 商户后台更新课程时，比较两个EpOrganClassPo对象是否相同
-     * 班次名称，负责人，价格，折扣，是否限制报名人数，要求报名人数，总计课时
-     *
-     * @param newPo
-     * @param oldPo
-     * @return
-     */
-    private Boolean isClassEq4MerchUpdateCourse(EpOrganClassPo newPo, EpOrganClassPo oldPo) {
-        if (!newPo.getClassName().equals(oldPo.getClassName())) {
-            return false;
-        }
-        if (!newPo.getOgnAccountId().equals(oldPo.getOgnAccountId())) {
-            return false;
-        }
-        if (0 != newPo.getClassPrize().compareTo(oldPo.getClassPrize())) {
-            return false;
-        }
-        if (0 != newPo.getDiscountAmount().compareTo(oldPo.getDiscountAmount())) {
-            return false;
-        }
-        if (newPo.getEnterLimitFlag().booleanValue() != oldPo.getEnterLimitFlag().booleanValue()) {
-            return false;
-        }
-//        if (newPo.getEnterRequireNum().intValue()==oldPo.getEnterRequireNum().intValue()) {
-//            return false;
-//        }
-        if (newPo.getCourseNum().intValue()==oldPo.getCourseNum().intValue()) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 商户后台更新课程时，比较两个EpOrganClassCatelogPo对象是否相同
-     * 班次名称，负责人，价格，折扣，是否限制报名人数，要求报名人数，总计课时
-     *
-     * @param newPo
-     * @param oldPo
-     * @return
-     */
-//    private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatalogPo newPo, EpOrganClassCatalogPo oldPo) {
-//        if (!newPo.getCatelogTitle().equals(oldPo.getCatelogTitle())) {
-//            return false;
-//        }
-//        if (!newPo.getCatelogIndex().equals(oldPo.getCatelogIndex())) {
-//            return false;
-//        }
-//        if (!newPo.getCatelogDesc().equals(oldPo.getCatelogDesc())) {
-//            return false;
-//        }
-//        if (!newPo.getStartTime().equals(oldPo.getStartTime())) {
-//            return false;
-//        }
-//        return true;
-//    }
 }
