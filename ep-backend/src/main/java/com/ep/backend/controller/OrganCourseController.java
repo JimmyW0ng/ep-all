@@ -156,10 +156,7 @@ public class OrganCourseController extends BackendController {
         List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
         ognTagList.addAll(constantTagList);
         Map<String, Object> map = Maps.newHashMap();
-//        Map<Long, String> constantTagMap = Maps.newHashMap();
-//        ognTagList.forEach(p -> {
-//            constantTagMap.put(p.getId(), p.getTagName());
-//        });
+
         map.put("ognTagList", ognTagList);
 
 
