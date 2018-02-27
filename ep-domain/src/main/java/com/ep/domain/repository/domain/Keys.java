@@ -4,76 +4,13 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.EpConstantCatalog;
-import com.ep.domain.repository.domain.tables.EpConstantRegion;
-import com.ep.domain.repository.domain.tables.EpConstantTag;
-import com.ep.domain.repository.domain.tables.EpFile;
-import com.ep.domain.repository.domain.tables.EpMember;
-import com.ep.domain.repository.domain.tables.EpMemberChild;
-import com.ep.domain.repository.domain.tables.EpMemberChildComment;
-import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
-import com.ep.domain.repository.domain.tables.EpMemberChildSign;
-import com.ep.domain.repository.domain.tables.EpMemberChildTag;
-import com.ep.domain.repository.domain.tables.EpMemberMessage;
-import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
-import com.ep.domain.repository.domain.tables.EpOrder;
-import com.ep.domain.repository.domain.tables.EpOrgan;
-import com.ep.domain.repository.domain.tables.EpOrganAccount;
-import com.ep.domain.repository.domain.tables.EpOrganCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClass;
-import com.ep.domain.repository.domain.tables.EpOrganClassCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClassChild;
-import com.ep.domain.repository.domain.tables.EpOrganClassComment;
-import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
-import com.ep.domain.repository.domain.tables.EpOrganCourse;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
-import com.ep.domain.repository.domain.tables.EpSystemClient;
-import com.ep.domain.repository.domain.tables.EpSystemDict;
-import com.ep.domain.repository.domain.tables.EpSystemMenu;
-import com.ep.domain.repository.domain.tables.EpSystemRole;
-import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
-import com.ep.domain.repository.domain.tables.EpSystemUser;
-import com.ep.domain.repository.domain.tables.EpSystemUserRole;
-import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
-import com.ep.domain.repository.domain.tables.records.EpConstantCatalogRecord;
-import com.ep.domain.repository.domain.tables.records.EpConstantRegionRecord;
-import com.ep.domain.repository.domain.tables.records.EpConstantTagRecord;
-import com.ep.domain.repository.domain.tables.records.EpFileRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildCommentRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildHonorRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildSignRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberMessageRecord;
-import com.ep.domain.repository.domain.tables.records.EpMemberRecord;
-import com.ep.domain.repository.domain.tables.records.EpMessageCaptchaRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCatalogRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassCatalogRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCourseTagRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganCourseTeamRecord;
-import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemClientRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemDictRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemRoleAuthorityRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
-import com.ep.domain.repository.domain.tables.records.EpSystemUserRoleRecord;
-import com.ep.domain.repository.domain.tables.records.EpWechatSessionTokenRecord;
-
-import javax.annotation.Generated;
-
+import com.ep.domain.repository.domain.tables.*;
+import com.ep.domain.repository.domain.tables.records.*;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -114,7 +51,6 @@ public class Keys {
     public static final Identity<EpOrganClassCatalogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATALOG = Identities0.IDENTITY_EP_ORGAN_CLASS_CATALOG;
     public static final Identity<EpOrganClassChildRecord, Long> IDENTITY_EP_ORGAN_CLASS_CHILD = Identities0.IDENTITY_EP_ORGAN_CLASS_CHILD;
     public static final Identity<EpOrganClassCommentRecord, Long> IDENTITY_EP_ORGAN_CLASS_COMMENT = Identities0.IDENTITY_EP_ORGAN_CLASS_COMMENT;
-    public static final Identity<EpOrganClassScheduleRecord, Long> IDENTITY_EP_ORGAN_CLASS_SCHEDULE = Identities0.IDENTITY_EP_ORGAN_CLASS_SCHEDULE;
     public static final Identity<EpOrganCourseRecord, Long> IDENTITY_EP_ORGAN_COURSE = Identities0.IDENTITY_EP_ORGAN_COURSE;
     public static final Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = Identities0.IDENTITY_EP_ORGAN_COURSE_TAG;
     public static final Identity<EpOrganCourseTeamRecord, Long> IDENTITY_EP_ORGAN_COURSE_TEAM = Identities0.IDENTITY_EP_ORGAN_COURSE_TEAM;
@@ -125,7 +61,6 @@ public class Keys {
     public static final Identity<EpSystemRoleAuthorityRecord, Long> IDENTITY_EP_SYSTEM_ROLE_AUTHORITY = Identities0.IDENTITY_EP_SYSTEM_ROLE_AUTHORITY;
     public static final Identity<EpSystemUserRecord, Long> IDENTITY_EP_SYSTEM_USER = Identities0.IDENTITY_EP_SYSTEM_USER;
     public static final Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = Identities0.IDENTITY_EP_SYSTEM_USER_ROLE;
-    public static final Identity<EpWechatSessionTokenRecord, Long> IDENTITY_EP_WECHAT_SESSION_TOKEN = Identities0.IDENTITY_EP_WECHAT_SESSION_TOKEN;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -140,7 +75,7 @@ public class Keys {
     public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = UniqueKeys0.KEY_EP_MEMBER_UNIQUE_MOBILE;
     public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_PRIMARY;
     public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY;
-    public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD = UniqueKeys0.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD;
+    public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD = UniqueKeys0.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD;
     public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_HONOR_PRIMARY;
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_PRIMARY;
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID;
@@ -158,7 +93,6 @@ public class Keys {
     public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID = UniqueKeys0.KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID;
     public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY;
     public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID = UniqueKeys0.KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID;
-    public static final UniqueKey<EpOrganClassScheduleRecord> KEY_EP_ORGAN_CLASS_SCHEDULE_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_SCHEDULE_PRIMARY;
     public static final UniqueKey<EpOrganCourseRecord> KEY_EP_ORGAN_COURSE_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_PRIMARY;
     public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TAG_PRIMARY;
     public static final UniqueKey<EpOrganCourseTeamRecord> KEY_EP_ORGAN_COURSE_TEAM_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TEAM_PRIMARY;
@@ -173,7 +107,6 @@ public class Keys {
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_PRIMARY;
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_IDX_MOBILE = UniqueKeys0.KEY_EP_SYSTEM_USER_IDX_MOBILE;
     public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_ROLE_PRIMARY;
-    public static final UniqueKey<EpWechatSessionTokenRecord> KEY_EP_WECHAT_SESSION_TOKEN_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_SESSION_TOKEN_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -205,7 +138,6 @@ public class Keys {
         public static Identity<EpOrganClassCatalogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATALOG = createIdentity(EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG, EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG.ID);
         public static Identity<EpOrganClassChildRecord, Long> IDENTITY_EP_ORGAN_CLASS_CHILD = createIdentity(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ID);
         public static Identity<EpOrganClassCommentRecord, Long> IDENTITY_EP_ORGAN_CLASS_COMMENT = createIdentity(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ID);
-        public static Identity<EpOrganClassScheduleRecord, Long> IDENTITY_EP_ORGAN_CLASS_SCHEDULE = createIdentity(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE, EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE.ID);
         public static Identity<EpOrganCourseRecord, Long> IDENTITY_EP_ORGAN_COURSE = createIdentity(EpOrganCourse.EP_ORGAN_COURSE, EpOrganCourse.EP_ORGAN_COURSE.ID);
         public static Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = createIdentity(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
         public static Identity<EpOrganCourseTeamRecord, Long> IDENTITY_EP_ORGAN_COURSE_TEAM = createIdentity(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM, EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.ID);
@@ -216,7 +148,6 @@ public class Keys {
         public static Identity<EpSystemRoleAuthorityRecord, Long> IDENTITY_EP_SYSTEM_ROLE_AUTHORITY = createIdentity(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY, EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ID);
         public static Identity<EpSystemUserRecord, Long> IDENTITY_EP_SYSTEM_USER = createIdentity(EpSystemUser.EP_SYSTEM_USER, EpSystemUser.EP_SYSTEM_USER.ID);
         public static Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = createIdentity(EpSystemUserRole.EP_SYSTEM_USER_ROLE, EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
-        public static Identity<EpWechatSessionTokenRecord, Long> IDENTITY_EP_WECHAT_SESSION_TOKEN = createIdentity(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN, EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN.ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
@@ -229,7 +160,7 @@ public class Keys {
         public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = createUniqueKey(EpMember.EP_MEMBER, "KEY_ep_member_UNIQUE_MOBILE", EpMember.EP_MEMBER.MOBILE);
         public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = createUniqueKey(EpMemberChild.EP_MEMBER_CHILD, "KEY_ep_member_child_PRIMARY", EpMemberChild.EP_MEMBER_CHILD.ID);
         public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_PRIMARY", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.ID);
-        public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_UNIQUE_CATELOG_CHILD", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID, EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CHILD_ID);
+        public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_UNIQUE_CATALOG_CHILD", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID, EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CHILD_ID);
         public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = createUniqueKey(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR, "KEY_ep_member_child_honor_PRIMARY", EpMemberChildHonor.EP_MEMBER_CHILD_HONOR.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_PRIMARY", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_UNIQUE_CHILD_ID", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.CHILD_ID);
@@ -247,7 +178,6 @@ public class Keys {
         public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID = createUniqueKey(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, "KEY_ep_organ_class_child_UNIQUE_ORDER_ID", EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ORDER_ID);
         public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY = createUniqueKey(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, "KEY_ep_organ_class_comment_PRIMARY", EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ID);
         public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID = createUniqueKey(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, "KEY_ep_organ_class_comment_UNIQUE_ORDER_ID", EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ORDER_ID);
-        public static final UniqueKey<EpOrganClassScheduleRecord> KEY_EP_ORGAN_CLASS_SCHEDULE_PRIMARY = createUniqueKey(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE, "KEY_ep_organ_class_schedule_PRIMARY", EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE.ID);
         public static final UniqueKey<EpOrganCourseRecord> KEY_EP_ORGAN_COURSE_PRIMARY = createUniqueKey(EpOrganCourse.EP_ORGAN_COURSE, "KEY_ep_organ_course_PRIMARY", EpOrganCourse.EP_ORGAN_COURSE.ID);
         public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = createUniqueKey(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, "KEY_ep_organ_course_tag_PRIMARY", EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
         public static final UniqueKey<EpOrganCourseTeamRecord> KEY_EP_ORGAN_COURSE_TEAM_PRIMARY = createUniqueKey(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM, "KEY_ep_organ_course_team_PRIMARY", EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.ID);
@@ -262,6 +192,5 @@ public class Keys {
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_PRIMARY", EpSystemUser.EP_SYSTEM_USER.ID);
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_IDX_MOBILE = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_IDX_MOBILE", EpSystemUser.EP_SYSTEM_USER.MOBILE);
         public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = createUniqueKey(EpSystemUserRole.EP_SYSTEM_USER_ROLE, "KEY_ep_system_user_role_PRIMARY", EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
-        public static final UniqueKey<EpWechatSessionTokenRecord> KEY_EP_WECHAT_SESSION_TOKEN_PRIMARY = createUniqueKey(EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN, "KEY_ep_wechat_session_token_PRIMARY", EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN.ID);
     }
 }

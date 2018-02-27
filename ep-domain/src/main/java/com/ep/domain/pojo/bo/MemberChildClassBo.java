@@ -20,7 +20,7 @@ public class MemberChildClassBo extends EpOrderPo {
     private Integer scheduleCommentNum;
     @JsonIgnore
     private Boolean courseCommentFlag;
-    private Integer lastCatelogIndex;
+    private Integer lastCatalogIndex;
     private String label;
     private String mainPicUrl;
 

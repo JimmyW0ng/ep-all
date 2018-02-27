@@ -5,16 +5,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpOrganClassChild;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record13;
 import org.jooq.Row13;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -30,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChildRecord> implements Record13<Long, Long, Long, Long, Integer, Integer, Boolean, Integer, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = -2123474538;
+    private static final long serialVersionUID = 777378858;
 
     /**
      * Setter for <code>ep.ep_organ_class_child.id</code>. 主键
@@ -138,17 +136,30 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_child.last_catelog_index</code>. 最近参加的课时目录
+     * Create a detached, initialised EpOrganClassChildRecord
      */
-    public EpOrganClassChildRecord setLastCatelogIndex(Integer value) {
-        set(7, value);
-        return this;
+    public EpOrganClassChildRecord(Long id, Long classId, Long childId, Long orderId, Integer honorNum, Integer scheduleCommentNum, Boolean courseCommentFlag, Integer lastCatalogIndex, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganClassChild.EP_ORGAN_CLASS_CHILD);
+
+        set(0, id);
+        set(1, classId);
+        set(2, childId);
+        set(3, orderId);
+        set(4, honorNum);
+        set(5, scheduleCommentNum);
+        set(6, courseCommentFlag);
+        set(7, lastCatalogIndex);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.last_catelog_index</code>. 最近参加的课时目录
+     * Getter for <code>ep.ep_organ_class_child.last_catalog_index</code>. 最近参加的课时目录
      */
-    public Integer getLastCatelogIndex() {
+    public Integer getLastCatalogIndex() {
         return (Integer) get(7);
     }
 
@@ -316,11 +327,11 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for <code>ep.ep_organ_class_child.last_catalog_index</code>. 最近参加的课时目录
      */
-    @Override
-    public Field<Integer> field8() {
-        return EpOrganClassChild.EP_ORGAN_CLASS_CHILD.LAST_CATELOG_INDEX;
+    public EpOrganClassChildRecord setLastCatalogIndex(Integer value) {
+        set(7, value);
+        return this;
     }
 
     /**
@@ -423,8 +434,8 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
      * {@inheritDoc}
      */
     @Override
-    public Integer value8() {
-        return getLastCatelogIndex();
+    public Field<Integer> field8() {
+        return EpOrganClassChild.EP_ORGAN_CLASS_CHILD.LAST_CATALOG_INDEX;
     }
 
     /**
@@ -534,9 +545,8 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
      * {@inheritDoc}
      */
     @Override
-    public EpOrganClassChildRecord value8(Integer value) {
-        setLastCatelogIndex(value);
-        return this;
+    public Integer value8() {
+        return getLastCatalogIndex();
     }
 
     /**
@@ -617,23 +627,11 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Create a detached, initialised EpOrganClassChildRecord
+     * {@inheritDoc}
      */
-    public EpOrganClassChildRecord(Long id, Long classId, Long childId, Long orderId, Integer honorNum, Integer scheduleCommentNum, Boolean courseCommentFlag, Integer lastCatelogIndex, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganClassChild.EP_ORGAN_CLASS_CHILD);
-
-        set(0, id);
-        set(1, classId);
-        set(2, childId);
-        set(3, orderId);
-        set(4, honorNum);
-        set(5, scheduleCommentNum);
-        set(6, courseCommentFlag);
-        set(7, lastCatelogIndex);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
+    @Override
+    public EpOrganClassChildRecord value8(Integer value) {
+        setLastCatalogIndex(value);
+        return this;
     }
 }

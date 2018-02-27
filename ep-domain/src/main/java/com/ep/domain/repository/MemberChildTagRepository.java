@@ -32,12 +32,12 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
      * 根据孩子和获取课时标签
      *
      * @param childId
-     * @param classCatelogId
+     * @param classCatalogId
      * @return
      */
-    public List<EpMemberChildTagPo> findByChildIdAndClassCatelogId(Long childId, Long classCatelogId) {
+    public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
         return dslContext.selectFrom(EP_MEMBER_CHILD_TAG)
-                         .where(EP_MEMBER_CHILD_TAG.CLASS_CATELOG_ID.eq(classCatelogId))
+                .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
                          .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
                          .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
                          .fetchInto(EpMemberChildTagPo.class);

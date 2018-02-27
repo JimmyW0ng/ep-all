@@ -7,7 +7,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.bo.MemberChildTagAndCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
-import com.ep.domain.pojo.dto.OrganClassCatelogCommentDto;
+import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class OrganClassCatelogService {
+public class OrganClassCatalogService {
 
     @Autowired
     private OrganClassCatalogRepository organClassCatalogRepository;
@@ -48,21 +48,21 @@ public class OrganClassCatelogService {
      * 课时评价初始化
      *
      * @param mobile
-     * @param classCatelogId
+     * @param classCatalogId
      * @return
      */
-    public ResultDo<OrganClassCatelogCommentDto> getClassCatelogCommentView(Long mobile, Long classCatelogId) {
-        ResultDo<OrganClassCatelogCommentDto> resultDo = ResultDo.build();
+    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(Long mobile, Long classCatalogId) {
+        ResultDo<OrganClassCatalogCommentDto> resultDo = ResultDo.build();
         // 课时信息
-        EpOrganClassCatalogPo classCatelogPo = organClassCatalogRepository.getById(classCatelogId);
-        if (classCatelogPo == null || classCatelogPo.getDelFlag()) {
-            log.error("课时信息不存在, classCatelogId={}", classCatelogId);
-            return resultDo.setError(MessageCode.ERROR_CLASS_CATELOG_NOT_EXISTS);
+        EpOrganClassCatalogPo classCatalogPo = organClassCatalogRepository.getById(classCatalogId);
+        if (classCatalogPo == null || classCatalogPo.getDelFlag()) {
+            log.error("课时信息不存在, classCatalogId={}", classCatalogId);
+            return resultDo.setError(MessageCode.ERROR_CLASS_CATALOG_NOT_EXISTS);
         }
         // 校验课程
-        EpOrganClassPo classPo = organClassRepository.getById(classCatelogPo.getClassId());
+        EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());
         if (classPo == null || classPo.getDelFlag()) {
-            log.error("班次不存在, classId={}", classCatelogPo.getClassId());
+            log.error("班次不存在, classId={}", classCatalogPo.getClassId());
             return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
         }
         EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
@@ -75,7 +75,7 @@ public class OrganClassCatelogService {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_OPENING);
         }
         // 孩子信息
-        List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classCatelogPo.getClassId());
+        List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classCatalogPo.getClassId());
         if (CollectionsTools.isNotEmpty(childList)) {
             for (MemberChildBo childBo : childList) {
                 Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childBo.getId());
@@ -97,13 +97,13 @@ public class OrganClassCatelogService {
         // 课程标签
         List<OrganCourseTagBo> courseTagList = organCourseTagRepository.findBosByCourseId(classPo.getCourseId());
         // 孩子评论信息
-        List<MemberChildTagAndCommentBo> childTagAndCommentList = organClassCatalogRepository.findChildComments(classPo.getId(), classCatelogId);
+        List<MemberChildTagAndCommentBo> childTagAndCommentList = organClassCatalogRepository.findChildComments(classPo.getId(), classCatalogId);
         for (MemberChildTagAndCommentBo bo : childTagAndCommentList) {
             // 加载标签
-            List<EpMemberChildTagPo> tags = memberChildTagRepository.findByChildIdAndClassCatelogId(bo.getChildId(), classCatelogId);
+            List<EpMemberChildTagPo> tags = memberChildTagRepository.findByChildIdAndClassCatalogId(bo.getChildId(), classCatalogId);
             bo.setTags(tags);
         }
-        OrganClassCatelogCommentDto commentDto = new OrganClassCatelogCommentDto(classCatelogPo, childList, courseTagList, childTagAndCommentList);
+        OrganClassCatalogCommentDto commentDto = new OrganClassCatalogCommentDto(classCatalogPo, childList, courseTagList, childTagAndCommentList);
         return resultDo.setResult(commentDto);
     }
 

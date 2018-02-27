@@ -26,7 +26,7 @@ public class EpMemberChildTagPo extends AbstractBasePojo {
     private Long ognId;
     private Long courseId;
     private Long classId;
-    private Long classCatelogId;
+    private Long classCatalogId;
     private Long tagId;
     private Timestamp createAt;
     @JsonIgnore

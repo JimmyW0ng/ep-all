@@ -4,48 +4,15 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.EpConstantCatalog;
-import com.ep.domain.repository.domain.tables.EpConstantRegion;
-import com.ep.domain.repository.domain.tables.EpConstantTag;
-import com.ep.domain.repository.domain.tables.EpFile;
-import com.ep.domain.repository.domain.tables.EpMember;
-import com.ep.domain.repository.domain.tables.EpMemberChild;
-import com.ep.domain.repository.domain.tables.EpMemberChildComment;
-import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
-import com.ep.domain.repository.domain.tables.EpMemberChildSign;
-import com.ep.domain.repository.domain.tables.EpMemberChildTag;
-import com.ep.domain.repository.domain.tables.EpMemberMessage;
-import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
-import com.ep.domain.repository.domain.tables.EpOrder;
-import com.ep.domain.repository.domain.tables.EpOrgan;
-import com.ep.domain.repository.domain.tables.EpOrganAccount;
-import com.ep.domain.repository.domain.tables.EpOrganCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClass;
-import com.ep.domain.repository.domain.tables.EpOrganClassCatalog;
-import com.ep.domain.repository.domain.tables.EpOrganClassChild;
-import com.ep.domain.repository.domain.tables.EpOrganClassComment;
-import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
-import com.ep.domain.repository.domain.tables.EpOrganCourse;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
-import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
-import com.ep.domain.repository.domain.tables.EpSystemClient;
-import com.ep.domain.repository.domain.tables.EpSystemDict;
-import com.ep.domain.repository.domain.tables.EpSystemMenu;
-import com.ep.domain.repository.domain.tables.EpSystemRole;
-import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
-import com.ep.domain.repository.domain.tables.EpSystemUser;
-import com.ep.domain.repository.domain.tables.EpSystemUserRole;
-import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Generated;
-
+import com.ep.domain.repository.domain.tables.*;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -61,7 +28,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 1823697810;
+    private static final long serialVersionUID = -1454890475;
 
     /**
      * The reference instance of <code>ep</code>
@@ -169,11 +136,6 @@ public class Ep extends SchemaImpl {
     public final EpOrganClassComment EP_ORGAN_CLASS_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassComment.EP_ORGAN_CLASS_COMMENT;
 
     /**
-     * 机构行程信息表
-     */
-    public final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = com.ep.domain.repository.domain.tables.EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE;
-
-    /**
      * 机构课程表
      */
     public final EpOrganCourse EP_ORGAN_COURSE = com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
@@ -224,11 +186,6 @@ public class Ep extends SchemaImpl {
     public final EpSystemUserRole EP_SYSTEM_USER_ROLE = com.ep.domain.repository.domain.tables.EpSystemUserRole.EP_SYSTEM_USER_ROLE;
 
     /**
-     * 微信会话token表
-     */
-    public final EpWechatSessionToken EP_WECHAT_SESSION_TOKEN = com.ep.domain.repository.domain.tables.EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN;
-
-    /**
      * No further instances allowed
      */
     private Ep() {
@@ -273,7 +230,6 @@ public class Ep extends SchemaImpl {
             EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG,
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
             EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
-            EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE,
             EpOrganCourse.EP_ORGAN_COURSE,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,
             EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM,
@@ -283,7 +239,6 @@ public class Ep extends SchemaImpl {
             EpSystemRole.EP_SYSTEM_ROLE,
             EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY,
             EpSystemUser.EP_SYSTEM_USER,
-            EpSystemUserRole.EP_SYSTEM_USER_ROLE,
-            EpWechatSessionToken.EP_WECHAT_SESSION_TOKEN);
+                EpSystemUserRole.EP_SYSTEM_USER_ROLE);
     }
 }

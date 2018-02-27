@@ -8,20 +8,13 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildCommentRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> {
 
-    private static final long serialVersionUID = -35531505;
+    private static final long serialVersionUID = 334685587;
 
     /**
      * The reference instance of <code>ep.ep_member_child_comment</code>
@@ -183,7 +176,7 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      */
     @Override
     public List<UniqueKey<EpMemberChildCommentRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpMemberChildCommentRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD);
+        return Arrays.<UniqueKey<EpMemberChildCommentRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD);
     }
 
     /**

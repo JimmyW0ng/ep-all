@@ -84,7 +84,7 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatelogId"));
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatalogId"));
         fieldList.add(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM);
         return dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)

@@ -27,7 +27,7 @@ public class EpOrganClassChildPo extends AbstractBasePojo {
     private Integer honorNum;
     private Integer scheduleCommentNum;
     private Boolean courseCommentFlag;
-    private Integer lastCatelogIndex;
+    private Integer lastCatalogIndex;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

@@ -3,10 +3,10 @@ package com.ep.api.controller;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
-import com.ep.domain.pojo.dto.OrganClassCatelogCommentDto;
+import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.OrganAccountService;
-import com.ep.domain.service.OrganClassCatelogService;
+import com.ep.domain.service.OrganClassCatalogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class OrganAccountController extends ApiController {
     @Autowired
     private OrganAccountService organAccountService;
     @Autowired
-    private OrganClassCatelogService organClassCatelogService;
+    private OrganClassCatalogService organClassCatalogService;
 
     @ApiOperation(value = "机构账户信息")
     @PostMapping("/info")
@@ -49,10 +49,10 @@ public class OrganAccountController extends ApiController {
     }
 
     @ApiOperation(value = "课时评价初始化")
-    @PostMapping("/class/catelog/init")
-    public ResultDo<OrganClassCatelogCommentDto> getClassCatelogCommentView(@RequestParam("classCatelogId") Long classCatelogId) {
+    @PostMapping("/class/catalog/init")
+    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(@RequestParam("classCatalogId") Long classCatalogId) {
         EpMemberPo memberPo = super.getCurrentUser().get();
-        return organClassCatelogService.getClassCatelogCommentView(memberPo.getMobile(), classCatelogId);
+        return organClassCatalogService.getClassCatalogCommentView(memberPo.getMobile(), classCatalogId);
     }
 
 }

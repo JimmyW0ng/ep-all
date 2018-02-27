@@ -14,7 +14,7 @@ public class OrganAccountClassBo extends EpOrganClassPo {
     private String courseName;
     private Integer childEvaluatedNum;
     private String mainPicUrl;
-    private Long classCatelogId;
+    private Long classCatalogId;
 
     public Boolean getViewCommentFlag() {
         return this.childEvaluatedNum >= super.getEnteredNum();

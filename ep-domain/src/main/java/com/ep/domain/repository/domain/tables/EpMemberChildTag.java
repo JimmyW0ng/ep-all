@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
 
-    private static final long serialVersionUID = -1856311750;
+    private static final long serialVersionUID = -1064776402;
 
     /**
      * The reference instance of <code>ep.ep_member_child_tag</code>
@@ -77,9 +70,9 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
     public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
 
     /**
-     * The column <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id
+     * The column <code>ep.ep_member_child_tag.class_catalog_id</code>. 课程内容目录id
      */
-    public final TableField<EpMemberChildTagRecord, Long> CLASS_CATELOG_ID = createField("class_catelog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程内容目录id");
+    public final TableField<EpMemberChildTagRecord, Long> CLASS_CATALOG_ID = createField("class_catalog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程内容目录id");
 
     /**
      * The column <code>ep.ep_member_child_tag.tag_id</code>. 标签id

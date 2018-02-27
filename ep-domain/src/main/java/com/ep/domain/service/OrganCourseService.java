@@ -5,7 +5,10 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.*;
+import com.ep.domain.pojo.bo.OrganAccountBo;
+import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.bo.OrganClassCommentBo;
+import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -20,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 机构课程服务类
@@ -170,13 +175,13 @@ public class OrganCourseService {
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
-            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
-            for (int i = 0; i < organClassCatelogPos.size(); i++) {
-                organClassCatelogPos.get(i).setClassId(insertOrganClassId);
-//                organClassCatelogPos.get(i).setCatelogIndex(i + 1);
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
+            for (int i = 0; i < organClassCatalogPos.size(); i++) {
+                organClassCatalogPos.get(i).setClassId(insertOrganClassId);
+//                organClassCatalogPos.get(i).setCatalogIndex(i + 1);
             }
             //班次课程内容目录表插入数据
-            organClassCatalogRepository.insert(organClassCatelogPos);
+            organClassCatalogRepository.insert(organClassCatalogPos);
         });
 
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
@@ -231,14 +236,14 @@ public class OrganCourseService {
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
-            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
-            for (int i = 0; i < organClassCatelogPos.size(); i++) {
-                organClassCatelogPos.get(i).setClassId(insertOrganClassId);
-                organClassCatelogPos.get(i).setId(null);
-//                organClassCatelogPos.get(i).setCatelogIndex(i + 1);
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
+            for (int i = 0; i < organClassCatalogPos.size(); i++) {
+                organClassCatalogPos.get(i).setClassId(insertOrganClassId);
+                organClassCatalogPos.get(i).setId(null);
+//                organClassCatalogPos.get(i).setCatalogIndex(i + 1);
             }
             //班次课程内容目录表插入数据
-            organClassCatalogRepository.insert(organClassCatelogPos);
+            organClassCatalogRepository.insert(organClassCatalogPos);
         });
 
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
@@ -332,21 +337,21 @@ public class OrganCourseService {
     }
 
     /**
-     * 商户后台更新课程时，比较两个EpOrganClassCatelogPo对象是否相同
+     * 商户后台更新课程时，比较两个EpOrganClassCatalogPo对象是否相同
      * 班次名称，负责人，价格，折扣，是否限制报名人数，要求报名人数，总计课时
      *
      * @param newPo
      * @param oldPo
      * @return
      */
-//    private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatalogPo newPo, EpOrganClassCatalogPo oldPo) {
-//        if (!newPo.getCatelogTitle().equals(oldPo.getCatelogTitle())) {
+//    private Boolean isClassCatalogEq4MerchUpdateCourse(EpOrganClassCatalogPo newPo, EpOrganClassCatalogPo oldPo) {
+//        if (!newPo.getCatalogTitle().equals(oldPo.getCatalogTitle())) {
 //            return false;
 //        }
-//        if (!newPo.getCatelogIndex().equals(oldPo.getCatelogIndex())) {
+//        if (!newPo.getCatalogIndex().equals(oldPo.getCatalogIndex())) {
 //            return false;
 //        }
-//        if (!newPo.getCatelogDesc().equals(oldPo.getCatelogDesc())) {
+//        if (!newPo.getCatalogDesc().equals(oldPo.getCatalogDesc())) {
 //            return false;
 //        }
 //        if (!newPo.getStartTime().equals(oldPo.getStartTime())) {

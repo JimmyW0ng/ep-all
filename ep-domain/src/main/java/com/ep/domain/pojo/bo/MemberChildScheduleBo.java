@@ -17,7 +17,7 @@ public class MemberChildScheduleBo extends EpOrderPo {
     private String ognName;
     private String courseName;
     private Integer courseNum;
-    private Integer catelogIndex;
+    private Integer catalogIndex;
     private String label;
     @JsonIgnore
     private Timestamp startTime;

@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,7 +29,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
 
-    private static final long serialVersionUID = 363058242;
+    private static final long serialVersionUID = 1041236038;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_child</code>
@@ -87,9 +80,9 @@ public class EpOrganClassChild extends TableImpl<EpOrganClassChildRecord> {
     public final TableField<EpOrganClassChildRecord, Boolean> COURSE_COMMENT_FLAG = createField("course_comment_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否评论课程");
 
     /**
-     * The column <code>ep.ep_organ_class_child.last_catelog_index</code>. 最近参加的课时目录
+     * The column <code>ep.ep_organ_class_child.last_catalog_index</code>. 最近参加的课时目录
      */
-    public final TableField<EpOrganClassChildRecord, Integer> LAST_CATELOG_INDEX = createField("last_catelog_index", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "最近参加的课时目录");
+    public final TableField<EpOrganClassChildRecord, Integer> LAST_CATALOG_INDEX = createField("last_catalog_index", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "最近参加的课时目录");
 
     /**
      * The column <code>ep.ep_organ_class_child.create_at</code>. 创建时间
