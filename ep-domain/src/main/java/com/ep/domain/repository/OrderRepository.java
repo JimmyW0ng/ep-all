@@ -259,6 +259,19 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 批量订单报名成功
+     * @param ids
+     */
+    public int orderSuccessByIds(List<Long> ids){
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS,EpOrderStatus.success)
+                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.ID.in(ids))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
      * 订单拒绝
      * @param id
      */
@@ -282,7 +295,20 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .where(EP_ORDER.ID.eq(id))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .fetchOneInto(EpOrderPo.class);
+    }
 
+    /**
+     * 根据id取消报名成功/拒绝的订单
+     * @param id
+     */
+    public int orderCancelById(Long id,EpOrderStatus status){
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS,EpOrderStatus.save)
+                .where(EP_ORDER.STATUS.eq(status))
+                .and(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success).or(EP_ORDER.STATUS.eq(EpOrderStatus.refuse)))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
     }
 }
 

@@ -164,15 +164,25 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      * @param orderCount
      */
     public void updateEnteredNumByorderSuccess(Long classId, int orderCount) {
-        EpOrganClassPo updatePo = dslContext.selectFrom(EP_ORGAN_CLASS)
-                .where(EP_ORGAN_CLASS.ID.eq(classId))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .forUpdate().fetchOneInto(EpOrganClassPo.class);
         dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.ENTERED_NUM, updatePo.getEnteredNum() + orderCount)
+                .set(EP_ORGAN_CLASS.ENTERED_NUM, EP_ORGAN_CLASS.ENTERED_NUM.add(orderCount))
                 .where(EP_ORGAN_CLASS.ID.eq(classId))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据id和count，在报名取消时更新班级已报名人数
+     * @param classId
+     * @param count
+     */
+    public void enteredNumByOrderCancel(Long classId,int count){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.ENTERED_NUM,EP_ORGAN_CLASS.ENTERED_NUM.add(count))
+                .where(EP_ORGAN_CLASS.ID.eq(classId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
+
 }
 

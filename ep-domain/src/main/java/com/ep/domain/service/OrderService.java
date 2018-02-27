@@ -14,6 +14,7 @@ import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -244,7 +245,7 @@ public class OrderService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public int orderSuccessById(Long id,Long classId) {
+    public int orderSuccessById(Long id, Long classId) {
         int count = orderRepository.orderSuccessById(id);
         organClassRepository.updateEnteredNumByorderSuccess(classId, count);
         return count;
@@ -253,16 +254,20 @@ public class OrderService {
     /**
      * 批量报名
      *
-     * @param pos
+     * @param map
      */
     @Transactional(rollbackFor = Exception.class)
-    public void batchOrderSuccess(List<EpOrderPo> pos) {
-
-//        int count = 0;
-//        for (int i = 0; i < ids.length; i++) {
-//            count = count + orderRepository.orderSuccessById(ids[i]);
-//        }
-//        organClassRepository.updateEnteredNumByorderSuccess(classId, count);
+    public void batchOrderSuccess(Map<Long, Object> map) {
+        //相同班次批量报名
+        map.keySet().forEach(key -> {
+            List<EpOrderPo> pos = (List<EpOrderPo>) map.get(key);
+            List<Long> list = Lists.newArrayList();
+            for (int i = 0; i < pos.size(); i++) {
+                list.add(pos.get(i).getId());
+            }
+            int count = orderRepository.orderSuccessByIds(list);
+            organClassRepository.updateEnteredNumByorderSuccess(key, count);
+        });
     }
 
     /**
@@ -284,5 +289,17 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-
+    /**
+     * 根据id取消报名成功/拒绝的订单
+     * @param id
+     * @param status
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void orderCancelById(Long id, EpOrderStatus status) {
+        Long classId = orderRepository.findById(id).getClassId();
+        int count = orderRepository.orderCancelById(id, status);
+        if (status.equals(EpOrderStatus.success)) {
+            organClassRepository.enteredNumByOrderCancel(classId, count);
+        }
+    }
 }
