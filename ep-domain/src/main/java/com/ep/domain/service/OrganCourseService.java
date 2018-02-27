@@ -51,8 +51,6 @@ public class OrganCourseService {
     @Autowired
     private OrganClassCatalogRepository organClassCatalogRepository;
     @Autowired
-    private ConstantTagRepository constantTagRepository;
-    @Autowired
     private OrganCourseTagRepository organCourseTagRepository;
 
     /**

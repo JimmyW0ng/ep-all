@@ -162,8 +162,7 @@
                     <section style="position: static">
                         <div id="constantTagBox" class="col-sm-12">
                             <div class="col-sm-2" th:each="bo:${organCourseTagBos}">
-                                <!--<input name="tagName" value=${tagName} type="hidden"/>-->
-                                <!--<input type="checkbox" name="id" value="${id}">-->
+
                                 <span class="label" th:text="${bo.tagName}"></span>
                             </div>
                         </div>
@@ -217,44 +216,7 @@
                                                                       aria-hidden="true"></span></a>
     </div>
 </script>
-<!--<script type="text/template" id='classTmpl'>-->
-    <!--<div name="organClassBosBox"  class="panel panel-default">-->
-        <!--<div class="panel-heading">-->
-            <!--<h5 class="panel-title">-->
-                <!--<a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>标题</a>-->
-                <!--<a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"-->
-                                                                        <!--aria-hidden="true"-->
-                                                                        <!--onclick="removeClassBox(this)"></span></a>-->
-            <!--</h5>-->
-        <!--</div>-->
-        <!--<div id=${collapse} class="panel-collapse collapse in">-->
-            <!--<div class="panel-body " >-->
-                <!--<div name="organClassBos" class="form-group col-sm-4" >-->
-                    <!--<label>班次名称 *</label>-->
-                    <!--<input name="className" type="text"  class=" form-control "-->
-                           <!--onblur="setClassBoxTitle(this)">-->
-                    <!--<label>课程负责人 *</label>-->
-                    <!--<select name="ognAccountId" type="text"  class=" form-control ">-->
 
-                    <!--</select>-->
-                    <!--<label>价格 *</label>-->
-                    <!--<input name="classPrize" type="text"  class=" form-control ">-->
-                    <!--<label>折扣优惠 *</label>-->
-                    <!--<input name="discountAmount" type="text"  class=" form-control ">-->
-                    <!--<label>是否限制报名人数 *</label>-->
-                    <!--<input name="enterLimitFlag" type="text"  class=" form-control ">-->
-                    <!--<label>要求报名人数 *</label>-->
-                    <!--<input name="enterRequireNum" type="text" class=" form-control ">-->
-                    <!--<label>总计课时 *</label>-->
-                    <!--<input name="courseNum" type="Number" class=" form-control " onblur="addClassCatalogBox(this)">-->
-                <!--</div>-->
-<!--<div name="organClassCatalogPosBox" class="form-group col-sm-8 well">-->
-
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
@@ -263,10 +225,6 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
-    //教师map
-    var organAccountMap = [[${organAccountMap}]]
-    //班次目录
-    var organClassCatalogPos = [[${organClassCatalogPos}]]
 
     $(document).ready(function () {
         var form = $("#frm");
