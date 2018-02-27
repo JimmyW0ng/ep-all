@@ -5,11 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @Description: 订单Bo
- * @Author: CC.F
- * @Date: 21:41 2018/2/25
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

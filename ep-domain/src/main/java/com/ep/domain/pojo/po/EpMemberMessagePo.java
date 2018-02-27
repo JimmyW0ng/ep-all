@@ -7,6 +7,7 @@ package com.ep.domain.pojo.po;
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpMemberMessageStatus;
 import com.ep.domain.repository.domain.enums.EpMemberMessageType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,12 +31,17 @@ public class EpMemberMessagePo extends AbstractBasePojo {
     private EpMemberMessageType type;
     private EpMemberMessageStatus status;
     private String content;
+    @JsonIgnore
     private Long sourceId;
     private String sourseDesc;
     private Timestamp createAt;
+    @JsonIgnore
     private Timestamp updateAt;
+    @JsonIgnore
     private String remark;
+    @JsonIgnore
     private Boolean delFlag;
+    @JsonIgnore
     private Long version;
 
 }
