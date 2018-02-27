@@ -19,13 +19,13 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EpOrganClassCatelogPo extends AbstractBasePojo {
+public class EpOrganClassCatalogPo extends AbstractBasePojo {
 
     private Long id;
     private Long classId;
-    private String catelogTitle;
-    private String catelogDesc;
-    private Integer catelogIndex;
+    private String catalogTitle;
+    private String catalogDesc;
+    private Integer catalogIndex;
     private Timestamp startTime;
     private Timestamp endTime;
     private String remark;

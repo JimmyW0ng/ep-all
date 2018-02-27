@@ -84,21 +84,21 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(EP_ORGAN_CLASS_CATELOG.ID.as("classCatelogId"));
-        fieldList.add(EP_ORGAN_CLASS_CATELOG.CHILD_EVALUATED_NUM);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatelogId"));
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM);
         return dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)
                 .leftJoin(EP_ORGAN)
                 .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
                 .leftJoin(EP_ORGAN_COURSE)
                 .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                .leftJoin(EP_ORGAN_CLASS_CATELOG)
-                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATELOG.CLASS_ID))
-                .and(EP_ORGAN_CLASS_CATELOG.DEL_FLAG.eq(false))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG)
+                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
-                .and(EP_ORGAN_CLASS_CATELOG.START_TIME.between(startTime, endTime))
+                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.between(startTime, endTime))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .orderBy(EP_ORGAN_CLASS_CATELOG.START_TIME.asc())
+                .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc())
                 .fetchInto(OrganAccountClassBo.class);
     }
 

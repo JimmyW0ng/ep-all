@@ -7,14 +7,16 @@ package com.ep.domain.repository.domain.tables.records;
 import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.EpSystemUser;
+
+import java.sql.Timestamp;
+
+import javax.annotation.Generated;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record14;
 import org.jooq.Row14;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
 
 
 /**
@@ -41,10 +43,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Create a detached EpSystemUserRecord
+     * Getter for <code>ep.ep_system_user.id</code>. 主键
      */
-    public EpSystemUserRecord() {
-        super(EpSystemUser.EP_SYSTEM_USER);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -56,25 +58,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Create a detached, initialised EpSystemUserRecord
+     * Getter for <code>ep.ep_system_user.mobile</code>. 手机号
      */
-    public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemUser.EP_SYSTEM_USER);
-
-        set(0, id);
-        set(1, mobile);
-        set(2, userName);
-        set(3, salt);
-        set(4, password);
-        set(5, email);
-        set(6, type);
-        set(7, ognId);
-        set(8, status);
-        set(9, createAt);
-        set(10, updateAt);
-        set(11, remark);
-        set(12, delFlag);
-        set(13, version);
+    public Long getMobile() {
+        return (Long) get(1);
     }
 
     /**
@@ -86,10 +73,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.id</code>. 主键
+     * Getter for <code>ep.ep_system_user.user_name</code>. 用户名
      */
-    public Long getId() {
-        return (Long) get(0);
+    public String getUserName() {
+        return (String) get(2);
     }
 
     /**
@@ -101,10 +88,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.mobile</code>. 手机号
+     * Getter for <code>ep.ep_system_user.salt</code>. 盐
      */
-    public Long getMobile() {
-        return (Long) get(1);
+    public String getSalt() {
+        return (String) get(3);
     }
 
     /**
@@ -116,10 +103,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.user_name</code>. 用户名
+     * Getter for <code>ep.ep_system_user.password</code>. 密码
      */
-    public String getUserName() {
-        return (String) get(2);
+    public String getPassword() {
+        return (String) get(4);
     }
 
     /**
@@ -131,10 +118,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.salt</code>. 盐
+     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
-    public String getSalt() {
-        return (String) get(3);
+    public String getEmail() {
+        return (String) get(5);
     }
 
     /**
@@ -146,10 +133,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.password</code>. 密码
+     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
      */
-    public String getPassword() {
-        return (String) get(4);
+    public EpSystemUserType getType() {
+        return (EpSystemUserType) get(6);
     }
 
     /**
@@ -161,10 +148,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
+     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public String getEmail() {
-        return (String) get(5);
+    public Long getOgnId() {
+        return (Long) get(7);
     }
 
     /**
@@ -176,10 +163,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
+     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
      */
-    public EpSystemUserType getType() {
-        return (EpSystemUserType) get(6);
+    public EpSystemUserStatus getStatus() {
+        return (EpSystemUserStatus) get(8);
     }
 
     /**
@@ -191,10 +178,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
+     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public Long getOgnId() {
-        return (Long) get(7);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -206,10 +193,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
      */
-    public EpSystemUserStatus getStatus() {
-        return (EpSystemUserStatus) get(8);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -221,10 +208,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_user.remark</code>. 备注
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public String getRemark() {
+        return (String) get(11);
     }
 
     /**
@@ -236,17 +223,18 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     * Setter for <code>ep.ep_system_user.version</code>.
      */
-    public String getRemark() {
-        return (String) get(11);
+    public EpSystemUserRecord setVersion(Long value) {
+        set(13, value);
+        return this;
     }
 
     /**
@@ -665,17 +653,31 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Create a detached EpSystemUserRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public EpSystemUserRecord() {
+        super(EpSystemUser.EP_SYSTEM_USER);
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.version</code>.
+     * Create a detached, initialised EpSystemUserRecord
      */
-    public EpSystemUserRecord setVersion(Long value) {
-        set(13, value);
-        return this;
+    public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemUser.EP_SYSTEM_USER);
+
+        set(0, id);
+        set(1, mobile);
+        set(2, userName);
+        set(3, salt);
+        set(4, password);
+        set(5, email);
+        set(6, type);
+        set(7, ognId);
+        set(8, status);
+        set(9, createAt);
+        set(10, updateAt);
+        set(11, remark);
+        set(12, delFlag);
+        set(13, version);
     }
 }

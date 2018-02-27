@@ -7,13 +7,20 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
-import org.jooq.*;
-import org.jooq.impl.TableImpl;
 
-import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Schema;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
+import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,9 +44,12 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
     public static final EpMemberChildTag EP_MEMBER_CHILD_TAG = new EpMemberChildTag();
 
     /**
-     * The column <code>ep.ep_member_child_tag.ogn_id</code>. 机构id
+     * The class holding records for this type
      */
-    public final TableField<EpMemberChildTagRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+    @Override
+    public Class<EpMemberChildTagRecord> getRecordType() {
+        return EpMemberChildTagRecord.class;
+    }
 
     /**
      * The column <code>ep.ep_member_child_tag.id</code>. 主键
@@ -52,12 +62,9 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
     public final TableField<EpMemberChildTagRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
 
     /**
-     * The class holding records for this type
+     * The column <code>ep.ep_member_child_tag.ogn_id</code>. 机构id
      */
-    @Override
-    public Class<EpMemberChildTagRecord> getRecordType() {
-        return EpMemberChildTagRecord.class;
-    }
+    public final TableField<EpMemberChildTagRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
 
     /**
      * The column <code>ep.ep_member_child_tag.course_id</code>. 课程id

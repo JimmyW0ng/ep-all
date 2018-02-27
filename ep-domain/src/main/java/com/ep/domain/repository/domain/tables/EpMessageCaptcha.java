@@ -9,13 +9,20 @@ import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import com.ep.domain.repository.domain.tables.records.EpMessageCaptchaRecord;
-import org.jooq.*;
-import org.jooq.impl.TableImpl;
 
-import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Field;
+import org.jooq.Identity;
+import org.jooq.Schema;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
+import org.jooq.impl.TableImpl;
 
 
 /**

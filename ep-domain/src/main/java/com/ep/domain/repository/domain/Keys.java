@@ -4,13 +4,76 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.*;
-import com.ep.domain.repository.domain.tables.records.*;
+import com.ep.domain.repository.domain.tables.EpConstantCatalog;
+import com.ep.domain.repository.domain.tables.EpConstantRegion;
+import com.ep.domain.repository.domain.tables.EpConstantTag;
+import com.ep.domain.repository.domain.tables.EpFile;
+import com.ep.domain.repository.domain.tables.EpMember;
+import com.ep.domain.repository.domain.tables.EpMemberChild;
+import com.ep.domain.repository.domain.tables.EpMemberChildComment;
+import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
+import com.ep.domain.repository.domain.tables.EpMemberChildSign;
+import com.ep.domain.repository.domain.tables.EpMemberChildTag;
+import com.ep.domain.repository.domain.tables.EpMemberMessage;
+import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
+import com.ep.domain.repository.domain.tables.EpOrder;
+import com.ep.domain.repository.domain.tables.EpOrgan;
+import com.ep.domain.repository.domain.tables.EpOrganAccount;
+import com.ep.domain.repository.domain.tables.EpOrganCatalog;
+import com.ep.domain.repository.domain.tables.EpOrganClass;
+import com.ep.domain.repository.domain.tables.EpOrganClassCatalog;
+import com.ep.domain.repository.domain.tables.EpOrganClassChild;
+import com.ep.domain.repository.domain.tables.EpOrganClassComment;
+import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
+import com.ep.domain.repository.domain.tables.EpOrganCourse;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
+import com.ep.domain.repository.domain.tables.EpSystemClient;
+import com.ep.domain.repository.domain.tables.EpSystemDict;
+import com.ep.domain.repository.domain.tables.EpSystemMenu;
+import com.ep.domain.repository.domain.tables.EpSystemRole;
+import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
+import com.ep.domain.repository.domain.tables.EpSystemUser;
+import com.ep.domain.repository.domain.tables.EpSystemUserRole;
+import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
+import com.ep.domain.repository.domain.tables.records.EpConstantCatalogRecord;
+import com.ep.domain.repository.domain.tables.records.EpConstantRegionRecord;
+import com.ep.domain.repository.domain.tables.records.EpConstantTagRecord;
+import com.ep.domain.repository.domain.tables.records.EpFileRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildCommentRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildHonorRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildSignRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberMessageRecord;
+import com.ep.domain.repository.domain.tables.records.EpMemberRecord;
+import com.ep.domain.repository.domain.tables.records.EpMessageCaptchaRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCatalogRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassCatalogRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCourseTagRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganCourseTeamRecord;
+import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemClientRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemDictRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemRoleAuthorityRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemRoleRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemUserRecord;
+import com.ep.domain.repository.domain.tables.records.EpSystemUserRoleRecord;
+import com.ep.domain.repository.domain.tables.records.EpWechatSessionTokenRecord;
+
+import javax.annotation.Generated;
+
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
-
-import javax.annotation.Generated;
 
 
 /**
@@ -48,7 +111,7 @@ public class Keys {
     public static final Identity<EpOrganAccountRecord, Long> IDENTITY_EP_ORGAN_ACCOUNT = Identities0.IDENTITY_EP_ORGAN_ACCOUNT;
     public static final Identity<EpOrganCatalogRecord, Long> IDENTITY_EP_ORGAN_CATALOG = Identities0.IDENTITY_EP_ORGAN_CATALOG;
     public static final Identity<EpOrganClassRecord, Long> IDENTITY_EP_ORGAN_CLASS = Identities0.IDENTITY_EP_ORGAN_CLASS;
-    public static final Identity<EpOrganClassCatelogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATELOG = Identities0.IDENTITY_EP_ORGAN_CLASS_CATELOG;
+    public static final Identity<EpOrganClassCatalogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATALOG = Identities0.IDENTITY_EP_ORGAN_CLASS_CATALOG;
     public static final Identity<EpOrganClassChildRecord, Long> IDENTITY_EP_ORGAN_CLASS_CHILD = Identities0.IDENTITY_EP_ORGAN_CLASS_CHILD;
     public static final Identity<EpOrganClassCommentRecord, Long> IDENTITY_EP_ORGAN_CLASS_COMMENT = Identities0.IDENTITY_EP_ORGAN_CLASS_COMMENT;
     public static final Identity<EpOrganClassScheduleRecord, Long> IDENTITY_EP_ORGAN_CLASS_SCHEDULE = Identities0.IDENTITY_EP_ORGAN_CLASS_SCHEDULE;
@@ -90,7 +153,7 @@ public class Keys {
     public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CATALOG_PRIMARY;
     public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_UNIQUE_OGN_ID_COURSE_CATALOG_ID = UniqueKeys0.KEY_EP_ORGAN_CATALOG_UNIQUE_OGN_ID_COURSE_CATALOG_ID;
     public static final UniqueKey<EpOrganClassRecord> KEY_EP_ORGAN_CLASS_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_PRIMARY;
-    public static final UniqueKey<EpOrganClassCatelogRecord> KEY_EP_ORGAN_CLASS_CATELOG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_CATELOG_PRIMARY;
+    public static final UniqueKey<EpOrganClassCatalogRecord> KEY_EP_ORGAN_CLASS_CATALOG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_CATALOG_PRIMARY;
     public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_CHILD_PRIMARY;
     public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID = UniqueKeys0.KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID;
     public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY;
@@ -139,7 +202,7 @@ public class Keys {
         public static Identity<EpOrganAccountRecord, Long> IDENTITY_EP_ORGAN_ACCOUNT = createIdentity(EpOrganAccount.EP_ORGAN_ACCOUNT, EpOrganAccount.EP_ORGAN_ACCOUNT.ID);
         public static Identity<EpOrganCatalogRecord, Long> IDENTITY_EP_ORGAN_CATALOG = createIdentity(EpOrganCatalog.EP_ORGAN_CATALOG, EpOrganCatalog.EP_ORGAN_CATALOG.ID);
         public static Identity<EpOrganClassRecord, Long> IDENTITY_EP_ORGAN_CLASS = createIdentity(EpOrganClass.EP_ORGAN_CLASS, EpOrganClass.EP_ORGAN_CLASS.ID);
-        public static Identity<EpOrganClassCatelogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATELOG = createIdentity(EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG, EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.ID);
+        public static Identity<EpOrganClassCatalogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATALOG = createIdentity(EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG, EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG.ID);
         public static Identity<EpOrganClassChildRecord, Long> IDENTITY_EP_ORGAN_CLASS_CHILD = createIdentity(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ID);
         public static Identity<EpOrganClassCommentRecord, Long> IDENTITY_EP_ORGAN_CLASS_COMMENT = createIdentity(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ID);
         public static Identity<EpOrganClassScheduleRecord, Long> IDENTITY_EP_ORGAN_CLASS_SCHEDULE = createIdentity(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE, EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE.ID);
@@ -166,7 +229,7 @@ public class Keys {
         public static final UniqueKey<EpMemberRecord> KEY_EP_MEMBER_UNIQUE_MOBILE = createUniqueKey(EpMember.EP_MEMBER, "KEY_ep_member_UNIQUE_MOBILE", EpMember.EP_MEMBER.MOBILE);
         public static final UniqueKey<EpMemberChildRecord> KEY_EP_MEMBER_CHILD_PRIMARY = createUniqueKey(EpMemberChild.EP_MEMBER_CHILD, "KEY_ep_member_child_PRIMARY", EpMemberChild.EP_MEMBER_CHILD.ID);
         public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_PRIMARY", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.ID);
-        public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_UNIQUE_CATELOG_CHILD", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_CATELOG_ID, EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CHILD_ID);
+        public static final UniqueKey<EpMemberChildCommentRecord> KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATELOG_CHILD = createUniqueKey(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT, "KEY_ep_member_child_comment_UNIQUE_CATELOG_CHILD", EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID, EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CHILD_ID);
         public static final UniqueKey<EpMemberChildHonorRecord> KEY_EP_MEMBER_CHILD_HONOR_PRIMARY = createUniqueKey(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR, "KEY_ep_member_child_honor_PRIMARY", EpMemberChildHonor.EP_MEMBER_CHILD_HONOR.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_PRIMARY", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_UNIQUE_CHILD_ID", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.CHILD_ID);
@@ -179,7 +242,7 @@ public class Keys {
         public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_PRIMARY = createUniqueKey(EpOrganCatalog.EP_ORGAN_CATALOG, "KEY_ep_organ_catalog_PRIMARY", EpOrganCatalog.EP_ORGAN_CATALOG.ID);
         public static final UniqueKey<EpOrganCatalogRecord> KEY_EP_ORGAN_CATALOG_UNIQUE_OGN_ID_COURSE_CATALOG_ID = createUniqueKey(EpOrganCatalog.EP_ORGAN_CATALOG, "KEY_ep_organ_catalog_UNIQUE_OGN_ID_COURSE_CATALOG_ID", EpOrganCatalog.EP_ORGAN_CATALOG.OGN_ID, EpOrganCatalog.EP_ORGAN_CATALOG.COURSE_CATALOG_ID);
         public static final UniqueKey<EpOrganClassRecord> KEY_EP_ORGAN_CLASS_PRIMARY = createUniqueKey(EpOrganClass.EP_ORGAN_CLASS, "KEY_ep_organ_class_PRIMARY", EpOrganClass.EP_ORGAN_CLASS.ID);
-        public static final UniqueKey<EpOrganClassCatelogRecord> KEY_EP_ORGAN_CLASS_CATELOG_PRIMARY = createUniqueKey(EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG, "KEY_ep_organ_class_catelog_PRIMARY", EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG.ID);
+        public static final UniqueKey<EpOrganClassCatalogRecord> KEY_EP_ORGAN_CLASS_CATALOG_PRIMARY = createUniqueKey(EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG, "KEY_ep_organ_class_catalog_PRIMARY", EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG.ID);
         public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_PRIMARY = createUniqueKey(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, "KEY_ep_organ_class_child_PRIMARY", EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ID);
         public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID = createUniqueKey(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, "KEY_ep_organ_class_child_UNIQUE_ORDER_ID", EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ORDER_ID);
         public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY = createUniqueKey(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, "KEY_ep_organ_class_comment_PRIMARY", EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ID);

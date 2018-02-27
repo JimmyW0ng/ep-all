@@ -5,15 +5,17 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpOrganClass;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import javax.annotation.Generated;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record18;
 import org.jooq.Row18;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import javax.annotation.Generated;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 
 /**
@@ -40,10 +42,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Create a detached EpOrganClassRecord
+     * Getter for <code>ep.ep_organ_class.id</code>. 主键
      */
-    public EpOrganClassRecord() {
-        super(EpOrganClass.EP_ORGAN_CLASS);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -55,29 +57,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Create a detached, initialised EpOrganClassRecord
+     * Getter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
      */
-    public EpOrganClassRecord(Long id, Long ognId, Long courseId, String className, Long ognAccountId, BigDecimal classPrize, BigDecimal discountAmount, Boolean enterLimitFlag, Integer enterRequireNum, Integer orderedNum, Integer enteredNum, Integer courseNum, Long sort, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpOrganClass.EP_ORGAN_CLASS);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, courseId);
-        set(3, className);
-        set(4, ognAccountId);
-        set(5, classPrize);
-        set(6, discountAmount);
-        set(7, enterLimitFlag);
-        set(8, enterRequireNum);
-        set(9, orderedNum);
-        set(10, enteredNum);
-        set(11, courseNum);
-        set(12, sort);
-        set(13, remark);
-        set(14, createAt);
-        set(15, updateAt);
-        set(16, delFlag);
-        set(17, version);
+    public Long getOgnId() {
+        return (Long) get(1);
     }
 
     /**
@@ -89,10 +72,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.id</code>. 主键
+     * Getter for <code>ep.ep_organ_class.course_id</code>. 课程ID
      */
-    public Long getId() {
-        return (Long) get(0);
+    public Long getCourseId() {
+        return (Long) get(2);
     }
 
     /**
@@ -104,10 +87,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.ogn_id</code>. 机构ID
+     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
-    public Long getOgnId() {
-        return (Long) get(1);
+    public String getClassName() {
+        return (String) get(3);
     }
 
     /**
@@ -119,10 +102,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.course_id</code>. 课程ID
+     * Getter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
      */
-    public Long getCourseId() {
-        return (Long) get(2);
+    public Long getOgnAccountId() {
+        return (Long) get(4);
     }
 
     /**
@@ -134,10 +117,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.class_name</code>. 班次名称
+     * Getter for <code>ep.ep_organ_class.class_prize</code>. 价格
      */
-    public String getClassName() {
-        return (String) get(3);
+    public BigDecimal getClassPrize() {
+        return (BigDecimal) get(5);
     }
 
     /**
@@ -149,10 +132,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
+     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
      */
-    public Long getOgnAccountId() {
-        return (Long) get(4);
+    public BigDecimal getDiscountAmount() {
+        return (BigDecimal) get(6);
     }
 
     /**
@@ -164,10 +147,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.class_prize</code>. 价格
+     * Getter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
      */
-    public BigDecimal getClassPrize() {
-        return (BigDecimal) get(5);
+    public Boolean getEnterLimitFlag() {
+        return (Boolean) get(7);
     }
 
     /**
@@ -179,10 +162,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
      */
-    public BigDecimal getDiscountAmount() {
-        return (BigDecimal) get(6);
+    public Integer getEnterRequireNum() {
+        return (Integer) get(8);
     }
 
     /**
@@ -194,10 +177,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
+     * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
-    public Boolean getEnterLimitFlag() {
-        return (Boolean) get(7);
+    public Integer getOrderedNum() {
+        return (Integer) get(9);
     }
 
     /**
@@ -209,10 +192,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
+     * Getter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
      */
-    public Integer getEnterRequireNum() {
-        return (Integer) get(8);
+    public Integer getEnteredNum() {
+        return (Integer) get(10);
     }
 
     /**
@@ -224,10 +207,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
+     * Getter for <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
-    public Integer getOrderedNum() {
-        return (Integer) get(9);
+    public Integer getCourseNum() {
+        return (Integer) get(11);
     }
 
     /**
@@ -239,10 +222,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
+     * Getter for <code>ep.ep_organ_class.sort</code>. 排序
      */
-    public Integer getEnteredNum() {
-        return (Integer) get(10);
+    public Long getSort() {
+        return (Long) get(12);
     }
 
     /**
@@ -254,10 +237,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.course_num</code>. 总计课时
+     * Getter for <code>ep.ep_organ_class.remark</code>. 备注信息
      */
-    public Integer getCourseNum() {
-        return (Integer) get(11);
+    public String getRemark() {
+        return (String) get(13);
     }
 
     /**
@@ -269,10 +252,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.sort</code>. 排序
+     * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
      */
-    public Long getSort() {
-        return (Long) get(12);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(14);
     }
 
     /**
@@ -284,10 +267,10 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(13);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(15);
     }
 
     /**
@@ -299,17 +282,18 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(14);
+    public Boolean getDelFlag() {
+        return (Boolean) get(16);
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_class.version</code>.
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(15);
+    public EpOrganClassRecord setVersion(Long value) {
+        set(17, value);
+        return this;
     }
 
     /**
@@ -832,17 +816,35 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
+     * Create a detached EpOrganClassRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(16);
+    public EpOrganClassRecord() {
+        super(EpOrganClass.EP_ORGAN_CLASS);
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.version</code>.
+     * Create a detached, initialised EpOrganClassRecord
      */
-    public EpOrganClassRecord setVersion(Long value) {
-        set(17, value);
-        return this;
+    public EpOrganClassRecord(Long id, Long ognId, Long courseId, String className, Long ognAccountId, BigDecimal classPrize, BigDecimal discountAmount, Boolean enterLimitFlag, Integer enterRequireNum, Integer orderedNum, Integer enteredNum, Integer courseNum, Long sort, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpOrganClass.EP_ORGAN_CLASS);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, courseId);
+        set(3, className);
+        set(4, ognAccountId);
+        set(5, classPrize);
+        set(6, discountAmount);
+        set(7, enterLimitFlag);
+        set(8, enterRequireNum);
+        set(9, orderedNum);
+        set(10, enteredNum);
+        set(11, courseNum);
+        set(12, sort);
+        set(13, remark);
+        set(14, createAt);
+        set(15, updateAt);
+        set(16, delFlag);
+        set(17, version);
     }
 }

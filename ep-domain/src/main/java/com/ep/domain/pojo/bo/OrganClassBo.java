@@ -1,6 +1,6 @@
 package com.ep.domain.pojo.bo;
 
-import com.ep.domain.pojo.po.EpOrganClassCatelogPo;
+import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,5 +17,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganClassBo extends EpOrganClassPo {
-    private List<EpOrganClassCatelogPo> organClassCatelogPos;
+    private List<EpOrganClassCatalogPo> organClassCatelogPos;
 }

@@ -217,7 +217,7 @@ public class OrganCourseController extends BackendController {
             OrganClassBo organClassBo = new OrganClassBo();
             BeanTools.copyPropertiesIgnoreNull(po, organClassBo);
             //班次目录
-            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassCatelogService.findByClassId(po.getId());
+            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassCatelogService.findByClassId(po.getId());
             organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
             organClassBos.add(organClassBo);
         });
@@ -262,7 +262,7 @@ public class OrganCourseController extends BackendController {
         organClassPos.forEach(p -> {
             OrganClassBo organClassBo = new OrganClassBo();
             BeanTools.copyPropertiesIgnoreNull(p, organClassBo);
-            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassCatelogService.findByClassId(p.getId());
+            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassCatelogService.findByClassId(p.getId());
             if (CollectionsTools.isNotEmpty(organClassCatelogPos)) {
                 organClassBo.setOrganClassCatelogPos(organClassCatelogPos);
             }

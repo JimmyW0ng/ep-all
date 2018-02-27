@@ -6,14 +6,16 @@ package com.ep.domain.repository.domain.tables.records;
 
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.repository.domain.tables.EpOrgan;
+
+import java.sql.Timestamp;
+
+import javax.annotation.Generated;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record21;
 import org.jooq.Row21;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import javax.annotation.Generated;
-import java.sql.Timestamp;
 
 
 /**
@@ -40,10 +42,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Create a detached EpOrganRecord
+     * Getter for <code>ep.ep_organ.id</code>. 主键
      */
-    public EpOrganRecord() {
-        super(EpOrgan.EP_ORGAN);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -55,32 +57,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Create a detached, initialised EpOrganRecord
+     * Getter for <code>ep.ep_organ.ogn_name</code>. 机构名称
      */
-    public EpOrganRecord(Long id, String ognName, String ognAddress, Long ognRegion, String ognLng, String ognLat, String ognShortIntroduce, Timestamp ognCreateDate, String ognPhone, String ognEmail, String ognUrl, String ognIntroduce, Byte marketWeight, Byte togetherScore, Integer totalParticipate, EpOrganStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpOrgan.EP_ORGAN);
-
-        set(0, id);
-        set(1, ognName);
-        set(2, ognAddress);
-        set(3, ognRegion);
-        set(4, ognLng);
-        set(5, ognLat);
-        set(6, ognShortIntroduce);
-        set(7, ognCreateDate);
-        set(8, ognPhone);
-        set(9, ognEmail);
-        set(10, ognUrl);
-        set(11, ognIntroduce);
-        set(12, marketWeight);
-        set(13, togetherScore);
-        set(14, totalParticipate);
-        set(15, status);
-        set(16, remark);
-        set(17, createAt);
-        set(18, updateAt);
-        set(19, delFlag);
-        set(20, version);
+    public String getOgnName() {
+        return (String) get(1);
     }
 
     /**
@@ -92,10 +72,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.id</code>. 主键
+     * Getter for <code>ep.ep_organ.ogn_address</code>. 机构地址
      */
-    public Long getId() {
-        return (Long) get(0);
+    public String getOgnAddress() {
+        return (String) get(2);
     }
 
     /**
@@ -107,10 +87,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_name</code>. 机构名称
+     * Getter for <code>ep.ep_organ.ogn_region</code>. 机构地区
      */
-    public String getOgnName() {
-        return (String) get(1);
+    public Long getOgnRegion() {
+        return (Long) get(3);
     }
 
     /**
@@ -122,10 +102,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_address</code>. 机构地址
+     * Getter for <code>ep.ep_organ.ogn_lng</code>. 地区经度
      */
-    public String getOgnAddress() {
-        return (String) get(2);
+    public String getOgnLng() {
+        return (String) get(4);
     }
 
     /**
@@ -137,10 +117,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_region</code>. 机构地区
+     * Getter for <code>ep.ep_organ.ogn_lat</code>. 地区纬度
      */
-    public Long getOgnRegion() {
-        return (Long) get(3);
+    public String getOgnLat() {
+        return (String) get(5);
     }
 
     /**
@@ -152,10 +132,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_lng</code>. 地区经度
+     * Getter for <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
      */
-    public String getOgnLng() {
-        return (String) get(4);
+    public String getOgnShortIntroduce() {
+        return (String) get(6);
     }
 
     /**
@@ -167,10 +147,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_lat</code>. 地区纬度
+     * Getter for <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
      */
-    public String getOgnLat() {
-        return (String) get(5);
+    public Timestamp getOgnCreateDate() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -182,10 +162,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_short_introduce</code>. 机构简介
+     * Getter for <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
      */
-    public String getOgnShortIntroduce() {
-        return (String) get(6);
+    public String getOgnPhone() {
+        return (String) get(8);
     }
 
     /**
@@ -197,10 +177,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_create_date</code>. 机构成立日期
+     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
      */
-    public Timestamp getOgnCreateDate() {
-        return (Timestamp) get(7);
+    public String getOgnEmail() {
+        return (String) get(9);
     }
 
     /**
@@ -212,10 +192,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_phone</code>. 机构官方电话
+     * Getter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
      */
-    public String getOgnPhone() {
-        return (String) get(8);
+    public String getOgnUrl() {
+        return (String) get(10);
     }
 
     /**
@@ -227,10 +207,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_email</code>. 机构官方邮箱
+     * Getter for <code>ep.ep_organ.ogn_introduce</code>. 机构简介
      */
-    public String getOgnEmail() {
-        return (String) get(9);
+    public String getOgnIntroduce() {
+        return (String) get(11);
     }
 
     /**
@@ -242,10 +222,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_url</code>. 机构官方网址
+     * Getter for <code>ep.ep_organ.market_weight</code>. 营销权重
      */
-    public String getOgnUrl() {
-        return (String) get(10);
+    public Byte getMarketWeight() {
+        return (Byte) get(12);
     }
 
     /**
@@ -257,10 +237,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.ogn_introduce</code>. 机构简介
+     * Getter for <code>ep.ep_organ.together_score</code>. 综合得分
      */
-    public String getOgnIntroduce() {
-        return (String) get(11);
+    public Byte getTogetherScore() {
+        return (Byte) get(13);
     }
 
     /**
@@ -272,10 +252,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.market_weight</code>. 营销权重
+     * Getter for <code>ep.ep_organ.total_participate</code>. 总参与人数
      */
-    public Byte getMarketWeight() {
-        return (Byte) get(12);
+    public Integer getTotalParticipate() {
+        return (Integer) get(14);
     }
 
     /**
@@ -287,10 +267,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.together_score</code>. 综合得分
+     * Getter for <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
      */
-    public Byte getTogetherScore() {
-        return (Byte) get(13);
+    public EpOrganStatus getStatus() {
+        return (EpOrganStatus) get(15);
     }
 
     /**
@@ -302,10 +282,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.total_participate</code>. 总参与人数
+     * Getter for <code>ep.ep_organ.remark</code>. 备注信息
      */
-    public Integer getTotalParticipate() {
-        return (Integer) get(14);
+    public String getRemark() {
+        return (String) get(16);
     }
 
     /**
@@ -317,10 +297,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_organ.create_at</code>. 创建时间
      */
-    public EpOrganStatus getStatus() {
-        return (EpOrganStatus) get(15);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(17);
     }
 
     /**
@@ -332,10 +312,10 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(16);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(18);
     }
 
     /**
@@ -347,17 +327,18 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_organ.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ.del_flag</code>. 删除标志
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(17);
+    public Boolean getDelFlag() {
+        return (Boolean) get(19);
     }
 
     /**
-     * Getter for <code>ep.ep_organ.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ.version</code>.
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(18);
+    public EpOrganRecord setVersion(Long value) {
+        set(20, value);
+        return this;
     }
 
     /**
@@ -958,17 +939,38 @@ public class EpOrganRecord extends UpdatableRecordImpl<EpOrganRecord> implements
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_organ.del_flag</code>. 删除标志
+     * Create a detached EpOrganRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(19);
+    public EpOrganRecord() {
+        super(EpOrgan.EP_ORGAN);
     }
 
     /**
-     * Setter for <code>ep.ep_organ.version</code>.
+     * Create a detached, initialised EpOrganRecord
      */
-    public EpOrganRecord setVersion(Long value) {
-        set(20, value);
-        return this;
+    public EpOrganRecord(Long id, String ognName, String ognAddress, Long ognRegion, String ognLng, String ognLat, String ognShortIntroduce, Timestamp ognCreateDate, String ognPhone, String ognEmail, String ognUrl, String ognIntroduce, Byte marketWeight, Byte togetherScore, Integer totalParticipate, EpOrganStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpOrgan.EP_ORGAN);
+
+        set(0, id);
+        set(1, ognName);
+        set(2, ognAddress);
+        set(3, ognRegion);
+        set(4, ognLng);
+        set(5, ognLat);
+        set(6, ognShortIntroduce);
+        set(7, ognCreateDate);
+        set(8, ognPhone);
+        set(9, ognEmail);
+        set(10, ognUrl);
+        set(11, ognIntroduce);
+        set(12, marketWeight);
+        set(13, togetherScore);
+        set(14, totalParticipate);
+        set(15, status);
+        set(16, remark);
+        set(17, createAt);
+        set(18, updateAt);
+        set(19, delFlag);
+        set(20, version);
     }
 }

@@ -6,15 +6,17 @@ package com.ep.domain.repository.domain.tables.records;
 
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.EpOrder;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import javax.annotation.Generated;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record15;
 import org.jooq.Row15;
 import org.jooq.impl.UpdatableRecordImpl;
-
-import javax.annotation.Generated;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 
 /**
@@ -41,10 +43,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Create a detached EpOrderRecord
+     * Getter for <code>ep.ep_order.id</code>. 主键
      */
-    public EpOrderRecord() {
-        super(EpOrder.EP_ORDER);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -56,26 +58,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Create a detached, initialised EpOrderRecord
+     * Getter for <code>ep.ep_order.member_id</code>. 会员id
      */
-    public EpOrderRecord(Long id, Long memberId, Long childId, Long ognId, Long courseId, Long classId, BigDecimal prize, EpOrderStatus status, Timestamp authTime, Timestamp cancelTime, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrder.EP_ORDER);
-
-        set(0, id);
-        set(1, memberId);
-        set(2, childId);
-        set(3, ognId);
-        set(4, courseId);
-        set(5, classId);
-        set(6, prize);
-        set(7, status);
-        set(8, authTime);
-        set(9, cancelTime);
-        set(10, createAt);
-        set(11, updateAt);
-        set(12, remark);
-        set(13, delFlag);
-        set(14, version);
+    public Long getMemberId() {
+        return (Long) get(1);
     }
 
     /**
@@ -87,10 +73,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.id</code>. 主键
+     * Getter for <code>ep.ep_order.child_id</code>. 孩子id
      */
-    public Long getId() {
-        return (Long) get(0);
+    public Long getChildId() {
+        return (Long) get(2);
     }
 
     /**
@@ -102,10 +88,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.member_id</code>. 会员id
+     * Getter for <code>ep.ep_order.ogn_id</code>. 机构id
      */
-    public Long getMemberId() {
-        return (Long) get(1);
+    public Long getOgnId() {
+        return (Long) get(3);
     }
 
     /**
@@ -117,10 +103,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.child_id</code>. 孩子id
+     * Getter for <code>ep.ep_order.course_id</code>. 课程id
      */
-    public Long getChildId() {
-        return (Long) get(2);
+    public Long getCourseId() {
+        return (Long) get(4);
     }
 
     /**
@@ -132,10 +118,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_order.class_id</code>. 班次id
      */
-    public Long getOgnId() {
-        return (Long) get(3);
+    public Long getClassId() {
+        return (Long) get(5);
     }
 
     /**
@@ -147,10 +133,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.course_id</code>. 课程id
+     * Getter for <code>ep.ep_order.prize</code>. 价格
      */
-    public Long getCourseId() {
-        return (Long) get(4);
+    public BigDecimal getPrize() {
+        return (BigDecimal) get(6);
     }
 
     /**
@@ -162,10 +148,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.class_id</code>. 班次id
+     * Getter for <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
      */
-    public Long getClassId() {
-        return (Long) get(5);
+    public EpOrderStatus getStatus() {
+        return (EpOrderStatus) get(7);
     }
 
     /**
@@ -177,10 +163,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.prize</code>. 价格
+     * Getter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */
-    public BigDecimal getPrize() {
-        return (BigDecimal) get(6);
+    public Timestamp getAuthTime() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -192,10 +178,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
+     * Getter for <code>ep.ep_order.cancel_time</code>. 订单取消时间
      */
-    public EpOrderStatus getStatus() {
-        return (EpOrderStatus) get(7);
+    public Timestamp getCancelTime() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -207,10 +193,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
+     * Getter for <code>ep.ep_order.create_at</code>. 创建时间
      */
-    public Timestamp getAuthTime() {
-        return (Timestamp) get(8);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -222,10 +208,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.cancel_time</code>. 订单取消时间
+     * Getter for <code>ep.ep_order.update_at</code>. 更新时间
      */
-    public Timestamp getCancelTime() {
-        return (Timestamp) get(9);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -237,10 +223,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_order.remark</code>. 备注
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(10);
+    public String getRemark() {
+        return (String) get(12);
     }
 
     /**
@@ -252,17 +238,18 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_order.del_flag</code>. 删除标记
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(11);
+    public Boolean getDelFlag() {
+        return (Boolean) get(13);
     }
 
     /**
-     * Getter for <code>ep.ep_order.remark</code>. 备注
+     * Setter for <code>ep.ep_order.version</code>.
      */
-    public String getRemark() {
-        return (String) get(12);
+    public EpOrderRecord setVersion(Long value) {
+        set(14, value);
+        return this;
     }
 
     /**
@@ -707,17 +694,32 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_order.del_flag</code>. 删除标记
+     * Create a detached EpOrderRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(13);
+    public EpOrderRecord() {
+        super(EpOrder.EP_ORDER);
     }
 
     /**
-     * Setter for <code>ep.ep_order.version</code>.
+     * Create a detached, initialised EpOrderRecord
      */
-    public EpOrderRecord setVersion(Long value) {
-        set(14, value);
-        return this;
+    public EpOrderRecord(Long id, Long memberId, Long childId, Long ognId, Long courseId, Long classId, BigDecimal prize, EpOrderStatus status, Timestamp authTime, Timestamp cancelTime, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrder.EP_ORDER);
+
+        set(0, id);
+        set(1, memberId);
+        set(2, childId);
+        set(3, ognId);
+        set(4, courseId);
+        set(5, classId);
+        set(6, prize);
+        set(7, status);
+        set(8, authTime);
+        set(9, cancelTime);
+        set(10, createAt);
+        set(11, updateAt);
+        set(12, remark);
+        set(13, delFlag);
+        set(14, version);
     }
 }

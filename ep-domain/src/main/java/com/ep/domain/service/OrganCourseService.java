@@ -11,7 +11,6 @@ import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class OrganCourseService {
     @Autowired
     private OrganClassCommentRepository organClassCommentRepository;
     @Autowired
-    private OrganClassCatelogRepository organClassCatelogRepository;
+    private OrganClassCatalogRepository organClassCatalogRepository;
     @Autowired
     private ConstantTagRepository constantTagRepository;
     @Autowired
@@ -171,13 +170,13 @@ public class OrganCourseService {
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
-            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
             for (int i = 0; i < organClassCatelogPos.size(); i++) {
                 organClassCatelogPos.get(i).setClassId(insertOrganClassId);
 //                organClassCatelogPos.get(i).setCatelogIndex(i + 1);
             }
             //班次课程内容目录表插入数据
-            organClassCatelogRepository.insert(organClassCatelogPos);
+            organClassCatalogRepository.insert(organClassCatelogPos);
         });
 
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
@@ -217,7 +216,7 @@ public class OrganCourseService {
         Long organCourseId = organCoursePo.getId();
         List<Long> classIds=organClassRepository.findClassIdsByCourseId(organCourseId);
         //物理删除班次目录
-        organClassCatelogRepository.deletePhysicByClassIds(classIds);
+        organClassCatalogRepository.deletePhysicByClassIds(classIds);
         //物理删除班次
         organClassRepository.deletePhysicByCourseId(organCourseId);
         //物理删除课程标签
@@ -232,14 +231,14 @@ public class OrganCourseService {
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
-            List<EpOrganClassCatelogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
+            List<EpOrganClassCatalogPo> organClassCatelogPos = organClassBo.getOrganClassCatelogPos();
             for (int i = 0; i < organClassCatelogPos.size(); i++) {
                 organClassCatelogPos.get(i).setClassId(insertOrganClassId);
                 organClassCatelogPos.get(i).setId(null);
 //                organClassCatelogPos.get(i).setCatelogIndex(i + 1);
             }
             //班次课程内容目录表插入数据
-            organClassCatelogRepository.insert(organClassCatelogPos);
+            organClassCatalogRepository.insert(organClassCatelogPos);
         });
 
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
@@ -340,19 +339,19 @@ public class OrganCourseService {
      * @param oldPo
      * @return
      */
-    private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatelogPo newPo, EpOrganClassCatelogPo oldPo) {
-        if (!newPo.getCatelogTitle().equals(oldPo.getCatelogTitle())) {
-            return false;
-        }
-        if (!newPo.getCatelogIndex().equals(oldPo.getCatelogIndex())) {
-            return false;
-        }
-        if (!newPo.getCatelogDesc().equals(oldPo.getCatelogDesc())) {
-            return false;
-        }
-        if (!newPo.getStartTime().equals(oldPo.getStartTime())) {
-            return false;
-        }
-        return true;
-    }
+//    private Boolean isClassCatelogEq4MerchUpdateCourse(EpOrganClassCatalogPo newPo, EpOrganClassCatalogPo oldPo) {
+//        if (!newPo.getCatelogTitle().equals(oldPo.getCatelogTitle())) {
+//            return false;
+//        }
+//        if (!newPo.getCatelogIndex().equals(oldPo.getCatelogIndex())) {
+//            return false;
+//        }
+//        if (!newPo.getCatelogDesc().equals(oldPo.getCatelogDesc())) {
+//            return false;
+//        }
+//        if (!newPo.getStartTime().equals(oldPo.getStartTime())) {
+//            return false;
+//        }
+//        return true;
+//    }
 }

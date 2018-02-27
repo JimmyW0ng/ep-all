@@ -4,15 +4,48 @@
 package com.ep.domain.repository.domain;
 
 
-import com.ep.domain.repository.domain.tables.*;
-import org.jooq.Catalog;
-import org.jooq.Table;
-import org.jooq.impl.SchemaImpl;
+import com.ep.domain.repository.domain.tables.EpConstantCatalog;
+import com.ep.domain.repository.domain.tables.EpConstantRegion;
+import com.ep.domain.repository.domain.tables.EpConstantTag;
+import com.ep.domain.repository.domain.tables.EpFile;
+import com.ep.domain.repository.domain.tables.EpMember;
+import com.ep.domain.repository.domain.tables.EpMemberChild;
+import com.ep.domain.repository.domain.tables.EpMemberChildComment;
+import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
+import com.ep.domain.repository.domain.tables.EpMemberChildSign;
+import com.ep.domain.repository.domain.tables.EpMemberChildTag;
+import com.ep.domain.repository.domain.tables.EpMemberMessage;
+import com.ep.domain.repository.domain.tables.EpMessageCaptcha;
+import com.ep.domain.repository.domain.tables.EpOrder;
+import com.ep.domain.repository.domain.tables.EpOrgan;
+import com.ep.domain.repository.domain.tables.EpOrganAccount;
+import com.ep.domain.repository.domain.tables.EpOrganCatalog;
+import com.ep.domain.repository.domain.tables.EpOrganClass;
+import com.ep.domain.repository.domain.tables.EpOrganClassCatalog;
+import com.ep.domain.repository.domain.tables.EpOrganClassChild;
+import com.ep.domain.repository.domain.tables.EpOrganClassComment;
+import com.ep.domain.repository.domain.tables.EpOrganClassSchedule;
+import com.ep.domain.repository.domain.tables.EpOrganCourse;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTag;
+import com.ep.domain.repository.domain.tables.EpOrganCourseTeam;
+import com.ep.domain.repository.domain.tables.EpSystemClient;
+import com.ep.domain.repository.domain.tables.EpSystemDict;
+import com.ep.domain.repository.domain.tables.EpSystemMenu;
+import com.ep.domain.repository.domain.tables.EpSystemRole;
+import com.ep.domain.repository.domain.tables.EpSystemRoleAuthority;
+import com.ep.domain.repository.domain.tables.EpSystemUser;
+import com.ep.domain.repository.domain.tables.EpSystemUserRole;
+import com.ep.domain.repository.domain.tables.EpWechatSessionToken;
 
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Generated;
+
+import org.jooq.Catalog;
+import org.jooq.Table;
+import org.jooq.impl.SchemaImpl;
 
 
 /**
@@ -28,7 +61,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 1509094166;
+    private static final long serialVersionUID = 1823697810;
 
     /**
      * The reference instance of <code>ep</code>
@@ -123,7 +156,7 @@ public class Ep extends SchemaImpl {
     /**
      * 班次课程内容目录表
      */
-    public final EpOrganClassCatelog EP_ORGAN_CLASS_CATELOG = com.ep.domain.repository.domain.tables.EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG;
+    public final EpOrganClassCatalog EP_ORGAN_CLASS_CATALOG = com.ep.domain.repository.domain.tables.EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG;
 
     /**
      * 机构班级孩子表
@@ -222,24 +255,24 @@ public class Ep extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             EpConstantCatalog.EP_CONSTANT_CATALOG,
             EpConstantRegion.EP_CONSTANT_REGION,
-                EpConstantTag.EP_CONSTANT_TAG,
+            EpConstantTag.EP_CONSTANT_TAG,
             EpFile.EP_FILE,
             EpMember.EP_MEMBER,
             EpMemberChild.EP_MEMBER_CHILD,
-                EpMemberChildComment.EP_MEMBER_CHILD_COMMENT,
+            EpMemberChildComment.EP_MEMBER_CHILD_COMMENT,
             EpMemberChildHonor.EP_MEMBER_CHILD_HONOR,
             EpMemberChildSign.EP_MEMBER_CHILD_SIGN,
             EpMemberChildTag.EP_MEMBER_CHILD_TAG,
-                EpMemberMessage.EP_MEMBER_MESSAGE,
+            EpMemberMessage.EP_MEMBER_MESSAGE,
             EpMessageCaptcha.EP_MESSAGE_CAPTCHA,
             EpOrder.EP_ORDER,
             EpOrgan.EP_ORGAN,
             EpOrganAccount.EP_ORGAN_ACCOUNT,
             EpOrganCatalog.EP_ORGAN_CATALOG,
             EpOrganClass.EP_ORGAN_CLASS,
-                EpOrganClassCatelog.EP_ORGAN_CLASS_CATELOG,
+            EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG,
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
-                EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
+            EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
             EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE,
             EpOrganCourse.EP_ORGAN_COURSE,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,

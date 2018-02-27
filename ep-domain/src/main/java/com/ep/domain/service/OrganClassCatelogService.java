@@ -28,7 +28,7 @@ import java.util.Optional;
 public class OrganClassCatelogService {
 
     @Autowired
-    private OrganClassCatelogRepository organClassCatelogRepository;
+    private OrganClassCatalogRepository organClassCatalogRepository;
     @Autowired
     private MemberChildRepository memberChildRepository;
     @Autowired
@@ -54,7 +54,7 @@ public class OrganClassCatelogService {
     public ResultDo<OrganClassCatelogCommentDto> getClassCatelogCommentView(Long mobile, Long classCatelogId) {
         ResultDo<OrganClassCatelogCommentDto> resultDo = ResultDo.build();
         // 课时信息
-        EpOrganClassCatelogPo classCatelogPo = organClassCatelogRepository.getById(classCatelogId);
+        EpOrganClassCatalogPo classCatelogPo = organClassCatalogRepository.getById(classCatelogId);
         if (classCatelogPo == null || classCatelogPo.getDelFlag()) {
             log.error("课时信息不存在, classCatelogId={}", classCatelogId);
             return resultDo.setError(MessageCode.ERROR_CLASS_CATELOG_NOT_EXISTS);
@@ -97,7 +97,7 @@ public class OrganClassCatelogService {
         // 课程标签
         List<OrganCourseTagBo> courseTagList = organCourseTagRepository.findBosByCourseId(classPo.getCourseId());
         // 孩子评论信息
-        List<MemberChildTagAndCommentBo> childTagAndCommentList = organClassCatelogRepository.findChildComments(classPo.getId(), classCatelogId);
+        List<MemberChildTagAndCommentBo> childTagAndCommentList = organClassCatalogRepository.findChildComments(classPo.getId(), classCatelogId);
         for (MemberChildTagAndCommentBo bo : childTagAndCommentList) {
             // 加载标签
             List<EpMemberChildTagPo> tags = memberChildTagRepository.findByChildIdAndClassCatelogId(bo.getChildId(), classCatelogId);
@@ -107,11 +107,11 @@ public class OrganClassCatelogService {
         return resultDo.setResult(commentDto);
     }
 
-    public List<EpOrganClassCatelogPo> findByCourseId(Long courseId){
-        return organClassCatelogRepository.findByCourseId(courseId);
+    public List<EpOrganClassCatalogPo> findByCourseId(Long courseId){
+        return organClassCatalogRepository.findByCourseId(courseId);
     }
 
-    public List<EpOrganClassCatelogPo> findByClassId(Long classId){
-        return organClassCatelogRepository.findByClassId(classId);
+    public List<EpOrganClassCatalogPo> findByClassId(Long classId){
+        return organClassCatalogRepository.findByClassId(classId);
     }
 }

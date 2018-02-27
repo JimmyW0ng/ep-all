@@ -14,6 +14,9 @@ public class MemberChildCommentBo extends EpMemberChildCommentPo {
     private String nickName;
     private String ognName;
     private String avatar;
+    private String childTrueName;
+    private String courseName;
+    private String className;
 
     public String getCommentTimeFormat() {
         return DateTools.formatDatetoString(super.getCreateAt(), DateTools.DATE_FMT_4);
