@@ -31,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
 
-    private static final long serialVersionUID = 1106860995;
+    private static final long serialVersionUID = 1984745795;
 
     /**
      * The reference instance of <code>ep.ep_member_message</code>
@@ -50,6 +50,11 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
      * The column <code>ep.ep_member_message.id</code>.
      */
     public final TableField<EpMemberMessageRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>ep.ep_member_message.sender_id</code>. 发件人id
+     */
+    public final TableField<EpMemberMessageRecord, Long> SENDER_ID = createField("sender_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "发件人id");
 
     /**
      * The column <code>ep.ep_member_message.sender_name</code>. 发件人姓名

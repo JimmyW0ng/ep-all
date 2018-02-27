@@ -202,6 +202,13 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
+     * Getter for <code>ep.ep_member_child_tag.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(10);
+    }
+
+    /**
      * Getter for <code>ep.ep_member_child_tag.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
@@ -213,13 +220,6 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      */
     public String getRemark() {
         return (String) get(9);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_tag.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(10);
     }
 
     // -------------------------------------------------------------------------

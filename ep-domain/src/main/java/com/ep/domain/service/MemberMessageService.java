@@ -62,7 +62,7 @@ public class MemberMessageService {
         List<MemberMessageBo> data = page.getContent();
         if (CollectionsTools.isNotEmpty(data)) {
             for (MemberMessageBo messageBo : data) {
-                Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, messageBo.getId());
+                Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, messageBo.getSenderId());
                 String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
                 messageBo.setAvatar(avatar);
             }

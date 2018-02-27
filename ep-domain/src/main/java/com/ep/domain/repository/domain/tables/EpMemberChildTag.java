@@ -35,6 +35,7 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      * The reference instance of <code>ep.ep_member_child_tag</code>
      */
     public static final EpMemberChildTag EP_MEMBER_CHILD_TAG = new EpMemberChildTag();
+
     /**
      * The column <code>ep.ep_member_child_tag.ogn_id</code>. 机构id
      */
@@ -49,14 +50,6 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      * The column <code>ep.ep_member_child_tag.child_id</code>. 孩子id
      */
     public final TableField<EpMemberChildTagRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
-    /**
-     * The column <code>ep.ep_member_child_tag.course_id</code>. 课程id
-     */
-    public final TableField<EpMemberChildTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
-    /**
-     * The column <code>ep.ep_member_child_tag.class_id</code>. 班次id
-     */
-    public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
 
     /**
      * The class holding records for this type
@@ -65,6 +58,16 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
     public Class<EpMemberChildTagRecord> getRecordType() {
         return EpMemberChildTagRecord.class;
     }
+
+    /**
+     * The column <code>ep.ep_member_child_tag.course_id</code>. 课程id
+     */
+    public final TableField<EpMemberChildTagRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
+
+    /**
+     * The column <code>ep.ep_member_child_tag.class_id</code>. 班次id
+     */
+    public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
 
     /**
      * The column <code>ep.ep_member_child_tag.class_catelog_id</code>. 课程内容目录id

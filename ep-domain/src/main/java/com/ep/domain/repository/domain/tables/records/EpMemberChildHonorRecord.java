@@ -111,20 +111,6 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
-     */
-    public Long getOgnId() {
-        return (Long) get(2);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_honor.course_id</code>. 课程id
-     */
-    public Long getCourseId() {
-        return (Long) get(3);
-    }
-
-    /**
      * Getter for <code>ep.ep_member_child_honor.class_id</code>. 班级id
      */
     public Long getClassId() {
@@ -132,11 +118,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
      */
-    public EpMemberChildHonorRecord setCreateAt(Timestamp value) {
-        set(6, value);
-        return this;
+    public Long getOgnId() {
+        return (Long) get(2);
     }
 
     /**
@@ -147,11 +132,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_child_honor.course_id</code>. 课程id
      */
-    public EpMemberChildHonorRecord setUpdateAt(Timestamp value) {
-        set(7, value);
-        return this;
+    public Long getCourseId() {
+        return (Long) get(3);
     }
 
     /**
@@ -163,10 +147,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.remark</code>. 备注
+     * Setter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
      */
-    public EpMemberChildHonorRecord setRemark(String value) {
-        set(8, value);
+    public EpMemberChildHonorRecord setUpdateAt(Timestamp value) {
+        set(7, value);
         return this;
     }
 
@@ -175,6 +159,22 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
      */
     public Timestamp getCreateAt() {
         return (Timestamp) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_child_honor.remark</code>. 备注
+     */
+    public EpMemberChildHonorRecord setRemark(String value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_child_honor.create_at</code>. 创建时间
+     */
+    public EpMemberChildHonorRecord setCreateAt(Timestamp value) {
+        set(6, value);
+        return this;
     }
 
     /**
