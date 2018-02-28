@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
+import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.repository.ChildCommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Description: 孩子评论服务类
@@ -33,4 +35,21 @@ public class ChildCommentService {
         return childCommentRepository.findbyPageAndCondition(pageable, conditions);
     }
 
+    /**
+     * 修改评论内容
+     * @param id
+     * @param content
+     */
+    public void updateContent(Long id,String content){
+        childCommentRepository.updateContent(id,content);
+    }
+
+    /**
+     * 根据父级id获取评论内容
+     * @param pid
+     * @return
+     */
+    public List<EpMemberChildCommentPo> findRepayByPid(Long pid){
+        return childCommentRepository.findRepayByPid(pid);
+    }
 }

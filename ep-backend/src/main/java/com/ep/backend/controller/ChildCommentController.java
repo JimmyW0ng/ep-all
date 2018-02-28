@@ -1,10 +1,8 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
-import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.service.ChildCommentService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -16,15 +14,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-
-import static com.ep.domain.repository.domain.Ep.EP;
 
 /**
  * @Description: 孩子评论控制器
@@ -32,7 +26,7 @@ import static com.ep.domain.repository.domain.Ep.EP;
  * @Date: 20:59 2018/2/25
  */
 @Controller
-@RequestMapping("auth/comment")
+@RequestMapping("auth/childComment")
 public class ChildCommentController extends BackendController {
     @Autowired
     private ChildCommentService childCommentService;
@@ -84,6 +78,39 @@ public class ChildCommentController extends BackendController {
         model.addAttribute("page", page);
         model.addAttribute("map", map);
         return "childComment/index";
+    }
+
+    /**
+     * 修改评论内容
+     * @param id
+     * @param content
+     * @return
+     */
+    @PostMapping("updateContent")
+    @ResponseBody
+    public ResultDo updateContent(
+            @RequestParam(value="id")Long id,
+            @RequestParam(value="content")String content
+    ){
+        ResultDo resultDo = ResultDo.build();
+        childCommentService.updateContent(id,content);
+        return resultDo;
+    }
+
+    /**
+     * 根据父级id获取评论内容
+     * @param pid
+     * @return
+     */
+    @GetMapping("findReplyByPid/{pid}")
+    @ResponseBody
+    public ResultDo findRepayByPid(
+            @PathVariable(value="pid")Long pid
+    ){
+        ResultDo resultDo = ResultDo.build();
+        List<EpMemberChildCommentPo> list = childCommentService.findRepayByPid(pid);
+        resultDo.setResult(list);
+        return resultDo;
     }
 
 }
