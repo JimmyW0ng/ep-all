@@ -33,11 +33,12 @@ public class ChildCommentRepository extends AbstractCRUDRepository<EpMemberChild
 
     /**
      * 商户后台获取分页
+     *
      * @param pageable
      * @param condition
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition){
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         long totalCount = dslContext.selectCount()
                 .from(EP_MEMBER_CHILD_COMMENT)
                 .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
@@ -62,7 +63,7 @@ public class ChildCommentRepository extends AbstractCRUDRepository<EpMemberChild
                 .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
                 .where(condition);
 
-        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(),EP_ORGAN_CLASS.ID.desc())
+        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(), EP_ORGAN_CLASS.ID.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(MemberChildCommentBo.class);
@@ -72,12 +73,13 @@ public class ChildCommentRepository extends AbstractCRUDRepository<EpMemberChild
 
     /**
      * 修改评论内容
+     *
      * @param id
      * @param content
      */
-    public void updateContent(Long id,String content){
+    public void updateContent(Long id, String content) {
         dslContext.update(EP_MEMBER_CHILD_COMMENT)
-                .set(EP_MEMBER_CHILD_COMMENT.CONTENT,content)
+                .set(EP_MEMBER_CHILD_COMMENT.CONTENT, content)
                 .set(EP_MEMBER_CHILD_COMMENT.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_MEMBER_CHILD_COMMENT.ID.eq(id))
                 .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
@@ -86,13 +88,23 @@ public class ChildCommentRepository extends AbstractCRUDRepository<EpMemberChild
 
     /**
      * 根据父级id获取评论内容
+     *
      * @param pid
      * @return
      */
-    public List<EpMemberChildCommentPo> findRepayByPid(Long pid){
-        return dslContext.selectFrom(EP_MEMBER_CHILD_COMMENT)
+    public List<MemberChildCommentBo> findRepayByPid(Long pid) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.as("classCatalogTitle"));
+        return dslContext.select(fieldList).from(EP_MEMBER_CHILD_COMMENT)
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
                 .where(EP_MEMBER_CHILD_COMMENT.P_ID.eq(pid))
                 .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                .fetchInto(EpMemberChildCommentPo.class);
+                .fetchInto(MemberChildCommentBo.class);
     }
 }

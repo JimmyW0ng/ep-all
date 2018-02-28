@@ -20,46 +20,41 @@
 
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
-                <form class="form-inline" id="query-form" role="form" >
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"-->
-                               <!--placeholder="会员账号" >-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control " name="childTrueName" th:value="${map.get('childTrueName')}"-->
-                               <!--placeholder="姓名">-->
-                    <!--</div>-->
+                <form class="form-inline" id="query-form" role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
+                               placeholder="课程">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="className" th:value="${map.get('className')}"
+                               placeholder="班次">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="classCatalogTitle" th:value="${map.get('classCatalogTitle')}"
+                               placeholder="班次目录">
+                    </div>
 
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"-->
-                               <!--placeholder="课程">-->
-                    <!--</div>-->
 
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control " name="className" th:value="${map.get('className')}"-->
-                               <!--placeholder="班次">-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group ">-->
-                        <!--<select class="form-control" name="status" id="type" style="width:182px;" >-->
-                            <!--<option value>状态</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderStatus).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:selected="${#stringTools.equals(state,map.get('status'))}"-->
-                                    <!--th:text="#{EpOrderStatus.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
+                    <div class="form-group ">
+                        <select class="form-control" name="status" id="type" style="width:182px;">
+                            <option value>类型</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpMemberChildCommentType).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,map.get('type'))}"
+                                    th:text="#{EpMemberChildCommentType.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
                     <!--<div class="form-group mr10">-->
-                        <!--<div class="input-group input-large">-->
-                            <!--<input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"-->
-                                   <!--th:placeholder="创建时间从" th:value="${map.get('crStartTime')}"-->
-                            <!--&gt;-->
-                            <!--<span class="input-group-addon">到</span>-->
-                            <!--<input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"-->
-                                   <!--th:placeholder="到" th:value="${map.get('crEndTime')}"-->
-                            <!--&gt;-->
-                        <!--</div>-->
+                    <!--<div class="input-group input-large">-->
+                    <!--<input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"-->
+                    <!--th:placeholder="创建时间从" th:value="${map.get('crStartTime')}"-->
+                    <!--&gt;-->
+                    <!--<span class="input-group-addon">到</span>-->
+                    <!--<input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"-->
+                    <!--th:placeholder="到" th:value="${map.get('crEndTime')}"-->
+                    <!--&gt;-->
+                    <!--</div>-->
                     <!--</div>-->
 
 
@@ -104,9 +99,11 @@
                             <td th:text="#{EpMemberChildCommentType.+${bo.type}}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
-                                <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"  href="javascript:void(0)"
+                                <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"
+                                   href="javascript:void(0)"
                                    th:onclick="'updateContentBox(this,'+${bo.id}+')'">修改内容</a>
-                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(bo.type,'launch')}" href="javascript:void(0)"
+                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(bo.type,'launch')}"
+                                   href="javascript:void(0)"
                                    th:onclick="'findReplyBox('+${bo.id}+')'">查看回复</a>
 
                             </td>
@@ -144,7 +141,8 @@
 
             <input type="hidden" id="sourceId">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
                 </button>
                 <h3 style="text-align: left">修改评价</h3>
 
@@ -161,11 +159,12 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal fade" id="replyModal" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal inmodal fade" id="replyModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
                 <h3 class="modal-title">回复记录</h3>
             </div>
             <div class="modal-body">
@@ -194,13 +193,14 @@
 </div>
 <script type="text/template" id='replyTmpl'>
     <tr>
-        <td >${id}</td>
-        <td >${childTrueName}</td>
-        <td >${courseName}</td>
-        <td >${className}</td>
-        <td >${classCatalogTitle}</td>
-        <td >${content}</td>
-        <td >${createAt}</td>
+        <td>${id}</td>
+        <td>${childTrueName}</td>
+        <td>${courseName}</td>
+        <td>${className}</td>
+        <td>${classCatalogTitle}</td>
+        <td>${content}</td>
+        <td>${pid}</td>
+        <td>${createAt}</td>
     </tr>
 </script>
 <script th:replace="~{fragments/scripts}"></script>
@@ -210,18 +210,18 @@
     function findReplyBox(pid) {
         $("#replyModal").modal("show")
         $.ajax({
-            type:"GET",
-            url:"/auth/childComment/findReplyByPid/"+pid,
-            success:function (data) {
-                if(data.success){
-                    var replyList=data.result
+            type: "GET",
+            url: "/auth/childComment/findReplyByPid/" + pid,
+            success: function (data) {
+                if (data.success) {
+                    var replyList = data.result
                     console.log(replyList)
                     $("#replyListBox").html($("#replyTmpl").tmpl(replyList));
                 }
             }
         })
     }
-    function updateContentBox(ele,id) {
+    function updateContentBox(ele, id) {
         $("#uploadModal").modal("show")
         var content = $(ele).parent().siblings("td[name='content']").eq(0).html()
         $("#content").text(content)
@@ -229,19 +229,22 @@
     }
     function updateContentDo() {
         $.ajax({
-            type:"POST",
-            url:"/auth/childComment/updateContent",
-            data:{id:$("#sourceId").val(),content:$("#content").val()},
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null,"/auth/childComment/index")
-                }else{
-                    toastr_error(null,"/auth/childComment/index")
+            type: "POST",
+            url: "/auth/childComment/updateContent",
+            data: {id: $("#sourceId").val(), content: $("#content").val()},
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, "/auth/childComment/index")
+                } else {
+                    toastr_error(null, "/auth/childComment/index")
                 }
             }
         })
     }
 
+//    $(function () {
+//        console.log([[${page}]]);
+//    })
 
 </script>
 </body>
