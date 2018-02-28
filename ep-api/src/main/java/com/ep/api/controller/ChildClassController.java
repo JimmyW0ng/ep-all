@@ -6,8 +6,10 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
+import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
 import com.ep.domain.service.MemberChildService;
 import com.ep.domain.service.OrderService;
+import com.ep.domain.service.OrganClassCatalogService;
 import com.ep.domain.service.OrganClassCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +42,8 @@ public class ChildClassController extends ApiController {
     private OrderService orderService;
     @Autowired
     private OrganClassCommentService organClassCommentService;
+    @Autowired
+    private OrganClassCatalogService organClassCatalogService;
 
     @ApiOperation(value = "孩子全部课程分页列表")
     @PostMapping("/page")
@@ -86,6 +90,13 @@ public class ChildClassController extends ApiController {
                                     @RequestParam(value = "pic", required = false) List<String> picList) {
         Long memberId = super.getCurrentUser().get().getId();
         return organClassCommentService.addClassComment(memberId, orderId, score, content, picList);
+    }
+
+    @ApiOperation(value = "班次老师评价")
+    @PostMapping("/catalog/detail")
+    public ResultDo<OrganClassCatalogDetailDto> getCatalogDetail(@RequestParam("orderId") Long orderId) {
+        Long memberId = super.getCurrentUser().get().getId();
+        return organClassCatalogService.getCatalogDetail(memberId, orderId);
     }
 
 }

@@ -70,4 +70,5 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .fetchInto(MemberChildCommentBo.class);
         return new PageImpl(data, pageable, count);
     }
+
 }

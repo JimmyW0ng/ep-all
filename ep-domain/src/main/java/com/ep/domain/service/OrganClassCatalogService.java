@@ -4,10 +4,9 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberChildBo;
-import com.ep.domain.pojo.bo.MemberChildTagAndCommentBo;
-import com.ep.domain.pojo.bo.OrganCourseTagBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
+import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
@@ -27,6 +26,8 @@ import java.util.Optional;
 @Service
 public class OrganClassCatalogService {
 
+    @Autowired
+    private OrderRepository orderRepository;
     @Autowired
     private OrganClassCatalogRepository organClassCatalogRepository;
     @Autowired
@@ -107,11 +108,40 @@ public class OrganClassCatalogService {
         return resultDo.setResult(commentDto);
     }
 
-    public List<EpOrganClassCatalogPo> findByCourseId(Long courseId){
-        return organClassCatalogRepository.findByCourseId(courseId);
-    }
-
+    /**
+     * 根据班次获取
+     *
+     * @param classId
+     * @return
+     */
     public List<EpOrganClassCatalogPo> findByClassId(Long classId){
         return organClassCatalogRepository.findByClassId(classId);
     }
+
+    /**
+     * 课时明细
+     *
+     * @param memberId
+     * @param orderId
+     * @return
+     */
+    public ResultDo<OrganClassCatalogDetailDto> getCatalogDetail(Long memberId, Long orderId) {
+        ResultDo<OrganClassCatalogDetailDto> resultDo = ResultDo.build();
+        // 校验订单
+        EpOrderPo orderPo = orderRepository.getById(orderId);
+        if (orderPo == null || orderPo.getDelFlag()) {
+            return resultDo.setError(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        EpMemberChildPo childPo = memberChildRepository.getById(orderPo.getChildId());
+        if (childPo == null || !childPo.getMemberId().equals(memberId)) {
+            return resultDo.setError(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        // 标签汇总
+        List<MemberChildTagBo> tags = memberChildTagRepository.findTagsByChildIdAndClassId(orderPo.getChildId(), orderPo.getClassId());
+        // 课时明细
+        List<OrganClassCatalogBo> classCatalogs = organClassCatalogRepository.findDetailByClassId(orderPo.getClassId());
+        OrganClassCatalogDetailDto detailDto = new OrganClassCatalogDetailDto(tags, classCatalogs);
+        return resultDo.setResult(detailDto);
+    }
+
 }

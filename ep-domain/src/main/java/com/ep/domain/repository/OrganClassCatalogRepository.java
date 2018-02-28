@@ -1,6 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.pojo.bo.MemberChildTagAndCommentBo;
+import com.ep.domain.pojo.bo.OrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCatalogRecord;
@@ -135,5 +136,35 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
         dslContext.delete(EP_ORGAN_CLASS_CATALOG)
                 .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.in(classIds))
                 .execute();
+    }
+
+    /**
+     * 根据班次获取课时明细
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrganClassCatalogBo> findDetailByClassId(Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.as("co").CONTENT.as("comment"));
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.as("co").CREATE_AT.as("commentTime"));
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.as("re").CONTENT.as("replay"));
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.ID);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_DESC);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.START_TIME);
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_CATALOG)
+                .leftJoin(EP_MEMBER_CHILD_COMMENT.as("co"))
+                .on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.as("co").CLASS_CATALOG_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.as("co").TYPE.eq(EpMemberChildCommentType.launch))
+                        .and(EP_MEMBER_CHILD_COMMENT.as("co").DEL_FLAG.eq(false)))
+                .leftJoin(EP_MEMBER_CHILD_COMMENT.as("re"))
+                .on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.as("re").CLASS_CATALOG_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.as("re").TYPE.eq(EpMemberChildCommentType.reply))
+                        .and(EP_MEMBER_CHILD_COMMENT.as("re").DEL_FLAG.eq(false)))
+                .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
+                .fetchInto(OrganClassCatalogBo.class);
     }
 }

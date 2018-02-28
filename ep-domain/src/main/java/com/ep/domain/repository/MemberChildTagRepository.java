@@ -44,7 +44,7 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     }
 
     /**
-     * 分组获取孩子的标签数
+     * 以孩子获取分组获取孩子的标签数
      *
      * @param childId
      * @return
@@ -59,6 +59,30 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
                 .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                .groupBy(EP_MEMBER_CHILD_TAG.TAG_ID)
+                .orderBy(DSL.max(EP_MEMBER_CHILD_TAG.CREATE_AT).desc())
+                .fetchInto(MemberChildTagBo.class);
+    }
+
+    /**
+     * 以孩子班次分组获取孩子的标签数
+     *
+     * @param childId
+     * @param classId
+     * @return
+     */
+    public List<MemberChildTagBo> findTagsByChildIdAndClassId(Long childId, Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_TAG.TAG_ID);
+        fieldList.add(DSL.count(EP_MEMBER_CHILD_TAG.ID).as("num"));
+        fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_TAG)
+                .innerJoin(EP_CONSTANT_TAG)
+                .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.CLASS_ID.eq(classId))
                 .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
                 .groupBy(EP_MEMBER_CHILD_TAG.TAG_ID)
                 .orderBy(DSL.max(EP_MEMBER_CHILD_TAG.CREATE_AT).desc())
