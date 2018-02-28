@@ -12,7 +12,7 @@ public class OrganClassCatalogBo extends EpOrganClassCatalogPo {
     private Long commentId;
     private String comment;
     private Timestamp commentTime;
-    private String reply;
+    private String replay;
 
     public String getStartTimeFormat() {
         return DateTools.formatDatetoString(super.getStartTime(), DateTools.DATE_FMT_4);
