@@ -115,5 +115,6 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .fetchOneInto(Byte.class);
     }
+
 }
 

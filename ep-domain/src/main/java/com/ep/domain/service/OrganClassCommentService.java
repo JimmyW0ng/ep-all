@@ -113,4 +113,5 @@ public class OrganClassCommentService {
         organRepository.updateTogetherById(orderPo.getOgnId(), new Integer(avg).byteValue());
         return ResultDo.build();
     }
+
 }

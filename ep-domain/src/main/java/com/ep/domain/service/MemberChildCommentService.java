@@ -1,12 +1,16 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildCommentRepository;
+import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +31,8 @@ public class MemberChildCommentService {
 
     @Autowired
     private MemberChildCommentRepository memberChildCommentRepository;
+    @Autowired
+    private MemberChildService memberChildService;
     @Autowired
     private FileRepository fileRepository;
 
@@ -51,4 +57,43 @@ public class MemberChildCommentService {
         return resultDo.setResult(page);
     }
 
+    /**
+     * 班次老师评价回复
+     *
+     * @param memberId
+     * @param commentId
+     * @return
+     */
+    public ResultDo replayComment(Long memberId, Long commentId, String content) {
+        // 前置校验
+        if (StringTools.isBlank(content) || commentId == BizConstant.DB_NUM_ZERO) {
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        // 查看是否已经回复过
+        Optional<EpMemberChildCommentPo> optional = memberChildCommentRepository.existByPId(commentId);
+        if (optional.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_REPLAY_EXIST);
+        }
+        EpMemberChildCommentPo commentPo = memberChildCommentRepository.getById(commentId);
+        if (commentPo == null || !commentPo.getType().equals(EpMemberChildCommentType.launch) || commentPo.getDelFlag()) {
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST);
+        }
+        // 查询孩子是否属于当前会员
+        ResultDo checkedChild = memberChildService.getCheckedMemberChild(memberId, commentPo.getChildId());
+        if (checkedChild.isError()) {
+            return checkedChild;
+        }
+        EpMemberChildCommentPo replay = new EpMemberChildCommentPo();
+        replay.setPId(commentId);
+        replay.setChildId(commentPo.getChildId());
+        replay.setOgnId(commentPo.getOgnId());
+        replay.setCourseId(commentPo.getCourseId());
+        replay.setClassId(commentPo.getClassId());
+        replay.setClassCatalogId(commentPo.getClassCatalogId());
+        replay.setType(EpMemberChildCommentType.reply);
+        replay.setContent(content);
+        replay.setReplyMemberId(memberId);
+        memberChildCommentRepository.insert(replay);
+        return ResultDo.build();
+    }
 }

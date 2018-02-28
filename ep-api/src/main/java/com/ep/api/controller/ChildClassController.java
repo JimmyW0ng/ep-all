@@ -7,10 +7,7 @@ import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
-import com.ep.domain.service.MemberChildService;
-import com.ep.domain.service.OrderService;
-import com.ep.domain.service.OrganClassCatalogService;
-import com.ep.domain.service.OrganClassCommentService;
+import com.ep.domain.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +35,8 @@ public class ChildClassController extends ApiController {
 
     @Autowired
     private MemberChildService memberChildService;
+    @Autowired
+    private MemberChildCommentService memberChildCommentService;
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -97,6 +96,14 @@ public class ChildClassController extends ApiController {
     public ResultDo<OrganClassCatalogDetailDto> getCatalogDetail(@RequestParam("orderId") Long orderId) {
         Long memberId = super.getCurrentUser().get().getId();
         return organClassCatalogService.getCatalogDetail(memberId, orderId);
+    }
+
+    @ApiOperation(value = "班次老师评价回复")
+    @PostMapping("/catalog/detail/replay")
+    public ResultDo<OrganClassCatalogDetailDto> replayComment(@RequestParam("commentId") Long commentId,
+                                                              @RequestParam("content") String content) {
+        Long memberId = super.getCurrentUser().get().getId();
+        return memberChildCommentService.replayComment(memberId, commentId, content);
     }
 
 }

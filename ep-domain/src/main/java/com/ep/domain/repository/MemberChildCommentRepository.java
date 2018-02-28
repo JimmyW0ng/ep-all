@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -71,4 +72,16 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         return new PageImpl(data, pageable, count);
     }
 
+    /**
+     * 根据父级id查询是否存在回复
+     *
+     * @param pId
+     * @return
+     */
+    public Optional<EpMemberChildCommentPo> existByPId(Long pId) {
+        EpMemberChildCommentPo commentPo = dslContext.selectFrom(EP_MEMBER_CHILD_COMMENT)
+                .where(EP_MEMBER_CHILD_COMMENT.P_ID.eq(pId))
+                .fetchOneInto(EpMemberChildCommentPo.class);
+        return Optional.ofNullable(commentPo);
+    }
 }

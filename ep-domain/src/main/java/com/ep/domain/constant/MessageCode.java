@@ -69,6 +69,11 @@ public class MessageCode {
      */
     public static final String ERROR_COURSE_COMMENT_DUPLICATE = "ERROR_COURSE_COMMENT_DUPLICATE";
     /**
+     * 课时评论
+     */
+    public static final String ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST = "ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST";
+    public static final String ERROR_CLASS_CATALOG_COMMENT_REPLAY_EXIST = "ERROR_CLASS_CATALOG_COMMENT_REPLAY_EXIST";
+    /**
      * 机构账户
      */
     public static final String ERROR_ORGAN_ACCOUNT_NOT_EXISTS = "ERROR_ORGAN_ACCOUNT_NOT_EXISTS";
