@@ -1,10 +1,8 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
-import com.ep.domain.pojo.bo.OrderBo;
-import com.ep.domain.pojo.po.EpMemberChildCommentPo;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.service.ChildCommentService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -16,15 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
-import static com.ep.domain.repository.domain.Ep.EP;
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description: 孩子评论控制器
@@ -32,29 +28,38 @@ import static com.ep.domain.repository.domain.Ep.EP;
  * @Date: 20:59 2018/2/25
  */
 @Controller
-@RequestMapping("auth/comment")
+@RequestMapping("auth/childComment")
 public class ChildCommentController extends BackendController {
     @Autowired
     private ChildCommentService childCommentService;
 
     @GetMapping("index")
     public String index(Model model,
-                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-//                        @RequestParam(value = "mobile", required = false) String mobile,
+                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                        @RequestParam(value = "courseName", required = false) String courseName,
 //                        @RequestParam(value = "childTrueName", required = false) String childTrueName,
 //                        @RequestParam(value = "courseName", required = false) String courseName,
-//                        @RequestParam(value = "className", required = false) String className,
-//                        @RequestParam(value = "status", required = false) String status,
+                        @RequestParam(value = "className", required = false) String className,
+                        @RequestParam(value = "classCatalogTitle", required = false) String classCatalogTitle,
+                        @RequestParam(value = "type", required = false) String type
 //                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
 //                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
     ) {
         Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
-//        if (StringTools.isNotBlank(mobile)) {
-//            conditions.add(EP.EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
-//        }
-//        map.put("mobile", mobile);
+        if (StringTools.isNotBlank(courseName)) {
+            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.eq(courseName));
+        }
+        map.put("courseName", courseName);
+        if (StringTools.isNotBlank(className)) {
+            conditions.add(EP_ORGAN_CLASS.CLASS_NAME.eq(className));
+        }
+        map.put("className", className);
+        if (StringTools.isNotBlank(classCatalogTitle)) {
+            conditions.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.eq(classCatalogTitle));
+        }
+        map.put("classCatalogTitle", classCatalogTitle);
 //        if (StringTools.isNotBlank(childTrueName)) {
 //            conditions.add(EP.EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
 //        }
@@ -84,6 +89,41 @@ public class ChildCommentController extends BackendController {
         model.addAttribute("page", page);
         model.addAttribute("map", map);
         return "childComment/index";
+    }
+
+    /**
+     * 修改评论内容
+     *
+     * @param id
+     * @param content
+     * @return
+     */
+    @PostMapping("updateContent")
+    @ResponseBody
+    public ResultDo updateContent(
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "content") String content
+    ) {
+        ResultDo resultDo = ResultDo.build();
+        childCommentService.updateContent(id, content);
+        return resultDo;
+    }
+
+    /**
+     * 根据父级id获取评论内容
+     *
+     * @param pid
+     * @return
+     */
+    @GetMapping("findReplyByPid/{pid}")
+    @ResponseBody
+    public ResultDo findRepayByPid(
+            @PathVariable(value = "pid") Long pid
+    ) {
+        ResultDo resultDo = ResultDo.build();
+        List<MemberChildCommentBo> list = childCommentService.findRepayByPid(pid);
+        resultDo.setResult(list);
+        return resultDo;
     }
 
 }
