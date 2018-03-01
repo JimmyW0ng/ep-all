@@ -10,13 +10,16 @@ import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildCommentRepository;
+import com.ep.domain.repository.MemberChildTagRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +38,8 @@ public class MemberChildCommentService {
     private MemberChildService memberChildService;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private MemberChildTagRepository memberChildTagRepository;
 
     /**
      * 查询孩子获得的最新评价-分页
@@ -95,5 +100,40 @@ public class MemberChildCommentService {
         replay.setReplyMemberId(memberId);
         memberChildCommentRepository.insert(replay);
         return ResultDo.build();
+    }
+
+    /**
+     * 商户后台获取分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+        return memberChildCommentRepository.findbyPageAndCondition(pageable, conditions);
+    }
+
+    /**
+     * 商户后台修改评论内容
+     *
+     * @param id
+     * @param content
+     */
+    public void updateContent(Long id, String content) {
+        memberChildCommentRepository.updateContent(id, content);
+    }
+
+    /**
+     * 商户后台修改评论
+     * @param id
+     * @param content
+     * @param childId
+     * @param classCatalogId
+     * @param tagIds
+     */
+    public void updateComment(Long id,String content,Long childId,Long classCatalogId,List<Long> tagIds){
+        memberChildCommentRepository.updateContent(id, content);
+        memberChildTagRepository.updateChildTag(childId,classCatalogId,tagIds);
+
     }
 }
