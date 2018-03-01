@@ -146,6 +146,7 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
      */
     public List<OrganClassCatalogBo> findDetailByClassId(Long classId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.as("co").CONTENT.as("comment"));
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.as("co").ID.as("commentId"));
         fieldList.add(EP_MEMBER_CHILD_COMMENT.as("co").CREATE_AT.as("commentTime"));
         fieldList.add(EP_MEMBER_CHILD_COMMENT.as("re").CONTENT.as("replay"));
         fieldList.add(EP_ORGAN_CLASS_CATALOG.ID);

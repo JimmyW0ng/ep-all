@@ -91,7 +91,7 @@ public class ChildClassController extends ApiController {
         return organClassCommentService.addClassComment(memberId, orderId, score, content, picList);
     }
 
-    @ApiOperation(value = "班次老师评价")
+    @ApiOperation(value = "班次老师评价信息")
     @PostMapping("/catalog/detail")
     public ResultDo<OrganClassCatalogDetailDto> getCatalogDetail(@RequestParam("orderId") Long orderId) {
         Long memberId = super.getCurrentUser().get().getId();

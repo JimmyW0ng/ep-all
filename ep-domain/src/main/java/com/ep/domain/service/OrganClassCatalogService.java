@@ -39,6 +39,8 @@ public class OrganClassCatalogService {
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
+    private OrganClassChildRepository organClassChildRepository;
+    @Autowired
     private OrganCourseRepository organCourseRepository;
     @Autowired
     private OrganAccountRepository organAccountRepository;
@@ -71,7 +73,8 @@ public class OrganClassCatalogService {
             log.error("课程不存在, courseId={}", classPo.getCourseId());
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
         }
-        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)) {
+        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)
+                && !coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.offline)) {
             log.error("课程状态不是进行中, courseId={}, status={}", classPo.getCourseId(), coursePo.getCourseStatus());
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_OPENING);
         }
@@ -106,6 +109,59 @@ public class OrganClassCatalogService {
         }
         OrganClassCatalogCommentDto commentDto = new OrganClassCatalogCommentDto(classCatalogPo, childList, courseTagList, childTagAndCommentList);
         return resultDo.setResult(commentDto);
+    }
+
+    /**
+     * 课时评价
+     *
+     * @param mobile
+     * @param classCatalogId
+     * @param childId
+     * @param tagIds
+     * @param comment
+     * @return
+     */
+    public ResultDo doClassCatalogComment(Long mobile, Long classCatalogId, Long childId, List<Long> tagIds, String comment) {
+        // 课时信息
+        EpOrganClassCatalogPo classCatalogPo = organClassCatalogRepository.getById(classCatalogId);
+        if (classCatalogPo == null || classCatalogPo.getDelFlag()) {
+            log.error("课时信息不存在, classCatalogId={}", classCatalogId);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_NOT_EXISTS);
+        }
+        // 校验课程
+        EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", classCatalogPo.getClassId());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXISTS);
+        }
+        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
+        if (coursePo == null || coursePo.getDelFlag()) {
+            log.error("课程不存在, courseId={}", classPo.getCourseId());
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXISTS);
+        }
+        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)
+                && !coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.offline)) {
+            log.error("课程状态不是进行中, courseId={}, status={}", classPo.getCourseId(), coursePo.getCourseStatus());
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_OPENING);
+        }
+        // 孩子信息
+        Optional<EpOrganClassChildPo> existChild = organClassChildRepository.getByClassIdAndChildId(classCatalogPo.getClassId(), childId);
+        if (!existChild.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        // 校验班次负责人
+        List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
+        if (CollectionsTools.isEmpty(accountList)) {
+            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        }
+        // 校验班次负责人
+        Optional<EpOrganAccountPo> optional = accountList.stream().filter(item -> item.getId().equals(classPo.getOgnAccountId())).findFirst();
+        if (!optional.isPresent()) {
+            log.error("当前用户不是班次负责人, mobile={}", mobile);
+            return ResultDo.build(MessageCode.ERROR_CLASS_ACCOUNT_NOT_MATCH);
+        }
+
+        return ResultDo.build();
     }
 
     /**

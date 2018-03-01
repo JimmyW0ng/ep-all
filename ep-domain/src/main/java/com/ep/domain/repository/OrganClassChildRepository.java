@@ -38,6 +38,22 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
     }
 
     /**
+     * 根据班次和孩子id获取数据
+     *
+     * @param classId
+     * @param childId
+     * @return
+     */
+    public Optional<EpOrganClassChildPo> getByClassIdAndChildId(Long classId, Long childId) {
+        EpOrganClassChildPo classChildPo = dslContext.selectFrom(EP_ORGAN_CLASS_CHILD)
+                .where(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CHILD.CHILD_ID.eq(childId))
+                .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganClassChildPo.class);
+        return Optional.ofNullable(classChildPo);
+    }
+
+    /**
      * 更新
      *
      * @param orderId

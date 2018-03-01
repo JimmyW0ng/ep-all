@@ -55,4 +55,15 @@ public class OrganAccountController extends ApiController {
         return organClassCatalogService.getClassCatalogCommentView(memberPo.getMobile(), classCatalogId);
     }
 
+    @ApiOperation(value = "课时评价")
+    @PostMapping("/class/catalog/comment")
+    public ResultDo<OrganClassCatalogCommentDto> doClassCatalogComment(@RequestParam("classCatalogId") Long classCatalogId,
+                                                                       @RequestParam("childId") Long childId,
+                                                                       @RequestParam("tagIds") List<Long> tagIds,
+                                                                       @RequestParam("comment") String comment
+    ) {
+        EpMemberPo memberPo = super.getCurrentUser().get();
+        return organClassCatalogService.doClassCatalogComment(memberPo.getMobile(), classCatalogId, childId, tagIds, comment);
+    }
+
 }
