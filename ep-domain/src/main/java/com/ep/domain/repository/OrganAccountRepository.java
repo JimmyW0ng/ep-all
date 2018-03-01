@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -31,6 +32,18 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
     }
 
     /**
+     * 加锁
+     *
+     * @param id
+     */
+    public EpOrganAccountPo getByIdForLock(Long id) {
+        return dslContext.selectFrom(EP_ORGAN_ACCOUNT)
+                .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .forUpdate()
+                .fetchOneInto(EpOrganAccountPo.class);
+    }
+
+    /**
      * 根据手机号获取机构账户
      *
      * @param mobile
@@ -42,6 +55,22 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_ACCOUNT.CREATE_AT.asc())
                 .fetchInto(EpOrganAccountPo.class);
+    }
+
+    /**
+     * 根据手机号和机构id获取机构账户
+     *
+     * @param mobile
+     * @param ognId
+     * @return
+     */
+    public Optional<EpOrganAccountPo> getByMobileAndOgnId(Long mobile, Long ognId) {
+        EpOrganAccountPo accountPo = dslContext.selectFrom(EP_ORGAN_ACCOUNT)
+                .where(EP_ORGAN_ACCOUNT.REFER_MOBILE.eq(mobile))
+                .and(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganAccountPo.class);
+        return Optional.ofNullable(accountPo);
     }
 
 
@@ -128,5 +157,6 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganAccountPo.class);
     }
+
 }
 

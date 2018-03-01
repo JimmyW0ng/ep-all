@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildTagBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
@@ -41,6 +42,22 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
                          .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
                          .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
                          .fetchInto(EpMemberChildTagPo.class);
+    }
+
+    /**
+     * 根据孩子和判断是否存在课时标签
+     *
+     * @param childId
+     * @param classCatalogId
+     * @return
+     */
+    public boolean existByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+        int count = dslContext.selectCount().from(EP_MEMBER_CHILD_TAG)
+                .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
+                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+        return count > BizConstant.DB_NUM_ZERO;
     }
 
     /**

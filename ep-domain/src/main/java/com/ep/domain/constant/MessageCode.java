@@ -71,8 +71,10 @@ public class MessageCode {
     /**
      * 课时评论
      */
+    public static final String ERROR_CLASS_CATALOG_COMMENT_IS_EXIST = "ERROR_CLASS_CATALOG_COMMENT_IS_EXIST";
     public static final String ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST = "ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST";
     public static final String ERROR_CLASS_CATALOG_COMMENT_REPLAY_EXIST = "ERROR_CLASS_CATALOG_COMMENT_REPLAY_EXIST";
+    public static final String ERROR_CLASS_CATALOG_COMMENT_OTHER_TAG_EXIST = "ERROR_CLASS_CATALOG_COMMENT_OTHER_TAG_EXIST";
     /**
      * 机构账户
      */

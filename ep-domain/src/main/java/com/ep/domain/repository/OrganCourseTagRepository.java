@@ -1,15 +1,18 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.po.EpOrganCourseTagPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseTagRecord;
 import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_TAG;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE_TAG;
@@ -76,4 +79,23 @@ public class OrganCourseTagRepository extends AbstractCRUDRepository<EpOrganCour
                 .execute();
     }
 
+    /**
+     * 查询是否有未设置的标签id
+     *
+     * @param courseId
+     * @param tagIds
+     * @return
+     */
+    public boolean existOtherTag(Long courseId, Set<Long> tagIds) {
+        int count = dslContext.select(DSL.count(EP_CONSTANT_TAG.ID))
+                .from(EP_CONSTANT_TAG)
+                .leftJoin(EP_ORGAN_COURSE_TAG)
+                .on(EP_CONSTANT_TAG.ID.eq(EP_ORGAN_COURSE_TAG.TAG_ID))
+                .and(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
+                .where(EP_CONSTANT_TAG.ID.in(tagIds))
+                .and(EP_ORGAN_COURSE_TAG.ID.isNull())
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+        return count > BizConstant.DB_NUM_ZERO;
+    }
 }

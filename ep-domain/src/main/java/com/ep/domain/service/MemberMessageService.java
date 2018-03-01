@@ -5,8 +5,12 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberMessageBo;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberMessageRepository;
+import com.ep.domain.repository.OrganClassCatalogRepository;
+import com.ep.domain.repository.OrganClassRepository;
 import com.ep.domain.repository.domain.enums.EpMemberMessageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @Description: 会员消息接口服务类
@@ -30,6 +35,10 @@ public class MemberMessageService {
     private MemberMessageRepository memberMessageRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private OrganClassCatalogRepository organClassCatalogRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
 
     /**
      * 孩子消息未读数
@@ -68,5 +77,22 @@ public class MemberMessageService {
             }
         }
         return resultDo.setResult(page);
+    }
+
+    /**
+     * 发送课时评论消息
+     *
+     * @param classCatalogId
+     * @param childId
+     * @param tagIds
+     * @param comment
+     */
+    public void sendClassCatalogCommentMessage(Long classCatalogId, Long childId, Set<Long> tagIds, String comment) {
+        // 课时信息
+        EpOrganClassCatalogPo classCatalogPo = organClassCatalogRepository.getById(classCatalogId);
+        // 班次
+        EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());
+        // 发送着-机构账户
+
     }
 }

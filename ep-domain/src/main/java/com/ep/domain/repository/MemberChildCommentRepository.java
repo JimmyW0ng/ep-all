@@ -84,4 +84,20 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .fetchOneInto(EpMemberChildCommentPo.class);
         return Optional.ofNullable(commentPo);
     }
+
+    /**
+     * 根据孩子id课时目录id判断是否存在评价
+     *
+     * @param childId
+     * @param classCatalogId
+     * @return
+     */
+    public boolean existByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+        int count = dslContext.selectCount().from(EP_MEMBER_CHILD_COMMENT)
+                .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+        return count > BizConstant.DB_NUM_ZERO;
+    }
 }
