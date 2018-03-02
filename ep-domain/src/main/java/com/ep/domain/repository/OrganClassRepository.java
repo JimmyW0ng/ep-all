@@ -2,16 +2,20 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
+import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -184,5 +188,28 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .execute();
     }
 
+    public Page<OrganClassBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition){
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORGAN_CLASS)
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS)
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .where(condition);
+
+        List<OrganClassBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganClassBo.class);
+        PageImpl<OrganClassBo> page = new PageImpl<OrganClassBo>(list, pageable, totalCount);
+        return page;
+    }
 }
 

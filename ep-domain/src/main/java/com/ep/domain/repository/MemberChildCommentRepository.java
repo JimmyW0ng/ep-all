@@ -34,6 +34,13 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         super(dslContext, EP_MEMBER_CHILD_COMMENT, EP_MEMBER_CHILD_COMMENT.ID, EpMemberChildCommentPo.class);
     }
 
+    public EpMemberChildCommentPo findById(Long id) {
+        return dslContext.selectFrom(EP_MEMBER_CHILD_COMMENT)
+                .where(EP_MEMBER_CHILD_COMMENT.ID.eq(id))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildCommentPo.class);
+    }
+
     /**
      * 查询孩子获得的最新评价-分页
      *
@@ -111,7 +118,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      * @return
      */
     public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
-        EpMemberChildComment member_child_comment_copy=EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
+        EpMemberChildComment member_child_comment_copy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
 
         long totalCount = dslContext.selectCount()
                 .from(EP_MEMBER_CHILD_COMMENT)
@@ -139,7 +146,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .leftJoin(member_child_comment_copy).on(member_child_comment_copy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
                 .where(condition);
 
-        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(), EP_ORGAN_CLASS.ID.desc(),EP_ORGAN_CLASS_CATALOG.ID.desc())
+        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(), EP_ORGAN_CLASS.ID.desc(), EP_ORGAN_CLASS_CATALOG.ID.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(MemberChildCommentBo.class);

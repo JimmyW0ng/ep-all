@@ -101,10 +101,10 @@
                                    th:onclick="'viewContent(this)'">查看</a>
                                 <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"
                                    href="javascript:void(0)"
-                                   th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.classCatalogId}+')'">修改内容</a>
-                                <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"
-                                   href="javascript:void(0)"
-                                   th:onclick="'updateChildTagInit(this)'">标签</a>
+                                   th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.classCatalogId}+')'">修改</a>
+                                <!--<a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"-->
+                                   <!--href="javascript:void(0)"-->
+                                   <!--th:onclick="'updateChildTagInit(this)'">标签</a>-->
 
                             </td>
 

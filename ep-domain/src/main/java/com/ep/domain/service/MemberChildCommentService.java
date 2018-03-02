@@ -8,6 +8,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
+import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildCommentRepository;
 import com.ep.domain.repository.MemberChildTagRepository;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +42,10 @@ public class MemberChildCommentService {
     private FileRepository fileRepository;
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
+
+    public EpMemberChildCommentPo findById(Long id) {
+        return memberChildCommentRepository.findById(id);
+    }
 
     /**
      * 查询孩子获得的最新评价-分页
@@ -125,15 +131,17 @@ public class MemberChildCommentService {
 
     /**
      * 商户后台修改评论
+     *
      * @param id
      * @param content
      * @param childId
      * @param classCatalogId
-     * @param tagIds
+     * @param insertPos
      */
-    public void updateComment(Long id,String content,Long childId,Long classCatalogId,List<Long> tagIds){
+    @Transactional(rollbackFor = Exception.class)
+    public void updateComment(Long id, String content, Long childId, Long classCatalogId, List<EpMemberChildTagPo> insertPos) {
         memberChildCommentRepository.updateContent(id, content);
-        memberChildTagRepository.updateChildTag(childId,classCatalogId,tagIds);
-
+        memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classCatalogId);
+        memberChildTagRepository.insert(insertPos);
     }
 }

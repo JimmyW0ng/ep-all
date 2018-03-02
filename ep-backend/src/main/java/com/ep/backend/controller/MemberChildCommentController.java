@@ -4,7 +4,9 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
+import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.service.MemberChildCommentService;
 import com.ep.domain.service.MemberChildTagService;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -98,16 +101,29 @@ public class MemberChildCommentController extends BackendController {
      */
     @PostMapping("updateComment")
     @ResponseBody
-    public ResultDo updateComment(
-            @RequestParam(value = "id") Long id,
-            @RequestParam(value = "childId") Long childId,
-            @RequestParam(value = "classCatalogId") Long classCatalogId,
-            @RequestParam(value = "content") String content,
-            @RequestParam(value = "tagId[]") List<Long> tagIds
+    public ResultDo updateComment(HttpServletRequest request,
+                                  @RequestParam(value = "id") Long id,
+                                  @RequestParam(value = "childId") Long childId,
+                                  @RequestParam(value = "classCatalogId") Long classCatalogId,
+                                  @RequestParam(value = "content") String content,
+                                  @RequestParam(value = "tagId[]") List<Long> tagIds
     ) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
-//        memberChildCommentService.updateContent(id, content);
-        memberChildCommentService.updateComment(id, content,childId,classCatalogId,tagIds);
+        EpMemberChildCommentPo memberChildCommentPo = memberChildCommentService.findById(id);
+        List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
+        tagIds.forEach(p -> {
+            EpMemberChildTagPo po = new EpMemberChildTagPo();
+            po.setChildId(childId);
+            po.setOgnId(ognId);
+            po.setCourseId(memberChildCommentPo.getCourseId());
+            po.setClassId(memberChildCommentPo.getClassId());
+            po.setClassCatalogId(classCatalogId);
+            po.setTagId(p);
+            insertPos.add(po);
+        });
+        memberChildCommentService.updateComment(id, content, childId, classCatalogId, insertPos);
         return resultDo;
     }
 
@@ -126,9 +142,9 @@ public class MemberChildCommentController extends BackendController {
 
 
         List<EpMemberChildTagPo> memberChildTagPos = memberChildTagService.findByChildIdAndClassCatalogId(childId, classCatalogId);
-        List<Long> list=Lists.newArrayList();
-        map.put("organCourseTagBos",organCourseTagBos);
-        map.put("memberChildTagPos",memberChildTagPos);
+        List<Long> list = Lists.newArrayList();
+        map.put("organCourseTagBos", organCourseTagBos);
+        map.put("memberChildTagPos", memberChildTagPos);
         resultDo.setResult(map);
         return resultDo;
     }

@@ -39,9 +39,9 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
         return dslContext.selectFrom(EP_MEMBER_CHILD_TAG)
                 .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                         .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                         .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
-                         .fetchInto(EpMemberChildTagPo.class);
+                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                .fetchInto(EpMemberChildTagPo.class);
     }
 
     /**
@@ -132,16 +132,25 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
 
     /**
      * 根据id逻辑删除孩子标签记录
+     *
      * @param id
      */
-    public void deleteLogicChildTagById(Long id){
+    public void deleteLogicChildTagById(Long id) {
         dslContext.update(EP_MEMBER_CHILD_TAG)
-                .set(EP_MEMBER_CHILD_TAG.DEL_FLAG,true)
+                .set(EP_MEMBER_CHILD_TAG.DEL_FLAG, true)
                 .where(EP_MEMBER_CHILD_TAG.ID.eq(id))
                 .execute();
     }
 
-    public void updateChildTag(Long childId,Long classCatalogId,List<Long> tagIds){
-
+    /**
+     * 根据孩子childId和课程目录classCatalogId物理删除孩子标签
+     * @param childId
+     * @param classCatalogId
+     */
+    public void deletePhysicByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+        dslContext.delete(EP_MEMBER_CHILD_TAG)
+                .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
+                .execute();
     }
 }
