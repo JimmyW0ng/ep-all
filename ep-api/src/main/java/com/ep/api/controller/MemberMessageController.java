@@ -45,7 +45,7 @@ public class MemberMessageController extends ApiController {
         if (checkedChild.isError()) {
             return resultDo.setError(checkedChild.getError());
         }
-        return memberMessageService.getUnreadNumByChildId(childId, EpMemberMessageType.class_comment);
+        return memberMessageService.getUnreadNumByChildId(childId, EpMemberMessageType.class_catalog_comment);
     }
 
     @ApiOperation(value = "孩子评价类消息-分页")
@@ -59,7 +59,7 @@ public class MemberMessageController extends ApiController {
         if (checkedChild.isError()) {
             return resultDo.setError(checkedChild.getError());
         }
-        return memberMessageService.findByChildIdForPage(pageable, childId, EpMemberMessageType.class_comment);
+        return memberMessageService.findClassCatalogCommentByChildIdForPage(pageable, childId);
     }
 
 }

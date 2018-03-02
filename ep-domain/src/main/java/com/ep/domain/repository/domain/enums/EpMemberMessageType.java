@@ -4,11 +4,11 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -24,7 +24,7 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum EpMemberMessageType implements EnumType {
 
-    class_comment("class_comment");
+    class_catalog_comment("class_catalog_comment");
 
     private final String literal;
 

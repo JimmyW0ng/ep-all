@@ -8,20 +8,13 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +30,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
 
-    private static final long serialVersionUID = 1179445405;
+    private static final long serialVersionUID = -547748746;
 
     /**
      * The reference instance of <code>ep.ep_organ_account</code>
@@ -163,7 +156,7 @@ public class EpOrganAccount extends TableImpl<EpOrganAccountRecord> {
      */
     @Override
     public List<UniqueKey<EpOrganAccountRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpOrganAccountRecord>>asList(Keys.KEY_EP_ORGAN_ACCOUNT_PRIMARY);
+        return Arrays.<UniqueKey<EpOrganAccountRecord>>asList(Keys.KEY_EP_ORGAN_ACCOUNT_PRIMARY, Keys.KEY_EP_ORGAN_ACCOUNT_UNIQUE_MOBILE_OGN);
     }
 
     /**

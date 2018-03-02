@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemberMessageBo extends EpMemberMessagePo {
 
     private String avatar;
+    private Long orderId;
 
     public String getCommentTimeFormat() {
         return DateTools.dateToString(super.getCreateAt(), DateTools.TIME_PATTERN);

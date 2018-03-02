@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> {
 
-    private static final long serialVersionUID = 334685587;
+    private static final long serialVersionUID = 1568653282;
 
     /**
      * The reference instance of <code>ep.ep_member_child_comment</code>
@@ -176,7 +176,7 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      */
     @Override
     public List<UniqueKey<EpMemberChildCommentRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpMemberChildCommentRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD);
+        return Arrays.<UniqueKey<EpMemberChildCommentRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD_TYPE);
     }
 
     /**

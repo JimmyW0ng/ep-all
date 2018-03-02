@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
 
-    private static final long serialVersionUID = -1064776402;
+    private static final long serialVersionUID = -620900094;
 
     /**
      * The reference instance of <code>ep.ep_member_child_tag</code>
@@ -155,7 +155,7 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      */
     @Override
     public List<UniqueKey<EpMemberChildTagRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpMemberChildTagRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_TAG_PRIMARY);
+        return Arrays.<UniqueKey<EpMemberChildTagRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_TAG_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_TAG_UNIQUE_CATELOG_CHILD_TAG);
     }
 
     /**

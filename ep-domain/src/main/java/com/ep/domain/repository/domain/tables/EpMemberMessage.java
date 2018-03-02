@@ -9,20 +9,13 @@ import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpMemberMessageStatus;
 import com.ep.domain.repository.domain.enums.EpMemberMessageType;
 import com.ep.domain.repository.domain.tables.records.EpMemberMessageRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -38,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
 
-    private static final long serialVersionUID = 1984745795;
+    private static final long serialVersionUID = 1670652659;
 
     /**
      * The reference instance of <code>ep.ep_member_message</code>
@@ -59,9 +52,9 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
     public final TableField<EpMemberMessageRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>ep.ep_member_message.sender_id</code>. 发件人id
+     * The column <code>ep.ep_member_message.sender_ogn_account_id</code>. 发件人对应机构账户id
      */
-    public final TableField<EpMemberMessageRecord, Long> SENDER_ID = createField("sender_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "发件人id");
+    public final TableField<EpMemberMessageRecord, Long> SENDER_OGN_ACCOUNT_ID = createField("sender_ogn_account_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "发件人对应机构账户id");
 
     /**
      * The column <code>ep.ep_member_message.sender_name</code>. 发件人姓名
@@ -102,11 +95,6 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
      * The column <code>ep.ep_member_message.source_id</code>. 业务id
      */
     public final TableField<EpMemberMessageRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "业务id");
-
-    /**
-     * The column <code>ep.ep_member_message.sourse_desc</code>. 业务来源描述
-     */
-    public final TableField<EpMemberMessageRecord, String> SOURSE_DESC = createField("sourse_desc", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "业务来源描述");
 
     /**
      * The column <code>ep.ep_member_message.create_at</code>. 创建时间

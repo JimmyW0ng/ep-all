@@ -51,25 +51,6 @@ public class BizConstant {
     public static int DB_NUM_ONE = 1;
 
     /**
-     * wechat
-     */
-    public static String DICT_GROUP_WECHAT = "WECHAT";
-
-    public static String DICT_KEY_WECHAT_ACCESS_TOKEN = "WECHAT_ACCESS_TOKEN";
-
-    public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
-
-    public static int WECHAT_SESSION_TIME_OUT_M = -60;
-
-    public static String WECHAT_URL_SESSION = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
-
-    public static String WECHAT_URL_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
-
-    public static String WECHAT_URL_WECHAT_CODE = "https://api.weixin.qq.com/wxa/getwxacode?access_token=%s";
-
-    public static String WECHAT_URL_WECHAT_CODE_UNLIMIT = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s";
-
-    /**
      * 短信验证码
      */
     public static int CAPTCHA_SHORT_MSG_LENGTH = 6;
@@ -108,4 +89,9 @@ public class BizConstant {
      * 评分最小单位
      */
     public static final byte SCORE_UNIT = 5;
+
+    /**
+     * 消息文案
+     */
+    public static final String MESSAGE_CONTENT_CLASS_CATALOG_COMMENT = "\"%s\"在\"%s-%s\"中收到评价，点击查看";
 }

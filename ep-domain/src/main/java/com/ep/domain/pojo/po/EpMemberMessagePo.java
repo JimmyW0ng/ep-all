@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 public class EpMemberMessagePo extends AbstractBasePojo {
 
     private Long id;
-    private Long senderId;
+    private Long senderOgnAccountId;
     private String senderName;
     private String senderDesc;
     private Long memberId;
@@ -34,7 +34,6 @@ public class EpMemberMessagePo extends AbstractBasePojo {
     private String content;
     @JsonIgnore
     private Long sourceId;
-    private String sourseDesc;
     private Timestamp createAt;
     @JsonIgnore
     private Timestamp updateAt;
