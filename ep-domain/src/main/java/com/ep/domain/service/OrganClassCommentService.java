@@ -48,18 +48,19 @@ public class OrganClassCommentService {
      * @param courseId
      * @return
      */
-    public Page<OrganClassCommentBo> findCourseCommentForPage(Pageable pageable, Long courseId) {
+    public ResultDo<Page<OrganClassCommentBo>> findCourseCommentForPage(Pageable pageable, Long courseId) {
+        ResultDo<Page<OrganClassCommentBo>> resultDo = ResultDo.build();
         Page<OrganClassCommentBo> page = organClassCommentRepository.findCourseCommentForPage(pageable, courseId);
         List<OrganClassCommentBo> data = page.getContent();
         if (CollectionsTools.isEmpty(data)) {
-            return page;
+            return resultDo.setResult(page);
         }
         for (OrganClassCommentBo classCommentBo : data) {
             Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, classCommentBo.getChildId());
             String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
             classCommentBo.setChildAvatar(avatar);
         }
-        return page;
+        return resultDo.setResult(page);
     }
 
     /**

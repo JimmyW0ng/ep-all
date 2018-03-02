@@ -51,8 +51,8 @@ public class OrganCourseController extends ApiController {
 
     @ApiOperation(value = "分页查询课程全部评论")
     @PostMapping("/comment/page")
-    public Page<OrganClassCommentBo> findCourseCommentForPage(@PageableDefault Pageable pageable,
-                                                              @RequestParam("courseId") Long courseId) {
+    public ResultDo<Page<OrganClassCommentBo>> findCourseCommentForPage(@PageableDefault Pageable pageable,
+                                                                        @RequestParam("courseId") Long courseId) {
         return organClassCommentService.findCourseCommentForPage(pageable, courseId);
     }
 
