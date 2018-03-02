@@ -42,12 +42,15 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_COMMENT.fields());
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS_CHILD.HONOR_NUM);
         return dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS_COMMENT)
                 .leftJoin(EP_MEMBER_CHILD)
                 .on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
                 .leftJoin(EP_ORGAN_CLASS)
                 .on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_ORGAN_CLASS_CHILD)
+                .on(EP_ORGAN_CLASS_COMMENT.ORDER_ID.eq(EP_ORGAN_CLASS_CHILD.ORDER_ID))
                 .where(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(courseId))
                 .and(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG.eq(true))
                 .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
@@ -73,12 +76,15 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_COMMENT.fields());
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS_CHILD.HONOR_NUM);
         List<OrganClassCommentBo> pList = dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS_COMMENT)
                 .leftJoin(EP_MEMBER_CHILD)
                 .on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
                 .leftJoin(EP_ORGAN_CLASS)
                 .on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_ORGAN_CLASS_CHILD)
+                .on(EP_ORGAN_CLASS_COMMENT.ORDER_ID.eq(EP_ORGAN_CLASS_CHILD.ORDER_ID))
                 .where(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(courseId))
                 .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS_COMMENT.CREATE_AT.desc())
