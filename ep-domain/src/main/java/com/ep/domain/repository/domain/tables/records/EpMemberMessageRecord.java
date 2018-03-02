@@ -48,26 +48,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Create a detached, initialised EpMemberMessageRecord
+     * Create a detached EpMemberMessageRecord
      */
-    public EpMemberMessageRecord(Long id, Long senderOgnAccountId, String senderName, String senderDesc, Long memberId, Long childId, EpMemberMessageType type, EpMemberMessageStatus status, String content, Long sourceId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpMemberMessageRecord() {
         super(EpMemberMessage.EP_MEMBER_MESSAGE);
-
-        set(0, id);
-        set(1, senderOgnAccountId);
-        set(2, senderName);
-        set(3, senderDesc);
-        set(4, memberId);
-        set(5, childId);
-        set(6, type);
-        set(7, status);
-        set(8, content);
-        set(9, sourceId);
-        set(10, createAt);
-        set(11, updateAt);
-        set(12, remark);
-        set(13, delFlag);
-        set(14, version);
     }
 
     /**
@@ -198,11 +182,26 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.sender_ogn_account_id</code>. 发件人对应机构账户id
+     * Create a detached, initialised EpMemberMessageRecord
      */
-    public EpMemberMessageRecord setSenderOgnAccountId(Long value) {
-        set(1, value);
-        return this;
+    public EpMemberMessageRecord(Long id, Long senderOgnAccountId, String senderName, String senderDesc, Long memberId, Long childId, EpMemberMessageType type, EpMemberMessageStatus status, String content, Long sourceId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberMessage.EP_MEMBER_MESSAGE);
+
+        set(0, id);
+        set(1, senderOgnAccountId);
+        set(2, senderName);
+        set(3, senderDesc);
+        set(4, memberId);
+        set(5, childId);
+        set(6, type);
+        set(7, status);
+        set(8, content);
+        set(9, sourceId);
+        set(10, createAt);
+        set(11, updateAt);
+        set(12, remark);
+        set(13, delFlag);
+        set(14, version);
     }
 
     /**
@@ -213,10 +212,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_member_message.sender_ogn_account_id</code>. 发件人对应机构账户id
      */
-    public EpMemberMessageRecord setCreateAt(Timestamp value) {
-        set(10, value);
+    public EpMemberMessageRecord setSenderOgnAccountId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -228,10 +227,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_member_message.create_at</code>. 创建时间
      */
-    public EpMemberMessageRecord setUpdateAt(Timestamp value) {
-        set(11, value);
+    public EpMemberMessageRecord setCreateAt(Timestamp value) {
+        set(10, value);
         return this;
     }
 
@@ -243,10 +242,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.remark</code>. 备注
+     * Setter for <code>ep.ep_member_message.update_at</code>. 更新时间
      */
-    public EpMemberMessageRecord setRemark(String value) {
-        set(12, value);
+    public EpMemberMessageRecord setUpdateAt(Timestamp value) {
+        set(11, value);
         return this;
     }
 
@@ -258,10 +257,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_member_message.remark</code>. 备注
      */
-    public EpMemberMessageRecord setDelFlag(Boolean value) {
-        set(13, value);
+    public EpMemberMessageRecord setRemark(String value) {
+        set(12, value);
         return this;
     }
 
@@ -289,19 +288,19 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>ep.ep_member_message.version</code>.
-     */
-    public EpMemberMessageRecord setVersion(Long value) {
-        set(14, value);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public Row15<Long, Long, String, String, Long, Long, EpMemberMessageType, EpMemberMessageStatus, String, Long, Timestamp, Timestamp, String, Boolean, Long> fieldsRow() {
         return (Row15) super.fieldsRow();
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.del_flag</code>. 删除标记
+     */
+    public EpMemberMessageRecord setDelFlag(Boolean value) {
+        set(13, value);
+        return this;
     }
 
     /**
@@ -313,11 +312,11 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * {@inheritDoc}
+     * Setter for <code>ep.ep_member_message.version</code>.
      */
-    @Override
-    public Row15<Long, Long, String, String, Long, Long, EpMemberMessageType, EpMemberMessageStatus, String, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row15) super.valuesRow();
+    public EpMemberMessageRecord setVersion(Long value) {
+        set(14, value);
+        return this;
     }
 
     /**
@@ -388,14 +387,6 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field2() {
-        return EpMemberMessage.EP_MEMBER_MESSAGE.SENDER_OGN_ACCOUNT_ID;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<Timestamp> field11() {
         return EpMemberMessage.EP_MEMBER_MESSAGE.CREATE_AT;
     }
@@ -428,6 +419,14 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
+    public Row15<Long, Long, String, String, Long, Long, EpMemberMessageType, EpMemberMessageStatus, String, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row15) super.valuesRow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Long value1() {
         return getId();
     }
@@ -436,8 +435,8 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field15() {
-        return EpMemberMessage.EP_MEMBER_MESSAGE.VERSION;
+    public Field<Long> field2() {
+        return EpMemberMessage.EP_MEMBER_MESSAGE.SENDER_OGN_ACCOUNT_ID;
     }
 
     /**
@@ -508,14 +507,6 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Long value2() {
-        return getSenderOgnAccountId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Timestamp value11() {
         return getCreateAt();
     }
@@ -548,6 +539,14 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
+    public Field<Long> field15() {
+        return EpMemberMessage.EP_MEMBER_MESSAGE.VERSION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public EpMemberMessageRecord value1(Long value) {
         setId(value);
         return this;
@@ -557,8 +556,8 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Long value15() {
-        return getVersion();
+    public Long value2() {
+        return getSenderOgnAccountId();
     }
 
     /**
@@ -637,15 +636,6 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public EpMemberMessageRecord value2(Long value) {
-        setSenderOgnAccountId(value);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public EpMemberMessageRecord value11(Timestamp value) {
         setCreateAt(value);
         return this;
@@ -687,17 +677,6 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpMemberMessageRecord
-     */
-    public EpMemberMessageRecord() {
-        super(EpMemberMessage.EP_MEMBER_MESSAGE);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -718,6 +697,27 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
         value13(value13);
         value14(value14);
         value15(value15);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long value15() {
+        return getVersion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EpMemberMessageRecord value2(Long value) {
+        setSenderOgnAccountId(value);
         return this;
     }
 }

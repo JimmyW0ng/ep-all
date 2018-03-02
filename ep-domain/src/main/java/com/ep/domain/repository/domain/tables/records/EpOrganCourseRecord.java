@@ -7,17 +7,15 @@ package com.ep.domain.repository.domain.tables.records;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.repository.domain.tables.EpOrganCourse;
-
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record22;
 import org.jooq.Row22;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 
 /**
@@ -33,7 +31,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord> implements Record22<Long, Long, EpOrganCourseCourseType, Long, String, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, Integer, String, Timestamp, Timestamp, Boolean, Long> {
 
-    private static final long serialVersionUID = 684149922;
+    private static final long serialVersionUID = -128258716;
 
     /**
      * Setter for <code>ep.ep_organ_course.id</code>. 主键
@@ -216,18 +214,18 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
+     * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
+     */
+    public EpOrganCourseCourseStatus getCourseStatus() {
+        return (EpOrganCourseCourseStatus) get(12);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
      */
     public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
         set(12, value);
         return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；进行中；已下线；
-     */
-    public EpOrganCourseCourseStatus getCourseStatus() {
-        return (EpOrganCourseCourseStatus) get(12);
     }
 
     /**

@@ -4,15 +4,15 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
 
+import javax.annotation.Generated;
+
 
 /**
- * 课状态：已保存；已上线；进行中；已下线；
+ * 课状态：已保存；已上线；已下线；
  */
 @Generated(
     value = {
@@ -27,8 +27,6 @@ public enum EpOrganCourseCourseStatus implements EnumType {
     save("save"),
 
     online("online"),
-
-    opening("opening"),
 
     offline("offline");
 

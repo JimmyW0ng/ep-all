@@ -48,7 +48,6 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .where(EP_ORGAN_COURSE.ID.eq(courseId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
-                        EpOrganCourseCourseStatus.opening,
                         EpOrganCourseCourseStatus.offline))
                 .fetchOneInto(OrganCourseBo.class);
     }
@@ -64,8 +63,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
         long count = dslContext.selectCount().from(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.opening,
-                        EpOrganCourseCourseStatus.online,
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline))
                 .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
@@ -79,11 +77,9 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.opening,
-                        EpOrganCourseCourseStatus.online,
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline))
-                .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.opening,
-                        EpOrganCourseCourseStatus.online,
+                .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline))
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())

@@ -6,22 +6,16 @@ package com.ep.domain.repository.domain.tables;
 
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -37,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = 896450054;
+    private static final long serialVersionUID = -1518659586;
 
     /**
      * The reference instance of <code>ep.ep_organ_class</code>
@@ -116,6 +110,11 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The column <code>ep.ep_organ_class.sort</code>. 排序
      */
     public final TableField<EpOrganClassRecord, Long> SORT = createField("sort", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "排序");
+
+    /**
+     * The column <code>ep.ep_organ_class.status</code>. 状态：已保存；已上线；进行中；已下线；
+     */
+    public final TableField<EpOrganClassRecord, EpOrganClassStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassStatus.class), this, "状态：已保存；已上线；进行中；已下线；");
 
     /**
      * The column <code>ep.ep_organ_class.remark</code>. 备注信息

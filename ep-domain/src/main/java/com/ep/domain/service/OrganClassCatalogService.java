@@ -11,7 +11,7 @@ import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
-import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,6 @@ public class OrganClassCatalogService {
     @Autowired
     private OrganClassChildRepository organClassChildRepository;
     @Autowired
-    private OrganCourseRepository organCourseRepository;
-    @Autowired
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
@@ -75,15 +73,9 @@ public class OrganClassCatalogService {
             log.error("班次不存在, classId={}", classCatalogPo.getClassId());
             return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
         }
-        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
-        if (coursePo == null || coursePo.getDelFlag()) {
-            log.error("课程不存在, courseId={}", classPo.getCourseId());
-            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
-        }
-        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)
-                && !coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.offline)) {
-            log.error("课程状态不是进行中, courseId={}, status={}", classPo.getCourseId(), coursePo.getCourseStatus());
-            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_OPENING);
+        if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+            log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_OPENING);
         }
         // 孩子信息
         List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classCatalogPo.getClassId());
@@ -141,15 +133,9 @@ public class OrganClassCatalogService {
             log.error("班次不存在, classId={}", classCatalogPo.getClassId());
             return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXISTS);
         }
-        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
-        if (coursePo == null || coursePo.getDelFlag()) {
-            log.error("课程不存在, courseId={}", classPo.getCourseId());
-            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXISTS);
-        }
-        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.opening)
-                && !coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.offline)) {
-            log.error("课程状态不是进行中, courseId={}, status={}", classPo.getCourseId(), coursePo.getCourseStatus());
-            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_OPENING);
+        if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+            log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_OPENING);
         }
         // 孩子信息
         Optional<EpOrganClassChildPo> existChild = organClassChildRepository.getByClassIdAndChildId(classCatalogPo.getClassId(), childId);
