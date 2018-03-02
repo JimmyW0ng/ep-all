@@ -9,7 +9,7 @@ import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.OrganCourseRepository;
+import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.OrganRepository;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import org.jooq.Condition;
@@ -36,7 +36,7 @@ public class OrganService {
     @Autowired
     private FileRepository fileRepository;
     @Autowired
-    private OrganCourseRepository ognCourseRepository;
+    private OrderRepository orderRepository;
 
     /**
      * 机构详情(基本信息＋banner列表＋课程列表)
@@ -57,7 +57,9 @@ public class OrganService {
         // 机构Logo
         Optional<EpFilePo> logoOpt = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
         String logo = logoOpt.isPresent() ? logoOpt.get().getFileUrl() : null;
-        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), logo, mainPic);
+        // 总评论数
+        Long totalCommentNum = orderRepository.countByOgnId(id);
+        OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), logo, mainPic, totalCommentNum);
         return resultDo.setResult(ognInfoDto);
     }
 

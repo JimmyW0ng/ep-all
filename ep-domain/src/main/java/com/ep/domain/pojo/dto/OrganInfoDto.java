@@ -14,5 +14,6 @@ public class OrganInfoDto extends AbstractBasePojo {
     private EpOrganPo ognInfo;
     private String logoUrl;
     private String mainPicUrl;
+    private Long totalCommentNum;
 
 }

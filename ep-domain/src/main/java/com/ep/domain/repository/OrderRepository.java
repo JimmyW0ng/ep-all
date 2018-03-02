@@ -193,6 +193,20 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 根据机构统计订单数
+     *
+     * @param ognId
+     * @return
+     */
+    public Long countByOgnId(Long ognId) {
+        return dslContext.selectCount()
+                .from(EP_ORDER)
+                .where(EP_ORDER.OGN_ID.eq(ognId))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
+
+    /**
      * 根据孩子统计订单数
      *
      * @param childId
