@@ -20,5 +20,6 @@ public class OrganCourseDto extends AbstractBasePojo {
     private List<EpOrganClassPo> classes;
     private List<OrganAccountBo> team;
     private List<OrganClassCommentBo> comments;
+    private Long totalCommentNum;
 
 }

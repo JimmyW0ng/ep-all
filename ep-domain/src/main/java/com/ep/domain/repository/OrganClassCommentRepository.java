@@ -59,6 +59,20 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
     }
 
     /**
+     * 统计课程评价总数
+     *
+     * @param courseId
+     * @return
+     */
+    public Long countByCourseId(Long courseId) {
+        return dslContext.selectCount()
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .where(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
+
+    /**
      * 分页查询课程全部评论
      *
      * @param pageable

@@ -108,8 +108,10 @@ public class OrganCourseService {
                 classCommentBo.setChildAvatar(avatar);
             }
         }
+        // 总评论数
+        Long totalCommentNum = organClassCommentRepository.countByCourseId(courseId);
         // 封装返回dto
-        OrganCourseDto courseDto = new OrganCourseDto(ognCourseBo, classes, team, comments);
+        OrganCourseDto courseDto = new OrganCourseDto(ognCourseBo, classes, team, comments, totalCommentNum);
         ResultDo<OrganCourseDto> resultDo = ResultDo.build();
         resultDo.setResult(courseDto);
         return resultDo;
