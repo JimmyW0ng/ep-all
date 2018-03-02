@@ -1,11 +1,16 @@
 package com.ep.domain.service;
 
+import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.OrganClassRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -27,4 +32,7 @@ public class OrganClassService {
         return organClassRepository.insertNew(organClassPo);
     }
 
+    public Page<OrganClassBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return organClassRepository.findbyPageAndCondition(pageable, condition);
+    }
 }

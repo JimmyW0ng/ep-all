@@ -39,9 +39,9 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
         return dslContext.selectFrom(EP_MEMBER_CHILD_TAG)
                 .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                         .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                         .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
-                         .fetchInto(EpMemberChildTagPo.class);
+                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                .fetchInto(EpMemberChildTagPo.class);
     }
 
     /**
@@ -104,5 +104,53 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
                 .groupBy(EP_MEMBER_CHILD_TAG.TAG_ID)
                 .orderBy(DSL.max(EP_MEMBER_CHILD_TAG.CREATE_AT).desc())
                 .fetchInto(MemberChildTagBo.class);
+    }
+
+    /**
+     * 根据孩子childId和班次目录ClassCatalogId获取孩子的标签
+     *
+     * @param childId
+     * @param classCatalogId
+     * @return
+     */
+    public List<MemberChildTagBo> findBosByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_TAG.TAG_ID);
+        fieldList.add(EP_CONSTANT_TAG.ID);
+        fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_TAG)
+                .innerJoin(EP_CONSTANT_TAG)
+                .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
+                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                .groupBy(EP_MEMBER_CHILD_TAG.TAG_ID)
+                .orderBy(DSL.max(EP_MEMBER_CHILD_TAG.CREATE_AT).desc())
+                .fetchInto(MemberChildTagBo.class);
+    }
+
+    /**
+     * 根据id逻辑删除孩子标签记录
+     *
+     * @param id
+     */
+    public void deleteLogicChildTagById(Long id) {
+        dslContext.update(EP_MEMBER_CHILD_TAG)
+                .set(EP_MEMBER_CHILD_TAG.DEL_FLAG, true)
+                .where(EP_MEMBER_CHILD_TAG.ID.eq(id))
+                .execute();
+    }
+
+    /**
+     * 根据孩子childId和课程目录classCatalogId物理删除孩子标签
+     * @param childId
+     * @param classCatalogId
+     */
+    public void deletePhysicByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+        dslContext.delete(EP_MEMBER_CHILD_TAG)
+                .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
+                .execute();
     }
 }

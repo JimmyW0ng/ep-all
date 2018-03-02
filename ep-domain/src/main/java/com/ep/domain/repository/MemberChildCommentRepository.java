@@ -4,16 +4,18 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.tables.EpMemberChildComment;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildCommentRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,13 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
     @Autowired
     public MemberChildCommentRepository(DSLContext dslContext) {
         super(dslContext, EP_MEMBER_CHILD_COMMENT, EP_MEMBER_CHILD_COMMENT.ID, EpMemberChildCommentPo.class);
+    }
+
+    public EpMemberChildCommentPo findById(Long id) {
+        return dslContext.selectFrom(EP_MEMBER_CHILD_COMMENT)
+                .where(EP_MEMBER_CHILD_COMMENT.ID.eq(id))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildCommentPo.class);
     }
 
     /**
@@ -104,5 +113,64 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
                 .fetchOneInto(Integer.class);
         return count > BizConstant.DB_NUM_ZERO;
+    }
+
+    /**
+     * 商户后台获取分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        EpMemberChildComment member_child_comment_copy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
+
+        long totalCount = dslContext.selectCount()
+                .from(EP_MEMBER_CHILD_COMMENT)
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
+                .leftJoin(member_child_comment_copy).on(member_child_comment_copy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.as("classCatalogTitle"));
+        fieldList.add(member_child_comment_copy.CONTENT.as("contentReply"));
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_COMMENT)
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
+                .leftJoin(member_child_comment_copy).on(member_child_comment_copy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+                .where(condition);
+
+        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(), EP_ORGAN_CLASS.ID.desc(), EP_ORGAN_CLASS_CATALOG.ID.desc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(MemberChildCommentBo.class);
+        PageImpl<MemberChildCommentBo> pPage = new PageImpl<MemberChildCommentBo>(list, pageable, totalCount);
+        return pPage;
+    }
+
+    /**
+     * 商户后台修改评论内容
+     *
+     * @param id
+     * @param content
+     */
+    public void updateContent(Long id, String content) {
+        dslContext.update(EP_MEMBER_CHILD_COMMENT)
+                .set(EP_MEMBER_CHILD_COMMENT.CONTENT, content)
+                .set(EP_MEMBER_CHILD_COMMENT.UPDATE_AT, DSL.currentTimestamp())
+                .where(EP_MEMBER_CHILD_COMMENT.ID.eq(id))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .execute();
     }
 }
