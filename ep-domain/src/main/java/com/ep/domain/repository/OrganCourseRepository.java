@@ -146,7 +146,20 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .set(EP_ORGAN_COURSE.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
                 .execute();
+    }
 
+    /**
+     * 根据ognId获取课程目录ID的集合
+     * @param ognId
+     * @return
+     */
+    public List<Long> findCourseCatalogIdByOgnId(Long ognId){
+        return dslContext.select(EP_ORGAN_COURSE.COURSE_CATALOG_ID)
+                .from(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .groupBy(EP_ORGAN_COURSE.COURSE_CATALOG_ID)
+                .fetchInto(Long.class);
     }
 
 }

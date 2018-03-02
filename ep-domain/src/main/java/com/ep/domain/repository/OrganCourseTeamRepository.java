@@ -21,5 +21,15 @@ public class OrganCourseTeamRepository extends AbstractCRUDRepository<EpOrganCou
         super(dslContext, EP_ORGAN_COURSE_TEAM, EP_ORGAN_COURSE_TEAM.ID, EpOrganCourseTeamPo.class);
     }
 
+    /**
+     * 根据课程courseId物理删除
+     * @param courseId
+     */
+    public void deletePhysicByCourseId(Long courseId){
+        dslContext.deleteFrom(EP_ORGAN_COURSE_TEAM)
+                .where(EP_ORGAN_COURSE_TEAM.COURSE_ID.eq(courseId))
+                .execute();
+    }
+
 }
 
