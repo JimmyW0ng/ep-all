@@ -103,9 +103,13 @@ public class OrganCourseService {
         List<OrganClassCommentBo> comments = organClassCommentRepository.getChosenByCourseId(courseId);
         if (CollectionsTools.isNotEmpty(comments)) {
             for (OrganClassCommentBo classCommentBo : comments) {
+                // 孩子头像
                 Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, classCommentBo.getChildId());
                 String avatar = optAvatar.isPresent() ? optAvatar.get().getFileUrl() : null;
                 classCommentBo.setChildAvatar(avatar);
+                // 评论图片
+                List<String> pics = fileRepository.getUrlByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_CLASS_COMMENT_PIC, classCommentBo.getId());
+                classCommentBo.setPics(pics);
             }
         }
         // 总评论数

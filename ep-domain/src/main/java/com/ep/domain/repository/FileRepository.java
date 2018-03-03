@@ -40,6 +40,20 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
     }
 
     /**
+     * 根据业务类型和来源获取文件链接，按排序字段正序和创建时间正序排列
+     *
+     * @return
+     */
+    public List<String> getUrlByBizTypeAndSourceId(Short bscFileBizType, Long sourceId) {
+        return dslContext.select(EP_FILE.FILE_URL).from(EP_FILE)
+                .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
+                .and(EP_FILE.SOURCE_ID.eq(sourceId))
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .orderBy(EP_FILE.SORT.asc(), EP_FILE.CREATE_AT.asc())
+                .fetchInto(String.class);
+    }
+
+    /**
      * 根据业务类型和来源获取已删除文件列表
      *
      * @return
