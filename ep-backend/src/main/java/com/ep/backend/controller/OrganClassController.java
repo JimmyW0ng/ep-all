@@ -1,7 +1,9 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -13,9 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -38,6 +38,7 @@ public class OrganClassController {
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "className", required = false) String className,
+                        @RequestParam(value = "status", required = false) String status,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
@@ -49,6 +50,10 @@ public class OrganClassController {
             conditions.add(EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
         }
         map.put("className", className);
+        if (StringTools.isNotBlank(status)) {
+            conditions.add(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.valueOf(status)));
+        }
+        map.put("status", status);
 
         if (null != crStartTime) {
             conditions.add(EP_ORGAN_CLASS.CREATE_AT.greaterOrEqual(crStartTime));
@@ -63,5 +68,18 @@ public class OrganClassController {
         model.addAttribute("page", page);
         model.addAttribute("map", map);
         return "organClass/index";
+    }
+
+    /**
+     * 上线课程
+     * @param id
+     * @return
+     */
+    @GetMapping("opening/{id}")
+    @ResponseBody
+    public ResultDo opening(@PathVariable(value="id") Long id){
+        ResultDo resultDo = ResultDo.build();
+        organClassService.openingById(id);
+        return resultDo;
     }
 }

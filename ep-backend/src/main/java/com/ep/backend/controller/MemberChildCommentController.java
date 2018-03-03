@@ -93,7 +93,7 @@ public class MemberChildCommentController extends BackendController {
     }
 
     /**
-     * 修改评价
+     * 修改评价(评论内容，标签)
      *
      * @param id
      * @param content
@@ -128,6 +128,13 @@ public class MemberChildCommentController extends BackendController {
     }
 
 
+    /**
+     * 初始化标签
+     * @param childId
+     * @param courseId
+     * @param classCatalogId
+     * @return
+     */
     @PostMapping("updateChildTagInit")
     @ResponseBody
     public ResultDo updateChildTagInit(

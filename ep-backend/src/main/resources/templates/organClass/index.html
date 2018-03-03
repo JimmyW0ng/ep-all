@@ -27,16 +27,16 @@
                                placeholder="班次名称">
                     </div>
 
-                    <!--<div class="form-group ">-->
-                        <!--<select class="form-control" name="type" id="type" style="width:182px;" >-->
-                            <!--<option value>类型</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:selected="${#stringTools.equals(state,map.get('type'))}"-->
-                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
+                    <div class="form-group ">
+                        <select class="form-control" name="status" id="type" style="width:182px;" >
+                            <option value>状态</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassStatus).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,map.get('status'))}"
+                                    th:text="#{EpOrganClassStatus.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"
@@ -76,6 +76,7 @@
                             <th>下单人数</th>
                             <th>已报名成功人数</th>
                             <th>总计课时</th>
+                            <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -92,12 +93,15 @@
                             <td th:text="${bo.orderedNum}"></td>
                             <td th:text="${bo.enteredNum}"></td>
                             <td th:text="${bo.courseNum}"></td>
+                            <td th:text="#{EpOrganClassStatus.+${bo.status}}"></td>
 
                             <td th:text="${bo.createAt}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info" th:href="@{/auth/organAccount/view/}+${bo.id}">查看</a>
-                                <a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
+                                <!--<a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'save')}" th:href="@{/auth/organClass/online/}+${bo.id}">上线</a>-->
+                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'online')}"
+                                   href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
+
+                                <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>-->
 
                             </td>
 
@@ -131,11 +135,32 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script>
+    function openingBox(id) {
+        parent.layer.alert('确认该班次开课', {
+                icon: 1,
+                skin: 'layer-ext-moon',
+            },
+            function (index) {
+                openingDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function openingDo(id) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/organClass/opening/"+id,
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/organClass/index');
+                }
+            }
+        })
+
+    }
     function deleteBox(id) {
         parent.layer.alert('确认删除用户', {
                 icon: 1,
                 skin: 'layer-ext-moon',
-
             },
             function (index) {
                 delDo(id);
@@ -145,14 +170,13 @@
     function delDo(id) {
         $.ajax({
             type:"GET",
-            url:"/auth/organAccount/delete/"+id,
+            url:"/auth/organClass/delete/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/organAccount/index');
+                    toastr_success(null,'/auth/organClass/index');
                 }
             }
         })
-
     }
 </script>
 </body>

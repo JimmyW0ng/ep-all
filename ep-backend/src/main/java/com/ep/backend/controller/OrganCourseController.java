@@ -306,4 +306,33 @@ public class OrganCourseController extends BackendController {
         ResultDo resultDo = ResultDo.build();
         return resultDo;
     }
+
+    /**
+     * 删除课程
+     * @param courseId
+     * @return
+     */
+    public ResultDo deleteByCourseId(HttpServletRequest request,Long courseId){
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId = currentUser.getOgnId();
+        ResultDo resultDo = ResultDo.build();
+        organCourseService.deleteCourseByCourseId(courseId,ognId);
+        return resultDo;
+    }
+
+    /**
+     * 上线课程
+     * @param id
+     * @return
+     */
+    @GetMapping("online/{id}")
+    @ResponseBody
+    public ResultDo onlineById(@PathVariable(value="id") Long id){
+        ResultDo resultDo = ResultDo.build();
+        organCourseService.onlineById(id);
+        return resultDo;
+    }
+
 }
+
+

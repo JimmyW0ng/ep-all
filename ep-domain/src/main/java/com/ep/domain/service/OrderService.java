@@ -252,7 +252,7 @@ public class OrderService {
     }
 
     /**
-     * 批量报名
+     * 批量报名（不同孩子的班次批量报名）
      *
      * @param map
      */

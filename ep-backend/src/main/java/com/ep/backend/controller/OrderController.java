@@ -125,7 +125,7 @@ public class OrderController extends BackendController {
             }
             map.put(classId,list);
         }
-
+        //不同班次的孩子批量报名
         orderService.batchOrderSuccess(map);
         return resultDo;
     }

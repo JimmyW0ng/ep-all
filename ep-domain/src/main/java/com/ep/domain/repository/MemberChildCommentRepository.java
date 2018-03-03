@@ -141,6 +141,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.as("classCatalogTitle"));
+        fieldList.add(member_child_comment_copy.ID.as("replyId"));
         fieldList.add(member_child_comment_copy.CONTENT.as("contentReply"));
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_MEMBER_CHILD_COMMENT)
