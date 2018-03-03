@@ -4,6 +4,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -162,6 +163,24 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
     }
 
     /**
+     * 根据课程courseId批量逻辑删除记录
+     *
+     * @param courseId
+     */
+    public List<Long> deleteLogicByCourseId(Long courseId) {
+       List<Long> list = dslContext.select(EP_ORGAN_CLASS.ID).from(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchInto(Long.class);
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.DEL_FLAG,true)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+        return list;
+    }
+
+    /**
      * 报名成功更新entered_num字段
      *
      * @param classId
@@ -210,6 +229,70 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .fetchInto(OrganClassBo.class);
         PageImpl<OrganClassBo> page = new PageImpl<OrganClassBo>(list, pageable, totalCount);
         return page;
+    }
+
+    /**
+     * 根据ids班次上线
+     * @param ids
+     */
+    public void onlineByIds(List<Long> ids){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.online)
+                .where(EP_ORGAN_CLASS.ID.in(ids))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.save))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id班次上线
+     * @param id
+     */
+    public void onlineById(Long id){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.online)
+                .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.save))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据courseId班次上线
+     * @param courseId
+     */
+    public void onlineByCourseId(Long courseId){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.online)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.save))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id获取记录
+     * @param id
+     * @return
+     */
+    public EpOrganClassPo findById(Long id){
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganClassPo.class);
+    }
+
+    /**
+     * 根据id开课
+     * @param id
+     * @return
+     */
+    public void openingById(Long id){
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS,EpOrganClassStatus.opening)
+                .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
     }
 }
 

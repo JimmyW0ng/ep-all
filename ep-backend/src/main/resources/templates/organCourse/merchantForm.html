@@ -15,7 +15,7 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>课程详情</h5>
+            <h5>课程详情(<span style="color:red">*为必填</span>)</h5>
 
         </div>
         <div class="ibox-content">
@@ -27,14 +27,14 @@
                         <input id="courseId" name="organCoursePo.id" type="hidden" th:value="${organCoursePo.id}">
                         <input id="ognId" type="hidden" th:value="${organCoursePo.ognId}">
                         <div class="form-group">
-                            <label for="courseName">课程名称 *</label>
+                            <label for="courseName">课程名称 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="courseName" name="organCoursePo.courseName" type="text" th:value="${organCoursePo.courseName}"
                                        required="true" class=" form-control ">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="courseType">课程类型 *</label>
+                            <label for="courseType">课程类型 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <select id="courseType" name="organCoursePo.courseType" type="text" required="true"
                                         class=" form-control ">
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="courseCatalogId">课程所属目录 *</label>
+                            <label for="courseCatalogId">课程所属目录 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text" required="true"
                                         class="form-control" onchange="changeGetTags(this)">
@@ -61,21 +61,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="courseIntroduce">课程简介 *</label>
+                            <label for="courseIntroduce">课程简介 </label>
                             <div class="input-group input-large col-sm-4">
                                 <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
                                           class="form-control " th:text="${organCoursePo.courseIntroduce}"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="courseContent">课程内容 *</label>
+                            <label for="courseContent">课程内容 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <textarea id="courseContent" name="organCoursePo.courseContent" type="text"
                                           required="true" class="form-control " th:text="${organCoursePo.courseContent}"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="courseNote">课程须知 *</label>
+                            <label for="courseNote">课程须知 </label>
                             <div class="input-group input-large col-sm-4">
                                 <textarea id="courseNote" name="organCoursePo.courseNote" type="text"
                                           class="form-control " th:text="${organCoursePo.courseNote}"></textarea>
@@ -91,21 +91,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="onlineTime">上线时间 *</label>
+                            <label for="onlineTime">上线时间 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
                                        required="true" class="form-control datetimepicker" th:value="${organCoursePo.onlineTime}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="enterTimeStart">报名开始时间 *</label>
+                            <label for="enterTimeStart">报名开始时间 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
                                        required="true" class="form-control datetimepicker" th:value="${organCoursePo.enterTimeStart}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="enterTimeEnd">报名结束时间 *</label>
+                            <label for="enterTimeEnd">报名结束时间 </label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
                                        class="form-control datetimepicker" th:value="${organCoursePo.enterTimeEnd}">
@@ -219,12 +219,12 @@
                     </select>
                     <label>价格 *</label>
                     <div class="input-group input-large">
-                        <input name="classPrize" type="text"  class=" form-control " value="${classPrize}">
+                        <input name="classPrize" type="text"  class=" form-control " value="${classPrize}" >
                         <span class="input-group-addon">元</span>
                     </div>
                     <label>折扣优惠 *</label>
                     <div class="input-group input-large">
-                        <input name="discountAmount" type="text"  class=" form-control " value="${discountAmount}">
+                        <input name="discountAmount" type="text"  class=" form-control " value="${discountAmount}" >
                         <span class="input-group-addon">%</span>
                     </div>
                     <label>是否限制报名人数 *</label>
@@ -340,7 +340,7 @@
 //        console.log($("#accordion").find("div[name='organClassBos']").length)
         var len = $("#accordion").find("div[name='organClassBosBox']").length
 
-        var classes = [{href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),className:"班次"}]
+        var classes = [{href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),className:"班次",discountAmount:0,classPrize:0}]
         $("#accordion").append($("#classTmpl").tmpl(classes));
 //        console.log($("#accordion").find("div[name='organClassBos']:last-child").find("select[name='ognAccountId']"))
         var htmls = '<option value="">请选择</option>';

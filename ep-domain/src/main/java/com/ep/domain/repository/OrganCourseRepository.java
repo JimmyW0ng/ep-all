@@ -158,5 +158,29 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .fetchInto(Long.class);
     }
 
+    /**
+     * 根据id逻辑删除记录
+     * @param id
+     */
+    public void deleteLogicById(Long id){
+        dslContext.update(EP_ORGAN_COURSE)
+                .set(EP_ORGAN_COURSE.DEL_FLAG,true)
+                .where(EP_ORGAN_COURSE.ID.eq(id))
+                .execute();
+    }
+
+    /**
+     * 根据id课程上线
+     * @param id
+     */
+    public void onlineById(Long id){
+        dslContext.update(EP_ORGAN_COURSE)
+                .set(EP_ORGAN_COURSE.COURSE_STATUS, EpOrganCourseCourseStatus.online)
+                .where(EP_ORGAN_COURSE.ID.eq(id))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.save))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .execute();
+    }
+
 }
 

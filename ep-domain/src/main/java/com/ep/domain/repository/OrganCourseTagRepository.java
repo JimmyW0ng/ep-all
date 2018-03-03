@@ -98,4 +98,16 @@ public class OrganCourseTagRepository extends AbstractCRUDRepository<EpOrganCour
                 .fetchOneInto(Integer.class);
         return count > BizConstant.DB_NUM_ZERO;
     }
+
+    /**
+     * 根据课程id逻辑删除
+     * @param courseId
+     */
+    public void deleteLogicByCourseId(Long courseId){
+        dslContext.update(EP_ORGAN_COURSE_TAG)
+                .set(EP_ORGAN_COURSE_TAG.DEL_FLAG,true)
+                .where(EP_ORGAN_COURSE_TAG.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_COURSE_TAG.DEL_FLAG.eq(false))
+                .execute();
+    }
 }

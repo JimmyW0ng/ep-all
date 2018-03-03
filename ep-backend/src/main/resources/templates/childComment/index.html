@@ -99,7 +99,7 @@
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.type,'launch')}"
                                    href="javascript:void(0)"
                                    th:onclick="'viewContent(this)'">查看</a>
-                                <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"
+                                <a class="btn btn-xs btn-info" th:if="${null==bo.replyId}"
                                    href="javascript:void(0)"
                                    th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.classCatalogId}+')'">修改</a>
                                 <!--<a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"-->
