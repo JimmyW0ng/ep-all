@@ -180,6 +180,8 @@
                 <p id="p_content"></p>
                 <label style="color:greenyellow">回复：</label>
                 <p id="p_contentReply"></p>
+                <label style="margin-top: 10px">标签：</label>
+                <div id="viewChildTagBox" style="background: #eee;min-height: 200px;padding: 20px 0px;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -269,6 +271,32 @@
         var contentReply = $(ele).parent().siblings("td").find("p[name='contentReply']").eq(0).text()
         $("#p_content").text(content)
         $("#p_contentReply").text(contentReply)
+        var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
+//        console.log($frm)
+        $.ajax({
+            type: "POST",
+            url: "/auth/childComment/updateChildTagInit",
+            data: $frm.serialize(),
+            success: function (data) {
+                if (data.success) {
+//                    console.log(data.result)
+                    var tag = data.result.organCourseTagBos
+                    var memberChildTagPos=data.result.memberChildTagPos
+
+//                    $("#uploadChildTagModal").modal("show")
+                    $("#viewChildTagBox").html($("#ognTagTmpl").tmpl(tag));
+                    $("#viewChildTagBox").find("input[type='checkbox']").each(function () {
+                        var id=$(this).val()
+                        for(var item in memberChildTagPos){
+                            if(memberChildTagPos[item].tagId==id){
+                                $(this).attr("checked",true)
+                                $(this).after('<input name="id" type="hidden" value="'+memberChildTagPos[item].id+'">')
+                            }
+                        }
+                    })
+                }
+            }
+        })
     }
 
     /**
@@ -282,7 +310,7 @@
         $("#childId").val(childId)
         $("#classCatalogId").val(classCatalogId)
         var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
-        console.log($frm)
+//        console.log($frm)
         $.ajax({
             type: "POST",
             url: "/auth/childComment/updateChildTagInit",
@@ -313,11 +341,18 @@
      * 修改评价内容提交
      */
     function updateCommentDo() {
+        var tagIds=[]
+        $("#uploadChildTagBox").find("input[name='tagId']").each(function () {
+            if($(this).is(':checked')){
+                tagIds.push($(this).val())
+            }
+        })
+//        console.log(tagIds)
         $.ajax({
             type: "POST",
             url: "/auth/childComment/updateComment",
             data: {id: $("#sourceId").val(), content: $("#updateContent").val(),childId:$("#childId").val(),
-                classCatalogId:$("#classCatalogId").val(),tagId:[1,2]},
+                classCatalogId:$("#classCatalogId").val(),tagId:tagIds},
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, "/auth/childComment/index")

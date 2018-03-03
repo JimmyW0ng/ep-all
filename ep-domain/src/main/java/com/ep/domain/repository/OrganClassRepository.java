@@ -201,7 +201,7 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      */
     public void enteredNumByOrderCancel(Long classId,int count){
         dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.ENTERED_NUM,EP_ORGAN_CLASS.ENTERED_NUM.add(count))
+                .set(EP_ORGAN_CLASS.ENTERED_NUM,EP_ORGAN_CLASS.ENTERED_NUM.subtract(count))
                 .where(EP_ORGAN_CLASS.ID.eq(classId))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();

@@ -183,6 +183,7 @@ public class OrganCourseService {
             organClassPo.setOgnId(organCoursePo.getOgnId());
             organClassPo.setCourseId(insertOrganCourseId);
             organClassPo.setStatus(EpOrganClassStatus.save);
+            organClassPo.setEnteredNum(0);
             //机构课程班次表插入数据
             EpOrganClassPo insertOrganClassPo = organClassRepository.insertNew(organClassPo);
             Long insertOrganClassId = insertOrganClassPo.getId();
