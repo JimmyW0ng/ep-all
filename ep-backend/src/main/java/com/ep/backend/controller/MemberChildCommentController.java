@@ -1,9 +1,11 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
+import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
@@ -15,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -45,6 +48,8 @@ public class MemberChildCommentController extends BackendController {
     private MemberChildTagService memberChildTagService;
     @Autowired
     private OrganCourseTagService organCourseTagService;
+    @Autowired
+    ApplicationEventPublisher publisher;
 
     @GetMapping("index")
     public String index(Model model,
@@ -106,30 +111,41 @@ public class MemberChildCommentController extends BackendController {
                                   @RequestParam(value = "childId") Long childId,
                                   @RequestParam(value = "classCatalogId") Long classCatalogId,
                                   @RequestParam(value = "content") String content,
-                                  @RequestParam(value = "tagId[]") List<Long> tagIds
+                                  @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
         EpMemberChildCommentPo memberChildCommentPo = memberChildCommentService.findById(id);
         List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
-        tagIds.forEach(p -> {
-            EpMemberChildTagPo po = new EpMemberChildTagPo();
-            po.setChildId(childId);
-            po.setOgnId(ognId);
-            po.setCourseId(memberChildCommentPo.getCourseId());
-            po.setClassId(memberChildCommentPo.getClassId());
-            po.setClassCatalogId(classCatalogId);
-            po.setTagId(p);
-            insertPos.add(po);
-        });
+        if (CollectionsTools.isNotEmpty(tagIds)) {
+            tagIds.forEach(p -> {
+                EpMemberChildTagPo po = new EpMemberChildTagPo();
+                po.setChildId(childId);
+                po.setOgnId(ognId);
+                po.setCourseId(memberChildCommentPo.getCourseId());
+                po.setClassId(memberChildCommentPo.getClassId());
+                po.setClassCatalogId(classCatalogId);
+                po.setTagId(p);
+                insertPos.add(po);
+            });
+        }
         memberChildCommentService.updateComment(id, content, childId, classCatalogId, insertPos);
+        //课时评价事件start
+        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
+        eventPojo.setChildId(childId);
+        eventPojo.setClassCatalogId(classCatalogId);
+        eventPojo.setComment(content);
+        eventPojo.setTagIds(tagIds);
+        this.publisher.publishEvent(eventPojo);
+        //课时评价事件end
         return resultDo;
     }
 
 
     /**
      * 初始化标签
+     *
      * @param childId
      * @param courseId
      * @param classCatalogId
