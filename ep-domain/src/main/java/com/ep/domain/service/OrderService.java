@@ -57,9 +57,9 @@ public class OrderService {
         ResultDo<List<MemberCourseOrderInitBo>> resultDo = ResultDo.build();
         EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
         if (coursePo == null || coursePo.getDelFlag()) {
-            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
         } else if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.online)) {
-            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         List<MemberCourseOrderInitBo> data = orderRepository.findChildrenAndOrders(memberId, courseId);
         if (CollectionsTools.isNotEmpty(data)) {
@@ -110,7 +110,7 @@ public class OrderService {
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag()) {
             log.error("下单失败，班次不存在！");
-            resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXISTS);
+            resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
             return resultDo;
         }
         // 查询课程信息

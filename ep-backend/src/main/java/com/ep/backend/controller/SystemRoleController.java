@@ -102,7 +102,7 @@ public class SystemRoleController extends BackendController {
      */
     @GetMapping("view/{id}")
     public String read(HttpServletRequest request,Model model,@PathVariable("id") Long id) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         EpSystemRolePo systemRolePo = systemRoleService.getById(id);
 
         List<Long> menuIds=systemRoleAuthorityService.getMenuIdByRole(systemRolePo.getId());
@@ -121,7 +121,7 @@ public class SystemRoleController extends BackendController {
      */
     @GetMapping("createInit")
     public String createInit(HttpServletRequest request,Model model) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         model.addAttribute("systemRolePo", new EpSystemRolePo());
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
         model.addAttribute("menuList",menuList);
@@ -141,7 +141,7 @@ public class SystemRoleController extends BackendController {
 //            ,
 //                           EpSystemRolePo po, @RequestParam(value = "systemRoleAuthorityPos[]", required = false) EpSystemRoleAuthorityPo[] array
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         bo.setCreateBy(currentUser.getId());
         List<EpSystemRoleAuthorityPo> systemRoleAuthorityPos=bo.getSystemRoleAuthorityPos();
@@ -165,10 +165,10 @@ public class SystemRoleController extends BackendController {
     public ResultDo update(HttpServletRequest request,
                            @RequestBody SystemRoleBo bo
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         bo.setUpdateAt(DateTools.getCurrentDateTime());
-        bo.setUpdateBy(super.getCurrentUser(request).get().getId());
+        bo.setUpdateBy(super.getCurrentUser().get().getId());
         List<EpSystemRoleAuthorityPo> systemRoleAuthorityPos=bo.getSystemRoleAuthorityPos();
         EpSystemRolePo systemRolePo=new EpSystemRolePo();
         BeanTools.copyPropertiesIgnoreNull(bo,systemRolePo);
@@ -187,7 +187,7 @@ public class SystemRoleController extends BackendController {
      */
     @GetMapping("updateInit/{id}")
     public String updateInit(HttpServletRequest request,Model model,@PathVariable("id") Long id) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         EpSystemRolePo systemRolePo = systemRoleService.getById(id);
 
         List<Long> menuIds=systemRoleAuthorityService.getMenuIdByRole(systemRolePo.getId());
@@ -206,7 +206,7 @@ public class SystemRoleController extends BackendController {
     @GetMapping("delete/{id}")
     @ResponseBody
     public ResultDo deleteRole(HttpServletRequest request,@PathVariable("id") Long id){
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         systemRoleService.delete(id);
         log.info("[角色]，角色删除成功，角色id={},currentUserId={}。", id,currentUser.getId());

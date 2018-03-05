@@ -349,12 +349,33 @@ public class OrganCourseService {
     }
 
     /**
-     * 根据id课程上线
+     * 课程上线
+     *
+     * @param currentUser
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public void onlineById(Long id){
-        organCourseRepository.onlineById(id);
-        organClassRepository.onlineByCourseId(id);
+    public ResultDo onlineById(EpSystemUserPo currentUser, Long id) {
+        log.info("机构上线课程, sysUserId={}, courseId={}", currentUser.getId(), id);
+        EpOrganCoursePo coursePo = organCourseRepository.getById(id);
+        if (coursePo == null || coursePo.getDelFlag()) {
+            log.error("课程不存在, courseId={}", id);
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
+        }
+        if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.save)) {
+            log.error("课程不是已保存状态, courseId={}, status={}", id, coursePo.getCourseStatus());
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_SAVE);
+        }
+        if (!coursePo.getOgnId().equals(currentUser.getOgnId())) {
+            log.error("课程与当前操作机构不匹配, courseId={}, courseOgnId={}, userOgnId={}", id, coursePo.getOgnId(), currentUser.getOgnId());
+            return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        // 上线
+        int num = organCourseRepository.onlineById(id);
+        if (num == BizConstant.DB_NUM_ONE) {
+            // 上线班次
+            organClassRepository.onlineByCourseId(id);
+        }
+        return ResultDo.build();
     }
 }

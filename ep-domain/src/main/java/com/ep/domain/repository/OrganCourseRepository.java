@@ -173,7 +173,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * 根据id课程上线
      * @param id
      */
-    public void onlineById(Long id){
+    public int onlineById(Long id) {
         dslContext.update(EP_ORGAN_COURSE)
                 .set(EP_ORGAN_COURSE.COURSE_STATUS, EpOrganCourseCourseStatus.online)
                 .where(EP_ORGAN_COURSE.ID.eq(id))

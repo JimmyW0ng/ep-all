@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/security/login")
                 .loginProcessingUrl("/security/login")
                 .failureUrl("/security/login?error")
-                .defaultSuccessUrl("/auth/index")
+                .defaultSuccessUrl("/auth/index", true)
                 .authenticationDetailsSource(getBackendAuthenticationDetailsSource())
                 .permitAll().and()
                 .logout().permitAll();

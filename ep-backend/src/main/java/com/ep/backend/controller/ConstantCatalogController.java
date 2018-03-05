@@ -43,7 +43,7 @@ public class ConstantCatalogController extends BackendController {
     @PostMapping("/create")
     @ResponseBody
     public ResultDo<String> create(HttpServletRequest request, EpConstantCatalogPo po) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
 
         ResultDo<String> resultDo = ResultDo.build();
         if (po.getId() == null) {//新增课程类目
@@ -88,7 +88,7 @@ public class ConstantCatalogController extends BackendController {
     @PostMapping("/delete")
     @ResponseBody
     public ResultDo delete(HttpServletRequest request, @RequestParam("ids[]") Long[] ids) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         for(int i=0;i<ids.length;i++){
             constantCatalogService.delete(ids[i]);

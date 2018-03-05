@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 /**
@@ -20,10 +19,9 @@ public class BackendController {
     /**
      * 从session获取当前登录用户
      *
-     * @param request
      * @return
      */
-    protected Optional<EpSystemUserPo> getCurrentUser(HttpServletRequest request) {
+    protected Optional<EpSystemUserPo> getCurrentUser() {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
             return Optional.empty();

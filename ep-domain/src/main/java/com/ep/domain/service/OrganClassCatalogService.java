@@ -71,7 +71,7 @@ public class OrganClassCatalogService {
         EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());
         if (classPo == null || classPo.getDelFlag()) {
             log.error("班次不存在, classId={}", classCatalogPo.getClassId());
-            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
         if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
             log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
@@ -131,7 +131,7 @@ public class OrganClassCatalogService {
         EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());
         if (classPo == null || classPo.getDelFlag()) {
             log.error("班次不存在, classId={}", classCatalogPo.getClassId());
-            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXISTS);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
         if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
             log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
@@ -256,7 +256,7 @@ public class OrganClassCatalogService {
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag()) {
             log.error("班次不存在, classId={}", classId);
-            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
         if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
             log.error("课程未上线, classId={}, status={}", classId, classPo.getStatus().getName());

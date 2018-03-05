@@ -1,7 +1,6 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
-import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
@@ -18,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,7 +42,7 @@ public class SystemMenuController extends BackendController {
      */
     @GetMapping("/index")
     public String index(HttpServletRequest request,Model model) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
         model.addAttribute("menuList",menuList);
         return "systemMenu/index";
@@ -57,7 +55,7 @@ public class SystemMenuController extends BackendController {
      */
     @GetMapping("/merchantIndex")
     public String merchantIndex(HttpServletRequest request,Model model) {
-//        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+//        EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(EpSystemUserType.merchant);
         model.addAttribute("menuList",menuList);
         return "systemMenu/merchantIndex";
@@ -72,7 +70,7 @@ public class SystemMenuController extends BackendController {
     @PostMapping("/create")
     @ResponseBody
     public ResultDo<String> create(HttpServletRequest request,EpSystemMenuPo po) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         if(currentUser.getType().equals(EpSystemUserType.platform)&&po.getTarget()==null){
             po.setTarget(EpSystemMenuTarget.admin);
         }
@@ -119,7 +117,7 @@ public class SystemMenuController extends BackendController {
     @PostMapping("/delete")
     @ResponseBody
     public ResultDo delete(HttpServletRequest request, @RequestParam("ids[]") Long[] ids) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         for(int i=0;i<ids.length;i++){
             systemMenuService.delete(ids[i]);

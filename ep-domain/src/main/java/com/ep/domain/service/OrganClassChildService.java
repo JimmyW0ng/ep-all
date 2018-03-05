@@ -51,7 +51,7 @@ public class OrganClassChildService {
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag()) {
             log.error("班次不存在, classId={}", classId);
-            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
         if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
             log.error("课程未上线, classId={}, status={}", classId, classPo.getStatus().getName());

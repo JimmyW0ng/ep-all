@@ -315,26 +315,16 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
     }
 
     /**
-     * 根据id获取记录
-     * @param id
-     * @return
-     */
-    public EpOrganClassPo findById(Long id){
-        return dslContext.selectFrom(EP_ORGAN_CLASS)
-                .where(EP_ORGAN_CLASS.ID.eq(id))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .fetchOneInto(EpOrganClassPo.class);
-    }
-
-    /**
      * 根据id开课
+     *
      * @param id
      * @return
      */
-    public void openingById(Long id){
-        dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.STATUS,EpOrganClassStatus.opening)
+    public int openById(Long id) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.opening)
                 .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.online))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();
     }

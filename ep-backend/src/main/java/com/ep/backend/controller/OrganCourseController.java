@@ -115,7 +115,7 @@ public class OrganCourseController extends BackendController {
      */
     @GetMapping("/merchantCreateInit")
     public String merchantCreateInit(Model model, HttpServletRequest request) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
         constantCatalogList.forEach(p -> {
@@ -146,7 +146,7 @@ public class OrganCourseController extends BackendController {
     public ResultDo findTagsByConstantCatalog(
             @PathVariable("catalogId") Long catalogId,
             HttpServletRequest request) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
 
@@ -173,7 +173,7 @@ public class OrganCourseController extends BackendController {
     @PostMapping("/merchantCreate")
     @ResponseBody
     public ResultDo merchantCreate(HttpServletRequest request, CreateOrganCourseDto dto) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
@@ -232,7 +232,7 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantUpdateInit/{courseId}")
     public String merchantUpdateInit(HttpServletRequest request, Model model, @PathVariable(value = "courseId") Long courseId) {
 
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
@@ -293,7 +293,7 @@ public class OrganCourseController extends BackendController {
     @PostMapping("/merchantUpdate")
     @ResponseBody
     public ResultDo merchantUpdate(HttpServletRequest request, CreateOrganCourseDto dto) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         //课程对象
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
@@ -313,7 +313,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     public ResultDo deleteByCourseId(HttpServletRequest request,Long courseId){
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
         organCourseService.deleteCourseByCourseId(courseId,ognId);
@@ -322,15 +322,15 @@ public class OrganCourseController extends BackendController {
 
     /**
      * 上线课程
+     *
      * @param id
      * @return
      */
     @GetMapping("online/{id}")
     @ResponseBody
     public ResultDo onlineById(@PathVariable(value="id") Long id){
-        ResultDo resultDo = ResultDo.build();
-        organCourseService.onlineById(id);
-        return resultDo;
+        EpSystemUserPo userPo = super.getCurrentUser().get();
+        return organCourseService.onlineById(userPo, id);
     }
 
 }

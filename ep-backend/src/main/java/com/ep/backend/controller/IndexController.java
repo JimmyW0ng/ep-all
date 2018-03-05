@@ -42,7 +42,7 @@ public class IndexController extends BackendController {
      */
     @GetMapping("/index")
     public String index(Model model, HttpServletRequest request) {
-        EpSystemUserPo currentUser = getCurrentUser(request).get();
+        EpSystemUserPo currentUser = getCurrentUser().get();
         List<SystemMenuBo> leftMenu=systemMenuService.getLeftMenuByUserType(currentUser.getType());
         model.addAttribute("currentUser",currentUser);
         model.addAttribute("leftMenu",leftMenu);
@@ -66,7 +66,7 @@ public class IndexController extends BackendController {
      */
     @GetMapping("/settingUpdateInit")
     public String settingUpdateInit(Model model, HttpServletRequest request) {
-//        EpSystemUserPo currentUser = getCurrentUser(request).get();
+//        EpSystemUserPo currentUser = getCurrentUser().get();
 //        List<SystemMenuBo> leftMenu=systemMenuService.getLeftMenuByUserType(currentUser.getType());
 //        model.addAttribute("currentUser",currentUser);
 //        model.addAttribute("leftMenu",leftMenu);
@@ -81,7 +81,7 @@ public class IndexController extends BackendController {
      */
     @GetMapping("/settingView")
     public String settingView(Model model, HttpServletRequest request) {
-        Long id=super.getCurrentUser(request).get().getId();
+        Long id = super.getCurrentUser().get().getId();
         EpSystemUserPo systemUserPo = systemUserService.getById(id);
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());

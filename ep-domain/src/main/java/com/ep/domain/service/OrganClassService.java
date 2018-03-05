@@ -1,10 +1,18 @@
 package com.ep.domain.service;
 
+import com.ep.common.tool.CollectionsTools;
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.po.EpOrderPo;
+import com.ep.domain.pojo.po.EpOrganClassChildPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
+import com.ep.domain.pojo.po.EpSystemUserPo;
+import com.ep.domain.repository.OrderRepository;
+import com.ep.domain.repository.OrganClassChildRepository;
 import com.ep.domain.repository.OrganClassRepository;
-import com.ep.domain.repository.OrganCourseRepository;
-import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +32,16 @@ import java.util.List;
 @Service
 @Slf4j
 public class OrganClassService {
+
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
-    private OrganCourseRepository organCourseRepository;
+    private OrganClassChildRepository organClassChildRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     public List<EpOrganClassPo> findByCourseId(Long courseId){
         return organClassRepository.getByCourseId(courseId);
-    }
-
-    public EpOrganClassPo insertOrganClassPo(EpOrganClassPo organClassPo){
-        return organClassRepository.insertNew(organClassPo);
     }
 
     public Page<OrganClassBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
@@ -42,24 +49,53 @@ public class OrganClassService {
     }
 
     /**
-     * 根据id班次上线
+     * 开班
+     *
+     * @param currentUser
      * @param id
+     * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void onlineById(Long id){
-        Long courseId = organClassRepository.findById(id).getCourseId();
-        EpOrganCourseCourseStatus courseStatus = organCourseRepository.getById(courseId).getCourseStatus();
-        organClassRepository.onlineById(id);
-        if(courseStatus.equals(EpOrganCourseCourseStatus.save)){
-            organCourseRepository.onlineById(courseId);
+    public ResultDo openById(EpSystemUserPo currentUser, Long id) {
+        log.info("班次开班, sysUserId={}, classId={}", currentUser.getId(), id);
+        // 校验班次
+        EpOrganClassPo classPo = organClassRepository.getById(id);
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
-    }
-
-    /**
-     * 根据id班次开课
-     * @param id
-     */
-    public void openingById(Long id){
-        organClassRepository.openingById(id);
+        if (!classPo.getStatus().equals(EpOrganClassStatus.online)) {
+            log.error("班次不是已上线状态, classId={}, status={}", id, classPo.getStatus());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_ONLINE);
+        }
+        if (!classPo.getOgnId().equals(currentUser.getOgnId())) {
+            log.error("课程与当前操作机构不匹配, classId={}, classOgnId={}, userOgnId={}", id, classPo.getOgnId(), currentUser.getOgnId());
+            return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        if (classPo.getEnteredNum().intValue() < BizConstant.DB_NUM_ONE) {
+            log.error("成功报名人数小于1, classId={}, enteredNum={}", id, classPo.getEnteredNum());
+            return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        // 开班
+        int num = organClassRepository.openById(id);
+        if (num == BizConstant.DB_NUM_ZERO) {
+            return ResultDo.build();
+        }
+        // 更新订单状态为已开班
+        orderRepository.openOrderByClassId(id);
+        // 生成班级孩子记录
+        List<EpOrderPo> openingOrders = orderRepository.findOpeningOrdersByClassId(id);
+        if (CollectionsTools.isEmpty(openingOrders)) {
+            log.error("班次不存在已开班订单, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CHILD_NOT_EXISTS);
+        }
+        for (EpOrderPo orderPo : openingOrders) {
+            EpOrganClassChildPo classChildPo = new EpOrganClassChildPo();
+            classChildPo.setClassId(id);
+            classChildPo.setChildId(orderPo.getChildId());
+            classChildPo.setOrderId(orderPo.getId());
+            organClassChildRepository.insert(classChildPo);
+        }
+        return ResultDo.build();
     }
 }

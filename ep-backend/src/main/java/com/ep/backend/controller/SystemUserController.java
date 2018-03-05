@@ -29,7 +29,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -149,7 +148,7 @@ public class SystemUserController extends BackendController {
     public ResultDo create(HttpServletRequest request,
                            @RequestBody SystemUserBo bo
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         EpSystemUserPo epSystemUserPo = new EpSystemUserPo();
         BeanTools.copyPropertiesIgnoreNull(bo, epSystemUserPo);
@@ -179,7 +178,7 @@ public class SystemUserController extends BackendController {
     public ResultDo update(HttpServletRequest request,
                            @RequestBody SystemUserBo bo
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         EpSystemUserPo epSystemUserPo = new EpSystemUserPo();
         BeanTools.copyPropertiesIgnoreNull(bo, epSystemUserPo);
@@ -234,7 +233,7 @@ public class SystemUserController extends BackendController {
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     @ResponseBody
     public ResultDo delete(HttpServletRequest request,@PathVariable("id") Long id) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo=ResultDo.build();
         systemUserService.deleteUser(id);
         log.info("[用户]，删除用户成功，用户id={},currentUserId={}。", id,currentUser.getId());

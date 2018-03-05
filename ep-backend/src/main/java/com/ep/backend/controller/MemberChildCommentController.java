@@ -113,7 +113,7 @@ public class MemberChildCommentController extends BackendController {
                                   @RequestParam(value = "content") String content,
                                   @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
         EpMemberChildCommentPo memberChildCommentPo = memberChildCommentService.findById(id);

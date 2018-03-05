@@ -3,6 +3,7 @@ package com.ep.backend.controller;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
@@ -30,7 +31,7 @@ import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
  */
 @Controller
 @RequestMapping("auth/organClass")
-public class OrganClassController {
+public class OrganClassController extends BackendController {
     @Autowired
     private OrganClassService organClassService;
 
@@ -71,15 +72,15 @@ public class OrganClassController {
     }
 
     /**
-     * 上线课程
+     * 开班
+     *
      * @param id
      * @return
      */
     @GetMapping("opening/{id}")
     @ResponseBody
-    public ResultDo opening(@PathVariable(value="id") Long id){
-        ResultDo resultDo = ResultDo.build();
-        organClassService.openingById(id);
-        return resultDo;
+    public ResultDo opening(@PathVariable(value = "id") Long id) {
+        EpSystemUserPo userPo = super.getCurrentUser().get();
+        return organClassService.openById(userPo, id);
     }
 }

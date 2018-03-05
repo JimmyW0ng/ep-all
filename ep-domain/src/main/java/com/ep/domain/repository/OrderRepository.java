@@ -326,5 +326,33 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据班次id更新订单状态为已开班
+     *
+     * @param classId
+     */
+    public int openOrderByClassId(Long classId) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS, EpOrderStatus.opening)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 获取已经开班的订单
+     *
+     * @param classId
+     * @return
+     */
+    public List<EpOrderPo> findOpeningOrdersByClassId(Long classId) {
+        return dslContext.selectFrom(EP_ORDER)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(EpOrderPo.class);
+    }
 }
 

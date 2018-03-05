@@ -46,13 +46,17 @@ public class MessageCode {
     /**
      * 课程
      */
-    public static final String ERROR_COURSE_NOT_EXISTS = "ERROR_COURSE_NOT_EXISTS";
+    public static final String ERROR_COURSE_NOT_EXIST = "ERROR_COURSE_NOT_EXIST";
     public static final String ERROR_COURSE_ENTER_NOT_START = "ERROR_COURSE_ENTER_NOT_START";
     public static final String ERROR_COURSE_ENTER_END = "ERROR_COURSE_ENTER_END";
+    public static final String ERROR_COURSE_NOT_SAVE = "ERROR_COURSE_NOT_SAVE";
     public static final String ERROR_COURSE_NOT_ONLINE = "ERROR_COURSE_NOT_ONLINE";
     public static final String ERROR_COURSE_IS_OFF = "ERROR_COURSE_IS_OFF";
-    public static final String ERROR_CLASS_NOT_EXISTS = "ERROR_CLASS_NOT_EXISTS";
+    public static final String ERROR_COURSE_OGN_NOT_MATCH = "ERROR_COURSE_OGN_NOT_MATCH";
+    public static final String ERROR_CLASS_NOT_EXIST = "ERROR_CLASS_NOT_EXIST";
+    public static final String ERROR_CLASS_NOT_ONLINE = "ERROR_CLASS_NOT_ONLINE";
     public static final String ERROR_CLASS_NOT_OPENING = "ERROR_CLASS_NOT_OPENING";
+    public static final String ERROR_CLASS_CHILD_NOT_EXISTS = "ERROR_CLASS_CHILD_NOT_EXISTS";
     public static final String ERROR_CLASS_CATALOG_NOT_EXISTS = "ERROR_CLASS_CATALOG_NOT_EXISTS";
     /**
      * 订单
