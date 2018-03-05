@@ -7,15 +7,11 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberChildAbstractBo;
-import com.ep.domain.pojo.bo.MemberChildBo;
-import com.ep.domain.pojo.bo.MemberChildTagBo;
-import com.ep.domain.pojo.po.EpFilePo;
-import com.ep.domain.pojo.po.EpMemberChildPo;
-import com.ep.domain.pojo.po.EpMemberChildSignPo;
-import com.ep.domain.pojo.po.EpOrderPo;
+import com.ep.domain.pojo.bo.*;
+import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +42,14 @@ public class MemberChildService {
     private MemberChildHonorRepository memberChildHonorRepository;
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
+    @Autowired
+    private OrganClassChildRepository organClassChildRepository;
+    @Autowired
+    private MemberChildCommentRepository memberChildCommentRepository;
 
     /**
      * 新增孩子信息
@@ -297,4 +301,66 @@ public class MemberChildService {
         abstractBo.setTags(tags);
         return resultDo.setResult(abstractBo);
     }
+
+    /**
+     * 查看孩子班次内摘要信息
+     *
+     * @param classId
+     * @param childId
+     * @param mobile
+     * @return
+     */
+    public ResultDo<ClassChildAbstractBo> getClassChildAbstract(Long classId, Long childId, Long mobile) {
+        ResultDo<ClassChildAbstractBo> resultDo = ResultDo.build();
+        // 校验课程
+        EpOrganClassPo classPo = organClassRepository.getById(classId);
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", classId);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
+        }
+        if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
+            log.error("课程未上线, classId={}, status={}", classId, classPo.getStatus().getName());
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
+        }
+        // 校验班次负责人
+        Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
+        if (!existAccount.isPresent()) {
+            log.error("当前用户无机构账户数据, mobile={}", mobile);
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        }
+        // 孩子信息
+        Optional<EpOrganClassChildPo> existChild = organClassChildRepository.getByClassIdAndChildId(classId, childId);
+        if (!existChild.isPresent()) {
+            log.error("当前孩子信息不存在，childId={}", childId);
+            return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        EpMemberChildPo childPo = memberChildRepository.getById(childId);
+        if (childPo == null || childPo.getDelFlag()) {
+            log.error("当前孩子信息不存在，childId={}", childId);
+            return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        ClassChildAbstractBo abstractBo = new ClassChildAbstractBo();
+        abstractBo.setId(childPo.getId());
+        abstractBo.setChildNickName(childPo.getChildNickName());
+        abstractBo.setCurrentSchool(childPo.getCurrentSchool());
+        abstractBo.setCurrentClass(childPo.getCurrentClass());
+        // 头像
+        Optional<EpFilePo> existAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childPo.getId());
+        if (existAvatar.isPresent()) {
+            abstractBo.setAvatar(existAvatar.get().getFileUrl());
+        }
+        // 签名
+        Optional<EpMemberChildSignPo> optional = memberChildSignRepository.getByChildId(childPo.getId());
+        if (optional.isPresent()) {
+            abstractBo.setSign(optional.get().getContent());
+        }
+        // 标签汇总
+        List<MemberChildTagBo> tags = memberChildTagRepository.findTagsByChildIdAndClassId(childId, classId);
+        abstractBo.setTags(tags);
+        // 评论
+        List<MemberChildCommentBo> comments = memberChildCommentRepository.findByChildIdAndClassId(childId, classId);
+        abstractBo.setComments(comments);
+        return resultDo.setResult(abstractBo);
+    }
+
 }

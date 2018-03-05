@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +47,7 @@ public class ChildClassController extends ApiController {
 
     @ApiOperation(value = "孩子全部课程分页列表")
     @PostMapping("/page")
+    @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<Page<MemberChildClassBo>> findChildClassPage(@PageableDefault Pageable pageable,
                                                                  @RequestParam("childId") Long childId,
                                                                  @RequestParam("status") ChildClassStatusEnum statusEnum) {
@@ -61,6 +63,7 @@ public class ChildClassController extends ApiController {
 
     @ApiOperation(value = "孩子行程")
     @PostMapping("/schedule")
+    @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<Page<MemberChildScheduleBo>> findChildSchedulePage(@PageableDefault Pageable pageable,
                                                                        @RequestParam("childId") Long childId) {
         ResultDo<Page<MemberChildScheduleBo>> resultDo = ResultDo.build();
@@ -83,6 +86,7 @@ public class ChildClassController extends ApiController {
 
     @ApiOperation(value = "班次评价")
     @PostMapping("/add/comment")
+    @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo addClassComment(@RequestParam("orderId") Long orderId,
                                     @RequestParam("score") Byte score,
                                     @RequestParam(value = "content", required = false) String content,
@@ -93,6 +97,7 @@ public class ChildClassController extends ApiController {
 
     @ApiOperation(value = "班次老师评价信息")
     @PostMapping("/catalog/detail")
+    @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrganClassCatalogDetailDto> getCatalogDetail(@RequestParam("orderId") Long orderId) {
         Long memberId = super.getCurrentUser().get().getId();
         return organClassCatalogService.getCatalogDetail(memberId, orderId);
@@ -100,6 +105,7 @@ public class ChildClassController extends ApiController {
 
     @ApiOperation(value = "班次老师评价回复")
     @PostMapping("/catalog/detail/replay")
+    @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrganClassCatalogDetailDto> replayComment(@RequestParam("commentId") Long commentId,
                                                               @RequestParam("content") String content) {
         Long memberId = super.getCurrentUser().get().getId();

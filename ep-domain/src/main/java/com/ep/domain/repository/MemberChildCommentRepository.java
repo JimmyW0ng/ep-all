@@ -87,6 +87,29 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
     }
 
     /**
+     * 查询班次内孩子获得的评价
+     *
+     * @param childId
+     * @param classId
+     * @return
+     */
+    public List<MemberChildCommentBo> findByChildIdAndClassId(Long childId, Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.CONTENT);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE);
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT);
+        return dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_COMMENT)
+                .leftJoin(EP_ORGAN_CLASS_CATALOG)
+                .on(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_CATALOG.ID))
+                .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_COMMENT.CLASS_ID.eq(classId))
+                .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
+                .fetchInto(MemberChildCommentBo.class);
+    }
+
+    /**
      * 根据父级id查询是否存在回复
      *
      * @param pId

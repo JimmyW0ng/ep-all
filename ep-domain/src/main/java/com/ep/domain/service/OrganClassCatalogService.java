@@ -243,4 +243,32 @@ public class OrganClassCatalogService {
         return resultDo.setResult(detailDto);
     }
 
+    /**
+     * 查看班次全部课时
+     *
+     * @param classId
+     * @param mobile
+     * @return
+     */
+    public ResultDo<List<OrganClassCatalogBo>> getClassAllCatalog(Long classId, Long mobile) {
+        ResultDo<List<OrganClassCatalogBo>> resultDo = ResultDo.build();
+        // 校验课程
+        EpOrganClassPo classPo = organClassRepository.getById(classId);
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", classId);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXISTS);
+        }
+        if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
+            log.error("课程未上线, classId={}, status={}", classId, classPo.getStatus().getName());
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
+        }
+        // 校验班次负责人
+        Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
+        if (!existAccount.isPresent()) {
+            log.error("当前用户无机构账户数据, mobile={}", mobile);
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        }
+        List<OrganClassCatalogBo> classCatalogs = organClassCatalogRepository.findDetailByClassId(classId);
+        return resultDo.setResult(classCatalogs);
+    }
 }
