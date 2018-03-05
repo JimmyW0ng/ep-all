@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
@@ -31,8 +32,26 @@ public class ConstantTagController extends BackendController {
     @Autowired
     private ConstantCatalogService constantCatalogService;
 
+    @GetMapping("index")
+    public String index(Model model) {
+        List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
+        Map<Long,String> constantCatalogMap=Maps.newHashMap();
+        Map<Long,List<ConstantTagBo>> constantTagsMap=Maps.newHashMap();
+        constantCatalogPos.forEach(po->{
+            constantCatalogMap.put(po.getId(),po.getLabel());
+            List<ConstantTagBo> constantTagBos = constantTagService.findBosByCatalogIdAndOgnId(po.getId(),null);
+            constantTagBos.forEach(bo->{
+                bo.setUsedFlag(bo.getUsedOrganCourseTag()!=null);
+            });
+            constantTagsMap.put(po.getId(),constantTagBos);
+        });
+        model.addAttribute("constantCatalogMap", constantCatalogMap);
+        model.addAttribute("constantTagsMap", constantTagsMap);
+        return "/constantTag/index";
+    }
+
     @GetMapping("merchantIndex")
-    public String index(HttpServletRequest request, Model model) {
+    public String merchantIndex(Model model) {
         List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
         model.addAttribute("constantCatalogPos", constantCatalogPos);
         return "/constantTag/merchantIndex";
@@ -40,6 +59,7 @@ public class ConstantTagController extends BackendController {
 
     /**
      * 根据类目获得标签
+     *
      * @param request
      * @param catalogId
      * @return
@@ -65,7 +85,34 @@ public class ConstantTagController extends BackendController {
     }
 
     /**
+     * 后台创建公用标签
+     *
+     * @param catalogId
+     * @param tagName
+     * @return
+     */
+    @GetMapping("createConstantTag")
+    @ResponseBody
+    public ResultDo createConstantTag(
+            HttpServletRequest request,
+            @RequestParam(value = "catalogId") Long catalogId,
+            @RequestParam(value = "tagName") String tagName
+    ) {
+        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        Long ognId = currentUser.getOgnId();
+        ResultDo resultDo = ResultDo.build();
+        EpConstantTagPo constantTagPo = new EpConstantTagPo();
+        constantTagPo.setCatalogId(catalogId);
+        constantTagPo.setOgnId(ognId);
+        constantTagPo.setTagName(tagName);
+        EpConstantTagPo insertPo = constantTagService.createPo(constantTagPo);
+        resultDo.setResult(insertPo.getTagName());
+        return resultDo;
+    }
+
+    /**
      * 商户创建私有标签
+     *
      * @param catalogId
      * @param tagName
      * @return
@@ -79,25 +126,26 @@ public class ConstantTagController extends BackendController {
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser(request).get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo=ResultDo.build();
+        ResultDo resultDo = ResultDo.build();
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
         constantTagPo.setCatalogId(catalogId);
         constantTagPo.setOgnId(ognId);
         constantTagPo.setOgnFlag(true);
         constantTagPo.setTagName(tagName);
-        EpConstantTagPo insertPo= constantTagService.createPo(constantTagPo);
+        EpConstantTagPo insertPo = constantTagService.createPo(constantTagPo);
         resultDo.setResult(insertPo.getTagName());
         return resultDo;
     }
 
     /**
      * 删除标签
+     *
      * @param id
      * @return
      */
     @GetMapping("deleteTag/{id}")
     @ResponseBody
-    public ResultDo deleteOgnTag(@PathVariable("id") Long id){
+    public ResultDo deleteOgnTag(@PathVariable("id") Long id) {
         ResultDo resultDo = ResultDo.build();
         constantTagService.deleteById(id);
         return resultDo;

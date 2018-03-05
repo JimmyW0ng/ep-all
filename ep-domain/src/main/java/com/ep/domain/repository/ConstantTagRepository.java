@@ -1,14 +1,18 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.repository.domain.tables.records.EpConstantTagRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.ep.domain.repository.domain.tables.EpConstantTag.EP_CONSTANT_TAG;
+import static com.ep.domain.repository.domain.tables.EpOrganCourseTag.EP_ORGAN_COURSE_TAG;
 
 /**
  * @Description: 标签仓库
@@ -36,6 +40,31 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .fetchInto(EpConstantTagPo.class);
+    }
+
+    /**
+     * 根据课程类目id和机构id获取标签Bo
+     *
+     * @param catalogId
+     * @param ognId
+     * @return
+     */
+    public List<ConstantTagBo> findBosByCatalogIdAndOgnId(Long catalogId, Long ognId) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_CONSTANT_TAG.ID);
+        fieldList.add(EP_CONSTANT_TAG.CATALOG_ID);
+        fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
+
+        fieldList.add(EP_ORGAN_COURSE_TAG.ID.as("usedOrganCourseTag"));
+        return dslContext.select(fieldList)
+                .from(EP_CONSTANT_TAG)
+                .leftJoin(EP_ORGAN_COURSE_TAG)
+                .on(EP_CONSTANT_TAG.ID.eq(EP_ORGAN_COURSE_TAG.TAG_ID))
+                .where(EP_CONSTANT_TAG.CATALOG_ID.eq(catalogId))
+                .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .groupBy(EP_CONSTANT_TAG.ID)
+                .fetchInto(ConstantTagBo.class);
     }
 
     /**

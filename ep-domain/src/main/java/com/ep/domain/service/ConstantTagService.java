@@ -1,5 +1,6 @@
 package com.ep.domain.service;
 
+import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.repository.ConstantTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,16 @@ public class ConstantTagService {
      */
     public List<EpConstantTagPo> findByCatalogIdAndOgnId(Long catalogId, Long ognId) {
         return constantTagRepository.findByCatalogIdAndOgnId(catalogId, ognId);
+    }
+
+    /**
+     * 根据课程类目id和机构id获取标签Bo
+     * @param catalogId
+     * @param ognId
+     * @return
+     */
+    public List<ConstantTagBo> findBosByCatalogIdAndOgnId(Long catalogId, Long ognId) {
+        return constantTagRepository.findBosByCatalogIdAndOgnId(catalogId, ognId);
     }
 
     /**
