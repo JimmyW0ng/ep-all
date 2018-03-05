@@ -98,7 +98,7 @@ public class ConstantTagController extends BackendController {
             @RequestParam(value = "catalogId") Long catalogId,
             @RequestParam(value = "tagName") String tagName
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser(request).get();
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
