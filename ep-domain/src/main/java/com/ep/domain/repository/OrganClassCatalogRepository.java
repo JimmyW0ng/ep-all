@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildTagAndCommentBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
@@ -167,5 +168,19 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
                 .fetchInto(OrganClassCatalogBo.class);
+    }
+
+    /**
+     * 课时评价数+1
+     *
+     * @param id
+     */
+    public int addChildEvaluatedNum(Long id) {
+        return dslContext.update(EP_ORGAN_CLASS_CATALOG)
+                .set(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM,
+                        EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM.add(BizConstant.DB_NUM_ONE))
+                .where(EP_ORGAN_CLASS_CATALOG.ID.eq(id))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .execute();
     }
 }

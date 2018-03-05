@@ -118,13 +118,14 @@ public class OrganAccountService {
      * @param mobile
      * @return
      */
-    public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount(Long mobile) {
+    public ResultDo<List<OrganAccountClassBo>> findTodayClassByOrganAccount(Long mobile) {
         ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
         Timestamp now = DateTools.getCurrentDateTime();
         Timestamp startTime = DateTools.zerolizedTime(now);
         Timestamp endTime = DateTools.getEndTime(now);
         List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
         if (CollectionsTools.isEmpty(accountList)) {
+            log.error("机构账户不存在, mobile={}", mobile);
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
         EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
@@ -137,8 +138,35 @@ public class OrganAccountService {
                 classBo.setMainPicUrl(mainPicUrl);
             }
         }
-        resultDo.setResult(todayClasses);
-        return resultDo;
+        return resultDo.setResult(todayClasses);
+    }
+
+    /**
+     * 根据账户id获取全部课程
+     *
+     * @param mobile
+     * @return
+     */
+    public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(Pageable pageable, Long mobile) {
+        ResultDo<Page<OrganAccountClassBo>> resultDo = ResultDo.build();
+        List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
+        if (CollectionsTools.isEmpty(accountList)) {
+            log.error("机构账户不存在, mobile={}", mobile);
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        }
+        EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
+        Page<OrganAccountClassBo> page = organClassRepository.findAllClassByOrganAccountForPage(pageable, accountPo.getId());
+        List<OrganAccountClassBo> data = page.getContent();
+        if (CollectionsTools.isEmpty(data)) {
+            return resultDo.setResult(page);
+        }
+        for (OrganAccountClassBo classBo : data) {
+            // 加载课程图片
+            Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, classBo.getCourseId());
+            String mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;
+            classBo.setMainPicUrl(mainPicUrl);
+        }
+        return resultDo.setResult(page);
     }
 
 }

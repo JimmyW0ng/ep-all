@@ -13,6 +13,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,10 +49,10 @@ public class OrganAccountController extends ApiController {
     }
 
     @ApiOperation(value = "今日课时")
-    @PostMapping("/today/class")
-    public ResultDo<List<OrganAccountClassBo>> findClassByOrganAccount() {
+    @PostMapping("/class/today")
+    public ResultDo<List<OrganAccountClassBo>> findTodayClassByOrganAccount() {
         EpMemberPo memberPo = super.getCurrentUser().get();
-        return organAccountService.findClassByOrganAccount(memberPo.getMobile());
+        return organAccountService.findTodayClassByOrganAccount(memberPo.getMobile());
     }
 
     @ApiOperation(value = "课时评价初始化")
@@ -76,6 +79,13 @@ public class OrganAccountController extends ApiController {
             publisher.publishEvent(eventBo);
         }
         return resultDo;
+    }
+
+    @ApiOperation(value = "全部课程-分页")
+    @PostMapping("/class/all")
+    public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(@PageableDefault Pageable pageable) {
+        EpMemberPo memberPo = super.getCurrentUser().get();
+        return organAccountService.findAllClassByOrganAccountForPage(pageable, memberPo.getMobile());
     }
 
 }

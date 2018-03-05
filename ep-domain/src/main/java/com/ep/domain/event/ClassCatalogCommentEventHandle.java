@@ -1,5 +1,6 @@
 package com.ep.domain.event;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.service.MemberMessageService;
 import com.google.common.collect.Sets;
@@ -27,7 +28,7 @@ public class ClassCatalogCommentEventHandle {
     @EventListener
     public void handle(ClassCatalogCommentEventBo event) {
         log.info("课时评价事件处理开始, event={}", event);
-        Set<Long> tagIds = Sets.newHashSet(event.getTagIds());
+        Set<Long> tagIds = CollectionsTools.isNotEmpty(event.getTagIds()) ? Sets.newHashSet(event.getTagIds()) : null;
         // 发送课时评论消息
         memberMessageService.sendClassCatalogCommentMessage(event.getClassCatalogId(), event.getChildId(), tagIds, event.getComment());
     }

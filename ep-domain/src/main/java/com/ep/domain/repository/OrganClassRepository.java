@@ -101,10 +101,54 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
+                        EpOrganClassStatus.opening,
+                        EpOrganClassStatus.end))
                 .and(EP_ORGAN_CLASS_CATALOG.START_TIME.between(startTime, endTime))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc())
                 .fetchInto(OrganAccountClassBo.class);
+    }
+
+    /**
+     * 根据课程负责人获取全部班次-分页
+     *
+     * @param pageable
+     * @param ognAccountId
+     * @return
+     */
+    public Page<OrganAccountClassBo> findAllClassByOrganAccountForPage(Pageable pageable, Long ognAccountId) {
+        Long count = dslContext.selectCount()
+                .from(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
+                        EpOrganClassStatus.opening,
+                        EpOrganClassStatus.end))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+        if (count == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl(Lists.newArrayList(), pageable, count);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        List<OrganAccountClassBo> data = dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS)
+                .leftJoin(EP_ORGAN)
+                .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE)
+                .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
+                        EpOrganClassStatus.opening,
+                        EpOrganClassStatus.end))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
+                        EpOrganClassStatus.opening,
+                        EpOrganClassStatus.end),
+                        EP_ORGAN_COURSE.ONLINE_TIME.desc())
+                .fetchInto(OrganAccountClassBo.class);
+        return new PageImpl(data, pageable, count);
     }
 
     /**

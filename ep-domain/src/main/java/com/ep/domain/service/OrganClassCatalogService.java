@@ -200,6 +200,10 @@ public class OrganClassCatalogService {
             commentPo.setOgnAccountId(accountPo.getId());
             memberChildCommentRepository.insert(commentPo);
         }
+        // 孩子班次评价数+1
+        organClassChildRepository.addScheduleCommentNum(existChild.get().getOrderId());
+        // 课时评价数+1
+        organClassCatalogRepository.addChildEvaluatedNum(classCatalogId);
         return ResultDo.build();
     }
 

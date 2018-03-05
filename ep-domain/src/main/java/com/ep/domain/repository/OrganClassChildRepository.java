@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpOrganClassChildPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
 import org.jooq.DSLContext;
@@ -67,5 +68,18 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
                 .execute();
     }
 
+    /**
+     * 孩子班次评价数+1
+     *
+     * @param orderId
+     */
+    public int addScheduleCommentNum(Long orderId) {
+        return dslContext.update(EP_ORGAN_CLASS_CHILD)
+                .set(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM,
+                        EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM.add(BizConstant.DB_NUM_ONE))
+                .where(EP_ORGAN_CLASS_CHILD.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 
