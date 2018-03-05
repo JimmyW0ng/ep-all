@@ -94,21 +94,23 @@
                             <label for="onlineTime">上线时间 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
-                                       required="true" class="form-control datetimepicker" th:value="${organCoursePo.onlineTime}">
+                                       required="true" class="form-control laydate"
+                                       th:value="${organCoursePo.onlineTime}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="enterTimeStart">报名开始时间 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
-                                       required="true" class="form-control datetimepicker" th:value="${organCoursePo.enterTimeStart}">
+                                       required="true" class="form-control laydate"
+                                       th:value="${organCoursePo.enterTimeStart}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 </label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
-                                       class="form-control datetimepicker" th:value="${organCoursePo.enterTimeEnd}">
+                                       class="form-control laydate" th:value="${organCoursePo.enterTimeEnd}">
                             </div>
                         </div>
                     </section>
@@ -164,7 +166,7 @@
         <div class="form-group col-sm-6">
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">开始时间</label>
             <div class=" col-sm-8">
-                <input name="startTime" class="form-control datetimepicker" value="${startTime}"/>
+                <input name="startTime" class="form-control laydateer" value="${startTime}"/>
             </div>
         </div>
         <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
@@ -245,6 +247,7 @@
         </div>
     </div>
 </script>
+
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
@@ -252,7 +255,12 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
+<script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
+    laydate.render({
+        elem: '.laydate',
+        type: 'datetime'
+    });
     //教师map
     var organAccountMap = [[${organAccountMap}]]
     //表单是否提交过
@@ -270,10 +278,10 @@
         $box.append($("#classCatalogTmpl").tmpl(catalog))
         $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len+1)
 
-        // 日历组件,最小单位为秒
-        $('.datetimepicker').datetimepicker({
-            locale: 'zh-CN',
-            format: 'YYYY-MM-DD HH:mm:ss'
+        debugger
+        laydate.render({
+            elem: '.laydateer',
+            type: 'datetime'
         });
     }
 
@@ -364,8 +372,7 @@
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
     }
     $(document).ready(function () {
-        var ognTagList=[[${ognTagList}]]
-        console.log(ognTagList)
+
         //jq.step start
         var form = $("#frm");
         form.validate({
@@ -379,11 +386,11 @@
             bodyTag: "section",
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex) {
-                form.validate().settings.ignore = ":disabled,:hidden";
+//                form.validate().settings.ignore = ":disabled,:hidden";
                 return form.valid();
             },
             onFinishing: function (event, currentIndex) {
-                form.validate().settings.ignore = ":disabled";
+//                form.validate().settings.ignore = ":disabled";
                 return form.valid();
             },
             onCanceled: function () {
@@ -552,12 +559,6 @@
 
         }
 
-//        getTags();
-        // 日历组件,最小单位为秒
-        $('.datetimepicker').datetimepicker({
-            locale: 'zh-CN',
-            format: 'YYYY-MM-DD HH:mm:ss'
-        });
 
     });
 

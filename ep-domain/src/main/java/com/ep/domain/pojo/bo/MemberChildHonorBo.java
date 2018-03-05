@@ -12,6 +12,8 @@ public class MemberChildHonorBo extends EpMemberChildHonorPo {
     private String coursePic;
     private String ognName;
     private String childNickName;
+    private String childTrueName;
+    private String className;
 
     public String getAwardTimeFormat() {
         return DateTools.dateToString(super.getCreateAt(), DateTools.DATE_FMT_4);

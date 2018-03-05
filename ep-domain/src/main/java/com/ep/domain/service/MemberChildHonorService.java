@@ -8,11 +8,13 @@ import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildHonorRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,5 +64,16 @@ public class MemberChildHonorService {
         ResultDo<List<MemberChildHonorBo>> resultDo = ResultDo.build();
         List<MemberChildHonorBo> data = memberChildHonorRepository.queryByClassId(childId, classId);
         return resultDo.setResult(data);
+    }
+
+    /**
+     * 后台获取孩子荣誉分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<MemberChildHonorBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return memberChildHonorRepository.findbyPageAndCondition(pageable, condition);
     }
 }

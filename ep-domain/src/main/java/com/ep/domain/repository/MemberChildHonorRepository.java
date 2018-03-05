@@ -5,14 +5,14 @@ import com.ep.domain.pojo.bo.MemberChildHonorBo;
 import com.ep.domain.pojo.po.EpMemberChildHonorPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildHonorRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -115,6 +115,43 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
                 .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
                 .orderBy(EP_MEMBER_CHILD_HONOR.CREATE_AT.desc())
                 .fetchInto(MemberChildHonorBo.class);
+    }
+
+    /**
+     * 后台获取孩子荣誉分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<MemberChildHonorBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.selectCount()
+                .from(EP_MEMBER_CHILD_HONOR)
+                .leftJoin(EP_ORGAN_COURSE).on(EP_MEMBER_CHILD_HONOR.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_MEMBER_CHILD_HONOR.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD_HONOR.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_HONOR.fields());
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_HONOR)
+                .leftJoin(EP_ORGAN_COURSE).on(EP_MEMBER_CHILD_HONOR.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_MEMBER_CHILD_HONOR.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD_HONOR.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(condition);
+
+        List<MemberChildHonorBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(MemberChildHonorBo.class);
+        PageImpl<MemberChildHonorBo> page = new PageImpl<MemberChildHonorBo>(list, pageable, totalCount);
+        return page;
     }
 }
 
