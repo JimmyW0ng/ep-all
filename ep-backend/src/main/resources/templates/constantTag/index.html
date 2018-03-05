@@ -23,16 +23,16 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form">
 
-                    <div class="form-group">
-                        <select type="text" class="form-control" name="catalogId" id="catalogId" style="width:182px;">
-                            <option value="">类目</option>
-                            <option th:each="po :${constantCatalogPos}" th:value="${po.id}" th:text="${po.label}"></option>
-                        </select>
-                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<select type="text" class="form-control" name="catalogId" id="catalogId" style="width:182px;">-->
+                            <!--<option value="">类目</option>-->
+                            <!--<option th:each="po :${constantCatalogPos}" th:value="${po.id}" th:text="${po.label}"></option>-->
+                        <!--</select>-->
+                    <!--</div>-->
 
-                    <div class="form-group" style="vertical-align: top;">
-                        <button class="btn btn-primary" onclick="findTags()" type="button">查询</button>
-                    </div>
+                    <!--<div class="form-group" style="vertical-align: top;">-->
+                        <!--<button class="btn btn-primary" onclick="findTags()" type="button">查询</button>-->
+                    <!--</div>-->
 
                 </form>
 
@@ -44,34 +44,47 @@
                         <input id="createTag" name="" type="text" class="form-control" placeholder="标签名">
                     </div>
                     <div class="col-sm-3">
+                        <select type="text" class="form-control" name="catalogId" id="catalogId" style="width:182px;">
+                            <option value="">类目</option>
+                            <option th:each="key :${constantCatalogMap.keySet()}" th:value="${key}" th:text="${constantCatalogMap.get(key)}"></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
                         <button class="btn btn-primary " type="button" onclick="createTagBox()">创 建</button>
+                        <button class="btn btn-warning"  type="button" onclick="resetTag()">重置</button>
+
                     </div>
-                    <div  class="col-sm-12" style="padding-top: 20px">
-                        <label class="col-sm-2" >公用标签：</label>
-                        <div id="constantTagBox"></div>
-                    </div>
-                    <div  class="col-sm-12" style="padding-top: 20px">
-                        <label class="col-sm-2" >我的标签：</label>
-                        <div id="createTagBox"></div>
+                    <div id="allTagBox">
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/template" id='tagBoxTmpl'>
+    <div  class="col-sm-12" style="padding-top: 20px">
+        <label class="col-sm-2" >${constantCatalog}标签：</label>
+        <input type="hidden" name="constantCatalogId${constantCatalogId}" value="${constantCatalogId}">
+        <div name="constantTagBox"></div>
+    </div>
+</script>
 <script type="text/template" id='ognTagTmpl'>
     <div class="col-sm-2" style="margin-bottom: 20px">
         <input name="id" type="hidden" value=${id} >
         <input name="tagName" type="hidden" value=${tagName}>
-        <input name="ognFlag" value=true type="hidden">
+        <input name="usedFlag" type="hidden" value=${usedFlag}>
         <span class="label">${tagName}</span>
-        <a href="javascript:void(0);" onclick="removeTag(this)" value=${id}><span class="glyphicon glyphicon-remove"
+        <a name="removeBtn" href="javascript:void(0);" onclick="removeTag(this)" value=${id} ><span class="glyphicon glyphicon-remove"
                                                                       aria-hidden="true"></span></a>
     </div>
 </script>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+    function resetTag() {
+        window.location="/auth/constantTag/index"
+    }
     /**
      * 新增课程标签
      */
@@ -86,13 +99,16 @@
             toastr.error("请填写标签名")
             return
         }
+
         $.ajax({
             type:"GET",
-            url:"/auth/constantTag/createOgnTag?"+"catalogId="+catalogId+"&tagName="+tagName,
+            url:"/auth/constantTag/createConstantTag?"+"catalogId="+catalogId+"&tagName="+tagName,
             success:function (data) {
                 if(data.success){
                     var tag = [{id:"",tagName: data.result}]
-                    $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
+                    var $box=$("#allTagBox").find("input[name='constantCatalogId"+catalogId+"']").eq(0).siblings("div[name='constantTagBox']").eq(0)
+
+                    $box.append($("#ognTagTmpl").tmpl(tag));
                 }
             }
         })
@@ -144,6 +160,26 @@
             }
         })
     }
+
+    $(document).ready(function () {
+        var constantCatalogMap = [[${constantCatalogMap}]]
+        var tagBox=[]
+        for(var item in constantCatalogMap){
+            tagBox.push({constantCatalogId:item,constantCatalog:constantCatalogMap[item]})
+        }
+        $("#allTagBox").append($("#tagBoxTmpl").tmpl(tagBox))
+        var constantTagsMap = [[${constantTagsMap}]]
+        for(var item in constantTagsMap){
+            var $box=$("#allTagBox").find("input[value="+item+"]").eq(0).siblings("div[name='constantTagBox']").eq(0)
+            $box.append($("#ognTagTmpl").tmpl(constantTagsMap[item]))
+        }
+        $("#allTagBox").find("input[name='usedFlag']").each(function () {
+            if($(this).attr("value")=="true"){
+                $(this).siblings("a[name='removeBtn']").hide()
+            }
+        })
+
+    })
 </script>
 </body>
 </html>

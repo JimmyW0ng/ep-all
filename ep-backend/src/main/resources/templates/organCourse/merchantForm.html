@@ -364,6 +364,8 @@
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
     }
     $(document).ready(function () {
+        var ognTagList=[[${ognTagList}]]
+        console.log(ognTagList)
         //jq.step start
         var form = $("#frm");
         form.validate({
@@ -495,8 +497,8 @@
 //                console.log(organClassCatalogPos)
 
                 var $box = $("#accordion").find("div[name='organClassCatalogPosBox']:last")
-                console.log("$box")
-                console.log($box)
+//                console.log("$box")
+//                console.log($box)
                 var catalog=[]
                 for (var j = 0; j < organClassCatalogPos.length; j++) {
                     catalog.push({
@@ -518,6 +520,7 @@
             //班次end
             //公用标签start
             var ognTagList=[[${ognTagList}]]
+            console.log(ognTagList)
             var constantTag = []
             for (item in ognTagList) {
 //                        background-color#f8ac59
