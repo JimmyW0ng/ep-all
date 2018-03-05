@@ -108,7 +108,7 @@ public class OrganAccountController extends ApiController {
     }
 
     @ApiOperation(value = "查看班次学员")
-    @PostMapping("/class/all")
+    @PostMapping("/class/child/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<List<MemberChildBo>> findChildrenByClassId(@RequestParam("classId") Long classId) {
         EpMemberPo memberPo = super.getCurrentUser().get();
