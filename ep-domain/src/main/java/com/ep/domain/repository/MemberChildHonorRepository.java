@@ -153,5 +153,52 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
         PageImpl<MemberChildHonorBo> page = new PageImpl<MemberChildHonorBo>(list, pageable, totalCount);
         return page;
     }
+
+    /**
+     * 根据id获取孩子荣誉
+     *
+     * @param id
+     * @return
+     */
+    public MemberChildHonorBo findBoById(Long id) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_HONOR.fields());
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        return dslContext.select(fieldList).from(EP_MEMBER_CHILD_HONOR)
+                .leftJoin(EP_ORGAN_COURSE).on(EP_MEMBER_CHILD_HONOR.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_MEMBER_CHILD_HONOR.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD_HONOR.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+
+                .where(EP_MEMBER_CHILD_HONOR.ID.eq(id))
+                .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
+                .fetchOneInto(MemberChildHonorBo.class);
+    }
+
+    /**
+     * 更新孩子的荣誉记录
+     *
+     * @param po
+     */
+    public void updateChildHonor(EpMemberChildHonorPo po) {
+        dslContext.update(EP_MEMBER_CHILD_HONOR)
+                .set(EP_MEMBER_CHILD_HONOR.CONTENT, po.getContent())
+                .where(EP_MEMBER_CHILD_HONOR.ID.eq(po.getId()))
+                .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id逻辑删除记录
+     *
+     * @param id
+     */
+    public void deleteLogicById(Long id) {
+        dslContext.update(EP_MEMBER_CHILD_HONOR)
+                .set(EP_MEMBER_CHILD_HONOR.DEL_FLAG, true)
+                .where(EP_MEMBER_CHILD_HONOR.ID.eq(id))
+                .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

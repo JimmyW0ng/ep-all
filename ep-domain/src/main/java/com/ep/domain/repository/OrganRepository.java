@@ -140,8 +140,6 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .set(EP_ORGAN.OGN_URL, po.getOgnUrl())
                 .set(EP_ORGAN.OGN_INTRODUCE, po.getOgnIntroduce())
             .set(EP_ORGAN.MARKET_WEIGHT, po.getMarketWeight())
-            .set(EP_ORGAN.TOGETHER_SCORE, po.getTogetherScore())
-            .set(EP_ORGAN.TOTAL_PARTICIPATE, po.getTotalParticipate())
             .set(EP_ORGAN.STATUS, po.getStatus())
             .set(EP_ORGAN.REMARK, po.getRemark())
             .set(EP_ORGAN.UPDATE_AT, DSL.currentTimestamp())

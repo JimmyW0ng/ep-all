@@ -5,13 +5,11 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildBo;
+import com.ep.domain.pojo.bo.OrganClassChildBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.MemberChildRepository;
-import com.ep.domain.repository.OrganAccountRepository;
-import com.ep.domain.repository.OrganClassRepository;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,8 @@ public class OrganClassChildService {
     private MemberChildRepository memberChildRepository;
     @Autowired
     private OrganAccountRepository organAccountRepository;
+    @Autowired
+    private OrganClassChildRepository organClassChildRepository;
 
     /**
      * 查看班次学员
@@ -73,5 +73,15 @@ public class OrganClassChildService {
             }
         }
         return resultDo.setResult(childList);
+    }
+
+    /**
+     * 根据班级id获取该班孩子记录
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrganClassChildBo> findChildMapByClassId(Long classId) {
+        return organClassChildRepository.findChildByClassId(classId);
     }
 }

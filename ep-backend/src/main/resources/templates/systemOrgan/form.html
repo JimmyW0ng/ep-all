@@ -79,8 +79,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构简介：</label>
                     <div class="col-sm-3">
-                        <textarea id="ognShortIntroduce"  name="ognShortIntroduce" type="text" class="form-control" required="true" th:field="*{ognShortIntroduce}"
-                                aria-required="true"/>
+                        <textarea id="ognShortIntroduce" name="ognShortIntroduce" type="text" class="form-control"
+                                  th:field="*{ognShortIntroduce}"
+                                  aria-required="true"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -100,14 +101,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方邮箱：</label>
                     <div class="col-sm-3">
-                        <input id="ognEmail" name="ognEmail" type="text" class="form-control" required="true" th:field="*{ognEmail}"
+                        <input id="ognEmail" name="ognEmail" type="text" class="form-control" th:field="*{ognEmail}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方网址：</label>
                     <div class="col-sm-3">
-                        <input id="ognUrl" name="ognUrl" type="text" class="form-control" required="true" th:field="*{ognUrl}"
+                        <input id="ognUrl" name="ognUrl" type="text" class="form-control" th:field="*{ognUrl}"
                                aria-required="true">
                     </div>
                 </div>
@@ -125,20 +126,7 @@
                                   aria-required="true"/>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">综合得分：</label>
-                    <div class="col-sm-3">
-                        <input id="togetherScore" name="togetherScore" type="text" class="form-control" required="true" th:field="*{togetherScore}"
-                               aria-required="true"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">分享：</label>
-                    <div class="col-sm-3">
-                        <input id="totalParticipate" name="totalParticipate" type="text" class="form-control" required="true" th:field="*{totalParticipate}"
-                               aria-required="true"/>
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">状态：</label>
                     <div class="col-sm-3">
@@ -159,7 +147,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">商家mainpic:</label>
+                    <label class="col-sm-2 control-label">商家主图:</label>
                     <button  type="button" class="btn btn-info" id="mainpic_img_btn" onclick="$('#mainpic_img').click()">
                         <span>选择图片</span>
 
@@ -245,10 +233,10 @@
 
     }
     function organFrmSubmit() {
-//        if (!$("#organFrm").valid()) {
-//            console.log("valid fail")
-//            return;
-//        }
+        if (!$("#organFrm").valid()) {
+            console.log("valid fail")
+            return;
+        }
 
         var url;
         if($("#id").val()){

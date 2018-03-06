@@ -5,6 +5,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildHonorBo;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpMemberChildHonorPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildHonorRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -75,5 +76,42 @@ public class MemberChildHonorService {
      */
     public Page<MemberChildHonorBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return memberChildHonorRepository.findbyPageAndCondition(pageable, condition);
+    }
+
+    /**
+     * 新增孩子荣誉
+     *
+     * @param po
+     */
+    public void create(EpMemberChildHonorPo po) {
+        memberChildHonorRepository.insert(po);
+    }
+
+    /**
+     * 根据id获取孩子荣誉
+     *
+     * @param id
+     * @return
+     */
+    public MemberChildHonorBo findBoById(Long id) {
+        return memberChildHonorRepository.findBoById(id);
+    }
+
+    /**
+     * 更新孩子的荣誉记录
+     *
+     * @param po
+     */
+    public void update(EpMemberChildHonorPo po) {
+        memberChildHonorRepository.updateChildHonor(po);
+    }
+
+    /**
+     * 删除孩子荣誉
+     *
+     * @param id
+     */
+    public void deleteById(Long id) {
+        memberChildHonorRepository.deleteLogicById(id);
     }
 }

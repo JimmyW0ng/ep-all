@@ -182,5 +182,17 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .execute();
     }
 
+    /**
+     * 根据机构id获取记录
+     *
+     * @param ognId
+     * @return
+     */
+    public List<EpOrganCoursePo> findByOgnId(Long ognId) {
+        return dslContext.selectFrom(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganCoursePo.class);
+    }
 }
 
