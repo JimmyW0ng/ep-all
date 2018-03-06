@@ -139,4 +139,13 @@ public class OrganService {
     public List<EpOrganPo> getByStatus(EpOrganStatus status){
         return organRepository.getByStatus(status);
     }
+
+    public void offlineById(Long id){
+        organRepository.offlineById(id);
+    }
+
+    public void onlineById(Long id){
+        organRepository.onlineById(id);
+    }
+
 }

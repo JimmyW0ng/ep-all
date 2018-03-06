@@ -331,4 +331,31 @@ public class SystemOrganController extends BackendController {
         resultDo.setResult(map);
         return resultDo;
     }
+
+    /**
+     * 机构下线
+     * @param id
+     * @return
+     */
+    @GetMapping("offline/{id}")
+    @ResponseBody
+    public ResultDo offline(@PathVariable("id")Long id){
+        ResultDo resultDo = ResultDo.build();
+        organService.offlineById(id);
+        return resultDo;
+    }
+
+    /**
+     * 机构上线
+     * @param id
+     * @return
+     */
+    @GetMapping("online/{id}")
+    @ResponseBody
+    public ResultDo onlineById(@PathVariable("id")Long id){
+        ResultDo resultDo = ResultDo.build();
+        organService.onlineById(id);
+        return resultDo;
+    }
+
 }
