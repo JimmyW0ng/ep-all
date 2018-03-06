@@ -43,9 +43,9 @@ public class OrganAccountController extends ApiController {
     @Autowired
     private OrganClassChildService organClassChildService;
     @Autowired
-    private ApplicationEventPublisher publisher;
-    @Autowired
     private MemberChildService memberChildService;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @ApiOperation(value = "机构账户信息")
     @PostMapping("/info")

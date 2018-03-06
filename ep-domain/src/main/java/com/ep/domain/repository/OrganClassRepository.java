@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassBo;
@@ -90,6 +91,7 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatalogId"));
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM);
         return dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)
@@ -132,17 +134,23 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(DSL.ifnull(DSL.max(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX), BizConstant.DB_NUM_ZERO).as("catalogIndex"));
         List<OrganAccountClassBo> data = dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)
                 .leftJoin(EP_ORGAN)
                 .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
                 .leftJoin(EP_ORGAN_COURSE)
                 .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG)
+                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
+                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.le(DateTools.getCurrentDateTime()))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
                 .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
                         EpOrganClassStatus.opening,
                         EpOrganClassStatus.end))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .groupBy(EP_ORGAN_CLASS.ID)
                 .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
                         EpOrganClassStatus.opening,
                         EpOrganClassStatus.end),
