@@ -109,7 +109,7 @@
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 </label>
                             <div class="input-group input-large col-sm-4">
-                                <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
+                                <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" required="true"
                                        class="form-control laydate" th:value="${organCoursePo.enterTimeEnd}">
                             </div>
                         </div>
@@ -255,12 +255,10 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
+<!--<script th:src="@{/js/plugins/layer/laydate/laydate.js}"></script>-->
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
-    laydate.render({
-        elem: '.laydate',
-        type: 'datetime'
-    });
+
     //教师map
     var organAccountMap = [[${organAccountMap}]]
     //表单是否提交过
@@ -278,10 +276,12 @@
         $box.append($("#classCatalogTmpl").tmpl(catalog))
         $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len+1)
 
-        debugger
-        laydate.render({
-            elem: '.laydateer',
-            type: 'datetime'
+        lay('.laydateer').each(function () {
+            laydate.render({
+                type: 'datetime',
+                elem: this,
+                trigger: 'click'
+            });
         });
     }
 
@@ -556,10 +556,20 @@
             }
             //课程标签end
 
-
         }
 
-
+        laydate.render({
+            elem: '#onlineTime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#enterTimeStart',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#enterTimeEnd',
+            type: 'datetime'
+        });
     });
 
 
