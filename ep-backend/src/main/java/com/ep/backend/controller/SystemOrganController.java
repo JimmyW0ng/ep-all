@@ -3,6 +3,7 @@ package com.ep.backend.controller;
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.component.DictComponent;
 import com.ep.domain.constant.BizConstant;
@@ -58,14 +59,15 @@ public class SystemOrganController extends BackendController {
     @GetMapping("index")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                        @RequestParam(value = "ognName", required = false) String ognName,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
         Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
-//        if (StringTools.isNotBlank(mobile)) {
-//            conditions.add(EP.EP_SYSTEM_USER.MOBILE.eq(Long.parseLong(mobile)));
-//        }
+        if (StringTools.isNotBlank(ognName)) {
+            conditions.add(EP.EP_ORGAN.OGN_NAME.like("%" + ognName + "%"));
+        }
 //        map.put("mobile", mobile);
 //        if (StringTools.isNotBlank(type)) {
 //            conditions.add(EP.EP_SYSTEM_USER.TYPE.eq(EpSystemUserType.valueOf(type)));
@@ -147,7 +149,7 @@ public class SystemOrganController extends BackendController {
         ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
-        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(), "yyyy-MM-dd"));
+        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         organService.createSystemOrgan(po,bo.getMainpicUrlPreCode(),bo.getLogoUrlPreCode());
         return resultDo;
     }
@@ -166,7 +168,7 @@ public class SystemOrganController extends BackendController {
         ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
-        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOrganCreateDateStr(), "yyyy-MM-dd"));
+        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         organService.updateSystemOrgan(po,bo.getMainpicUrlPreCode(),bo.getLogoUrlPreCode());
         return resultDo;
     }

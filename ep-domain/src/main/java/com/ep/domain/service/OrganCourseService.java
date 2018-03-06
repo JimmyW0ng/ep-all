@@ -378,4 +378,14 @@ public class OrganCourseService {
         }
         return ResultDo.build();
     }
+
+    /**
+     * 根据机构id获取记录
+     *
+     * @param ognId
+     * @return
+     */
+    public List<EpOrganCoursePo> findByOgnId(Long ognId) {
+        return organCourseRepository.findByOgnId(ognId);
+    }
 }

@@ -24,6 +24,10 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
 
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="ognName" th:value="${map.get('ognName')}"
+                               placeholder="机构名称">
+                    </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"

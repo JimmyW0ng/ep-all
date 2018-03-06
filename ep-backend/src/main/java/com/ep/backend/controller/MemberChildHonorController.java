@@ -1,8 +1,17 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildHonorBo;
+import com.ep.domain.pojo.bo.OrganClassChildBo;
+import com.ep.domain.pojo.po.EpMemberChildHonorPo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
+import com.ep.domain.pojo.po.EpOrganCoursePo;
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.MemberChildHonorService;
+import com.ep.domain.service.OrganClassChildService;
+import com.ep.domain.service.OrganClassService;
+import com.ep.domain.service.OrganCourseService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jooq.Condition;
@@ -13,12 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -34,6 +43,12 @@ import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COUR
 public class MemberChildHonorController extends BackendController {
     @Autowired
     private MemberChildHonorService memberChildHonorService;
+    @Autowired
+    private OrganCourseService organCourseService;
+    @Autowired
+    private OrganClassService organClassService;
+    @Autowired
+    private OrganClassChildService organClassChildService;
 
     @GetMapping("index")
     public String index(Model model,
@@ -74,5 +89,80 @@ public class MemberChildHonorController extends BackendController {
         model.addAttribute("page", page);
         model.addAttribute("map", map);
         return "childHonor/index";
+    }
+
+    @GetMapping("createInit")
+    public String createInit(Model model, HttpServletRequest request) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        List<EpOrganCoursePo> organCoursePos = organCourseService.findByOgnId(ognId);
+        Map<Long, String> courseMap = Maps.newHashMap();
+        organCoursePos.forEach(po -> {
+            courseMap.put(po.getId(), po.getCourseName());
+        });
+        model.addAttribute("courseMap", courseMap);
+        model.addAttribute("memberChildHonerPo", new MemberChildHonorBo());
+        return "/childHonor/form";
+    }
+
+    @GetMapping("findClassByCourseId/{courseId}")
+    @ResponseBody
+    public ResultDo findClassByCourseId(@PathVariable("courseId") Long courseId) {
+        ResultDo resultDo = ResultDo.build();
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
+        Map<Long, String> classMap = Maps.newHashMap();
+        organClassPos.forEach(po -> {
+            classMap.put(po.getId(), po.getClassName());
+        });
+        resultDo.setResult(classMap);
+        return resultDo;
+    }
+
+
+    @GetMapping("findClildByClassId/{classId}")
+    @ResponseBody
+    public ResultDo findClildByClassId(@PathVariable("classId") Long classId) {
+        ResultDo resultDo = ResultDo.build();
+        List<OrganClassChildBo> bos = organClassChildService.findChildMapByClassId(classId);
+        Map<Long, String> childMap = Maps.newHashMap();
+        bos.forEach(bo -> {
+            childMap.put(bo.getChildId(), bo.getChildTrueName());
+        });
+        resultDo.setResult(childMap);
+        return resultDo;
+    }
+
+    @PostMapping("create")
+    @ResponseBody
+    public ResultDo create(EpMemberChildHonorPo po) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        ResultDo resultDo = ResultDo.build();
+        po.setOgnId(ognId);
+        memberChildHonorService.create(po);
+        return resultDo;
+    }
+
+    @PostMapping("update")
+    @ResponseBody
+    public ResultDo update(EpMemberChildHonorPo po) {
+        ResultDo resultDo = ResultDo.build();
+        memberChildHonorService.update(po);
+        return resultDo;
+    }
+
+    @GetMapping("updateInit/{id}")
+    public String updateInit(Model model, @PathVariable("id") Long id) {
+        EpMemberChildHonorPo bo = memberChildHonorService.findBoById(id);
+        model.addAttribute("memberChildHonerPo", bo);
+        return "childHonor/form";
+    }
+
+    @GetMapping("delete/{id}")
+    @ResponseBody
+    public ResultDo delete(@PathVariable("id") Long id) {
+        ResultDo resultDo = ResultDo.build();
+        memberChildHonorService.deleteById(id);
+        return resultDo;
     }
 }

@@ -1,14 +1,19 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.OrganClassChildBo;
 import com.ep.domain.pojo.po.EpOrganClassChildPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassChildRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS_CHILD;
 
 /**
@@ -80,6 +85,28 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
                 .where(EP_ORGAN_CLASS_CHILD.ORDER_ID.eq(orderId))
                 .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    /**
+     * 根据班级id获取该班孩子记录
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrganClassChildBo> findChildByClassId(Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORGAN_CLASS_CHILD.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_CHILD.CLASS_ID);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_CHILD)
+                .innerJoin(EP_MEMBER_CHILD)
+                .on(EP_ORGAN_CLASS_CHILD.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .fetchInto(OrganClassChildBo.class);
     }
 }
 
