@@ -2,9 +2,11 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildTagAndCommentBo;
+import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCatalogRecord;
 import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
@@ -168,6 +170,37 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
                 .fetchInto(OrganClassCatalogBo.class);
+    }
+
+    /**
+     * 机构端-根据班次获取全部课时
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrganAccountClassBo> findByClassIdForOgnAccount(Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatalogId"));
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM);
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS)
+                .leftJoin(EP_ORGAN)
+                .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE)
+                .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG)
+                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .where(EP_ORGAN_CLASS.ID.eq(classId))
+                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
+                        EpOrganClassStatus.opening,
+                        EpOrganClassStatus.end))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc())
+                .fetchInto(OrganAccountClassBo.class);
     }
 
     /**

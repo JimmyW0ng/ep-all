@@ -250,8 +250,8 @@ public class OrganClassCatalogService {
      * @param mobile
      * @return
      */
-    public ResultDo<List<OrganClassCatalogBo>> getClassAllCatalog(Long classId, Long mobile) {
-        ResultDo<List<OrganClassCatalogBo>> resultDo = ResultDo.build();
+    public ResultDo<List<OrganAccountClassBo>> getClassAllCatalog(Long classId, Long mobile) {
+        ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag()) {
@@ -268,7 +268,7 @@ public class OrganClassCatalogService {
             log.error("当前用户无机构账户数据, mobile={}", mobile);
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
-        List<OrganClassCatalogBo> classCatalogs = organClassCatalogRepository.findDetailByClassId(classId);
+        List<OrganAccountClassBo> classCatalogs = organClassCatalogRepository.findByClassIdForOgnAccount(classId);
         return resultDo.setResult(classCatalogs);
     }
 }

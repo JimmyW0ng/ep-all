@@ -1,7 +1,10 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.*;
+import com.ep.domain.pojo.bo.ClassChildAbstractBo;
+import com.ep.domain.pojo.bo.MemberChildBo;
+import com.ep.domain.pojo.bo.OrganAccountBo;
+import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.pojo.po.EpMemberPo;
@@ -102,7 +105,7 @@ public class OrganAccountController extends ApiController {
     @ApiOperation(value = "查看班次全部课时")
     @PostMapping("/class/catalog/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<OrganClassCatalogBo>> getClassAllCatalog(@RequestParam("classId") Long classId) {
+    public ResultDo<List<OrganAccountClassBo>> getClassAllCatalog(@RequestParam("classId") Long classId) {
         EpMemberPo memberPo = super.getCurrentUser().get();
         return organClassCatalogService.getClassAllCatalog(classId, memberPo.getMobile());
     }
