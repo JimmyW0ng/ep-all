@@ -77,15 +77,6 @@ public class OrganClassCatalogService {
             log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
             return ResultDo.build(MessageCode.ERROR_CLASS_NOT_OPENING);
         }
-        // 孩子信息
-        List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classCatalogPo.getClassId());
-        if (CollectionsTools.isNotEmpty(childList)) {
-            for (MemberChildBo childBo : childList) {
-                Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childBo.getId());
-                String avatar = optional.isPresent() ? optional.get().getFileUrl() : null;
-                childBo.setAvatar(avatar);
-            }
-        }
         // 校验班次负责人
         Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
         if (!existAccount.isPresent()) {
@@ -95,13 +86,17 @@ public class OrganClassCatalogService {
         // 课程标签
         List<OrganCourseTagBo> courseTagList = organCourseTagRepository.findBosByCourseId(classPo.getCourseId());
         // 孩子评论信息
-        List<MemberChildTagAndCommentBo> childTagAndCommentList = organClassCatalogRepository.findChildComments(classPo.getId(), classCatalogId);
-        for (MemberChildTagAndCommentBo bo : childTagAndCommentList) {
+        List<OrganClassCatalogCommentBo> childTagAndCommentList = organClassCatalogRepository.findChildComments(classPo.getId(), classCatalogId);
+        for (OrganClassCatalogCommentBo bo : childTagAndCommentList) {
+            // 头像
+            Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, bo.getChildId());
+            String avatar = optional.isPresent() ? optional.get().getFileUrl() : null;
+            bo.setAvatar(avatar);
             // 加载标签
             List<EpMemberChildTagPo> tags = memberChildTagRepository.findByChildIdAndClassCatalogId(bo.getChildId(), classCatalogId);
             bo.setTags(tags);
         }
-        OrganClassCatalogCommentDto commentDto = new OrganClassCatalogCommentDto(classCatalogPo, childList, courseTagList, childTagAndCommentList);
+        OrganClassCatalogCommentDto commentDto = new OrganClassCatalogCommentDto(classCatalogPo, childTagAndCommentList, courseTagList);
         return resultDo.setResult(commentDto);
     }
 

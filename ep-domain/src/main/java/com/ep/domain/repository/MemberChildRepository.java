@@ -194,7 +194,10 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
      * @return
      */
     public List<MemberChildBo> queryAllByClassId(Long classId) {
-        return dslContext.select(EP_MEMBER_CHILD.ID, EP_MEMBER_CHILD.CHILD_NICK_NAME)
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.ID);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM);
+        return dslContext.select(fieldList)
                          .from(EP_MEMBER_CHILD)
                          .innerJoin(EP_ORGAN_CLASS_CHILD)
                          .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))

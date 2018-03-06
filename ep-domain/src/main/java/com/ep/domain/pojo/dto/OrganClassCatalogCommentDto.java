@@ -2,8 +2,7 @@ package com.ep.domain.pojo.dto;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
-import com.ep.domain.pojo.bo.MemberChildBo;
-import com.ep.domain.pojo.bo.MemberChildTagAndCommentBo;
+import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import lombok.AllArgsConstructor;
@@ -18,8 +17,7 @@ import java.util.List;
 public class OrganClassCatalogCommentDto extends AbstractBasePojo {
 
     private EpOrganClassCatalogPo classCatalog;
-    private List<MemberChildBo> childList;
+    private List<OrganClassCatalogCommentBo> childList;
     private List<OrganCourseTagBo> courseTagList;
-    private List<MemberChildTagAndCommentBo> childTagAndCommentList;
 
 }

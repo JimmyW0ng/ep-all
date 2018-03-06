@@ -19,7 +19,7 @@ public class OrganAccountClassBo extends EpOrganClassPo {
     private Long classCatalogId;
     private Integer catalogIndex;
 
-    public Boolean getWiatCommentFlag() {
+    public Boolean getWaitCommentFlag() {
         if (EpOrganClassStatus.opening.equals(super.getStatus())) {
             if (this.childEvaluatedNum == null) {
                 return false;
@@ -44,4 +44,16 @@ public class OrganAccountClassBo extends EpOrganClassPo {
         return false;
     }
 
+    public String getStatusText() {
+        if (EpOrganClassStatus.save.equals(super.getStatus())) {
+            return "报名中";
+        } else if (EpOrganClassStatus.online.equals(super.getStatus())) {
+            return "确认开班";
+        } else if (EpOrganClassStatus.opening.equals(super.getStatus())) {
+            return "学习中";
+        } else if (EpOrganClassStatus.end.equals(super.getStatus())) {
+            return "已结束";
+        }
+        return null;
+    }
 }
