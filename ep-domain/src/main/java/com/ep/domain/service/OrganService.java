@@ -48,7 +48,7 @@ public class OrganService {
         ResultDo<OrganInfoDto> resultDo = ResultDo.build();
         // 机构详情
         Optional<EpOrganPo> ognInfoPojo = this.getById(id);
-        if (!ognInfoPojo.isPresent() || !EpOrganStatus.normal.equals(ognInfoPojo.get().getStatus())) {
+        if (!ognInfoPojo.isPresent() || !EpOrganStatus.online.equals(ognInfoPojo.get().getStatus())) {
             return ResultDo.build(MessageCode.ERROR_DATA_MISS);
         }
         // 机构主图

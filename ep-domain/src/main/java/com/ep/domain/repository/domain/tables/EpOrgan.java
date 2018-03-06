@@ -8,21 +8,14 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganRecord;
+import org.jooq.*;
+import org.jooq.impl.DateAsTimestampBinding;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.DateAsTimestampBinding;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -38,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrgan extends TableImpl<EpOrganRecord> {
 
-    private static final long serialVersionUID = 1304988305;
+    private static final long serialVersionUID = 1790596703;
 
     /**
      * The reference instance of <code>ep.ep_organ</code>
@@ -61,12 +54,12 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
     /**
      * The column <code>ep.ep_organ.ogn_name</code>. 机构名称
      */
-    public final TableField<EpOrganRecord, String> OGN_NAME = createField("ogn_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构名称");
+    public final TableField<EpOrganRecord, String> OGN_NAME = createField("ogn_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "机构名称");
 
     /**
      * The column <code>ep.ep_organ.ogn_address</code>. 机构地址
      */
-    public final TableField<EpOrganRecord, String> OGN_ADDRESS = createField("ogn_address", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "机构地址");
+    public final TableField<EpOrganRecord, String> OGN_ADDRESS = createField("ogn_address", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "机构地址");
 
     /**
      * The column <code>ep.ep_organ.ogn_region</code>. 机构地区

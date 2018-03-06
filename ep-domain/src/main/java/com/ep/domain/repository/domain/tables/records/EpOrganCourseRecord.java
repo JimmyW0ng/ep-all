@@ -214,18 +214,18 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
-     */
-    public EpOrganCourseCourseStatus getCourseStatus() {
-        return (EpOrganCourseCourseStatus) get(12);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
      */
     public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
         set(12, value);
         return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
+     */
+    public EpOrganCourseCourseStatus getCourseStatus() {
+        return (EpOrganCourseCourseStatus) get(12);
     }
 
     /**

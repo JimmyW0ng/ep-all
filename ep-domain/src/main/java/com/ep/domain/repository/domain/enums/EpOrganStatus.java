@@ -4,11 +4,11 @@
 package com.ep.domain.repository.domain.enums;
 
 
-import javax.annotation.Generated;
-
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
+
+import javax.annotation.Generated;
 
 
 /**
@@ -24,11 +24,13 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum EpOrganStatus implements EnumType {
 
-    normal("normal"),
+    save("save"),
 
-    freeze("freeze"),
+    online("online"),
 
-    cancel("cancel");
+    offline("offline"),
+
+    freeze("freeze");
 
     private final String literal;
 

@@ -94,7 +94,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
      */
     public Page<OrganBo> queryOrganForPage(Pageable pageable) {
         long count = dslContext.selectCount().from(EP_ORGAN)
-                .where(EP_ORGAN.STATUS.eq(EpOrganStatus.normal))
+                .where(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
@@ -111,7 +111,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .leftJoin(EP_CONSTANT_CATALOG)
                 .on(EP_CONSTANT_CATALOG.ID.eq(EP_ORGAN_CATALOG.COURSE_CATALOG_ID))
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
-                .where(EP_ORGAN.STATUS.eq(EpOrganStatus.normal))
+                .where(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
                 .groupBy(EP_ORGAN.ID)
                 .orderBy(EP_ORGAN.MARKET_WEIGHT.desc())
                 .limit(pageable.getPageSize())

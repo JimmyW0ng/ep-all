@@ -1,15 +1,10 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
-import com.ep.domain.repository.domain.enums.EpSystemUserType;
-import com.ep.domain.repository.domain.tables.EpOrgan;
-import com.ep.domain.repository.domain.tables.EpOrganAccount;
 import com.ep.domain.service.OrganAccountService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
@@ -25,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +90,7 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/view/{id}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String view(Model model,@PathVariable("id")Long id) {
-        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.normal);
+        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.online);
         Map<Long,String> organMap=Maps.newHashMap();
         list.forEach(p->{
             organMap.put(p.getId(),p.getOgnName());
@@ -115,7 +109,7 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/createInit")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String createInit(Model model) {
-        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.normal);
+        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.online);
         Map<Long,String> organMap=Maps.newHashMap();
         list.forEach(p->{
             organMap.put(p.getId(),p.getOgnName());
@@ -134,7 +128,7 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/updateInit/{id}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String updateInit(Model model,@PathVariable("id")Long id) {
-        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.normal);
+        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.online);
         Map<Long,String> organMap=Maps.newHashMap();
         list.forEach(p->{
             organMap.put(p.getId(),p.getOgnName());
