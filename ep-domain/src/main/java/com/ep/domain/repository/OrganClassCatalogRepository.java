@@ -194,8 +194,10 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatalogId"));
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_DESC);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.START_TIME);
         return dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)
                 .leftJoin(EP_ORGAN)
@@ -210,7 +212,7 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                         EpOrganClassStatus.opening,
                         EpOrganClassStatus.end))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc())
+                .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
                 .fetchInto(OrganAccountClassBo.class);
     }
 
