@@ -93,7 +93,7 @@ public class OrganClassCatalogService {
             String avatar = optional.isPresent() ? optional.get().getFileUrl() : null;
             bo.setAvatar(avatar);
             // 加载标签
-            List<EpMemberChildTagPo> tags = memberChildTagRepository.findByChildIdAndClassCatalogId(bo.getChildId(), classCatalogId);
+            List<MemberChildTagBo> tags = memberChildTagRepository.findDetailByChildIdAndClassCatalogId(bo.getChildId(), classCatalogId);
             bo.setTags(tags);
         }
         OrganClassCatalogCommentDto commentDto = new OrganClassCatalogCommentDto(classCatalogPo, childTagAndCommentList, courseTagList);

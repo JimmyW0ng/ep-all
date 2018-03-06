@@ -45,6 +45,27 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     }
 
     /**
+     * 根据孩子和获取课时标签和便签名
+     *
+     * @param childId
+     * @param classCatalogId
+     * @return
+     */
+    public List<MemberChildTagBo> findDetailByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_TAG.fields());
+        fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_MEMBER_CHILD_TAG)
+                .leftJoin(EP_CONSTANT_TAG)
+                .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
+                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                .fetchInto(MemberChildTagBo.class);
+    }
+
+    /**
      * 根据孩子和判断是否存在课时标签
      *
      * @param childId
