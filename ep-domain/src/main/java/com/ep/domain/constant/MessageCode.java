@@ -34,6 +34,7 @@ public class MessageCode {
      * 机构
      */
     public static final String ERROR_ORGAN_EXISTS = "ERROR_ORGAN_EXISTS";
+    public static final String ERROR_ORGAN_NOT_EXISTS = "ERROR_ORGAN_NOT_EXISTS";
     /**
      * 孩子
      */

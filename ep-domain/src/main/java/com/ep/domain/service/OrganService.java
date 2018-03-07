@@ -12,6 +12,7 @@ import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.OrganRepository;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ import java.util.Optional;
  * @Author: J.W
  * @Date: 上午9:30 2018/1/14
  */
+@Slf4j
 @Service
 public class OrganService {
 
@@ -100,52 +102,106 @@ public class OrganService {
     }
 
     /**
-     * 系统后台新增商家
+     * 系统后台新增机构
+     *
      * @param po
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createSystemOrgan(EpOrganPo po,String mainpicUrlPreCode,String logoUrlPreCode){
+    public void createSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) {
+        log.info("[机构]新增机构开始。");
         EpOrganPo insertPo = organRepository.insertNew(po);
-        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode,insertPo.getId());
-        fileRepository.updateSourceIdByPreCode(logoUrlPreCode,insertPo.getId());
+        //机构主图
+        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, insertPo.getId());
+        //机构logo
+        fileRepository.updateSourceIdByPreCode(logoUrlPreCode, insertPo.getId());
+        log.info("[机构]新增机构成功，id={}。", insertPo.getId());
     }
 
     /**
-     * 系统后台修改商家
+     * 系统后台修改机构
+     *
      * @param po
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateSystemOrgan(EpOrganPo po,String mainpicUrlPreCode,String logoUrlPreCode){
+    public ResultDo updateSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) {
+        ResultDo<?> resultDo = ResultDo.build();
+        log.info("[机构]更新机构开始，id={}。", po.getId());
+        if (null == organRepository.findById(po.getId())) {
+            log.error("[机构]，修改失败，机构不存在。");
+            resultDo.setSuccess(false);
+            resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+            return resultDo;
+        }
         organRepository.updateSystemOrgan(po);
-        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode,po.getId());
-        fileRepository.updateSourceIdByPreCode(logoUrlPreCode,po.getId());
+        //主图
+        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, po.getId());
+        //logo
+        fileRepository.updateSourceIdByPreCode(logoUrlPreCode, po.getId());
+        log.info("[机构]更新机构成功，id={}。", po.getId());
+        return resultDo;
     }
 
     /**
-     * 删除商家
+     * 删除机构
+     *
      * @param id
      */
-    public void delete(Long id){
+    public void delete(Long id) {
         organRepository.deleteLogical(id);
     }
 
     /**
-     *
      * @param status
      * @return
      */
-    public List<EpOrganPo> getByStatus(EpOrganStatus status){
+    public List<EpOrganPo> getByStatus(EpOrganStatus status) {
         return organRepository.getByStatus(status);
     }
 
-    public void offlineById(Long id){
+    /**
+     * 根据id下线机构
+     *
+     * @param id
+     */
+    public ResultDo offlineById(Long id) {
+        ResultDo<?> resultDo = ResultDo.build();
+        EpOrganPo po = organRepository.findById(id);
+        if (null == po) {
+            log.error("[机构]，下线失败，机构不存在。");
+            resultDo.setSuccess(false);
+            resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+            return resultDo;
+        }
+        if (po.getStatus().equals(EpOrganStatus.offline)) {
+            return resultDo;
+        }
         organRepository.offlineById(id);
+        log.error("[机构]，下线成功，id={}。", id);
+        return resultDo;
     }
 
-    public void onlineById(Long id){
+    /**
+     * 根据id上线机构
+     *
+     * @param id
+     */
+    public ResultDo onlineById(Long id) {
+        ResultDo<?> resultDo = ResultDo.build();
+        EpOrganPo po = organRepository.findById(id);
+        if (null == po) {
+            log.error("[机构]，上线失败，机构不存在。");
+            resultDo.setSuccess(false);
+            resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+            return resultDo;
+        }
+        if (po.getStatus().equals(EpOrganStatus.online)) {
+            return resultDo;
+        }
         organRepository.onlineById(id);
+        log.error("[机构]，上线成功，id={}。", id);
+        return resultDo;
     }
 
 }

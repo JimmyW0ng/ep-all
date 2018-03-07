@@ -180,6 +180,10 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .execute();
     }
 
+    /**
+     * 根据id下线机构
+     * @param id
+     */
     public void offlineById(Long id){
         dslContext.update(EP_ORGAN)
                 .set(EP_ORGAN.STATUS,EpOrganStatus.offline)
@@ -189,6 +193,10 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .execute();
     }
 
+    /**
+     * 根据id上线机构
+     * @param id
+     */
     public void onlineById(Long id){
         dslContext.update(EP_ORGAN)
                 .set(EP_ORGAN.STATUS,EpOrganStatus.online)
@@ -197,5 +205,17 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }
-}
+
+    /**
+     * 根据id获取记录
+     * @param id
+     * @return
+     */
+    public EpOrganPo findById(Long id){
+        return dslContext.selectFrom(EP_ORGAN)
+                .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganPo.class);
+    }
+ }
 

@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构地区：</label>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block;margin-left: 15px" >
                         <select id="province" name="province" type="text" class="form-control" required="true" onchange="getCityByProvince()"
                                aria-required="true">
                             <option value="">省</option>
@@ -41,14 +41,14 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block" >
                         <select id="city" name="city" type="text" class="form-control" required="true"
                              onchange="getDistrictByCity()"  aria-required="true">
                             <option value="">市</option>
 
                         </select>
                     </div>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block" >
                         <select id="ognRegion" name="ognRegion" type="text" class="form-control" required="true" th:field="*{ognRegion}"
                                 aria-required="true">
                             <option value="">区</option>
@@ -65,15 +65,15 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区经度：</label>
                     <div class="col-sm-3">
-                        <input id="ognLng" name="ognLng" type="text" class="form-control" required="true" th:field="*{ognLng}"
-                               aria-required="true">
+                        <input id="ognLng" name="ognLng" type="text" class="form-control" th:field="*{ognLng}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区纬度：</label>
                     <div class="col-sm-3">
-                        <input id="ognLat" name="ognLat" type="text" class="form-control" required="true" th:field="*{ognLat}"
-                               aria-required="true">
+                        <input id="ognLat" name="ognLat" type="text" class="form-control" th:field="*{ognLat}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
@@ -81,41 +81,41 @@
                     <div class="col-sm-3">
                         <textarea id="ognShortIntroduce" name="ognShortIntroduce" type="text" class="form-control"
                                   th:field="*{ognShortIntroduce}"
-                                  aria-required="true"/>
+                                  />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构成立日期：</label>
                     <div class="col-sm-3">
-                        <input id="ognCreateDateStr" name="ognCreateDateStr" type="text" class="form-control datetimepicker_date" required="true" th:value="${organPo.ognCreateDate}"
-                                aria-required="true">
+                        <input id="ognCreateDateStr" name="ognCreateDateStr" type="text" class="form-control datetimepicker_date" th:value="${organPo.ognCreateDate}"
+                                >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方电话：</label>
                     <div class="col-sm-3">
-                        <input id="ognPhone" name="ognPhone" type="text" class="form-control" required="true" th:field="*{ognPhone}"
-                               aria-required="true">
+                        <input id="ognPhone" name="ognPhone" type="text" class="form-control" th:field="*{ognPhone}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方邮箱：</label>
                     <div class="col-sm-3">
                         <input id="ognEmail" name="ognEmail" type="text" class="form-control" th:field="*{ognEmail}"
-                               aria-required="true">
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方网址：</label>
                     <div class="col-sm-3">
                         <input id="ognUrl" name="ognUrl" type="text" class="form-control" th:field="*{ognUrl}"
-                               aria-required="true">
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构介绍：</label>
                     <div class="col-sm-3">
-                        <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" required="true" th:field="*{ognIntroduce}"
+                        <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" th:field="*{ognIntroduce}"
                                aria-required="true"/>
                     </div>
                 </div>
@@ -142,8 +142,8 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-3">
-                        <textarea id="remark" name="remark" type="text" class="form-control" required="true" th:field="*{remark}"
-                               aria-required="true"/>
+                        <textarea id="remark" name="remark" type="text" class="form-control"  th:field="*{remark}"
+                               />
                     </div>
                 </div>
                 <div class="form-group">
@@ -338,7 +338,7 @@
 
         var city=[[${city}]]
         var cityId=[[${cityId}]]
-        var htmls_city="<option value=''>区</option>";
+        var htmls_city="<option value=''>市</option>";
         for(var key in city){
             htmls_city=htmls_city+"<option value='"+key+"'>"+city[key]+"</option>"
         }

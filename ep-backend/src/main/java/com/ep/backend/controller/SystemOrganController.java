@@ -17,6 +17,7 @@ import com.ep.domain.service.FileService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,7 @@ import static com.ep.domain.repository.domain.Ep.EP;
  * @Author: CC.F
  * @Date: 11:19 2018/1/29
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/systemOrgan")
 public class SystemOrganController extends BackendController {
@@ -63,29 +65,24 @@ public class SystemOrganController extends BackendController {
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
-        Map map = Maps.newHashMap();
+        Map<String,Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(ognName)) {
             conditions.add(EP.EP_ORGAN.OGN_NAME.like("%" + ognName + "%"));
         }
-//        map.put("mobile", mobile);
-//        if (StringTools.isNotBlank(type)) {
-//            conditions.add(EP.EP_SYSTEM_USER.TYPE.eq(EpSystemUserType.valueOf(type)));
-//        }
-//        map.put("type", type);
 
         if (null != crStartTime) {
             conditions.add(EP.EP_ORGAN.CREATE_AT.greaterOrEqual(crStartTime));
         }
-        map.put("crStartTime", crStartTime);
+        searchMap.put("crStartTime", crStartTime);
         if (null != crEndTime) {
             conditions.add(EP.EP_ORGAN.CREATE_AT.lessOrEqual(crEndTime));
         }
-        map.put("crEndTime", crEndTime);
+        searchMap.put("crEndTime", crEndTime);
         conditions.add(EP.EP_ORGAN.DEL_FLAG.eq(false));
         Page<EpOrganPo> page = organService.findByPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
-        model.addAttribute("map", map);
+        model.addAttribute("searchMap", searchMap);
         return "/systemOrgan/index";
     }
 
@@ -158,19 +155,17 @@ public class SystemOrganController extends BackendController {
      * 修改机构
      *
      * @param bo
-     * @param request
      * @return
      */
     @PostMapping("update")
     @ResponseBody
-    public ResultDo update(HttpServletRequest request, SystemOrganBo bo
+    public ResultDo update( SystemOrganBo bo
     ) {
-        ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
-        organService.updateSystemOrgan(po,bo.getMainpicUrlPreCode(),bo.getLogoUrlPreCode());
-        return resultDo;
+
+        return organService.updateSystemOrgan(po,bo.getMainpicUrlPreCode(),bo.getLogoUrlPreCode());
     }
 
     /**
@@ -340,9 +335,8 @@ public class SystemOrganController extends BackendController {
     @GetMapping("offline/{id}")
     @ResponseBody
     public ResultDo offline(@PathVariable("id")Long id){
-        ResultDo resultDo = ResultDo.build();
-        organService.offlineById(id);
-        return resultDo;
+
+        return organService.offlineById(id);
     }
 
     /**
@@ -353,9 +347,7 @@ public class SystemOrganController extends BackendController {
     @GetMapping("online/{id}")
     @ResponseBody
     public ResultDo onlineById(@PathVariable("id")Long id){
-        ResultDo resultDo = ResultDo.build();
-        organService.onlineById(id);
-        return resultDo;
+        return organService.onlineById(id);
     }
 
 }
