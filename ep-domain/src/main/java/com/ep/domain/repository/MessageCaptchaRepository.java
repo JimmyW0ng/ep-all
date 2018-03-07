@@ -1,7 +1,6 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.DateTools;
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
@@ -88,9 +87,8 @@ public class MessageCaptchaRepository extends AbstractCRUDRepository<EpMessageCa
      */
     public int delCaptcha(Timestamp handleTime) {
         // 删除长期失效的验证码
-        Timestamp delTime = DateTools.dateToTimestamp(DateTools.addHour(handleTime, BizConstant.CAPTCHA_EXPIRE_DEL_HOUR_LIMIT));
         return dslContext.delete(EP_MESSAGE_CAPTCHA)
-                .where(EP_MESSAGE_CAPTCHA.EXPIRE_TIME.lessThan(delTime))
+                .where(EP_MESSAGE_CAPTCHA.EXPIRE_TIME.lessThan(handleTime))
                 .execute();
     }
 

@@ -1189,4 +1189,16 @@ public final class StringTools {
         return UUID.randomUUID().toString().replaceAll(MINUS_SIGN, EMPTY);
     }
 
+    /**
+     * 如果是空字符串返回null
+     *
+     * @param input
+     * @return
+     */
+    public static String getNullIfBlank(String input) {
+        if (isBlank(input)) {
+            return null;
+        }
+        return input;
+    }
 }

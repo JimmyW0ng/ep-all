@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构地区：</label>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block;margin-left: 15px" >
                         <select id="province" name="province" type="text" class="form-control" required="true" onchange="getCityByProvince()"
                                aria-required="true">
                             <option value="">省</option>
@@ -41,14 +41,14 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block" >
                         <select id="city" name="city" type="text" class="form-control" required="true"
                              onchange="getDistrictByCity()"  aria-required="true">
                             <option value="">市</option>
 
                         </select>
                     </div>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block" >
                         <select id="ognRegion" name="ognRegion" type="text" class="form-control" required="true" th:field="*{ognRegion}"
                                 aria-required="true">
                             <option value="">区</option>
@@ -65,15 +65,15 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区经度：</label>
                     <div class="col-sm-3">
-                        <input id="ognLng" name="ognLng" type="text" class="form-control" required="true" th:field="*{ognLng}"
-                               aria-required="true">
+                        <input id="ognLng" name="ognLng" type="text" class="form-control" th:field="*{ognLng}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">地区纬度：</label>
                     <div class="col-sm-3">
-                        <input id="ognLat" name="ognLat" type="text" class="form-control" required="true" th:field="*{ognLat}"
-                               aria-required="true">
+                        <input id="ognLat" name="ognLat" type="text" class="form-control" th:field="*{ognLat}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
@@ -81,69 +81,58 @@
                     <div class="col-sm-3">
                         <textarea id="ognShortIntroduce" name="ognShortIntroduce" type="text" class="form-control"
                                   th:field="*{ognShortIntroduce}"
-                                  aria-required="true"/>
+                                  />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构成立日期：</label>
                     <div class="col-sm-3">
-                        <input id="ognCreateDateStr" name="ognCreateDateStr" type="text" class="form-control datetimepicker_date" required="true" th:value="${organPo.ognCreateDate}"
-                                aria-required="true">
+                        <input id="ognCreateDateStr" name="ognCreateDateStr" type="text" class="form-control datetimepicker_date" th:value="${organPo.ognCreateDate}"
+                                >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方电话：</label>
                     <div class="col-sm-3">
-                        <input id="ognPhone" name="ognPhone" type="text" class="form-control" required="true" th:field="*{ognPhone}"
-                               aria-required="true">
+                        <input id="ognPhone" name="ognPhone" type="text" class="form-control" th:field="*{ognPhone}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方邮箱：</label>
                     <div class="col-sm-3">
-                        <input id="ognEmail" name="ognEmail" type="text" class="form-control" th:field="*{ognEmail}"
-                               aria-required="true">
+                        <input id="ognEmail" name="ognEmail" type="email" class="form-control" th:field="*{ognEmail}"
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方网址：</label>
                     <div class="col-sm-3">
                         <input id="ognUrl" name="ognUrl" type="text" class="form-control" th:field="*{ognUrl}"
-                               aria-required="true">
+                               >
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构介绍：</label>
                     <div class="col-sm-3">
-                        <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" required="true" th:field="*{ognIntroduce}"
+                        <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" th:field="*{ognIntroduce}"
                                aria-required="true"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">营销权重：</label>
                     <div class="col-sm-3">
-                        <input id="marketWeight" name="marketWeight" type="text" class="form-control" required="true" th:field="*{marketWeight}"
-                                  aria-required="true"/>
+                        <input id="marketWeight" name="marketWeight" type="number" class="form-control" required="true"
+                               th:field="*{marketWeight}"
+                               aria-required="true"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
-                                aria-required="true">
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-3">
-                        <textarea id="remark" name="remark" type="text" class="form-control" required="true" th:field="*{remark}"
-                               aria-required="true"/>
+                        <textarea id="remark" name="remark" type="text" class="form-control"  th:field="*{remark}"
+                               />
                     </div>
                 </div>
                 <div class="form-group">
@@ -154,8 +143,8 @@
                     </button>
                     <input style="display:none" id="mainpic_img" type="file" onchange="uploadMainpicImg($('#mainpic_img_btn'),this)"/>
                 </div>
-                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:200px;width: 500px">
-                    <img id="mainpic_img_url" style="margin: 10px;height:180px" th:src="${mainpicImgUrl}"/>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:240px;width: 405px">
+                    <img id="mainpic_img_url" th:src="${mainpicImgUrl}"/>
                     <input type="hidden" name="mainpic_url" id="mainpic_url">
                     <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                 </div>
@@ -169,8 +158,8 @@
                     <input style="display: none" id="logo_img" type="file" onchange="uploadLogoImg($('#logo_img_btn'),this)"/>
 
                 </div>
-                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
-                    <img id="logo_img_url" style="margin: 10px;height:140px;width: 140px;border-radius:50%" th:src="${logoImgUrl}"/>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 165px;height: 165px">
+                    <img id="logo_img_url" th:src="${logoImgUrl}"/>
                     <input type="hidden" name="logo_url" id="logo_url">
                     <input type="hidden" name="logoUrlPreCode" id="logo_url_preCode">
                 </div>
@@ -251,32 +240,14 @@
             success: function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index')
+                } else {
+
+                    toastr.error("操作失败" + (data.errorDescription ? ("," + data.errorDescription) : ""));
                 }
             }
 
         })
     }
-
-//    function changeType(ele) {
-//        $.ajax({
-//            type:"GET",
-//            url:"/auth/user/getRoleByUserType/"+$(ele).val(),
-//            success:function (data) {
-//                if(data.success){
-//                    var res=data.result;
-//                    var htmls="";
-//                    for(var i=0;i<res.length;i++){
-//                        htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
-//                            "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
-//                            "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
-//
-//                    }
-//                    $("#role_tb_body").html(htmls)
-//                }
-//            }
-//        })
-//    }
-//
 
     /**
      * 上传商家主图
@@ -294,7 +265,7 @@
             processData: false,
             success: function (data) {
                 if(data.success){
-                    $("#mainpic_img_url").attr("src",data.result.fileUrl)
+                    $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px").attr("src", data.result.fileUrl)
                     $("#mainpic_url").val(data.result.fileUrl)
                     $("#mainpic_url_preCode").val(data.result.preCode)
                 }
@@ -319,7 +290,7 @@
             success: function (data) {
                 if(data.success){
                     console.log(data.result)
-                    $("#logo_img_url").attr("src",data.result.fileUrl)
+                    $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%").attr("src", data.result.fileUrl)
                     $("#logo_url").val(data.result.fileUrl)
                     $("#logo_url_preCode").val(data.result.preCode)
                 }
@@ -328,6 +299,8 @@
         })
     }
     $(function () {
+        $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px")
+        $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%")
         var district=[[${district}]]
         var districtId=[[${districtId}]]
         var htmls_district="<option value=''>区</option>";
@@ -338,7 +311,7 @@
 
         var city=[[${city}]]
         var cityId=[[${cityId}]]
-        var htmls_city="<option value=''>区</option>";
+        var htmls_city="<option value=''>市</option>";
         for(var key in city){
             htmls_city=htmls_city+"<option value='"+key+"'>"+city[key]+"</option>"
         }
