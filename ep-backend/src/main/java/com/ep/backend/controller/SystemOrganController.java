@@ -1,14 +1,13 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
+import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
-import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
 import com.ep.domain.service.FileService;
@@ -29,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
@@ -182,16 +180,9 @@ public class SystemOrganController extends BackendController {
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
         model.addAttribute("provinceId", provinceId);
         model.addAttribute("organPo", po);
-        List<EpFilePo> mainpics = fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, po.getId());
-        String mainpicImgUrl = null;
-        if (CollectionsTools.isNotEmpty(mainpics)) {
-            mainpicImgUrl = mainpics.get(mainpics.size() - 1).getFileUrl();
-        }
-        List<EpFilePo> logos = fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
-        String logoImgUrl = null;
-        if (CollectionsTools.isNotEmpty(logos)) {
-            logoImgUrl = logos.get(logos.size() - 1).getFileUrl();
-        }
+        String mainpicImgUrl = organService.getOgnMainpic(id).getFileUrl();
+        String logoImgUrl = organService.getOgnLogo(id).getFileUrl();
+
         model.addAttribute("mainpicImgUrl", mainpicImgUrl);
         model.addAttribute("logoImgUrl", logoImgUrl);
         return "systemOrgan/form";
@@ -221,17 +212,9 @@ public class SystemOrganController extends BackendController {
         model.addAttribute("province", constantRegionPoProvince.getRegionName());
         model.addAttribute("organPo", po);
         //主图
-        List<EpFilePo> mainpics = fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, po.getId());
-        String mainpicImgUrl = null;
-        if (CollectionsTools.isNotEmpty(mainpics)) {
-            mainpicImgUrl = mainpics.get(mainpics.size() - 1).getFileUrl();
-        }
-        //logo
-        List<EpFilePo> logos = fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
-        String logoImgUrl = null;
-        if (CollectionsTools.isNotEmpty(logos)) {
-            logoImgUrl = logos.get(logos.size() - 1).getFileUrl();
-        }
+        String mainpicImgUrl = organService.getOgnMainpic(id).getFileUrl();
+        //商家logo
+        String logoImgUrl = organService.getOgnLogo(id).getFileUrl();
         model.addAttribute("mainpicImgUrl", mainpicImgUrl);
         model.addAttribute("logoImgUrl", logoImgUrl);
         return "systemOrgan/view";
@@ -260,15 +243,12 @@ public class SystemOrganController extends BackendController {
     @PostMapping("uploadMainpic")
     @ResponseBody
     public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) {
-        ResultDo resultDo = ResultDo.build();
         try {
-            resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, null);
+            return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, null);
         } catch (Exception e) {
-            resultDo.setSuccess(false);
-            return resultDo;
+            log.error("[机构]机构上传主图失败。", e);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-
-        return resultDo;
     }
 
     /**
@@ -279,47 +259,15 @@ public class SystemOrganController extends BackendController {
      */
     @PostMapping("uploadLogo")
     @ResponseBody
-    public ResultDo uploadLogo(@RequestParam("file") MultipartFile file) {
-        ResultDo resultDo = ResultDo.build();
+    public ResultDo<FileDto> uploadLogo(@RequestParam("file") MultipartFile file) {
         try {
-            resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
+            return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
         } catch (Exception e) {
-            resultDo.setSuccess(false);
-            return resultDo;
+            log.error("[机构]机构上传logo失败。", e);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-
-        return resultDo;
     }
 
-    /**
-     * 设置图片模态框初始化
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("uploadInit/{id}")
-    @ResponseBody
-    public ResultDo<Map<String, String>> uploadInit(@PathVariable("id") Long id) {
-        ResultDo<Map<String, String>> resultDo = ResultDo.build();
-        Map<String, String> map = Maps.newHashMap();
-        //商家主图
-        List<EpFilePo> mainpics = fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, id);
-        if (CollectionsTools.isNotEmpty(mainpics)) {
-            String mainpicImgUrl = mainpics.get(0).getFileUrl();
-            map.put("mainpicImgUrl", mainpicImgUrl);
-        }
-
-        //商家logo
-        List<EpFilePo> logos = fileService.getByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
-
-        if (CollectionsTools.isNotEmpty(logos)) {
-            String logoImgUrl = logos.get(0).getFileUrl();
-            map.put("logoImgUrl", logoImgUrl);
-        }
-
-        resultDo.setResult(map);
-        return resultDo;
-    }
 
     /**
      * 机构下线

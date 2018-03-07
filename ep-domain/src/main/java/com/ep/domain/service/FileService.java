@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @Description: 文件服务类
  * @Author: J.W
@@ -67,13 +65,4 @@ public class FileService {
         return resultDo;
     }
 
-    /**
-     *
-     * @param bizTypeCode
-     * @param sourceId
-     * @return
-     */
-    public List<EpFilePo> getByBizTypeAndSourceId(Short bizTypeCode, Long sourceId){
-        return fileRepository.getByBizTypeAndSourceId(bizTypeCode,sourceId);
-    }
 }

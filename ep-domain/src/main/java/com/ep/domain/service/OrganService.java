@@ -223,14 +223,6 @@ public class OrganService {
     }
 
     /**
-     * @param status
-     * @return
-     */
-    public List<EpOrganPo> getByStatus(EpOrganStatus status) {
-        return organRepository.getByStatus(status);
-    }
-
-    /**
      * 根据id下线机构
      *
      * @param id
@@ -248,7 +240,7 @@ public class OrganService {
             return resultDo;
         }
         organRepository.offlineById(id);
-        log.error("[机构]，下线成功，id={}。", id);
+        log.info("[机构]，下线成功，id={}。", id);
         return resultDo;
     }
 
@@ -270,8 +262,28 @@ public class OrganService {
             return resultDo;
         }
         organRepository.onlineById(id);
-        log.error("[机构]，上线成功，id={}。", id);
+        log.info("[机构]，上线成功，id={}。", id);
         return resultDo;
+    }
+
+    /**
+     * 根据sourceId获取机构主图
+     *
+     * @param sourceId
+     * @return
+     */
+    public EpFilePo getOgnMainpic(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId).get();
+    }
+
+    /**
+     * 根据sourceId获取机构logo
+     *
+     * @param sourceId
+     * @return
+     */
+    public EpFilePo getOgnLogo(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId).get();
     }
 
 }

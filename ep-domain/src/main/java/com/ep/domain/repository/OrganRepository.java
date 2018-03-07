@@ -144,7 +144,6 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .set(EP_ORGAN.REMARK, po.getRemark())
                 .set(EP_ORGAN.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN.ID.eq(po.getId()))
-                .and(EP_ORGAN.STATUS.eq(EpOrganStatus.save))
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }
@@ -160,13 +159,6 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .set(EP_ORGAN.DEL_FLAG, true)
                 .where(EP_ORGAN.ID.eq(id))
                 .execute();
-    }
-
-    public List<EpOrganPo> getByStatus(EpOrganStatus status) {
-        return dslContext.selectFrom(EP_ORGAN)
-                .where(EP_ORGAN.DEL_FLAG.eq(false))
-                .and(EP_ORGAN.STATUS.eq(status))
-                .fetchInto(EpOrganPo.class);
     }
 
     /**
