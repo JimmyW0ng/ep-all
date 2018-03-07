@@ -7,6 +7,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,14 +55,28 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
     }
 
     /**
-     * 根据业务类型和来源获取已删除文件列表
+     * 获取带删除文件
      *
      * @return
      */
-    public List<EpFilePo> getDelByBizTypeAndSourceId(Short bscFileBizType, Long sourceId) {
+    public int logicDel(Timestamp endTime) {
+        return dslContext.update(EP_FILE)
+                .set(EP_FILE.DEL_FLAG, true)
+                .where(EP_FILE.CREATE_AT.lessThan(endTime))
+                .and(EP_FILE.SOURCE_ID.isNull())
+                .and(EP_FILE.PRE_CODE.isNotNull())
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 获取带删除文件
+     *
+     * @return
+     */
+    public List<EpFilePo> getWaitDelete(Timestamp endTime) {
         return dslContext.selectFrom(EP_FILE)
-                .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
-                .and(EP_FILE.SOURCE_ID.eq(sourceId))
+                .where(EP_FILE.CREATE_AT.lessThan(endTime))
                 .and(EP_FILE.DEL_FLAG.eq(true))
                 .fetchInto(EpFilePo.class);
     }
