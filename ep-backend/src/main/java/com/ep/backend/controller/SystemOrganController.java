@@ -142,10 +142,11 @@ public class SystemOrganController extends BackendController {
     @PostMapping("create")
     @ResponseBody
     public ResultDo create(HttpServletRequest request, SystemOrganBo bo
-    ) {
+    ) throws Exception{
         ResultDo resultDo = ResultDo.build();
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
+//        BeanTools.BeanStringPropertyNullValue(po);
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         organService.createSystemOrgan(po,bo.getMainpicUrlPreCode(),bo.getLogoUrlPreCode());
         return resultDo;
@@ -160,9 +161,10 @@ public class SystemOrganController extends BackendController {
     @PostMapping("update")
     @ResponseBody
     public ResultDo update( SystemOrganBo bo
-    ) {
+    ) throws Exception{
         EpOrganPo po = new EpOrganPo();
         BeanTools.copyPropertiesIgnoreNull(bo, po);
+//        BeanTools.BeanStringPropertyNullValue(po);
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
 
         return organService.updateSystemOrgan(po,bo.getMainpicUrlPreCode(),bo.getLogoUrlPreCode());

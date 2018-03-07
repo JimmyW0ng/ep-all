@@ -7,7 +7,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,5 +89,27 @@ public class BeanTools {
             }
             souceClass = souceClass.getSuperclass();
         } while (!souceClass.equals(Object.class));
+    }
+
+    /**
+     * 对象中String属性为“”，变为null
+     * @param src
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    public static void BeanStringPropertyNullValue(Object src) throws IllegalAccessException, InvocationTargetException {
+        Field[] srcfields = src.getClass().getDeclaredFields();
+        for (int i = 0; i < srcfields.length; i++) {
+            Field field = srcfields[i];
+            field.setAccessible(true);
+            if (field.getType() == String.class) {
+                if (StringTools.isBlank((String) field.get(src))) {
+                    //获取 clazz 类型中的 propertyName 的属性描述器
+                    PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(src.getClass(), field.getName());
+                    Method setMethod = pd.getWriteMethod();//从属性描述器中获取 set 方法
+                    setMethod.invoke(src, new Object[]{null});//调用 set 方法将传入的value值保存属性中去
+                }
+            }
+        }
     }
 }
