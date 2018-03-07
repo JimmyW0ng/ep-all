@@ -92,4 +92,5 @@ public class BizConstant {
      * 消息文案
      */
     public static final String MESSAGE_CONTENT_CLASS_CATALOG_COMMENT = "\"%s\"在\"%s-%s\"中收到评价，点击查看";
+
 }

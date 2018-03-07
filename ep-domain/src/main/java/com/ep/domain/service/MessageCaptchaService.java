@@ -10,6 +10,7 @@ import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.repository.MessageCaptchaRepository;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
  * @Author: J.W
  * @Date: 上午10:33 2017/11/27
  */
+@Slf4j
 @Service
 public class MessageCaptchaService {
 

@@ -4,6 +4,7 @@ import com.ep.common.tool.JsonTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -24,7 +25,9 @@ public class ApiSecurityAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         ResultDo resultDo = ResultDo.build(MessageCode.ERROR_ACCESS_NEED_AUTH);
-        resultDo.setErrorDescription(e.getMessage());
+        if (!e.getClass().equals(InsufficientAuthenticationException.class)) {
+            resultDo.setErrorDescription(e.getMessage());
+        }
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
