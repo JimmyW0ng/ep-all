@@ -128,18 +128,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
-                                aria-required="true">
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-3">
                         <textarea id="remark" name="remark" type="text" class="form-control"  th:field="*{remark}"
