@@ -3,8 +3,7 @@ package com.ep.backend.controller;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
-import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.repository.domain.enums.EpOrganStatus;
+import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.OrganAccountService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
@@ -21,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
@@ -74,6 +72,8 @@ public class OrganAccountController extends BackendController {
 //        }
 //        map.put("crEndTime", crEndTime);
         conditions.add(EP.EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false));
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP.EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId));
         Page<OrganAccountBo> page = organAccountService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);
@@ -90,12 +90,7 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/view/{id}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String view(Model model,@PathVariable("id")Long id) {
-        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.online);
-        Map<Long,String> organMap=Maps.newHashMap();
-        list.forEach(p->{
-            organMap.put(p.getId(),p.getOgnName());
-        });
-        model.addAttribute("organMap", organMap);
+
         model.addAttribute("organAccountPo", organAccountService.getById(id));
         return "/organAccount/view";
     }
@@ -109,12 +104,7 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/createInit")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String createInit(Model model) {
-        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.online);
-        Map<Long,String> organMap=Maps.newHashMap();
-        list.forEach(p->{
-            organMap.put(p.getId(),p.getOgnName());
-        });
-        model.addAttribute("organMap", organMap);
+
         model.addAttribute("organAccountPo", new EpOrganAccountPo());
         return "/organAccount/form";
     }
@@ -128,12 +118,7 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/updateInit/{id}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String updateInit(Model model,@PathVariable("id")Long id) {
-        List<EpOrganPo> list = organService.getByStatus(EpOrganStatus.online);
-        Map<Long,String> organMap=Maps.newHashMap();
-        list.forEach(p->{
-            organMap.put(p.getId(),p.getOgnName());
-        });
-        model.addAttribute("organMap", organMap);
+
         model.addAttribute("organAccountPo",organAccountService.getById(id));
         return "/organAccount/form";
     }
@@ -148,6 +133,8 @@ public class OrganAccountController extends BackendController {
     @ResponseBody
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public ResultDo create(EpOrganAccountPo po) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        po.setOgnId(currentUser.getOgnId());
         ResultDo resultDo=ResultDo.build();
         organAccountService.create(po);
         return resultDo;

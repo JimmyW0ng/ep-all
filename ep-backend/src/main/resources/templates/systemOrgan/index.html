@@ -85,6 +85,10 @@
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/systemOrgan/view/}+${po.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>
+                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(po.status,'save')}"
+                                   href="javascript:void(0)" th:onclick="'onlineOrganBox('+${po.id}+')'">上线</a>
+                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(po.status,'online')}"
+                                   href="javascript:void(0)" th:onclick="'offlineOrganBox('+${po.id}+')'">下线</a>
                                 <a class="btn btn-xs btn-danger"  href="javascript:void(0)" th:onclick="'deleteOrganBox('+${po.id}+')'" >删除</a>
                                 <!--<button type="button" class="btn btn-xs btn-primary" data-toggle="modal" th:onclick="'modelShow('+${po.id}+');'">-->
                                     <!--上传相关图片-->
@@ -171,10 +175,55 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script type="text/javascript">
+
+    function onlineOrganBox(id) {
+        parent.layer.alert('确认上线', {
+                icon: 1,
+//                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+                onlineOrganDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function onlineOrganDo(id) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/systemOrgan/online/"+id,
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/systemOrgan/index');
+                }
+            }
+        })
+    }
+    function offlineOrganBox(id) {
+        parent.layer.alert('确认下线', {
+                icon: 1,
+//                skin: 'layer-ext-moon',
+
+            },
+            function (index) {
+                delOrganDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function offlineOrganDo(id) {
+        $.ajax({
+            type:"GET",
+            url:"/auth/systemOrgan/offline/"+id,
+            success:function (data) {
+                if(data.success){
+                    toastr_success(null,'/auth/systemOrgan/index');
+                }
+            }
+        })
+    }
     function deleteOrganBox(id) {
         parent.layer.alert('确认删除此机构', {
-                icon: 1,
-                skin: 'layer-ext-moon',
+                icon: 0,
+//                skin: 'layer-ext-moon',
 
             },
             function (index) {

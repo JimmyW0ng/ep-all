@@ -84,6 +84,7 @@ public class MemberChildHonorController extends BackendController {
             conditions.add(EP_MEMBER_CHILD_HONOR.CREATE_AT.lessOrEqual(crEndTime));
         }
         map.put("crEndTime", crEndTime);
+        conditions.add(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false));
 
         Page<MemberChildHonorBo> page = memberChildHonorService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);

@@ -179,5 +179,23 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    public void offlineById(Long id){
+        dslContext.update(EP_ORGAN)
+                .set(EP_ORGAN.STATUS,EpOrganStatus.offline)
+                .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    public void onlineById(Long id){
+        dslContext.update(EP_ORGAN)
+                .set(EP_ORGAN.STATUS,EpOrganStatus.online)
+                .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.STATUS.eq(EpOrganStatus.save))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

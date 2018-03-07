@@ -1,10 +1,12 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
 import com.google.common.collect.Lists;
-import org.jooq.*;
+import org.jooq.Condition;
+import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ep.domain.repository.domain.Tables.*;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE_TEAM;
 
 /**
  * @Description:机构后台账户表Repository
@@ -100,18 +103,17 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
      * @return
      */
     public Page<OrganAccountBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
-        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_ACCOUNT.fields());
-        fieldList.add(EP_ORGAN.OGN_NAME.as("ognName"));
-
-        SelectConditionStep<Record> record = dslContext.select(fieldList).from(EP_ORGAN_ACCOUNT).
-                leftJoin(EP_ORGAN).on(EP_ORGAN_ACCOUNT.OGN_ID.eq(EP_ORGAN.ID)).where(condition);
-
         long totalCount = dslContext.selectCount()
                 .from(EP_ORGAN_ACCOUNT)
-                .leftJoin(EP_ORGAN).on(EP_ORGAN_ACCOUNT.OGN_ID.eq(EP_ORGAN.ID))
                 .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
 
-        List<OrganAccountBo> list = record.orderBy(getSortFields(pageable.getSort()))
+        List<OrganAccountBo> list = dslContext
+                .selectFrom(EP_ORGAN_ACCOUNT)
+                .where(condition)
+                .orderBy(getSortFields(pageable.getSort()))
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(OrganAccountBo.class);
