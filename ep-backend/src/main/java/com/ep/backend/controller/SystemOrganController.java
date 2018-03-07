@@ -5,6 +5,7 @@ import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
@@ -153,7 +154,11 @@ public class SystemOrganController extends BackendController {
         po.setRemark(bo.getRemark());
         po.setStatus(EpOrganStatus.save);
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
-        organService.createSystemOrgan(po, bo.getMainpicUrlPreCode(), bo.getLogoUrlPreCode());
+        try {
+            organService.createSystemOrgan(po, bo.getMainpicUrlPreCode(), bo.getLogoUrlPreCode());
+        } catch (Exception e) {
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
+        }
         return resultDo;
     }
 
@@ -166,6 +171,7 @@ public class SystemOrganController extends BackendController {
     @PostMapping("update")
     @ResponseBody
     public ResultDo update(SystemOrganBo bo) {
+        ResultDo resultDo;
         EpOrganPo po = new EpOrganPo();
         po.setId(bo.getId());
         po.setOgnName(bo.getOgnName());
@@ -181,7 +187,12 @@ public class SystemOrganController extends BackendController {
         po.setMarketWeight(bo.getMarketWeight());
         po.setRemark(bo.getRemark());
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
-        return organService.updateSystemOrgan(po, bo.getMainpicUrlPreCode(), bo.getLogoUrlPreCode());
+        try {
+            resultDo = organService.updateSystemOrgan(po, bo.getMainpicUrlPreCode(), bo.getLogoUrlPreCode());
+        } catch (Exception e) {
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
+        }
+        return resultDo;
     }
 
     /**
@@ -306,7 +317,6 @@ public class SystemOrganController extends BackendController {
     public ResultDo uploadLogo(@RequestParam("file") MultipartFile file) {
         ResultDo resultDo = ResultDo.build();
         try {
-            // resultDo=fileService.replaceFileByBizTypeAndSourceId(file.getName(),file.getBytes(),BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO,sourceId,null);
             resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
         } catch (Exception e) {
             resultDo.setSuccess(false);

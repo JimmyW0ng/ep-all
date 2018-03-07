@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -108,13 +109,17 @@ public class OrganService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) {
-        log.info("[机构]新增机构开始。");
+    public void createSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) throws Exception {
+        log.info("[机构]新增机构开始。机构对象={}。", po.toString());
         EpOrganPo insertPo = organRepository.insertNew(po);
         //机构主图
-        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, insertPo.getId());
+        if (StringTools.isNotBlank(mainpicUrlPreCode)) {
+            fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, insertPo.getId());
+        }
         //机构logo
-        fileRepository.updateSourceIdByPreCode(logoUrlPreCode, insertPo.getId());
+        if (StringTools.isNotBlank(logoUrlPreCode)) {
+            fileRepository.updateSourceIdByPreCode(logoUrlPreCode, insertPo.getId());
+        }
         log.info("[机构]新增机构成功，id={}。", insertPo.getId());
     }
 
@@ -125,22 +130,32 @@ public class OrganService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo updateSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) {
+    public ResultDo updateSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) throws Exception {
         ResultDo<?> resultDo = ResultDo.build();
-        log.info("[机构]更新机构开始，id={}。", po.getId());
+        log.info("[机构]更新机构开始，机构对象={}。", po.toString());
         if (null == organRepository.findById(po.getId())) {
             log.error("[机构]，修改失败，机构不存在。");
             resultDo.setSuccess(false);
             resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
             return resultDo;
         }
-        organRepository.updateSystemOrgan(po);
+
         //主图
-        fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, po.getId());
+        if (StringTools.isNotBlank(mainpicUrlPreCode)) {
+            fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, po.getId());
+        }
         //logo
-        fileRepository.updateSourceIdByPreCode(logoUrlPreCode, po.getId());
-        log.info("[机构]更新机构成功，id={}。", po.getId());
-        return resultDo;
+        if (StringTools.isNotBlank(logoUrlPreCode)) {
+            fileRepository.updateSourceIdByPreCode(logoUrlPreCode, po.getId());
+        }
+        if (organRepository.updateSystemOrgan(po) == 1) {
+            log.info("[机构]更新机构成功，id={}。", po.getId());
+            return resultDo;
+        } else {
+            log.error("[机构]更新机构失败，id={}。", po.getId());
+            resultDo.setSuccess(false);
+            return resultDo;
+        }
     }
 
     /**

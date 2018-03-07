@@ -239,6 +239,8 @@
             success: function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index')
+                } else {
+                    toastr.error("操作失败");
                 }
             }
 
