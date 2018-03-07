@@ -111,7 +111,7 @@ public class OrganService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createSystemOrgan(SystemOrganBo bo) throws Exception {
+    public ResultDo createSystemOrgan(SystemOrganBo bo) throws Exception {
         EpOrganPo po = new EpOrganPo();
         po.setId(bo.getId());
         po.setOgnName(bo.getOgnName());
@@ -130,6 +130,10 @@ public class OrganService {
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
 
         log.info("[机构]新增机构开始。机构对象={}。", po);
+        if (organRepository.findByName(bo.getOgnName()).isPresent()) {
+            log.error("[机构]新增机构失败。机构名称已存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NAME_EXISTS);
+        }
         organRepository.insert(po);
         //机构主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
@@ -140,6 +144,7 @@ public class OrganService {
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
         log.info("[机构]新增机构成功，id={}。", po.getId());
+        return ResultDo.build();
     }
 
     /**

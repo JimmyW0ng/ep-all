@@ -135,9 +135,9 @@ public class SystemOrganController extends BackendController {
     @PostMapping("create")
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
-        ResultDo resultDo = ResultDo.build();
+        ResultDo resultDo;
         try {
-            organService.createSystemOrgan(bo);
+            resultDo = organService.createSystemOrgan(bo);
         } catch (Exception e) {
             return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }

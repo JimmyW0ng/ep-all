@@ -143,8 +143,8 @@
                     </button>
                     <input style="display:none" id="mainpic_img" type="file" onchange="uploadMainpicImg($('#mainpic_img_btn'),this)"/>
                 </div>
-                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:200px;width: 500px">
-                    <img id="mainpic_img_url" style="margin: 10px;height:180px" th:src="${mainpicImgUrl}"/>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:240px;width: 405px">
+                    <img id="mainpic_img_url" th:src="${mainpicImgUrl}"/>
                     <input type="hidden" name="mainpic_url" id="mainpic_url">
                     <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                 </div>
@@ -158,8 +158,8 @@
                     <input style="display: none" id="logo_img" type="file" onchange="uploadLogoImg($('#logo_img_btn'),this)"/>
 
                 </div>
-                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
-                    <img id="logo_img_url" style="margin: 10px;height:140px;width: 140px;border-radius:50%" th:src="${logoImgUrl}"/>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 165px;height: 165px">
+                    <img id="logo_img_url" th:src="${logoImgUrl}"/>
                     <input type="hidden" name="logo_url" id="logo_url">
                     <input type="hidden" name="logoUrlPreCode" id="logo_url_preCode">
                 </div>
@@ -241,33 +241,13 @@
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index')
                 } else {
-                    toastr.error("操作失败");
+
+                    toastr.error("操作失败" + (data.errorDescription ? ("," + data.errorDescription) : ""));
                 }
             }
 
         })
     }
-
-//    function changeType(ele) {
-//        $.ajax({
-//            type:"GET",
-//            url:"/auth/user/getRoleByUserType/"+$(ele).val(),
-//            success:function (data) {
-//                if(data.success){
-//                    var res=data.result;
-//                    var htmls="";
-//                    for(var i=0;i<res.length;i++){
-//                        htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
-//                            "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
-//                            "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
-//
-//                    }
-//                    $("#role_tb_body").html(htmls)
-//                }
-//            }
-//        })
-//    }
-//
 
     /**
      * 上传商家主图
@@ -285,7 +265,7 @@
             processData: false,
             success: function (data) {
                 if(data.success){
-                    $("#mainpic_img_url").attr("src",data.result.fileUrl)
+                    $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px").attr("src", data.result.fileUrl)
                     $("#mainpic_url").val(data.result.fileUrl)
                     $("#mainpic_url_preCode").val(data.result.preCode)
                 }
@@ -310,7 +290,7 @@
             success: function (data) {
                 if(data.success){
                     console.log(data.result)
-                    $("#logo_img_url").attr("src",data.result.fileUrl)
+                    $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%").attr("src", data.result.fileUrl)
                     $("#logo_url").val(data.result.fileUrl)
                     $("#logo_url_preCode").val(data.result.preCode)
                 }

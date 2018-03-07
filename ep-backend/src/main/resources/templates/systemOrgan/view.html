@@ -31,19 +31,19 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构地区：</label>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block;margin-left: 15px">
                         <input id="province" name="province" type="text" class="form-control" required="true" th:value="${province}"
                                 aria-required="true">
 
                         </input>
                     </div>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block;margin-left: 15px">
                         <input id="city" name="city" type="text" class="form-control" required="true"
                                 th:value="${city}"  aria-required="true">
 
                         </input>
                     </div>
-                    <div class="col-sm-1">
+                    <div style="width: 100px;display: inline-block;margin-left: 15px">
                         <input id="ognRegion" name="ognRegion" type="text" class="form-control" required="true" th:value="${district}"
                                 aria-required="true">
 
@@ -118,32 +118,6 @@
                     <div class="col-sm-3">
                         <input id="marketWeight" name="marketWeight" type="text" class="form-control" required="true" th:field="*{marketWeight}"
                                aria-required="true"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">综合得分：</label>
-                    <div class="col-sm-3">
-                        <input id="togetherScore" name="togetherScore" type="text" class="form-control" required="true" th:field="*{togetherScore}"
-                               aria-required="true"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">分享：</label>
-                    <div class="col-sm-3">
-                        <input id="totalParticipate" name="totalParticipate" type="text" class="form-control" required="true" th:field="*{totalParticipate}"
-                               aria-required="true"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
-                                aria-required="true">
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganStatus.+${state.literal}}">
-                            </option>
-                        </select>
                     </div>
                 </div>
                 <div class="form-group">
