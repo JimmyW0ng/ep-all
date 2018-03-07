@@ -166,9 +166,15 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         Optional<EpOrganPo> optional = organRepository.findByName(bo.getOgnName());
-        if (optional.isPresent() && !(optional.get().getId().longValue() == bo.getId().longValue())) {
+        if (optional.isPresent() && !(optional.get().getId().equals(bo.getId()))) {
             log.error("[机构]修改机构失败。机构名称已存在。");
             return ResultDo.build(MessageCode.ERROR_ORGAN_NAME_EXISTS);
+        }
+
+        EpOrganPo poLock = organRepository.findByIdLock(bo.getId());
+        if (null == poLock) {
+            log.error("[机构]修改机构失败。该机构不存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         EpOrganPo po = new EpOrganPo();
         po.setId(bo.getId());
@@ -189,10 +195,12 @@ public class OrganService {
 
         //主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getMainpicUrlPreCode(), po.getId());
         }
         //logo
         if (StringTools.isNotBlank(bo.getLogoUrlPreCode())) {
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
         if (organRepository.updateSystemOrgan(po) == 1) {

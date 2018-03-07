@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
             // 接口入参缺失或者格式不正确
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
-        return ResultDo.build(MessageCode.ERROR_SYSTEM);
+        return ResultDo.build(MessageCode.ERROR_SYSTEM).setErrorDescription(ex.getCause().getMessage());
     }
 
 }
