@@ -227,17 +227,22 @@ public class SystemOrganController extends BackendController {
     }
 
     /**
-     * 删除机构
+     * 冻结机构
      *
      * @return
      */
-    @GetMapping("delete/{id}")
+    @GetMapping("freeze/{id}")
     @ResponseBody
-    public ResultDo delete(@PathVariable("id") Long id
+    public ResultDo freeze(@PathVariable("id") Long id
     ) {
         ResultDo resultDo = ResultDo.build();
-        organService.delete(id);
-        return resultDo;
+        try {
+            organService.freezeById(id);
+            return resultDo;
+        } catch (Exception e) {
+            log.error("[机构]机构冻结失败。id={}", id, e);
+            return resultDo.setSuccess(false);
+        }
     }
 
     /**
@@ -284,7 +289,6 @@ public class SystemOrganController extends BackendController {
     @GetMapping("offline/{id}")
     @ResponseBody
     public ResultDo offline(@PathVariable("id") Long id) {
-
         return organService.offlineById(id);
     }
 

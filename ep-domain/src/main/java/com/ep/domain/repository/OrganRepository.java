@@ -181,8 +181,8 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
      *
      * @param id
      */
-    public void offlineById(Long id) {
-        dslContext.update(EP_ORGAN)
+    public int offlineById(Long id) {
+        return dslContext.update(EP_ORGAN)
                 .set(EP_ORGAN.STATUS, EpOrganStatus.offline)
                 .where(EP_ORGAN.ID.eq(id))
                 .and(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
@@ -229,6 +229,20 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .forUpdate()
                 .fetchOneInto(EpOrganPo.class);
+    }
+
+    /**
+     * 根据id更新状态
+     *
+     * @param id
+     * @param status
+     */
+    public int updateStatusById(Long id, EpOrganStatus status) {
+        return dslContext.update(EP_ORGAN)
+                .set(EP_ORGAN.STATUS, status)
+                .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .execute();
     }
 }
 

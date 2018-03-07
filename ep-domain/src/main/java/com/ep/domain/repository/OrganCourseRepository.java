@@ -89,6 +89,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
 
     /**
      * 后台机构课程分页列表
+     *
      * @param pageable
      * @param condition
      * @return
@@ -122,23 +123,24 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
 
     /**
      * 根据id更新课程对象EpOrganCoursePo
+     *
      * @param po
      */
-    public void updateByIdLock(EpOrganCoursePo po){
+    public void updateByIdLock(EpOrganCoursePo po) {
         dslContext.selectFrom(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false)).forUpdate();
         dslContext.update(EP_ORGAN_COURSE)
-                .set(EP_ORGAN_COURSE.COURSE_NAME,po.getCourseName())
-                .set(EP_ORGAN_COURSE.COURSE_TYPE,po.getCourseType())
-                .set(EP_ORGAN_COURSE.COURSE_INTRODUCE,po.getCourseIntroduce())
-                .set(EP_ORGAN_COURSE.COURSE_CONTENT,po.getCourseContent())
-                .set(EP_ORGAN_COURSE.COURSE_NOTE,po.getCourseNote())
-                .set(EP_ORGAN_COURSE.PRIZE_MIN,po.getPrizeMin())
-                .set(EP_ORGAN_COURSE.COURSE_ADDRESS,po.getCourseAddress())
-                .set(EP_ORGAN_COURSE.ONLINE_TIME,po.getOnlineTime())
-                .set(EP_ORGAN_COURSE.ENTER_TIME_START,po.getEnterTimeStart())
-                .set(EP_ORGAN_COURSE.ENTER_TIME_END,po.getEnterTimeEnd())
+                .set(EP_ORGAN_COURSE.COURSE_NAME, po.getCourseName())
+                .set(EP_ORGAN_COURSE.COURSE_TYPE, po.getCourseType())
+                .set(EP_ORGAN_COURSE.COURSE_INTRODUCE, po.getCourseIntroduce())
+                .set(EP_ORGAN_COURSE.COURSE_CONTENT, po.getCourseContent())
+                .set(EP_ORGAN_COURSE.COURSE_NOTE, po.getCourseNote())
+                .set(EP_ORGAN_COURSE.PRIZE_MIN, po.getPrizeMin())
+                .set(EP_ORGAN_COURSE.COURSE_ADDRESS, po.getCourseAddress())
+                .set(EP_ORGAN_COURSE.ONLINE_TIME, po.getOnlineTime())
+                .set(EP_ORGAN_COURSE.ENTER_TIME_START, po.getEnterTimeStart())
+                .set(EP_ORGAN_COURSE.ENTER_TIME_END, po.getEnterTimeEnd())
                 .set(EP_ORGAN_COURSE.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
                 .execute();
@@ -146,10 +148,11 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
 
     /**
      * 根据ognId获取课程目录ID的集合
+     *
      * @param ognId
      * @return
      */
-    public List<Long> findCourseCatalogIdByOgnId(Long ognId){
+    public List<Long> findCourseCatalogIdByOgnId(Long ognId) {
         return dslContext.select(EP_ORGAN_COURSE.COURSE_CATALOG_ID)
                 .from(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
@@ -160,17 +163,19 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
 
     /**
      * 根据id逻辑删除记录
+     *
      * @param id
      */
-    public void deleteLogicById(Long id){
+    public void deleteLogicById(Long id) {
         dslContext.update(EP_ORGAN_COURSE)
-                .set(EP_ORGAN_COURSE.DEL_FLAG,true)
+                .set(EP_ORGAN_COURSE.DEL_FLAG, true)
                 .where(EP_ORGAN_COURSE.ID.eq(id))
                 .execute();
     }
 
     /**
      * 根据id课程上线
+     *
      * @param id
      */
     public int onlineById(Long id) {
@@ -193,6 +198,35 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganCoursePo.class);
+    }
+
+
+    /**
+     * 根据机构id和状态获取记录
+     *
+     * @param ognId
+     * @return
+     */
+    public List<EpOrganCoursePo> findByOgnIdAndStatus(Long ognId, EpOrganCourseCourseStatus status) {
+        return dslContext.selectFrom(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(status))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganCoursePo.class);
+    }
+
+    /**
+     * 机构下线，该机构下的课程下线
+     *
+     * @param ognId
+     */
+    public void updateCourseByOfflineOgn(Long ognId) {
+        dslContext.update(EP_ORGAN_COURSE)
+                .set(EP_ORGAN_COURSE.COURSE_STATUS, EpOrganCourseCourseStatus.offline)
+                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.save))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .execute();
     }
 }
 

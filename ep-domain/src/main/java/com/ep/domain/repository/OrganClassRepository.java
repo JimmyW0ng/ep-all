@@ -336,5 +336,19 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 机构下线，该机构下的班次结束
+     *
+     * @param ognId
+     */
+    public void updateClassByOfflineOgn(Long ognId) {
+        dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.end)
+                .where(EP_ORGAN_CLASS.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.save))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

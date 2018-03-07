@@ -89,7 +89,8 @@
                                    href="javascript:void(0)" th:onclick="'onlineOrganBox('+${po.id}+')'">上线</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(po.status,'online')}"
                                    href="javascript:void(0)" th:onclick="'offlineOrganBox('+${po.id}+')'">下线</a>
-                                <a class="btn btn-xs btn-danger"  href="javascript:void(0)" th:onclick="'deleteOrganBox('+${po.id}+')'" >删除</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:onclick="'freezeOrganBox('+${po.id}+')'">冻结</a>
 
 
                             </td>
@@ -118,54 +119,6 @@
                     </div>
                 </div>
 
-                <div class="modal inmodal" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content animated bounceInRight">
-
-                            <input type="hidden" id="sourceId">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                                        class="sr-only">关闭</span>
-                                </button>
-                                <h4 class="modal-title">设置图片</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>商家banner</label>
-                                    <button style="float:right;" type="button" class="btn btn-info" id="banner_img_btn"
-                                            onclick="$('#banner_img').click()">
-                                        <span>选择图片</span>
-
-                                    </button>
-                                    <input style="display:none" id="banner_img" type="file"
-                                           onchange="uploadBannerImg($('#banner_img_btn'),$('#sourceId').val(),this)"/>
-                                </div>
-                                <div style="border:3px dashed #e6e6e6;height:200px">
-                                    <img id="banner_img_url" style="margin: 10px;height:180px" src=""/>
-                                </div>
-
-                                <div class="form-group" style="margin-top: 20px">
-                                    <label>商家logo</label>
-                                    <button type="button" style="float:right" class="btn btn-info" id="logo_img_btn"
-                                            onclick="$('#logo_img').click()">
-                                        <span>选择图片</span>
-
-                                    </button>
-                                    <input style="display: none" id="logo_img" type="file"
-                                           onchange="uploadLogoImg($('#logo_img_btn'),$('#sourceId').val(),this)"/>
-
-                                </div>
-                                <div style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
-                                    <img id="logo_img_url"
-                                         style="margin: 10px;height:140px;width: 140px;border-radius:50%"/>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -190,6 +143,10 @@
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index');
+                } else if (data.error == "ERROR_ORGAN_MAINPIC_NOT_EXISTS" ||
+                    data.error == "ERROR_ORGAN_LOGO_NOT_EXISTS") {
+
+                    toastr_error("操作失败，原因：请先上传主图和logo。", '/auth/systemOrgan/index');
                 }
             }
         })
@@ -199,7 +156,7 @@
                 icon: 1,
             },
             function (index) {
-                delOrganDo(id);
+                offlineOrganDo(id);
                 parent.layer.close(index);
             })
     }
@@ -214,20 +171,19 @@
             }
         })
     }
-    function deleteOrganBox(id) {
+    function freezeOrganBox(id) {
         parent.layer.alert('确认删除此机构', {
                 icon: 0,
-
             },
             function (index) {
-                delOrganDo(id);
+                freezeOrganDo(id);
                 parent.layer.close(index);
             })
     }
-    function delOrganDo(id) {
+    function freezeOrganDo(id) {
         $.ajax({
             type:"GET",
-            url:"/auth/systemOrgan/delete/"+id,
+            url: "/auth/systemOrgan/freeze/" + id,
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index');

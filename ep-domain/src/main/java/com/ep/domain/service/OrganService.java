@@ -14,6 +14,7 @@ import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.OrganRepository;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -42,6 +43,10 @@ public class OrganService {
     private FileRepository fileRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private OrganCourseService organCourseService;
+    @Autowired
+    private OrganClassService organClassService;
 
     /**
      * 机构详情(基本信息＋banner列表＋课程列表)
@@ -158,7 +163,8 @@ public class OrganService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo updateSystemOrgan(SystemOrganBo bo) throws Exception {
+    public ResultDo updateSystemOrgan(SystemOrganBo bo) {
+
         log.info("[机构]修改机构开始。机构对象={}。", bo);
         if (null == bo.getId() || StringTools.isBlank(bo.getOgnName())
                 || StringTools.isBlank(bo.getOgnAddress()) || null == bo.getOgnRegion()) {
@@ -211,6 +217,7 @@ public class OrganService {
             resultDo.setSuccess(false);
             return resultDo;
         }
+
     }
 
     /**
@@ -227,21 +234,40 @@ public class OrganService {
      *
      * @param id
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo offlineById(Long id) {
         ResultDo<?> resultDo = ResultDo.build();
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
             log.error("[机构]，下线失败，机构不存在。");
-            resultDo.setSuccess(false);
-            resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
-            return resultDo;
+            return resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         if (po.getStatus().equals(EpOrganStatus.offline)) {
+            log.info("[机构]，机构已下线。id={}。", id);
             return resultDo;
         }
-        organRepository.offlineById(id);
-        log.info("[机构]，下线成功，id={}。", id);
-        return resultDo;
+        if (!po.getStatus().equals(EpOrganStatus.online)) {
+            log.error("[机构]，机构下线失败。状态为{},只有online状态能上线。", po.getStatus().getLiteral());
+            return resultDo.setSuccess(false);
+        }
+        //机构下没有online的课程的机构才能下线
+        if (CollectionsTools.isNotEmpty(organCourseService.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
+            log.error("[机构]，机构下线失败。机构下存在上线的课程。");
+            return resultDo.setError(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
+        }
+
+        if (organRepository.offlineById(id) == BizConstant.DB_NUM_ONE) {
+            //机构下线，该机构下的课程下线
+            organCourseService.updateCourseByOfflineOgn(id);
+            //机构下线，该机构下的班次结束
+            organClassService.updateClassByOfflineOgn(id);
+            log.info("[机构]，下线成功，id={}。", id);
+            return resultDo;
+        } else {
+            log.info("[机构]，下线失败，id={}。", id);
+            return resultDo.setSuccess(false);
+        }
+
     }
 
     /**
@@ -249,6 +275,7 @@ public class OrganService {
      *
      * @param id
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo onlineById(Long id) {
         ResultDo<?> resultDo = ResultDo.build();
         EpOrganPo po = organRepository.findById(id);
@@ -257,7 +284,7 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         if (po.getStatus().equals(EpOrganStatus.online)) {
-            log.info("[机构]，机构已上线失败。");
+            log.info("[机构]，机构已上线。id={}。", id);
             return resultDo;
         }
         //机构主图和logo存在才能上线
@@ -303,4 +330,25 @@ public class OrganService {
         return optional.isPresent() ? optional.get() : null;
     }
 
+    /**
+     * 冻结机构
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo freezeById(Long id) throws Exception {
+        ResultDo resultDo = ResultDo.build();
+        EpOrganPo po = organRepository.findById(id);
+        if (null == po) {
+            log.error("[机构]，冻结失败，机构不存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+        }
+        if (organRepository.updateStatusById(id, EpOrganStatus.freeze) == BizConstant.DB_NUM_ONE) {
+            log.info("[机构]，冻结成功。id={}", id);
+            return resultDo;
+        } else {
+            log.info("[机构]，冻结成功。id={}", id);
+            return resultDo.setError(MessageCode.ERROR_SYSTEM);
+        }
+    }
 }

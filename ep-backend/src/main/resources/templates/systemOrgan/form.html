@@ -299,8 +299,12 @@
         })
     }
     $(function () {
-        $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px")
-        $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%")
+        if ($("#mainpic_img_url").attr("src")) {
+            $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px")
+        }
+        if ($("#logo_img_url").attr("src")) {
+            $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%")
+        }
         var district=[[${district}]]
         var districtId=[[${districtId}]]
         var htmls_district="<option value=''>区</option>";

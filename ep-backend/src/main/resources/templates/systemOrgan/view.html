@@ -136,7 +136,7 @@
                     <!--<input style="display:none" id="mainpic_img" type="file" onchange="uploadBannerImg($('#mainpic_img_btn'),this)"/>-->
                 </div>
                 <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:240px;width: 405px">
-                    <img id="mainpic_img_url" style="margin: 10px;height:210px;width: 375px" th:src="${mainpicImgUrl}"/>
+                    <img id="mainpic_img_url" th:src="${mainpicImgUrl}"/>
                     <input type="hidden" name="mainpic_url" id="mainpic_url">
                     <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                 </div>
@@ -151,7 +151,7 @@
 
                 </div>
                 <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
-                    <img id="logo_img_url" style="margin: 10px;height:140px;width: 140px;border-radius:50%" th:src="${logoImgUrl}"/>
+                    <img id="logo_img_url" th:src="${logoImgUrl}"/>
                     <input type="hidden" name="logo_url" id="logo_url" >
                     <input type="hidden" name="logoUrlPreCode" id="logo_url_preCode">
                 </div>
@@ -168,6 +168,12 @@
 <script th:inline="javascript">
 
     $(function () {
+        if ($("#mainpic_img_url").attr("src")) {
+            $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px")
+        }
+        if ($("#logo_img_url").attr("src")) {
+            $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%")
+        }
         $("#organFrm").find("input").attr("readonly",true)
         $("#organFrm").find("textarea").attr("readonly",true)
         $("#organFrm").find("select").attr("disabled",true)

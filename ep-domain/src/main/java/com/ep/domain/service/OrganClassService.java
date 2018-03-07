@@ -98,4 +98,13 @@ public class OrganClassService {
         }
         return ResultDo.build();
     }
+
+    /**
+     * 机构下线，该机构下的班次结束
+     *
+     * @param ognId
+     */
+    public void updateClassByOfflineOgn(Long ognId) {
+        organClassRepository.updateClassByOfflineOgn(ognId);
+    }
 }

@@ -59,6 +59,7 @@ public class OrganCourseService {
     private OrganCourseTeamRepository organCourseTeamRepository;
     @Autowired
     private OrganCatalogRepository organCatalogRepository;
+
     /**
      * 根据id获取机构课程
      *
@@ -159,14 +160,14 @@ public class OrganCourseService {
     @Transactional(rollbackFor = Exception.class)
     public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<OrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
         //获取最低价格start
-        BigDecimal[] priceArr=new BigDecimal[organClassBos.size()];
-        for(int i=0;i<priceArr.length;i++){
-            priceArr[i]=organClassBos.get(i).getClassPrize();
+        BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
+        for (int i = 0; i < priceArr.length; i++) {
+            priceArr[i] = organClassBos.get(i).getClassPrize();
         }
         int index = 0;
         for (int j = index + 1; j < priceArr.length; j++) {
-            if (priceArr[j].compareTo(priceArr[index])==-1 ) {
-                BigDecimal temp  = priceArr[j];
+            if (priceArr[j].compareTo(priceArr[index]) == -1) {
+                BigDecimal temp = priceArr[j];
                 priceArr[j] = priceArr[index];
                 priceArr[index] = temp;
             }
@@ -194,17 +195,16 @@ public class OrganCourseService {
             List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
             for (int i = 0; i < organClassCatalogPos.size(); i++) {
                 organClassCatalogPos.get(i).setClassId(insertOrganClassId);
-//                organClassCatalogPos.get(i).setCatalogIndex(i + 1);
             }
             //班次课程内容目录表 插入数据
             organClassCatalogRepository.insert(organClassCatalogPos);
         });
         //机构类目表 插入数据
-        organCatalogRepository.insert(new EpOrganCatalogPo(null,ognId,organCoursePo.getCourseCatalogId(),null,null,null,null,null,null));
+        organCatalogRepository.insert(new EpOrganCatalogPo(null, ognId, organCoursePo.getCourseCatalogId(), null, null, null, null, null, null));
 
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
-        ognAccountIds.forEach(ognAccountId->{
-            organCourseTeamPos.add(new EpOrganCourseTeamPo(null,insertOrganCourseId,ognAccountId,null,null,null,null,null,null));
+        ognAccountIds.forEach(ognAccountId -> {
+            organCourseTeamPos.add(new EpOrganCourseTeamPo(null, insertOrganCourseId, ognAccountId, null, null, null, null, null, null));
         });
         //机构课程团队信息表插入数据
         organCourseTeamRepository.insert(organCourseTeamPos);
@@ -226,14 +226,14 @@ public class OrganCourseService {
     @Transactional(rollbackFor = Exception.class)
     public void updateOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<OrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
         //获取最低价格start
-        BigDecimal[] priceArr=new BigDecimal[organClassBos.size()];
-        for(int i=0;i<priceArr.length;i++){
-            priceArr[i]=organClassBos.get(i).getClassPrize();
+        BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
+        for (int i = 0; i < priceArr.length; i++) {
+            priceArr[i] = organClassBos.get(i).getClassPrize();
         }
         int index = 0;
         for (int j = index + 1; j < priceArr.length; j++) {
-            if (priceArr[j].compareTo(priceArr[index])==-1 ) {
-                BigDecimal temp  = priceArr[j];
+            if (priceArr[j].compareTo(priceArr[index]) == -1) {
+                BigDecimal temp = priceArr[j];
                 priceArr[j] = priceArr[index];
                 priceArr[index] = temp;
             }
@@ -245,7 +245,7 @@ public class OrganCourseService {
         //课程id
         Long organCourseId = organCoursePo.getId();
         Long ognId = organCoursePo.getOgnId();
-        List<Long> classIds=organClassRepository.findClassIdsByCourseId(organCourseId);
+        List<Long> classIds = organClassRepository.findClassIdsByCourseId(organCourseId);
         //物理删除班次目录
         organClassCatalogRepository.deletePhysicByClassIds(classIds);
         //物理删除班次
@@ -274,7 +274,6 @@ public class OrganCourseService {
             for (int i = 0; i < organClassCatalogPos.size(); i++) {
                 organClassCatalogPos.get(i).setClassId(insertOrganClassId);
                 organClassCatalogPos.get(i).setId(null);
-//                organClassCatalogPos.get(i).setCatalogIndex(i + 1);
             }
             //班次课程内容目录表插入数据
             organClassCatalogRepository.insert(organClassCatalogPos);
@@ -285,16 +284,16 @@ public class OrganCourseService {
         Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
         courseCatalogIdsSet.add(organCoursePo.getCourseCatalogId());
         List<EpOrganCatalogPo> organCatalogPos = Lists.newArrayList();
-        courseCatalogIdsSet.forEach(courseCatalogId->{
-            organCatalogPos.add(new EpOrganCatalogPo(null,ognId,courseCatalogId,null,null,null,null,null,null));
+        courseCatalogIdsSet.forEach(courseCatalogId -> {
+            organCatalogPos.add(new EpOrganCatalogPo(null, ognId, courseCatalogId, null, null, null, null, null, null));
         });
         organCatalogRepository.insert(organCatalogPos);
         //机构类目表 插入数据end
 
         //机构课程团队信息表插入数据start
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
-        ognAccountIds.forEach(ognAccountId->{
-            organCourseTeamPos.add(new EpOrganCourseTeamPo(null,organCourseId,ognAccountId,null,null,null,null,null,null));
+        ognAccountIds.forEach(ognAccountId -> {
+            organCourseTeamPos.add(new EpOrganCourseTeamPo(null, organCourseId, ognAccountId, null, null, null, null, null, null));
         });
         organCourseTeamRepository.insert(organCourseTeamPos);
         //机构课程团队信息表插入数据end
@@ -313,20 +312,11 @@ public class OrganCourseService {
 
     /**
      * 根据课程id删除课程
+     *
      * @param courseId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deleteCourseByCourseId(Long courseId,Long ognId){
-//        //机构类目表 待插入数据start
-//        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(ognId);
-//        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
-//        courseCatalogIdsSet.add(organCoursePo.getCourseCatalogId());
-//        List<EpOrganCatalogPo> organCatalogPos = Lists.newArrayList();
-//        courseCatalogIdsSet.forEach(courseCatalogId->{
-//            organCatalogPos.add(new EpOrganCatalogPo(null,ognId,courseCatalogId,null,null,null,null,null,null));
-//        });
-//        organCatalogRepository.insert(organCatalogPos);
-//        //机构类目表 待插入数据end
+    public void deleteCourseByCourseId(Long courseId, Long ognId) {
         //课程表 逻辑删除
         organCourseRepository.deleteLogicById(courseId);
         //班次表 逻辑删除
@@ -387,5 +377,24 @@ public class OrganCourseService {
      */
     public List<EpOrganCoursePo> findByOgnId(Long ognId) {
         return organCourseRepository.findByOgnId(ognId);
+    }
+
+    /**
+     * 根据机构id和状态获取记录
+     *
+     * @param ognId
+     * @return
+     */
+    public List<EpOrganCoursePo> findByOgnIdAndStatus(Long ognId, EpOrganCourseCourseStatus status) {
+        return organCourseRepository.findByOgnIdAndStatus(ognId, status);
+    }
+
+    /**
+     * 机构下线，该机构下的课程下线
+     *
+     * @param ognId
+     */
+    public void updateCourseByOfflineOgn(Long ognId) {
+        organCourseRepository.updateCourseByOfflineOgn(ognId);
     }
 }
