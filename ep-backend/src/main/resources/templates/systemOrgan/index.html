@@ -90,9 +90,7 @@
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(po.status,'online')}"
                                    href="javascript:void(0)" th:onclick="'offlineOrganBox('+${po.id}+')'">下线</a>
                                 <a class="btn btn-xs btn-danger"  href="javascript:void(0)" th:onclick="'deleteOrganBox('+${po.id}+')'" >删除</a>
-                                <!--<button type="button" class="btn btn-xs btn-primary" data-toggle="modal" th:onclick="'modelShow('+${po.id}+');'">-->
-                                    <!--上传相关图片-->
-                                <!--</button>-->
+
 
                             </td>
 
@@ -179,8 +177,6 @@
     function onlineOrganBox(id) {
         parent.layer.alert('确认上线', {
                 icon: 1,
-//                skin: 'layer-ext-moon',
-
             },
             function (index) {
                 onlineOrganDo(id);
@@ -201,8 +197,6 @@
     function offlineOrganBox(id) {
         parent.layer.alert('确认下线', {
                 icon: 1,
-//                skin: 'layer-ext-moon',
-
             },
             function (index) {
                 delOrganDo(id);
@@ -223,7 +217,6 @@
     function deleteOrganBox(id) {
         parent.layer.alert('确认删除此机构', {
                 icon: 0,
-//                skin: 'layer-ext-moon',
 
             },
             function (index) {
@@ -243,28 +236,7 @@
         })
 
     }
-    
-    function modelShow(sourceId) {
-        $("#uploadModal").modal("show")
-        $("#sourceId").val(sourceId)
-        uploadInit();
 
-    }
-
-    function uploadInit() {
-        var id=$("#sourceId").val()
-        $.ajax({
-            type:"GET",
-            url:"/auth/systemOrgan/uploadInit/"+id,
-            success:function (data) {
-                if(data.success){
-                    $("#banner_img_url").attr("src",data.result.bannerImgUrl==undefined?"":data.result.bannerImgUrl)
-                    $("#logo_img_url").attr("src",data.result.logoImgUrl==undefined?"":data.result.logoImgUrl)
-                }
-            }
-        })
-        
-    }
 
     /**
      * 上传商家主图

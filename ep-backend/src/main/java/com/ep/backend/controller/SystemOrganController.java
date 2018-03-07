@@ -8,6 +8,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
+import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
 import com.ep.domain.service.FileService;
@@ -180,11 +181,14 @@ public class SystemOrganController extends BackendController {
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
         model.addAttribute("provinceId", provinceId);
         model.addAttribute("organPo", po);
-        String mainpicImgUrl = organService.getOgnMainpic(id).getFileUrl();
-        String logoImgUrl = organService.getOgnLogo(id).getFileUrl();
-
-        model.addAttribute("mainpicImgUrl", mainpicImgUrl);
-        model.addAttribute("logoImgUrl", logoImgUrl);
+        EpFilePo mainpicImgPo = organService.getOgnMainpic(id);
+        if (null != mainpicImgPo) {
+            model.addAttribute("mainpicImgUrl", mainpicImgPo.getFileUrl());
+        }
+        EpFilePo logoImgPo = organService.getOgnLogo(id);
+        if (null != logoImgPo) {
+            model.addAttribute("logoImgUrl", logoImgPo.getFileUrl());
+        }
         return "systemOrgan/form";
     }
 
@@ -211,12 +215,14 @@ public class SystemOrganController extends BackendController {
         EpConstantRegionPo constantRegionPoProvince = constantRegionComponent.getById(provinceId);
         model.addAttribute("province", constantRegionPoProvince.getRegionName());
         model.addAttribute("organPo", po);
-        //主图
-        String mainpicImgUrl = organService.getOgnMainpic(id).getFileUrl();
-        //商家logo
-        String logoImgUrl = organService.getOgnLogo(id).getFileUrl();
-        model.addAttribute("mainpicImgUrl", mainpicImgUrl);
-        model.addAttribute("logoImgUrl", logoImgUrl);
+        EpFilePo mainpicImgPo = organService.getOgnMainpic(id);
+        if (null != mainpicImgPo) {
+            model.addAttribute("mainpicImgUrl", mainpicImgPo.getFileUrl());
+        }
+        EpFilePo logoImgPo = organService.getOgnLogo(id);
+        if (null != logoImgPo) {
+            model.addAttribute("logoImgUrl", logoImgPo.getFileUrl());
+        }
         return "systemOrgan/view";
     }
 

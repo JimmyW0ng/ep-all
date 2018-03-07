@@ -273,7 +273,8 @@ public class OrganService {
      * @return
      */
     public EpFilePo getOgnMainpic(Long sourceId) {
-        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId).get();
+        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId);
+        return optional.isPresent() ? optional.get() : null;
     }
 
     /**
@@ -283,7 +284,8 @@ public class OrganService {
      * @return
      */
     public EpFilePo getOgnLogo(Long sourceId) {
-        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId).get();
+        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId);
+        return optional.isPresent() ? optional.get() : null;
     }
 
 }
