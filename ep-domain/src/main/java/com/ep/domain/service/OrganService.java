@@ -112,8 +112,17 @@ public class OrganService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo createSystemOrgan(SystemOrganBo bo) throws Exception {
+        log.info("[机构]新增机构开始。机构对象={}。", bo);
+        if (StringTools.isBlank(bo.getOgnName()) || StringTools.isBlank(bo.getOgnAddress())
+                || null == bo.getOgnRegion()) {
+            log.error("[机构]新增机构失败。请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        if (organRepository.findByName(bo.getOgnName()).isPresent()) {
+            log.error("[机构]新增机构失败。机构名称已存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NAME_EXISTS);
+        }
         EpOrganPo po = new EpOrganPo();
-        po.setId(bo.getId());
         po.setOgnName(bo.getOgnName());
         po.setOgnAddress(bo.getOgnAddress());
         po.setOgnRegion(bo.getOgnRegion());
@@ -129,11 +138,6 @@ public class OrganService {
         po.setStatus(EpOrganStatus.save);
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
 
-        log.info("[机构]新增机构开始。机构对象={}。", po);
-        if (organRepository.findByName(bo.getOgnName()).isPresent()) {
-            log.error("[机构]新增机构失败。机构名称已存在。");
-            return ResultDo.build(MessageCode.ERROR_ORGAN_NAME_EXISTS);
-        }
         organRepository.insert(po);
         //机构主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
@@ -155,6 +159,17 @@ public class OrganService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo updateSystemOrgan(SystemOrganBo bo) throws Exception {
+        log.info("[机构]修改机构开始。机构对象={}。", bo);
+        if (null == bo.getId() || StringTools.isBlank(bo.getOgnName())
+                || StringTools.isBlank(bo.getOgnAddress()) || null == bo.getOgnRegion()) {
+            log.error("[机构]修改机构失败。请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        Optional<EpOrganPo> optional = organRepository.findByName(bo.getOgnName());
+        if (optional.isPresent() && !(optional.get().getId().longValue() == bo.getId().longValue())) {
+            log.error("[机构]修改机构失败。机构名称已存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NAME_EXISTS);
+        }
         EpOrganPo po = new EpOrganPo();
         po.setId(bo.getId());
         po.setOgnName(bo.getOgnName());
@@ -171,13 +186,6 @@ public class OrganService {
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         ResultDo<?> resultDo = ResultDo.build();
-        log.info("[机构]更新机构开始，机构对象={}。", po.toString());
-        if (null == organRepository.findById(po.getId())) {
-            log.error("[机构]，修改失败，机构不存在。");
-            resultDo.setSuccess(false);
-            resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
-            return resultDo;
-        }
 
         //主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {

@@ -135,13 +135,12 @@ public class SystemOrganController extends BackendController {
     @PostMapping("create")
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
-        ResultDo resultDo;
         try {
-            resultDo = organService.createSystemOrgan(bo);
+            return organService.createSystemOrgan(bo);
         } catch (Exception e) {
+            log.error("[机构]机构新增失败。", e);
             return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-        return resultDo;
     }
 
     /**
@@ -153,13 +152,12 @@ public class SystemOrganController extends BackendController {
     @PostMapping("update")
     @ResponseBody
     public ResultDo update(SystemOrganBo bo) {
-        ResultDo resultDo;
         try {
-            resultDo = organService.updateSystemOrgan(bo);
+            return organService.updateSystemOrgan(bo);
         } catch (Exception e) {
+            log.error("[机构]修改机构失败。", e);
             return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-        return resultDo;
     }
 
     /**
