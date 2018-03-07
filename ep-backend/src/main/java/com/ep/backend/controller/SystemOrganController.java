@@ -1,7 +1,6 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.CollectionsTools;
-import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.constant.BizConstant;
@@ -12,7 +11,6 @@ import com.ep.domain.pojo.po.EpConstantRegionPo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
-import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.service.FileService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
@@ -138,24 +136,8 @@ public class SystemOrganController extends BackendController {
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
         ResultDo resultDo = ResultDo.build();
-        EpOrganPo po = new EpOrganPo();
-        po.setId(bo.getId());
-        po.setOgnName(bo.getOgnName());
-        po.setOgnAddress(bo.getOgnAddress());
-        po.setOgnRegion(bo.getOgnRegion());
-        po.setOgnLat(StringTools.getNullIfBlank(bo.getOgnLat()));
-        po.setOgnLng(StringTools.getNullIfBlank(bo.getOgnLng()));
-        po.setOgnShortIntroduce(StringTools.getNullIfBlank(bo.getOgnShortIntroduce()));
-        po.setOgnPhone(StringTools.getNullIfBlank(bo.getOgnPhone()));
-        po.setOgnEmail(StringTools.getNullIfBlank(bo.getOgnEmail()));
-        po.setOgnUrl(StringTools.getNullIfBlank(bo.getOgnUrl()));
-        po.setOgnIntroduce(StringTools.getNullIfBlank(bo.getOgnIntroduce()));
-        po.setMarketWeight(bo.getMarketWeight());
-        po.setRemark(bo.getRemark());
-        po.setStatus(EpOrganStatus.save);
-        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         try {
-            organService.createSystemOrgan(po, bo.getMainpicUrlPreCode(), bo.getLogoUrlPreCode());
+            organService.createSystemOrgan(bo);
         } catch (Exception e) {
             return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
@@ -172,23 +154,8 @@ public class SystemOrganController extends BackendController {
     @ResponseBody
     public ResultDo update(SystemOrganBo bo) {
         ResultDo resultDo;
-        EpOrganPo po = new EpOrganPo();
-        po.setId(bo.getId());
-        po.setOgnName(bo.getOgnName());
-        po.setOgnAddress(bo.getOgnAddress());
-        po.setOgnRegion(bo.getOgnRegion());
-        po.setOgnLat(StringTools.getNullIfBlank(bo.getOgnLat()));
-        po.setOgnLng(StringTools.getNullIfBlank(bo.getOgnLng()));
-        po.setOgnShortIntroduce(StringTools.getNullIfBlank(bo.getOgnShortIntroduce()));
-        po.setOgnPhone(StringTools.getNullIfBlank(bo.getOgnPhone()));
-        po.setOgnEmail(StringTools.getNullIfBlank(bo.getOgnEmail()));
-        po.setOgnUrl(StringTools.getNullIfBlank(bo.getOgnUrl()));
-        po.setOgnIntroduce(StringTools.getNullIfBlank(bo.getOgnIntroduce()));
-        po.setMarketWeight(bo.getMarketWeight());
-        po.setRemark(bo.getRemark());
-        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         try {
-            resultDo = organService.updateSystemOrgan(po, bo.getMainpicUrlPreCode(), bo.getLogoUrlPreCode());
+            resultDo = organService.updateSystemOrgan(bo);
         } catch (Exception e) {
             return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }

@@ -1,11 +1,13 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganBo;
+import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
@@ -105,32 +107,64 @@ public class OrganService {
     /**
      * 系统后台新增机构
      *
-     * @param po
+     * @param bo
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) throws Exception {
-        log.info("[机构]新增机构开始。机构对象={}。", po.toString());
-        EpOrganPo insertPo = organRepository.insertNew(po);
+    public void createSystemOrgan(SystemOrganBo bo) throws Exception {
+        EpOrganPo po = new EpOrganPo();
+        po.setId(bo.getId());
+        po.setOgnName(bo.getOgnName());
+        po.setOgnAddress(bo.getOgnAddress());
+        po.setOgnRegion(bo.getOgnRegion());
+        po.setOgnLat(StringTools.getNullIfBlank(bo.getOgnLat()));
+        po.setOgnLng(StringTools.getNullIfBlank(bo.getOgnLng()));
+        po.setOgnShortIntroduce(StringTools.getNullIfBlank(bo.getOgnShortIntroduce()));
+        po.setOgnPhone(StringTools.getNullIfBlank(bo.getOgnPhone()));
+        po.setOgnEmail(StringTools.getNullIfBlank(bo.getOgnEmail()));
+        po.setOgnUrl(StringTools.getNullIfBlank(bo.getOgnUrl()));
+        po.setOgnIntroduce(StringTools.getNullIfBlank(bo.getOgnIntroduce()));
+        po.setMarketWeight(bo.getMarketWeight());
+        po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
+        po.setStatus(EpOrganStatus.save);
+        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
+
+        log.info("[机构]新增机构开始。机构对象={}。", po);
+        organRepository.insert(po);
         //机构主图
-        if (StringTools.isNotBlank(mainpicUrlPreCode)) {
-            fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, insertPo.getId());
+        if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
+            fileRepository.updateSourceIdByPreCode(bo.getMainpicUrlPreCode(), po.getId());
         }
         //机构logo
-        if (StringTools.isNotBlank(logoUrlPreCode)) {
-            fileRepository.updateSourceIdByPreCode(logoUrlPreCode, insertPo.getId());
+        if (StringTools.isNotBlank(bo.getLogoUrlPreCode())) {
+            fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
-        log.info("[机构]新增机构成功，id={}。", insertPo.getId());
+        log.info("[机构]新增机构成功，id={}。", po.getId());
     }
 
     /**
      * 系统后台修改机构
      *
-     * @param po
+     * @param bo
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo updateSystemOrgan(EpOrganPo po, String mainpicUrlPreCode, String logoUrlPreCode) throws Exception {
+    public ResultDo updateSystemOrgan(SystemOrganBo bo) throws Exception {
+        EpOrganPo po = new EpOrganPo();
+        po.setId(bo.getId());
+        po.setOgnName(bo.getOgnName());
+        po.setOgnAddress(bo.getOgnAddress());
+        po.setOgnRegion(bo.getOgnRegion());
+        po.setOgnLat(StringTools.getNullIfBlank(bo.getOgnLat()));
+        po.setOgnLng(StringTools.getNullIfBlank(bo.getOgnLng()));
+        po.setOgnShortIntroduce(StringTools.getNullIfBlank(bo.getOgnShortIntroduce()));
+        po.setOgnPhone(StringTools.getNullIfBlank(bo.getOgnPhone()));
+        po.setOgnEmail(StringTools.getNullIfBlank(bo.getOgnEmail()));
+        po.setOgnUrl(StringTools.getNullIfBlank(bo.getOgnUrl()));
+        po.setOgnIntroduce(StringTools.getNullIfBlank(bo.getOgnIntroduce()));
+        po.setMarketWeight(bo.getMarketWeight());
+        po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
+        po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
         ResultDo<?> resultDo = ResultDo.build();
         log.info("[机构]更新机构开始，机构对象={}。", po.toString());
         if (null == organRepository.findById(po.getId())) {
@@ -141,12 +175,12 @@ public class OrganService {
         }
 
         //主图
-        if (StringTools.isNotBlank(mainpicUrlPreCode)) {
-            fileRepository.updateSourceIdByPreCode(mainpicUrlPreCode, po.getId());
+        if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
+            fileRepository.updateSourceIdByPreCode(bo.getMainpicUrlPreCode(), po.getId());
         }
         //logo
-        if (StringTools.isNotBlank(logoUrlPreCode)) {
-            fileRepository.updateSourceIdByPreCode(logoUrlPreCode, po.getId());
+        if (StringTools.isNotBlank(bo.getLogoUrlPreCode())) {
+            fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
         if (organRepository.updateSystemOrgan(po) == 1) {
             log.info("[机构]更新机构成功，id={}。", po.getId());

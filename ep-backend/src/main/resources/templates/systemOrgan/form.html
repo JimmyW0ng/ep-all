@@ -101,7 +101,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构官方邮箱：</label>
                     <div class="col-sm-3">
-                        <input id="ognEmail" name="ognEmail" type="text" class="form-control" th:field="*{ognEmail}"
+                        <input id="ognEmail" name="ognEmail" type="email" class="form-control" th:field="*{ognEmail}"
                                >
                     </div>
                 </div>
@@ -122,8 +122,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">营销权重：</label>
                     <div class="col-sm-3">
-                        <input id="marketWeight" name="marketWeight" type="text" class="form-control" required="true" th:field="*{marketWeight}"
-                                  aria-required="true"/>
+                        <input id="marketWeight" name="marketWeight" type="number" class="form-control" required="true"
+                               th:field="*{marketWeight}"
+                               aria-required="true"/>
                     </div>
                 </div>
 
