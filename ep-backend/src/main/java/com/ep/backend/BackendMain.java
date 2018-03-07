@@ -2,6 +2,7 @@ package com.ep.backend;
 
 import com.ep.backend.config.SecurityConfig;
 import com.ep.backend.config.ThymeleafConfig;
+import com.ep.common.config.JsonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,7 +25,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         // 鉴权
         SecurityConfig.class,
         // json配置
-//        JsonConfig.class,
+        JsonConfig.class,
 //        // swagger
 //        Swagger2Config.class
         ThymeleafConfig.class

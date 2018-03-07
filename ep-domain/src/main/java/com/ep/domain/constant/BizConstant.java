@@ -59,8 +59,6 @@ public class BizConstant {
 
     public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
 
-    public static int CAPTCHA_EXPIRE_DEL_HOUR_LIMIT = -1;
-
     /**
      * 文件业务类型
      */
