@@ -195,8 +195,8 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
      *
      * @param id
      */
-    public void onlineById(Long id) {
-        dslContext.update(EP_ORGAN)
+    public int onlineById(Long id) {
+        return dslContext.update(EP_ORGAN)
                 .set(EP_ORGAN.STATUS, EpOrganStatus.online)
                 .where(EP_ORGAN.ID.eq(id))
                 .and(EP_ORGAN.STATUS.eq(EpOrganStatus.save))

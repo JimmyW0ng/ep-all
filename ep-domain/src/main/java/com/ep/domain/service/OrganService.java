@@ -254,16 +254,31 @@ public class OrganService {
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
             log.error("[机构]，上线失败，机构不存在。");
-            resultDo.setSuccess(false);
-            resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
-            return resultDo;
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         if (po.getStatus().equals(EpOrganStatus.online)) {
+            log.info("[机构]，机构已上线失败。");
             return resultDo;
         }
-        organRepository.onlineById(id);
-        log.info("[机构]，上线成功，id={}。", id);
-        return resultDo;
+        //机构主图和logo存在才能上线
+        Optional<EpFilePo> optionalMainpic = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, id);
+        if (!optionalMainpic.isPresent()) {
+            log.error("[机构]，上线失败，机构主图不存在。");
+            return resultDo.setError(MessageCode.ERROR_ORGAN_MAINPIC_NOT_EXISTS);
+        }
+        Optional<EpFilePo> optionalLogo = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
+        if (!optionalLogo.isPresent()) {
+            log.error("[机构]，上线失败，机构logo不存在。");
+            return resultDo.setError(MessageCode.ERROR_ORGAN_LOGO_NOT_EXISTS);
+        }
+        if (organRepository.onlineById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[机构]，上线成功，id={}。", id);
+            return resultDo;
+        } else {
+            log.error("[机构]，上线失败，id={}。", id);
+            return resultDo.setError(MessageCode.ERROR_SYSTEM);
+        }
+
     }
 
     /**
