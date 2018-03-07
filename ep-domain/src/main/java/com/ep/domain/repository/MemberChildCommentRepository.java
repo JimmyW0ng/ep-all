@@ -95,7 +95,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      */
     public List<MemberChildCommentBo> findByChildIdAndClassId(Long childId, Long classId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.CONTENT);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE);
+        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.as("classCatalogTitle"));
         fieldList.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT);
         return dslContext.select(fieldList)
                 .from(EP_MEMBER_CHILD_COMMENT)
