@@ -195,11 +195,12 @@ public class OrganService {
 
         //主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
-
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getMainpicUrlPreCode(), po.getId());
         }
         //logo
         if (StringTools.isNotBlank(bo.getLogoUrlPreCode())) {
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
         if (organRepository.updateSystemOrgan(po) == 1) {

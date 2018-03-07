@@ -226,7 +226,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
     }
 
     /**
-     * 根据id获取记录
+     * 加锁根据id获取记录
      *
      * @param id
      * @return

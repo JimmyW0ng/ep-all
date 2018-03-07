@@ -144,5 +144,18 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
         return Optional.ofNullable(filePo);
     }
 
+    /**
+     * 根据业务类型和来源id逻辑删除记录
+     *
+     * @param bizTypeCode
+     * @param sourceId
+     */
+    public void deleteLogicByBizTypeAndSourceId(Short bizTypeCode, Long sourceId) {
+        dslContext.update(EP_FILE)
+                .set(EP_FILE.DEL_FLAG, true)
+                .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
+                .and(EP_FILE.SOURCE_ID.eq(sourceId))
+                .execute();
+    }
 }
 
