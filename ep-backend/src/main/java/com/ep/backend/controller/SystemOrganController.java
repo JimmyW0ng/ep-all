@@ -64,7 +64,7 @@ public class SystemOrganController extends BackendController {
         if (StringTools.isNotBlank(ognName)) {
             conditions.add(EP.EP_ORGAN.OGN_NAME.like("%" + ognName + "%"));
         }
-
+        searchMap.put("ognName", ognName);
         if (null != crStartTime) {
             conditions.add(EP.EP_ORGAN.CREATE_AT.greaterOrEqual(crStartTime));
         }

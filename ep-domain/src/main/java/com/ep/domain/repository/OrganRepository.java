@@ -224,5 +224,19 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .fetchOneInto(EpOrganPo.class);
     }
+
+    /**
+     * 根据id获取记录
+     *
+     * @param id
+     * @return
+     */
+    public EpOrganPo findByIdLock(Long id) {
+        return dslContext.selectFrom(EP_ORGAN)
+                .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .forUpdate()
+                .fetchOneInto(EpOrganPo.class);
+    }
 }
 
