@@ -14,6 +14,7 @@ import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.OrganRepository;
+import com.ep.domain.repository.SystemUserRepository;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,8 @@ public class OrganService {
     private OrganCourseService organCourseService;
     @Autowired
     private OrganClassService organClassService;
+    @Autowired
+    private SystemUserRepository systemUserRepository;
 
     /**
      * 机构详情(基本信息＋banner列表＋课程列表)
@@ -338,6 +341,8 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         if (organRepository.freezeById(id) == BizConstant.DB_NUM_ONE) {
+            //冻结该机构对应的用户账号
+            systemUserRepository.freezeByOgnId(id);
             log.info("[机构]，冻结成功。id={}", id);
             return ResultDo.build();
         } else {

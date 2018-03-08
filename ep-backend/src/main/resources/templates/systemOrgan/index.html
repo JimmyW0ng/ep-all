@@ -91,6 +91,8 @@
                                    href="javascript:void(0)" th:onclick="'offlineOrganBox('+${po.id}+')'">下线</a>
                                 <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(po.status,'online')}"
                                    href="javascript:void(0)" th:onclick="'freezeOrganBox('+${po.id}+')'">冻结</a>
+                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(po.status,'freeze')}"
+                                   href="javascript:void(0)" th:onclick="'unfreezeOrganBox('+${po.id}+')'">解冻</a>
 
 
                             </td>

@@ -1,6 +1,5 @@
 package com.ep.domain.service;
 
-import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.pojo.po.EpSystemUserRolePo;
@@ -32,8 +31,8 @@ public class SystemUserService {
     @Autowired
     private SystemUserRoleRepository systemUserRoleRepository;
 
-    public EpSystemUserPo getById(Long id) {
-        return systemUserRepository.getById(id);
+    public EpSystemUserPo findById(Long id) {
+        return systemUserRepository.findById(id);
 
     }
 
@@ -77,8 +76,10 @@ public class SystemUserService {
             list.forEach(p -> {
                 roleNewSet.add(p.getId());
             });
-            Set<Long> diffAdd = Sets.difference(roleNewSet, roleOldSet);//差集，roleNewSet有, roleOldSet无
-            Set<Long> diffDel = Sets.difference(roleOldSet, roleNewSet);//差集，roleOldSet有, roleNewSet无
+            //差集，roleNewSet有, roleOldSet无
+            Set<Long> diffAdd = Sets.difference(roleNewSet, roleOldSet);
+            //差集，roleOldSet有, roleNewSet无
+            Set<Long> diffDel = Sets.difference(roleOldSet, roleNewSet);
 
             //删除 roleOldSet有, roleNewSet无
             diffDel.forEach(p -> {
