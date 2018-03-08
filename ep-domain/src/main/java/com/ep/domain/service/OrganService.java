@@ -209,7 +209,7 @@ public class OrganService {
             fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
-        if (organRepository.updateSystemOrgan(po) == 1) {
+        if (organRepository.updateSystemOrgan(po) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]更新机构成功，id={}。", po.getId());
             return ResultDo.build();
         } else {
@@ -333,6 +333,7 @@ public class OrganService {
      * @param id
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo freezeById(Long id) {
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
