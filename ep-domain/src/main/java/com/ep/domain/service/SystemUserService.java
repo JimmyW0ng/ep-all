@@ -31,7 +31,7 @@ public class SystemUserService {
     @Autowired
     private SystemUserRoleRepository systemUserRoleRepository;
 
-    public EpSystemUserPo findById(Long id) {
+    public Optional<EpSystemUserPo> findById(Long id) {
         return systemUserRepository.findById(id);
 
     }
@@ -114,4 +114,12 @@ public class SystemUserService {
         return systemUserRepository.deleteLogical(userId);
     }
 
+    /**
+     * 根据id冻结系统用户
+     * @param id
+     * @return
+     */
+//    public ResultDo freezeById(Long id){
+//        systemUserRepository.findById(id);
+//    }
 }

@@ -7,6 +7,8 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_USER;
 
 /**
@@ -22,11 +24,12 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
         super(dslContext, EP_SYSTEM_USER, EP_SYSTEM_USER.ID, EpSystemUserPo.class);
     }
 
-    public EpSystemUserPo findById(Long id) {
-        return dslContext.selectFrom(EP_SYSTEM_USER)
+    public Optional<EpSystemUserPo> findById(Long id) {
+        EpSystemUserPo data = dslContext.selectFrom(EP_SYSTEM_USER)
                 .where(EP_SYSTEM_USER.ID.equal(id))
                 .and(EP_SYSTEM_USER.DEL_FLAG.equal(false))
                 .fetchOneInto(EpSystemUserPo.class);
+        return Optional.ofNullable(data);
     }
 
     /**

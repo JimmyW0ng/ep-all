@@ -80,9 +80,9 @@ public class IndexController extends BackendController {
      * @return
      */
     @GetMapping("/settingView")
-    public String settingView(Model model, HttpServletRequest request) {
+    public String settingView(Model model) {
         Long id = super.getCurrentUser().get().getId();
-        EpSystemUserPo systemUserPo = systemUserService.getById(id);
+        EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         try{
