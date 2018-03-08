@@ -11,7 +11,7 @@
                   value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
         <property name="FILE_LOG_PATTERN"
                   value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
-        <property name="LOG_FILE" value="Work/projects/log/ep-api.log}"/>
+        <property name="LOG_FILE" value="../log/ep-api}"/>
 
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -32,6 +32,10 @@
             </rollingPolicy>
         </appender>
         <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!--如果只是想要 Error 级别的日志，那么需要过滤一下，默认是 info 级别的，ThresholdFilter-->
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>Error</level>
+            </filter>
             <encoder>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
             </encoder>
