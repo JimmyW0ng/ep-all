@@ -347,7 +347,7 @@ public class OrganService {
             log.info("[机构]，冻结成功。id={}", id);
             return resultDo;
         } else {
-            log.info("[机构]，冻结成功。id={}", id);
+            log.error("[机构]，冻结失败。id={}", id);
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
     }

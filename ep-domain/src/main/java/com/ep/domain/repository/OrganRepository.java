@@ -241,6 +241,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
         return dslContext.update(EP_ORGAN)
                 .set(EP_ORGAN.STATUS, status)
                 .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }
