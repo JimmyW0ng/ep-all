@@ -303,7 +303,7 @@ public class OrganService {
             return resultDo;
         } else {
             log.error("[机构]，上线失败，id={}。", id);
-            return resultDo.setError(MessageCode.ERROR_SYSTEM);
+            return resultDo.setError(MessageCode.ERROR_OPERATE_FAIL);
         }
 
     }
@@ -341,12 +341,12 @@ public class OrganService {
             log.error("[机构]，冻结失败，机构不存在。");
             return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
-        if (organRepository.updateStatusById(id, EpOrganStatus.freeze) == BizConstant.DB_NUM_ONE) {
+        if (organRepository.freezeById(id) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]，冻结成功。id={}", id);
             return resultDo;
         } else {
             log.error("[机构]，冻结失败。id={}", id);
-            return resultDo.setError(MessageCode.ERROR_SYSTEM);
+            return resultDo.setError(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
 }
