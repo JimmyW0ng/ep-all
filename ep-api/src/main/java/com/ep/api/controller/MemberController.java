@@ -30,10 +30,19 @@ public class MemberController extends ApiController {
     @Autowired
     private MemberChildService memberChildService;
 
+    @ApiOperation(value = "当前用户基本信息")
+    @PostMapping("/info")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<EpMemberPo> info() {
+        EpMemberPo currentMbr = super.getCurrentUser().get();
+        ResultDo<EpMemberPo> resultDo = ResultDo.build();
+        return resultDo.setResult(currentMbr);
+    }
+
     @ApiOperation(value = "当前用户信息")
     @PostMapping("/detail")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<MemberInfoDto> index() {
+    public ResultDo<MemberInfoDto> detail() {
         EpMemberPo currentMbr = super.getCurrentUser().get();
         List<MemberChildBo> children = memberChildService.queryAllByMemberId(currentMbr.getId());
         MemberInfoDto mbrInfoDto = new MemberInfoDto(currentMbr, children);
