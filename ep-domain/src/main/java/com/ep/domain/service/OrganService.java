@@ -11,10 +11,7 @@ import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.OrganRepository;
-import com.ep.domain.repository.SystemUserRepository;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +42,9 @@ public class OrganService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private OrganCourseService organCourseService;
+    private OrganCourseRepository organCourseRepository;
     @Autowired
-    private OrganClassService organClassService;
+    private OrganClassRepository organClassRepository;
     @Autowired
     private SystemUserRepository systemUserRepository;
 
@@ -212,7 +209,7 @@ public class OrganService {
             fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
-        if (organRepository.updateSystemOrgan(po) == 1) {
+        if (organRepository.updateSystemOrgan(po) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]更新机构成功，id={}。", po.getId());
             return ResultDo.build();
         } else {
@@ -253,16 +250,18 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_OFFLINE_CURRSTATUS_NOT_ONLINE);
         }
         //机构下没有online的课程的机构才能下线
-        if (CollectionsTools.isNotEmpty(organCourseService.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
+        if (CollectionsTools.isNotEmpty(organCourseRepository.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
             log.error("[机构]，机构下线失败。机构下存在上线的课程。");
             return ResultDo.build(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
         }
 
         if (organRepository.offlineById(id) == BizConstant.DB_NUM_ONE) {
             //机构下线，该机构下的课程下线
-            organCourseService.updateCourseByOfflineOgn(id);
+            organCourseRepository.updateCourseByOfflineOgn(id);
             //机构下线，该机构下的班次结束
-            organClassService.updateClassByOfflineOgn(id);
+            organClassRepository.updateClassByOfflineOgn(id);
+            //机构下线，该机构对应平台账号注销
+            systemUserRepository.cancelByOfflineOgn(id);
             log.info("[机构]，下线成功，id={}。", id);
             return ResultDo.build();
         } else {
@@ -334,6 +333,7 @@ public class OrganService {
      * @param id
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo freezeById(Long id) {
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
@@ -347,6 +347,30 @@ public class OrganService {
             return ResultDo.build();
         } else {
             log.error("[机构]，冻结失败。id={}", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 解冻机构
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo unfreezeById(Long id) {
+        EpOrganPo po = organRepository.findById(id);
+        if (null == po) {
+            log.error("[机构]，解冻失败，机构不存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+        }
+        if (organRepository.unfreezeById(id) == BizConstant.DB_NUM_ONE) {
+            //解冻该机构对应的用户账号
+            systemUserRepository.unfreezeByOgnId(id);
+            log.info("[机构]，解冻成功。id={}", id);
+            return ResultDo.build();
+        } else {
+            log.error("[机构]，解冻失败。id={}", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }

@@ -76,14 +76,12 @@ public class IndexController extends BackendController {
     /**
      * 个人查看
      * @param model
-     * @param request
      * @return
      */
     @GetMapping("/settingView")
     public String settingView(Model model) {
-        Long id = super.getCurrentUser().get().getId();
-        EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
-        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
+        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(systemUserPo.getId());
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         try{
             systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
@@ -98,6 +96,32 @@ public class IndexController extends BackendController {
         model.addAttribute("roleList", lists);
         model.addAttribute("roleIds", roleIds);
         return "/systemUser/settingView";
+    }
+
+    /**
+     * 个人设置初始化
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/settingEdit")
+    public String settingEdit(Model model) {
+        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+//        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(systemUserPo.getId());
+//        List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
+//        try{
+//            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
+//
+//        }catch(Exception e){
+//            model.addAttribute("systemUserPo", systemUserPo);
+//            model.addAttribute("roleList", lists);
+//            model.addAttribute("roleIds", roleIds);
+//            return "/systemUser/view";
+//        }
+        model.addAttribute("systemUserPo", systemUserPo);
+//        model.addAttribute("roleList", lists);
+//        model.addAttribute("roleIds", roleIds);
+        return "/systemUser/settingForm";
     }
 
 }

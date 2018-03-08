@@ -52,7 +52,7 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
     }
 
     /**
-     * 根据机构id冻结账号
+     * 根据机构id冻结平台用户
      *
      * @param ognId
      * @return
@@ -62,6 +62,83 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
                 .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.freeze)
                 .where(EP_SYSTEM_USER.OGN_ID.eq(ognId))
                 .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.normal))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据机构id解冻平台用户
+     *
+     * @param ognId
+     * @return
+     */
+    public int unfreezeByOgnId(Long ognId) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.normal)
+                .where(EP_SYSTEM_USER.OGN_ID.eq(ognId))
+                .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.freeze))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+
+    /**
+     * 根据id冻结平台用户
+     *
+     * @param id
+     * @return
+     */
+    public int freezeById(Long id) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.freeze)
+                .where(EP_SYSTEM_USER.ID.eq(id))
+                .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.normal))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id解冻平台用户
+     *
+     * @param id
+     * @return
+     */
+    public int unfreezeById(Long id) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.normal)
+                .where(EP_SYSTEM_USER.ID.eq(id))
+                .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.freeze))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+
+    /**
+     * 根据id注销平台用户
+     *
+     * @param id
+     * @return
+     */
+    public int cancelById(Long id) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.cancel)
+                .where(EP_SYSTEM_USER.ID.eq(id))
+                .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.normal))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 机构下线,机构对应平台账号注销
+     *
+     * @param ognId
+     * @return
+     */
+    public int cancelByOfflineOgn(Long ognId) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.cancel)
+                .where(EP_SYSTEM_USER.OGN_ID.eq(ognId))
+                .and(EP_SYSTEM_USER.STATUS.in(EpSystemUserStatus.normal, EpSystemUserStatus.freeze))
                 .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
                 .execute();
     }

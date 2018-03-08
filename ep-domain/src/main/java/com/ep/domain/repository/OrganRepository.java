@@ -244,5 +244,19 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据id解冻记录
+     *
+     * @param id
+     */
+    public int unfreezeById(Long id) {
+        return dslContext.update(EP_ORGAN)
+                .set(EP_ORGAN.STATUS, EpOrganStatus.online)
+                .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.STATUS.eq(EpOrganStatus.freeze))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 
