@@ -119,7 +119,7 @@ public class OrganService {
     public ResultDo createSystemOrgan(SystemOrganBo bo) throws Exception {
         log.info("[机构]新增机构开始。机构对象={}。", bo);
         if (StringTools.isBlank(bo.getOgnName()) || StringTools.isBlank(bo.getOgnAddress())
-                || null == bo.getOgnRegion()) {
+                || null == bo.getOgnRegion() || null == bo.getMarketWeight()) {
             log.error("[机构]新增机构失败。请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
@@ -143,6 +143,7 @@ public class OrganService {
         po.setStatus(EpOrganStatus.save);
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
 
+        //先插入机构，后插入主图、logo
         organRepository.insert(po);
         //机构主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
@@ -197,7 +198,6 @@ public class OrganService {
         po.setMarketWeight(bo.getMarketWeight());
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
-        ResultDo<?> resultDo = ResultDo.build();
 
         //主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
@@ -211,11 +211,11 @@ public class OrganService {
         }
         if (organRepository.updateSystemOrgan(po) == 1) {
             log.info("[机构]更新机构成功，id={}。", po.getId());
-            return resultDo;
+            return ResultDo.build();
         } else {
             log.error("[机构]更新机构失败，id={}。", po.getId());
-            resultDo.setSuccess(false);
-            return resultDo;
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+
         }
 
     }
@@ -236,24 +236,23 @@ public class OrganService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo offlineById(Long id) {
-        ResultDo<?> resultDo = ResultDo.build();
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
             log.error("[机构]，下线失败，机构不存在。");
-            return resultDo.setError(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         if (po.getStatus().equals(EpOrganStatus.offline)) {
             log.info("[机构]，机构已下线。id={}。", id);
-            return resultDo;
+            return ResultDo.build();
         }
         if (!po.getStatus().equals(EpOrganStatus.online)) {
             log.error("[机构]，机构下线失败。状态为{},只有online状态能上线。", po.getStatus().getLiteral());
-            return resultDo.setSuccess(false);
+            return ResultDo.build(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
         }
         //机构下没有online的课程的机构才能下线
         if (CollectionsTools.isNotEmpty(organCourseService.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
             log.error("[机构]，机构下线失败。机构下存在上线的课程。");
-            return resultDo.setError(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
+            return ResultDo.build(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
         }
 
         if (organRepository.offlineById(id) == BizConstant.DB_NUM_ONE) {
@@ -262,10 +261,10 @@ public class OrganService {
             //机构下线，该机构下的班次结束
             organClassService.updateClassByOfflineOgn(id);
             log.info("[机构]，下线成功，id={}。", id);
-            return resultDo;
+            return ResultDo.build();
         } else {
-            log.info("[机构]，下线失败，id={}。", id);
-            return resultDo.setSuccess(false);
+            log.error("[机构]，下线失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
 
     }
@@ -277,7 +276,6 @@ public class OrganService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo onlineById(Long id) {
-        ResultDo<?> resultDo = ResultDo.build();
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
             log.error("[机构]，上线失败，机构不存在。");
@@ -285,25 +283,25 @@ public class OrganService {
         }
         if (po.getStatus().equals(EpOrganStatus.online)) {
             log.info("[机构]，机构已上线。id={}。", id);
-            return resultDo;
+            return ResultDo.build();
         }
         //机构主图和logo存在才能上线
         Optional<EpFilePo> optionalMainpic = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, id);
         if (!optionalMainpic.isPresent()) {
             log.error("[机构]，上线失败，机构主图不存在。");
-            return resultDo.setError(MessageCode.ERROR_ORGAN_MAINPIC_NOT_EXISTS);
+            return ResultDo.build(MessageCode.ERROR_ORGAN_MAINPIC_NOT_EXISTS);
         }
         Optional<EpFilePo> optionalLogo = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
         if (!optionalLogo.isPresent()) {
             log.error("[机构]，上线失败，机构logo不存在。");
-            return resultDo.setError(MessageCode.ERROR_ORGAN_LOGO_NOT_EXISTS);
+            return ResultDo.build(MessageCode.ERROR_ORGAN_LOGO_NOT_EXISTS);
         }
         if (organRepository.onlineById(id) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]，上线成功，id={}。", id);
-            return resultDo;
+            return ResultDo.build();
         } else {
             log.error("[机构]，上线失败，id={}。", id);
-            return resultDo.setError(MessageCode.ERROR_SYSTEM);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
 
     }
@@ -314,9 +312,8 @@ public class OrganService {
      * @param sourceId
      * @return
      */
-    public EpFilePo getOgnMainpic(Long sourceId) {
-        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId);
-        return optional.isPresent() ? optional.get() : null;
+    public Optional<EpFilePo> getOgnMainpic(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId);
     }
 
     /**
@@ -325,9 +322,8 @@ public class OrganService {
      * @param sourceId
      * @return
      */
-    public EpFilePo getOgnLogo(Long sourceId) {
-        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId);
-        return optional.isPresent() ? optional.get() : null;
+    public Optional<EpFilePo> getOgnLogo(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId);
     }
 
     /**
@@ -336,19 +332,18 @@ public class OrganService {
      * @param id
      * @return
      */
-    public ResultDo freezeById(Long id) throws Exception {
-        ResultDo resultDo = ResultDo.build();
+    public ResultDo freezeById(Long id) {
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
             log.error("[机构]，冻结失败，机构不存在。");
             return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
-        if (organRepository.updateStatusById(id, EpOrganStatus.freeze) == BizConstant.DB_NUM_ONE) {
+        if (organRepository.freezeById(id) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]，冻结成功。id={}", id);
-            return resultDo;
+            return ResultDo.build();
         } else {
-            log.info("[机构]，冻结成功。id={}", id);
-            return resultDo.setError(MessageCode.ERROR_SYSTEM);
+            log.error("[机构]，冻结失败。id={}", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
 }

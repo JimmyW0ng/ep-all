@@ -232,15 +232,15 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
     }
 
     /**
-     * 根据id更新状态
+     * 根据id冻结记录
      *
      * @param id
-     * @param status
      */
-    public int updateStatusById(Long id, EpOrganStatus status) {
+    public int freezeById(Long id) {
         return dslContext.update(EP_ORGAN)
-                .set(EP_ORGAN.STATUS, status)
+                .set(EP_ORGAN.STATUS, EpOrganStatus.freeze)
                 .where(EP_ORGAN.ID.eq(id))
+                .and(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }

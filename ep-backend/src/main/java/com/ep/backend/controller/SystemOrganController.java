@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 
@@ -154,7 +155,7 @@ public class SystemOrganController extends BackendController {
         try {
             return organService.updateSystemOrgan(bo);
         } catch (Exception e) {
-            log.error("[机构]修改机构失败。", e);
+            log.error("[机构]修改机构失败。id={}。", bo.getId(), e);
             return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
     }
@@ -181,13 +182,13 @@ public class SystemOrganController extends BackendController {
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
         model.addAttribute("provinceId", provinceId);
         model.addAttribute("organPo", po);
-        EpFilePo mainpicImgPo = organService.getOgnMainpic(id);
-        if (null != mainpicImgPo) {
-            model.addAttribute("mainpicImgUrl", mainpicImgPo.getFileUrl());
+        Optional<EpFilePo> mainpicImgOptional = organService.getOgnMainpic(id);
+        if (mainpicImgOptional.isPresent()) {
+            model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
-        EpFilePo logoImgPo = organService.getOgnLogo(id);
-        if (null != logoImgPo) {
-            model.addAttribute("logoImgUrl", logoImgPo.getFileUrl());
+        Optional<EpFilePo> logoImgOptional = organService.getOgnLogo(id);
+        if (logoImgOptional.isPresent()) {
+            model.addAttribute("logoImgUrl", logoImgOptional.get().getFileUrl());
         }
         return "systemOrgan/form";
     }
@@ -215,13 +216,13 @@ public class SystemOrganController extends BackendController {
         EpConstantRegionPo constantRegionPoProvince = constantRegionComponent.getById(provinceId);
         model.addAttribute("province", constantRegionPoProvince.getRegionName());
         model.addAttribute("organPo", po);
-        EpFilePo mainpicImgPo = organService.getOgnMainpic(id);
-        if (null != mainpicImgPo) {
-            model.addAttribute("mainpicImgUrl", mainpicImgPo.getFileUrl());
+        Optional<EpFilePo> mainpicImgOptional = organService.getOgnMainpic(id);
+        if (mainpicImgOptional.isPresent()) {
+            model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
-        EpFilePo logoImgPo = organService.getOgnLogo(id);
-        if (null != logoImgPo) {
-            model.addAttribute("logoImgUrl", logoImgPo.getFileUrl());
+        Optional<EpFilePo> logoImgOptional = organService.getOgnLogo(id);
+        if (logoImgOptional.isPresent()) {
+            model.addAttribute("logoImgUrl", logoImgOptional.get().getFileUrl());
         }
         return "systemOrgan/view";
     }
@@ -235,13 +236,12 @@ public class SystemOrganController extends BackendController {
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id
     ) {
-        ResultDo resultDo = ResultDo.build();
         try {
             organService.freezeById(id);
-            return resultDo;
+            return ResultDo.build();
         } catch (Exception e) {
             log.error("[机构]机构冻结失败。id={}", id, e);
-            return resultDo.setSuccess(false);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
 
@@ -258,7 +258,7 @@ public class SystemOrganController extends BackendController {
             return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, null);
         } catch (Exception e) {
             log.error("[机构]机构上传主图失败。", e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
 
@@ -275,7 +275,7 @@ public class SystemOrganController extends BackendController {
             return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
         } catch (Exception e) {
             log.error("[机构]机构上传logo失败。", e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
 
@@ -289,7 +289,12 @@ public class SystemOrganController extends BackendController {
     @GetMapping("offline/{id}")
     @ResponseBody
     public ResultDo offline(@PathVariable("id") Long id) {
-        return organService.offlineById(id);
+        try {
+            return organService.offlineById(id);
+        } catch (Exception e) {
+            log.error("[机构]，机构下线失败。id={}。", id, e);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     /**
@@ -301,7 +306,12 @@ public class SystemOrganController extends BackendController {
     @GetMapping("online/{id}")
     @ResponseBody
     public ResultDo onlineById(@PathVariable("id") Long id) {
-        return organService.onlineById(id);
+        try {
+            return organService.onlineById(id);
+        } catch (Exception e) {
+            log.error("[机构]，机构上线失败。id={}。", id, e);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
 }
