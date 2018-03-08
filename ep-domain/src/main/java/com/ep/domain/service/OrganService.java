@@ -11,10 +11,7 @@ import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.OrganRepository;
-import com.ep.domain.repository.SystemUserRepository;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +42,9 @@ public class OrganService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private OrganCourseService organCourseService;
+    private OrganCourseRepository organCourseRepository;
     @Autowired
-    private OrganClassService organClassService;
+    private OrganClassRepository organClassRepository;
     @Autowired
     private SystemUserRepository systemUserRepository;
 
@@ -253,16 +250,18 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_OFFLINE_CURRSTATUS_NOT_ONLINE);
         }
         //机构下没有online的课程的机构才能下线
-        if (CollectionsTools.isNotEmpty(organCourseService.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
+        if (CollectionsTools.isNotEmpty(organCourseRepository.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
             log.error("[机构]，机构下线失败。机构下存在上线的课程。");
             return ResultDo.build(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
         }
 
         if (organRepository.offlineById(id) == BizConstant.DB_NUM_ONE) {
             //机构下线，该机构下的课程下线
-            organCourseService.updateCourseByOfflineOgn(id);
+            organCourseRepository.updateCourseByOfflineOgn(id);
             //机构下线，该机构下的班次结束
-            organClassService.updateClassByOfflineOgn(id);
+            organClassRepository.updateClassByOfflineOgn(id);
+            //机构下线，该机构对应平台账号注销
+            systemUserRepository.cancelByOfflineOgn(id);
             log.info("[机构]，下线成功，id={}。", id);
             return ResultDo.build();
         } else {

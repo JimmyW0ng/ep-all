@@ -118,7 +118,7 @@ public class SystemUserController extends BackendController {
     @GetMapping("/updateInit/{id}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String updateInit(Model model,@PathVariable("id") Long id) {
-        EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
+        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         try{
@@ -205,7 +205,7 @@ public class SystemUserController extends BackendController {
     @GetMapping("/view/{id}")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String view(Model model, @PathVariable("id") Long id) {
-        EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
+        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         try{
@@ -233,10 +233,11 @@ public class SystemUserController extends BackendController {
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     @ResponseBody
     public ResultDo delete(@PathVariable("id") Long id) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+
         ResultDo resultDo=ResultDo.build();
         systemUserService.deleteUser(id);
-        log.info("[用户]，删除用户成功，用户id={},currentUserId={}。", id,currentUser.getId());
+        log.info("[用户]，删除用户成功，用户id={},currentUserId={}。", id, systemUserPo.getId());
         return resultDo;
     }
 
@@ -249,8 +250,31 @@ public class SystemUserController extends BackendController {
     @GetMapping("freeze/{id}")
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id) {
-//        systemUserService.freezeById();
-        return null;
+        return systemUserService.freezeById(id);
+    }
+
+    /**
+     * 注销用户
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("cancel/{id}")
+    @ResponseBody
+    public ResultDo cancel(@PathVariable("id") Long id) {
+        return systemUserService.cancelById(id);
+    }
+
+    /**
+     * 解冻用户
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("unfreeze/{id}")
+    @ResponseBody
+    public ResultDo unfreeze(@PathVariable("id") Long id) {
+        return systemUserService.unfreezeById(id);
     }
 
     /**

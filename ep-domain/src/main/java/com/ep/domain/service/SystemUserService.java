@@ -1,5 +1,8 @@
 package com.ep.domain.service;
 
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.pojo.po.EpSystemUserRolePo;
@@ -116,10 +119,61 @@ public class SystemUserService {
 
     /**
      * 根据id冻结系统用户
+     *
      * @param id
      * @return
      */
-//    public ResultDo freezeById(Long id){
-//        systemUserRepository.findById(id);
-//    }
+    public ResultDo freezeById(Long id) {
+        if (!systemUserRepository.findById(id).isPresent()) {
+            log.error("[用户]冻结失败，该用户不存在。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_USER_NOT_EXISTS);
+        }
+        if (systemUserRepository.freezeById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[用户]冻结成功。id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[用户]冻结失败。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 根据id解冻系统用户
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo unfreezeById(Long id) {
+        if (!systemUserRepository.findById(id).isPresent()) {
+            log.error("[用户]解冻失败，该用户不存在。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_USER_NOT_EXISTS);
+        }
+        if (systemUserRepository.unfreezeById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[用户]解冻成功。id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[用户]解冻失败。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 根据id注销系统用户
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo cancelById(Long id) {
+        if (!systemUserRepository.findById(id).isPresent()) {
+            log.error("[用户]注销失败，该用户不存在。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_USER_NOT_EXISTS);
+        }
+        if (systemUserRepository.cancelById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[用户]注销成功。id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[用户]注销失败。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
 }

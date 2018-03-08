@@ -88,4 +88,9 @@ public class MessageCode {
      * 机构账户
      */
     public static final String ERROR_ORGAN_ACCOUNT_NOT_EXISTS = "ERROR_ORGAN_ACCOUNT_NOT_EXISTS";
+    /**
+     * 系统用户
+     */
+    public static final String ERROR_SYSTEM_USER_NOT_EXISTS = "ERROR_SYSTEM_USER_NOT_EXISTS";
+
 }

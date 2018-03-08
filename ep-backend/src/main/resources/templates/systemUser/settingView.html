@@ -31,13 +31,13 @@
                                aria-required="true">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">密码：</label>
-                    <div class="col-sm-3">
-                        <input id="password" name="password" type="text" class="form-control" required="true" th:field="*{password}"
-                               aria-required="true">
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                <!--<label class="col-sm-2 control-label">密码：</label>-->
+                <!--<div class="col-sm-3">-->
+                <!--<input id="password" name="password" type="text" class="form-control" required="true" th:field="*{password}"-->
+                <!--aria-required="true">-->
+                <!--</div>-->
+                <!--</div>-->
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">邮箱：</label>
@@ -46,18 +46,7 @@
                                aria-required="true">
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label class="col-sm-2 control-label">类型：</label>-->
-                    <!--<div class="col-sm-3">-->
-                        <!--<select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}">-->
-                            <!--<option value="">请选择</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商户id：</label>
                     <div class="col-sm-3">
@@ -65,72 +54,33 @@
                                aria-required="true">
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label class="col-sm-2 control-label">状态：</label>-->
-                    <!--<div class="col-sm-3">-->
-                        <!--<select id="status" name="status" class="form-control" required="true" aria-required="true" >-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserStatus).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:text="#{EpSystemUserStatus.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
 
-                    <!--</div>-->
-                <!--</div>-->
-
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">角色：</label>
-                    <div class="col-sm-4">
-                        <table class="table table-striped table-hover table-bordered dataTable" id="editable"
-                               aria-describedby="editable_info">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>角色</th>
-
-                                <th>备注</th>
-                            </tr>
-                            </thead>
-                            <tbody id="role_tb_body">
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
             </form>
         </div>
     </div>
 </div>
 
 <script th:replace="~{fragments/scripts}"></script>
-<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 
-<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
-<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
-<script th:src="@{/js/jquery.ztree.core.js}"></script>
-<script th:src="@{/js/jquery.ztree.core.js}"></script>
-<script th:src="@{/js/jquery.ztree.excheck.js}"></script>
-<script th:src="@{/js/jquery.ztree.exedit.js}"></script>
 <script th:inline="javascript">
     $(function () {
-        var type=$("#type").val();
-        var res=[[${roleList}]];
-        var roleIds=[[${roleIds}]];
-        console.log(roleIds)
-        var htmls="";
-        if(res!=undefined&&res.length>0){
-            for(var i=0;i<res.length;i++){
-                htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
-                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
-                    "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
-
-            }
-            $("#role_tb_body").html(htmls)
-            for(var i=0;i<roleIds.length;i++){
-                $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
-            }
-        }
+//        var type=$("#type").val();
+//        var res=[[${roleList}]];
+//        var roleIds=[[${roleIds}]];
+//        console.log(roleIds)
+//        var htmls="";
+//        if(res!=undefined&&res.length>0){
+//            for(var i=0;i<res.length;i++){
+//                htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
+//                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
+//                    "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
+//
+//            }
+//            $("#role_tb_body").html(htmls)
+//            for(var i=0;i<roleIds.length;i++){
+//                $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
+//            }
+//        }
         $("#userFrm").find("input").attr("readonly","true")
     })
 </script>

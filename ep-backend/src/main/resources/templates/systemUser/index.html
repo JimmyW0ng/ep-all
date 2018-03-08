@@ -8,7 +8,6 @@
 </head>
 <header>
     <th:block layout:fragment="links">
-        <!--<link th:href="@{/css/plugins/dataTables/dataTables.bootstrap.css}" rel="stylesheet">-->
 
     </th:block>
 </header>
@@ -27,10 +26,7 @@
                         <input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"
                                placeholder="手机号">
                     </div>
-                    <!--<div class="form-group">-->
-                        <!--<input type="text" class="form-control " name="roleCode" th:value="${map['roleCode']}"-->
-                               <!--placeholder="角色标识">-->
-                    <!--</div>-->
+
                     <div class="form-group ">
                         <select class="form-control" name="type" id="type" style="width:182px;" >
                             <option value>类型</option>
@@ -93,10 +89,16 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info" th:href="@{/auth/user/view/}+${bo.id}">查看</a>
-                                <a class="btn btn-xs btn-primary" th:href="@{/auth/user/updateInit/}+${bo.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteUserBox('+${bo.id}+')'">删除</a>
-
+                                <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.status,'normal')}"
+                                   th:href="@{/auth/user/view/}+${bo.id}">查看</a>
+                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'normal')}"
+                                   th:href="@{/auth/user/updateInit/}+${bo.id}">修改</a>
+                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(bo.status,'normal')}"
+                                   href="javascript:void(0)" th:onclick="'freezeUserBox('+${bo.id}+')'">冻结</a>
+                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(bo.status,'freeze')}"
+                                   href="javascript:void(0)" th:onclick="'unfreezeUserBox('+${bo.id}+')'">解冻</a>
+                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(bo.status,'normal')}"
+                                   href="javascript:void(0)" th:onclick="'cancelUserBox('+${bo.id}+')'">注销</a>
                             </td>
 
                         </tr>
@@ -129,21 +131,71 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script>
-    function deleteUserBox(id) {
-        parent.layer.alert('确认删除用户', {
+    function unfreezeUserBox(id) {
+        parent.layer.alert('确认冻结用户', {
                 icon: 1,
-                skin: 'layer-ext-moon',
-
             },
             function (index) {
-                delUserDo(id);
+                unfreezeUserDo(id);
                 parent.layer.close(index);
             })
     }
-    function delUserDo(id) {
+    function unfreezeUserDo(id) {
         $.ajax({
             type:"GET",
-            url:"/auth/user/delete/"+id,
+            url: "/auth/user/unfreeze/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, '/auth/user/index');
+                } else {
+                    toastr_error(data.errorDescription, '/auth/user/index');
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+    function freezeUserBox(id) {
+        parent.layer.alert('确认冻结用户', {
+                icon: 1,
+            },
+            function (index) {
+                freezeUserDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function freezeUserDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/user/freeze/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, '/auth/user/index');
+                } else {
+                    toastr_error(data.errorDescription, '/auth/user/index');
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+
+    }
+
+    function cancelUserBox(id) {
+        parent.layer.alert('确认注销用户', {
+                icon: 1,
+            },
+            function (index) {
+                cancelUserDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function cancelUserDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/user/cancel/" + id,
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/user/index');
