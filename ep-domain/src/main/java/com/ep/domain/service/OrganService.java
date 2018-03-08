@@ -314,9 +314,8 @@ public class OrganService {
      * @param sourceId
      * @return
      */
-    public EpFilePo getOgnMainpic(Long sourceId) {
-        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId);
-        return optional.isPresent() ? optional.get() : null;
+    public Optional<EpFilePo> getOgnMainpic(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, sourceId);
     }
 
     /**
@@ -325,9 +324,8 @@ public class OrganService {
      * @param sourceId
      * @return
      */
-    public EpFilePo getOgnLogo(Long sourceId) {
-        Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId);
-        return optional.isPresent() ? optional.get() : null;
+    public Optional<EpFilePo> getOgnLogo(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, sourceId);
     }
 
     /**
