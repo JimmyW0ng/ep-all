@@ -61,6 +61,7 @@
 
                             <input type="hidden" id="id" name="id">
                             <input type="hidden" id="parentId" name="parentId">
+                            <input type="hidden" id="target" name="target" value="backend">
                             <div class="form-group">
 
                                 <label class="col-sm-3 control-label">父级菜单：</label>
@@ -288,14 +289,12 @@
         resetFrmField();
         menuBoxTitle("u_act")
         $("#permission").attr("readonly",true)
-        console.log($(ele).data("id"));
         var id = $(ele).data("id")
         $.ajax({
             type: 'GET',
             url: '/auth/menu/view/' + id,
             success: function (data) {
                 if (data.success) {
-                    console.log(data.result)
                     var menu = data.result
                     $("#id").val(menu.id)
                     $("#parentId").val(menu.parentId)
@@ -319,7 +318,6 @@
     function delMenuShow() {
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
         var nodes = treeObj.getCheckedNodes(true);
-        console.log(nodes)
         var ids=[];
 
         if(nodes.length==0){
@@ -351,7 +349,12 @@
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/menu/index')
+                } else {
+                    toastr_error(data.errorDescription, '/auth/menu/index');
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }
