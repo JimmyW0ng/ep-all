@@ -1,9 +1,9 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.domain.tables.records.EpSystemRoleAuthorityRecord;
-import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -61,9 +61,9 @@ public class SystemRoleAuthorityRepository extends AbstractCRUDRepository<EpSyst
                 .execute();
     }
 
-    public void deleteByMenuId(Long menuId) {
+    public void deletePhysicByMenuIds(List<Long> ids) {
         dslContext.delete(EP_SYSTEM_ROLE_AUTHORITY)
-                .where(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.eq(menuId))
+                .where(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.in(ids))
                 .execute();
     }
 

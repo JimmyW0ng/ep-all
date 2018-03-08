@@ -135,12 +135,7 @@ public class SystemOrganController extends BackendController {
     @PostMapping("create")
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
-        try {
-            return organService.createSystemOrgan(bo);
-        } catch (Exception e) {
-            log.error("[机构]机构新增失败。", e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
-        }
+        return organService.createSystemOrgan(bo);
     }
 
     /**
@@ -152,12 +147,7 @@ public class SystemOrganController extends BackendController {
     @PostMapping("update")
     @ResponseBody
     public ResultDo update(SystemOrganBo bo) {
-        try {
-            return organService.updateSystemOrgan(bo);
-        } catch (Exception e) {
-            log.error("[机构]修改机构失败。id={}。", bo.getId(), e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
-        }
+        return organService.updateSystemOrgan(bo);
     }
 
     /**
@@ -233,6 +223,7 @@ public class SystemOrganController extends BackendController {
 
     /**
      * 冻结机构
+     *
      * @param id
      * @return
      */

@@ -116,7 +116,7 @@ public class OrganService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo createSystemOrgan(SystemOrganBo bo) throws Exception {
+    public ResultDo createSystemOrgan(SystemOrganBo bo) {
         log.info("[机构]新增机构开始。机构对象={}。", bo);
         if (StringTools.isBlank(bo.getOgnName()) || StringTools.isBlank(bo.getOgnAddress())
                 || null == bo.getOgnRegion() || null == bo.getMarketWeight()) {

@@ -52,6 +52,26 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
     }
 
     /**
+     * 修改用户记录
+     *
+     * @return
+     */
+    public int updatePo(EpSystemUserPo po) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.MOBILE, po.getMobile())
+                .set(EP_SYSTEM_USER.USER_NAME, po.getUserName())
+                .set(EP_SYSTEM_USER.PASSWORD, po.getPassword())
+                .set(EP_SYSTEM_USER.EMAIL, po.getEmail())
+                .set(EP_SYSTEM_USER.EMAIL, po.getEmail())
+//                .set(EP_SYSTEM_USER.TYPE,po.getType())
+                .set(EP_SYSTEM_USER.OGN_ID, po.getOgnId())
+                .where(EP_SYSTEM_USER.ID.eq(po.getId()))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+
+    }
+
+    /**
      * 根据机构id冻结平台用户
      *
      * @param ognId

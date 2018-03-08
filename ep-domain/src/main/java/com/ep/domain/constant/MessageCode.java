@@ -92,5 +92,6 @@ public class MessageCode {
      * 系统用户
      */
     public static final String ERROR_SYSTEM_USER_NOT_EXISTS = "ERROR_SYSTEM_USER_NOT_EXISTS";
+    public static final String ERROR_SYSTEM_USER_ORGAN_NOT_ONLINE = "ERROR_SYSTEM_USER_ORGAN_NOT_ONLINE";
 
 }

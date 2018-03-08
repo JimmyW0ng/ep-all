@@ -52,10 +52,30 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .fetchInto(SystemMenuBo.class);
     }
 
-    public int deleteLogical(Long id){
+    /**
+     * 批量逻辑删除记录
+     *
+     * @param ids
+     * @return
+     */
+    public int deleteLogicByIds(List<Long> ids) {
         return dslContext.update(EP_SYSTEM_MENU)
-                .set(EP_SYSTEM_MENU.DEL_FLAG,true)
-                .where(EP_SYSTEM_MENU.ID.equal(id))
+                .set(EP_SYSTEM_MENU.DEL_FLAG, true)
+                .where(EP_SYSTEM_MENU.ID.in(ids))
+                .execute();
+    }
+
+    public int updatePo(EpSystemMenuPo po) {
+        return dslContext.update(EP_SYSTEM_MENU)
+                .set(EP_SYSTEM_MENU.PARENT_ID, po.getId())
+                .set(EP_SYSTEM_MENU.MENU_NAME, po.getMenuName())
+                .set(EP_SYSTEM_MENU.MENU_TYPE, po.getMenuType())
+                .set(EP_SYSTEM_MENU.HREF, po.getHref())
+                .set(EP_SYSTEM_MENU.SORT, po.getSort())
+                .set(EP_SYSTEM_MENU.STATUS, po.getStatus())
+                .set(EP_SYSTEM_MENU.PERMISSION, po.getPermission())
+                .set(EP_SYSTEM_MENU.REMARK, po.getRemark())
+                .where(EP_SYSTEM_MENU.ID.eq(po.getId()))
                 .execute();
     }
 

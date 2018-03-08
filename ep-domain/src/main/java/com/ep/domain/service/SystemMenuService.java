@@ -1,11 +1,11 @@
 package com.ep.domain.service;
 
-import com.ep.common.tool.DateTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
-import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.repository.SystemMenuRepository;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
@@ -52,33 +52,60 @@ public class SystemMenuService {
         return list;
     }
 
-    public EpSystemMenuPo insert(EpSystemMenuPo po) {
-        return systemMenuRepository.create(po);
+    /**
+     * 新增菜单
+     *
+     * @param po
+     * @return
+     */
+    public ResultDo createMenu(EpSystemMenuPo po) {
+        log.info("[菜单]新增菜单开始，菜单对象={}。", po);
+        if (null == po.getParentId() || null == po.getTarget()
+                || null == po.getTarget() || null == po.getMenuType()
+                || StringTools.isBlank(po.getMenuName()) || null == po.getSort()
+                || StringTools.isBlank(po.getPermission())) {
+            log.error("[菜单]新增菜单失败。请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        systemMenuRepository.insert(po);
+        return ResultDo.build();
     }
 
-    public int update(EpSystemMenuPo po) {
-        po.setUpdateAt(DateTools.getCurrentDateTime());
-        return systemMenuRepository.updateReturnEffRowsCount(po);
+    /**
+     * 更新菜单
+     *
+     * @param po
+     * @return
+     */
+    public ResultDo updateMenu(EpSystemMenuPo po) {
+        log.info("[菜单]修改菜单开始，菜单对象={}。", po);
+        if (null == po.getId() || null == po.getParentId() || null == po.getMenuType()
+                || StringTools.isBlank(po.getMenuName()) || null == po.getSort()
+                || StringTools.isBlank(po.getPermission())) {
+            log.error("[菜单]修改菜单失败。请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        if (systemMenuRepository.updatePo(po) == BizConstant.DB_NUM_ONE) {
+            log.info("[菜单]修改菜单成功。id={}。", po.getId());
+            return ResultDo.build();
+        } else {
+            log.error("[菜单]修改菜单失败。id={}。", po.getId());
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
+    /**
+     * 删除菜单
+     *
+     * @param ids
+     */
     @Transactional(rollbackFor = Exception.class)
-    public int delete(Long id) {
-        systemRoleAuthorityRepository.deleteByMenuId(id);
-        return systemMenuRepository.deleteLogical(id);
-//        ResultDo resultDo=ResultDo.build();
-//        if(systemRoleAuthorityRepository.isMenuUseByMenu(id)){
-//            List<EpSystemRolePo> systemRolePos=systemRoleAuthorityRepository.getRoleByUseMenu(id);
-//            StringBuffer sb=new StringBuffer("存在以下角色：");
-//            systemRolePos.forEach(p->{
-//                sb.append(p.getRoleName());
-//            });
-//            sb.append("正在使用此菜单");
-//            resultDo.setSuccess(false);
-//            resultDo.setErrorDescription(sb.toString());
-//        }else{
-//            systemMenuRepository.deleteLogical(id);
-//        }
-//        return resultDo;
+    public void deleteMenu(List<Long> ids) {
+        log.info("[菜单]删除菜单开始。删除菜单ids={}。", ids);
+        //逻辑删除 菜单表 记录
+        systemMenuRepository.deleteLogicByIds(ids);
+        //物理删除 角色权限表 记录
+        systemRoleAuthorityRepository.deletePhysicByMenuIds(ids);
+        log.info("[菜单]删除菜单成功。删除菜单ids={}。", ids);
     }
-
 }

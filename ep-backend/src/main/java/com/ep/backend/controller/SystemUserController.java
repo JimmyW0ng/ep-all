@@ -1,9 +1,8 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.StringTools;
-import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemUserBo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
@@ -14,7 +13,6 @@ import com.ep.domain.service.SystemUserRoleService;
 import com.ep.domain.service.SystemUserService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -24,11 +22,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -37,12 +35,13 @@ import java.util.Map;
 import static com.ep.domain.repository.domain.Ep.EP;
 
 /**
- * Created by fcc on 2018/1/10.
+ * @Description: 用户控制器
+ * @Author: CC.F
+ * @Date:
  */
 @Slf4j
 @RequestMapping("/auth/user")
 @Controller
-@Api(value = "后管用户")
 public class SystemUserController extends BackendController {
 
     @Autowired
@@ -59,40 +58,37 @@ public class SystemUserController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "列表")
     @GetMapping("/index")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @ApiOperation(value = "新增用户初始化")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
                         @RequestParam(value = "type", required = false) String type,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
-        Map map = Maps.newHashMap();
+        Map searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(mobile)) {
             conditions.add(EP.EP_SYSTEM_USER.MOBILE.eq(Long.parseLong(mobile)));
         }
-        map.put("mobile", mobile);
+        searchMap.put("mobile", mobile);
         if (StringTools.isNotBlank(type)) {
             conditions.add(EP.EP_SYSTEM_USER.TYPE.eq(EpSystemUserType.valueOf(type)));
         }
-        map.put("type", type);
+        searchMap.put("type", type);
 
         if (null != crStartTime) {
             conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.greaterOrEqual(crStartTime));
         }
-        map.put("crStartTime", crStartTime);
+        searchMap.put("crStartTime", crStartTime);
         if (null != crEndTime) {
             conditions.add(EP.EP_SYSTEM_USER.CREATE_AT.lessOrEqual(crEndTime));
         }
-        map.put("crEndTime", crEndTime);
+        searchMap.put("crEndTime", crEndTime);
         conditions.add(EP.EP_SYSTEM_USER.DEL_FLAG.eq(false));
         Page<EpSystemUserPo> page = systemUserService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
-        model.addAttribute("map", map);
-
-
+        model.addAttribute("searchMap", searchMap);
         return "systemUser/index";
     }
 
@@ -101,9 +97,8 @@ public class SystemUserController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "新增用户初始化")
     @GetMapping("/createInit")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     public String createInit(Model model) {
         model.addAttribute("systemUserPo", new EpSystemUserPo());
         return "/systemUser/form";
@@ -116,9 +111,9 @@ public class SystemUserController extends BackendController {
      */
     @ApiOperation(value = "修改用户初始化")
     @GetMapping("/updateInit/{id}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     public String updateInit(Model model,@PathVariable("id") Long id) {
-        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+        EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         try{
@@ -144,26 +139,15 @@ public class SystemUserController extends BackendController {
     @ApiOperation(value = "新增用户")
     @PostMapping("/create")
     @ResponseBody
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
-    public ResultDo create(HttpServletRequest request,
-                           @RequestBody SystemUserBo bo
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    public ResultDo create(@RequestBody SystemUserBo bo
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        ResultDo resultDo = ResultDo.build();
-        EpSystemUserPo epSystemUserPo = new EpSystemUserPo();
-        BeanTools.copyPropertiesIgnoreNull(bo, epSystemUserPo);
-        epSystemUserPo.setSalt(StringTools.generateShortUrl(epSystemUserPo.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         try {
-            epSystemUserPo.setPassword(CryptTools.aesEncrypt(epSystemUserPo.getPassword(), epSystemUserPo.getSalt()));
-
+            return systemUserService.createUser(bo);
         } catch (Exception e) {
-            resultDo.setSuccess(false);
-            return resultDo;
+            log.error("[用户]，新增失败。", e);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-        EpSystemUserPo insertPo=systemUserService.createUser(epSystemUserPo,bo.getSystemRolePos());
-        log.info("[用户]，新增用户成功，用户id={},currentUserId={}。", insertPo.getId(),currentUser.getId());
-
-        return resultDo;
     }
 
     /**
@@ -174,26 +158,15 @@ public class SystemUserController extends BackendController {
     @ApiOperation(value = "修改用户")
     @PostMapping("/update")
     @ResponseBody
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
-    public ResultDo update(HttpServletRequest request,
-                           @RequestBody SystemUserBo bo
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    public ResultDo update(@RequestBody SystemUserBo bo
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        ResultDo resultDo = ResultDo.build();
-        EpSystemUserPo epSystemUserPo = new EpSystemUserPo();
-        BeanTools.copyPropertiesIgnoreNull(bo, epSystemUserPo);
-        epSystemUserPo.setSalt(StringTools.generateShortUrl(epSystemUserPo.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         try {
-            epSystemUserPo.setPassword(CryptTools.aesEncrypt(epSystemUserPo.getPassword(), epSystemUserPo.getSalt()));
-
+            return systemUserService.updateUser(bo);
         } catch (Exception e) {
-            resultDo.setSuccess(false);
-            return resultDo;
+            log.error("[用户]，修改失败。id={}。", bo.getId(), e);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
-        systemUserService.updateUser(epSystemUserPo,bo.getSystemRolePos());
-        log.info("[用户]，修改用户成功，用户id={},currentUserId={}。", bo.getId(),currentUser.getId());
-
-        return resultDo;
     }
 
     /**
@@ -203,9 +176,9 @@ public class SystemUserController extends BackendController {
      */
     @ApiOperation(value = "查看用户")
     @GetMapping("/view/{id}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     public String view(Model model, @PathVariable("id") Long id) {
-        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+        EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         try{
@@ -228,14 +201,13 @@ public class SystemUserController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "删除用户")
     @GetMapping("/delete/{id}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     @ResponseBody
     public ResultDo delete(@PathVariable("id") Long id) {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
 
-        ResultDo resultDo=ResultDo.build();
+        ResultDo resultDo = ResultDo.build();
         systemUserService.deleteUser(id);
         log.info("[用户]，删除用户成功，用户id={},currentUserId={}。", id, systemUserPo.getId());
         return resultDo;
@@ -248,6 +220,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("freeze/{id}")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id) {
         return systemUserService.freezeById(id);
@@ -260,6 +233,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("cancel/{id}")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     @ResponseBody
     public ResultDo cancel(@PathVariable("id") Long id) {
         return systemUserService.cancelById(id);
@@ -272,6 +246,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("unfreeze/{id}")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     @ResponseBody
     public ResultDo unfreeze(@PathVariable("id") Long id) {
         return systemUserService.unfreezeById(id);
@@ -279,11 +254,12 @@ public class SystemUserController extends BackendController {
 
     /**
      * 根据用户类型获得角色列表
+     *
      * @param type
      * @return
      */
     @GetMapping("/getRoleByUserType/{type}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     @ResponseBody
     public ResultDo view(@PathVariable("type") EpSystemUserType type) {
         ResultDo resultDo = ResultDo.build();

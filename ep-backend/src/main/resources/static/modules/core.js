@@ -89,7 +89,7 @@ function toastr_success(msg, url) {
 }
 function toastr_error(msg, url) {
     if (msg != null && msg != "") {
-        toastr.error(msg);
+        toastr.error("操作失败，原因：" + msg + "。");
     } else {
         toastr.error("操作失败");
     }
