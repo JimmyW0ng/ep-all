@@ -143,11 +143,12 @@
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index');
-                } else if (data.error == "ERROR_ORGAN_MAINPIC_NOT_EXISTS" ||
-                    data.error == "ERROR_ORGAN_LOGO_NOT_EXISTS") {
-
-                    toastr_error("操作失败，原因：请先上传主图和logo。", '/auth/systemOrgan/index');
+                } else {
+                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }
@@ -167,12 +168,17 @@
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index');
+                } else {
+                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }
     function freezeOrganBox(id) {
-        parent.layer.alert('确认删除此机构', {
+        parent.layer.alert('确认冻结此机构', {
                 icon: 0,
             },
             function (index) {
@@ -187,58 +193,12 @@
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index');
+                } else {
+                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
                 }
-            }
-        })
-
-    }
-
-
-    /**
-     * 上传商家主图
-     */
-    function uploadBannerImg($btn,sourceId,ele) {
-
-        $(ele).attr("disabled", true);
-        data = new FormData();
-        data.append("file", $("#banner_img")[0].files[0]);
-        data.append("sourceId", sourceId);
-        $.ajax({
-            type: "POST",
-            url: "/auth/systemOrgan/uploadMainpic",
-            data: data,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                if(data.success){
-                    console.log(data.result)
-                    $("#banner_img_url").attr("src",data.result)
-                }
-                $(ele).attr("disabled", false);
-            }
-        })
-    }
-    /**
-     * 上传商家logo
-     */
-    function uploadLogoImg($btn,sourceId,ele) {
-
-        $(ele).attr("disabled", true);
-        data = new FormData();
-        data.append("file", $("#logo_img")[0].files[0]);
-        data.append("sourceId", sourceId);
-        $.ajax({
-            type: "POST",
-            url: "/auth/systemOrgan/uploadLogo",
-            data: data,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                if(data.success){
-                    console.log(data.result)
-                    $("#logo_img_url").attr("src",data.result)
-                }
-                $(ele).attr("disabled", false);
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }

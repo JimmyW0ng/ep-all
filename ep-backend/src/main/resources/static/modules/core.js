@@ -1,5 +1,3 @@
-
-
 /**
  * 根据上一页面的url,返回上一页面
  */
@@ -79,25 +77,29 @@ function trimStr(str) {
     return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-function toastr_success(msg,url) {
-    if(msg!=null&&msg!=""){
+function toastr_success(msg, url) {
+    if (msg != null && msg != "") {
         toastr.success(msg);
-    }else{
+    } else {
         toastr.success("操作成功");
     }
     setTimeout(function () {
-        window.location.href=url
-    },2000)
+        window.location.href = url
+    }, 2000)
 }
-function toastr_error(msg,url) {
-    if(msg!=null&&msg!=""){
+function toastr_error(msg, url) {
+    if (msg != null && msg != "") {
         toastr.error(msg);
-    }else{
+    } else {
         toastr.error("操作失败");
     }
     setTimeout(function () {
-        window.location.href=url
-    },2000)
+        window.location.href = url
+    }, 2000)
+}
+
+function toastr_error_system(msg) {
+    toastr.error("系统异常,状态码:" + msg + "。");
 }
 
 $(function () {

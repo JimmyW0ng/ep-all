@@ -236,13 +236,7 @@ public class SystemOrganController extends BackendController {
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id
     ) {
-        try {
-            organService.freezeById(id);
-            return ResultDo.build();
-        } catch (Exception e) {
-            log.error("[机构]机构冻结失败。id={}", id, e);
-            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
-        }
+        return organService.freezeById(id);
     }
 
     /**
@@ -258,7 +252,7 @@ public class SystemOrganController extends BackendController {
             return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, null);
         } catch (Exception e) {
             log.error("[机构]机构上传主图失败。", e);
-            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
     }
 
@@ -275,7 +269,7 @@ public class SystemOrganController extends BackendController {
             return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
         } catch (Exception e) {
             log.error("[机构]机构上传logo失败。", e);
-            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM);
         }
     }
 
@@ -289,12 +283,7 @@ public class SystemOrganController extends BackendController {
     @GetMapping("offline/{id}")
     @ResponseBody
     public ResultDo offline(@PathVariable("id") Long id) {
-        try {
-            return organService.offlineById(id);
-        } catch (Exception e) {
-            log.error("[机构]，机构下线失败。id={}。", id, e);
-            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
-        }
+        return organService.offlineById(id);
     }
 
     /**
@@ -306,12 +295,7 @@ public class SystemOrganController extends BackendController {
     @GetMapping("online/{id}")
     @ResponseBody
     public ResultDo onlineById(@PathVariable("id") Long id) {
-        try {
-            return organService.onlineById(id);
-        } catch (Exception e) {
-            log.error("[机构]，机构上线失败。id={}。", id, e);
-            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
-        }
+        return organService.onlineById(id);
     }
 
 }

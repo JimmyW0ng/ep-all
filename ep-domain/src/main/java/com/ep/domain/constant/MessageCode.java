@@ -39,6 +39,7 @@ public class MessageCode {
     public static final String ERROR_ORGAN_MAINPIC_NOT_EXISTS = "ERROR_ORGAN_MAINPIC_NOT_EXISTS";
     public static final String ERROR_ORGAN_LOGO_NOT_EXISTS = "ERROR_ORGAN_LOGO_NOT_EXISTS";
     public static final String ERROR_OFFLINE_EXISTS_ONLINE_COURSE = "ERROR_OFFLINE_EXISTS_ONLINE_COURSE";
+    public static final String ERROR_OFFLINE_CURRSTATUS_NOT_ONLINE = "ERROR_OFFLINE_CURRSTATUS_NOT_ONLINE";
     /**
      * 孩子
      */

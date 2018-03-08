@@ -179,6 +179,9 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
+    /**
+     * 根据省获取市
+     */
     function getCityByProvince() {
         var provinceId=$("#province").val();
         if(provinceId){
@@ -198,8 +201,10 @@
                 }
             })
         }
-
     }
+    /**
+     * 根据市获取区
+     */
     function getDistrictByCity() {
         var cityId=$("#city").val()
         if(cityId){
@@ -219,7 +224,6 @@
                 }
             })
         }
-
     }
     function organFrmSubmit() {
         if (!$("#organFrm").valid()) {
@@ -241,11 +245,12 @@
                 if(data.success){
                     toastr_success(null,'/auth/systemOrgan/index')
                 } else {
-
-                    toastr.error("操作失败" + (data.errorDescription ? ("," + data.errorDescription) : ""));
+                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
-
         })
     }
 
@@ -253,7 +258,6 @@
      * 上传商家主图
      */
     function uploadMainpicImg($btn,ele) {
-
         $(ele).attr("disabled", true);
         data = new FormData();
         data.append("file", $("#mainpic_img")[0].files[0]);
@@ -270,6 +274,10 @@
                     $("#mainpic_url_preCode").val(data.result.preCode)
                 }
                 $(ele).attr("disabled", false);
+            },
+            error: function (XMLHttpRequest) {
+                $(ele).attr("disabled", false);
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }
@@ -277,7 +285,6 @@
      * 上传商家logo
      */
     function uploadLogoImg($btn,ele) {
-
         $(ele).attr("disabled", true);
         data = new FormData();
         data.append("file", $("#logo_img")[0].files[0]);
@@ -295,6 +302,10 @@
                     $("#logo_url_preCode").val(data.result.preCode)
                 }
                 $(ele).attr("disabled", false);
+            },
+            error: function (XMLHttpRequest) {
+                $(ele).attr("disabled", false);
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }

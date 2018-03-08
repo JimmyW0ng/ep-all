@@ -246,8 +246,8 @@ public class OrganService {
             return ResultDo.build();
         }
         if (!po.getStatus().equals(EpOrganStatus.online)) {
-            log.error("[机构]，机构下线失败。状态为{},只有online状态能上线。", po.getStatus().getLiteral());
-            return ResultDo.build(MessageCode.ERROR_OFFLINE_EXISTS_ONLINE_COURSE);
+            log.error("[机构]，机构下线失败。状态为{},只有online状态能下线。", po.getStatus().getLiteral());
+            return ResultDo.build(MessageCode.ERROR_OFFLINE_CURRSTATUS_NOT_ONLINE);
         }
         //机构下没有online的课程的机构才能下线
         if (CollectionsTools.isNotEmpty(organCourseService.findByOgnIdAndStatus(id, EpOrganCourseCourseStatus.online))) {
@@ -274,7 +274,6 @@ public class OrganService {
      *
      * @param id
      */
-    @Transactional(rollbackFor = Exception.class)
     public ResultDo onlineById(Long id) {
         EpOrganPo po = organRepository.findById(id);
         if (null == po) {
