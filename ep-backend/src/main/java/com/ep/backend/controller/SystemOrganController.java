@@ -182,10 +182,12 @@ public class SystemOrganController extends BackendController {
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
         model.addAttribute("provinceId", provinceId);
         model.addAttribute("organPo", po);
+        //主图
         Optional<EpFilePo> mainpicImgOptional = organService.getOgnMainpic(id);
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
+        //logo
         Optional<EpFilePo> logoImgOptional = organService.getOgnLogo(id);
         if (logoImgOptional.isPresent()) {
             model.addAttribute("logoImgUrl", logoImgOptional.get().getFileUrl());
@@ -216,10 +218,12 @@ public class SystemOrganController extends BackendController {
         EpConstantRegionPo constantRegionPoProvince = constantRegionComponent.getById(provinceId);
         model.addAttribute("province", constantRegionPoProvince.getRegionName());
         model.addAttribute("organPo", po);
+        //主图
         Optional<EpFilePo> mainpicImgOptional = organService.getOgnMainpic(id);
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
+        //logo
         Optional<EpFilePo> logoImgOptional = organService.getOgnLogo(id);
         if (logoImgOptional.isPresent()) {
             model.addAttribute("logoImgUrl", logoImgOptional.get().getFileUrl());
@@ -229,7 +233,7 @@ public class SystemOrganController extends BackendController {
 
     /**
      * 冻结机构
-     *
+     * @param id
      * @return
      */
     @GetMapping("freeze/{id}")
@@ -237,6 +241,19 @@ public class SystemOrganController extends BackendController {
     public ResultDo freeze(@PathVariable("id") Long id
     ) {
         return organService.freezeById(id);
+    }
+
+    /**
+     * 解冻机构
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("unfreeze/{id}")
+    @ResponseBody
+    public ResultDo unfreeze(@PathVariable("id") Long id
+    ) {
+        return organService.unfreezeById(id);
     }
 
     /**

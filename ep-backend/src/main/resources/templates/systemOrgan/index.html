@@ -204,6 +204,31 @@
             }
         })
     }
+    function unfreezeOrganBox(id) {
+        parent.layer.alert('确认解冻此机构', {
+                icon: 0,
+            },
+            function (index) {
+                unfreezeOrganDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function unfreezeOrganDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/systemOrgan/unfreeze/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, '/auth/systemOrgan/index');
+                } else {
+                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
 
 </script>
 </body>

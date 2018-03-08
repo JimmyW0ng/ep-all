@@ -350,4 +350,28 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
+    /**
+     * 解冻机构
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo unfreezeById(Long id) {
+        EpOrganPo po = organRepository.findById(id);
+        if (null == po) {
+            log.error("[机构]，解冻失败，机构不存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+        }
+        if (organRepository.unfreezeById(id) == BizConstant.DB_NUM_ONE) {
+            //解冻该机构对应的用户账号
+            systemUserRepository.unfreezeByOgnId(id);
+            log.info("[机构]，解冻成功。id={}", id);
+            return ResultDo.build();
+        } else {
+            log.error("[机构]，解冻失败。id={}", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
 }

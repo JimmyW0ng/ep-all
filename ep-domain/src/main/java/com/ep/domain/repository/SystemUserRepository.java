@@ -66,6 +66,21 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
                 .execute();
     }
 
+    /**
+     * 根据机构id解冻平台用户
+     *
+     * @param ognId
+     * @return
+     */
+    public int unfreezeByOgnId(Long ognId) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.normal)
+                .where(EP_SYSTEM_USER.OGN_ID.eq(ognId))
+                .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.freeze))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
 
     /**
      * 根据id冻结平台用户
@@ -123,7 +138,7 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
         return dslContext.update(EP_SYSTEM_USER)
                 .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.cancel)
                 .where(EP_SYSTEM_USER.OGN_ID.eq(ognId))
-                .and(EP_SYSTEM_USER.STATUS.eq(EpSystemUserStatus.normal))
+                .and(EP_SYSTEM_USER.STATUS.in(EpSystemUserStatus.normal, EpSystemUserStatus.freeze))
                 .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
                 .execute();
     }
