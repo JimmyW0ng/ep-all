@@ -14,6 +14,7 @@ import com.ep.domain.repository.OrganRepository;
 import com.ep.domain.repository.SystemUserRepository;
 import com.ep.domain.repository.SystemUserRoleRepository;
 import com.ep.domain.repository.domain.enums.EpOrganStatus;
+import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.GeneralSecurityException;
 import java.util.*;
 
 /**
@@ -93,7 +95,7 @@ public class SystemUserService {
         }
         EpSystemUserPo po = new EpSystemUserPo();
         List<EpSystemRolePo> systemRolePos = bo.getSystemRolePos();
-
+        po.setStatus(EpSystemUserStatus.normal);
         this.copyBoPropertyToPo(bo, po);
         //盐
         po.setSalt(StringTools.generateShortUrl(po.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
@@ -280,5 +282,37 @@ public class SystemUserService {
         po.setOgnId(bo.getOgnId());
         po.setStatus(bo.getStatus());
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
+    }
+
+    /**
+     * 个人设置修改密码
+     *
+     * @param userId
+     * @param oldPsd
+     * @param password
+     * @return
+     * @throws GeneralSecurityException
+     */
+    public ResultDo updatePassword(Long userId, String oldPsd, String password) throws GeneralSecurityException {
+        log.info("[用户]修改用户密码开始。用户id={},原密码={}，新密码={}。", userId, oldPsd, password);
+        Optional<EpSystemUserPo> systemUserPoOptional = systemUserRepository.findById(userId);
+        if (!systemUserPoOptional.isPresent()) {
+            log.error("[用户]修改用户密码失败。用户id={}。", userId);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_USER_NOT_EXISTS);
+        }
+        EpSystemUserPo systemUserPo = systemUserPoOptional.get();
+        String encryptOldPsd = CryptTools.aesEncrypt(oldPsd, systemUserPo.getSalt());
+        if (!encryptOldPsd.equals(systemUserPo.getPassword())) {
+            log.error("[用户]修改用户密码失败。原密码不正确。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_USER_OLDPSD_WRONG);
+        }
+        String encryptPassword = CryptTools.aesEncrypt(password, systemUserPo.getSalt());
+        if (systemUserRepository.updatePsdById(userId, encryptPassword) == BizConstant.DB_NUM_ONE) {
+            log.info("[用户]修改用户密码成功。用户id={}。", userId);
+            return ResultDo.build();
+        } else {
+            log.error("[用户]修改用户密码失败。用户id={}。", userId);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 }
