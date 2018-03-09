@@ -54,7 +54,7 @@ public class SystemOrganController extends BackendController {
 
 
     @GetMapping("index")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "ognName", required = false) String ognName,
@@ -89,7 +89,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("createInit")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     public String createInit(Model model
     ) {
         model.addAttribute("organPo", new EpOrganPo());
@@ -106,7 +106,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("getCityByProvince/{provinceId}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo<Map<Long, String>> getCityByProvince(Model model, @PathVariable("provinceId") Long provinceId
     ) {
@@ -122,7 +122,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("getDistrictByCity/{cityId}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo<Map<Long, String>> getDistrictByCity(@PathVariable("cityId") Long cityId
     ) {
@@ -138,7 +138,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @PostMapping("create")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
         return organService.createSystemOrgan(bo);
@@ -151,7 +151,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @PostMapping("update")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo update(SystemOrganBo bo) {
         return organService.updateSystemOrgan(bo);
@@ -165,7 +165,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("updateInit/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     public String updateInit(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
@@ -201,7 +201,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("view/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     public String view(Model model, @PathVariable("id") Long id
     ) {
         EpOrganPo po = organService.getById(id).get();
@@ -237,7 +237,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("freeze/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id
     ) {
@@ -251,7 +251,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("unfreeze/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo unfreeze(@PathVariable("id") Long id
     ) {
@@ -265,7 +265,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @PostMapping("uploadMainpic")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) {
         try {
@@ -283,7 +283,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @PostMapping("uploadLogo")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo<FileDto> uploadLogo(@RequestParam("file") MultipartFile file) {
         try {
@@ -302,7 +302,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("offline/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo offline(@PathVariable("id") Long id) {
         return organService.offlineById(id);
@@ -315,7 +315,7 @@ public class SystemOrganController extends BackendController {
      * @return
      */
     @GetMapping("online/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:organ:index')")
+    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo onlineById(@PathVariable("id") Long id) {
         return organService.onlineById(id);

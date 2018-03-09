@@ -58,7 +58,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("/index")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
                         @RequestParam(value = "type", required = false) String type,
@@ -97,7 +97,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("/createInit")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public String createInit(Model model) {
         model.addAttribute("systemUserPo", new EpSystemUserPo());
         return "/systemUser/form";
