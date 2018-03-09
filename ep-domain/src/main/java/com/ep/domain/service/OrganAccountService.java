@@ -86,7 +86,7 @@ public class OrganAccountService {
      * @param po
      * @return
      */
-    public EpOrganAccountPo create(EpOrganAccountPo po){
+    public EpOrganAccountPo createOgnAccount(EpOrganAccountPo po) {
         return organAccountRepository.insertNew(po);
     }
 

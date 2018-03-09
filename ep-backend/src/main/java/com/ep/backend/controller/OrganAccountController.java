@@ -5,7 +5,6 @@ import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.OrganAccountService;
-import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.ApiOperation;
@@ -35,8 +34,7 @@ public class OrganAccountController extends BackendController {
 
     @Autowired
     private OrganAccountService organAccountService;
-    @Autowired
-    private OrganService organService;
+
 
     /**
      * 机构账户关联信息列表
@@ -136,7 +134,7 @@ public class OrganAccountController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         po.setOgnId(currentUser.getOgnId());
         ResultDo resultDo=ResultDo.build();
-        organAccountService.create(po);
+        organAccountService.createOgnAccount(po);
         return resultDo;
     }
 

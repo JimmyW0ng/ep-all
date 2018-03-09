@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -30,6 +31,20 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
     @Autowired
     public OrganCourseRepository(DSLContext dslContext) {
         super(dslContext, EP_ORGAN_COURSE, EP_ORGAN_COURSE.ID, EpOrganCoursePo.class);
+    }
+
+    /**
+     * 根据id获取记录
+     *
+     * @param id
+     * @return
+     */
+    public Optional<EpOrganCoursePo> findById(Long id) {
+        EpOrganCoursePo data = dslContext.selectFrom(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.ID.eq(id))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganCoursePo.class);
+        return Optional.ofNullable(data);
     }
 
     /**

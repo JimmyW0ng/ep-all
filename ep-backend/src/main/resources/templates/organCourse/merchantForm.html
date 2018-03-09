@@ -30,7 +30,7 @@
                             <label for="courseName">课程名称 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="courseName" name="organCoursePo.courseName" type="text" th:value="${organCoursePo.courseName}"
-                                       required="true" class=" form-control ">
+                                       required="true" aria-required="true" class=" form-control ">
                             </div>
                         </div>
                         <div class="form-group">
@@ -461,6 +461,10 @@
                 if($("#courseId").val()){
                     url="/auth/organCourse/merchantUpdate"
                 }
+
+                if (!$("#enterTimeEnd").val()) {
+                    $("#enterTimeEnd").attr("name", "")
+                }
                 $.ajax({
                     type: "POST",
                     data: $("#frm").serialize(),
@@ -469,6 +473,8 @@
                         if (data.success) {
                             toastr_success(null,"/auth/organCourse/merchantIndex")
                         }
+                        $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+
                     }
                 })
             }

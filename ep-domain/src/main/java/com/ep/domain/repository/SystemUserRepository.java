@@ -60,6 +60,7 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
         return dslContext.update(EP_SYSTEM_USER)
                 .set(EP_SYSTEM_USER.MOBILE, po.getMobile())
                 .set(EP_SYSTEM_USER.USER_NAME, po.getUserName())
+                .set(EP_SYSTEM_USER.SALT, po.getSalt())
                 .set(EP_SYSTEM_USER.PASSWORD, po.getPassword())
                 .set(EP_SYSTEM_USER.EMAIL, po.getEmail())
                 .set(EP_SYSTEM_USER.EMAIL, po.getEmail())

@@ -28,6 +28,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 
@@ -172,14 +173,15 @@ public class OrganCourseController extends BackendController {
      */
     @PostMapping("/merchantCreate")
     @ResponseBody
-    public ResultDo merchantCreate(HttpServletRequest request, CreateOrganCourseDto dto) {
+    public ResultDo merchantCreate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
-        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
-        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-        organCoursePo.setOgnId(ognId);
-        organCourseService.createOrganCourseByMerchant(organCoursePo, organClassBos, constantTagPos);
+        dto.getOrganCoursePo().setOgnId(ognId);
+//        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+//        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
+//        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+
+        organCourseService.createOrganCourseByMerchant(dto);
         ResultDo resultDo = ResultDo.build();
         return resultDo;
     }
@@ -192,8 +194,11 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantview/{courseId}")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
         //机构课程
-        EpOrganCoursePo organCoursePo = organCourseService.getById(courseId);
-        model.addAttribute("organCoursePo", organCoursePo);
+        Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
+        if (!courseOptional.isPresent()) {
+            return "errorErupt";
+        }
+        model.addAttribute("organCoursePo", courseOptional.get());
 
         //课程类目
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
@@ -249,7 +254,11 @@ public class OrganCourseController extends BackendController {
         //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
 
-        EpOrganCoursePo organCoursePo = organCourseService.getById(courseId);
+        Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
+        if (!courseOptional.isPresent()) {
+            return "errorErupt";
+        }
+        EpOrganCoursePo organCoursePo = courseOptional.get();
         //课程对象
         model.addAttribute("organCoursePo", organCoursePo);
         Long catalogId = organCoursePo.getCourseCatalogId();
@@ -309,14 +318,15 @@ public class OrganCourseController extends BackendController {
 
     /**
      * 删除课程
+     *
      * @param courseId
      * @return
      */
-    public ResultDo deleteByCourseId(HttpServletRequest request,Long courseId){
+    public ResultDo deleteByCourseId(HttpServletRequest request, Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
-        organCourseService.deleteCourseByCourseId(courseId,ognId);
+        organCourseService.deleteCourseByCourseId(courseId, ognId);
         return resultDo;
     }
 
@@ -328,7 +338,7 @@ public class OrganCourseController extends BackendController {
      */
     @GetMapping("online/{id}")
     @ResponseBody
-    public ResultDo onlineById(@PathVariable(value="id") Long id){
+    public ResultDo onlineById(@PathVariable(value = "id") Long id) {
         EpSystemUserPo userPo = super.getCurrentUser().get();
         return organCourseService.onlineById(userPo, id);
     }

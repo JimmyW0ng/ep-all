@@ -17,8 +17,6 @@ import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 用户服务类
@@ -159,36 +159,19 @@ public class SystemUserService {
         po.setSalt(StringTools.generateShortUrl(po.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         po.setPassword(CryptTools.aesEncrypt(po.getPassword(), po.getSalt()));
         if (systemUserRepository.updatePo(po) == BizConstant.DB_NUM_ONE) {
-            List<Long> roleOldList = systemUserRoleRepository.getRoleIdsByUserId(po.getId());
-            Set<Long> roleOldSet = new HashSet<>(roleOldList);
-            Set<Long> roleNewSet = new HashSet<>();
-            List<EpSystemRolePo> list = bo.getSystemRolePos();
-            list.forEach(p -> {
-                roleNewSet.add(p.getId());
+            //删除用户角色表记录
+            systemUserRoleRepository.deleteLogicByUserId(po.getId());
+            List<EpSystemRolePo> newSystemRolePos = bo.getSystemRolePos();
+            List<EpSystemUserRolePo> newSystemUserRolePos = Lists.newArrayList();
+            newSystemRolePos.forEach(p -> {
+                EpSystemUserRolePo systemUserRolePo = new EpSystemUserRolePo();
+                systemUserRolePo.setUserId(po.getId());
+                systemUserRolePo.setRoleId(p.getId());
+                newSystemUserRolePos.add(systemUserRolePo);
             });
-            //差集，roleNewSet有, roleOldSet无
-            Set<Long> diffAdd = Sets.difference(roleNewSet, roleOldSet);
-            //差集，roleOldSet有, roleNewSet无
-            Set<Long> diffDel = Sets.difference(roleOldSet, roleNewSet);
+            //重新插入用户角色表记录
+            systemUserRoleRepository.insert(newSystemUserRolePos);
 
-            //删除 roleOldSet有, roleNewSet无
-            diffDel.forEach(p -> {
-                systemUserRoleRepository.deleteByUserIdAndRoleId(po.getId(), p);
-            });
-
-            Map map = Maps.newHashMap();
-            list.forEach(p -> {
-                map.put(p.getId(), p);
-            });
-
-            List<EpSystemUserRolePo> systemUserRolePoNew = Lists.newArrayList();
-            diffAdd.forEach(p -> {
-                EpSystemUserRolePo systemUserRolePoAdd = (EpSystemUserRolePo) map.get(p);
-                systemUserRolePoAdd.setUserId(po.getId());
-                systemUserRolePoNew.add(systemUserRolePoAdd);
-            });
-            //插入  roleNewSet有， roleOldSet无
-            systemUserRoleRepository.insert(systemUserRolePoNew);
             log.info("[用户]，修改用户成功。id={}。", po.getId());
             return ResultDo.build();
         } else {
@@ -205,7 +188,7 @@ public class SystemUserService {
      */
     @Transactional(rollbackFor = Exception.class)
     public int deleteUser(Long userId) {
-        systemUserRoleRepository.deleteByUserId(userId);
+        systemUserRoleRepository.deleteLogicByUserId(userId);
         return systemUserRepository.deleteLogical(userId);
     }
 
@@ -280,7 +263,6 @@ public class SystemUserService {
         po.setEmail(StringTools.getNullIfBlank(bo.getEmail()));
         po.setType(bo.getType());
         po.setOgnId(bo.getOgnId());
-//        po.setStatus(bo.getStatus());
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
     }
 

@@ -204,25 +204,25 @@
         } else {
             $("#organIdBox").hide();
         }
-        if (type) {
-            $.ajax({
-                type: "GET",
-                url: "/auth/user/getRoleByUserType/" + type,
-                success: function (data) {
-                    if (data.success) {
-                        var res = data.result;
-                        var htmls = "";
-                        for (var i = 0; i < res.length; i++) {
-                            htmls = htmls + "<tr><td><input name='id' type='checkbox'value='" + res[i].id + "'/>" +
-                                "<input name='roleCode' type='hidden' value='" + res[i].roleCode + "'/>" +
-                                "</td><td>" + res[i].roleName + "</td><td>" + (res[i].remark == null ? '' : res[i].remark) + "</td></tr>"
-
-                        }
-                        $("#role_tb_body").html(htmls)
-                    }
-                }
-            })
-        }
+//        if (type) {
+//            $.ajax({
+//                type: "GET",
+//                url: "/auth/user/getRoleByUserType/" + type,
+//                success: function (data) {
+//                    if (data.success) {
+//                        var res = data.result;
+//                        var htmls = "";
+//                        for (var i = 0; i < res.length; i++) {
+//                            htmls = htmls + "<tr><td><input name='id' type='checkbox'value='" + res[i].id + "'/>" +
+//                                "<input name='roleCode' type='hidden' value='" + res[i].roleCode + "'/>" +
+//                                "</td><td>" + res[i].roleName + "</td><td>" + (res[i].remark == null ? '' : res[i].remark) + "</td></tr>"
+//
+//                        }
+//                        $("#role_tb_body").html(htmls)
+//                    }
+//                }
+//            })
+//        }
     })
 
 </script>

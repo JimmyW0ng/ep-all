@@ -9,6 +9,7 @@ import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
+import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import com.ep.domain.pojo.dto.OrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -66,8 +67,8 @@ public class OrganCourseService {
      * @param id
      * @return
      */
-    public EpOrganCoursePo getById(Long id) {
-        return organCourseRepository.getById(id);
+    public Optional<EpOrganCoursePo> findById(Long id) {
+        return organCourseRepository.findById(id);
     }
 
     /**
@@ -158,7 +159,11 @@ public class OrganCourseService {
      * 商户后台创建课程
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createOrganCourseByMerchant(EpOrganCoursePo organCoursePo, List<OrganClassBo> organClassBos, List<EpConstantTagPo> constantTagPos) {
+    public void createOrganCourseByMerchant(CreateOrganCourseDto dto) {
+        log.info("[课程]创建课程开始。课程dto={}。", dto);
+        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
+        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         //获取最低价格start
         BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
         for (int i = 0; i < priceArr.length; i++) {
@@ -172,9 +177,10 @@ public class OrganCourseService {
                 priceArr[index] = temp;
             }
         }
+        BigDecimal priceMin = priceArr[index];
         //获取最低价格end
         //机构课程表插入数据
-        organCoursePo.setPrizeMin(priceArr[index]);
+        organCoursePo.setPrizeMin(priceMin);
         organCoursePo.setCourseStatus(EpOrganCourseCourseStatus.save);
         EpOrganCoursePo insertOrganCoursePo = organCourseRepository.insertNew(organCoursePo);
         Long insertOrganCourseId = insertOrganCoursePo.getId();

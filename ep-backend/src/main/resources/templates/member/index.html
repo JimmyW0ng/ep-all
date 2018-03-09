@@ -26,20 +26,7 @@
                         <input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"
                                placeholder="手机号">
                     </div>
-                    <!--<div class="form-group">-->
-                    <!--<input type="text" class="form-control " name="roleCode" th:value="${map['roleCode']}"-->
-                    <!--placeholder="角色标识">-->
-                    <!--</div>-->
-                    <!--<div class="form-group ">-->
-                        <!--<select class="form-control" name="type" id="type" style="width:182px;" >-->
-                            <!--<option value>类型</option>-->
-                            <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
-                                    <!--th:value="${state}"-->
-                                    <!--th:selected="${#stringTools.equals(state,map.get('type'))}"-->
-                                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
-                            <!--</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
+
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"
@@ -87,8 +74,8 @@
                             <td th:text="${bo.nickName}"></td>
                             <td th:text="${bo.trueName}"></td>
                             <td th:text="${bo.sex}"></td>
-                            <td th:text="${bo.status}"></td>
-                            <td th:text="${bo.type}"></td>
+                            <td th:text="#{EpMemberStatus.+${bo.status}}"></td>
+                            <td th:text="#{EpMemberType.+${bo.type}}"></td>
 
                             <td th:text="${bo.createAt}"></td>
                             <td>
