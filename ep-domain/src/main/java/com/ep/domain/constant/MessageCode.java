@@ -93,5 +93,8 @@ public class MessageCode {
      */
     public static final String ERROR_SYSTEM_USER_NOT_EXISTS = "ERROR_SYSTEM_USER_NOT_EXISTS";
     public static final String ERROR_SYSTEM_USER_ORGAN_NOT_ONLINE = "ERROR_SYSTEM_USER_ORGAN_NOT_ONLINE";
-
+    /**
+     * 角色
+     */
+    public static final String ERROR_SYSTEM_ROLE_NOT_EXISTS = "ERROR_SYSTEM_ROLE_NOT_EXISTS";
 }

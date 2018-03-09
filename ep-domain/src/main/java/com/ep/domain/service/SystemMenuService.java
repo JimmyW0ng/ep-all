@@ -34,16 +34,28 @@ public class SystemMenuService {
 
     }
 
+    /**
+     * 根据用户类型获取菜单集合
+     *
+     * @param type
+     * @return
+     */
     public List<EpSystemMenuPo> getAllByUserType(EpSystemUserType type) {
         return systemMenuRepository.getAllByUserType(type);
     }
 
+    /**
+     * 根据用户类型获取左部菜单
+     *
+     * @param type
+     * @return
+     */
     public List<SystemMenuBo> getLeftMenuByUserType(EpSystemUserType type) {
-        List<SystemMenuBo> list = null;
-        if(type.equals(EpSystemUserType.platform)){
-            list = systemMenuRepository.getAllMenu(BizConstant.ADMIN_MENU_PARENT_ID);
-        }else{
-            list = systemMenuRepository.getAllMenu(BizConstant.BACKEND_MENU_PARENT_ID);
+        List<SystemMenuBo> list;
+        if (type.equals(EpSystemUserType.platform)) {
+            list = systemMenuRepository.getAllMenu(BizConstant.PLATFORM_MENU_PARENT_ID);
+        } else {
+            list = systemMenuRepository.getAllMenu(BizConstant.MERCHANT_MENU_PARENT_ID);
         }
 
         list.forEach(p -> {

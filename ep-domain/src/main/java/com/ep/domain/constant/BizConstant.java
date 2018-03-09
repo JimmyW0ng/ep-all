@@ -36,12 +36,12 @@ public class BizConstant {
     /**
      * 后台菜单树顶点id
      */
-    public static Long ADMIN_MENU_PARENT_ID = 1L;
+    public static Long PLATFORM_MENU_PARENT_ID = 1L;
 
     /**
      * 商户菜单树顶点id
      */
-    public static Long BACKEND_MENU_PARENT_ID = 3L;
+    public static Long MERCHANT_MENU_PARENT_ID = 3L;
 
     /**
      * 数据常量

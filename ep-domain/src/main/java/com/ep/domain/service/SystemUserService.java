@@ -1,6 +1,5 @@
 package com.ep.domain.service;
 
-import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
@@ -94,21 +93,20 @@ public class SystemUserService {
         }
         EpSystemUserPo po = new EpSystemUserPo();
         List<EpSystemRolePo> systemRolePos = bo.getSystemRolePos();
-        BeanTools.copyPropertiesIgnoreNull(bo, po);
+
+        this.copyBoPropertyToPo(bo, po);
         //盐
         po.setSalt(StringTools.generateShortUrl(po.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         po.setPassword(CryptTools.aesEncrypt(po.getPassword(), po.getSalt()));
 
         systemUserRepository.insert(po);
         //插入角色
-        if (null != po) {
-            systemRolePos.forEach(p -> {
-                EpSystemUserRolePo systemUserRolePo = new EpSystemUserRolePo();
-                systemUserRolePo.setUserId(po.getId());
-                systemUserRolePo.setRoleId(p.getId());
-                systemUserRoleRepository.insert(systemUserRolePo);
-            });
-        }
+        systemRolePos.forEach(p -> {
+            EpSystemUserRolePo systemUserRolePo = new EpSystemUserRolePo();
+            systemUserRolePo.setUserId(po.getId());
+            systemUserRolePo.setRoleId(p.getId());
+            systemUserRoleRepository.insert(systemUserRolePo);
+        });
         log.info("[用户]，新增用户成功。id={}。", po.getId());
         return ResultDo.build();
     }
@@ -154,7 +152,7 @@ public class SystemUserService {
         }
 
         EpSystemUserPo po = new EpSystemUserPo();
-        BeanTools.copyPropertiesIgnoreNull(bo, po);
+        this.copyBoPropertyToPo(bo, po);
         //盐
         po.setSalt(StringTools.generateShortUrl(po.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         po.setPassword(CryptTools.aesEncrypt(po.getPassword(), po.getSalt()));
@@ -267,5 +265,20 @@ public class SystemUserService {
             log.error("[用户]注销失败。id={}。", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+    }
+
+    private void copyBoPropertyToPo(SystemUserBo bo, EpSystemUserPo po) {
+        if (bo.getId() != null) {
+            po.setId(bo.getId());
+        }
+        po.setMobile(bo.getMobile());
+        po.setUserName(StringTools.getNullIfBlank(bo.getUserName()));
+        po.setSalt(StringTools.getNullIfBlank(bo.getSalt()));
+        po.setPassword(StringTools.getNullIfBlank(bo.getPassword()));
+        po.setEmail(StringTools.getNullIfBlank(bo.getEmail()));
+        po.setType(bo.getType());
+        po.setOgnId(bo.getOgnId());
+        po.setStatus(bo.getStatus());
+        po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
     }
 }

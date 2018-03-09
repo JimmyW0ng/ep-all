@@ -55,7 +55,7 @@ public class SystemRoleAuthorityRepository extends AbstractCRUDRepository<EpSyst
                 .execute();
     }
 
-    public void deleteByRoleId(Long roleId) {
+    public void deletePhysicByRoleId(Long roleId) {
         dslContext.delete(EP_SYSTEM_ROLE_AUTHORITY)
                 .where(EP_SYSTEM_ROLE_AUTHORITY.ROLE_ID.eq(roleId))
                 .execute();

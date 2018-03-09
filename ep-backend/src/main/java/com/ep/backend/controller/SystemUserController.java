@@ -2,7 +2,6 @@ package com.ep.backend.controller;
 
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.StringTools;
-import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemUserBo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
@@ -112,14 +111,14 @@ public class SystemUserController extends BackendController {
     @ApiOperation(value = "修改用户初始化")
     @GetMapping("/updateInit/{id}")
     @PreAuthorize("hasAnyAuthority('backend:user:index')")
-    public String updateInit(Model model,@PathVariable("id") Long id) {
+    public String updateInit(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
-        try{
-            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
+        try {
+            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(), systemUserPo.getSalt()));
 
-        }catch(Exception e){
+        } catch (Exception e) {
             model.addAttribute("systemUserPo", systemUserPo);
             model.addAttribute("roleList", lists);
             model.addAttribute("roleIds", roleIds);
@@ -141,13 +140,10 @@ public class SystemUserController extends BackendController {
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('backend:user:index')")
     public ResultDo create(@RequestBody SystemUserBo bo
-    ) {
-        try {
-            return systemUserService.createUser(bo);
-        } catch (Exception e) {
-            log.error("[用户]，新增失败。", e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
-        }
+    ) throws Exception {
+
+        return systemUserService.createUser(bo);
+
     }
 
     /**
@@ -160,13 +156,9 @@ public class SystemUserController extends BackendController {
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('backend:user:index')")
     public ResultDo update(@RequestBody SystemUserBo bo
-    ) {
-        try {
-            return systemUserService.updateUser(bo);
-        } catch (Exception e) {
-            log.error("[用户]，修改失败。id={}。", bo.getId(), e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
-        }
+    ) throws Exception {
+        return systemUserService.updateUser(bo);
+
     }
 
     /**
@@ -181,10 +173,10 @@ public class SystemUserController extends BackendController {
         EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
-        try{
-            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
+        try {
+            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(), systemUserPo.getSalt()));
 
-        }catch(Exception e){
+        } catch (Exception e) {
             model.addAttribute("systemUserPo", systemUserPo);
             model.addAttribute("roleList", lists);
             model.addAttribute("roleIds", roleIds);

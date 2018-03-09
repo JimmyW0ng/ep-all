@@ -1,12 +1,9 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.BeanTools;
-import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemRoleBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
-import com.ep.domain.pojo.po.EpSystemRoleAuthorityPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
@@ -31,6 +28,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 
@@ -62,29 +60,29 @@ public class SystemRoleController extends BackendController {
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
-        Map map= Maps.newHashMap();
+        Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
-        if(StringTools.isNotBlank(roleName)){
+        if (StringTools.isNotBlank(roleName)) {
             conditions.add(EP.EP_SYSTEM_ROLE.ROLE_NAME.like("%" + roleName + "%"));
         }
-        map.put("roleName",roleName);
+        map.put("roleName", roleName);
 
-        if(StringTools.isNotBlank(roleCode)){
+        if (StringTools.isNotBlank(roleCode)) {
             conditions.add(EP.EP_SYSTEM_ROLE.ROLE_CODE.like("%" + roleCode + "%"));
         }
-        map.put("roleCode",roleCode);
-        if(StringTools.isNotBlank(target)){
+        map.put("roleCode", roleCode);
+        if (StringTools.isNotBlank(target)) {
             conditions.add(EP.EP_SYSTEM_ROLE.TARGET.eq(EpSystemRoleTarget.valueOf(target)));
         }
-        map.put("target",target);
+        map.put("target", target);
         if (null != crStartTime) {
             conditions.add(EP.EP_SYSTEM_ROLE.CREATE_AT.greaterOrEqual(crStartTime));
         }
-        map.put("crStartTime",crStartTime);
+        map.put("crStartTime", crStartTime);
         if (null != crEndTime) {
             conditions.add(EP.EP_SYSTEM_ROLE.CREATE_AT.lessOrEqual(crEndTime));
         }
-        map.put("crEndTime",crEndTime);
+        map.put("crEndTime", crEndTime);
         conditions.add(EP.EP_SYSTEM_ROLE.DEL_FLAG.eq(false));
 
         Page<EpSystemRolePo> page = systemRoleService.findbyPageAndCondition(pageable, conditions);
@@ -99,15 +97,22 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("view/{id}")
-    public String read(HttpServletRequest request,Model model,@PathVariable("id") Long id) {
+    public String read(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
-        EpSystemRolePo systemRolePo = systemRoleService.getById(id);
+        Optional<EpSystemRolePo> systemRolePoOptional = systemRoleService.findById(id);
+        if (systemRolePoOptional.isPresent()) {
+            model.addAttribute("systemRolePo", systemRolePoOptional.get());
+            //拥有权限的菜单
+            List<Long> menuIds = systemRoleAuthorityService.getMenuIdByRole(systemRolePoOptional.get().getId());
+            model.addAttribute("menuIds", menuIds);
+        }
+//        }else{
+//
+//        }
 
-        List<Long> menuIds=systemRoleAuthorityService.getMenuIdByRole(systemRolePo.getId());
-        model.addAttribute("systemRolePo", systemRolePo);
-        model.addAttribute("menuIds", menuIds);
+        //所有菜单
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
-        model.addAttribute("menuList",menuList);
+        model.addAttribute("menuList", menuList);
         return "/systemRole/view";
 
     }
@@ -118,11 +123,12 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("createInit")
-    public String createInit(HttpServletRequest request,Model model) {
+    public String createInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         model.addAttribute("systemRolePo", new EpSystemRolePo());
+        //所有菜单
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
-        model.addAttribute("menuList",menuList);
+        model.addAttribute("menuList", menuList);
         return "/systemRole/form";
 
     }
@@ -134,22 +140,13 @@ public class SystemRoleController extends BackendController {
      */
     @PostMapping("create")
     @ResponseBody
-    public ResultDo create(HttpServletRequest request,
-                           @RequestBody SystemRoleBo bo
-//            ,
-//                           EpSystemRolePo po, @RequestParam(value = "systemRoleAuthorityPos[]", required = false) EpSystemRoleAuthorityPo[] array
+    public ResultDo create(@RequestBody SystemRoleBo bo
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
-        ResultDo resultDo = ResultDo.build();
         bo.setCreateBy(currentUser.getId());
-        List<EpSystemRoleAuthorityPo> systemRoleAuthorityPos=bo.getSystemRoleAuthorityPos();
-        EpSystemRolePo systemRolePo=new EpSystemRolePo();
-        BeanTools.copyPropertiesIgnoreNull(bo,systemRolePo);
 
-        EpSystemRolePo insertPo=systemRoleService.createSystemRole(systemRolePo, systemRoleAuthorityPos);
-        log.info("[角色]，角色新增成功，角色id={},currentUserId={}。", insertPo.getId(),currentUser.getId());
+        return systemRoleService.createSystemRole(bo);
 
-        return resultDo;
 
     }
 
@@ -162,18 +159,9 @@ public class SystemRoleController extends BackendController {
     @ResponseBody
     public ResultDo update(@RequestBody SystemRoleBo bo
     ) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        ResultDo resultDo = ResultDo.build();
-        bo.setUpdateAt(DateTools.getCurrentDateTime());
         bo.setUpdateBy(super.getCurrentUser().get().getId());
-        List<EpSystemRoleAuthorityPo> systemRoleAuthorityPos=bo.getSystemRoleAuthorityPos();
-        EpSystemRolePo systemRolePo=new EpSystemRolePo();
-        BeanTools.copyPropertiesIgnoreNull(bo,systemRolePo);
+        return systemRoleService.updateSystemRole(bo);
 
-        systemRoleService.updateSystemRole(systemRolePo, systemRoleAuthorityPos);
-        log.info("[角色]，角色修改成功，角色id={},currentUserId={}。", bo.getId(),currentUser.getId());
-
-        return resultDo;
 
     }
 
@@ -183,30 +171,33 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("updateInit/{id}")
-    public String updateInit(HttpServletRequest request,Model model,@PathVariable("id") Long id) {
+    public String updateInit(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
-        EpSystemRolePo systemRolePo = systemRoleService.getById(id);
+        Optional<EpSystemRolePo> systemRolePoOptional = systemRoleService.findById(id);
+        if (systemRolePoOptional.isPresent()) {
+            List<Long> menuIds = systemRoleAuthorityService.getMenuIdByRole(systemRolePoOptional.get().getId());
+            model.addAttribute("systemRolePo", systemRolePoOptional.get());
+            model.addAttribute("menuIds", menuIds);
+        }
 
-        List<Long> menuIds=systemRoleAuthorityService.getMenuIdByRole(systemRolePo.getId());
-        model.addAttribute("systemRolePo", systemRolePo);
-        model.addAttribute("menuIds", menuIds);
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
-        model.addAttribute("menuList",menuList);
+        model.addAttribute("menuList", menuList);
         return "/systemRole/form";
 
     }
 
     /**
      * 删除角色
+     *
      * @return
      */
     @GetMapping("delete/{id}")
     @ResponseBody
-    public ResultDo deleteRole(HttpServletRequest request,@PathVariable("id") Long id){
+    public ResultDo deleteRole(HttpServletRequest request, @PathVariable("id") Long id) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
-        systemRoleService.delete(id);
-        log.info("[角色]，角色删除成功，角色id={},currentUserId={}。", id,currentUser.getId());
+        systemRoleService.deleteRole(id);
+        log.info("[角色]，角色删除成功，角色id={},currentUserId={}。", id, currentUser.getId());
 
         return resultDo;
     }
