@@ -6,7 +6,9 @@ import com.ep.domain.repository.domain.enums.EpSystemMenuStatus;
 import com.ep.domain.repository.domain.enums.EpSystemMenuTarget;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +17,11 @@ import java.util.List;
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_MENU;
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_ROLE_AUTHORITY;
 
-
+/**
+ * @Description: 菜单服务仓库
+ * @Author: CC.F
+ * @Date: 上午9:30 2018/1/14
+ */
 @Repository
 public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRecord, Long, EpSystemMenuPo> {
 
@@ -49,6 +55,25 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
         return dslContext.selectFrom(EP_SYSTEM_MENU)
                 .where(EP_SYSTEM_MENU.PARENT_ID.equal(parentId))
                 .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                .and(EP_SYSTEM_MENU.STATUS.equal(EpSystemMenuStatus.enable))
+                .fetchInto(SystemMenuBo.class);
+    }
+
+    public List<SystemMenuBo> getAllLeftMenu(Long parentId, List<Long> roleIds) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_SYSTEM_MENU.ID);
+        fieldList.add(EP_SYSTEM_MENU.PARENT_ID);
+        fieldList.add(EP_SYSTEM_MENU.MENU_NAME);
+        fieldList.add(EP_SYSTEM_MENU.PERMISSION);
+        fieldList.add(EP_SYSTEM_ROLE_AUTHORITY.ID.as("roleAuthId"));
+        return dslContext.select(fieldList).from(EP_SYSTEM_MENU)
+                .leftJoin(EP_SYSTEM_ROLE_AUTHORITY)
+                .on(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.eq(EP_SYSTEM_MENU.ID)
+                        .and(EP_SYSTEM_ROLE_AUTHORITY.ROLE_ID.in(roleIds)))
+                .where(EP_SYSTEM_MENU.PARENT_ID.equal(parentId))
+                .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                .and(EP_SYSTEM_MENU.STATUS.equal(EpSystemMenuStatus.enable))
+                .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.equal(false))
                 .fetchInto(SystemMenuBo.class);
     }
 

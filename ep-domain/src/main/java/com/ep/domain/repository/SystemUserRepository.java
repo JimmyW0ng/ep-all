@@ -43,9 +43,9 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
                 .where(EP_SYSTEM_USER.MOBILE.equal(mobile)).fetchOneInto(EpSystemUserPo.class);
     }
 
-    public int deleteLogical(Long userId){
+    public int deleteLogical(Long userId) {
         return dslContext.update(EP_SYSTEM_USER)
-                .set(EP_SYSTEM_USER.DEL_FLAG,true)
+                .set(EP_SYSTEM_USER.DEL_FLAG, true)
                 .where(EP_SYSTEM_USER.ID.eq(userId))
                 .execute();
 
@@ -159,6 +159,21 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
                 .set(EP_SYSTEM_USER.STATUS, EpSystemUserStatus.cancel)
                 .where(EP_SYSTEM_USER.OGN_ID.eq(ognId))
                 .and(EP_SYSTEM_USER.STATUS.in(EpSystemUserStatus.normal, EpSystemUserStatus.freeze))
+                .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id更新密码
+     *
+     * @param id
+     * @param password
+     * @return
+     */
+    public int updatePsdById(Long id, String password) {
+        return dslContext.update(EP_SYSTEM_USER)
+                .set(EP_SYSTEM_USER.PASSWORD, password)
+                .where(EP_SYSTEM_USER.ID.eq(id))
                 .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
                 .execute();
     }

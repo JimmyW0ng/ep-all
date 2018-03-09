@@ -50,12 +50,12 @@ public class SystemMenuService {
      * @param type
      * @return
      */
-    public List<SystemMenuBo> getLeftMenuByUserType(EpSystemUserType type) {
+    public List<SystemMenuBo> getLeftMenuByUserType(EpSystemUserType type, List<Long> roleIds) {
         List<SystemMenuBo> list;
         if (type.equals(EpSystemUserType.platform)) {
-            list = systemMenuRepository.getAllMenu(BizConstant.PLATFORM_MENU_PARENT_ID);
+            list = systemMenuRepository.getAllLeftMenu(BizConstant.PLATFORM_MENU_PARENT_ID, roleIds);
         } else {
-            list = systemMenuRepository.getAllMenu(BizConstant.MERCHANT_MENU_PARENT_ID);
+            list = systemMenuRepository.getAllLeftMenu(BizConstant.MERCHANT_MENU_PARENT_ID, roleIds);
         }
 
         list.forEach(p -> {
