@@ -521,7 +521,7 @@
                     catalog.push({
                         id: organClassCatalogPos[j].id,
                         len: j + 1,
-                        startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd hh:mm:ss'),
+                        startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
                         catalogTitle: organClassCatalogPos[j].catalogTitle,
                         catalogDesc: organClassCatalogPos[j].catalogDesc
                     })
@@ -579,6 +579,13 @@
         laydate.render({
             elem: '#enterTimeEnd',
             type: 'datetime'
+        });
+        lay('.laydateer').each(function () {
+            laydate.render({
+                type: 'datetime',
+                elem: this,
+                trigger: 'click'
+            });
         });
     });
 
