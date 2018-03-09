@@ -101,7 +101,7 @@ public class MessageCaptchaService {
      */
     public void checkAndHandleCaptcha(Long sourceId, String captchaCode, String captchaContent) {
         // 测试环境支持通用验证码
-        if (!SpringComponent.isProduct() && BizConstant.MESSAGE_CAPTCHA_IN_TEST.equals(captchaCode)) {
+        if (!SpringComponent.isProduct() && BizConstant.MESSAGE_CAPTCHA_IN_TEST.equals(captchaContent)) {
             return;
         }
         EpMessageCaptchaPo captchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaCode(sourceId,
