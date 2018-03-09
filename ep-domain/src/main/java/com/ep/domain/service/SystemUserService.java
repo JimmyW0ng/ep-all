@@ -95,12 +95,12 @@ public class SystemUserService {
         }
         EpSystemUserPo po = new EpSystemUserPo();
         List<EpSystemRolePo> systemRolePos = bo.getSystemRolePos();
-        po.setStatus(EpSystemUserStatus.normal);
+
         this.copyBoPropertyToPo(bo, po);
         //盐
         po.setSalt(StringTools.generateShortUrl(po.getMobile(), passwordSaltKey, BizConstant.PASSWORD_SALT_MINLENGTH));
         po.setPassword(CryptTools.aesEncrypt(po.getPassword(), po.getSalt()));
-
+        po.setStatus(EpSystemUserStatus.normal);
         systemUserRepository.insert(po);
         //插入角色
         systemRolePos.forEach(p -> {
@@ -280,7 +280,7 @@ public class SystemUserService {
         po.setEmail(StringTools.getNullIfBlank(bo.getEmail()));
         po.setType(bo.getType());
         po.setOgnId(bo.getOgnId());
-        po.setStatus(bo.getStatus());
+//        po.setStatus(bo.getStatus());
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
     }
 
