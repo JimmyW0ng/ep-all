@@ -3,8 +3,10 @@ package com.ep.backend.controller;
 import com.ep.common.tool.CryptTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
+import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.SystemMenuService;
+import com.ep.domain.service.SystemRoleService;
 import com.ep.domain.service.SystemUserRoleService;
 import com.ep.domain.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,13 @@ public class IndexController extends BackendController {
     private SystemUserService systemUserService;
     @Autowired
     private SystemUserRoleService systemUserRoleService;
+    @Autowired
+    private SystemRoleService systemRoleService;
 
     /**
      * 登录成功后首页
      *
      * @param model
-     * @param request
      * @return
      */
     @GetMapping("/index")
@@ -70,8 +73,11 @@ public class IndexController extends BackendController {
         systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(), systemUserPo.getSalt()));
 
         model.addAttribute("systemUserPo", systemUserPo);
-
-        return "/systemUser/view";
+        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(systemUserPo.getId());
+        List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
+        model.addAttribute("roleList", lists);
+        model.addAttribute("roleIds", roleIds);
+        return "/systemUser/settingView";
 
     }
 

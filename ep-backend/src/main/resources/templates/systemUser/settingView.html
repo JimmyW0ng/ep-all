@@ -54,7 +54,36 @@
                                aria-required="true">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">类型：</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" required="true" aria-required="true"
+                               th:value="#{EpSystemUserType.+${systemUserPo.type}}">
 
+                        </input>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色：</label>
+                    <div class="col-sm-4">
+                        <table class="table table-striped table-hover table-bordered dataTable" id="editable"
+                               aria-describedby="editable_info">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>角色</th>
+
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody id="role_tb_body">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -64,23 +93,23 @@
 
 <script th:inline="javascript">
     $(function () {
-//        var type=$("#type").val();
-//        var res=[[${roleList}]];
-//        var roleIds=[[${roleIds}]];
-//        console.log(roleIds)
-//        var htmls="";
-//        if(res!=undefined&&res.length>0){
-//            for(var i=0;i<res.length;i++){
-//                htmls=htmls+"<tr><td><input name='id' type='checkbox'value='"+res[i].id+"'/>" +
-//                    "<input name='roleCode' type='hidden' value='"+res[i].roleCode+"'/>"+
-//                    "</td><td>"+res[i].roleName+"</td><td>"+(res[i].remark==null?'':res[i].remark)+"</td></tr>"
-//
-//            }
-//            $("#role_tb_body").html(htmls)
-//            for(var i=0;i<roleIds.length;i++){
-//                $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
-//            }
-//        }
+        var type = $("#type").val();
+        var res = [[${roleList}]];
+        var roleIds = [[${roleIds}]];
+        console.log(roleIds)
+        var htmls = "";
+        if (res != undefined && res.length > 0) {
+            for (var i = 0; i < res.length; i++) {
+                htmls = htmls + "<tr><td><input name='id' type='checkbox'value='" + res[i].id + "'/>" +
+                    "<input name='roleCode' type='hidden' value='" + res[i].roleCode + "'/>" +
+                    "</td><td>" + res[i].roleName + "</td><td>" + (res[i].remark == null ? '' : res[i].remark) + "</td></tr>"
+
+            }
+            $("#role_tb_body").html(htmls)
+            for (var i = 0; i < roleIds.length; i++) {
+                $("#role_tb_body").find("input[value=" + roleIds[i] + "]").attr("checked", true)
+            }
+        }
         $("#userFrm").find("input").attr("readonly","true")
     })
 </script>
