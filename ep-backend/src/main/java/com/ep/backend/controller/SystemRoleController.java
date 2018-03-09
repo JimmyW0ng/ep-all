@@ -15,7 +15,6 @@ import com.ep.domain.service.SystemRoleAuthorityService;
 import com.ep.domain.service.SystemRoleService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,6 @@ import static com.ep.domain.repository.domain.Ep.EP;
 @Slf4j
 @Controller
 @RequestMapping("auth/role")
-@Api(value = "backend-auth-role", description = "系统角色")
 public class SystemRoleController extends BackendController {
 
     @Autowired
@@ -162,8 +160,7 @@ public class SystemRoleController extends BackendController {
      */
     @PostMapping("update")
     @ResponseBody
-    public ResultDo update(HttpServletRequest request,
-                           @RequestBody SystemRoleBo bo
+    public ResultDo update(@RequestBody SystemRoleBo bo
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();

@@ -59,7 +59,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("/index")
-    @ApiOperation(value = "新增用户初始化")
+    @PreAuthorize("hasAnyAuthority('backend:user:index')")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
                         @RequestParam(value = "type", required = false) String type,

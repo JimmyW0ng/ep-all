@@ -96,7 +96,7 @@
     $(document).ready(function () {
         var zNodes = [
             [# th:each="menuPojo :${menuList}"]
-        {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false, authority:[[${menuPojo.permission}]]},
+        {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false},
         [/]
         ];
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);
@@ -126,7 +126,7 @@
         var nodes = treeObj.getCheckedNodes(true);
         var authority = []
         for (var i = 0; i < nodes.length; i++) {
-            authority.push({menuId:nodes[i].id,authority:nodes[i].authority});
+            authority.push({menuId:nodes[i].id});
         }
         console.log(authority)
         if (nodes.length == 0) {
