@@ -75,6 +75,7 @@ public class SystemUserService {
             log.error("[用户]新增用户失败，请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
+//        systemUserRepository.findByMobile()
         if (bo.getType().equals(EpSystemUserType.merchant)) {
             if (null == bo.getOgnId()) {
                 log.error("[用户]新增用户失败，请求参数异常。");

@@ -178,5 +178,10 @@ public class SystemUserRepository extends AbstractCRUDRepository<EpSystemUserRec
                 .and(EP_SYSTEM_USER.DEL_FLAG.eq(false))
                 .execute();
     }
+
+//    public Optional<EpSystemUserPo> findByMobile(Long mobile){
+//        EpSystemUserPo data=dslContext.selectFrom(EP_SYSTEM_USER)
+//                .where()
+//    }
 }
 

@@ -112,9 +112,10 @@
                                             <input name="className" type="text"  class=" form-control " th:value="${po.className}"
                                                    onblur="setClassBoxTitle(this)">
                                             <label>课程负责人 *</label>
-                                            <select name="ognAccountId" type="text"  class=" form-control ">
+                                            <input name="ognAccountId" type="text" class=" form-control "
+                                                   th:value="${po.ognAccountId}">
 
-                                            </select>
+                                            </input>
                                             <label>价格 *</label>
                                             <input name="classPrize" type="text"  class=" form-control " th:value="${po.classPrize}">
                                             <label>折扣优惠 *</label>

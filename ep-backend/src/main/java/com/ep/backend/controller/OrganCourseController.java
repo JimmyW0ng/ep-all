@@ -290,7 +290,6 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         model.addAttribute("ognTagList", ognTagList);
 
-
         return "organCourse/merchantForm";
     }
 
@@ -301,19 +300,12 @@ public class OrganCourseController extends BackendController {
      */
     @PostMapping("/merchantUpdate")
     @ResponseBody
-    public ResultDo merchantUpdate(HttpServletRequest request, CreateOrganCourseDto dto) {
+    public ResultDo merchantUpdate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        //课程对象
-        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
-        //班次
-        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
-        //标签
-        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-        organCoursePo.setOgnId(ognId);
-        organCourseService.updateOrganCourseByMerchant(organCoursePo, organClassBos, constantTagPos);
-        ResultDo resultDo = ResultDo.build();
-        return resultDo;
+
+        dto.getOrganCoursePo().setOgnId(ognId);
+        return organCourseService.updateOrganCourseByMerchant(dto);
     }
 
     /**
@@ -322,12 +314,10 @@ public class OrganCourseController extends BackendController {
      * @param courseId
      * @return
      */
-    public ResultDo deleteByCourseId(HttpServletRequest request, Long courseId) {
+    public ResultDo deleteByCourseId(Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
-        organCourseService.deleteCourseByCourseId(courseId, ognId);
-        return resultDo;
+        return organCourseService.deleteCourseByCourseId(courseId, ognId);
     }
 
     /**

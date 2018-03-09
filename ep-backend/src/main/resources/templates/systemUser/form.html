@@ -111,6 +111,10 @@
             console.log("valid fail")
             return;
         }
+
+        if ($("#role_tb_body").find("input[type='checkbox']:checked").length == 0) {
+            return;
+        }
         var roles = []
         $("#role_tb_body tr").each(function () {
             if($(this).find("input[name='id']").eq(0).is(":checked")){
@@ -147,7 +151,7 @@
                 if(data.success){
                     toastr_success(null,'/auth/user/index')
                 } else {
-                    toastr_error(data.errorDescription, '/auth/user/index');
+                    toastr.error(data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {

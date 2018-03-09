@@ -95,7 +95,7 @@
                             <div class="input-group input-large col-sm-4">
                                 <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
                                        required="true" class="form-control laydate"
-                                       th:value="${organCoursePo.onlineTime}">
+                                       th:value="${#dateTools.timestampSubstring(organCoursePo.onlineTime)}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -103,14 +103,15 @@
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
                                        required="true" class="form-control laydate"
-                                       th:value="${organCoursePo.enterTimeStart}">
+                                       th:value="${#dateTools.timestampSubstring(organCoursePo.enterTimeStart)}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 </label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" required="true"
-                                       class="form-control laydate" th:value="${organCoursePo.enterTimeEnd}">
+                                       class="form-control laydate"
+                                       th:value="${#dateTools.timestampSubstring(organCoursePo.enterTimeEnd)}">
                             </div>
                         </div>
                     </section>
@@ -258,6 +259,9 @@
 <!--<script th:src="@{/js/plugins/layer/laydate/laydate.js}"></script>-->
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
+    function timestamp2date(timestamp) {
+        return timestamp.substring(0, 18)
+    }
 
     //教师map
     var organAccountMap = [[${organAccountMap}]]
@@ -517,7 +521,7 @@
                     catalog.push({
                         id: organClassCatalogPos[j].id,
                         len: j + 1,
-                        startTime: organClassCatalogPos[j].startTime,
+                        startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd hh:mm:ss'),
                         catalogTitle: organClassCatalogPos[j].catalogTitle,
                         catalogDesc: organClassCatalogPos[j].catalogDesc
                     })
