@@ -18,4 +18,5 @@ import java.util.List;
 public class SystemMenuBo extends EpSystemMenuPo {
     private String parentName;
     private List<SystemMenuBo> childList;
+    private Long roleAuthId;
 }

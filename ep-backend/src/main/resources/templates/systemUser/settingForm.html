@@ -22,7 +22,7 @@
                     <label class="col-sm-2 control-label">手机号：</label>
                     <div class="col-sm-3">
                         <input id="mobile" name="mobile" type="text" class="form-control" required="true"
-                               th:field="*{mobile}"
+                               th:field="*{mobile}" readonly="true"
                                aria-required="true">
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <label class="col-sm-2 control-label">用户名：</label>
                     <div class="col-sm-3">
                         <input id="userName" name="userName" type="text" class="form-control" required="true"
-                               th:field="*{userName}"
+                               th:field="*{userName}" readonly="true"
                                aria-required="true">
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     <label class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-3">
                         <input id="email" name="email" type="text" class="form-control" required="true"
-                               th:field="*{email}"
+                               th:field="*{email}" readonly="true"
                                aria-required="true">
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">原密码：</label>
                                 <div class="col-sm-4">
-                                    <input name="oldPsd" type="text" class="form-control" required="true"
+                                    <input id="oldPsd" name="oldPsd" type="text" class="form-control" required="true"
                                            aria-required="true">
                                 </div>
                             </div>
@@ -119,6 +119,7 @@
 <script th:inline="javascript">
     function updatePsdInit(id) {
         $("#psdModal").modal("show")
+        $("#psdFrm").find("input").val("")
         $("#sourceId").val(id)
         $("#psdFrm").validate(
             {
@@ -138,6 +139,22 @@
             console.log("valid fail")
             return;
         }
+        $.ajax({
+            type: "POST",
+            url: "/auth/updatePsd",
+            data: {oldPsd: $("#oldPsd").val(), password: $("#password").val()},
+            success: function (data) {
+                if (data.success) {
+                    toastr.success('操作成功')
+                    $("#psdModal").modal("hide")
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
     }
     $(function () {
 //        var type=$("#type").val();

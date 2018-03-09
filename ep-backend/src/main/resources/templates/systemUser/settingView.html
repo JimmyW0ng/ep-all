@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" th:if="${#stringTools.equals(systemUserPo.type,'merchant')}">
                     <label class="col-sm-2 control-label">商户id：</label>
                     <div class="col-sm-3">
                         <input id="organId" name="organId" type="text" class="form-control" required="true" th:field="*{ognId}"
