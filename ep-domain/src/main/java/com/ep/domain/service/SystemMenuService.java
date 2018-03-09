@@ -80,6 +80,7 @@ public class SystemMenuService {
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         systemMenuRepository.insert(po);
+        log.info("[菜单]新增菜单成功。id={}。", po.getId());
         return ResultDo.build();
     }
 
@@ -112,12 +113,13 @@ public class SystemMenuService {
      * @param ids
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deleteMenu(List<Long> ids) {
+    public ResultDo deleteMenu(List<Long> ids) {
         log.info("[菜单]删除菜单开始。删除菜单ids={}。", ids);
         //逻辑删除 菜单表 记录
         systemMenuRepository.deleteLogicByIds(ids);
         //物理删除 角色权限表 记录
         systemRoleAuthorityRepository.deletePhysicByMenuIds(ids);
         log.info("[菜单]删除菜单成功。删除菜单ids={}。", ids);
+        return ResultDo.build();
     }
 }

@@ -73,7 +73,7 @@ public class SystemRoleService {
         log.info("[角色]新增角色开始。角色对象={}。", bo);
         if (null == bo.getTarget() || StringTools.isBlank(bo.getRoleName()) || StringTools.isBlank(bo.getRoleCode())
                 ) {
-            log.error("[角色]修改角色失败，请求参数异常。");
+            log.error("[角色]新增角色失败，请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         List<EpSystemRoleAuthorityPo> list = bo.getSystemRoleAuthorityPos();

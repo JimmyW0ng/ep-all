@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,7 @@ public class SystemRoleController extends BackendController {
     private SystemMenuService systemMenuService;
 
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "roleName", required = false) String roleName,
@@ -97,6 +99,7 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("view/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String read(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Optional<EpSystemRolePo> systemRolePoOptional = systemRoleService.findById(id);
@@ -106,9 +109,6 @@ public class SystemRoleController extends BackendController {
             List<Long> menuIds = systemRoleAuthorityService.getMenuIdByRole(systemRolePoOptional.get().getId());
             model.addAttribute("menuIds", menuIds);
         }
-//        }else{
-//
-//        }
 
         //所有菜单
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
@@ -123,6 +123,7 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("createInit")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String createInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         model.addAttribute("systemRolePo", new EpSystemRolePo());
@@ -139,6 +140,7 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @PostMapping("create")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     @ResponseBody
     public ResultDo create(@RequestBody SystemRoleBo bo
     ) {
@@ -156,6 +158,7 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @PostMapping("update")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     @ResponseBody
     public ResultDo update(@RequestBody SystemRoleBo bo
     ) {
@@ -171,6 +174,7 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("updateInit/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String updateInit(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Optional<EpSystemRolePo> systemRolePoOptional = systemRoleService.findById(id);
@@ -192,6 +196,7 @@ public class SystemRoleController extends BackendController {
      * @return
      */
     @GetMapping("delete/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
     @ResponseBody
     public ResultDo deleteRole(HttpServletRequest request, @PathVariable("id") Long id) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();

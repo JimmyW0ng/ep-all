@@ -9,6 +9,7 @@ import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.service.SystemMenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class SystemMenuController extends BackendController {
      * @return
      */
     @GetMapping("/index")
+    @PreAuthorize("hasAnyAuthority('platform:menu:index')")
     public String index(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
@@ -48,8 +50,8 @@ public class SystemMenuController extends BackendController {
      * @return
      */
     @GetMapping("/merchantIndex")
+    @PreAuthorize("hasAnyAuthority('platform:menu:index')")
     public String merchantIndex(Model model) {
-//        EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(EpSystemUserType.merchant);
         model.addAttribute("menuList",menuList);
         return "systemMenu/merchantIndex";
@@ -61,6 +63,7 @@ public class SystemMenuController extends BackendController {
      * @return
      */
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('platform:menu:index')")
     @ResponseBody
     public ResultDo<String> create(EpSystemMenuPo po) {
         if (po.getId() == null) {
@@ -78,6 +81,7 @@ public class SystemMenuController extends BackendController {
      * @return
      */
     @GetMapping("/view/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:menu:index')")
     @ResponseBody
     public ResultDo<SystemMenuBo> viewAjax(@PathVariable(value = "id") Long id) {
         ResultDo<SystemMenuBo> resultDo = ResultDo.build();
@@ -98,10 +102,9 @@ public class SystemMenuController extends BackendController {
      * @return
      */
     @PostMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('platform:menu:index')")
     @ResponseBody
     public ResultDo delete(@RequestParam("ids[]") Long[] ids) {
-        ResultDo resultDo = ResultDo.build();
-        systemMenuService.deleteMenu(Arrays.asList(ids));
-        return resultDo;
+        return systemMenuService.deleteMenu(Arrays.asList(ids));
     }
 }

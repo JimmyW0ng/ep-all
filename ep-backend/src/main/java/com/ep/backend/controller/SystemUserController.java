@@ -110,7 +110,7 @@ public class SystemUserController extends BackendController {
      */
     @ApiOperation(value = "修改用户初始化")
     @GetMapping("/updateInit/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public String updateInit(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
@@ -138,7 +138,7 @@ public class SystemUserController extends BackendController {
     @ApiOperation(value = "新增用户")
     @PostMapping("/create")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public ResultDo create(@RequestBody SystemUserBo bo
     ) throws Exception {
 
@@ -154,7 +154,7 @@ public class SystemUserController extends BackendController {
     @ApiOperation(value = "修改用户")
     @PostMapping("/update")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public ResultDo update(@RequestBody SystemUserBo bo
     ) throws Exception {
         return systemUserService.updateUser(bo);
@@ -168,7 +168,7 @@ public class SystemUserController extends BackendController {
      */
     @ApiOperation(value = "查看用户")
     @GetMapping("/view/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public String view(Model model, @PathVariable("id") Long id) {
         EpSystemUserPo systemUserPo = systemUserService.findById(id).get();
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(id);
@@ -194,7 +194,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     @ResponseBody
     public ResultDo delete(@PathVariable("id") Long id) {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
@@ -212,7 +212,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("freeze/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id) {
         return systemUserService.freezeById(id);
@@ -225,7 +225,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("cancel/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     @ResponseBody
     public ResultDo cancel(@PathVariable("id") Long id) {
         return systemUserService.cancelById(id);
@@ -238,7 +238,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("unfreeze/{id}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     @ResponseBody
     public ResultDo unfreeze(@PathVariable("id") Long id) {
         return systemUserService.unfreezeById(id);
@@ -251,7 +251,7 @@ public class SystemUserController extends BackendController {
      * @return
      */
     @GetMapping("/getRoleByUserType/{type}")
-    @PreAuthorize("hasAnyAuthority('backend:user:index')")
+    @PreAuthorize("hasAnyAuthority('platform:user:index')")
     @ResponseBody
     public ResultDo view(@PathVariable("type") EpSystemUserType type) {
         ResultDo resultDo = ResultDo.build();
