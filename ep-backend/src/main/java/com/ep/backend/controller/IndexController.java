@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.CryptTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
@@ -11,10 +12,9 @@ import com.ep.domain.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 /**
@@ -36,21 +36,23 @@ public class IndexController extends BackendController {
 
     /**
      * 登录成功后首页
+     *
      * @param model
-     * @param request
      * @return
      */
     @GetMapping("/index")
-    public String index(Model model, HttpServletRequest request) {
+    public String index(Model model) {
         EpSystemUserPo currentUser = getCurrentUser().get();
-        List<SystemMenuBo> leftMenu=systemMenuService.getLeftMenuByUserType(currentUser.getType());
-        model.addAttribute("currentUser",currentUser);
-        model.addAttribute("leftMenu",leftMenu);
+        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(currentUser.getId());
+        List<SystemMenuBo> leftMenu = systemMenuService.getLeftMenuByUserType(currentUser.getType(), roleIds);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("leftMenu", leftMenu);
         return "layout/default";
     }
 
     /**
      * 登录成功后ifeame首页
+     *
      * @return
      */
     @GetMapping("/homePage")
@@ -58,44 +60,25 @@ public class IndexController extends BackendController {
         return "index";
     }
 
-    /**
-     * 个人设置初始化
-     * @param model
-     * @param request
-     * @return
-     */
-    @GetMapping("/settingUpdateInit")
-    public String settingUpdateInit(Model model, HttpServletRequest request) {
-//        EpSystemUserPo currentUser = getCurrentUser().get();
-//        List<SystemMenuBo> leftMenu=systemMenuService.getLeftMenuByUserType(currentUser.getType());
-//        model.addAttribute("currentUser",currentUser);
-//        model.addAttribute("leftMenu",leftMenu);
-        return "layout/default";
-    }
 
     /**
      * 个人查看
+     *
      * @param model
      * @return
      */
     @GetMapping("/settingView")
-    public String settingView(Model model) {
+    public String settingView(Model model) throws GeneralSecurityException {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+        systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(), systemUserPo.getSalt()));
+
+        model.addAttribute("systemUserPo", systemUserPo);
         List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(systemUserPo.getId());
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
-        try{
-            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
-
-        }catch(Exception e){
-            model.addAttribute("systemUserPo", systemUserPo);
-            model.addAttribute("roleList", lists);
-            model.addAttribute("roleIds", roleIds);
-            return "/systemUser/view";
-        }
-        model.addAttribute("systemUserPo", systemUserPo);
         model.addAttribute("roleList", lists);
         model.addAttribute("roleIds", roleIds);
         return "/systemUser/settingView";
+
     }
 
     /**
@@ -107,21 +90,25 @@ public class IndexController extends BackendController {
     @GetMapping("/settingEdit")
     public String settingEdit(Model model) {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
-//        List<Long> roleIds = systemUserRoleService.getRoleIdsByUserId(systemUserPo.getId());
-//        List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
-//        try{
-//            systemUserPo.setPassword(CryptTools.aesDecrypt(systemUserPo.getPassword(),systemUserPo.getSalt()));
-//
-//        }catch(Exception e){
-//            model.addAttribute("systemUserPo", systemUserPo);
-//            model.addAttribute("roleList", lists);
-//            model.addAttribute("roleIds", roleIds);
-//            return "/systemUser/view";
-//        }
+
         model.addAttribute("systemUserPo", systemUserPo);
-//        model.addAttribute("roleList", lists);
-//        model.addAttribute("roleIds", roleIds);
         return "/systemUser/settingForm";
+    }
+
+    /**
+     * 个人设置修改密码
+     *
+     * @param oldPsd
+     * @param password
+     * @return
+     * @throws GeneralSecurityException
+     */
+    @PostMapping("updatePsd")
+    @ResponseBody
+    public ResultDo updatePsd(@RequestParam(value = "oldPsd") String oldPsd,
+                              @RequestParam(value = "password") String password) throws GeneralSecurityException {
+        EpSystemUserPo systemUserPo = super.getCurrentUser().get();
+        return systemUserService.updatePassword(systemUserPo.getId(), oldPsd, password);
     }
 
 }
