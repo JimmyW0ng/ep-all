@@ -1,5 +1,6 @@
 package com.ep.domain.service;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.RegexTools;
 import com.ep.common.tool.StringTools;
@@ -99,6 +100,10 @@ public class MessageCaptchaService {
      * @param captchaContent
      */
     public void checkAndHandleCaptcha(Long sourceId, String captchaCode, String captchaContent) {
+        // 测试环境支持通用验证码
+        if (!SpringComponent.isProduct() && BizConstant.MESSAGE_CAPTCHA_IN_TEST.equals(captchaCode)) {
+            return;
+        }
         EpMessageCaptchaPo captchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaCode(sourceId,
                 EpMessageCaptchaCaptchaType.short_msg,
                 EpMessageCaptchaCaptchaScene.login,

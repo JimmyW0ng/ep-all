@@ -1,12 +1,13 @@
 package com.ep.backend.security;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.CryptTools;
+import com.ep.common.tool.StringTools;
 import com.ep.common.tool.WebTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.repository.SystemUserRepository;
-import com.ep.domain.repository.SystemUserRoleRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -46,11 +47,13 @@ public class BackendSecurityAuthComponent {
      */
     public void checkLogin(String principal, String credential, String captchaCode) throws AuthenticationException {
         // 校验图形验证码
-        Object captcha = WebTools.getCurrentRequest().getSession().getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
-        if (captcha == null || captchaCode == null) {
-            throw new BadCredentialsException("请重新获取登录图形验证码！");
-        } else if (!captcha.toString().equalsIgnoreCase(captchaCode)) {
-            throw new BadCredentialsException("图形验证码错误！");
+        if (SpringComponent.isProduct() || !BizConstant.MESSAGE_CAPTCHA_IN_TEST.equals(captchaCode)) {
+            Object captcha = WebTools.getCurrentRequest().getSession().getAttribute(BizConstant.CAPTCHA_SESSION_KEY);
+            if (captcha == null || StringTools.isBlank(captchaCode)) {
+                throw new BadCredentialsException("请重新获取登录图形验证码！");
+            } else if (!captcha.toString().equalsIgnoreCase(captchaCode)) {
+                throw new BadCredentialsException("图形验证码错误！");
+            }
         }
         // 校验用户信息
         Long mobile = Long.valueOf(principal);

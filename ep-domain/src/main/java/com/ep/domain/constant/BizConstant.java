@@ -93,4 +93,8 @@ public class BizConstant {
      */
     public static final String MESSAGE_CONTENT_CLASS_CATALOG_COMMENT = "\"%s\"在\"%s-%s\"中收到评价，点击查看";
 
+    /**
+     * 测试环境通用验证码
+     */
+    public static final String MESSAGE_CAPTCHA_IN_TEST = "8888";
 }

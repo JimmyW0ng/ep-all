@@ -1,10 +1,12 @@
 package com.ep.common.component;
 
+import com.ep.common.tool.StringTools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -91,6 +93,16 @@ public class SpringComponent implements ApplicationContextAware {
             temp = code;
         }
         return temp;
+    }
+
+    /**
+     * 判断是否是生产环境
+     *
+     * @return
+     */
+    public static Boolean isProduct() {
+        String[] activeProfiles = getBean(Environment.class).getActiveProfiles();
+        return StringTools.equals(activeProfiles[0], "prod");
     }
 }
 
