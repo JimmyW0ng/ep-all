@@ -31,7 +31,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">目标：</label>
                     <div class="col-sm-3">
-                        <select id="target" name="target" class="form-control" required="true" aria-required="true" th:field="*{target}">
+                        <select id="target" name="target" class="form-control" required="true" aria-required="true"
+                                th:field="*{target}"
+                                disabled="true">
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemRoleTarget).values()}"
                                     th:value="${state}"
                                     th:text="#{EpSystemRoleTarget.+${state.literal}}">
@@ -159,7 +161,12 @@
             success: function (data) {
                 if (data.success) {
                     toastr_success(null,"/auth/role/index")
+                } else {
+                    toastr.error(data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
 

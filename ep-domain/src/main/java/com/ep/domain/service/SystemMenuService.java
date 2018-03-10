@@ -72,8 +72,7 @@ public class SystemMenuService {
      */
     public ResultDo createMenu(EpSystemMenuPo po) {
         log.info("[菜单]新增菜单开始，菜单对象={}。", po);
-        if (null == po.getParentId() || null == po.getTarget()
-                || null == po.getTarget() || null == po.getMenuType()
+        if (null == po.getTarget() || null == po.getMenuType()
                 || StringTools.isBlank(po.getMenuName()) || null == po.getSort()
                 || StringTools.isBlank(po.getPermission())) {
             log.error("[菜单]新增菜单失败。请求参数异常。");

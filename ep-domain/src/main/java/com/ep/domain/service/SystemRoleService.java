@@ -121,7 +121,7 @@ public class SystemRoleService {
             //角色权限表插入记录
             systemRoleAuthorityRepository.insert(list);
             log.info("[角色]修改角色成功。id={}。", po.getId());
-            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+            return ResultDo.build();
         } else {
             log.error("[角色]修改角色失败。");
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);

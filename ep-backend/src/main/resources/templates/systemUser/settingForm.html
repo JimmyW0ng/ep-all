@@ -35,6 +35,14 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">用户名：</label>
+                    <div class="col-sm-3">
+                        <input id="onlineTime" name="userName" type="text" class="form-control" required="true"
+                               th:field="*{createAt}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label">密码：</label>
                     <div class="col-sm-3">
                         <button class="btn btn-primary" th:onclick="'updatePsdInit('+${systemUserPo.id}+')'"
@@ -112,10 +120,11 @@
 
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
-<script th:src="@{/js/jquery.ztree.core.js}"></script>
-<script th:src="@{/js/jquery.ztree.core.js}"></script>
-<script th:src="@{/js/jquery.ztree.excheck.js}"></script>
-<script th:src="@{/js/jquery.ztree.exedit.js}"></script>
+<!--<script th:src="@{/js/jquery.ztree.core.js}"></script>-->
+<!--<script th:src="@{/js/jquery.ztree.core.js}"></script>-->
+<!--<script th:src="@{/js/jquery.ztree.excheck.js}"></script>-->
+<!--<script th:src="@{/js/jquery.ztree.exedit.js}"></script>-->
+<script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
     function updatePsdInit(id) {
         $("#psdModal").modal("show")
@@ -175,6 +184,10 @@
 //            }
 //        }
 //        $("#userFrm").find("input").attr("readonly","true")
+        laydate.render({
+            elem: '#onlineTime',
+            type: 'datetime'
+        });
     })
 </script>
 </body>
