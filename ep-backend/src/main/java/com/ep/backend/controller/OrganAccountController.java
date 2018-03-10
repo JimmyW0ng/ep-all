@@ -71,7 +71,10 @@ public class OrganAccountController extends BackendController {
 //        map.put("crEndTime", crEndTime);
         conditions.add(EP.EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false));
         Long ognId = super.getCurrentUser().get().getOgnId();
-        conditions.add(EP.EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId));
+        if (null != ognId) {
+            conditions.add(EP.EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId));
+        }
+
         Page<OrganAccountBo> page = organAccountService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);
