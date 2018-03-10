@@ -98,4 +98,9 @@ public class MessageCode {
      * 角色
      */
     public static final String ERROR_SYSTEM_ROLE_NOT_EXISTS = "ERROR_SYSTEM_ROLE_NOT_EXISTS";
+
+    /**
+     * 标签
+     */
+    public static final String ERROR_CONSTANT_DELETE_WHEN_USED = "ERROR_CONSTANT_DELETE_WHEN_USED";
 }

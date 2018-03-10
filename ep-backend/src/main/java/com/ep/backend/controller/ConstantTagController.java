@@ -9,7 +9,6 @@ import com.ep.domain.service.ConstantCatalogService;
 import com.ep.domain.service.ConstantTagService;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,14 +59,12 @@ public class ConstantTagController extends BackendController {
     /**
      * 根据类目获得标签
      *
-     * @param request
      * @param catalogId
      * @return
      */
     @GetMapping("findTags")
     @ResponseBody
     public ResultDo findTags(
-            HttpServletRequest request,
             @RequestParam(value = "catalogId") Long catalogId
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -94,19 +91,16 @@ public class ConstantTagController extends BackendController {
     @GetMapping("createConstantTag")
     @ResponseBody
     public ResultDo createConstantTag(
-            HttpServletRequest request,
             @RequestParam(value = "catalogId") Long catalogId,
             @RequestParam(value = "tagName") String tagName
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
         constantTagPo.setCatalogId(catalogId);
         constantTagPo.setOgnId(ognId);
         constantTagPo.setTagName(tagName);
-        EpConstantTagPo insertPo = constantTagService.createPo(constantTagPo);
-        resultDo.setResult(insertPo.getTagName());
+        ResultDo resultDo = constantTagService.createConstantTag(constantTagPo);
         return resultDo;
     }
 
@@ -120,20 +114,17 @@ public class ConstantTagController extends BackendController {
     @GetMapping("createOgnTag")
     @ResponseBody
     public ResultDo createOgnTag(
-            HttpServletRequest request,
             @RequestParam(value = "catalogId") Long catalogId,
             @RequestParam(value = "tagName") String tagName
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
         constantTagPo.setCatalogId(catalogId);
         constantTagPo.setOgnId(ognId);
         constantTagPo.setOgnFlag(true);
         constantTagPo.setTagName(tagName);
-        EpConstantTagPo insertPo = constantTagService.createPo(constantTagPo);
-        resultDo.setResult(insertPo.getTagName());
+        ResultDo resultDo = constantTagService.createConstantTag(constantTagPo);
         return resultDo;
     }
 
@@ -146,9 +137,8 @@ public class ConstantTagController extends BackendController {
     @GetMapping("deleteTag/{id}")
     @ResponseBody
     public ResultDo deleteOgnTag(@PathVariable("id") Long id) {
-        ResultDo resultDo = ResultDo.build();
-        constantTagService.deleteById(id);
-        return resultDo;
+
+        return constantTagService.deleteById(id);
     }
 
 }

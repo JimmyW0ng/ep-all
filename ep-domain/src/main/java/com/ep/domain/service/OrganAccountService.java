@@ -2,6 +2,7 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -87,29 +88,61 @@ public class OrganAccountService {
 
     /**
      * 新增机构账户关联信息
+     *
      * @param po
      * @return
      */
-    public EpOrganAccountPo createOgnAccount(EpOrganAccountPo po) {
-        return organAccountRepository.insertNew(po);
+    public ResultDo createOgnAccount(EpOrganAccountPo po) {
+        log.info("[教师]新增教师开始。教师对象={}。", po);
+        if (StringTools.isBlank(po.getAccountName()) || StringTools.isBlank(po.getNickName())
+                || null == po.getOgnId() || null == po.getStatus()
+                || null == po.getReferMobile()) {
+            log.error("[教师]新增教师失败，请求参数异常。");
+            ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+        organAccountRepository.insert(po);
+        log.info("[教师]新增教师成功。id={}。", po.getId());
+        return ResultDo.build();
     }
 
     /**
      * 修改机构账户关联信息
+     *
      * @param po
      * @return
      */
-    public int update(EpOrganAccountPo po){
-        return organAccountRepository.updateById(po);
+    public ResultDo updateOgnAccount(EpOrganAccountPo po) {
+        log.info("[教师]修改教师开始，教师对象={}。", po);
+        if (null == po.getId() || StringTools.isBlank(po.getAccountName()) || StringTools.isBlank(po.getNickName())
+                || null == po.getStatus() || null == po.getReferMobile()) {
+            log.error("[教师]修改教师失败，请求参数异常。");
+            ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+        if (organAccountRepository.updateById(po) == BizConstant.DB_NUM_ONE) {
+            log.info("[教师]修改教师成功，id={}。", po.getId());
+            return ResultDo.build();
+        } else {
+            log.error("[教师]修改教师失败，id={}。", po.getId());
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+
     }
 
     /**
      * 删除机构账户关联信息
+     *
      * @param id
      * @return
      */
-    public int delete(Long id){
-        return organAccountRepository.deleteLogical(id);
+    public ResultDo deleteOgnAccount(Long id) {
+        log.info("[教师]删除教师开始，教师id={}。", id);
+        if (organAccountRepository.deleteLogical(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[教师]删除教师成功，教师id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[教师]删除教师失败，教师id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     public List<EpOrganAccountPo> findByOgnId(Long ognId) {

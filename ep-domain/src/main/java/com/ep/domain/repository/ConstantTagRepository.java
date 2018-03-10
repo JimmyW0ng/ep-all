@@ -95,10 +95,11 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      * 根据id逻辑删除
      * @param id
      */
-    public void deleteById(Long id){
-        dslContext.update(EP_CONSTANT_TAG)
+    public int deleteById(Long id) {
+        return dslContext.update(EP_CONSTANT_TAG)
                 .set(EP_CONSTANT_TAG.DEL_FLAG,true)
                 .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .execute();
     }
 }

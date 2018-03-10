@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -164,7 +163,6 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .set(EP_ORGAN_ACCOUNT.REFER_MOBILE, po.getReferMobile())
                 .set(EP_ORGAN_ACCOUNT.STATUS, po.getStatus())
                 .set(EP_ORGAN_ACCOUNT.REMARK, po.getRemark())
-                .set(EP_ORGAN_ACCOUNT.UPDATE_AT, DSL.currentTimestamp())
                 .where(EP_ORGAN_ACCOUNT.ID.eq(po.getId()))
                 .execute();
     }
@@ -179,6 +177,7 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
         return dslContext.update(EP_ORGAN_ACCOUNT)
                 .set(EP_ORGAN_ACCOUNT.DEL_FLAG, true)
                 .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
                 .execute();
     }
 

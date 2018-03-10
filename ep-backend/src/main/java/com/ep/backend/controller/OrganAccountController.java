@@ -94,7 +94,6 @@ public class OrganAccountController extends BackendController {
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
 
-
         return "organAccount/index";
     }
 
@@ -151,9 +150,7 @@ public class OrganAccountController extends BackendController {
     public ResultDo create(EpOrganAccountPo po) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         po.setOgnId(currentUser.getOgnId());
-        ResultDo resultDo = ResultDo.build();
-        organAccountService.createOgnAccount(po);
-        return resultDo;
+        return organAccountService.createOgnAccount(po);
     }
 
     /**
@@ -166,9 +163,7 @@ public class OrganAccountController extends BackendController {
     @ResponseBody
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public ResultDo update(EpOrganAccountPo po) {
-        ResultDo resultDo = ResultDo.build();
-        organAccountService.update(po);
-        return resultDo;
+        return organAccountService.updateOgnAccount(po);
     }
 
     /**
@@ -180,9 +175,6 @@ public class OrganAccountController extends BackendController {
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     @ResponseBody
     public ResultDo updateInit(@PathVariable("id") Long id) {
-        ResultDo resultDo = ResultDo.build();
-        organAccountService.delete(id);
-
-        return resultDo;
+        return organAccountService.deleteOgnAccount(id);
     }
 }

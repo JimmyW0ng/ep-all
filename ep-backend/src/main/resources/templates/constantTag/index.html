@@ -109,7 +109,12 @@
                     var $box=$("#allTagBox").find("input[name='constantCatalogId"+catalogId+"']").eq(0).siblings("div[name='constantTagBox']").eq(0)
 
                     $box.append($("#ognTagTmpl").tmpl(tag));
+                } else {
+                    toastr.error(data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
 
@@ -128,7 +133,12 @@
                 success:function (data) {
                     if(data.success){
                         $(ele).parent().remove();
+                    } else {
+                        toastr.error(data.errorDescription);
                     }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
                 }
             })
 
