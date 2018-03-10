@@ -95,7 +95,7 @@
                             <div class="input-group input-large col-sm-4">
                                 <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
                                        required="true" class="form-control laydate"
-                                       th:value="${#dateTools.timestampSubstring(organCoursePo.onlineTime)}">
+                                       th:value="${#dates.format(organCoursePo.onlineTime,'yyyy-MM-dd HH:mm:ss')}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -103,7 +103,7 @@
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
                                        required="true" class="form-control laydate"
-                                       th:value="${#dateTools.timestampSubstring(organCoursePo.enterTimeStart)}">
+                                       th:value="${#dates.format(organCoursePo.enterTimeStart,'yyyy-MM-dd HH:mm:ss')}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -111,7 +111,7 @@
                             <div class="input-group input-large col-sm-4">
                                 <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" required="true"
                                        class="form-control laydate"
-                                       th:value="${#dateTools.timestampSubstring(organCoursePo.enterTimeEnd)}">
+                                       th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
                             </div>
                         </div>
                     </section>

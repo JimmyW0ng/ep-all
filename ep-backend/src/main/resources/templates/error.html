@@ -33,7 +33,7 @@
     <div th:if="${#response.getStatus() == 403}">
         <h3 class="font-bold">无此权限</h3>
     </div>
-    <div th:if="${#response.getStatus() != 500} && ${#response.getStatus() != 404}&& ${#response.getStatus() != 403}">
+    <div th:if="${#response.getStatus() != 500 && #response.getStatus() != 404&&#response.getStatus() != 403}">
         <h3 class="font-bold" th:text="'系统异常(' + ${#response.getStatus()} + ')，请稍后再试！'"></h3>
     </div>
     <div class="error-desc">

@@ -1682,11 +1682,4 @@ public class DateTools {
         return dateToString(temp, format);
     }
 
-    public static String timestampSubstring(String timestampStr) {
-        if (StringTools.isBlank(timestampStr)) {
-            return null;
-        }
-        return timestampStr.substring(0, 19);
-    }
-
 }

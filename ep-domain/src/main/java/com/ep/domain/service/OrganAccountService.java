@@ -77,8 +77,12 @@ public class OrganAccountService {
 
     }
 
-    public Page<OrganAccountBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
-        return organAccountRepository.findbyPageAndCondition(pageable, condition);
+    public Page<OrganAccountBo> merchantFindbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return organAccountRepository.merchantFindbyPageAndCondition(pageable, condition);
+    }
+
+    public Page<OrganAccountBo> platformFindbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return organAccountRepository.platformFindbyPageAndCondition(pageable, condition);
     }
 
     /**
