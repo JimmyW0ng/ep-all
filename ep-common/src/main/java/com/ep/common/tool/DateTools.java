@@ -174,6 +174,8 @@ public class DateTools {
      */
     public static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+    public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss:S";
+
     static {
         TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
         TimeZone.setDefault(timeZone);
@@ -1686,4 +1688,5 @@ public class DateTools {
         }
         return timestampStr.substring(0, 19);
     }
+
 }
