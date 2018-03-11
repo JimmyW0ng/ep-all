@@ -95,7 +95,7 @@
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/organCourse/merchantview/}+${bo.id}">查看</a>
                                 <a class="btn btn-xs btn-primary"
                                    th:href="@{/auth/organCourse/merchantUpdateInit/}+${bo.id}">修改</a>
-                                <a class="btn btn-xs btn-primary" th:if="${bo.courseStatus eq 'save'}"
+                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.courseStatus,'save')}"
                                    href="javascript:void(0)" th:onclick="'onlineBox('+${bo.id}+')'">上线</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
 
