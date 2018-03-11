@@ -120,6 +120,17 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
+function forbidClick() {
+    if (event.button == 1) {
+        event.returnValue = false;
+    }
+}
+function recoverClick() {
+    if (event.button == 1) {
+        event.returnValue = false;
+    }
+}
+
 function bindNumberInput($box) {
     $box.on("blur", "input.number-input", function () {
         if ($(this).val() == '') {
