@@ -180,10 +180,7 @@ public class OrganCourseController extends BackendController {
 //        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
 //        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
 //        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-
-        organCourseService.createOrganCourseByMerchant(dto);
-        ResultDo resultDo = ResultDo.build();
-        return resultDo;
+        return organCourseService.createOrganCourseByMerchant(dto);
     }
 
     /**

@@ -100,8 +100,8 @@ public class ConstantTagController extends BackendController {
         constantTagPo.setCatalogId(catalogId);
         constantTagPo.setOgnId(ognId);
         constantTagPo.setTagName(tagName);
-        ResultDo resultDo = constantTagService.createConstantTag(constantTagPo);
-        return resultDo;
+
+        return constantTagService.createConstantTag(constantTagPo);
     }
 
     /**

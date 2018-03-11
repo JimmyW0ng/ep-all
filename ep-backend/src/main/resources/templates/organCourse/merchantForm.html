@@ -64,6 +64,7 @@
                             <label for="courseIntroduce">课程简介 </label>
                             <div class="input-group input-large col-sm-4">
                                 <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
+                                          style="height: 100px"
                                           class="form-control " th:text="${organCoursePo.courseIntroduce}"></textarea>
                             </div>
                         </div>
@@ -71,6 +72,7 @@
                             <label for="courseContent">课程内容 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <textarea id="courseContent" name="organCoursePo.courseContent" type="text"
+                                          style="height: 100px"
                                           required="true" class="form-control " th:text="${organCoursePo.courseContent}"></textarea>
                             </div>
                         </div>
@@ -78,6 +80,7 @@
                             <label for="courseNote">课程须知 </label>
                             <div class="input-group input-large col-sm-4">
                                 <textarea id="courseNote" name="organCoursePo.courseNote" type="text"
+                                          style="height: 100px"
                                           class="form-control " th:text="${organCoursePo.courseNote}"></textarea>
                             </div>
                         </div>
@@ -109,7 +112,7 @@
                         <div class="form-group">
                             <label for="enterTimeEnd">报名结束时间 </label>
                             <div class="input-group input-large col-sm-4">
-                                <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" required="true"
+                                <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
                                        class="form-control laydate"
                                        th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
                             </div>
@@ -256,7 +259,6 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
-<!--<script th:src="@{/js/plugins/layer/laydate/laydate.js}"></script>-->
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
     function timestamp2date(timestamp) {
@@ -374,6 +376,13 @@
      */
     function setClassBoxTitle(ele) {
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
+    }
+
+    function beforeSunmit() {
+
+    }
+    function afterSunmit() {
+
     }
     $(document).ready(function () {
 
