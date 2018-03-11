@@ -14,7 +14,7 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>课程详情</h5>
+            <h5>课程详情(<span class="required-sign">*为必填</span>)</h5>
 
         </div>
         <div class="ibox-content">
@@ -24,12 +24,12 @@
                     <h3>课程</h3>
                     <section style="position: static" th:object="${organCoursePo}">
                         <div class="form-group">
-                            <label for="courseName">课程名称 *</label>
+                            <label for="courseName">课程名称 <span class="required-sign">*</span></label>
                             <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px" th:field="*{courseName}"
                                    class=" form-control ">
                         </div>
                         <div class="form-group">
-                            <label for="courseType">课程类型 *</label>
+                            <label for="courseType">课程类型 <span class="required-sign">*</span></label>
                             <select id="courseType" name="organCoursePo.courseType" type="text" style="width: 300px" th:field="*{courseType}"
                                     class=" form-control ">
                                 <option value="">请选择</option>
@@ -40,7 +40,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="courseCatalogId">课程所属目录 *</label>
+                            <label for="courseCatalogId">课程所属目录 <span class="required-sign">*</span></label>
                             <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text" style="width: 300px" th:field="*{courseCatalogId}"
                                     class="form-control" >
                                 <option value="">请选择</option>
@@ -51,43 +51,47 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="courseIntroduce">课程简介 *</label>
+                            <label for="courseIntroduce">课程简介 <span class="required-sign">*</span></label>
                             <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text" style="width: 300px" th:field="*{courseIntroduce}"
                                       class="form-control "></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="courseContent">课程内容 *</label>
+                            <label for="courseContent">课程内容 <span class="required-sign">*</span></label>
                             <textarea id="courseContent" name="organCoursePo.courseContent" type="text" style="width: 300px" th:field="*{courseContent}"
                                       class="form-control "></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="courseNote">课程须知 *</label>
+                            <label for="courseNote">课程须知 <span class="required-sign">*</span></label>
                             <textarea id="courseNote" name="organCoursePo.courseNote" type="text" style="width: 300px" th:field="*{courseNote}"
                                       class="form-control "></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="prizeMin">最低价格 *</label>
+                            <label for="prizeMin">最低价格 <span class="required-sign">*</span></label>
                             <input id="prizeMin" name="organCoursePo.prizeMin" type="text" style="width: 300px" class="form-control" th:field="*{prizeMin}">
                         </div>
                         <div class="form-group">
-                            <label for="courseAddress">上课地址 *</label>
+                            <label for="courseAddress">上课地址 <span class="required-sign">*</span></label>
                             <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text" style="width: 300px"
                                       class="form-control" th:field="*{courseAddress}">
                             </textarea>
                         </div>
                         <div class="form-group">
-                            <label for="onlineTime">上线时间 *</label>
-                            <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px" th:field="*{onlineTime}"
+                            <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
+                            <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px"
+                                   th:value="${#dates.format(organCoursePo.onlineTime,'yyyy-MM-dd HH:mm:ss')}"
                                    class="form-control datetimepicker">
                         </div>
                         <div class="form-group">
-                            <label for="enterTimeStart">报名开始时间 *</label>
-                            <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text" style="width: 300px" th:field="*{enterTimeStart}"
+                            <label for="enterTimeStart">报名开始时间 <span class="required-sign">*</span>*</label>
+                            <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
+                                   style="width: 300px"
+                                   th:value="${#dates.format(organCoursePo.enterTimeStart,'yyyy-MM-dd HH:mm:ss')}"
                                    class="form-control datetimepicker">
                         </div>
                         <div class="form-group">
-                            <label for="enterTimeEnd">报名结束时间 *</label>
-                            <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" style="width: 300px" th:field="*{enterTimeEnd}"
+                            <label for="enterTimeEnd">报名结束时间</label>
+                            <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text" style="width: 300px"
+                                   th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}"
                                    class="form-control datetimepicker">
                         </div>
                     </section>
@@ -113,7 +117,7 @@
                                                    onblur="setClassBoxTitle(this)">
                                             <label>课程负责人 *</label>
                                             <input name="ognAccountId" type="text" class=" form-control "
-                                                   th:value="${po.ognAccountId}">
+                                                   th:value="${organAccountMap.get(po.ognAccountId)}">
 
                                             </input>
                                             <label>价格 *</label>
@@ -121,7 +125,8 @@
                                             <label>折扣优惠 *</label>
                                             <input name="discountAmount" type="text"  class=" form-control " th:value="${po.discountAmount}">
                                             <label>是否限制报名人数 *</label>
-                                            <input name="enterLimitFlag" type="text"  class=" form-control " th:value="${po.enterLimitFlag}">
+                                            <input name="enterLimitFlag" type="text" class=" form-control "
+                                                   th:value="${po.enterLimitFlag ?'是':'否'}">
                                             <label>要求报名人数 *</label>
                                             <input name="enterRequireNum" type="text" class=" form-control " th:value="${po.enterRequireNum}">
                                             <label>总计课时 *</label>
@@ -141,7 +146,7 @@
                                                     <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">开始时间</label>
                                                     <div class=" col-sm-8">
                                                         <input name="startTime" class="form-control datetimepicker"
-                                                               th:value="${organClassCatalogPo.startTime}"/>
+                                                               th:value="${#dates.format(organClassCatalogPo.startTime,'yyyy-MM-dd HH:mm:ss')}"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-sm-12">
@@ -168,6 +173,18 @@
                             </div>
                         </div>
 
+                    </section>
+                    <h3>设置图片</h3>
+                    <section style="position: static">
+                        <div class="form-group">
+                            <label class="col-sm-2">课程主图:</label>
+
+                        </div>
+                        <div class="col-sm-offset-2 course-mainpic-box">
+                            <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
+                            <input type="hidden" name="mainpic_url" id="mainpic_url">
+                            <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
+                        </div>
                     </section>
 
                 </div>
@@ -228,6 +245,7 @@
 <script th:inline="javascript">
 
     $(document).ready(function () {
+
         var form = $("#frm");
         form.validate({
             errorPlacement: function errorPlacement(error, element) {

@@ -2,6 +2,7 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -242,6 +243,11 @@ public class OrganCourseService {
         //课程标签表插入数据
         log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
         organCourseTagRepository.insert(insertOrganCourseTagPos);
+        //课程主图
+        if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
+            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
+            fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), insertOrganCourseId);
+        }
         log.info("[课程]创建课程成功。课程id={}。", insertOrganCourseId);
         return ResultDo.build();
     }
@@ -354,6 +360,13 @@ public class OrganCourseService {
         log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
         organCourseTagRepository.insert(insertOrganCourseTagPos);
         //课程标签表插入数据end
+
+        //主图
+        if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, organCourseId);
+            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
+            fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), organCourseId);
+        }
         log.info("[课程]修改课程成功。课程id={}。", organCourseId);
         return ResultDo.build();
     }
@@ -449,5 +462,15 @@ public class OrganCourseService {
      */
     public void updateCourseByOfflineOgn(Long ognId) {
         organCourseRepository.updateCourseByOfflineOgn(ognId);
+    }
+
+    /**
+     * 根据sourceId获取课程主图
+     *
+     * @param sourceId
+     * @return
+     */
+    public Optional<EpFilePo> getCourseMainpic(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, sourceId);
     }
 }

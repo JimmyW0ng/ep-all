@@ -3,7 +3,6 @@ package com.ep.backend.controller;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.constant.BizConstant;
-import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.FileDto;
@@ -267,13 +266,9 @@ public class SystemOrganController extends BackendController {
     @PostMapping("uploadMainpic")
     @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
-    public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) {
-        try {
-            return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, null);
-        } catch (Exception e) {
-            log.error("[机构]机构上传主图失败。", e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
-        }
+    public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) throws Exception {
+        return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, null);
+
     }
 
     /**
@@ -285,13 +280,9 @@ public class SystemOrganController extends BackendController {
     @PostMapping("uploadLogo")
     @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
-    public ResultDo<FileDto> uploadLogo(@RequestParam("file") MultipartFile file) {
-        try {
-            return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
-        } catch (Exception e) {
-            log.error("[机构]机构上传logo失败。", e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM);
-        }
+    public ResultDo<FileDto> uploadLogo(@RequestParam("file") MultipartFile file) throws Exception {
+        return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, null);
+
     }
 
 

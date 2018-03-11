@@ -3,6 +3,7 @@ package com.ep.backend.controller;
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
@@ -22,6 +23,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -31,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE;
 
 /**
  * @Description: 机构课程控制器
@@ -54,21 +57,38 @@ public class OrganCourseController extends BackendController {
     private OrganCourseTagService organCourseTagService;
     @Autowired
     private OrganClassCatalogService organClassCatalogService;
+    @Autowired
+    private FileService fileService;
 
     @GetMapping("index")
-    public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-//                         , @RequestParam(value = "mobile", required = false) String mobile,
-//                        @RequestParam(value = "type", required = false) String type,
-//                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
-//                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
+    public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                        @RequestParam(value = "courseName", required = false) String courseName,
+                        @RequestParam(value = "courseType", required = false) String courseType,
+                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
-        Map map = Maps.newHashMap();
+        Map<String, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
-
-        conditions.add(EP.EP_ORGAN_COURSE.DEL_FLAG.eq(false));
+        if (StringTools.isNotBlank(courseName)) {
+            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
+        }
+        searchMap.put("courseName", courseName);
+        if (StringTools.isNotBlank(courseType)) {
+            conditions.add(EP_ORGAN_COURSE.COURSE_TYPE.eq(EpOrganCourseCourseType.valueOf(courseType)));
+        }
+        searchMap.put("courseType", courseType);
+        if (null != crStartTime) {
+            conditions.add(EP_ORGAN_COURSE.CREATE_AT.greaterOrEqual(crStartTime));
+        }
+        searchMap.put("crStartTime", crStartTime);
+        if (null != crEndTime) {
+            conditions.add(EP_ORGAN_COURSE.CREATE_AT.lessOrEqual(crEndTime));
+        }
+        searchMap.put("crEndTime", crEndTime);
+        conditions.add(EP_ORGAN_COURSE.DEL_FLAG.eq(false));
         Page<OrganCourseBo> page = organCourseService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
-        model.addAttribute("map", map);
+        model.addAttribute("searchMap", searchMap);
         return "/organCourse/index";
     }
 
@@ -190,6 +210,7 @@ public class OrganCourseController extends BackendController {
      */
     @GetMapping("/merchantview/{courseId}")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
         //机构课程
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
         if (!courseOptional.isPresent()) {
@@ -204,6 +225,13 @@ public class OrganCourseController extends BackendController {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
         model.addAttribute("constantCatalogMap", constantCatalogMap);
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        Map<Long, String> organAccountMap = Maps.newHashMap();
+        organAccountList.forEach(p -> {
+            organAccountMap.put(p.getId(), p.getAccountName());
+        });
+        //教师下拉框
+        model.addAttribute("organAccountMap", organAccountMap);
 
         //标签
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
@@ -221,7 +249,11 @@ public class OrganCourseController extends BackendController {
             organClassBos.add(organClassBo);
         });
         model.addAttribute("organClassBos", organClassBos);
-
+        //课程主图
+        Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
+        if (mainpicImgOptional.isPresent()) {
+            model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
+        }
         return "organCourse/merchantView";
     }
 
@@ -287,6 +319,11 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         model.addAttribute("ognTagList", ognTagList);
 
+        //课程主图
+        Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
+        if (mainpicImgOptional.isPresent()) {
+            model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
+        }
         return "organCourse/merchantForm";
     }
 
@@ -330,6 +367,18 @@ public class OrganCourseController extends BackendController {
         return organCourseService.onlineById(userPo, id);
     }
 
+    /**
+     * 上传课程主图
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping("uploadMainpic")
+//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @ResponseBody
+    public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) throws Exception {
+        return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, null);
+    }
 }
 
 

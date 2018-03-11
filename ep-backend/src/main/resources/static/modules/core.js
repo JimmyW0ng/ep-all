@@ -120,8 +120,21 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
-$(function () {
+function bindNumberInput($box) {
+    $box.on("blur", "input.number-input", function () {
+        if ($(this).val() == '') {
+            $(this).val(0)
+        }
+    });
+}
 
+$(function () {
+    $("body").on("blur", "input.number-input", function () {
+        if ($(this).val() == '') {
+            $(this).val(0)
+        }
+    });
+    $(".number-input").val(0)
     // 日历组件,最小单位为秒
     $('.datetimepicker').datetimepicker({
         locale: 'zh-CN',

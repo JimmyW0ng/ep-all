@@ -15,7 +15,7 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>课程详情(<span style="color:red">*为必填</span>)</h5>
+            <h5>课程详情(<span class="required-sign">*为必填</span>)</h5>
 
         </div>
         <div class="ibox-content">
@@ -30,7 +30,7 @@
                             <label for="courseName">课程名称 <span style="color:red">*</span></label>
                             <div class="input-group input-large col-sm-4">
                                 <input id="courseName" name="organCoursePo.courseName" type="text" th:value="${organCoursePo.courseName}"
-                                       required="true" aria-required="true" class=" form-control ">
+                                       required="true" aria-required="true" class=" form-control number-input">
                             </div>
                         </div>
                         <div class="form-group">
@@ -144,11 +144,23 @@
 
                         </div>
                     </section>
-                    <!--<h3>Finish</h3>-->
-                    <!--<section style="position: static">-->
-                        <!--<input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label-->
-                            <!--for="acceptTerms">I agree with the Terms and Conditions.</label>-->
-                    <!--</section>-->
+                    <h3>设置图片</h3>
+                    <section style="position: static">
+                        <div class="form-group">
+                            <label class="col-sm-2">商家主图:</label>
+                            <button type="button" class="btn btn-info" id="mainpic_img_btn"
+                                    onclick="$('#mainpic_img').click()">
+                                <span>选择图片</span>
+                            </button>
+                            <input style="display:none" id="mainpic_img" type="file"
+                                   onchange="uploadMainpicImg($('#mainpic_img_btn'),this)"/>
+                        </div>
+                        <div class="col-sm-offset-2 course-mainpic-box">
+                            <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
+                            <input type="hidden" name="mainpic_url" id="mainpic_url">
+                            <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
+                        </div>
+                    </section>
                 </div>
             </form>
 
@@ -163,23 +175,23 @@
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">课时</label>
             <div class=" col-sm-8">
                 <input name="id" type="hidden" value=${id}>
-                <input name="catalogTitle" class="form-control" value="${catalogTitle}"/>
+                <input name="catalogTitle" class="form-control cursor" value="${catalogTitle}"/>
                 <input name="catalogIndex" type="hidden" value=${len}>
             </div>
         </div>
         <div class="form-group col-sm-6">
             <label class="col-sm-4 control-label" style="text-align: right;padding: 8px">开始时间</label>
             <div class=" col-sm-8">
-                <input name="startTime" class="form-control laydateer" value="${startTime}"/>
+                <input name="startTime" class="form-control laydateer cursor" value="${startTime}"/>
             </div>
         </div>
-        <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                aria-hidden="true"
-                                                                onclick="removeClassCatalogBox(this)"></span></a>
+        <a style="float:right;" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+                                                                 aria-hidden="true"
+                                                                 onclick="removeClassCatalogBox(this)"></span></a>
         <div class="form-group col-sm-11">
             <label class="col-sm-2 control-label" style="text-align: right;padding: 8px">目录描述</label>
             <div class="col-sm-10">
-                <textarea name="catalogDesc" class="form-control">${catalogDesc}</textarea>
+                <textarea name="catalogDesc" class="form-control cursor">${catalogDesc}</textarea>
             </div>
         </div>
     </div>
@@ -217,22 +229,21 @@
                 <div name="organClassBos" class="form-group col-sm-4" >
                     <input name="id" type="hidden" value="${id}">
                     <label>班次名称 *</label>
-                    <input name="className" type="text"  class=" form-control " value="${className}"
+                    <input name="className" type="text" class=" form-control " value="${className}" required="true"
                            onblur="setClassBoxTitle(this)">
                     <label>课程负责人 *</label>
-                    <select name="ognAccountId" type="text"  class=" form-control ">
+                    <select name="ognAccountId" type="text" class=" form-control " required="true">
 
                     </select>
-                    <label>价格 *</label>
-                    <div class="input-group input-large">
-                        <input name="classPrize" type="text"  class=" form-control " value="${classPrize}" >
-                        <span class="input-group-addon">元</span>
-                    </div>
-                    <label>折扣优惠 *</label>
-                    <div class="input-group input-large">
-                        <input name="discountAmount" type="text"  class=" form-control " value="${discountAmount}" >
-                        <span class="input-group-addon">%</span>
-                    </div>
+                    <label>价格(元) *</label>
+                    <!--<div class="input-group input-large">-->
+                    <input name="classPrize" type="text" class=" form-control number-input" value="${classPrize}">
+                    <!--</div>-->
+                    <label>折扣优惠(%) *</label>
+                    <!--<div class="input-group input-large">-->
+                    <input name="discountAmount" type="text" class=" form-control number-input"
+                           value="${discountAmount}">
+                    <!--</div>-->
                     <label>是否限制报名人数 *</label>
                     <select name="enterLimitFlag" type="text"  class=" form-control " value="${enterLimitFlag}">
                         <option value=true>是</option>
@@ -246,6 +257,7 @@
                 <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
                     <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
                             class="glyphicon glyphicon-plus"></i> 添加课时</a>
+                    <a class="btn btn-success" type="button" onclick="insertClassCatalogBox()"> 插入课时</a>
                 </div>
             </div>
         </div>
@@ -261,8 +273,37 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
-    function timestamp2date(timestamp) {
-        return timestamp.substring(0, 18)
+    var $cursor;
+    /**
+     * 上传课程主图
+     */
+    function uploadMainpicImg($btn, ele) {
+        $btn.attr("disabled", true)
+        $(ele).attr("disabled", true);
+        data = new FormData();
+        data.append("file", $("#mainpic_img")[0].files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/auth/organCourse/uploadMainpic",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.success) {
+                    $("#mainpic_img_url").attr("src", data.result.fileUrl)
+                    $("#mainpic_url").val(data.result.fileUrl)
+                    $("#mainpic_url_preCode").val(data.result.preCode)
+                }
+                $(ele).attr("disabled", false);
+            },
+            error: function (XMLHttpRequest) {
+                $(ele).attr("disabled", false);
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+    function insertClassCatalogBox() {
+        $box.parents("div[name='organClassCatalogPos']").eq(0).after($("#classCatalogTmpl").tmpl([{catalogTitle: "课时"}]))
     }
 
     //教师map
@@ -362,6 +403,11 @@
             htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
         }
         $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
+        bindNumberInput($("#accordion"))
+        $("#accordion").on("click", ".cursor", function () {
+            $box = $(this)
+            console.log($box)
+        });
     }
     /**
      * 删除班次
@@ -378,12 +424,6 @@
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
     }
 
-    function beforeSunmit() {
-
-    }
-    function afterSunmit() {
-
-    }
     $(document).ready(function () {
 
         //jq.step start
@@ -478,6 +518,7 @@
                 if (!$("#enterTimeEnd").val()) {
                     $("#enterTimeEnd").attr("name", "")
                 }
+
                 $.ajax({
                     type: "POST",
                     data: $("#frm").serialize(),
@@ -485,9 +526,15 @@
                     success: function (data) {
                         if (data.success) {
                             toastr_success(null,"/auth/organCourse/merchantIndex")
+                        } else {
+                            toastr.error(data.errorDescription);
                         }
+                    },
+                    error: function (XMLHttpRequest) {
+                        toastr_error_system(XMLHttpRequest.status);
+                    },
+                    complete: function () {
                         $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
-
                     }
                 })
             }
