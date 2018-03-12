@@ -11,6 +11,7 @@ public class MemberChildBo extends EpMemberChildPo {
     private String avatar;
     private String sign;
     private Integer scheduleCommentNum;
+    private Boolean canDeleteFlag;
 
     public String getChildBirthdayFormat() {
         return DateTools.dateToString(super.getChildBirthday(), DateTools.DATE_FMT_3);

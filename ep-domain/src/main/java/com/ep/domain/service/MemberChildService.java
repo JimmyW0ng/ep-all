@@ -265,6 +265,13 @@ public class MemberChildService {
         if (existAvatar.isPresent()) {
             childBo.setAvatar(existAvatar.get().getFileUrl());
         }
+        // 判断是否可以删除
+        Long count = orderRepository.countByChildId(childBo.getId());
+        if (count.equals(BizConstant.LONG_ZERO)) {
+            childBo.setCanDeleteFlag(true);
+        } else {
+            childBo.setCanDeleteFlag(false);
+        }
         return resultDo.setResult(childBo);
     }
 
