@@ -11,11 +11,6 @@ var _url = window.location.href,
 var jsonObj = parseJSON(_url);
 var _obj = parseUrl(jsonObj);
 
-function getQueryField($frm) {
-    for (var item in jsonObj) {
-        $frm.find("[name='" + item + "']").eq(0).val(decodeURI(jsonObj[item]));
-    }
-}
 
 function parseUrl(jsonObj) {
     if (jsonObj) {
@@ -120,15 +115,23 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
-function forbidClick() {
-    if (event.button == 1) {
-        event.returnValue = false;
-    }
+function addLoadingWrap() {
+    $('<div class="loadingWrap"></div>').appendTo("body");
 }
-function recoverClick() {
-    if (event.button == 1) {
-        event.returnValue = false;
+
+function removeLoadingWrap() {
+    $(".loadingWrap").remove();
+}
+function checkFormImgRequired(array) {
+    var flag = true
+    for (var item in array) {
+        if ($("#" + array[item].eleId).val() == "") {
+            flag = false
+            var htmls = '<span style="display: inline-block;margin-left:10px;margin-top: 5px; color: #a94442;"><i class="fa fa-times-circle"></i>  ' + array[item].msg + '</span>'
+            $("." + array[item].eleId).after(htmls)
+        }
     }
+    return flag
 }
 
 function bindNumberInput($box) {

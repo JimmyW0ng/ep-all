@@ -77,7 +77,15 @@
                         </textarea>
                     </div>
                 </div>
+                <div class="form-group" style="margin-top: 20px">
+                    <label class="col-sm-2 control-label">教师头像</label>
 
+                </div>
+                <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;width: 160px;height: 160px">
+                    <img id="avatar_img_url" class="teacher-avatar-img-url" th:src="${avatarImgUrl}"/>
+                    <input type="hidden" name="avatar_url" id="avatar_url">
+                    <input type="hidden" name="avatarUrlPreCode" id="avatar_url_preCode">
+                </div>
             </form>
         </div>
     </div>

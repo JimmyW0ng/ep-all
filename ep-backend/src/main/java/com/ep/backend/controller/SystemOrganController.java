@@ -78,7 +78,7 @@ public class SystemOrganController extends BackendController {
         Page<EpOrganPo> page = organService.findByPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
-        return "/systemOrgan/index";
+        return "systemOrgan/index";
     }
 
     /**

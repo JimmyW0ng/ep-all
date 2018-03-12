@@ -253,19 +253,7 @@ public class SystemUserService {
         }
     }
 
-    private void copyBoPropertyToPo(SystemUserBo bo, EpSystemUserPo po) {
-        if (bo.getId() != null) {
-            po.setId(bo.getId());
-        }
-        po.setMobile(bo.getMobile());
-        po.setUserName(StringTools.getNullIfBlank(bo.getUserName()));
-        po.setSalt(StringTools.getNullIfBlank(bo.getSalt()));
-        po.setPassword(StringTools.getNullIfBlank(bo.getPassword()));
-        po.setEmail(StringTools.getNullIfBlank(bo.getEmail()));
-        po.setType(bo.getType());
-        po.setOgnId(bo.getOgnId());
-        po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
-    }
+
 
     /**
      * 个人设置修改密码
@@ -297,5 +285,19 @@ public class SystemUserService {
             log.error("[用户]修改用户密码失败。用户id={}。", userId);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+    }
+
+    private void copyBoPropertyToPo(SystemUserBo bo, EpSystemUserPo po) {
+        if (bo.getId() != null) {
+            po.setId(bo.getId());
+        }
+        po.setMobile(bo.getMobile());
+        po.setUserName(StringTools.getNullIfBlank(bo.getUserName()));
+        po.setSalt(StringTools.getNullIfBlank(bo.getSalt()));
+        po.setPassword(StringTools.getNullIfBlank(bo.getPassword()));
+        po.setEmail(StringTools.getNullIfBlank(bo.getEmail()));
+        po.setType(bo.getType());
+        po.setOgnId(bo.getOgnId());
+        po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
     }
 }

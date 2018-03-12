@@ -103,7 +103,7 @@ public class MemberChildHonorController extends BackendController {
         });
         model.addAttribute("courseMap", courseMap);
         model.addAttribute("memberChildHonerPo", new MemberChildHonorBo());
-        return "/childHonor/form";
+        return "childHonor/form";
     }
 
     @GetMapping("findClassByCourseId/{courseId}")

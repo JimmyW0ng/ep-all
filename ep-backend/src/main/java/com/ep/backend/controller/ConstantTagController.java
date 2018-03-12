@@ -46,14 +46,14 @@ public class ConstantTagController extends BackendController {
         });
         model.addAttribute("constantCatalogMap", constantCatalogMap);
         model.addAttribute("constantTagsMap", constantTagsMap);
-        return "/constantTag/index";
+        return "constantTag/index";
     }
 
     @GetMapping("merchantIndex")
     public String merchantIndex(Model model) {
         List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
         model.addAttribute("constantCatalogPos", constantCatalogPos);
-        return "/constantTag/merchantIndex";
+        return "constantTag/merchantIndex";
     }
 
     /**

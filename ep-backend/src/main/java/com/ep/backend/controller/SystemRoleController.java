@@ -113,7 +113,7 @@ public class SystemRoleController extends BackendController {
         //所有菜单
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
         model.addAttribute("menuList", menuList);
-        return "/systemRole/view";
+        return "systemRole/view";
 
     }
 
@@ -130,7 +130,7 @@ public class SystemRoleController extends BackendController {
         //所有菜单
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
         model.addAttribute("menuList", menuList);
-        return "/systemRole/form";
+        return "systemRole/form";
 
     }
 
@@ -186,7 +186,7 @@ public class SystemRoleController extends BackendController {
 
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
         model.addAttribute("menuList", menuList);
-        return "/systemRole/form";
+        return "systemRole/form";
 
     }
 

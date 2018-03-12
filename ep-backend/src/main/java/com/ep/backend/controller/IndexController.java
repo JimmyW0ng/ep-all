@@ -3,12 +3,10 @@ package com.ep.backend.controller;
 import com.ep.common.tool.CryptTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
+import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
-import com.ep.domain.service.SystemMenuService;
-import com.ep.domain.service.SystemRoleService;
-import com.ep.domain.service.SystemUserRoleService;
-import com.ep.domain.service.SystemUserService;
+import com.ep.domain.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 首页控制基类
@@ -33,6 +32,8 @@ public class IndexController extends BackendController {
     private SystemUserRoleService systemUserRoleService;
     @Autowired
     private SystemRoleService systemRoleService;
+    @Autowired
+    private OrganService organService;
 
     /**
      * 登录成功后首页
@@ -47,6 +48,13 @@ public class IndexController extends BackendController {
         List<SystemMenuBo> leftMenu = systemMenuService.getLeftMenuByUserType(currentUser.getType(), roleIds);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("leftMenu", leftMenu);
+        if (currentUser.getOgnId() != null) {
+            //logo
+            Optional<EpFilePo> logoImgOptional = organService.getOgnLogo(currentUser.getOgnId());
+            if (logoImgOptional.isPresent()) {
+                model.addAttribute("logoImgUrl", logoImgOptional.get().getFileUrl());
+            }
+        }
         return "layout/default";
     }
 
@@ -77,7 +85,7 @@ public class IndexController extends BackendController {
         List<EpSystemRolePo> lists = systemRoleService.getAllRoleByUserType(systemUserPo.getType());
         model.addAttribute("roleList", lists);
         model.addAttribute("roleIds", roleIds);
-        return "/systemUser/settingView";
+        return "systemUser/settingView";
 
     }
 
@@ -92,7 +100,7 @@ public class IndexController extends BackendController {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
 
         model.addAttribute("systemUserPo", systemUserPo);
-        return "/systemUser/settingForm";
+        return "systemUser/settingForm";
     }
 
     /**

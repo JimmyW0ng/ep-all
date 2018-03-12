@@ -12,5 +12,6 @@ public class OrganAccountBo extends EpOrganAccountPo {
 
     private String avatar;
     private String ognName;
+    private String avatarUrlPreCode;
 
 }

@@ -44,6 +44,8 @@ public class OrganAccountService {
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private OrganClassRepository organClassRepository;
+    @Autowired
+    private FileService fileService;
 
     /**
      * 根据手机号获取详情
@@ -89,18 +91,25 @@ public class OrganAccountService {
     /**
      * 新增机构账户关联信息
      *
-     * @param po
+     * @param bo
      * @return
      */
-    public ResultDo createOgnAccount(EpOrganAccountPo po) {
-        log.info("[教师]新增教师开始。教师对象={}。", po);
-        if (StringTools.isBlank(po.getAccountName()) || StringTools.isBlank(po.getNickName())
-                || null == po.getOgnId() || null == po.getStatus()
-                || null == po.getReferMobile()) {
+    public ResultDo createOgnAccount(OrganAccountBo bo) {
+        log.info("[教师]新增教师开始。教师对象={}。", bo);
+        if (StringTools.isBlank(bo.getAccountName()) || StringTools.isBlank(bo.getNickName())
+                || null == bo.getOgnId() || null == bo.getStatus()
+                || null == bo.getReferMobile() || StringTools.isBlank(bo.getAvatar())) {
             log.error("[教师]新增教师失败，请求参数异常。");
             ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+        EpOrganAccountPo po = new EpOrganAccountPo();
+        copyBoPropertyToPo(bo, po);
         organAccountRepository.insert(po);
+        //教师头像
+        if (StringTools.isNotBlank(bo.getAvatarUrlPreCode())) {
+            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", bo.getAvatarUrlPreCode(), po.getId());
+            fileRepository.updateSourceIdByPreCode(bo.getAvatarUrlPreCode(), po.getId());
+        }
         log.info("[教师]新增教师成功。id={}。", po.getId());
         return ResultDo.build();
     }
@@ -108,17 +117,25 @@ public class OrganAccountService {
     /**
      * 修改机构账户关联信息
      *
-     * @param po
+     * @param bo
      * @return
      */
-    public ResultDo updateOgnAccount(EpOrganAccountPo po) {
-        log.info("[教师]修改教师开始，教师对象={}。", po);
-        if (null == po.getId() || StringTools.isBlank(po.getAccountName()) || StringTools.isBlank(po.getNickName())
-                || null == po.getStatus() || null == po.getReferMobile()) {
+    public ResultDo updateOgnAccount(OrganAccountBo bo) {
+        log.info("[教师]修改教师开始，教师对象={}。", bo);
+        if (null == bo.getId() || StringTools.isBlank(bo.getAccountName()) || StringTools.isBlank(bo.getNickName())
+                || null == bo.getStatus() || null == bo.getReferMobile()) {
             log.error("[教师]修改教师失败，请求参数异常。");
             ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+        EpOrganAccountPo po = new EpOrganAccountPo();
+        copyBoPropertyToPo(bo, po);
         if (organAccountRepository.updateById(po) == BizConstant.DB_NUM_ONE) {
+            //主图
+            if (StringTools.isNotBlank(bo.getAvatarUrlPreCode())) {
+                fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, po.getId());
+                log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", bo.getAvatarUrlPreCode(), po.getId());
+                fileRepository.updateSourceIdByPreCode(bo.getAvatarUrlPreCode(), po.getId());
+            }
             log.info("[教师]修改教师成功，id={}。", po.getId());
             return ResultDo.build();
         } else {
@@ -206,4 +223,26 @@ public class OrganAccountService {
         return resultDo.setResult(page);
     }
 
+    /**
+     * 根据sourceId获取教师头像
+     *
+     * @param sourceId
+     * @return
+     */
+    public Optional<EpFilePo> getTeacherAvatar(Long sourceId) {
+        return fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, sourceId);
+    }
+
+    private void copyBoPropertyToPo(OrganAccountBo bo, EpOrganAccountPo po) {
+        if (bo.getId() != null) {
+            po.setId(bo.getId());
+        }
+        po.setAccountName(StringTools.getNullIfBlank(bo.getAccountName()));
+        po.setNickName(StringTools.getNullIfBlank(bo.getNickName()));
+        po.setIntroduce(StringTools.getNullIfBlank(bo.getIntroduce()));
+        po.setOgnId(bo.getOgnId());
+        po.setStatus(bo.getStatus());
+        po.setReferMobile(bo.getReferMobile());
+        po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
+    }
 }

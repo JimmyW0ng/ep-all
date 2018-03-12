@@ -8,7 +8,6 @@
 <header>
     <th:block layout:fragment="links">
 
-
     </th:block>
 </header>
 <body>
@@ -78,8 +77,25 @@
                         </textarea>
                     </div>
                 </div>
+                <div class="form-group" style="margin-top: 20px">
+                    <label class="col-sm-2 control-label">教师头像</label>
+                    <button type="button" class="btn btn-info avatar_url" id="avatar_img_btn"
+                            onclick="$('#avatar_img').click()">
+                        <span>选择图片</span>
+
+                    </button>
+                    <input style="display: none" id="avatar_img" type="file"
+                           onchange="uploadAvatarImg($('#avatar_img_btn'),this)"/>
+
+                </div>
+                <div class="col-sm-offset-2 teacher-avatar-box">
+                    <img id="avatar_img_url" class="teacher-avatar-img-url" th:src="${avatarImgUrl}" required="true"/>
+                    <input type="hidden" name="avatar_url" id="avatar_url">
+                    <input type="hidden" name="avatarUrlPreCode" id="avatar_url_preCode">
+
+                </div>
                 <div class="form-group">
-                    <div class="col-sm-3 col-sm-offset-2">
+                    <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
                         <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
                     </div>
                 </div>
@@ -94,11 +110,42 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
 
+    /**
+     * 上传教师头像
+     */
+    function uploadAvatarImg($btn, ele) {
+        $(ele).attr("disabled", true);
+        data = new FormData();
+        data.append("file", $("#avatar_img")[0].files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/auth/organAccount/uploadAvatar",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.success) {
+                    console.log(data.result)
+                    $("#avatar_img_url").attr("src", data.result.fileUrl)
+                    $("#avatar_url").val(data.result.fileUrl)
+                    $("#avatar_url_preCode").val(data.result.preCode)
+                }
+                $(ele).attr("disabled", false);
+            },
+            error: function (XMLHttpRequest) {
+                $(ele).attr("disabled", false);
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
 
     function frmSubmit() {
         if (!$("#frm").valid()) {
             console.log("valid fail")
             return;
+        }
+        if (!checkFormImgRequired([{eleId: "avatar_url", msg: "请上传教师头像"}])) {
+            return
         }
 
         var url;
@@ -111,12 +158,19 @@
             type: 'POST',
             url: url,
             data:$("#frm").serialize(),
+            beforeSend: function () {
+                $("button").attr("disabled", true)
+                addLoadingWrap();
+            },
             success: function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/organAccount/index')
                 }
+            },
+            complete: function () {
+                $("button").attr("disabled", false)
+                removeLoadingWrap();
             }
-
         })
     }
 

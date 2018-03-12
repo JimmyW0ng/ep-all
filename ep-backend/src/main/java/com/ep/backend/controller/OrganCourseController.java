@@ -89,7 +89,7 @@ public class OrganCourseController extends BackendController {
         Page<OrganCourseBo> page = organCourseService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
-        return "/organCourse/index";
+        return "organCourse/index";
     }
 
     /**
