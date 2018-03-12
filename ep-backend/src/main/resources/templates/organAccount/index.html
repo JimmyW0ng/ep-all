@@ -83,7 +83,7 @@
                             <td th:if="${ognId==null}" th:text="${bo.ognName}"></td>
                             <td th:text="#{EpOrganAccountStatus.+${bo.status}}"></td>
 
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/organAccount/view/}+${bo.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>
