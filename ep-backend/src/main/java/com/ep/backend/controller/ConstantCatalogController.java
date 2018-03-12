@@ -31,7 +31,7 @@ public class ConstantCatalogController extends BackendController {
     public String index(Model model){
         List<EpConstantCatalogPo> catalogList = constantCatalogService.getAll();
         model.addAttribute("catalogList",catalogList);
-        return "/catalog/index";
+        return "catalog/index";
     }
 
     /**

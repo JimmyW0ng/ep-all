@@ -14,7 +14,12 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                        <span><img alt="image" class="img-circle" style="width: 64px;height:64px" th:src="@{/img/user_ali.png}"/></span>
+                        <span>
+                            <img th:if="${currentUser.ognId==null}" alt="image" class="img-circle"
+                                 style="width: 64px;height:64px" th:src="@{/img/user_ali.png}"/>
+                            <img th:if="${currentUser.ognId!=null}" alt="image" class="img-circle"
+                                 style="width: 64px;height:64px" th:src="${logoImgUrl}"/>
+                        </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold"

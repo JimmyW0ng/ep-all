@@ -100,7 +100,7 @@ public class SystemUserController extends BackendController {
     @PreAuthorize("hasAnyAuthority('platform:user:index')")
     public String createInit(Model model) {
         model.addAttribute("systemUserPo", new EpSystemUserPo());
-        return "/systemUser/form";
+        return "systemUser/form";
     }
 
     /**
@@ -122,12 +122,12 @@ public class SystemUserController extends BackendController {
             model.addAttribute("systemUserPo", systemUserPo);
             model.addAttribute("roleList", lists);
             model.addAttribute("roleIds", roleIds);
-            return "/systemUser/form";
+            return "systemUser/form";
         }
         model.addAttribute("systemUserPo", systemUserPo);
         model.addAttribute("roleList", lists);
         model.addAttribute("roleIds", roleIds);
-        return "/systemUser/form";
+        return "systemUser/form";
     }
 
     /**
@@ -180,12 +180,12 @@ public class SystemUserController extends BackendController {
             model.addAttribute("systemUserPo", systemUserPo);
             model.addAttribute("roleList", lists);
             model.addAttribute("roleIds", roleIds);
-            return "/systemUser/view";
+            return "systemUser/view";
         }
         model.addAttribute("systemUserPo", systemUserPo);
         model.addAttribute("roleList", lists);
         model.addAttribute("roleIds", roleIds);
-        return "/systemUser/view";
+        return "systemUser/view";
     }
 
     /**

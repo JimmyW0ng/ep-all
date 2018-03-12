@@ -1,11 +1,14 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
+import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
+import com.ep.domain.service.FileService;
 import com.ep.domain.service.OrganAccountService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -19,10 +22,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
@@ -38,6 +43,8 @@ public class OrganAccountController extends BackendController {
 
     @Autowired
     private OrganAccountService organAccountService;
+    @Autowired
+    private FileService fileService;
 
 
     /**
@@ -107,7 +114,13 @@ public class OrganAccountController extends BackendController {
     public String view(Model model, @PathVariable("id") Long id) {
 
         model.addAttribute("organAccountPo", organAccountService.getById(id));
-        return "/organAccount/view";
+        //头像
+        Optional<EpFilePo> avatarOptional = organAccountService.getTeacherAvatar(id);
+        if (avatarOptional.isPresent()) {
+            model.addAttribute("avatarImgUrl", avatarOptional.get().getFileUrl());
+        }
+        model.addAttribute("organAccountPo", organAccountService.getById(id));
+        return "organAccount/view";
     }
 
     /**
@@ -121,7 +134,7 @@ public class OrganAccountController extends BackendController {
     public String createInit(Model model) {
 
         model.addAttribute("organAccountPo", new EpOrganAccountPo());
-        return "/organAccount/form";
+        return "organAccount/form";
     }
 
     /**
@@ -135,7 +148,12 @@ public class OrganAccountController extends BackendController {
     public String updateInit(Model model, @PathVariable("id") Long id) {
 
         model.addAttribute("organAccountPo", organAccountService.getById(id));
-        return "/organAccount/form";
+        //头像
+        Optional<EpFilePo> avatarOptional = organAccountService.getTeacherAvatar(id);
+        if (avatarOptional.isPresent()) {
+            model.addAttribute("avatarImgUrl", avatarOptional.get().getFileUrl());
+        }
+        return "organAccount/form";
     }
 
     /**
@@ -147,10 +165,10 @@ public class OrganAccountController extends BackendController {
     @PostMapping("/create")
     @ResponseBody
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
-    public ResultDo create(EpOrganAccountPo po) {
+    public ResultDo create(OrganAccountBo bo) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
-        po.setOgnId(currentUser.getOgnId());
-        return organAccountService.createOgnAccount(po);
+        bo.setOgnId(currentUser.getOgnId());
+        return organAccountService.createOgnAccount(bo);
     }
 
     /**
@@ -162,8 +180,9 @@ public class OrganAccountController extends BackendController {
     @PostMapping("/update")
     @ResponseBody
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
-    public ResultDo update(EpOrganAccountPo po) {
-        return organAccountService.updateOgnAccount(po);
+    public ResultDo update(OrganAccountBo bo) {
+
+        return organAccountService.updateOgnAccount(bo);
     }
 
     /**
@@ -176,5 +195,20 @@ public class OrganAccountController extends BackendController {
     @ResponseBody
     public ResultDo updateInit(@PathVariable("id") Long id) {
         return organAccountService.deleteOgnAccount(id);
+    }
+
+
+    /**
+     * 上传教师头像
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping("uploadAvatar")
+//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @ResponseBody
+    public ResultDo uploadOgnaccount(@RequestParam("file") MultipartFile file) throws Exception {
+        return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, null);
+
     }
 }

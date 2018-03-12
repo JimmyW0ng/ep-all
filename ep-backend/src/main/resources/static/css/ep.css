@@ -17,3 +17,32 @@ img[src=""] {
 .required-sign {
     color: red
 }
+
+.teacher-avatar-box {
+    border: 3px dashed #e6e6e6;
+    width: 165px;
+    height: 165px
+}
+
+.teacher-avatar-img-url {
+    margin: 10px;
+    height: 140px;
+    width: 140px;
+    border-radius: 50%
+}
+
+/*遮罩层*/
+.loadingWrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 300;
+    /*background-image:url(../img/loading2.gif);*/
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #000;
+    background-color: rgba(255, 255, 255, 0);
+    filter: alpha(opacity=50);
+}
