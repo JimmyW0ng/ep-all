@@ -61,10 +61,9 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param childId
      * @return
      */
-    public List<EpOrderPo> findSuccessByChildId(Long childId) {
+    public List<EpOrderPo> findByChildId(Long childId) {
         return dslContext.selectFrom(EP_ORDER)
                 .where(EP_ORDER.CHILD_ID.eq(childId))
-                .and(EP_ORDER.STATUS.in(EpOrderStatus.success))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .orderBy(EP_ORDER.ID.desc())
                 .fetchInto(EpOrderPo.class);

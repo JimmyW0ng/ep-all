@@ -203,7 +203,7 @@ public class MemberChildService {
         if (checkedChild.isError()) {
             return checkedChild;
         }
-        List<EpOrderPo> successOrders = orderRepository.findSuccessByChildId(id);
+        List<EpOrderPo> successOrders = orderRepository.findByChildId(id);
         if (CollectionsTools.isNotEmpty(successOrders)) {
             return ResultDo.build(MessageCode.ERROR_CHILD_CAN_NOT_DEL);
         }
