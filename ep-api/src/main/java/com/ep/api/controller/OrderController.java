@@ -1,7 +1,7 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
+import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.OrderService;
 import io.swagger.annotations.Api;
@@ -34,7 +34,7 @@ public class OrderController extends ApiController {
     @ApiOperation(value = "立即订单初始化信息")
     @PostMapping("/init")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<MemberCourseOrderInitBo>> init(@RequestParam("courseId") Long courseId) {
+    public ResultDo<OrderInitDto> init(@RequestParam("courseId") Long courseId) {
         Optional<EpMemberPo> optional = super.getCurrentUser();
         return orderService.initInfo(optional.get().getId(), courseId);
     }

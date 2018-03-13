@@ -10,6 +10,7 @@ import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
 import com.ep.domain.pojo.bo.OrderBo;
+import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
@@ -53,8 +54,8 @@ public class OrderService {
      * @param courseId
      * @return
      */
-    public ResultDo<List<MemberCourseOrderInitBo>> initInfo(Long memberId, Long courseId) {
-        ResultDo<List<MemberCourseOrderInitBo>> resultDo = ResultDo.build();
+    public ResultDo<OrderInitDto> initInfo(Long memberId, Long courseId) {
+        ResultDo<OrderInitDto> resultDo = ResultDo.build();
         EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
         if (coursePo == null || coursePo.getDelFlag()) {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
@@ -62,7 +63,9 @@ public class OrderService {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         List<MemberCourseOrderInitBo> data = orderRepository.findChildrenAndOrders(memberId, courseId);
+        int childrenNum = 0;
         if (CollectionsTools.isNotEmpty(data)) {
+            childrenNum = data.size();
             for (MemberCourseOrderInitBo initBo : data) {
                 Optional<EpFilePo> existAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, initBo.getChildId());
                 if (existAvatar.isPresent()) {
@@ -70,7 +73,7 @@ public class OrderService {
                 }
             }
         }
-        return resultDo.setResult(data);
+        return resultDo.setResult(new OrderInitDto(data, childrenNum, BizConstant.CHILD_LIMIT_NUM));
     }
 
     /**
