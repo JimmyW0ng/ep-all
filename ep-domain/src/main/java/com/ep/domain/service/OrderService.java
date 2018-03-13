@@ -41,6 +41,8 @@ public class OrderService {
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
+    private OrganClassCatalogRepository organClassCatalogRepository;
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private OrganCourseRepository organCourseRepository;
@@ -191,16 +193,19 @@ public class OrderService {
     public Page<MemberChildClassBo> findChildClassPage(Pageable pageable, Long childId, ChildClassStatusEnum statusEnum) {
         Page<MemberChildClassBo> page = orderRepository.findChildClassPage(pageable, childId, statusEnum);
         if (CollectionsTools.isNotEmpty(page.getContent())) {
-            Map<Long, String> courseIdMap = Maps.newHashMap();
             for (MemberChildClassBo bo : page.getContent()) {
-                String mainPicUrl;
-                if (!courseIdMap.containsKey(bo.getCourseId())) {
-                    Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
-                    mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;
-                } else {
-                    mainPicUrl = courseIdMap.get(bo.getCourseId());
-                }
+                Optional<EpFilePo> existPic = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
+                String mainPicUrl = existPic.isPresent() ? existPic.get().getFileUrl() : null;
                 bo.setMainPicUrl(mainPicUrl);
+                // 上课进度
+                if (bo.getStatus().equals(EpOrderStatus.opening)) {
+                    Optional<EpOrganClassCatalogPo> existCatalog = organClassCatalogRepository.getLastByClassId(bo.getClassId());
+                    bo.setLastCatalogIndex(existCatalog.isPresent() ? existCatalog.get().getCatalogIndex() : BizConstant.DB_NUM_ZERO);
+                } else if (bo.getStatus().equals(EpOrderStatus.end)) {
+                    bo.setLastCatalogIndex(bo.getCourseNum());
+                } else {
+                    bo.setLastCatalogIndex(BizConstant.DB_NUM_ZERO);
+                }
             }
         }
         return page;

@@ -7,16 +7,14 @@ package com.ep.domain.repository.domain.tables.records;
 import com.ep.domain.repository.domain.enums.EpSystemUserStatus;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.EpSystemUser;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record14;
 import org.jooq.Row14;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -35,11 +33,32 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     private static final long serialVersionUID = 105438082;
 
     /**
-     * Setter for <code>ep.ep_system_user.id</code>. 主键
+     * Create a detached EpSystemUserRecord
      */
-    public EpSystemUserRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpSystemUserRecord() {
+        super(EpSystemUser.EP_SYSTEM_USER);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemUserRecord
+     */
+    public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemUser.EP_SYSTEM_USER);
+
+        set(0, id);
+        set(1, mobile);
+        set(2, userName);
+        set(3, salt);
+        set(4, password);
+        set(5, email);
+        set(6, type);
+        set(7, ognId);
+        set(8, status);
+        set(9, createAt);
+        set(10, updateAt);
+        set(11, remark);
+        set(12, delFlag);
+        set(13, version);
     }
 
     /**
@@ -50,10 +69,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.mobile</code>. 手机号
+     * Setter for <code>ep.ep_system_user.id</code>. 主键
      */
-    public EpSystemUserRecord setMobile(Long value) {
-        set(1, value);
+    public EpSystemUserRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -65,10 +84,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.user_name</code>. 用户名
+     * Setter for <code>ep.ep_system_user.mobile</code>. 手机号
      */
-    public EpSystemUserRecord setUserName(String value) {
-        set(2, value);
+    public EpSystemUserRecord setMobile(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -80,10 +99,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.salt</code>. 盐
+     * Setter for <code>ep.ep_system_user.user_name</code>. 用户名
      */
-    public EpSystemUserRecord setSalt(String value) {
-        set(3, value);
+    public EpSystemUserRecord setUserName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -95,10 +114,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.password</code>. 密码
+     * Setter for <code>ep.ep_system_user.salt</code>. 盐
      */
-    public EpSystemUserRecord setPassword(String value) {
-        set(4, value);
+    public EpSystemUserRecord setSalt(String value) {
+        set(3, value);
         return this;
     }
 
@@ -110,10 +129,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.email</code>. 邮箱
+     * Setter for <code>ep.ep_system_user.password</code>. 密码
      */
-    public EpSystemUserRecord setEmail(String value) {
-        set(5, value);
+    public EpSystemUserRecord setPassword(String value) {
+        set(4, value);
         return this;
     }
 
@@ -125,10 +144,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.type</code>. 商户；平台
+     * Setter for <code>ep.ep_system_user.email</code>. 邮箱
      */
-    public EpSystemUserRecord setType(EpSystemUserType value) {
-        set(6, value);
+    public EpSystemUserRecord setEmail(String value) {
+        set(5, value);
         return this;
     }
 
@@ -140,10 +159,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.ogn_id</code>. 商户id
+     * Setter for <code>ep.ep_system_user.type</code>. 商户；平台
      */
-    public EpSystemUserRecord setOgnId(Long value) {
-        set(7, value);
+    public EpSystemUserRecord setType(EpSystemUserType value) {
+        set(6, value);
         return this;
     }
 
@@ -155,10 +174,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     * Setter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public EpSystemUserRecord setStatus(EpSystemUserStatus value) {
-        set(8, value);
+    public EpSystemUserRecord setOgnId(Long value) {
+        set(7, value);
         return this;
     }
 
@@ -170,10 +189,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
      */
-    public EpSystemUserRecord setCreateAt(Timestamp value) {
-        set(9, value);
+    public EpSystemUserRecord setStatus(EpSystemUserStatus value) {
+        set(8, value);
         return this;
     }
 
@@ -185,10 +204,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public EpSystemUserRecord setUpdateAt(Timestamp value) {
-        set(10, value);
+    public EpSystemUserRecord setCreateAt(Timestamp value) {
+        set(9, value);
         return this;
     }
 
@@ -200,10 +219,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.remark</code>. 备注
+     * Setter for <code>ep.ep_system_user.update_at</code>. 更新时间
      */
-    public EpSystemUserRecord setRemark(String value) {
-        set(11, value);
+    public EpSystemUserRecord setUpdateAt(Timestamp value) {
+        set(10, value);
         return this;
     }
 
@@ -215,10 +234,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_system_user.remark</code>. 备注
      */
-    public EpSystemUserRecord setDelFlag(Boolean value) {
-        set(12, value);
+    public EpSystemUserRecord setRemark(String value) {
+        set(11, value);
         return this;
     }
 
@@ -230,12 +249,16 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_user.version</code>.
+     * Setter for <code>ep.ep_system_user.del_flag</code>. 删除标记
      */
-    public EpSystemUserRecord setVersion(Long value) {
-        set(13, value);
+    public EpSystemUserRecord setDelFlag(Boolean value) {
+        set(12, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_user.version</code>.
@@ -245,8 +268,16 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record14 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_user.version</code>.
+     */
+    public EpSystemUserRecord setVersion(Long value) {
+        set(13, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -255,10 +286,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record14 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -617,6 +644,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -646,38 +677,5 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         value13(value13);
         value14(value14);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemUserRecord
-     */
-    public EpSystemUserRecord() {
-        super(EpSystemUser.EP_SYSTEM_USER);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemUserRecord
-     */
-    public EpSystemUserRecord(Long id, Long mobile, String userName, String salt, String password, String email, EpSystemUserType type, Long ognId, EpSystemUserStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemUser.EP_SYSTEM_USER);
-
-        set(0, id);
-        set(1, mobile);
-        set(2, userName);
-        set(3, salt);
-        set(4, password);
-        set(5, email);
-        set(6, type);
-        set(7, ognId);
-        set(8, status);
-        set(9, createAt);
-        set(10, updateAt);
-        set(11, remark);
-        set(12, delFlag);
-        set(13, version);
     }
 }

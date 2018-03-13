@@ -107,7 +107,7 @@ public class Keys {
     public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE = UniqueKeys0.KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE;
     public static final UniqueKey<EpSystemRoleAuthorityRecord> KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY;
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_PRIMARY;
-    public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_IDX_MOBILE = UniqueKeys0.KEY_EP_SYSTEM_USER_IDX_MOBILE;
+    public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_UNIQUE_MOBILE = UniqueKeys0.KEY_EP_SYSTEM_USER_UNIQUE_MOBILE;
     public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_ROLE_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -194,7 +194,7 @@ public class Keys {
         public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE = createUniqueKey(EpSystemRole.EP_SYSTEM_ROLE, "KEY_ep_system_role_UNIQUE_ROLE_CODE", EpSystemRole.EP_SYSTEM_ROLE.ROLE_CODE);
         public static final UniqueKey<EpSystemRoleAuthorityRecord> KEY_EP_SYSTEM_ROLE_AUTHORITY_PRIMARY = createUniqueKey(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY, "KEY_ep_system_role_authority_PRIMARY", EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ID);
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_PRIMARY = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_PRIMARY", EpSystemUser.EP_SYSTEM_USER.ID);
-        public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_IDX_MOBILE = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_IDX_MOBILE", EpSystemUser.EP_SYSTEM_USER.MOBILE);
+        public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_UNIQUE_MOBILE = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_UNIQUE_MOBILE", EpSystemUser.EP_SYSTEM_USER.MOBILE);
         public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = createUniqueKey(EpSystemUserRole.EP_SYSTEM_USER_ROLE, "KEY_ep_system_user_role_PRIMARY", EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
     }
 }

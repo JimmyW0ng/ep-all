@@ -8,16 +8,14 @@ import com.ep.domain.repository.domain.enums.EpMemberSex;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpMemberType;
 import com.ep.domain.repository.domain.tables.EpMember;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record13;
 import org.jooq.Row13;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -36,11 +34,31 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     private static final long serialVersionUID = 1993842369;
 
     /**
-     * Setter for <code>ep.ep_member.id</code>. 主键
+     * Create a detached EpMemberRecord
      */
-    public EpMemberRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpMemberRecord() {
+        super(EpMember.EP_MEMBER);
+    }
+
+    /**
+     * Create a detached, initialised EpMemberRecord
+     */
+    public EpMemberRecord(Long id, Long mobile, String nickName, String trueName, EpMemberSex sex, String email, EpMemberStatus status, EpMemberType type, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMember.EP_MEMBER);
+
+        set(0, id);
+        set(1, mobile);
+        set(2, nickName);
+        set(3, trueName);
+        set(4, sex);
+        set(5, email);
+        set(6, status);
+        set(7, type);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 
     /**
@@ -51,10 +69,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.mobile</code>. 手机号
+     * Setter for <code>ep.ep_member.id</code>. 主键
      */
-    public EpMemberRecord setMobile(Long value) {
-        set(1, value);
+    public EpMemberRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -66,10 +84,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.nick_name</code>. 昵称
+     * Setter for <code>ep.ep_member.mobile</code>. 手机号
      */
-    public EpMemberRecord setNickName(String value) {
-        set(2, value);
+    public EpMemberRecord setMobile(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -81,10 +99,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.true_name</code>. 真实姓名
+     * Setter for <code>ep.ep_member.nick_name</code>. 昵称
      */
-    public EpMemberRecord setTrueName(String value) {
-        set(3, value);
+    public EpMemberRecord setNickName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -96,10 +114,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.sex</code>. 性别
+     * Setter for <code>ep.ep_member.true_name</code>. 真实姓名
      */
-    public EpMemberRecord setSex(EpMemberSex value) {
-        set(4, value);
+    public EpMemberRecord setTrueName(String value) {
+        set(3, value);
         return this;
     }
 
@@ -111,10 +129,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.email</code>. 邮箱
+     * Setter for <code>ep.ep_member.sex</code>. 性别
      */
-    public EpMemberRecord setEmail(String value) {
-        set(5, value);
+    public EpMemberRecord setSex(EpMemberSex value) {
+        set(4, value);
         return this;
     }
 
@@ -126,10 +144,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.status</code>. 状态：正常；已冻结；已注销；
+     * Setter for <code>ep.ep_member.email</code>. 邮箱
      */
-    public EpMemberRecord setStatus(EpMemberStatus value) {
-        set(6, value);
+    public EpMemberRecord setEmail(String value) {
+        set(5, value);
         return this;
     }
 
@@ -141,10 +159,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.type</code>. 类型：会员；机构账户
+     * Setter for <code>ep.ep_member.status</code>. 状态：正常；已冻结；已注销；
      */
-    public EpMemberRecord setType(EpMemberType value) {
-        set(7, value);
+    public EpMemberRecord setStatus(EpMemberStatus value) {
+        set(6, value);
         return this;
     }
 
@@ -156,10 +174,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_member.type</code>. 类型：会员；机构账户
      */
-    public EpMemberRecord setCreateAt(Timestamp value) {
-        set(8, value);
+    public EpMemberRecord setType(EpMemberType value) {
+        set(7, value);
         return this;
     }
 
@@ -171,10 +189,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_member.create_at</code>. 创建时间
      */
-    public EpMemberRecord setUpdateAt(Timestamp value) {
-        set(9, value);
+    public EpMemberRecord setCreateAt(Timestamp value) {
+        set(8, value);
         return this;
     }
 
@@ -186,10 +204,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.remark</code>. 备注
+     * Setter for <code>ep.ep_member.update_at</code>. 更新时间
      */
-    public EpMemberRecord setRemark(String value) {
-        set(10, value);
+    public EpMemberRecord setUpdateAt(Timestamp value) {
+        set(9, value);
         return this;
     }
 
@@ -201,10 +219,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_member.remark</code>. 备注
      */
-    public EpMemberRecord setDelFlag(Boolean value) {
-        set(11, value);
+    public EpMemberRecord setRemark(String value) {
+        set(10, value);
         return this;
     }
 
@@ -216,12 +234,16 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     /**
-     * Setter for <code>ep.ep_member.version</code>.
+     * Setter for <code>ep.ep_member.del_flag</code>. 删除标志
      */
-    public EpMemberRecord setVersion(Long value) {
-        set(12, value);
+    public EpMemberRecord setDelFlag(Boolean value) {
+        set(11, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_member.version</code>.
@@ -231,8 +253,16 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record13 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_member.version</code>.
+     */
+    public EpMemberRecord setVersion(Long value) {
+        set(12, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -241,10 +271,6 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record13 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -578,6 +604,10 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -606,37 +636,5 @@ public class EpMemberRecord extends UpdatableRecordImpl<EpMemberRecord> implemen
         value12(value12);
         value13(value13);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpMemberRecord
-     */
-    public EpMemberRecord() {
-        super(EpMember.EP_MEMBER);
-    }
-
-    /**
-     * Create a detached, initialised EpMemberRecord
-     */
-    public EpMemberRecord(Long id, Long mobile, String nickName, String trueName, EpMemberSex sex, String email, EpMemberStatus status, EpMemberType type, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMember.EP_MEMBER);
-
-        set(0, id);
-        set(1, mobile);
-        set(2, nickName);
-        set(3, trueName);
-        set(4, sex);
-        set(5, email);
-        set(6, status);
-        set(7, type);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
     }
 }

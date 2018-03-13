@@ -6,16 +6,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.tables.EpOrganAccount;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record12;
 import org.jooq.Row12;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -34,11 +32,30 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     private static final long serialVersionUID = -1439138686;
 
     /**
-     * Setter for <code>ep.ep_organ_account.id</code>. 主键
+     * Create a detached EpOrganAccountRecord
      */
-    public EpOrganAccountRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrganAccountRecord() {
+        super(EpOrganAccount.EP_ORGAN_ACCOUNT);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganAccountRecord
+     */
+    public EpOrganAccountRecord(Long id, String accountName, String nickName, String introduce, Long ognId, EpOrganAccountStatus status, Long referMobile, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganAccount.EP_ORGAN_ACCOUNT);
+
+        set(0, id);
+        set(1, accountName);
+        set(2, nickName);
+        set(3, introduce);
+        set(4, ognId);
+        set(5, status);
+        set(6, referMobile);
+        set(7, createAt);
+        set(8, updateAt);
+        set(9, remark);
+        set(10, delFlag);
+        set(11, version);
     }
 
     /**
@@ -49,10 +66,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.account_name</code>. 机构内部名称
+     * Setter for <code>ep.ep_organ_account.id</code>. 主键
      */
-    public EpOrganAccountRecord setAccountName(String value) {
-        set(1, value);
+    public EpOrganAccountRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -64,10 +81,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.nick_name</code>. 对外昵称
+     * Setter for <code>ep.ep_organ_account.account_name</code>. 机构内部名称
      */
-    public EpOrganAccountRecord setNickName(String value) {
-        set(2, value);
+    public EpOrganAccountRecord setAccountName(String value) {
+        set(1, value);
         return this;
     }
 
@@ -79,10 +96,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.introduce</code>. 介绍
+     * Setter for <code>ep.ep_organ_account.nick_name</code>. 对外昵称
      */
-    public EpOrganAccountRecord setIntroduce(String value) {
-        set(3, value);
+    public EpOrganAccountRecord setNickName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -94,10 +111,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.ogn_id</code>. 所属机构id
+     * Setter for <code>ep.ep_organ_account.introduce</code>. 介绍
      */
-    public EpOrganAccountRecord setOgnId(Long value) {
-        set(4, value);
+    public EpOrganAccountRecord setIntroduce(String value) {
+        set(3, value);
         return this;
     }
 
@@ -109,10 +126,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
+     * Setter for <code>ep.ep_organ_account.ogn_id</code>. 所属机构id
      */
-    public EpOrganAccountRecord setStatus(EpOrganAccountStatus value) {
-        set(5, value);
+    public EpOrganAccountRecord setOgnId(Long value) {
+        set(4, value);
         return this;
     }
 
@@ -124,10 +141,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号
+     * Setter for <code>ep.ep_organ_account.status</code>. 状态：正常；已冻结；已注销；
      */
-    public EpOrganAccountRecord setReferMobile(Long value) {
-        set(6, value);
+    public EpOrganAccountRecord setStatus(EpOrganAccountStatus value) {
+        set(5, value);
         return this;
     }
 
@@ -139,10 +156,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_account.refer_mobile</code>. 关联手机号
      */
-    public EpOrganAccountRecord setCreateAt(Timestamp value) {
-        set(7, value);
+    public EpOrganAccountRecord setReferMobile(Long value) {
+        set(6, value);
         return this;
     }
 
@@ -154,10 +171,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_account.create_at</code>. 创建时间
      */
-    public EpOrganAccountRecord setUpdateAt(Timestamp value) {
-        set(8, value);
+    public EpOrganAccountRecord setCreateAt(Timestamp value) {
+        set(7, value);
         return this;
     }
 
@@ -169,10 +186,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_account.update_at</code>. 更新时间
      */
-    public EpOrganAccountRecord setRemark(String value) {
-        set(9, value);
+    public EpOrganAccountRecord setUpdateAt(Timestamp value) {
+        set(8, value);
         return this;
     }
 
@@ -184,10 +201,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_account.remark</code>. 备注
      */
-    public EpOrganAccountRecord setDelFlag(Boolean value) {
-        set(10, value);
+    public EpOrganAccountRecord setRemark(String value) {
+        set(9, value);
         return this;
     }
 
@@ -199,12 +216,16 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_account.version</code>.
+     * Setter for <code>ep.ep_organ_account.del_flag</code>. 删除标记
      */
-    public EpOrganAccountRecord setVersion(Long value) {
-        set(11, value);
+    public EpOrganAccountRecord setDelFlag(Boolean value) {
+        set(10, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_account.version</code>.
@@ -214,8 +235,16 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record12 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_account.version</code>.
+     */
+    public EpOrganAccountRecord setVersion(Long value) {
+        set(11, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -224,10 +253,6 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record12 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -536,6 +561,10 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -563,36 +592,5 @@ public class EpOrganAccountRecord extends UpdatableRecordImpl<EpOrganAccountReco
         value11(value11);
         value12(value12);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganAccountRecord
-     */
-    public EpOrganAccountRecord() {
-        super(EpOrganAccount.EP_ORGAN_ACCOUNT);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganAccountRecord
-     */
-    public EpOrganAccountRecord(Long id, String accountName, String nickName, String introduce, Long ognId, EpOrganAccountStatus status, Long referMobile, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganAccount.EP_ORGAN_ACCOUNT);
-
-        set(0, id);
-        set(1, accountName);
-        set(2, nickName);
-        set(3, introduce);
-        set(4, ognId);
-        set(5, status);
-        set(6, referMobile);
-        set(7, createAt);
-        set(8, updateAt);
-        set(9, remark);
-        set(10, delFlag);
-        set(11, version);
     }
 }

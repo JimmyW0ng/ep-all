@@ -7,20 +7,13 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.tables.records.EpFileRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -36,76 +29,55 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpFile extends TableImpl<EpFileRecord> {
 
-    private static final long serialVersionUID = 1018614691;
-
     /**
      * The reference instance of <code>ep.ep_file</code>
      */
     public static final EpFile EP_FILE = new EpFile();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpFileRecord> getRecordType() {
-        return EpFileRecord.class;
-    }
-
+    private static final long serialVersionUID = 1018614691;
     /**
      * The column <code>ep.ep_file.id</code>. 主键
      */
     public final TableField<EpFileRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
-
     /**
      * The column <code>ep.ep_file.pre_code</code>. 预授码
      */
     public final TableField<EpFileRecord, String> PRE_CODE = createField("pre_code", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "预授码");
-
     /**
      * The column <code>ep.ep_file.file_name</code>. 文件名字
      */
     public final TableField<EpFileRecord, String> FILE_NAME = createField("file_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "文件名字");
-
     /**
      * The column <code>ep.ep_file.file_url</code>. 文件url
      */
     public final TableField<EpFileRecord, String> FILE_URL = createField("file_url", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "文件url");
-
     /**
      * The column <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
      */
     public final TableField<EpFileRecord, Short> BIZ_TYPE_CODE = createField("biz_type_code", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "业务类型编码（FILE_BIZ_TYPE）");
-
     /**
      * The column <code>ep.ep_file.source_id</code>. 业务ID
      */
     public final TableField<EpFileRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT, this, "业务ID");
-
     /**
      * The column <code>ep.ep_file.sort</code>. 排序
      */
     public final TableField<EpFileRecord, Integer> SORT = createField("sort", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "排序");
-
     /**
      * The column <code>ep.ep_file.create_at</code>. 创建时间
      */
     public final TableField<EpFileRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_file.update_at</code>. 更新时间
      */
     public final TableField<EpFileRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_file.remark</code>. 备注信息
      */
     public final TableField<EpFileRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
-
     /**
      * The column <code>ep.ep_file.del_flag</code>. 删除标志
      */
     public final TableField<EpFileRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
-
     /**
      * The column <code>ep.ep_file.version</code>.
      */
@@ -131,6 +103,14 @@ public class EpFile extends TableImpl<EpFileRecord> {
 
     private EpFile(String alias, Table<EpFileRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "文件表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpFileRecord> getRecordType() {
+        return EpFileRecord.class;
     }
 
     /**

@@ -104,7 +104,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_ORGAN_CLASS_CHILD.HONOR_NUM);
         fieldList.add(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM);
         fieldList.add(EP_ORGAN_CLASS_CHILD.COURSE_COMMENT_FLAG);
-        fieldList.add(EP_ORGAN_CLASS_CHILD.LAST_CATALOG_INDEX);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<MemberChildClassBo> data = dslContext.select(fieldList)
                 .from(EP_ORDER)

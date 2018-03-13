@@ -6,16 +6,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.repository.domain.tables.EpSystemRole;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record11;
 import org.jooq.Row11;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -34,11 +32,29 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     private static final long serialVersionUID = 1774264823;
 
     /**
-     * Setter for <code>ep.ep_system_role.id</code>. 主键
+     * Create a detached EpSystemRoleRecord
      */
-    public EpSystemRoleRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpSystemRoleRecord() {
+        super(EpSystemRole.EP_SYSTEM_ROLE);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemRoleRecord
+     */
+    public EpSystemRoleRecord(Long id, EpSystemRoleTarget target, String roleName, String roleCode, Long createBy, Timestamp createAt, Long updateBy, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemRole.EP_SYSTEM_ROLE);
+
+        set(0, id);
+        set(1, target);
+        set(2, roleName);
+        set(3, roleCode);
+        set(4, createBy);
+        set(5, createAt);
+        set(6, updateBy);
+        set(7, updateAt);
+        set(8, remark);
+        set(9, delFlag);
+        set(10, version);
     }
 
     /**
@@ -49,10 +65,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.target</code>. 目标：前台，商户后台，系统后台
+     * Setter for <code>ep.ep_system_role.id</code>. 主键
      */
-    public EpSystemRoleRecord setTarget(EpSystemRoleTarget value) {
-        set(1, value);
+    public EpSystemRoleRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -64,10 +80,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.role_name</code>. 角色名称
+     * Setter for <code>ep.ep_system_role.target</code>. 目标：前台，商户后台，系统后台
      */
-    public EpSystemRoleRecord setRoleName(String value) {
-        set(2, value);
+    public EpSystemRoleRecord setTarget(EpSystemRoleTarget value) {
+        set(1, value);
         return this;
     }
 
@@ -79,10 +95,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.role_code</code>. 角色标识
+     * Setter for <code>ep.ep_system_role.role_name</code>. 角色名称
      */
-    public EpSystemRoleRecord setRoleCode(String value) {
-        set(3, value);
+    public EpSystemRoleRecord setRoleName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -94,10 +110,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.create_by</code>. 创建者
+     * Setter for <code>ep.ep_system_role.role_code</code>. 角色标识
      */
-    public EpSystemRoleRecord setCreateBy(Long value) {
-        set(4, value);
+    public EpSystemRoleRecord setRoleCode(String value) {
+        set(3, value);
         return this;
     }
 
@@ -109,10 +125,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_system_role.create_by</code>. 创建者
      */
-    public EpSystemRoleRecord setCreateAt(Timestamp value) {
-        set(5, value);
+    public EpSystemRoleRecord setCreateBy(Long value) {
+        set(4, value);
         return this;
     }
 
@@ -124,10 +140,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.update_by</code>. 更新者
+     * Setter for <code>ep.ep_system_role.create_at</code>. 创建时间
      */
-    public EpSystemRoleRecord setUpdateBy(Long value) {
-        set(6, value);
+    public EpSystemRoleRecord setCreateAt(Timestamp value) {
+        set(5, value);
         return this;
     }
 
@@ -139,10 +155,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_role.update_by</code>. 更新者
      */
-    public EpSystemRoleRecord setUpdateAt(Timestamp value) {
-        set(7, value);
+    public EpSystemRoleRecord setUpdateBy(Long value) {
+        set(6, value);
         return this;
     }
 
@@ -154,10 +170,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.remark</code>. 备注信息
+     * Setter for <code>ep.ep_system_role.update_at</code>. 更新时间
      */
-    public EpSystemRoleRecord setRemark(String value) {
-        set(8, value);
+    public EpSystemRoleRecord setUpdateAt(Timestamp value) {
+        set(7, value);
         return this;
     }
 
@@ -169,10 +185,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_system_role.remark</code>. 备注信息
      */
-    public EpSystemRoleRecord setDelFlag(Boolean value) {
-        set(9, value);
+    public EpSystemRoleRecord setRemark(String value) {
+        set(8, value);
         return this;
     }
 
@@ -184,12 +200,16 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_role.version</code>.
+     * Setter for <code>ep.ep_system_role.del_flag</code>. 删除标志
      */
-    public EpSystemRoleRecord setVersion(Long value) {
-        set(10, value);
+    public EpSystemRoleRecord setDelFlag(Boolean value) {
+        set(9, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_role.version</code>.
@@ -199,8 +219,16 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record11 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_role.version</code>.
+     */
+    public EpSystemRoleRecord setVersion(Long value) {
+        set(10, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -209,10 +237,6 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record11 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -496,6 +520,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -522,35 +550,5 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
         value10(value10);
         value11(value11);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemRoleRecord
-     */
-    public EpSystemRoleRecord() {
-        super(EpSystemRole.EP_SYSTEM_ROLE);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemRoleRecord
-     */
-    public EpSystemRoleRecord(Long id, EpSystemRoleTarget target, String roleName, String roleCode, Long createBy, Timestamp createAt, Long updateBy, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemRole.EP_SYSTEM_ROLE);
-
-        set(0, id);
-        set(1, target);
-        set(2, roleName);
-        set(3, roleCode);
-        set(4, createBy);
-        set(5, createAt);
-        set(6, updateBy);
-        set(7, updateAt);
-        set(8, remark);
-        set(9, delFlag);
-        set(10, version);
     }
 }

@@ -5,16 +5,14 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.tables.EpMemberChildHonor;
-
-import java.sql.Timestamp;
-
-import javax.annotation.Generated;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record11;
 import org.jooq.Row11;
 import org.jooq.impl.UpdatableRecordImpl;
+
+import javax.annotation.Generated;
+import java.sql.Timestamp;
 
 
 /**
@@ -33,11 +31,29 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     private static final long serialVersionUID = -1665643310;
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.id</code>. 主键
+     * Create a detached EpMemberChildHonorRecord
      */
-    public EpMemberChildHonorRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpMemberChildHonorRecord() {
+        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
+    }
+
+    /**
+     * Create a detached, initialised EpMemberChildHonorRecord
+     */
+    public EpMemberChildHonorRecord(Long id, Long childId, Long ognId, Long courseId, Long classId, String content, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
+
+        set(0, id);
+        set(1, childId);
+        set(2, ognId);
+        set(3, courseId);
+        set(4, classId);
+        set(5, content);
+        set(6, createAt);
+        set(7, updateAt);
+        set(8, remark);
+        set(9, delFlag);
+        set(10, version);
     }
 
     /**
@@ -48,10 +64,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.child_id</code>. 孩子id
+     * Setter for <code>ep.ep_member_child_honor.id</code>. 主键
      */
-    public EpMemberChildHonorRecord setChildId(Long value) {
-        set(1, value);
+    public EpMemberChildHonorRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -63,10 +79,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
+     * Setter for <code>ep.ep_member_child_honor.child_id</code>. 孩子id
      */
-    public EpMemberChildHonorRecord setOgnId(Long value) {
-        set(2, value);
+    public EpMemberChildHonorRecord setChildId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -78,10 +94,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.course_id</code>. 课程id
+     * Setter for <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
      */
-    public EpMemberChildHonorRecord setCourseId(Long value) {
-        set(3, value);
+    public EpMemberChildHonorRecord setOgnId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -93,10 +109,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.class_id</code>. 班级id
+     * Setter for <code>ep.ep_member_child_honor.course_id</code>. 课程id
      */
-    public EpMemberChildHonorRecord setClassId(Long value) {
-        set(4, value);
+    public EpMemberChildHonorRecord setCourseId(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -108,10 +124,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.content</code>. 荣誉内容
+     * Setter for <code>ep.ep_member_child_honor.class_id</code>. 班级id
      */
-    public EpMemberChildHonorRecord setContent(String value) {
-        set(5, value);
+    public EpMemberChildHonorRecord setClassId(Long value) {
+        set(4, value);
         return this;
     }
 
@@ -123,10 +139,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_member_child_honor.content</code>. 荣誉内容
      */
-    public EpMemberChildHonorRecord setCreateAt(Timestamp value) {
-        set(6, value);
+    public EpMemberChildHonorRecord setContent(String value) {
+        set(5, value);
         return this;
     }
 
@@ -138,10 +154,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_member_child_honor.create_at</code>. 创建时间
      */
-    public EpMemberChildHonorRecord setUpdateAt(Timestamp value) {
-        set(7, value);
+    public EpMemberChildHonorRecord setCreateAt(Timestamp value) {
+        set(6, value);
         return this;
     }
 
@@ -153,10 +169,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.remark</code>. 备注
+     * Setter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
      */
-    public EpMemberChildHonorRecord setRemark(String value) {
-        set(8, value);
+    public EpMemberChildHonorRecord setUpdateAt(Timestamp value) {
+        set(7, value);
         return this;
     }
 
@@ -168,10 +184,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_member_child_honor.remark</code>. 备注
      */
-    public EpMemberChildHonorRecord setDelFlag(Boolean value) {
-        set(9, value);
+    public EpMemberChildHonorRecord setRemark(String value) {
+        set(8, value);
         return this;
     }
 
@@ -183,12 +199,16 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_honor.version</code>.
+     * Setter for <code>ep.ep_member_child_honor.del_flag</code>. 删除标记
      */
-    public EpMemberChildHonorRecord setVersion(Long value) {
-        set(10, value);
+    public EpMemberChildHonorRecord setDelFlag(Boolean value) {
+        set(9, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_member_child_honor.version</code>.
@@ -198,8 +218,16 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record11 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_member_child_honor.version</code>.
+     */
+    public EpMemberChildHonorRecord setVersion(Long value) {
+        set(10, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -208,10 +236,6 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record11 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -495,6 +519,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -521,35 +549,5 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
         value10(value10);
         value11(value11);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpMemberChildHonorRecord
-     */
-    public EpMemberChildHonorRecord() {
-        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
-    }
-
-    /**
-     * Create a detached, initialised EpMemberChildHonorRecord
-     */
-    public EpMemberChildHonorRecord(Long id, Long childId, Long ognId, Long courseId, Long classId, String content, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
-
-        set(0, id);
-        set(1, childId);
-        set(2, ognId);
-        set(3, courseId);
-        set(4, classId);
-        set(5, content);
-        set(6, createAt);
-        set(7, updateAt);
-        set(8, remark);
-        set(9, delFlag);
-        set(10, version);
     }
 }

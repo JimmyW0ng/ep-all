@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 状态：正常；已冻结；已注销；
+ * 状态：已保存；已上线；已下线；已冻结
  */
 @Generated(
     value = {

@@ -33,152 +33,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     private static final long serialVersionUID = 1327714213;
 
     /**
-     * Setter for <code>ep.ep_member_message.id</code>.
-     */
-    public EpMemberMessageRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Create a detached EpMemberMessageRecord
      */
     public EpMemberMessageRecord() {
         super(EpMemberMessage.EP_MEMBER_MESSAGE);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.sender_ogn_account_id</code>. 发件人对应机构账户id
-     */
-    public Long getSenderOgnAccountId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.sender_name</code>. 发件人姓名
-     */
-    public EpMemberMessageRecord setSenderName(String value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.sender_name</code>. 发件人姓名
-     */
-    public String getSenderName() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.sender_desc</code>. 发件人描述
-     */
-    public EpMemberMessageRecord setSenderDesc(String value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.sender_desc</code>. 发件人描述
-     */
-    public String getSenderDesc() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.member_id</code>. 会员id
-     */
-    public EpMemberMessageRecord setMemberId(Long value) {
-        set(4, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.member_id</code>. 会员id
-     */
-    public Long getMemberId() {
-        return (Long) get(4);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.child_id</code>. 孩子id
-     */
-    public EpMemberMessageRecord setChildId(Long value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.child_id</code>. 孩子id
-     */
-    public Long getChildId() {
-        return (Long) get(5);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.type</code>. 类型：上课评价
-     */
-    public EpMemberMessageRecord setType(EpMemberMessageType value) {
-        set(6, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.type</code>. 类型：上课评价
-     */
-    public EpMemberMessageType getType() {
-        return (EpMemberMessageType) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.status</code>. 状态：未读；已读；
-     */
-    public EpMemberMessageRecord setStatus(EpMemberMessageStatus value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.status</code>. 状态：未读；已读；
-     */
-    public EpMemberMessageStatus getStatus() {
-        return (EpMemberMessageStatus) get(7);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.content</code>. 消息内容
-     */
-    public EpMemberMessageRecord setContent(String value) {
-        set(8, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.content</code>. 消息内容
-     */
-    public String getContent() {
-        return (String) get(8);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_message.source_id</code>. 业务id
-     */
-    public EpMemberMessageRecord setSourceId(Long value) {
-        set(9, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_message.source_id</code>. 业务id
-     */
-    public Long getSourceId() {
-        return (Long) get(9);
     }
 
     /**
@@ -205,10 +63,25 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Getter for <code>ep.ep_member_message.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_message.id</code>.
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(10);
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.id</code>.
+     */
+    public EpMemberMessageRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.sender_ogn_account_id</code>. 发件人对应机构账户id
+     */
+    public Long getSenderOgnAccountId() {
+        return (Long) get(1);
     }
 
     /**
@@ -220,10 +93,130 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Getter for <code>ep.ep_member_message.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_message.sender_name</code>. 发件人姓名
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(11);
+    public String getSenderName() {
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.sender_name</code>. 发件人姓名
+     */
+    public EpMemberMessageRecord setSenderName(String value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.sender_desc</code>. 发件人描述
+     */
+    public String getSenderDesc() {
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.sender_desc</code>. 发件人描述
+     */
+    public EpMemberMessageRecord setSenderDesc(String value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.member_id</code>. 会员id
+     */
+    public Long getMemberId() {
+        return (Long) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.member_id</code>. 会员id
+     */
+    public EpMemberMessageRecord setMemberId(Long value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.child_id</code>. 孩子id
+     */
+    public Long getChildId() {
+        return (Long) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.child_id</code>. 孩子id
+     */
+    public EpMemberMessageRecord setChildId(Long value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.type</code>. 类型：上课评价
+     */
+    public EpMemberMessageType getType() {
+        return (EpMemberMessageType) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.type</code>. 类型：上课评价
+     */
+    public EpMemberMessageRecord setType(EpMemberMessageType value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.status</code>. 状态：未读；已读；
+     */
+    public EpMemberMessageStatus getStatus() {
+        return (EpMemberMessageStatus) get(7);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.status</code>. 状态：未读；已读；
+     */
+    public EpMemberMessageRecord setStatus(EpMemberMessageStatus value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.content</code>. 消息内容
+     */
+    public String getContent() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.content</code>. 消息内容
+     */
+    public EpMemberMessageRecord setContent(String value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.source_id</code>. 业务id
+     */
+    public Long getSourceId() {
+        return (Long) get(9);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.source_id</code>. 业务id
+     */
+    public EpMemberMessageRecord setSourceId(Long value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_message.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -235,10 +228,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Getter for <code>ep.ep_member_message.remark</code>. 备注
+     * Getter for <code>ep.ep_member_message.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(12);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -250,10 +243,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Getter for <code>ep.ep_member_message.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_member_message.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(13);
+    public String getRemark() {
+        return (String) get(12);
     }
 
     /**
@@ -265,6 +258,25 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
+     * Getter for <code>ep.ep_member_message.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(13);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_message.del_flag</code>. 删除标记
+     */
+    public EpMemberMessageRecord setDelFlag(Boolean value) {
+        set(13, value);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * Getter for <code>ep.ep_member_message.version</code>.
      */
     public Long getVersion() {
@@ -272,8 +284,16 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record15 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_member_message.version</code>.
+     */
+    public EpMemberMessageRecord setVersion(Long value) {
+        set(14, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -282,10 +302,6 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record15 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -296,11 +312,11 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.del_flag</code>. 删除标记
+     * {@inheritDoc}
      */
-    public EpMemberMessageRecord setDelFlag(Boolean value) {
-        set(13, value);
-        return this;
+    @Override
+    public Row15<Long, Long, String, String, Long, Long, EpMemberMessageType, EpMemberMessageStatus, String, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
+        return (Row15) super.valuesRow();
     }
 
     /**
@@ -312,11 +328,11 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.version</code>.
+     * {@inheritDoc}
      */
-    public EpMemberMessageRecord setVersion(Long value) {
-        set(14, value);
-        return this;
+    @Override
+    public Field<Long> field2() {
+        return EpMemberMessage.EP_MEMBER_MESSAGE.SENDER_OGN_ACCOUNT_ID;
     }
 
     /**
@@ -419,8 +435,8 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Row15<Long, Long, String, String, Long, Long, EpMemberMessageType, EpMemberMessageStatus, String, Long, Timestamp, Timestamp, String, Boolean, Long> valuesRow() {
-        return (Row15) super.valuesRow();
+    public Field<Long> field15() {
+        return EpMemberMessage.EP_MEMBER_MESSAGE.VERSION;
     }
 
     /**
@@ -435,8 +451,8 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field2() {
-        return EpMemberMessage.EP_MEMBER_MESSAGE.SENDER_OGN_ACCOUNT_ID;
+    public Long value2() {
+        return getSenderOgnAccountId();
     }
 
     /**
@@ -539,8 +555,8 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Field<Long> field15() {
-        return EpMemberMessage.EP_MEMBER_MESSAGE.VERSION;
+    public Long value15() {
+        return getVersion();
     }
 
     /**
@@ -556,8 +572,9 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
      * {@inheritDoc}
      */
     @Override
-    public Long value2() {
-        return getSenderOgnAccountId();
+    public EpMemberMessageRecord value2(Long value) {
+        setSenderOgnAccountId(value);
+        return this;
     }
 
     /**
@@ -668,6 +685,10 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -697,27 +718,6 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
         value13(value13);
         value14(value14);
         value15(value15);
-        return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long value15() {
-        return getVersion();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public EpMemberMessageRecord value2(Long value) {
-        setSenderOgnAccountId(value);
         return this;
     }
 }

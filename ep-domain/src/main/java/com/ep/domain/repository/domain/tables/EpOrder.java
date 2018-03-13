@@ -8,21 +8,14 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
+import org.jooq.*;
+import org.jooq.impl.TableImpl;
 
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Generated;
-
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.jooq.impl.TableImpl;
 
 
 /**
@@ -38,91 +31,67 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrder extends TableImpl<EpOrderRecord> {
 
-    private static final long serialVersionUID = -483939818;
-
     /**
      * The reference instance of <code>ep.ep_order</code>
      */
     public static final EpOrder EP_ORDER = new EpOrder();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrderRecord> getRecordType() {
-        return EpOrderRecord.class;
-    }
-
+    private static final long serialVersionUID = -483939818;
     /**
      * The column <code>ep.ep_order.id</code>. 主键
      */
     public final TableField<EpOrderRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
-
     /**
      * The column <code>ep.ep_order.member_id</code>. 会员id
      */
     public final TableField<EpOrderRecord, Long> MEMBER_ID = createField("member_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "会员id");
-
     /**
      * The column <code>ep.ep_order.child_id</code>. 孩子id
      */
     public final TableField<EpOrderRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
-
     /**
      * The column <code>ep.ep_order.ogn_id</code>. 机构id
      */
     public final TableField<EpOrderRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
-
     /**
      * The column <code>ep.ep_order.course_id</code>. 课程id
      */
     public final TableField<EpOrderRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程id");
-
     /**
      * The column <code>ep.ep_order.class_id</code>. 班次id
      */
     public final TableField<EpOrderRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
-
     /**
      * The column <code>ep.ep_order.prize</code>. 价格
      */
     public final TableField<EpOrderRecord, BigDecimal> PRIZE = createField("prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false), this, "价格");
-
     /**
      * The column <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
      */
     public final TableField<EpOrderRecord, EpOrderStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderStatus.class), this, "订单状态:保存；成功；已开班；结束；拒绝；取消；");
-
     /**
      * The column <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */
     public final TableField<EpOrderRecord, Timestamp> AUTH_TIME = createField("auth_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "机构审核订单时间");
-
     /**
      * The column <code>ep.ep_order.cancel_time</code>. 订单取消时间
      */
     public final TableField<EpOrderRecord, Timestamp> CANCEL_TIME = createField("cancel_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "订单取消时间");
-
     /**
      * The column <code>ep.ep_order.create_at</code>. 创建时间
      */
     public final TableField<EpOrderRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_order.update_at</code>. 更新时间
      */
     public final TableField<EpOrderRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_order.remark</code>. 备注
      */
     public final TableField<EpOrderRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
-
     /**
      * The column <code>ep.ep_order.del_flag</code>. 删除标记
      */
     public final TableField<EpOrderRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
-
     /**
      * The column <code>ep.ep_order.version</code>.
      */
@@ -148,6 +117,14 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
 
     private EpOrder(String alias, Table<EpOrderRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "订单表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrderRecord> getRecordType() {
+        return EpOrderRecord.class;
     }
 
     /**
