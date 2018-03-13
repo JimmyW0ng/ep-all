@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpOrderPo;
@@ -140,7 +141,7 @@ public class OrderController extends BackendController {
     public ResultDo orderSuccess(
             EpOrderPo po) {
         ResultDo resultDo = ResultDo.build();
-        if (orderService.orderSuccessById(po.getId(), po.getClassId()) == 1) {
+        if (orderService.orderSuccessById(po.getId(), po.getClassId()) == BizConstant.DB_NUM_ONE) {
             //报名成功
             resultDo.setResult(EpOrderStatus.success.getLiteral());
             return resultDo;

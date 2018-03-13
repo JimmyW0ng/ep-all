@@ -263,12 +263,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int orderSuccessById(Long id){
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS,EpOrderStatus.success)
-                .set(EP_ORDER.REMARK,"")
-                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                .and(EP_ORDER.ID.eq(id))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER.STATUS,EpOrderStatus.success)
+                         .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
+                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                         .and(EP_ORDER.ID.eq(id))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**

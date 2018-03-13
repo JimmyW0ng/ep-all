@@ -258,5 +258,34 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
     }
+
+    /**
+     * 课程总参加人数扣减
+     *
+     * @param courseId
+     * @param count
+     */
+    public int totalParticipateCancel(Long courseId, int count) {
+        return dslContext.update(EP_ORGAN_COURSE)
+                         .set(EP_ORGAN_COURSE.TOTAL_PARTICIPATE, EP_ORGAN_COURSE.TOTAL_PARTICIPATE.subtract(count))
+                         .where(EP_ORGAN_COURSE.ID.eq(courseId))
+                         .and(EP_ORGAN_COURSE.TOTAL_PARTICIPATE.greaterThan(BizConstant.DB_NUM_ZERO))
+                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
+     * 增加课程总参与人数
+     *
+     * @param courseId
+     * @param count
+     */
+    public int addTotalParticipate(Long courseId, int count) {
+        return dslContext.update(EP_ORGAN_COURSE)
+                         .set(EP_ORGAN_COURSE.TOTAL_PARTICIPATE, EP_ORGAN_COURSE.TOTAL_PARTICIPATE.add(count))
+                         .where(EP_ORGAN_COURSE.ID.eq(courseId))
+                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                         .execute();
+    }
 }
 

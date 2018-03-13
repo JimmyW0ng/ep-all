@@ -251,12 +251,13 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      * @param classId
      * @param count
      */
-    public void enteredNumByOrderCancel(Long classId,int count){
-        dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.ENTERED_NUM,EP_ORGAN_CLASS.ENTERED_NUM.subtract(count))
-                .where(EP_ORGAN_CLASS.ID.eq(classId))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .execute();
+    public int enteredNumByOrderCancel(Long classId, int count) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                         .set(EP_ORGAN_CLASS.ENTERED_NUM,EP_ORGAN_CLASS.ENTERED_NUM.subtract(count))
+                         .where(EP_ORGAN_CLASS.ID.eq(classId))
+                         .and(EP_ORGAN_CLASS.ENTERED_NUM.greaterThan(BizConstant.DB_NUM_ZERO))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     public Page<OrganClassBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition){

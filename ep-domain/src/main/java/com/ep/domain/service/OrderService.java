@@ -45,6 +45,8 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private OrganRepository organRepository;
+    @Autowired
     private OrganCourseRepository organCourseRepository;
     @Autowired
     private FileRepository fileRepository;
@@ -255,7 +257,15 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public int orderSuccessById(Long id, Long classId) {
         int count = orderRepository.orderSuccessById(id);
-        organClassRepository.updateEnteredNumByorderSuccess(classId, count);
+        if (count > BizConstant.DB_NUM_ZERO) {
+            EpOrderPo orderPo = orderRepository.getById(id);
+            // 增加班次成功报名人数
+            organClassRepository.updateEnteredNumByorderSuccess(classId, count);
+            // 增加课程总参与人数
+            organCourseRepository.addTotalParticipate(orderPo.getCourseId(), count);
+            // 增加机构总参与人数
+            organRepository.addTotalParticipate(orderPo.getOgnId(), count);
+        }
         return count;
     }
 
@@ -304,10 +314,15 @@ public class OrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void orderCancelById(Long id, EpOrderStatus status) {
-        Long classId = orderRepository.findById(id).getClassId();
+        EpOrderPo orderPo = orderRepository.findById(id);
         int count = orderRepository.orderCancelById(id, status);
-        if (status.equals(EpOrderStatus.success)) {
-            organClassRepository.enteredNumByOrderCancel(classId, count);
+        if (count > BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.success)) {
+            // 班次成功报名人数扣减
+            organClassRepository.enteredNumByOrderCancel(orderPo.getClassId(), count);
+            // 课程总参加人数扣减
+            organCourseRepository.totalParticipateCancel(orderPo.getCourseId(), count);
+            // 机构总参加人数扣减
+            organRepository.totalParticipateCancel(orderPo.getOgnId(), count);
         }
     }
 }

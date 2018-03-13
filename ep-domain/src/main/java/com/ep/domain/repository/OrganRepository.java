@@ -258,5 +258,35 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                 .and(EP_ORGAN.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 机构总参加人数扣减
+     *
+     * @param ognId
+     * @param count
+     */
+    public int totalParticipateCancel(Long ognId, int count) {
+        return dslContext.update(EP_ORGAN)
+                         .set(EP_ORGAN.TOTAL_PARTICIPATE, EP_ORGAN.TOTAL_PARTICIPATE.subtract(count))
+                         .where(EP_ORGAN.ID.eq(ognId))
+                         .and(EP_ORGAN.TOTAL_PARTICIPATE.greaterThan(BizConstant.DB_NUM_ZERO))
+                         .and(EP_ORGAN.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
+     * 增加机构总参与人数
+     *
+     * @param ognId
+     * @param count
+     * @return
+     */
+    public int addTotalParticipate(Long ognId, int count) {
+        return dslContext.update(EP_ORGAN)
+                         .set(EP_ORGAN.TOTAL_PARTICIPATE, EP_ORGAN.TOTAL_PARTICIPATE.add(count))
+                         .where(EP_ORGAN.ID.eq(ognId))
+                         .and(EP_ORGAN.DEL_FLAG.eq(false))
+                         .execute();
+    }
 }
 
