@@ -2,6 +2,7 @@ package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.FileTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
@@ -9,6 +10,7 @@ import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.dto.CreateOrganCourseDto;
+import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
@@ -197,10 +199,11 @@ public class OrganCourseController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         dto.getOrganCoursePo().setOgnId(ognId);
-//        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
-//        List<OrganClassBo> organClassBos = dto.getOrganClassBos();
-//        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-        return organCourseService.createOrganCourseByMerchant(dto);
+
+        return
+//                ResultDo.build();
+                organCourseService.createOrganCourseByMerchant(dto);
+//
     }
 
     /**
@@ -339,7 +342,9 @@ public class OrganCourseController extends BackendController {
         Long ognId = currentUser.getOgnId();
 
         dto.getOrganCoursePo().setOgnId(ognId);
-        return organCourseService.updateOrganCourseByMerchant(dto);
+        return
+//                ResultDo.build();
+                organCourseService.updateOrganCourseByMerchant(dto);
     }
 
     /**
@@ -348,7 +353,9 @@ public class OrganCourseController extends BackendController {
      * @param courseId
      * @return
      */
-    public ResultDo deleteByCourseId(Long courseId) {
+    @GetMapping("/delete/{id}")
+    @ResponseBody
+    public ResultDo deleteByCourseId(@PathVariable(value = "id") Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         return organCourseService.deleteCourseByCourseId(courseId, ognId);
@@ -378,6 +385,27 @@ public class OrganCourseController extends BackendController {
     @ResponseBody
     public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) throws Exception {
         return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, null);
+    }
+
+    /**
+     * 上传课程内容图片
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping("uploadCourseDescPic")
+//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @ResponseBody
+    public String uploadCourseDescPic(@RequestParam("upfile") MultipartFile file
+    ) throws Exception {
+        ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
+        FileDto res = (FileDto) resultDo.getResult();
+        String result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() +
+                "\", \"preCode\": \"" + res.getPreCode()
+                + "\", \"size\": " + file.getSize() + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getName())
+                + "\", \"url\": \"" + res.getFileUrl() + "\"}";
+
+        return result.replaceAll("\\\\", "\\\\");
     }
 }
 

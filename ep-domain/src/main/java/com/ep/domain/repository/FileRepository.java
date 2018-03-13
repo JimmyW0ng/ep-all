@@ -41,6 +41,20 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
     }
 
     /**
+     * 根据业务类型和来源获取文件preCode，按排序字段正序和创建时间正序排列
+     *
+     * @return
+     */
+    public List<String> getPreCodeByBizTypeAndSourceId(Short bscFileBizType, Long sourceId) {
+        return dslContext.select(EP_FILE.PRE_CODE).from(EP_FILE)
+                .where(EP_FILE.BIZ_TYPE_CODE.eq(bscFileBizType))
+                .and(EP_FILE.SOURCE_ID.eq(sourceId))
+                .and(EP_FILE.DEL_FLAG.eq(false))
+                .orderBy(EP_FILE.SORT.asc(), EP_FILE.CREATE_AT.asc())
+                .fetchInto(String.class);
+    }
+
+    /**
      * 根据业务类型和来源获取文件链接，按排序字段正序和创建时间正序排列
      *
      * @return
@@ -170,6 +184,18 @@ public class FileRepository extends AbstractCRUDRepository<EpFileRecord, Long, E
                 .set(EP_FILE.DEL_FLAG, true)
                 .where(EP_FILE.BIZ_TYPE_CODE.eq(bizTypeCode))
                 .and(EP_FILE.SOURCE_ID.eq(sourceId))
+                .execute();
+    }
+
+    /**
+     * 根据业务类型和来源id逻辑删除记录
+     *
+     * @param preCodes
+     */
+    public void deleteLogicByPreCodes(List<String> preCodes) {
+        dslContext.update(EP_FILE)
+                .set(EP_FILE.DEL_FLAG, true)
+                .where(EP_FILE.PRE_CODE.in(preCodes))
                 .execute();
     }
 }

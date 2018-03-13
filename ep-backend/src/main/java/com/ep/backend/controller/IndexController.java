@@ -36,7 +36,7 @@ public class IndexController extends BackendController {
     private OrganService organService;
 
     /**
-     * 登录成功后首页
+     * 登录成功后布局页
      *
      * @param model
      * @return

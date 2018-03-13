@@ -27,10 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Description: 机构课程服务类
@@ -167,23 +164,30 @@ public class OrganCourseService {
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         //获取最低价格start
-        BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
-        for (int i = 0; i < priceArr.length; i++) {
-            priceArr[i] = organClassBos.get(i).getClassPrize();
-        }
-        int index = 0;
-        for (int j = index + 1; j < priceArr.length; j++) {
-            if (priceArr[j].compareTo(priceArr[index]) == -1) {
-                BigDecimal temp = priceArr[j];
-                priceArr[j] = priceArr[index];
-                priceArr[index] = temp;
+        BigDecimal priceMin;
+        if (CollectionsTools.isNotEmpty(organClassBos)) {
+            BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
+            for (int i = 0; i < priceArr.length; i++) {
+                priceArr[i] = organClassBos.get(i).getClassPrize();
             }
+            int index = 0;
+            for (int j = index + 1; j < priceArr.length; j++) {
+                if (priceArr[j].compareTo(priceArr[index]) == -1) {
+                    BigDecimal temp = priceArr[j];
+                    priceArr[j] = priceArr[index];
+                    priceArr[index] = temp;
+                }
+            }
+            priceMin = priceArr[index];
+        } else {
+            priceMin = BigDecimal.ZERO;
         }
-        BigDecimal priceMin = priceArr[index];
         //获取最低价格end
         //机构课程表插入数据
         organCoursePo.setPrizeMin(priceMin);
         organCoursePo.setCourseStatus(EpOrganCourseCourseStatus.save);
+        //内容图片preCode
+        List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         log.info("[课程]机构课程表ep_organ_course插入数据。{}。", organCoursePo);
         organCourseRepository.insert(organCoursePo);
         Long insertOrganCourseId = organCoursePo.getId();
@@ -248,6 +252,13 @@ public class OrganCourseService {
             log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
             fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), insertOrganCourseId);
         }
+        //课程内容图片
+        if (CollectionsTools.isNotEmpty(courseDescPicPreCodes)) {
+            courseDescPicPreCodes.forEach(proCode -> {
+                fileRepository.updateSourceIdByPreCode(proCode, insertOrganCourseId);
+            });
+            log.info("[课程]文件表ep_file更新数据。内容图片courseDescPicPreCodes={}。", courseDescPicPreCodes);
+        }
         log.info("[课程]创建课程成功。课程id={}。", insertOrganCourseId);
         return ResultDo.build();
     }
@@ -264,6 +275,8 @@ public class OrganCourseService {
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         //标签
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+        //内容图片preCode
+        List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         //获取最低价格start
         BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
         for (int i = 0; i < priceArr.length; i++) {
@@ -367,6 +380,18 @@ public class OrganCourseService {
             log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
             fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), organCourseId);
         }
+        //课程内容图片
+        if (CollectionsTools.isNotEmpty(courseDescPicPreCodes)) {
+            courseDescPicPreCodes.forEach(proCode -> {
+                fileRepository.updateSourceIdByPreCode(proCode, organCourseId);
+            });
+            List<String> oldProCodes = fileRepository.getPreCodeByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, organCourseId);
+            //待删除，差集oldProCodes里有，courseDescPicPreCodes里没有
+            Set<String> diffDel = Sets.difference(new HashSet<String>(oldProCodes), new HashSet<String>(courseDescPicPreCodes));
+            fileRepository.deleteLogicByPreCodes(new ArrayList<String>(diffDel));
+            log.info("[课程]文件表ep_file更新数据。原内容图片oldProCodes={},新内容图片courseDescPicPreCodes={}。", oldProCodes, courseDescPicPreCodes);
+        }
+
         log.info("[课程]修改课程成功。课程id={}。", organCourseId);
         return ResultDo.build();
     }
@@ -374,6 +399,7 @@ public class OrganCourseService {
     /**
      * 根据课程id删除课程
      * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_catalog，ep_organ_course_team，ep_organ_course_tag
+     * ep_file
      *
      * @param courseId
      */
@@ -399,6 +425,10 @@ public class OrganCourseService {
         if (count == BizConstant.DB_NUM_ZERO) {
             organCatalogRepository.deletePhysicByOgnIdAndCatalogId(ognId, courseCatalogId);
         }
+        //主图 逻辑删除
+        fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseId);
+        //内容图片 逻辑删除
+        fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, courseId);
         organCourseTeamRepository.deletePhysicByCourseId(courseId);
         log.info("[课程]删除课程成功。课程id={}。", courseId);
         return ResultDo.build();

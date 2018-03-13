@@ -122,7 +122,7 @@ function addLoadingWrap() {
 function removeLoadingWrap() {
     $(".loadingWrap").remove();
 }
-function checkFormImgRequired(array) {
+function checkFormCreateImgRequired(array) {
     var flag = true
     for (var item in array) {
         if ($("#" + array[item].eleId).val() == "") {

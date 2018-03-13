@@ -17,8 +17,10 @@
                         <span>
                             <img th:if="${currentUser.ognId==null}" alt="image" class="img-circle"
                                  style="width: 64px;height:64px" th:src="@{/img/user_ali.png}"/>
-                            <img th:if="${currentUser.ognId!=null}" alt="image" class="img-circle"
+                            <img th:if="${currentUser.ognId!=null&&logoImgUrl!=null}" alt="image" class="img-circle"
                                  style="width: 64px;height:64px" th:src="${logoImgUrl}"/>
+                            <img th:if="${currentUser.ognId!=null&&logoImgUrl==null}" alt="image" class="img-circle"
+                                 style="width: 64px;height:64px" th:src="@{/img/user_ali.png}"/>
                         </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">

@@ -12,11 +12,6 @@
     </th:block>
 </header>
 <body>
-<script th:inline="javascript">
-    function timestampSubstring(data) {
-        return "cccccc"
-    }
-</script>
 <div>
     <div class="col-lg-12">
 
@@ -133,8 +128,6 @@
     function onlineBox(id) {
         parent.layer.alert('该课程确认上线', {
                 icon: 1,
-                skin: 'layer-ext-moon',
-
             },
             function (index) {
                 onlineDo(id);
@@ -156,8 +149,6 @@
     function deleteBox(id) {
         parent.layer.alert('确认删除课程', {
                 icon: 1,
-                skin: 'layer-ext-moon',
-
             },
             function (index) {
                 delDo(id);
@@ -170,9 +161,14 @@
             url:"/auth/organCourse/delete/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/organCourse/index');
+                    toastr_success(null, '/auth/organCourse/merchantIndex');
+                } else {
+                    toastr.error(data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
 
     }
