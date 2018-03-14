@@ -180,8 +180,8 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
      *
      * @param po
      */
-    public void updateChildHonor(EpMemberChildHonorPo po) {
-        dslContext.update(EP_MEMBER_CHILD_HONOR)
+    public int updateChildHonor(EpMemberChildHonorPo po) {
+        return dslContext.update(EP_MEMBER_CHILD_HONOR)
                 .set(EP_MEMBER_CHILD_HONOR.CONTENT, po.getContent())
                 .where(EP_MEMBER_CHILD_HONOR.ID.eq(po.getId()))
                 .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
@@ -193,8 +193,8 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
      *
      * @param id
      */
-    public void deleteLogicById(Long id) {
-        dslContext.update(EP_MEMBER_CHILD_HONOR)
+    public int deleteLogicById(Long id) {
+        return dslContext.update(EP_MEMBER_CHILD_HONOR)
                 .set(EP_MEMBER_CHILD_HONOR.DEL_FLAG, true)
                 .where(EP_MEMBER_CHILD_HONOR.ID.eq(id))
                 .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))

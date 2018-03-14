@@ -92,6 +92,13 @@ public class MemberChildHonorController extends BackendController {
         return "childHonor/index";
     }
 
+    /**
+     * 创建初始化
+     *
+     * @param model
+     * @param request
+     * @return
+     */
     @GetMapping("createInit")
     public String createInit(Model model, HttpServletRequest request) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -133,6 +140,12 @@ public class MemberChildHonorController extends BackendController {
         return resultDo;
     }
 
+    /**
+     * 创建孩子荣誉
+     *
+     * @param po
+     * @return
+     */
     @PostMapping("create")
     @ResponseBody
     public ResultDo create(EpMemberChildHonorPo po) {
@@ -140,18 +153,29 @@ public class MemberChildHonorController extends BackendController {
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
         po.setOgnId(ognId);
-        memberChildHonorService.create(po);
+        memberChildHonorService.createHonor(po);
         return resultDo;
     }
 
+    /**
+     * 修改孩子荣誉
+     * @param po
+     * @return
+     */
     @PostMapping("update")
     @ResponseBody
     public ResultDo update(EpMemberChildHonorPo po) {
         ResultDo resultDo = ResultDo.build();
-        memberChildHonorService.update(po);
+        memberChildHonorService.updateHonor(po);
         return resultDo;
     }
 
+    /**
+     * 修改初始化
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("updateInit/{id}")
     public String updateInit(Model model, @PathVariable("id") Long id) {
         EpMemberChildHonorPo bo = memberChildHonorService.findBoById(id);
@@ -159,11 +183,14 @@ public class MemberChildHonorController extends BackendController {
         return "childHonor/form";
     }
 
+    /**
+     * 删除孩子荣誉
+     * @param id
+     * @return
+     */
     @GetMapping("delete/{id}")
     @ResponseBody
     public ResultDo delete(@PathVariable("id") Long id) {
-        ResultDo resultDo = ResultDo.build();
-        memberChildHonorService.deleteById(id);
-        return resultDo;
+        return memberChildHonorService.deleteById(id);
     }
 }

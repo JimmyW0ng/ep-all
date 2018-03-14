@@ -1,12 +1,10 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
-import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
@@ -26,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -106,8 +103,7 @@ public class MemberChildCommentController extends BackendController {
      */
     @PostMapping("updateComment")
     @ResponseBody
-    public ResultDo updateComment(HttpServletRequest request,
-                                  @RequestParam(value = "id") Long id,
+    public ResultDo updateComment(@RequestParam(value = "id") Long id,
                                   @RequestParam(value = "childId") Long childId,
                                   @RequestParam(value = "classCatalogId") Long classCatalogId,
                                   @RequestParam(value = "content") String content,
@@ -115,22 +111,7 @@ public class MemberChildCommentController extends BackendController {
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
-        EpMemberChildCommentPo memberChildCommentPo = memberChildCommentService.findById(id);
-        List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
-        if (CollectionsTools.isNotEmpty(tagIds)) {
-            tagIds.forEach(p -> {
-                EpMemberChildTagPo po = new EpMemberChildTagPo();
-                po.setChildId(childId);
-                po.setOgnId(ognId);
-                po.setCourseId(memberChildCommentPo.getCourseId());
-                po.setClassId(memberChildCommentPo.getClassId());
-                po.setClassCatalogId(classCatalogId);
-                po.setTagId(p);
-                insertPos.add(po);
-            });
-        }
-        memberChildCommentService.updateComment(id, content, childId, classCatalogId, insertPos);
+        ResultDo resultDo = memberChildCommentService.updateComment(id, content, childId, classCatalogId, ognId, tagIds);
         //课时评价事件start
         ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
         eventPojo.setChildId(childId);
@@ -172,13 +153,4 @@ public class MemberChildCommentController extends BackendController {
         return resultDo;
     }
 
-    @PostMapping("updateChildTag")
-    @ResponseBody
-    public ResultDo updateChildTag(
-            @RequestBody Long[] ids
-    ) {
-        ResultDo resultDo = ResultDo.build();
-//        memberChildTagService.updateChildTag(ids);
-        return resultDo;
-    }
 }

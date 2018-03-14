@@ -201,10 +201,7 @@ public class OrganCourseController extends BackendController {
         Long ognId = currentUser.getOgnId();
         dto.getOrganCoursePo().setOgnId(ognId);
 
-        return
-//                ResultDo.build();
-                organCourseService.createOrganCourseByMerchant(dto);
-//
+        return organCourseService.createOrganCourseByMerchant(dto);
     }
 
     /**
@@ -343,9 +340,7 @@ public class OrganCourseController extends BackendController {
         Long ognId = currentUser.getOgnId();
 
         dto.getOrganCoursePo().setOgnId(ognId);
-        return
-//                ResultDo.build();
-                organCourseService.updateOrganCourseByMerchant(dto);
+        return organCourseService.updateOrganCourseByMerchant(dto);
     }
 
     /**

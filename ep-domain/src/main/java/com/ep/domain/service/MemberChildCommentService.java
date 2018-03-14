@@ -13,6 +13,7 @@ import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildCommentRepository;
 import com.ep.domain.repository.MemberChildTagRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class MemberChildCommentService {
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
 
-    public EpMemberChildCommentPo findById(Long id) {
+    public Optional<EpMemberChildCommentPo> findById(Long id) {
         return memberChildCommentRepository.findById(id);
     }
 
@@ -136,12 +137,37 @@ public class MemberChildCommentService {
      * @param content
      * @param childId
      * @param classCatalogId
-     * @param insertPos
+     * @param ognId
+     * @param tagIds
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateComment(Long id, String content, Long childId, Long classCatalogId, List<EpMemberChildTagPo> insertPos) {
+    public ResultDo updateComment(Long id, String content, Long childId, Long classCatalogId, Long ognId, List<Long> tagIds) {
+        log.info("[评论]修改评论开始，评论id={},评论内容content={},childId={},classCatalogId={},ognId={},tagIds={}。", id,
+                content, childId, classCatalogId, ognId, tagIds);
+        Optional<EpMemberChildCommentPo> optional = memberChildCommentRepository.findById(id);
+        if (!optional.isPresent()) {
+            log.error("[评论]修改评论失败，次评论不存在，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST);
+        }
+        EpMemberChildCommentPo memberChildCommentPo = optional.get();
+        List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
+        if (CollectionsTools.isNotEmpty(tagIds)) {
+            tagIds.forEach(p -> {
+                EpMemberChildTagPo po = new EpMemberChildTagPo();
+                po.setChildId(childId);
+                po.setOgnId(ognId);
+                po.setCourseId(memberChildCommentPo.getCourseId());
+                po.setClassId(memberChildCommentPo.getClassId());
+                po.setClassCatalogId(classCatalogId);
+                po.setTagId(p);
+                insertPos.add(po);
+            });
+        }
         memberChildCommentRepository.updateContent(id, content);
+        //先物理删除孩子标签，再插入
         memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classCatalogId);
         memberChildTagRepository.insert(insertPos);
+        log.info("[评论]修改评论成功，评论id={}。");
+        return ResultDo.build();
     }
 }

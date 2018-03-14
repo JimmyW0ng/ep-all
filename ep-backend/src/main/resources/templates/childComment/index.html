@@ -204,30 +204,6 @@
 
 <script>
     /**
-     * 修改标签
-     */
-    function updateChildTagDo(ele) {
-        $("#uploadChildTagBox").find("a").attr("disabled",true)
-        var tagIds=[]
-        $("#uploadChildTagBox").find("input[name='id']").each(function () {
-            if($(this).is(':checked')){
-                tagIds.push($(this).val())
-            }
-        })
-        $.ajax({
-            type:"POST",
-            url:"/auth/childComment/updateChildTag",
-            data:JSON.stringify(tagIds),
-            contentType: "application/json;charset=utf-8",
-            success:function (data) {
-                if(data.success){
-                    $(ele).parent().remove()
-                    $("#uploadChildTagBox").find("a").attr("disabled",false)
-                }
-            }
-        })
-    }
-    /**
      * 修改标签初始化
      * @param ele
      */

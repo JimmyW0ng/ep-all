@@ -2,6 +2,7 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildHonorBo;
 import com.ep.domain.pojo.po.EpFilePo;
@@ -83,8 +84,11 @@ public class MemberChildHonorService {
      *
      * @param po
      */
-    public void create(EpMemberChildHonorPo po) {
+    public ResultDo createHonor(EpMemberChildHonorPo po) {
+        log.info("[荣誉]，新增孩子荣誉开始，荣誉对象po={}。", po);
         memberChildHonorRepository.insert(po);
+        log.info("[荣誉]，新增孩子荣誉成功，id={}。", po.getId());
+        return ResultDo.build();
     }
 
     /**
@@ -102,8 +106,15 @@ public class MemberChildHonorService {
      *
      * @param po
      */
-    public void update(EpMemberChildHonorPo po) {
-        memberChildHonorRepository.updateChildHonor(po);
+    public ResultDo updateHonor(EpMemberChildHonorPo po) {
+        log.info("[荣誉]，修改孩子荣誉开始，荣誉对象po={}。", po);
+        if (memberChildHonorRepository.updateChildHonor(po) == BizConstant.DB_NUM_ONE) {
+            log.info("[荣誉]，修改孩子荣誉成功，id={}。", po.getId());
+            return ResultDo.build();
+        } else {
+            log.error("[荣誉]，修改孩子荣誉失败，id={}。", po.getId());
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     /**
@@ -111,7 +122,14 @@ public class MemberChildHonorService {
      *
      * @param id
      */
-    public void deleteById(Long id) {
-        memberChildHonorRepository.deleteLogicById(id);
+    public ResultDo deleteById(Long id) {
+        log.info("[荣誉]，删除孩子荣誉开始，荣誉id={}。", id);
+        if (memberChildHonorRepository.deleteLogicById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[荣誉]，删除孩子荣誉成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[荣誉]，删除孩子荣誉失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 }
