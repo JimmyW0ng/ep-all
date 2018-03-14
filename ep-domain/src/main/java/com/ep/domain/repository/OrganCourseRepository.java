@@ -95,7 +95,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline))
                 .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.online,
-                        EpOrganCourseCourseStatus.offline))
+                        EpOrganCourseCourseStatus.offline), EP_ORGAN_COURSE.ONLINE_TIME.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(OrganCourseBo.class);
