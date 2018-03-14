@@ -69,12 +69,12 @@
         <div name="constantTagBox"></div>
     </div>
 </script>
-<script type="text/template" id='ognTagTmpl'>
+<script type="text/template" id='constantTagTmpl'>
     <div class="col-sm-2" style="margin-bottom: 20px">
         <input name="id" type="hidden" value=${id} >
         <input name="tagName" type="hidden" value=${tagName}>
         <input name="usedFlag" type="hidden" value=${usedFlag}>
-        <span class="label">${tagName}</span>
+        <span class="label constant-tag">${tagName}</span>
         <a name="removeBtn" href="javascript:void(0);" onclick="removeTag(this)" value=${id} ><span class="glyphicon glyphicon-remove"
                                                                       aria-hidden="true"></span></a>
     </div>
@@ -108,7 +108,7 @@
                     var tag = [{id:"",tagName: data.result}]
                     var $box=$("#allTagBox").find("input[name='constantCatalogId"+catalogId+"']").eq(0).siblings("div[name='constantTagBox']").eq(0)
 
-                    $box.append($("#ognTagTmpl").tmpl(tag));
+                    $box.append($("#constantTagTmpl").tmpl(tag));
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -158,11 +158,11 @@
                 if(data.success){
                     //公用标签
                     var constantTag=data.result.constantTag
-                    $("#constantTagBox").html($("#ognTagTmpl").tmpl(constantTag))
+                    $("#constantTagBox").html($("#constantTagTmpl").tmpl(constantTag))
                     $("#constantTagBox").find("a").hide()
                     //私有标签
-                    var ognTag=data.result.ognTag
-                    $("#createTagBox").html($("#ognTagTmpl").tmpl(ognTag))
+//                    var ognTag=data.result.ognTag
+//                    $("#createTagBox").html($("#ognTagTmpl").tmpl(ognTag))
 
 
 
@@ -181,7 +181,7 @@
         var constantTagsMap = [[${constantTagsMap}]]
         for(var item in constantTagsMap){
             var $box=$("#allTagBox").find("input[value="+item+"]").eq(0).siblings("div[name='constantTagBox']").eq(0)
-            $box.append($("#ognTagTmpl").tmpl(constantTagsMap[item]))
+            $box.append($("#constantTagTmpl").tmpl(constantTagsMap[item]))
         }
         $("#allTagBox").find("input[name='usedFlag']").each(function () {
             if($(this).attr("value")=="true"){

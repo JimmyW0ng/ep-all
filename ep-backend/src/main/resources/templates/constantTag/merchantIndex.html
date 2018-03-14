@@ -64,9 +64,16 @@
         <input name="id" type="hidden" value=${id} >
         <input name="tagName" type="hidden" value=${tagName}>
         <input name="ognFlag" value=true type="hidden">
-        <span class="label">${tagName}</span>
+        <span class="label ogn-tag">${tagName}</span>
         <a href="javascript:void(0);" onclick="removeTag(this)" value=${id}><span class="glyphicon glyphicon-remove"
-                                                                      aria-hidden="true"></span></a>
+                                                                                  aria-hidden="true"></span></a>
+    </div>
+</script>
+<script type="text/template" id='constantTagTmpl'>
+    <div class="col-sm-2" style="margin-bottom: 20px">
+        <input name="id" type="hidden" value=${id}>
+        <input name="tagName" type="hidden" value=${tagName}>
+        <span class="label constant-tag">${tagName}</span>
     </div>
 </script>
 <script th:replace="~{fragments/scripts}"></script>
@@ -132,8 +139,7 @@
                 if(data.success){
                     //公用标签
                     var constantTag=data.result.constantTag
-                    $("#constantTagBox").html($("#ognTagTmpl").tmpl(constantTag))
-                    $("#constantTagBox").find("a").hide()
+                    $("#constantTagBox").html($("#constantTagTmpl").tmpl(constantTag))
                     //私有标签
                     var ognTag=data.result.ognTag
                     $("#createTagBox").html($("#ognTagTmpl").tmpl(ognTag))

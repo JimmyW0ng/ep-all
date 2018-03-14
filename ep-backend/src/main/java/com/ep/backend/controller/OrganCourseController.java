@@ -60,6 +60,8 @@ public class OrganCourseController extends BackendController {
     private OrganClassCatalogService organClassCatalogService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private OrganService organService;
 
     @GetMapping("index")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
@@ -153,8 +155,13 @@ public class OrganCourseController extends BackendController {
         //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
         //课程对象
-        model.addAttribute("organCoursePo", new EpOrganCoursePo());
-        return "organCourse/merchantForm";
+        EpOrganCoursePo organCoursePo = new EpOrganCoursePo();
+        Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
+        if (organOptional.isPresent()) {
+            organCoursePo.setCourseAddress(organOptional.get().getOgnAddress());
+        }
+        model.addAttribute("organCoursePo", organCoursePo);
+        return "organCourse/merchantForm1";
     }
 
     /**
@@ -165,24 +172,19 @@ public class OrganCourseController extends BackendController {
      */
     @GetMapping("findTagsByCatalog/{catalogId}")
     @ResponseBody
-    public ResultDo findTagsByConstantCatalog(
-            @PathVariable("catalogId") Long catalogId,
-            HttpServletRequest request) {
+    public ResultDo<List<EpConstantTagPo>> findTagsByConstantCatalog(
+            @PathVariable("catalogId") Long catalogId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
+        ResultDo<List<EpConstantTagPo>> resultDo = ResultDo.build();
 
         //公用标签
         List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
         //私有标签
         List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
         ognTagList.addAll(constantTagList);
-        Map<String, Object> map = Maps.newHashMap();
 
-        map.put("ognTagList", ognTagList);
-
-
-        resultDo.setResult(map);
+        resultDo.setResult(ognTagList);
         return resultDo;
     }
 
@@ -266,7 +268,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantUpdateInit/{courseId}")
-    public String merchantUpdateInit(HttpServletRequest request, Model model, @PathVariable(value = "courseId") Long courseId) {
+    public String merchantUpdateInit(Model model, @PathVariable(value = "courseId") Long courseId) {
 
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
@@ -326,7 +328,7 @@ public class OrganCourseController extends BackendController {
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
-        return "organCourse/merchantForm";
+        return "organCourse/merchantForm1";
     }
 
     /**

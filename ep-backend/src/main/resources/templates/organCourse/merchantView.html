@@ -1,145 +1,150 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
->
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head th:replace="~{fragments/header :: common_header}">
-
 </head>
 <header>
     <th:block layout:fragment="links">
-        <link th:href="@{/css/plugins/steps/jquery.steps.css}" rel="stylesheet">
     </th:block>
+    <style>
+        .course-label {
+            font-size: 20px;
+            font-weight: bold
+        }
+    </style>
 </header>
-<body>
-<div class="col-sm-12">
-    <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5>课程详情(<span class="required-sign">*为必填</span>)</h5>
+<body class="gray-bg">
+<div class="col-sm-11 ">
+    <div style="padding-left: 40px" class="row ">
+        <form id="frm">
+            <div class="col-sm-12 ">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">课程详情（<span class="required-sign">*为必填</span>）</label>
+                        <a style="display: inline-block;float: right" class="btn btn-xs btn-danger"
+                           href="javascript:void(0)" onclick="history.back()">返回</a>
 
-        </div>
-        <div class="ibox-content">
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" th:object="${organCoursePo}">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="courseName">课程名称 <span class="required-sign">*</span></label>
+                                    <input id="courseName" name="organCoursePo.courseName" type="text"
+                                           th:field="*{courseName}"
+                                           class=" form-control ">
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseType">课程类型 <span class="required-sign">*</span></label>
+                                    <select id="courseType" name="organCoursePo.courseType" type="text"
+                                            th:field="*{courseType}"
+                                            class=" form-control ">
+                                        <option value="">请选择</option>
+                                        <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
+                                                th:value="${state}"
+                                                th:text="#{EpOrganCourseCourseType.+${state.literal}}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseCatalogId">课程所属目录 <span class="required-sign">*</span></label>
+                                    <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
+                                            th:field="*{courseCatalogId}"
+                                            class="form-control">
+                                        <option value="">请选择</option>
+                                        <option th:each="state : ${constantCatalogMap.keySet()}"
+                                                th:value="${state}"
+                                                th:text="${constantCatalogMap.get(state)}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseIntroduce">课程简介 <span class="required-sign">*</span></label>
+                                    <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
+                                              th:field="*{courseIntroduce}"
+                                              class="form-control "></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prizeMin">最低价格 <span class="required-sign">*</span></label>
+                                    <input id="prizeMin" name="organCoursePo.prizeMin" type="text"
+                                           class="form-control" th:field="*{prizeMin}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseAddress">上课地址 <span class="required-sign">*</span></label>
+                                    <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
 
-            <form id="frm">
-                <div>
-                    <h3>课程</h3>
-                    <section style="position: static" th:object="${organCoursePo}">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="courseName">课程名称 <span class="required-sign">*</span></label>
-                                <input id="courseName" name="organCoursePo.courseName" type="text" style="width: 300px"
-                                       th:field="*{courseName}"
-                                       class=" form-control ">
-                            </div>
-                            <div class="form-group">
-                                <label for="courseType">课程类型 <span class="required-sign">*</span></label>
-                                <select id="courseType" name="organCoursePo.courseType" type="text" style="width: 300px"
-                                        th:field="*{courseType}"
-                                        class=" form-control ">
-                                    <option value="">请选择</option>
-                                    <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
-                                            th:value="${state}"
-                                            th:text="#{EpOrganCourseCourseType.+${state.literal}}">
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="courseCatalogId">课程所属目录 <span class="required-sign">*</span></label>
-                                <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
-                                        style="width: 300px" th:field="*{courseCatalogId}"
-                                        class="form-control">
-                                    <option value="">请选择</option>
-                                    <option th:each="state : ${constantCatalogMap.keySet()}"
-                                            th:value="${state}"
-                                            th:text="${constantCatalogMap.get(state)}">
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="courseIntroduce">课程简介 <span class="required-sign">*</span></label>
-                                <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
-                                          style="width: 300px" th:field="*{courseIntroduce}"
-                                          class="form-control "></textarea>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="prizeMin">最低价格 <span class="required-sign">*</span></label>
-                                <input id="prizeMin" name="organCoursePo.prizeMin" type="text" style="width: 300px"
-                                       class="form-control" th:field="*{prizeMin}">
-                            </div>
-                            <div class="form-group">
-                                <label for="courseAddress">上课地址 <span class="required-sign">*</span></label>
-                                <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
-                                          style="width: 300px"
-                                          class="form-control" th:field="*{courseAddress}">
+                                              class="form-control" th:field="*{courseAddress}">
                             </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
+                                    <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
+                                           th:value="${#dates.format(organCoursePo.onlineTime,'yyyy-MM-dd HH:mm:ss')}"
+                                           class="form-control datetimepicker">
+                                </div>
+                                <div class="form-group">
+                                    <label for="enterTimeStart">报名开始时间 <span class="required-sign">*</span>*</label>
+                                    <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
+
+                                           th:value="${#dates.format(organCoursePo.enterTimeStart,'yyyy-MM-dd HH:mm:ss')}"
+                                           class="form-control datetimepicker">
+                                </div>
+                                <div class="form-group">
+                                    <label for="enterTimeEnd">报名结束时间</label>
+                                    <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
+                                           th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}"
+                                           class="form-control datetimepicker">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
-                                <input id="onlineTime" name="organCoursePo.onlineTime" type="text" style="width: 300px"
-                                       th:value="${#dates.format(organCoursePo.onlineTime,'yyyy-MM-dd HH:mm:ss')}"
-                                       class="form-control datetimepicker">
-                            </div>
-                            <div class="form-group">
-                                <label for="enterTimeStart">报名开始时间 <span class="required-sign">*</span>*</label>
-                                <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
-                                       style="width: 300px"
-                                       th:value="${#dates.format(organCoursePo.enterTimeStart,'yyyy-MM-dd HH:mm:ss')}"
-                                       class="form-control datetimepicker">
-                            </div>
-                            <div class="form-group">
-                                <label for="enterTimeEnd">报名结束时间</label>
-                                <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
-                                       style="width: 300px"
-                                       th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}"
-                                       class="form-control datetimepicker">
+                            <div class="col-sm-9">
+                                <label>课程内容 <span class="required-sign">*</span></label>
+                                <div id="editor">
+                                </div>
+                                <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
+                                       th:value="${organCoursePo.courseContent}">
+                                <div id="preCodeBox"></div>
                             </div>
                         </div>
-                        <div class="col-sm-9">
-                            <label>课程内容 <span class="required-sign">*</span></label>
-                            <div id="editor">
-                            </div>
-                            <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
-                                   th:value="${organCoursePo.courseContent}">
-                            <div id="preCodeBox"></div>
-                        </div>
-                    </section>
-                    <h3>班次</h3>
-                    <section style="position: static">
-                        <!--<a class="btn btn-success" type="button" onclick="createClassBox()"><i-->
-                        <!--class="glyphicon glyphicon-plus"></i> 添加班次</a>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">课程班次（<span class="required-sign">*为必填</span>）</label>
+                    </div>
+                    <div class="ibox-content">
                         <div class="panel-group" id="accordion">
                             <div name="organClassBosBox" class="panel panel-default" th:each="po:${organClassBos}">
                                 <div class="panel-heading">
                                     <h5 class="panel-title">
                                         <a name="boxTitle" data-toggle="collapse" data-parent="#accordion"
                                            th:href="'#collapse'+${po.id}" th:text="${po.className}"></a>
-
                                     </h5>
                                 </div>
                                 <div th:id="'collapse'+${po.id}" class="panel-collapse collapse">
                                     <div class="panel-body ">
                                         <div name="organClassBos" class="form-group col-sm-4">
 
-                                            <label>班次名称 *</label>
+                                            <label>班次名称 <span class="required-sign">*</span></label>
                                             <input name="className" type="text" class=" form-control "
                                                    th:value="${po.className}"
                                                    onblur="setClassBoxTitle(this)">
-                                            <label>课程负责人 *</label>
+                                            <label>课程负责人 <span class="required-sign">*</span></label>
                                             <input name="ognAccountId" type="text" class=" form-control "
                                                    th:value="${organAccountMap.get(po.ognAccountId)}">
 
                                             </input>
-                                            <label>价格 *</label>
+                                            <label>价格(元) <span class="required-sign">*</span></label>
                                             <input name="classPrize" type="text" class=" form-control "
                                                    th:value="${po.classPrize}">
-                                            <label>折扣优惠 *</label>
+                                            <label>折扣优惠(%) <span class="required-sign">*</span></label>
                                             <input name="discountAmount" type="text" class=" form-control "
                                                    th:value="${po.discountAmount}">
-                                            <label>是否限制报名人数 *</label>
+                                            <label>是否限制报名人数 <span class="required-sign">*</span></label>
                                             <input name="enterLimitFlag" type="text" class=" form-control "
                                                    th:value="${po.enterLimitFlag ?'是':'否'}">
-                                            <label>要求报名人数 *</label>
+                                            <label>要求报名人数 </label>
                                             <input name="enterRequireNum" type="text" class=" form-control "
                                                    th:value="${po.enterRequireNum}">
                                             <label>总计课时 *</label>
@@ -149,29 +154,25 @@
                                         <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
                                             <div name="organClassCatalogPos"
                                                  th:each="organClassCatalogPo:${po.organClassCatalogPos}">
-                                                <div name="" class="form-group col-sm-6">
-                                                    <label class="col-sm-4 control-label"
-                                                           style="text-align: right;padding: 8px">课时</label>
-                                                    <div class=" col-sm-8">
-                                                        <input name="catalogTitle" class="form-control"
-                                                               th:value="${organClassCatalogPo.catalogTitle}"/>
-                                                    </div>
+                                                <div name="" class="col-sm-5">
+                                                    <label>课时<span class="required-sign">*</span></label>
+                                                    <input name="catalogTitle" class="form-control"
+                                                           th:value="${organClassCatalogPo.catalogTitle}"/>
                                                 </div>
-                                                <div class="form-group col-sm-6">
-                                                    <label class="col-sm-4 control-label"
-                                                           style="text-align: right;padding: 8px">开始时间</label>
-                                                    <div class=" col-sm-8">
-                                                        <input name="startTime" class="form-control datetimepicker"
-                                                               th:value="${#dates.format(organClassCatalogPo.startTime,'yyyy-MM-dd HH:mm:ss')}"/>
-                                                    </div>
+                                                <div class="col-sm-5">
+                                                    <label>开始时间<span class="required-sign">*</span></label>
+                                                    <input name="startTime" class="form-control datetimepicker"
+                                                           th:value="${#dates.format(organClassCatalogPo.startTime,'yyyy-MM-dd HH:mm:ss')}"/>
                                                 </div>
-                                                <div class="form-group col-sm-12">
-                                                    <label class="col-sm-2 control-label"
-                                                           style="text-align: right;padding: 8px">目录描述</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea name="catalogDesc" class="form-control"
-                                                                  th:text="${organClassCatalogPo.catalogDesc}"></textarea>
-                                                    </div>
+                                                <div class="col-sm-5">
+                                                    <label>结束时间</label>
+                                                    <input name="endTime" class="form-control laydateer cursor endTime"
+                                                           value="${endTime}"/>
+                                                </div>
+                                                <div class="form-group col-sm-10">
+                                                    <label>目录描述<span class="required-sign">*</span></label>
+                                                    <textarea name="catalogDesc" class="form-control"
+                                                              th:text="${organClassCatalogPo.catalogDesc}"></textarea>
                                                 </div>
                                             </div>
 
@@ -180,35 +181,50 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
-                    <h3>标签</h3>
-                    <section style="position: static">
-                        <div id="constantTagBox" class="col-sm-12">
-                            <div class="col-sm-2" th:each="bo:${organCourseTagBos}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="background: #eee;min-height: 250px;padding: 20px 0px">
+                            <div id="constantTagBox" class="col-sm-12">
+                                <div class="col-sm-2" th:each="bo:${organCourseTagBos}">
+                                    <span th:if="${bo.ognFlag}" class="label ogn-tag" th:text="${bo.tagName}"></span>
+                                    <span th:if="${!bo.ognFlag}" class="label constant-tag"
+                                          th:text="${bo.tagName}"></span>
+                                </div>
+                            </div>
 
-                                <span class="label" th:text="${bo.tagName}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">设置图片（<span class="required-sign">必需</span>)</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2">课程主图:</label>
+
+                            </div>
+                            <div class="col-sm-offset-2 course-mainpic-box">
+                                <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
+                                <input type="hidden" name="mainpic_url" id="mainpic_url">
+                                <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
                         </div>
-
-                    </section>
-                    <h3>设置图片</h3>
-                    <section style="position: static">
-                        <div class="form-group">
-                            <label class="col-sm-2">课程主图:</label>
-
-                        </div>
-                        <div class="col-sm-offset-2 course-mainpic-box">
-                            <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
-                            <input type="hidden" name="mainpic_url" id="mainpic_url">
-                            <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
-                        </div>
-                    </section>
-
+                    </div>
                 </div>
-            </form>
-
-
-        </div>
+            </div>
+        </form>
     </div>
 
 </div>
@@ -253,47 +269,11 @@
 </script>
 
 <script th:replace="~{fragments/scripts}"></script>
-
-<!--<script th:src="@{/umeditor/umeditor.config.js}"></script>-->
-<!--<script th:src="@{/umeditor/umeditor.js}"></script>-->
-<!--<script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>-->
-<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
-<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 <script th:src="@{/wangeditor/wangEditor.js}"></script>
-<!--<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>-->
-<!--<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>-->
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
 
     $(document).ready(function () {
-
-        var form = $("#frm");
-        form.validate({
-            errorPlacement: function errorPlacement(error, element) {
-                element.before(error);
-            },
-
-        });
-        form.children("div").steps({
-            headerTag: "h3",
-            bodyTag: "section",
-            transitionEffect: "slideLeft",
-            onStepChanging: function (event, currentIndex, newIndex) {
-                form.validate().settings.ignore = ":disabled,:hidden";
-                return form.valid();
-            },
-//            onFinishing: function (event, currentIndex) {
-//                form.validate().settings.ignore = ":disabled";
-//                return form.valid();
-//            },
-            onCanceled: function () {
-                window.location.href = "/auth/organCourse/merchantIndex"
-
-            },
-
-        });
-
-        $("ul[role='menu'] li").eq(2).remove()//去除完成按钮
 
         $("#editor").html($("#courseContent").val())
 

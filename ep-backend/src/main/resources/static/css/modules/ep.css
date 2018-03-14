@@ -24,6 +24,7 @@ img[src=""] {
     height: 165px
 }
 
+/*教师头像img*/
 .teacher-avatar-img-url {
     margin: 10px;
     height: 140px;
@@ -45,4 +46,14 @@ img[src=""] {
     background-color: #000;
     background-color: rgba(255, 255, 255, 0);
     filter: alpha(opacity=50);
+}
+
+/*私有标签*/
+.ogn-tag {
+    background-color: #5EE495;
+}
+
+/*公用标签*/
+.constant-tag {
+    background-color: #2AD5F3;
 }
