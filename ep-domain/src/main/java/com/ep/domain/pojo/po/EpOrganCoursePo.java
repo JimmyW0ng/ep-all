@@ -31,7 +31,6 @@ public class EpOrganCoursePo extends AbstractBasePojo {
     private String courseName;
     private String courseIntroduce;
     private String courseContent;
-    private String courseNote;
     private BigDecimal prizeMin;
     private String courseAddress;
     private String addressLng;

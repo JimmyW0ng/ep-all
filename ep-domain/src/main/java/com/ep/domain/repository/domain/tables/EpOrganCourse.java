@@ -36,7 +36,7 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      * The reference instance of <code>ep.ep_organ_course</code>
      */
     public static final EpOrganCourse EP_ORGAN_COURSE = new EpOrganCourse();
-    private static final long serialVersionUID = 540670452;
+    private static final long serialVersionUID = -891298582;
     /**
      * The column <code>ep.ep_organ_course.id</code>. 主键
      */
@@ -65,10 +65,6 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      * The column <code>ep.ep_organ_course.course_content</code>. 课程内容
      */
     public final TableField<EpOrganCourseRecord, String> COURSE_CONTENT = createField("course_content", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "课程内容");
-    /**
-     * The column <code>ep.ep_organ_course.course_note</code>. 课程须知
-     */
-    public final TableField<EpOrganCourseRecord, String> COURSE_NOTE = createField("course_note", org.jooq.impl.SQLDataType.CLOB, this, "课程须知");
     /**
      * The column <code>ep.ep_organ_course.prize_min</code>. 最低价格
      */
