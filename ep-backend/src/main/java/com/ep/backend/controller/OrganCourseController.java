@@ -2,7 +2,6 @@ package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
-import com.ep.common.tool.FileTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
@@ -390,21 +389,27 @@ public class OrganCourseController extends BackendController {
     /**
      * 上传课程内容图片
      *
-     * @param file
      * @return
      */
     @PostMapping("uploadCourseDescPic")
 //    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
-    public String uploadCourseDescPic(@RequestParam("upfile") MultipartFile file
+    public String uploadCourseDescPic(@RequestParam("file") MultipartFile file
     ) throws Exception {
         ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
-        FileDto res = (FileDto) resultDo.getResult();
-        String result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() +
-                "\", \"preCode\": \"" + res.getPreCode()
-                + "\", \"size\": " + file.getSize() + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getName())
-                + "\", \"url\": \"" + res.getFileUrl() + "\"}";
+        FileDto fileDto = (FileDto) resultDo.getResult();
+        String fileUrl = fileDto.getFileUrl();
+        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
+        String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
+                "\", \"name\":\"" + name + "\"}";
+//        String result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() +
+//                "\", \"preCode\": \"" + res.getPreCode()
+//                + "\", \"size\": " + file.getSize() + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getName())
+//                + "\", \"url\": \"" + res.getFileUrl() + "\"}";
 
+//        Map<String,Object> result=Maps.newHashMap();
+//        result.put("errno",0);
+//        result.put("data",res.getFileUrl());
         return result.replaceAll("\\\\", "\\\\");
     }
 }

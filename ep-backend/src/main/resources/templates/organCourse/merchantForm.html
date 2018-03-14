@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
->
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head th:replace="~{fragments/header :: common_header}">
-
 </head>
 <header>
     <th:block layout:fragment="links">
         <link th:href="@{/css/plugins/steps/jquery.steps.css}" rel="stylesheet">
-        <!--<link th:href="@{/css/plugins/summernote/summernote.css}" rel="stylesheet">-->
-        <!--<link th:href="@{/css/plugins/summernote/summernote-bs3.css}" rel="stylesheet">-->
-        <link th:href="@{/umeditor/themes/default/css/umeditor.css}" rel="stylesheet">
-
     </th:block>
 </header>
 <body>
 <div class="col-sm-12">
-
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>课程详情(<span class="required-sign">*为必填</span>)</h5>
@@ -109,9 +102,12 @@
                         </div>
                         <div class="col-sm-9">
                             <label>课程内容 <span class="required-sign">*</span></label>
-                            <div id="myEditor" style="height:240px;">
+
+                            <div id="editor">
                             </div>
-                            <input id="courseContent" name="organCoursePo.courseContent" type="hidden">
+                            <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
+                                   th:value="${organCoursePo.courseContent}">
+                            <div id="preCodeBox"></div>
                         </div>
                     </section>
                     <h3>创建班次</h3>
@@ -153,7 +149,6 @@
                     </section>
                 </div>
             </form>
-
 
         </div>
     </div>
@@ -253,24 +248,18 @@
 </script>
 
 <script th:replace="~{fragments/scripts}"></script>
-<script th:src="@{/umeditor/umeditor.config.js}"></script>
-<script th:src="@{/umeditor/umeditor.js}"></script>
-<script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>
 <script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
-
-<!--<script th:src="@{/js/plugins/summernote/summernote.min.js}"></script>-->
-<!--<script th:src="@{/js/plugins/summernote/summernote-zh-CN.js}"></script>-->
-
-
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
-
+<script th:src="@{/wangeditor/wangEditor.js}"></script>
 <!--<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>-->
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
     var $cursor;
-
+    //wangEditor富文本
+    var E = window.wangEditor
+    var editor = new E('#editor')
 
     /**
      * 上传课程主图
@@ -512,26 +501,13 @@
     }
 
     function beforeSubmitCheckCourseDescPic() {
-        var $imgArray = $("#myEditor").find("img")
+        var $imgArray = $("#editor").find("img")
         var $preCodes = $("#preCodeBox")
         for (var i = 0; i < $imgArray.length; i++) {
-            var preCode = $imgArray.eq(i).attr("_src")
+            var preCode = $imgArray.eq(i).attr("precode")
             var htmls = '<input type="hidden" name="courseDescPicPreCodes" value="+preCode+">'
             $preCodes.append(htmls)
-//            var imgsrc=$imgArray.eq(i).attr("src")
-//            var name=imgsrc.substring(imgsrc.lastIndexOf("/")+1,imgsrc.lastIndexOf("."))
-//            for(var j=0;j<$preCodes.length;j++){
-//                var inputName=$preCodes.eq(j).attr("name")
-//                if(name==inputName){
-//                    $preCodes.eq(j).attr("name","courseDescPicPreCodes")
-//                }
-//            }
         }
-        $preCodes.each(function () {
-            if ($(this).attr("name") != "courseDescPicPreCodes") {
-                $(this).remove()
-            }
-        })
     }
 
     function beforeSubmitCheckCourseMainPic() {
@@ -548,26 +524,11 @@
 
     }
 
+    function beforeSubmitCourseContent(content) {
+        $("#courseContent").val(content)
+    }
+
     $(document).ready(function () {
-
-        //富文本start
-//        $(".summernote").summernote(
-//            {lang: "zh-CN",height:250,}
-//            )
-//        $("#eg").addClass("no-padding");
-//        $(".click2edit").summernote({
-//            lang: "zh-CN", focus: true,height:250,
-//            onImageUpload: function (files, editor, $editable) {
-//                sendFile(files[0], editor, $editable);
-//            }
-//        })
-//        $("div.note-editable").on("blur",function () {
-//            var aHTML = $(".click2edit").code();
-//            $("#courseContent").val(aHTML)
-//        })
-
-
-        //富文本end
 
         //jq.step start
         var form = $("#frm");
@@ -586,7 +547,6 @@
             },
             onFinishing: function (event, currentIndex) {
                 form.validate().settings.ignore = ":disabled,:hidden";
-                debugger
                 return form.valid() && beforeSubmitCheckCourseMainPic();
             },
             onCanceled: function () {
@@ -598,7 +558,12 @@
                 beforeSubmitFormatInputInnerName()
 
                 beforeSubmitCheckCourseDescPic()
-
+                console.log("courseContent" + editor.txt.text())
+                if (editor.txt.text() == "") {
+                    toastr.error("请填写课程内容！")
+                    return
+                }
+                beforeSubmitCourseContent(editor.txt.html());
                 var url = "/auth/organCourse/merchantCreate"
                 if ($("#courseId").val()) {
                     url = "/auth/organCourse/merchantUpdate"
@@ -629,7 +594,7 @@
         //修改页面初始化start
         if ([[${organCoursePo.id}]]) {
 
-            $("#myEditor").html($("#courseContent").val())
+            $("#editor").html($("#courseContent").val())
             //班次start
             var organClassBos = [[${organClassBos}]]
             for (var i = 0; i < organClassBos.length; i++) {
@@ -732,58 +697,27 @@
                 trigger: 'click'
             });
         });
-        var um = UM.getEditor('myEditor');
-        $("#myEditor").on("blur", function () {
-            console.log("courseContent")
-            $("#courseContent").val($("#myEditor").html())
-        })
-    });
 
-    function sendFile(file, editor, $editable) {
-        data = new FormData();
-        data.append("file", file);
-        data.append("name", file.name);
-        $.ajax({
-            data: data,
-            type: "POST",
-            url: "/auth/organCourse/uploadCourseDescPic",
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                if (data.success) {
-                    editor.insertImage($editable, data.result.fileUrl);
-                    var fileUrl = data.result.fileUrl
-                    var preCode = data.result.preCode
-                    var name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."))
-                    var htmls = '<input name="' + name + '" type="hidden" value="' + preCode + '">'
-                    $("#preCodeBox").append(htmls)
+
+        // 或者 var editor = new E( document.getElementById('#editor') )
+        // 配置服务器端地址
+        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
+        editor.customConfig.uploadFileName = 'file'
+        editor.customConfig.uploadImgMaxLength = 1
+        editor.customConfig.uploadImgHooks = {
+            success: function (xhr, editor, result) {
+                // 图片上传并返回结果，图片插入成功之后触发
+                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+                var $img = $("#editor").find("img[name=" + result.name + "]")
+                if ($img.length == 1) {
+                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
                 }
 
-            }
-        });
-    }
+            },
+        }
+        editor.create()
+    });
 
-
-    //    function editSummernote() {
-    //        $("#eg").addClass("no-padding");
-    //        $(".click2edit").summernote({
-    //            lang: "zh-CN", focus: true,height:250,
-    //            onImageUpload: function (files, editor, $editable) {
-    //                sendFile(files[0], editor, $editable);
-    //            }
-    //        })
-    //        $("div.note-editable").on("blur",function () {
-    //            var aHTML = $(".click2edit").code();
-    //            $("#courseContent").val(aHTML)
-    //        })
-    //    };
-    //    function saveSummernote() {
-    //        $("#eg").removeClass("no-padding");
-    //        var aHTML = $(".click2edit").code();
-    //        $("#courseContent").val(aHTML)
-    ////        $(".click2edit").destroy()
-    //    }
 </script>
 </body>
 </html>

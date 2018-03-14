@@ -278,19 +278,24 @@ public class OrganCourseService {
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         //获取最低价格start
-        BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
-        for (int i = 0; i < priceArr.length; i++) {
-            priceArr[i] = organClassBos.get(i).getClassPrize();
-        }
-        int index = 0;
-        for (int j = index + 1; j < priceArr.length; j++) {
-            if (priceArr[j].compareTo(priceArr[index]) == -1) {
-                BigDecimal temp = priceArr[j];
-                priceArr[j] = priceArr[index];
-                priceArr[index] = temp;
+        BigDecimal priceMin;
+        if (CollectionsTools.isNotEmpty(organClassBos)) {
+            BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
+            for (int i = 0; i < priceArr.length; i++) {
+                priceArr[i] = organClassBos.get(i).getClassPrize();
             }
+            int index = 0;
+            for (int j = index + 1; j < priceArr.length; j++) {
+                if (priceArr[j].compareTo(priceArr[index]) == -1) {
+                    BigDecimal temp = priceArr[j];
+                    priceArr[j] = priceArr[index];
+                    priceArr[index] = temp;
+                }
+            }
+            priceMin = priceArr[index];
+        } else {
+            priceMin = BigDecimal.ZERO;
         }
-        BigDecimal priceMin = priceArr[index];
         //获取最低价格end
         organCoursePo.setPrizeMin(priceMin);
         //机构课程表更新数据

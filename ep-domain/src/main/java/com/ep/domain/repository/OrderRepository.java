@@ -249,7 +249,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
                 .where(condition);
 //
-        List<OrderBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(),EP_ORGAN_CLASS.ID.desc())
+        List<OrderBo> list = record.orderBy(getSortFields(pageable.getSort()))
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(OrderBo.class);
