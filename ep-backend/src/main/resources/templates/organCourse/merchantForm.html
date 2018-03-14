@@ -63,13 +63,7 @@
 
                             </div>
 
-                            <div class="form-group">
-                                <label for="courseNote">课程须知 </label>
-                                <textarea id="courseNote" name="organCoursePo.courseNote" type="text"
-                                          style="height: 100px"
-                                          class="form-control " th:text="${organCoursePo.courseNote}"></textarea>
 
-                            </div>
 
                             <div class="form-group">
                                 <label for="courseAddress">上课地址 </label>
@@ -229,8 +223,8 @@
                     <!--</div>-->
                     <label>是否限制报名人数 <span class="required-sign">*</span></label>
                     <select name="enterLimitFlag" type="text" class=" form-control " value="${enterLimitFlag}">
-                        <option value=true>是</option>
                         <option value=false>否</option>
+                        <option value=true>是</option>
                     </select>
                     <label>要求报名人数 </label>
                     <input name="enterRequireNum" type="text" class=" form-control " value="${enterRequireNum}">
@@ -505,7 +499,7 @@
         var $preCodes = $("#preCodeBox")
         for (var i = 0; i < $imgArray.length; i++) {
             var preCode = $imgArray.eq(i).attr("precode")
-            var htmls = '<input type="hidden" name="courseDescPicPreCodes" value="+preCode+">'
+            var htmls = '<input type="hidden" name="courseDescPicPreCodes" value="' + preCode + '">'
             $preCodes.append(htmls)
         }
     }
