@@ -161,7 +161,7 @@ public class OrganCourseController extends BackendController {
             organCoursePo.setCourseAddress(organOptional.get().getOgnAddress());
         }
         model.addAttribute("organCoursePo", organCoursePo);
-        return "organCourse/merchantForm1";
+        return "organCourse/merchantForm";
     }
 
     /**
@@ -328,7 +328,7 @@ public class OrganCourseController extends BackendController {
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
-        return "organCourse/merchantForm1";
+        return "organCourse/merchantForm";
     }
 
     /**
@@ -404,14 +404,7 @@ public class OrganCourseController extends BackendController {
         String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
         String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
                 "\", \"name\":\"" + name + "\"}";
-//        String result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() +
-//                "\", \"preCode\": \"" + res.getPreCode()
-//                + "\", \"size\": " + file.getSize() + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getName())
-//                + "\", \"url\": \"" + res.getFileUrl() + "\"}";
 
-//        Map<String,Object> result=Maps.newHashMap();
-//        result.put("errno",0);
-//        result.put("data",res.getFileUrl());
         return result.replaceAll("\\\\", "\\\\");
     }
 }

@@ -4673,7 +4673,8 @@
             this._initUploadImg();
 
             // 初始化选区，将光标定位到内容尾部
-            this.initSelection(true);
+            //modify by feicongcong 注掉了，防止初始化页面光标定位在富文本内容的尾部
+            // this.initSelection(true);
 
             // 绑定事件
             this._bindEvent();
