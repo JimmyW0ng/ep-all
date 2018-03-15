@@ -48,19 +48,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
-                                aria-required="true">
-                            <option value="">请选择</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganAccountStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganAccountStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">关联手机号：</label>
                     <div class="col-sm-3">
@@ -90,7 +78,7 @@
                 </div>
                 <div class="col-sm-offset-2 teacher-avatar-box">
                     <img id="avatar_img_url" class="teacher-avatar-img-url" th:src="${avatarImgUrl}" required="true"/>
-                    <input type="hidden" name="avatar_url" id="avatar_url">
+                    <input type="hidden" name="avatar_url" id="avatar_url" th:value="${avatarImgUrl}">
                     <input type="hidden" name="avatarUrlPreCode" id="avatar_url_preCode">
 
                 </div>
@@ -165,7 +153,12 @@
             success: function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/organAccount/index')
+                } else {
+                    toastr.error(data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             },
             complete: function () {
                 $("button").attr("disabled", false)

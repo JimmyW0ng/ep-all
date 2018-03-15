@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sd="http://www.thymeleaf.org/spring-data"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head th:replace="~{fragments/header :: common_header}">
 
@@ -20,7 +21,8 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input type="text" class="form-control " name="mobile" th:value="${searchMap.get('mobile')}"
+                        <input sec:authorize="hasAuthority('platform:organ:index123')" type="text" class="form-control "
+                               name="mobile" th:value="${searchMap.get('mobile')}"
                                placeholder="课程名称">
                     </div>
 
@@ -86,7 +88,8 @@
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info" th:href="@{/auth/organAccount/view/}+${bo.id}">查看</a>
+                                <a class="btn btn-xs btn-info"
+                                   th:href="@{/auth/organCourse/merchantview/}+${bo.id}">查看</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
                                 <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>-->
 

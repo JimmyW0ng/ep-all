@@ -3,6 +3,7 @@ package com.ep.domain.repository;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
+import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
 import com.google.common.collect.Lists;
 import org.jooq.Condition;
@@ -161,7 +162,6 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .set(EP_ORGAN_ACCOUNT.NICK_NAME, po.getNickName())
                 .set(EP_ORGAN_ACCOUNT.INTRODUCE, po.getIntroduce())
                 .set(EP_ORGAN_ACCOUNT.REFER_MOBILE, po.getReferMobile())
-                .set(EP_ORGAN_ACCOUNT.STATUS, po.getStatus())
                 .set(EP_ORGAN_ACCOUNT.REMARK, po.getRemark())
                 .where(EP_ORGAN_ACCOUNT.ID.eq(po.getId()))
                 .execute();
@@ -188,5 +188,49 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .fetchInto(EpOrganAccountPo.class);
     }
 
+    /**
+     * 根据id注销
+     *
+     * @param id
+     * @return
+     */
+    public int cancelById(Long id) {
+        return dslContext.update(EP_ORGAN_ACCOUNT)
+                .set(EP_ORGAN_ACCOUNT.STATUS, EpOrganAccountStatus.cancel)
+                .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .and(EP_ORGAN_ACCOUNT.STATUS.ne(EpOrganAccountStatus.cancel))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id冻结
+     *
+     * @param id
+     * @return
+     */
+    public int freezeById(Long id) {
+        return dslContext.update(EP_ORGAN_ACCOUNT)
+                .set(EP_ORGAN_ACCOUNT.STATUS, EpOrganAccountStatus.freeze)
+                .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .and(EP_ORGAN_ACCOUNT.STATUS.eq(EpOrganAccountStatus.normal))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id解冻
+     *
+     * @param id
+     * @return
+     */
+    public int unfreezeById(Long id) {
+        return dslContext.update(EP_ORGAN_ACCOUNT)
+                .set(EP_ORGAN_ACCOUNT.STATUS, EpOrganAccountStatus.normal)
+                .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .and(EP_ORGAN_ACCOUNT.STATUS.eq(EpOrganAccountStatus.freeze))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

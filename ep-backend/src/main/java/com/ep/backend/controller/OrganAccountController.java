@@ -207,8 +207,47 @@ public class OrganAccountController extends BackendController {
     @PostMapping("uploadAvatar")
 //    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
-    public ResultDo uploadOgnaccount(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResultDo uploadAvatar(@RequestParam("file") MultipartFile file) throws Exception {
         return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, null);
-
     }
+
+    /**
+     * 根据id注销
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("cancel/{id}")
+//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @ResponseBody
+    public ResultDo cancel(@PathVariable("id") Long id) {
+        return organAccountService.cancelOgnAccount(id);
+    }
+
+    /**
+     * 根据id冻结
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("freeze/{id}")
+//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @ResponseBody
+    public ResultDo freeze(@PathVariable("id") Long id) {
+        return organAccountService.freezeOgnAccount(id);
+    }
+
+    /**
+     * 根据id解冻
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("unfreeze/{id}")
+//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @ResponseBody
+    public ResultDo unfreeze(@PathVariable("id") Long id) {
+        return organAccountService.unfreezeOgnAccount(id);
+    }
+
 }

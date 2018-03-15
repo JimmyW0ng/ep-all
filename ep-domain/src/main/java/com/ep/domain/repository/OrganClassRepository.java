@@ -4,6 +4,7 @@ import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
@@ -350,6 +351,36 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.save))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    /**
+     * 根据班次负责人(教师)id和班次状态获取班次集合
+     *
+     * @param ognAccountId
+     * @param classStatus
+     * @return
+     */
+    public List<EpOrganAccountPo> findByOgnAccountIdAndClassStatus(Long ognAccountId, EpOrganClassStatus[] classStatus) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                .and(EP_ORGAN_CLASS.STATUS.in(classStatus))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganAccountPo.class);
+    }
+
+    /**
+     * 根据班次负责人(教师)id和班次状态获取班次条数
+     *
+     * @param ognAccountId
+     * @param classStatus
+     * @return
+     */
+    public long countByOgnAccountIdAndClassStatus(Long ognAccountId, EpOrganClassStatus[] classStatus) {
+        return dslContext.selectCount().from(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                .and(EP_ORGAN_CLASS.STATUS.in(classStatus))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
     }
 }
 
