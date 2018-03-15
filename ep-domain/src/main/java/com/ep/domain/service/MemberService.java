@@ -68,8 +68,8 @@ public class MemberService {
         isOrganMan = CollectionsTools.isNotEmpty(accounts);
         if (EpMemberType.organ_account.equals(memberType) && !isOrganMan) {
             // 机构身份
-            log.error("当前手机号未找到机构身份数据, mobile={}", mobile);
-            throw new UsernameNotFoundException("客户端身份不存在");
+            log.error("当前手机号未匹配到机构身份数据, mobile={}", mobile);
+            throw new UsernameNotFoundException("当前手机号未匹配到机构身份");
         }
         if (memberPo != null) {
             // 机构账户直接返回
