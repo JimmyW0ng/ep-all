@@ -4,6 +4,7 @@ import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.repository.domain.enums.EpSystemMenuStatus;
 import com.ep.domain.repository.domain.enums.EpSystemMenuTarget;
+import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import com.ep.domain.repository.domain.tables.records.EpSystemMenuRecord;
 import com.google.common.collect.Lists;
@@ -12,6 +13,7 @@ import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_MENU;
@@ -74,6 +76,7 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                 .and(EP_SYSTEM_MENU.STATUS.equal(EpSystemMenuStatus.enable))
                 .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.equal(false))
+                .orderBy(EP_SYSTEM_MENU.SORT.asc())
                 .fetchInto(SystemMenuBo.class);
     }
 
@@ -92,7 +95,7 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
 
     public int updatePo(EpSystemMenuPo po) {
         return dslContext.update(EP_SYSTEM_MENU)
-                .set(EP_SYSTEM_MENU.PARENT_ID, po.getId())
+//                .set(EP_SYSTEM_MENU.PARENT_ID, po.getParentId())
                 .set(EP_SYSTEM_MENU.MENU_NAME, po.getMenuName())
                 .set(EP_SYSTEM_MENU.MENU_TYPE, po.getMenuType())
                 .set(EP_SYSTEM_MENU.HREF, po.getHref())
@@ -120,6 +123,28 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .where(EP_SYSTEM_MENU.STATUS.eq(EpSystemMenuStatus.enable))
                 .and(EP_SYSTEM_MENU.DEL_FLAG.eq(false))
                 .fetchInto(String.class);
+    }
+
+    /**
+     * 根据角色对应目标获取菜单集合
+     *
+     * @param roleTarget
+     * @return
+     */
+    public List<EpSystemMenuPo> getAllByRoleTarget(EpSystemRoleTarget roleTarget) {
+        if (roleTarget.equals(EpSystemRoleTarget.admin)) {
+            return dslContext.selectFrom(EP_SYSTEM_MENU)
+                    .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                    .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.admin))
+                    .fetchInto(EpSystemMenuPo.class);
+        } else if (roleTarget.equals(EpSystemRoleTarget.backend)) {
+            return dslContext.selectFrom(EP_SYSTEM_MENU)
+                    .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
+                    .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.backend))
+                    .fetchInto(EpSystemMenuPo.class);
+        } else {
+            return new ArrayList<EpSystemMenuPo>();
+        }
     }
 }
 
