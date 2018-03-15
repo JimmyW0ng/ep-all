@@ -8,6 +8,7 @@ import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpSystemMenuPo;
 import com.ep.domain.repository.SystemMenuRepository;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
+import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,16 @@ public class SystemMenuService {
      */
     public List<EpSystemMenuPo> getAllByUserType(EpSystemUserType type) {
         return systemMenuRepository.getAllByUserType(type);
+    }
+
+    /**
+     * 根据角色对应目标获取菜单集合
+     *
+     * @param roleTarget
+     * @return
+     */
+    public List<EpSystemMenuPo> getAllByRoleTarget(EpSystemRoleTarget roleTarget) {
+        return systemMenuRepository.getAllByRoleTarget(roleTarget);
     }
 
     /**

@@ -111,7 +111,7 @@ public class SystemRoleController extends BackendController {
         }
 
         //所有菜单
-        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByRoleTarget(systemRolePoOptional.get().getTarget());
         model.addAttribute("menuList", menuList);
         return "systemRole/view";
 
@@ -127,8 +127,8 @@ public class SystemRoleController extends BackendController {
     public String createInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         model.addAttribute("systemRolePo", new EpSystemRolePo());
-        //所有菜单
-        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
+        //所有菜单,默认商户菜单
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByRoleTarget(EpSystemRoleTarget.backend);
         model.addAttribute("menuList", menuList);
         return "systemRole/form";
 
@@ -150,6 +150,20 @@ public class SystemRoleController extends BackendController {
         return systemRoleService.createSystemRole(bo);
 
 
+    }
+
+    /**
+     * 根据角色目标切换菜单
+     *
+     * @return
+     */
+    @GetMapping("getMenuByRoleTarget/{target}")
+    @PreAuthorize("hasAnyAuthority('platform:role:index')")
+    @ResponseBody
+    public ResultDo<List<EpSystemMenuPo>> getMenuByRoleTarget(@PathVariable("target") String target) {
+        ResultDo<List<EpSystemMenuPo>> resultDo = ResultDo.build();
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByRoleTarget(EpSystemRoleTarget.valueOf(target));
+        return resultDo.setResult(menuList);
     }
 
     /**
@@ -176,7 +190,6 @@ public class SystemRoleController extends BackendController {
     @GetMapping("updateInit/{id}")
     @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String updateInit(Model model, @PathVariable("id") Long id) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Optional<EpSystemRolePo> systemRolePoOptional = systemRoleService.findById(id);
         if (systemRolePoOptional.isPresent()) {
             List<Long> menuIds = systemRoleAuthorityService.getMenuIdByRole(systemRolePoOptional.get().getId());
@@ -184,7 +197,7 @@ public class SystemRoleController extends BackendController {
             model.addAttribute("menuIds", menuIds);
         }
 
-        List<EpSystemMenuPo> menuList = systemMenuService.getAllByUserType(currentUser.getType());
+        List<EpSystemMenuPo> menuList = systemMenuService.getAllByRoleTarget(systemRolePoOptional.get().getTarget());
         model.addAttribute("menuList", menuList);
         return "systemRole/form";
 

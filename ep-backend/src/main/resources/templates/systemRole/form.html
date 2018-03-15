@@ -32,10 +32,12 @@
                     <label class="col-sm-2 control-label">目标：</label>
                     <div class="col-sm-3">
                         <select id="target" name="target" class="form-control" required="true" aria-required="true"
+                                onchange="getMenuByRoleTarget(this)"
                                 th:field="*{target}"
-                                disabled="true">
+                                th:disabled="${systemRolePo.id != null}">
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemRoleTarget).values()}"
                                     th:value="${state}"
+
                                     th:text="#{EpSystemRoleTarget.+${state.literal}}">
                             </option>
                         </select>
@@ -90,12 +92,43 @@
             }
         },
         callback: {}
-
-
     };
+
+    function getMenuByRoleTarget(ele) {
+        var target = $(ele).val()
+        if (target == "backend" || target == "admin") {
+            $.ajax({
+                type: "GET",
+                url: "/auth/role/getMenuByRoleTarget/" + target,
+                success: function (data) {
+                    if (data.success) {
+                        var menuList = data.result
+                        var zNodes = []
+                        for (var item in menuList) {
+                            zNodes.push({
+                                id: menuList[item].id,
+                                pId: menuList[item].parentId,
+                                name: menuList[item].menuName,
+                                open: false
+                            })
+                        }
+                        $("#treeDemo").html("")
+                        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    } else {
+                        toastr.error(data.errorDescription);
+                    }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
+                }
+            })
+        }
+
+    }
 
 
     $(document).ready(function () {
+        /*当menuIds中出现zNodes中没有的节点，ztree.js报错*/
         var zNodes = [
             [# th:each="menuPojo :${menuList}"]
         {id: [[${menuPojo.id}]], pId:[[${menuPojo.parentId}]], name:[[${menuPojo.menuName}]], open:false},
@@ -103,7 +136,6 @@
         ];
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);
         var id= [[${systemRolePo.id}]]
-        console.log("id="+id)
         if(id){
             var menuIds= [
                 [# th:each="id :${menuIds}"]
@@ -111,8 +143,9 @@
             [/]
             ];
             $("#roleCode").attr("readonly",true)
+        } else {
+            $("#target").val("backend")
         }
-        console.log(menuIds)
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
         if(menuIds!=undefined){
             for (var i = 0; i < menuIds.length; i++) {
@@ -121,7 +154,6 @@
                 treeObj.checkNode(node, true, false,false);
             }
         }
-
     })
     function frmSubmit() {
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
@@ -130,11 +162,11 @@
         for (var i = 0; i < nodes.length; i++) {
             authority.push({menuId:nodes[i].id});
         }
-        console.log(authority)
+
         if (nodes.length == 0) {
             return;
         }
-        console.log(nodes)
+
         if (! $("#roleFrm").valid()) {
             return;
         }
