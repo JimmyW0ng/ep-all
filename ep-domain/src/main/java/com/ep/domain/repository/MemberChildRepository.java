@@ -156,6 +156,7 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
     public List<MemberChildBo> queryAllByMemberId(Long memberId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.ID);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_SEX);
         return dslContext.select(fieldList)
                          .from(EP_MEMBER_CHILD)
                          .where(EP_MEMBER_CHILD.MEMBER_ID.eq(memberId))
