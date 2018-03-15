@@ -4,6 +4,7 @@ import com.ep.api.security.ApiSecurityAuthComponent;
 import com.ep.common.tool.IpTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.ApiLoginDto;
+import com.ep.domain.repository.domain.enums.EpMemberType;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import com.ep.domain.service.MessageCaptchaService;
@@ -56,9 +57,10 @@ public class SecurityController extends ApiController {
                                        @RequestParam(value = "code") String code,
                                        @RequestParam(value = "captcha") String captcha,
                                        @RequestParam(value = "clientId") String clientId,
-                                       @RequestParam(value = "clientSecret") String clientSecret
+                                       @RequestParam(value = "clientSecret") String clientSecret,
+                                       @RequestParam(value = "type") EpMemberType type
     ) {
-        return securityAuthComponent.loginFromApi(mobile.toString(), code, captcha, clientId, clientSecret);
+        return securityAuthComponent.loginFromApi(mobile.toString(), code, captcha, clientId, clientSecret, type);
     }
 
 }

@@ -12,6 +12,8 @@ import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -58,12 +60,17 @@ public class MemberService {
      * @param mobile
      * @return
      */
-    public EpMemberPo checkExistAndType(Long mobile) {
+    public EpMemberPo checkExistAndType(Long mobile, EpMemberType memberType) throws AuthenticationException {
         EpMemberPo memberPo = this.getByMobile(mobile);
         // 判断是否是机构账户
         boolean isOrganMan;
         List<EpOrganAccountPo> accounts = organAccountRepository.getByMobile(mobile);
         isOrganMan = CollectionsTools.isNotEmpty(accounts);
+        if (EpMemberType.organ_account.equals(memberType) && !isOrganMan) {
+            // 机构身份
+            log.error("当前手机号未找到机构身份数据, mobile={}", mobile);
+            throw new UsernameNotFoundException("客户端身份不存在");
+        }
         if (memberPo != null) {
             // 机构账户直接返回
             if (memberPo.getType().equals(EpMemberType.organ_account)) {

@@ -14,6 +14,7 @@ import com.ep.domain.repository.SystemClientRepository;
 import com.ep.domain.repository.SystemMenuRepository;
 import com.ep.domain.repository.SystemRoleRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
+import com.ep.domain.repository.domain.enums.EpMemberType;
 import com.ep.domain.repository.domain.enums.EpSystemClientLoginSource;
 import com.ep.domain.service.MemberService;
 import com.ep.domain.service.MessageCaptchaService;
@@ -80,7 +81,8 @@ public class ApiSecurityAuthComponent {
                                               String captchaCode,
                                               String captchaContent,
                                               String clientId,
-                                              String clientSecret) {
+                                              String clientSecret,
+                                              EpMemberType type) {
         if (StringTools.isBlank(userName)
                 || StringTools.isBlank(captchaCode)
                 || StringTools.isBlank(captchaContent)
@@ -93,6 +95,7 @@ public class ApiSecurityAuthComponent {
         ApiPrincipalBo principal = new ApiPrincipalBo();
         principal.setUserName(userName);
         principal.setClientId(clientId);
+        principal.setMemberType(type);
         // 验证码业务编码
         principal.setCaptchaCode(captchaCode);
         ApiCredentialBo credentials = new ApiCredentialBo(captchaContent, clientSecret);
@@ -191,7 +194,7 @@ public class ApiSecurityAuthComponent {
         // 校验验证码
         messageCaptchaService.checkAndHandleCaptcha(mobile, principalBo.getCaptchaCode(), credentialBo.getPassword());
         // 校验会员
-        EpMemberPo mbrInfoPo = memberService.checkExistAndType(mobile);
+        EpMemberPo mbrInfoPo = memberService.checkExistAndType(mobile, principalBo.getMemberType());
         if (mbrInfoPo.getStatus().equals(EpMemberStatus.cancel)) {
             throw new UsernameNotFoundException("账号已被注销");
         } else if (mbrInfoPo.getStatus().equals(EpMemberStatus.freeze)) {
@@ -199,7 +202,6 @@ public class ApiSecurityAuthComponent {
         }
         // 定位角色
         principalBo.setRole(sysClientPo.getRole());
-        principalBo.setMemberType(mbrInfoPo.getType());
     }
 
     /**

@@ -14,6 +14,7 @@ import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -120,20 +121,24 @@ public class OrderService {
             resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
             return resultDo;
         }
-        // 查询课程信息
-        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
         // 校验课程状态
-        if (coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.save)) {
-            log.error("下单失败，课程未上线！");
+        if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
+            log.error("下单失败，班次未上线！");
             resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
             return resultDo;
         }
-        if (coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.offline)) {
-            log.error("下单失败，课程已下线！");
-            resultDo.setError(MessageCode.ERROR_COURSE_IS_OFF);
+        if (classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+            log.error("下单失败，班次已开班！");
+            resultDo.setError(MessageCode.ERROR_CLASS_IS_OPENING);
+            return resultDo;
+        }
+        if (classPo.getStatus().equals(EpOrganClassStatus.end)) {
+            log.error("下单失败，课程已结束！");
+            resultDo.setError(MessageCode.ERROR_CLASS_IS_END);
             return resultDo;
         }
         // 校验报名时间
+        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
         Date now = DateTools.getCurrentDate();
         if (now.before(coursePo.getEnterTimeStart())) {
             log.error("下单失败，班次报名未开始！");
