@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">孩子：</label>
+                    <label class="col-sm-2 control-label">昵称：</label>
                     <div class="col-sm-3">
                         <select th:if="${memberChildHonerPo.id==null}" id="childId" name="childId" class="form-control"
                                 required="true" aria-required="true"
@@ -60,7 +60,7 @@
                             <option value="">请选择</option>
                         </select>
                         <input th:if="${memberChildHonerPo.id!=null}" type="text" class="form-control"
-                               th:field="*{childTrueName}" readonly="true">
+                               th:field="*{childNickName}" readonly="true">
 
                     </div>
                 </div>
@@ -118,7 +118,7 @@
         if (classId) {
             $.ajax({
                 type: "GET",
-                url: "/auth/childHonor/findClildByClassId/" + classId,
+                url: "/auth/childHonor/findNicknameByClassId/" + classId,
                 success: function (data) {
                     if (data.success) {
                         var childMap = data.result;

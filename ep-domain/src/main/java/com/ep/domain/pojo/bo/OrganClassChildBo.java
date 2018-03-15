@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrganClassChildBo extends EpOrganClassChildPo {
     private String childTrueName;
+    private String childNickName;
 }

@@ -108,5 +108,27 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
                 .fetchInto(OrganClassChildBo.class);
     }
+
+    /**
+     * 根据班级id获取该班孩子昵称记录
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrganClassChildBo> findNicknameByClassId(Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORGAN_CLASS_CHILD.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_CHILD.CLASS_ID);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_CHILD)
+                .innerJoin(EP_MEMBER_CHILD)
+                .on(EP_ORGAN_CLASS_CHILD.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .fetchInto(OrganClassChildBo.class);
+    }
 }
 

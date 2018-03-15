@@ -84,4 +84,14 @@ public class OrganClassChildService {
     public List<OrganClassChildBo> findChildMapByClassId(Long classId) {
         return organClassChildRepository.findChildByClassId(classId);
     }
+
+    /**
+     * 根据班级id获取该班孩子昵称记录
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrganClassChildBo> findNicknameMapByClassId(Long classId) {
+        return organClassChildRepository.findNicknameByClassId(classId);
+    }
 }

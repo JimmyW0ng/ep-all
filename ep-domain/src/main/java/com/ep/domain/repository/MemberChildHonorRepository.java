@@ -166,6 +166,7 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         return dslContext.select(fieldList).from(EP_MEMBER_CHILD_HONOR)
                 .leftJoin(EP_ORGAN_COURSE).on(EP_MEMBER_CHILD_HONOR.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_MEMBER_CHILD_HONOR.CLASS_ID.eq(EP_ORGAN_CLASS.ID))

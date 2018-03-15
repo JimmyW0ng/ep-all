@@ -145,6 +145,19 @@ public class MemberChildHonorController extends BackendController {
         return resultDo;
     }
 
+    @GetMapping("findNicknameByClassId/{classId}")
+    @ResponseBody
+    public ResultDo findNicknameByClassId(@PathVariable("classId") Long classId) {
+        ResultDo resultDo = ResultDo.build();
+        List<OrganClassChildBo> bos = organClassChildService.findNicknameMapByClassId(classId);
+        Map<Long, String> childMap = Maps.newHashMap();
+        bos.forEach(bo -> {
+            childMap.put(bo.getChildId(), bo.getChildNickName());
+        });
+        resultDo.setResult(childMap);
+        return resultDo;
+    }
+
     /**
      * 创建孩子荣誉
      *
