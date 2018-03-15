@@ -69,7 +69,7 @@
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>班次名称</th>
                             <th>课程名称</th>
-                            <th>价格</th>
+                            <th>价格（元）</th>
                             <th>折扣优惠(%)</th>
                             <th>是否限制报名人数</th>
                             <th>要求报名人数</th>
@@ -137,13 +137,14 @@
 <script>
     /*开课start*/
     function openingBox(id) {
-        parent.layer.alert('确认该班次开课', {
-                icon: 1,
-            },
+        layer.confirm('确定该班次开课', {icon: 3, btn: ['确定', '取消']},
             function (index) {
                 openingDo(id);
-                parent.layer.close(index);
-            })
+                layer.close(index);
+            },
+            function (index) {
+                layer.close(index);
+            });
     }
     function openingDo(id) {
         $.ajax({
@@ -165,8 +166,7 @@
     /*开课end*/
     /*结束班次start*/
     function endBox(id) {
-        layer.confirm('确定结束该班次',
-            {icon: 3, btn: ['确定', '取消']},
+        layer.confirm('确定结束该班次', {icon: 3, btn: ['确定', '取消']},
             function (index) {
                 endDo(id);
                 layer.close(index);
@@ -175,7 +175,7 @@
                 layer.close(index);
             });
     }
-    function endDo(id, index) {
+    function endDo(id) {
         $.ajax({
             type:"GET",
             url: "/auth/organClass/end/" + id,

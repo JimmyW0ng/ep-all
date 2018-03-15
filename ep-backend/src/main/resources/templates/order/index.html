@@ -47,7 +47,7 @@
 
                     <div class="form-group ">
                         <select class="form-control" name="status" id="type" style="width:182px;" >
-                            <option value>状态</option>
+                            <option value>订单状态</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderStatus).values()}"
                                     th:value="${state}"
                                     th:selected="${#stringTools.equals(state,map.get('status'))}"
@@ -94,8 +94,9 @@
                             <th>昵称</th>
                             <th>课程</th>
                             <th>班次</th>
+                            <th>班次状态</th>
                             <th>价格</th>
-                            <th>状态</th>
+                            <th>订单状态</th>
                             <th>备注</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -111,6 +112,7 @@
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
+                            <td th:text="#{EpOrganClassStatus.+${bo.classStatus}}"></td>
                             <td th:text="${bo.prize}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
                             <td name="statusZh" th:text="#{EpOrderStatus.+${bo.status}}"></td>
@@ -128,8 +130,8 @@
                                    th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
                                 <a name="cancel" class="btn btn-xs btn-info" style="display: none"
                                    th:value="${bo.status}"
-                                   th:if="${#strings.equals(bo.classStatus,'online')}&&
-                                   (${#strings.equals(bo.status,'success')}||${#strings.equals(bo.status,'refuse')})"
+                                   th:if="${#strings.equals(bo.classStatus,'online') &&
+                                   #strings.equals(bo.status,'success')||#strings.equals(bo.status,'refuse')}"
                                    th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
 
                             </td>
