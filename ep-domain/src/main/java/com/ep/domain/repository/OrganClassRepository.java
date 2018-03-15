@@ -382,5 +382,23 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
     }
+
+    /**
+     * 根据id和班次状态获取班次记录
+     *
+     * @param id
+     * @param status
+     * @return
+     */
+    public EpOrganClassPo getByIdAndStatusLock(Long id, EpOrganClassStatus status) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.online))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .forUpdate().fetchOneInto(EpOrganClassPo.class);
+    }
+
+
+
 }
 

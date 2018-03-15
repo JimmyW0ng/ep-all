@@ -113,4 +113,5 @@ public class OrganClassService {
     public void updateClassByOfflineOgn(Long ognId) {
         organClassRepository.updateClassByOfflineOgn(ognId);
     }
+
 }

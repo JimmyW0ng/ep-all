@@ -119,10 +119,18 @@
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info" style="display: none"
+                                   th:if="${#strings.equals(bo.status,'save')}"
                                    th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
-                                <a name="refuse" class="btn btn-xs btn-danger" style="display: none" href="javascript:void(0)" th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
-                                <a name="cancel" class="btn btn-xs btn-info" style="display: none" th:value="${bo.status}" th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
+                                <a name="refuse" class="btn btn-xs btn-danger" style="display: none"
+                                   href="javascript:void(0)"
+                                   th:if="${#strings.equals(bo.status,'save')}"
+                                   th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
+                                <a name="cancel" class="btn btn-xs btn-info" style="display: none"
+                                   th:value="${bo.status}"
+                                   th:if="${#strings.equals(bo.classStatus,'online')}&&
+                                   (${#strings.equals(bo.status,'success')}||${#strings.equals(bo.status,'refuse')})"
+                                   th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
 
                             </td>
 

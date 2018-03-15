@@ -262,6 +262,8 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo orderSuccessById(Long id, Long classId) {
         log.info("[订单]订单报名开始，订单id={},班次classId={}。", id, classId);
+        //行锁班次记录，防止班次下线并发
+        organClassRepository.getByIdAndStatusLock(classId, EpOrganClassStatus.online);
         int count = orderRepository.orderSuccessById(id);
         if (count == BizConstant.DB_NUM_ONE) {
             EpOrderPo orderPo = orderRepository.getById(id);
@@ -337,7 +339,14 @@ public class OrderService {
      *
      * @param id
      */
+    @Transactional(rollbackFor = Exception.class)
     public int orderRefuseById(Long id, String remark) {
+//        Optional<EpOrderPo> optional = orderRepository.findById(id);
+//        if(optional.isPresent()){
+//
+//        }
+//        //行锁班次记录，防止班次下线并发
+//        organClassRepository.getByIdAndStatusLock(classId, EpOrganClassStatus.online);
         return orderRepository.orderRefuseById(id, remark);
     }
 
@@ -353,6 +362,7 @@ public class OrderService {
 
     /**
      * 根据id取消报名成功/拒绝的订单
+     *
      * @param id
      * @param status
      */
