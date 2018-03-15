@@ -346,10 +346,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param classId
      * @return
      */
-    public List<EpOrderPo> findOpeningOrdersByClassId(Long classId) {
+    public List<EpOrderPo> findSuccessOrdersByClassId(Long classId) {
         return dslContext.selectFrom(EP_ORDER)
                          .where(EP_ORDER.CLASS_ID.eq(classId))
-                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .fetchInto(EpOrderPo.class);
     }

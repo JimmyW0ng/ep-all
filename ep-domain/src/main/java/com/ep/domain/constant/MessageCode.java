@@ -63,7 +63,7 @@ public class MessageCode {
     public static final String ERROR_CLASS_NOT_EXIST = "ERROR_CLASS_NOT_EXIST";
     public static final String ERROR_CLASS_NOT_ONLINE = "ERROR_CLASS_NOT_ONLINE";
     public static final String ERROR_CLASS_NOT_OPENING = "ERROR_CLASS_NOT_OPENING";
-    public static final String ERROR_CLASS_CHILD_NOT_EXISTS = "ERROR_CLASS_CHILD_NOT_EXISTS";
+    public static final String ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS = "ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS";
     public static final String ERROR_CLASS_CATALOG_NOT_EXISTS = "ERROR_CLASS_CATALOG_NOT_EXISTS";
     public static final String ERROR_CLASS_IS_OPENING = "ERROR_CLASS_IS_OPENING";
     public static final String ERROR_CLASS_IS_END = "ERROR_CLASS_IS_END";

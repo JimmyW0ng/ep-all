@@ -15,6 +15,6 @@ public class MemberMessageBo extends EpMemberMessagePo {
     private Long orderId;
 
     public String getCommentTimeFormat() {
-        return DateTools.dateToString(super.getCreateAt(), DateTools.TIME_PATTERN);
+        return DateTools.dateToString(super.getCreateAt(), DateTools.DATE_FMT_4);
     }
 }

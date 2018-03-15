@@ -82,10 +82,10 @@ public class OrganClassService {
             log.error("存在未处理的订单, classId={}, savedOrderNum={}", id, savedOrders.size());
             return ResultDo.build(MessageCode.ERROR_COURSE_EXIST_SAVED_ORDER);
         }
-        List<EpOrderPo> openingOrders = orderRepository.findOpeningOrdersByClassId(id);
+        List<EpOrderPo> openingOrders = orderRepository.findSuccessOrdersByClassId(id);
         if (CollectionsTools.isEmpty(openingOrders)) {
-            log.error("班次不存在已开班订单, classId={}", id);
-            return ResultDo.build(MessageCode.ERROR_CLASS_CHILD_NOT_EXISTS);
+            log.error("班次不存在报名成功的订单, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS);
         }
         // 开班
         int num = organClassRepository.openById(id);
