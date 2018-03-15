@@ -203,6 +203,7 @@ public class OrganCourseService {
                 organClassPo.setCourseId(insertOrganCourseId);
                 organClassPo.setStatus(EpOrganClassStatus.save);
                 organClassPo.setEnteredNum(0);
+                organClassPo.setOrderedNum(0);
                 //机构课程班次表插入数据
                 log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
                 organClassRepository.insert(organClassPo);
@@ -326,6 +327,8 @@ public class OrganCourseService {
                 organClassPo.setOgnId(organCoursePo.getOgnId());
                 organClassPo.setCourseId(organCourseId);
                 organClassPo.setStatus(EpOrganClassStatus.save);
+                organClassPo.setEnteredNum(0);
+                organClassPo.setOrderedNum(0);
                 //机构课程班次表插入数据
                 log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
                 organClassRepository.insert(organClassPo);

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sd="http://www.thymeleaf.org/spring-data"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head th:replace="~{fragments/header :: common_header}">
 
@@ -17,7 +18,8 @@
 
         <div class="panel">
             <div class="panel-heading">
-                <a class="btn btn-success" type="button" th:href="@{/auth/organCourse/merchantCreateInit}"><i
+                <a sec:authorize="hasAuthority('merchant:organCourse:merchantIndex')" class="btn btn-success"
+                   type="button" th:href="@{/auth/organCourse/merchantCreateInit}"><i
                         class="glyphicon glyphicon-plus"></i> 新增</a>
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">

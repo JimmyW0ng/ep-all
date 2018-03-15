@@ -29,6 +29,11 @@
                         <input type="text" class="form-control " name="childTrueName" th:value="${map.get('childTrueName')}"
                                placeholder="姓名">
                     </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="childNickName"
+                               th:value="${map.get('childNickName')}"
+                               placeholder="昵称">
+                    </div>
 
                     <div class="form-group">
                         <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
@@ -86,6 +91,7 @@
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>会员账号</th>
                             <th>姓名</th>
+                            <th>昵称</th>
                             <th>课程</th>
                             <th>班次</th>
                             <th>价格</th>
@@ -101,6 +107,7 @@
                             <td th:text="${bo.id}"></td>
                             <td th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
+                            <td th:text="${bo.childNickName}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
@@ -111,7 +118,8 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
-                                <a name="success" class="btn btn-xs btn-info" style="display: none" th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名</a>
+                                <a name="success" class="btn btn-xs btn-info" style="display: none"
+                                   th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
                                 <a name="refuse" class="btn btn-xs btn-danger" style="display: none" href="javascript:void(0)" th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
                                 <a name="cancel" class="btn btn-xs btn-info" style="display: none" th:value="${bo.status}" th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
@@ -234,7 +242,12 @@
                     $(ele).parents("tr").eq(0).find("td[name='status']").html(data.result)
                     $(ele).parents("tr").eq(0).find("td[name='statusZh']").html(EpOrderStatus[data.result]);
                     buttonByStatus($(ele).parent(),data.result)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }
@@ -260,8 +273,6 @@
     function orderCancelBox(ele,id) {
         parent.layer.alert('确认取消', {
                 icon: 1,
-                skin: 'layer-ext-moon',
-
             },
             function (index) {
                 orderCancelDo(id,$(ele).attr("value"));

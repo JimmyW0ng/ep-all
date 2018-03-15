@@ -1,7 +1,6 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpOrderPo;
@@ -20,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 
@@ -41,6 +42,7 @@ public class OrderController extends BackendController {
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
                         @RequestParam(value = "childTrueName", required = false) String childTrueName,
+                        @RequestParam(value = "childNickName", required = false) String childNickName,
                         @RequestParam(value = "courseName", required = false) String courseName,
                         @RequestParam(value = "className", required = false) String className,
                         @RequestParam(value = "status", required = false) String status,
@@ -58,6 +60,10 @@ public class OrderController extends BackendController {
             conditions.add(EP.EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
         }
         map.put("childTrueName", childTrueName);
+        if (StringTools.isNotBlank(childNickName)) {
+            conditions.add(EP.EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
+        }
+        map.put("childNickName", childNickName);
         if (StringTools.isNotBlank(courseName)) {
             conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
         }
@@ -86,7 +92,7 @@ public class OrderController extends BackendController {
     }
 
     /**
-     * 批量报名
+     * 批量报名成功
      *
      * @param pos
      * @return
@@ -95,44 +101,12 @@ public class OrderController extends BackendController {
     @ResponseBody
     public ResultDo batchOrderSuccess(
             @RequestBody List<EpOrderPo> pos) {
-        ResultDo resultDo = ResultDo.build();
-        //按classId排序
-        Collections.sort(pos, new Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                EpOrderPo po1 = (EpOrderPo) o1;
-                EpOrderPo po2 = (EpOrderPo) o2;
-                if (po1.getClassId().longValue() > po2.getClassId().longValue()) {
-                    return 1;
-                } else if (po1.getClassId().longValue() == po2.getClassId().longValue()) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-        });
-        //不同classId的记录封装在不同的map中
-        Map<Long, Object> map = Maps.newHashMap();
-        List<EpOrderPo> list = Lists.newArrayList();
-        Long classId = pos.get(0).getClassId();
-        for (int i = 0; i < pos.size(); i++) {
-            if (classId.longValue() == pos.get(i).getClassId().longValue()) {
-                list.add(pos.get(i));
-            } else {
-                map.put(classId,list);
-                list = Lists.newArrayList();
-                classId = pos.get(i).getClassId();
-                list.add(pos.get(i));
-            }
-            map.put(classId,list);
-        }
         //不同班次的孩子批量报名
-        orderService.batchOrderSuccess(map);
-        return resultDo;
+        return orderService.batchOrderSuccess(pos);
     }
 
     /**
-     * 订单报名成功
+     * 单个订单报名成功
      *
      * @param po
      */
@@ -140,21 +114,7 @@ public class OrderController extends BackendController {
     @ResponseBody
     public ResultDo orderSuccess(
             EpOrderPo po) {
-        ResultDo resultDo = ResultDo.build();
-        if (orderService.orderSuccessById(po.getId(), po.getClassId()) == BizConstant.DB_NUM_ONE) {
-            //报名成功
-            resultDo.setResult(EpOrderStatus.success.getLiteral());
-            return resultDo;
-        } else {
-            EpOrderPo orderPo = orderService.getById(po.getId());
-            if (null != orderPo && orderPo.getStatus().equals(EpOrderStatus.success)) {
-                //重复报名
-                return resultDo;
-            }
-            //报名失败
-            resultDo.setSuccess(false);
-            return resultDo;
-        }
+        return orderService.orderSuccessById(po.getId(), po.getClassId());
     }
 
     /**
@@ -187,9 +147,9 @@ public class OrderController extends BackendController {
     public ResultDo orderCancel(
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "status") String status
-            ) {
+    ) {
         ResultDo resultDo = ResultDo.build();
-        orderService.orderCancelById(id,EpOrderStatus.valueOf(status));
+        orderService.orderCancelById(id, EpOrderStatus.valueOf(status));
         return resultDo;
 
     }

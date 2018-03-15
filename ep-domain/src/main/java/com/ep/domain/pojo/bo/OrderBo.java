@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class OrderBo extends EpOrderPo {
     private Long mobile;
     private String childTrueName;
+    private String childNickName;
     private String courseName;
     private String className;
 }
