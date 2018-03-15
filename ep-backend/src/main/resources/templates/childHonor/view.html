@@ -15,7 +15,7 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5 th:text="${memberChildHonerPo.id} eq null ? '新增荣誉' : '修改荣誉'"></h5>
+            <h5 th:text="'查看荣誉'"></h5>
             <a style="display: inline-block;float: right" class="btn btn-xs btn-danger"
                href="/auth/childHonor/index">返回</a>
         </div>
@@ -70,17 +70,12 @@
                     <div class="col-sm-5">
                         <textarea style="height:250px" id="content" name="content" class="form-control" required="true"
                                   aria-required="true"
-                                  th:field="*{content}">
+                                  th:field="*{content}" readonly="true">
                         </textarea>
                     </div>
                 </div>
 
 
-                <div class="form-group">
-                    <div class="col-sm-3 col-sm-offset-2">
-                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
-                    </div>
-                </div>
             </form>
         </div>
     </div>
@@ -90,68 +85,7 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
-    function frmSubmit() {
-        if (!$("#frm").valid()) {
-            console.log("valid fail")
-            return;
-        }
 
-        var url;
-        if ($("#id").val()) {
-            url = '/auth/childHonor/update'
-        } else {
-            url = '/auth/childHonor/create'
-        }
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $("#frm").serialize(),
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, '/auth/childHonor/index')
-                }
-            }
-        })
-    }
-    function changeClassId(ele) {
-        var classId = $(ele).val()
-        if (classId) {
-            $.ajax({
-                type: "GET",
-                url: "/auth/childHonor/findClildByClassId/" + classId,
-                success: function (data) {
-                    if (data.success) {
-                        var childMap = data.result;
-                        var htmls = '<option value="">请选择</option>';
-                        for (var item in childMap) {
-                            htmls = htmls + '<option value=' + item + '>' + childMap[item] + '</option>'
-                        }
-                        $("#childId").html(htmls)
-                    }
-                }
-            })
-        }
-
-    }
-    function changeCourseId(ele) {
-        var courseId = $(ele).val()
-        if (courseId) {
-            $.ajax({
-                type: "GET",
-                url: "/auth/childHonor/findClassByCourseId/" + $(ele).val(),
-                success: function (data) {
-                    if (data.success) {
-                        var classMap = data.result;
-                        var htmls = '<option value="">请选择</option>';
-                        for (var item in classMap) {
-                            htmls = htmls + '<option value=' + item + '>' + classMap[item] + '</option>'
-                        }
-                        $("#classId").html(htmls)
-                    }
-                }
-            })
-        }
-    }
 
 </script>
 </body>

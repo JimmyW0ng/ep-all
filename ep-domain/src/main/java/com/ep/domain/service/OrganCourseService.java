@@ -272,6 +272,11 @@ public class OrganCourseService {
         log.info("[课程]修改课程开始。课程dto={}。", dto);
         //课程对象
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        Optional<EpOrganCoursePo> optional = organCourseRepository.findById(organCoursePo.getId());
+        if (!optional.isPresent()) {
+            log.error("[课程]修改课程失败。该课程不存在。");
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
+        }
         //班次
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         //标签

@@ -54,6 +54,7 @@ public class MemberChildHonorController extends BackendController {
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "childTrueName", required = false) String childTrueName,
+                        @RequestParam(value = "childNickName", required = false) String childNickName,
                         @RequestParam(value = "courseName", required = false) String courseName,
                         @RequestParam(value = "className", required = false) String className,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
@@ -67,6 +68,10 @@ public class MemberChildHonorController extends BackendController {
             conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
         }
         map.put("childTrueName", childTrueName);
+        if (StringTools.isNotBlank(childNickName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
+        }
+        map.put("childNickName", childNickName);
         if (StringTools.isNotBlank(courseName)) {
             conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
         }
@@ -168,6 +173,20 @@ public class MemberChildHonorController extends BackendController {
         ResultDo resultDo = ResultDo.build();
         memberChildHonorService.updateHonor(po);
         return resultDo;
+    }
+
+    /**
+     * 查看
+     *
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping("view/{id}")
+    public String view(Model model, @PathVariable("id") Long id) {
+        EpMemberChildHonorPo bo = memberChildHonorService.findBoById(id);
+        model.addAttribute("memberChildHonerPo", bo);
+        return "childHonor/view";
     }
 
     /**

@@ -114,21 +114,20 @@
                             <td th:text="${bo.className}"></td>
                             <td th:text="#{EpOrganClassStatus.+${bo.classStatus}}"></td>
                             <td th:text="${bo.prize}"></td>
-                            <td style="display: none" name="status" th:text="${bo.status}"></td>
                             <td name="statusZh" th:text="#{EpOrderStatus.+${bo.status}}"></td>
 
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
-                                <a name="success" class="btn btn-xs btn-info" style="display: none"
+                                <a name="success" class="btn btn-xs btn-info"
                                    th:if="${#strings.equals(bo.status,'save')}"
                                    th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
-                                <a name="refuse" class="btn btn-xs btn-danger" style="display: none"
+                                <a name="refuse" class="btn btn-xs btn-danger"
                                    href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'save')}"
                                    th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
-                                <a name="cancel" class="btn btn-xs btn-info" style="display: none"
+                                <a name="cancel" class="btn btn-xs btn-info"
                                    th:value="${bo.status}"
                                    th:if="${#strings.equals(bo.classStatus,'online') &&
                                    #strings.equals(bo.status,'success')||#strings.equals(bo.status,'refuse')}"
@@ -240,7 +239,7 @@
             $box.find("a[name='success']").show()
             $box.find("a[name='refuse']").show()
         }
-        
+
     }
     function orderSuccess(ele,id,classId) {
         $.ajax({
@@ -249,9 +248,9 @@
             data:{id:id,classId:classId},
             success:function (data) {
                 if(data.success){
-                    $(ele).parents("tr").eq(0).find("td[name='status']").html(data.result)
-                    $(ele).parents("tr").eq(0).find("td[name='statusZh']").html(EpOrderStatus[data.result]);
-                    buttonByStatus($(ele).parent(),data.result)
+                    var orderPo = data.result
+                    $(ele).parents("tr").eq(0).find("td[name='statusZh']").html(EpOrderStatus[orderPo.status]);
+                    buttonByStatus($(ele).parent(), orderPo.status)//更新改行按钮的显隐性
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }
@@ -281,13 +280,14 @@
 
     }
     function orderCancelBox(ele,id) {
-        parent.layer.alert('确认取消', {
-                icon: 1,
-            },
+        layer.alert('确认取消该订单', {icon: 3, btn: ['确定', '取消']},
             function (index) {
                 orderCancelDo(id,$(ele).attr("value"));
-                parent.layer.close(index);
-            })
+                layer.close(index);
+            }),
+            function (index) {
+                layer.close(index);
+            }
     }
     function orderCancelDo(id,status) {
         $.ajax({
@@ -302,18 +302,12 @@
 
     }
     $(function () {
-        $("#tbody tr").each(function () {
-            var $box=$(this).find("td[name='button']").eq(0)
-            var status=$(this).find("td[name='status']").eq(0).html()
-            buttonByStatus($box,status)
-//            if($(this).find("td[name='status']").eq(0).html()=="save"){
-//                $(this).find("a[name='success']").show()
-//                $(this).find("a[name='refuse']").show()
-//            }else{
-//                $(this).find("a[name='success']").hide()
-//                $(this).find("a[name='refuse']").hide()
-//            }
-        })
+//        $("#tbody tr").each(function () {
+//            var $box=$(this).find("td[name='button']").eq(0)
+//            var status=$(this).find("td[name='status']").eq(0).html()
+//            buttonByStatus($box,status)
+//
+//        })
     })
 
 </script>

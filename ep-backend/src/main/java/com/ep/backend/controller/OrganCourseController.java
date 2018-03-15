@@ -329,6 +329,75 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
+     * 商家后台紧急修改课程初始化
+     *
+     * @return
+     */
+    @GetMapping("/merchantRectifyInit/{courseId}")
+    public String merchantRectifyInit(Model model, @PathVariable(value = "courseId") Long courseId) {
+
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
+        Map<Long, String> constantCatalogMap = Maps.newHashMap();
+        constantCatalogList.forEach(p -> {
+            constantCatalogMap.put(p.getId(), p.getLabel());
+        });
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        Map<Long, String> organAccountMap = Maps.newHashMap();
+        organAccountList.forEach(p -> {
+            organAccountMap.put(p.getId(), p.getAccountName());
+        });
+        //课程目录下拉框
+        model.addAttribute("constantCatalogMap", constantCatalogMap);
+        //教师下拉框
+        model.addAttribute("organAccountMap", organAccountMap);
+
+        Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
+        if (!courseOptional.isPresent()) {
+            return "errorErupt";
+        }
+        EpOrganCoursePo organCoursePo = courseOptional.get();
+        //课程对象
+        model.addAttribute("organCoursePo", organCoursePo);
+        Long catalogId = organCoursePo.getCourseCatalogId();
+
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
+        List<OrganClassBo> organClassBos = Lists.newArrayList();
+        organClassPos.forEach(p -> {
+            OrganClassBo organClassBo = new OrganClassBo();
+            BeanTools.copyPropertiesIgnoreNull(p, organClassBo);
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassCatalogService.findByClassId(p.getId());
+            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
+                organClassBo.setOrganClassCatalogPos(organClassCatalogPos);
+            }
+            organClassBos.add(organClassBo);
+
+        });
+        //班次
+        model.addAttribute("organClassBos", organClassBos);
+
+        //课程标签
+        List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
+
+        //公用标签
+        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        //私有标签
+        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+        ognTagList.addAll(constantTagList);
+
+        model.addAttribute("organCourseTagBos", organCourseTagBos);
+        model.addAttribute("ognTagList", ognTagList);
+
+        //课程主图
+        Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
+        if (mainpicImgOptional.isPresent()) {
+            model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
+        }
+        return "organCourse/merchantRectify";
+    }
+
+    /**
      * 商家后台修改课程
      *
      * @return

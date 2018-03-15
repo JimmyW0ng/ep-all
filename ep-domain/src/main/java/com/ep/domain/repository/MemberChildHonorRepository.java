@@ -138,6 +138,7 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
 
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_MEMBER_CHILD_HONOR)

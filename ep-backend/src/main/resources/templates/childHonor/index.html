@@ -26,7 +26,11 @@
                                th:value="${map.get('childTrueName')}"
                                placeholder="姓名">
                     </div>
-
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="childNickName"
+                               th:value="${map.get('childNickName')}"
+                               placeholder="昵称">
+                    </div>
                     <div class="form-group">
                         <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
                                placeholder="课程">
@@ -68,6 +72,7 @@
                         <thead>
                         <tr>
                             <th>姓名</th>
+                            <th>昵称</th>
                             <th>课程</th>
                             <th>班次</th>
                             <th>荣誉</th>
@@ -79,12 +84,15 @@
                         <tbody id="tbody">
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.childTrueName}"></td>
+                            <td th:text="${bo.childNickName}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
                             <td th:text="${bo.content}"></td>
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
+                                <a class="btn btn-xs btn-info"
+                                   th:href="@{/auth/childHonor/view/}+${bo.id}">查看</a>
                                 <a class="btn btn-xs btn-primary"
                                    th:href="@{/auth/childHonor/updateInit/}+${bo.id}">修改</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"

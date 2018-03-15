@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:replace="~{fragments/header :: common_header}">
+</head>
+<header>
+    <th:block layout:fragment="links">
+    </th:block>
+    <style>
+        .course-label {
+            font-size: 20px;
+            font-weight: bold
+        }
+    </style>
+</header>
+<body class="gray-bg">
+<div class="col-sm-11 ">
+    <div style="padding-left: 40px" class="row ">
+        <form id="frm">
+            <div class="col-sm-12 ">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">课程详情（<span class="required-sign">*为必填</span>）</label>
+                        <a style="display: inline-block;float: right" class="btn btn-xs btn-danger"
+                           href="javascript:void(0)" onclick="history.back()">返回</a>
+
+                    </div>
+                    <div class="ibox-content" style="">
+                        <div class="row" th:object="${organCoursePo}">
+                            <div class="col-sm-6">
+                                <input id="courseId" name="organCoursePo.id" type="hidden"
+                                       th:value="${organCoursePo.id}">
+                                <input id="ognId" type="hidden" th:value="${organCoursePo.ognId}">
+                                <div class="form-group ">
+                                    <label for="courseName">课程名称 <span class="required-sign">*</span></label>
+                                    <input id="courseName" name="organCoursePo.courseName" type="text"
+                                           th:value="${organCoursePo.courseName}"
+                                           required="true" aria-required="true" class=" form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseType">课程类型 <span class="required-sign">*</span></label>
+                                    <select id="courseType" name="organCoursePo.courseType" type="text"
+                                            required="true"
+                                            class=" form-control ">
+                                        <option value="">请选择</option>
+                                        <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
+                                                th:field="*{courseType}"
+                                                th:value="${state}"
+                                                th:text="#{EpOrganCourseCourseType.+${state.literal}}">
+                                        </option>
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseCatalogId">课程所属目录 <span class="required-sign">*</span></label>
+                                    <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
+                                            required="true"
+                                            class="form-control" onchange="changeGetTags(this)">
+                                        <option value="">请选择</option>
+                                        <option th:each="state : ${constantCatalogMap.keySet()}"
+                                                th:field="*{courseCatalogId}"
+                                                th:value="${state}"
+                                                th:text="${constantCatalogMap.get(state)}">
+                                        </option>
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseIntroduce">课程简介 </label>
+                                    <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
+                                              placeholder="最多输入20个字" maxlength="20"
+                                              class="form-control"
+                                              th:text="${organCoursePo.courseIntroduce}"></textarea>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseAddress">上课地址 </label>
+                                    <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
+                                              class="form-control " th:text="${organCoursePo.courseAddress}">
+                            </textarea>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
+                                    <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
+                                           required="true" class="form-control laydate"
+                                           th:value="${#dates.format(organCoursePo.onlineTime,'yyyy-MM-dd HH:mm:ss')}">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="enterTimeStart">报名开始时间 <span class="required-sign">*</span></label>
+                                    <input id="enterTimeStart" name="organCoursePo.enterTimeStart" type="text"
+                                           required="true" class="form-control laydate"
+                                           th:value="${#dates.format(organCoursePo.enterTimeStart,'yyyy-MM-dd HH:mm:ss')}">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="enterTimeEnd">报名结束时间 </label>
+                                    <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
+                                           class="form-control laydate"
+                                           th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <label>课程内容 <span class="required-sign">*</span></label>
+
+                                <div id="editor">
+                                </div>
+                                <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
+                                       th:value="${organCoursePo.courseContent}">
+                                <div id="preCodeBox"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">课程班次（<span class="required-sign">*为必填</span>）</label>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-success" type="button" onclick="createClassBox()"><i
+                                class="glyphicon glyphicon-plus"></i> 添加班次</a>
+                        <div class="panel-group" id="accordion">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="tagBox" style="background: #eee;min-height: 250px;padding: 20px 0px">
+                            <div id="constantTagBox" class="col-sm-12">
+
+                            </div>
+
+                            <div id="createTagBox" class="col-sm-12" style="margin-top: 20px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">设置图片（<span class="required-sign">必需</span>)</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2">课程主图
+                                    <soan class="required-sign">*</soan>
+                                </label>
+                                <button type="button" class="btn btn-info mainpic_url" id="mainpic_img_btn"
+                                        onclick="$('#mainpic_img').click()">
+                                    <span>选择图片</span>
+                                </button>
+                                <input style="display:none" id="mainpic_img" type="file"
+                                       onchange="uploadMainpicImg($('#mainpic_img_btn'),this)"/>
+                            </div>
+                            <div class="col-sm-offset-2 course-mainpic-box">
+                                <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
+                                <input type="hidden" name="mainpic_url" id="mainpic_url" class="required">
+                                <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
+                                    <button style="width:150px" class="btn-lg btn btn-primary" type="button"
+                                            onclick="frmSubmit()">紧急修改
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script type="text/template" id='classCatalogTmpl'>
+    <div name="organClassCatalogPos" style="display:inline-block;margin:5px 0px">
+        <div name="" class="col-sm-5">
+            <label>课时<span class="required-sign">*</span></label>
+            <input name="id" type="hidden" value=${id}>
+            <input name="catalogTitle" class="form-control cursor" value="${catalogTitle}" required="true"/>
+            <input name="catalogIndex" type="hidden" value=${len}>
+        </div>
+        <div class="col-sm-5">
+            <label>开始时间<span class="required-sign">*</span></label>
+            <input name="startTime" class="form-control laydateer cursor" value="${startTime}" required="true"/>
+        </div>
+        <a style="float:right;" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+                                                                 aria-hidden="true"
+                                                                 onclick="removeClassCatalogBox(this)"></span></a>
+        <div class="col-sm-5">
+            <label>结束时间</label>
+            <input name="endTime" class="form-control laydateer cursor endTime" value="${endTime}"/>
+        </div>
+        <div class="col-sm-10">
+            <label>目录描述<span class="required-sign">*</span></label>
+            <textarea name="catalogDesc" class="form-control cursor" required="true">${catalogDesc}</textarea>
+        </div>
+    </div>
+</script>
+<script type="text/template" id='constantTagTmpl'>
+    <div class="col-sm-2" style="margin-bottom: 10px">
+        <input name="tagName" type="hidden" value=${tagName}>
+        <input type="checkbox" name="id" onclick="taglt6(this)" value="${id}">
+        <input name="ognFlag" type="hidden" value=false>
+        <span class="label constant-tag">${tagName}</span>
+    </div>
+</script>
+<script type="text/template" id='ognTagTmpl'>
+    <div class="col-sm-2" style="margin-bottom: 10px">
+        <input type="checkbox" name="id" onclick="taglt6(this)" value="${id}">
+        <input name="tagName" type="hidden" value=${tagName}>
+        <input name="ognFlag" value=true type="hidden">
+        <span class="label ogn-tag">${tagName}</span>
+    </div>
+</script>
+<script type="text/template" id='classTmpl'>
+    <div name="organClassBosBox" class="panel panel-default">
+        <div class="panel-heading">
+            <h5 class="panel-title">
+                <a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>${className}</a>
+                <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+                                                                        aria-hidden="true"
+                                                                        onclick="removeClassBox(this)"></span></a>
+            </h5>
+        </div>
+        <div id=${collapse} class="panel-collapse collapse in">
+            <div class="panel-body ">
+                <div name="organClassBos" class="form-group col-sm-4">
+                    <input name="id" type="hidden" value="${id}">
+                    <label>班次名称 <span class="required-sign">*</span></label>
+                    <input name="className" type="text" class=" form-control " value="${className}" required="true"
+                           onblur="setClassBoxTitle(this)">
+                    <label>课程负责人 <span class="required-sign">*</span></label>
+                    <select name="ognAccountId" type="text" class=" form-control " required="true">
+
+                    </select>
+                    <label>价格(元) <span class="required-sign">*</span></label>
+                    <!--<div class="input-group input-large">-->
+                    <input name="classPrize" type="text" class=" form-control number-input" value="${classPrize}">
+                    <!--</div>-->
+                    <label>折扣优惠(%) <span class="required-sign">*</span></label>
+                    <!--<div class="input-group input-large">-->
+                    <input name="discountAmount" type="text" class=" form-control number-input"
+                           value="${discountAmount}">
+                    <!--</div>-->
+                    <label>是否限制报名人数 <span class="required-sign">*</span></label>
+                    <select name="enterLimitFlag" type="text" class=" form-control " value="${enterLimitFlag}">
+                        <option value=false>否</option>
+                        <option value=true>是</option>
+                    </select>
+                    <label>要求报名人数 </label>
+                    <input name="enterRequireNum" type="text" class=" form-control " value="${enterRequireNum}"
+                           readonly="true">
+                    <label>总计课时 <span class="required-sign">*</span></label>
+                    <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
+                </div>
+                <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
+                    <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
+                            class="glyphicon glyphicon-plus"></i> 添加课时</a>
+                    <a class="btn btn-success" type="button" onclick="insertClassCatalogBox()"> 插入课时</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/wangeditor/wangEditor.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:src="@{/js/jquery.tmpl.min.js}"></script>
+<script th:src="@{/js/laydate/laydate.js}"></script>
+<script th:inline="javascript">
+    var $cursor;
+    //wangEditor富文本
+    var E = window.wangEditor
+    var editor = new E('#editor')
+
+    /**
+     * 上传课程主图
+     */
+    function uploadMainpicImg($btn, ele) {
+        $btn.attr("disabled", true)
+
+        data = new FormData();
+        data.append("file", $("#mainpic_img")[0].files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/auth/organCourse/uploadMainpic",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.success) {
+                    $("#mainpic_img_url").attr("src", data.result.fileUrl)
+                    $("#mainpic_url").val(data.result.fileUrl)
+                    $("#mainpic_url_preCode").val(data.result.preCode)
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                $(ele).attr("value", null);
+                $btn.attr("disabled", false)
+            }
+        })
+    }
+    function insertClassCatalogBox() {
+        $cursor.parents("div[name='organClassCatalogPos']").eq(0).after($("#classCatalogTmpl").tmpl([{catalogTitle: "课时"}]))
+    }
+
+    //教师map
+    var organAccountMap = [[${organAccountMap}]]
+    //表单是否提交过
+    var isFrmSubmit = false
+
+    /**
+     * 新增班次课时目录
+     */
+    function addClassCatalogBox(ele) {
+        var len = $(ele).parent().find("div[name='organClassCatalogPos']").length
+        var $box = $(ele).parent()
+        var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1}]
+
+        $box.append($("#classCatalogTmpl").tmpl(catalog))
+        $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len + 1)
+
+        lay('.laydateer').each(function () {
+            laydate.render({
+                type: 'datetime',
+                elem: this,
+                trigger: 'click'
+            });
+        });
+    }
+
+    /**
+     * 删除课时
+     */
+    function removeClassCatalogBox(ele) {
+        var len = $(ele).parent().parent().parent().find("div[name='organClassCatalogPos']").length
+        if (len == 1) {
+            return
+        } else {
+            console.log($(ele).parents("div[name='organClassBosBox']").find("input[name='courseNum']").eq(0).val(len - 1))
+            $(ele).parent().parent().remove()
+        }
+    }
+
+    /* 改变课程类目获得公用标签*/
+    function changeGetTags(ele) {
+        $("#constantTagBox").html("")
+        $.ajax({
+            type: "GET",
+            url: "/auth/organCourse/findTagsByCatalog/" + $(ele).val(),
+            success: function (data) {
+                if (data.success) {
+                    var res = data.result
+                    var constantTag = []
+                    var ognTag = []
+                    for (item in res) {
+                        if (res[item].ognFlag) {
+                            ognTag.push({id: res[item].id, tagName: res[item].tagName, ognFlag: res[item].ognFlag})
+                        } else {
+                            constantTag.push({id: res[item].id, tagName: res[item].tagName, ognFlag: res[item].ognFlag})
+                        }
+                    }
+                    $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+                    $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
+                }
+            }
+        })
+    }
+
+    /* 删除标签*/
+    function removeTag(ele) {
+        $(ele).parent().remove();
+    }
+
+    /* 新增课程标签*/
+    function createTagBox() {
+        var label = $('#createTag').val()
+        if (label == "" || label == undefined) {
+            return
+        }
+        var tag = [{id: "", label: label}]
+        $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
+    }
+
+    /*勾选标签不超过6个*/
+    function taglt6(ele) {
+        if ($("#tagBox").find("input[type='checkbox']:checked").length > 6) {
+            if ($(ele).is(":checked")) {
+                $(ele).attr("checked", false)
+                toastr.error("标签不得超过6个")
+            }
+        }
+    }
+    /**
+     * 增加班次
+     */
+    function createClassBox() {
+        var len = $("#accordion").find("div[name='organClassBosBox']").length
+
+        var classes = [{
+            href: "#collapse" + (len + 1),
+            collapse: "collapse" + (len + 1),
+            className: "班次",
+            discountAmount: 0,
+            classPrize: 0
+        }]
+        $("#accordion").append($("#classTmpl").tmpl(classes));
+        var htmls = '';
+        for (key in organAccountMap) {
+            htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
+        }
+        $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
+        bindNumberInput($("#accordion"))
+        $("#accordion").on("click", ".cursor", function () {
+            $cursor = $(this)
+        });
+        //是否限制报名人数 框绑定事件
+        $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
+            var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)
+            if ($(this).val() == "false") {
+                $enterRequireNum.attr("readonly", true)
+            } else {
+                $enterRequireNum.removeAttr("readonly")
+            }
+        })
+    }
+    /**
+     * 删除班次
+     */
+    function removeClassBox(ele) {
+        $(ele).parents("div[name='organClassBosBox']").remove();
+    }
+    /**
+     * 设置班次名称
+     */
+    function setClassBoxTitle(ele) {
+        $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
+    }
+
+    function beforeSubmitFormatDateInputName() {
+        if (!$("#enterTimeEnd").val()) {
+            $("#enterTimeEnd").attr("name", "")
+        }
+        $("#accordion").find("input.endTime").each(function () {
+            if (!$(this).val()) {
+                $(this).attr("name", "")
+            }
+        })
+    }
+
+    function beforeSubmitFormatInputInnerName() {
+        if (!isFrmSubmit) {
+            var $organClassBos = $("#accordion").find("div[name='organClassBos']")
+            for (var i = 0; i < $organClassBos.length; i++) {
+                $organClassBos.eq(i).attr("name", "organClassBos[" + i + "]")
+                $organClassBos.eq(i).find("input").each(function () {
+                    var oldName = $(this).attr("name")
+                    if (oldName) {
+                        $(this).attr("name", $organClassBos.eq(i).attr("name") + "." + oldName)
+                    }
+                })
+                $organClassBos.eq(i).find("select").each(function () {
+                    var oldName = $(this).attr("name")
+                    if (oldName) {
+                        $(this).attr("name", $organClassBos.eq(i).attr("name") + "." + oldName)
+                    }
+                })
+            }
+
+            var $organClassCatalogPosBox = $("#accordion").find("div[name='organClassCatalogPosBox']")
+            for (var j = 0; j < $organClassCatalogPosBox.length; j++) {
+                var $organClassCatalogPos = $organClassCatalogPosBox.eq(j).find("div[name='organClassCatalogPos']")
+                for (var i = 0; i < $organClassCatalogPos.length; i++) {
+                    var parentName = $organClassCatalogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
+                    $organClassCatalogPos.eq(i).attr("name", parentName + ".organClassCatalogPos[" + i + "]")
+                    $organClassCatalogPos.eq(i).find("input,textarea").each(function () {
+                        if ($(this).attr("name") == "catalogIndex") {
+                            $(this).val(i + 1)
+                        }
+                        var oldName = $(this).attr("name")
+                        $(this).attr("name", $organClassCatalogPos.eq(i).attr("name") + "." + oldName)
+                    })
+                }
+            }
+
+            var $constantTags = $("#constantTagBox").find("div")
+            var $ognTags = $("#createTagBox").find("div")
+            var tagCount = 0
+            for (var i = 0; i < $constantTags.length; i++) {
+                if ($constantTags.eq(i).find("input[type='checkbox']").length > 0
+                    && !$constantTags.eq(i).find("input[type='checkbox']").eq(0).is(':checked')) {
+                    $constantTags.eq(i).find("input").each(function () {
+                        $(this).attr("name", "")
+                    })
+                } else {
+                    $constantTags.eq(i).find("input").each(function () {
+                        var oldName = $(this).attr("name");
+                        $(this).attr("name", "constantTagPos[" + tagCount + "]." + oldName)
+                    })
+                    tagCount++;
+                }
+            }
+            for (var i = 0; i < $ognTags.length; i++) {
+                $ognTags.eq(i).find("input").each(function () {
+                    var oldName = $(this).attr("name");
+                    $(this).attr("name", "constantTagPos[" + (i + tagCount) + "]." + oldName)
+                })
+            }
+
+            isFrmSubmit = true
+        }
+    }
+
+    function resetFrmDateInputName() {
+        if (!$("#enterTimeEnd").attr("name")) {
+            $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+        }
+        $("#accordion").find("input.endTime").each(function () {
+            if (!$(this).attr("name")) {
+                $(this).attr("name", "endTime")
+            }
+        })
+    }
+
+    function beforeSubmitCheckCourseDescPic() {
+        var $imgArray = $("#editor").find("img")
+        var $preCodes = $("#preCodeBox")
+        for (var i = 0; i < $imgArray.length; i++) {
+            var preCode = $imgArray.eq(i).attr("precode")
+            var htmls = '<input type="hidden" name="courseDescPicPreCodes" value="' + preCode + '">'
+            $preCodes.append(htmls)
+        }
+    }
+
+    function beforeSubmitCheckCourseMainPic() {
+        if ($("#courseId").val()) {
+            if (!$("#mainpic_img_url").attr("src")) {
+                return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传课程主图"}])
+            }
+            {
+                return true
+            }
+        } else {
+            return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传课程主图"}])
+        }
+
+    }
+
+    function beforeSubmitCourseContent(content) {
+        $("#courseContent").val(content)
+    }
+
+    function frmSubmit() {
+        if (!$("#frm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        if (!beforeSubmitCheckCourseMainPic()) {
+            return
+        }
+        resetFrmDateInputName()
+        beforeSubmitFormatDateInputName()
+        beforeSubmitFormatInputInnerName()
+
+        beforeSubmitCheckCourseDescPic()
+        console.log("courseContent" + editor.txt.text())
+        if (editor.txt.text() == "") {
+            toastr.error("请填写课程内容！")
+            return
+        }
+        beforeSubmitCourseContent(editor.txt.html());
+        var url = "/auth/organCourse/merchantCreate"
+        if ($("#courseId").val()) {
+            url = "/auth/organCourse/merchantUpdate"
+        }
+
+        $.ajax({
+            type: "POST",
+            data: $("#frm").serialize(),
+            url: url,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, "/auth/organCourse/merchantIndex")
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        //修改页面初始化start
+        if ([[${organCoursePo.id}]]) {
+
+            $("#editor").html($("#courseContent").val())
+            //班次start
+            var organClassBos = [[${organClassBos}]]
+            for (var i = 0; i < organClassBos.length; i++) {
+                var len = $("#accordion").find("div[name='organClassBosBox']").length
+                var classes = [{
+                    id: organClassBos[i].id, href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),
+                    className: organClassBos[i].className, classPrize: organClassBos[i].classPrize,
+                    discountAmount: organClassBos[i].discountAmount, enterLimitFlag: organClassBos[i].enterLimitFlag,
+                    enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum
+                }]
+                $("#accordion").append($("#classTmpl").tmpl(classes));
+
+                var htmls = '<option value="">请选择</option>';
+                for (key in organAccountMap) {
+                    if (key == organClassBos[i].ognAccountId) {
+                        htmls = htmls + "<option selected value='" + key + "'>" + organAccountMap[key] + "</option>"
+                    } else {
+                        htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
+                    }
+                }
+                $("#accordion").find("div[name='organClassBosBox']:last").find("select[name='ognAccountId']").eq(0).html(htmls);
+                var organClassCatalogPos = organClassBos[i].organClassCatalogPos
+
+                var $box = $("#accordion").find("div[name='organClassCatalogPosBox']:last")
+                var catalog = []
+                for (var j = 0; j < organClassCatalogPos.length; j++) {
+                    catalog.push({
+                        id: organClassCatalogPos[j].id,
+                        len: j + 1,
+                        startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
+                        catalogTitle: organClassCatalogPos[j].catalogTitle,
+                        catalogDesc: organClassCatalogPos[j].catalogDesc
+                    })
+                }
+                $box.append($("#classCatalogTmpl").tmpl(catalog))
+            }
+            $("#accordion").find("select[name='enterLimitFlag']").each(function () {
+                var val = $(this).attr("value")
+                $(this).val(val)
+            })
+            $("#accordion").on("click", ".cursor", function () {
+                $cursor = $(this)
+            });
+            $("#accordion").find("div[id^='collapse']").removeClass("in");//选项卡折叠
+            $("#accordion").find("select[name='enterLimitFlag']").each(function () {
+                var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)
+                if ("false" == $(this).val()) {
+                    $enterRequireNum.attr("readonly", true)
+                }
+            })
+            //是否限制报名人数 框绑定事件
+            $("#accordion").on("change", "select[name='enterLimitFlag']", function () {
+                var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)
+                if ($(this).val() == "true") {
+                    $enterRequireNum.removeAttr("readonly")
+                } else {
+                    $enterRequireNum.attr("readonly", true)
+                }
+            })
+
+            //班次end
+            //公用标签start
+            var tagList = [[${ognTagList}]]
+            var constantTag = []
+            var ognTag = []
+
+            for (item in tagList) {
+                if (tagList[item].ognFlag) {
+                    ognTag.push({id: tagList[item].id, tagName: tagList[item].tagName, ognFlag: tagList[item].ognFlag})
+                } else {
+                    constantTag.push({
+                        id: tagList[item].id,
+                        tagName: tagList[item].tagName,
+                        ognFlag: tagList[item].ognFlag
+                    })
+                }
+            }
+            $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+            $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
+            //公用标签end
+            //课程标签start
+            var organCourseTagBos = [[${organCourseTagBos}]]
+            for (item in organCourseTagBos) {
+                $("#constantTagBox").find("input[name='id']").each(function () {
+                    if ($(this).val() == organCourseTagBos[item].tagId) {
+                        $(this).attr("checked", true)
+                    }
+                })
+            }
+            //课程标签end
+        }
+        //修改页面初始化end
+
+
+        laydate.render({
+            elem: '#onlineTime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#enterTimeStart',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#enterTimeEnd',
+            type: 'datetime'
+        });
+        lay('.laydateer').each(function () {
+            laydate.render({
+                type: 'datetime',
+                elem: this,
+                trigger: 'click'
+            });
+        });
+
+
+        // 或者 var editor = new E( document.getElementById('#editor') )
+        // 配置服务器端地址
+        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
+        editor.customConfig.uploadFileName = 'file'
+        editor.customConfig.uploadImgMaxLength = 1
+        editor.customConfig.uploadImgHooks = {
+            success: function (xhr, editor, result) {
+                // 图片上传并返回结果，图片插入成功之后触发
+                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+                var $img = $("#editor").find("img[name=" + result.name + "]")
+                if ($img.length == 1) {
+                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
+                }
+
+            },
+        }
+        editor.create()
+    });
+
+</script>
+</body>
+</html>
