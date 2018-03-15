@@ -85,13 +85,13 @@
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/systemOrgan/view/}+${po.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>
-                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(po.status,'save')}"
+                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'save')}"
                                    href="javascript:void(0)" th:onclick="'onlineOrganBox('+${po.id}+')'">上线</a>
-                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(po.status,'online')}"
+                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'online')}"
                                    href="javascript:void(0)" th:onclick="'offlineOrganBox('+${po.id}+')'">下线</a>
-                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(po.status,'online')}"
+                                <a class="btn btn-xs btn-danger" th:if="${#strings.equals(po.status,'online')}"
                                    href="javascript:void(0)" th:onclick="'freezeOrganBox('+${po.id}+')'">冻结</a>
-                                <a class="btn btn-xs btn-danger" th:if="${#stringTools.equals(po.status,'freeze')}"
+                                <a class="btn btn-xs btn-danger" th:if="${#strings.equals(po.status,'freeze')}"
                                    href="javascript:void(0)" th:onclick="'unfreezeOrganBox('+${po.id}+')'">解冻</a>
 
 

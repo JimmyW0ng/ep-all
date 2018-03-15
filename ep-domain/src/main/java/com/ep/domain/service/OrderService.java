@@ -255,14 +255,15 @@ public class OrderService {
     }
 
     /**
-     * 订单报名成功
+     * 单个订单报名成功
      *
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public int orderSuccessById(Long id, Long classId) {
+    public ResultDo orderSuccessById(Long id, Long classId) {
+        log.info("[订单]订单报名开始，订单id={},班次classId={}。", id, classId);
         int count = orderRepository.orderSuccessById(id);
-        if (count > BizConstant.DB_NUM_ZERO) {
+        if (count == BizConstant.DB_NUM_ONE) {
             EpOrderPo orderPo = orderRepository.getById(id);
             // 增加班次成功报名人数
             organClassRepository.updateEnteredNumByorderSuccess(classId, count);
@@ -270,27 +271,65 @@ public class OrderService {
             organCourseRepository.addTotalParticipate(orderPo.getCourseId(), count);
             // 增加机构总参与人数
             organRepository.addTotalParticipate(orderPo.getOgnId(), count);
+            log.info("[订单]订单报名成功，订单id={},班次classId={}。", id, classId);
+            return ResultDo.build();
+        } else {
+            log.error("[订单]订单报名失败，订单id={},班次classId={}。", id, classId);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
-        return count;
     }
 
     /**
      * 批量报名（不同孩子的班次批量报名）
      *
-     * @param map
+     * @param pos
      */
     @Transactional(rollbackFor = Exception.class)
-    public void batchOrderSuccess(Map<Long, Object> map) {
+    public ResultDo batchOrderSuccess(List<EpOrderPo> pos) {
+        //按classId排序
+        Collections.sort(pos, new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                EpOrderPo po1 = (EpOrderPo) o1;
+                EpOrderPo po2 = (EpOrderPo) o2;
+                if (po1.getClassId().longValue() > po2.getClassId().longValue()) {
+                    return 1;
+                } else if (po1.getClassId().longValue() == po2.getClassId().longValue()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        //不同classId的记录封装在不同的map中
+        Map<Long, Object> map = Maps.newHashMap();
+        List<EpOrderPo> list = Lists.newArrayList();
+        Long classId = pos.get(0).getClassId();
+        for (int i = 0; i < pos.size(); i++) {
+            if (classId.longValue() == pos.get(i).getClassId().longValue()) {
+                list.add(pos.get(i));
+            } else {
+                map.put(classId, list);
+                list = Lists.newArrayList();
+                classId = pos.get(i).getClassId();
+                list.add(pos.get(i));
+            }
+            map.put(classId, list);
+        }
+        //不同班次的孩子批量报名
+        log.info("[订单],订单批量报名成功，pos={}。", pos);
         //相同班次批量报名
         map.keySet().forEach(key -> {
-            List<EpOrderPo> pos = (List<EpOrderPo>) map.get(key);
-            List<Long> list = Lists.newArrayList();
-            for (int i = 0; i < pos.size(); i++) {
-                list.add(pos.get(i).getId());
+            List<EpOrderPo> orderPos = (List<EpOrderPo>) map.get(key);
+            List<Long> classlist = Lists.newArrayList();
+            for (int i = 0; i < orderPos.size(); i++) {
+                classlist.add(orderPos.get(i).getId());
             }
-            int count = orderRepository.orderSuccessByIds(list);
+            int count = orderRepository.orderSuccessByIds(classlist);
             organClassRepository.updateEnteredNumByorderSuccess(key, count);
         });
+        log.info("[订单],订单批量报名成功，pos={}。", pos);
+        return ResultDo.build();
     }
 
     /**

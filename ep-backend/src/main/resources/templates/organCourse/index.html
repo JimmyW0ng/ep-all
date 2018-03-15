@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sd="http://www.thymeleaf.org/spring-data"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head th:replace="~{fragments/header :: common_header}">
 
@@ -21,7 +20,7 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input sec:authorize="hasAuthority('platform:organ:index123')" type="text" class="form-control "
+                        <input type="text" class="form-control "
                                name="mobile" th:value="${searchMap.get('mobile')}"
                                placeholder="课程名称">
                     </div>
