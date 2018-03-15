@@ -292,6 +292,9 @@ public class MemberChildService {
         EpMemberChildPo childPo = checkChild.getResult();
         MemberChildAbstractBo abstractBo = new MemberChildAbstractBo();
         abstractBo.setChildId(childPo.getId());
+        abstractBo.setChildNickName(childPo.getChildNickName());
+        abstractBo.setCurrentSchool(childPo.getCurrentSchool());
+        abstractBo.setCurrentClass(childPo.getCurrentClass());
         // 签名
         Optional<EpMemberChildSignPo> optional = memberChildSignRepository.getByChildId(childPo.getId());
         if (optional.isPresent()) {

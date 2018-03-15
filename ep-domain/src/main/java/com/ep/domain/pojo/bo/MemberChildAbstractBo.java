@@ -9,6 +9,9 @@ import java.util.List;
 public class MemberChildAbstractBo extends AbstractBasePojo {
 
     private Long childId;
+    private String childNickName;
+    private String currentSchool;
+    private String currentClass;
     private String sign;
     private Long totalOrder;
     private Long totalHonor;
