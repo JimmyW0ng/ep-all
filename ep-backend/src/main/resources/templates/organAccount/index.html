@@ -17,7 +17,7 @@
 
         <div class="panel">
             <div class="panel-heading">
-                <a class="btn btn-success" type="button" th:if="${ognId!=null}"
+                <a class="btn btn-success" type="button"
                    th:href="@{/auth/organAccount/createInit}"><i
                         class="glyphicon glyphicon-plus"></i> 新增</a>
             </div>
@@ -82,15 +82,17 @@
                             <td th:text="${bo.referMobile}"></td>
                             <td th:if="${ognId==null}" th:text="${bo.ognName}"></td>
                             <td th:text="#{EpOrganAccountStatus.+${bo.status}}"></td>
-
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/organAccount/view/}+${bo.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
-
+                                <a class="btn btn-xs btn-danger" th:if="${#strings.equals(bo.status,'normal')}"
+                                   href="javascript:void(0)" th:onclick="'freezeBox('+${bo.id}+')'">冻结</a>
+                                <a class="btn btn-xs btn-danger" th:if="${#strings.equals(bo.status,'freeze')}"
+                                   href="javascript:void(0)" th:onclick="'unfreezeBox('+${bo.id}+')'">解冻</a>
+                                <a class="btn btn-xs btn-danger" th:if="!${#strings.equals(bo.status,'cancel')}"
+                                   href="javascript:void(0)" th:onclick="'cancelBox('+${bo.id}+')'">注销</a>
                             </td>
-
                         </tr>
                         </tbody>
                     </table>
@@ -121,26 +123,81 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script>
-    function deleteBox(id) {
-        parent.layer.alert('确认删除用户', {
+    function freezeBox(id) {
+        parent.layer.alert('确认冻结用户', {
                 icon: 1,
-                skin: 'layer-ext-moon',
-
             },
             function (index) {
-                delDo(id);
+                freezeDo(id);
                 parent.layer.close(index);
             })
     }
-    function delDo(id) {
+    function freezeDo(id) {
         $.ajax({
             type:"GET",
-            url:"/auth/organAccount/delete/"+id,
+            url: "/auth/organAccount/freeze/" + id,
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/organAccount/index');
+                } else {
+                    toastr.error(data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+
+    }
+    function unfreezeBox(id) {
+        parent.layer.alert('确认解冻用户', {
+                icon: 1,
+            },
+            function (index) {
+                unfreezeDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function unfreezeDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/organAccount/unfreeze/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, '/auth/organAccount/index');
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+
+    }
+    function cancelBox(id) {
+        parent.layer.alert('确认注销用户', {
+                icon: 1,
+            },
+            function (index) {
+                cancelDo(id);
+                parent.layer.close(index);
+            })
+    }
+    function cancelDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/organAccount/cancel/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, '/auth/organAccount/index');
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
 
     }

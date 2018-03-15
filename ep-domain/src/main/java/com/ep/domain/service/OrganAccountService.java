@@ -15,6 +15,8 @@ import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.OrganAccountRepository;
 import com.ep.domain.repository.OrganClassRepository;
 import com.ep.domain.repository.OrganRepository;
+import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +46,7 @@ public class OrganAccountService {
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private OrganClassRepository organClassRepository;
-    @Autowired
-    private FileService fileService;
+
 
     /**
      * 根据手机号获取详情
@@ -95,15 +96,17 @@ public class OrganAccountService {
      * @return
      */
     public ResultDo createOgnAccount(OrganAccountBo bo) {
+
         log.info("[教师]新增教师开始。教师对象={}。", bo);
         if (StringTools.isBlank(bo.getAccountName()) || StringTools.isBlank(bo.getNickName())
-                || null == bo.getOgnId() || null == bo.getStatus()
+                || null == bo.getOgnId()
                 || null == bo.getReferMobile() || StringTools.isBlank(bo.getAvatar())) {
             log.error("[教师]新增教师失败，请求参数异常。");
             ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
         EpOrganAccountPo po = new EpOrganAccountPo();
         copyBoPropertyToPo(bo, po);
+        po.setStatus(EpOrganAccountStatus.normal);
         organAccountRepository.insert(po);
         //教师头像
         if (StringTools.isNotBlank(bo.getAvatarUrlPreCode())) {
@@ -244,5 +247,62 @@ public class OrganAccountService {
         po.setStatus(bo.getStatus());
         po.setReferMobile(bo.getReferMobile());
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
+    }
+
+    /**
+     * 根据id注销
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo cancelOgnAccount(Long id) {
+        log.info("[教师]注销教师开始，id={}。", id);
+        EpOrganClassStatus[] classStatus = {EpOrganClassStatus.save, EpOrganClassStatus.online, EpOrganClassStatus.online};
+        //该教师不存在 状态为 已保存；已上线；进行中；的班次，才能注销
+        if (organClassRepository.countByOgnAccountIdAndClassStatus(id, classStatus) > BizConstant.DB_NUM_ZERO) {
+            log.error("[教师]注销教师失败，该教师存在状态为已保存或已上线或进行中的班次，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_CANCEL_EXIST_CLASS);
+        }
+        if (organAccountRepository.cancelById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[教师]注销教师成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[教师]注销教师失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 根据id冻结
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo freezeOgnAccount(Long id) {
+        log.info("[教师]冻结教师开始，id={}。", id);
+        if (organAccountRepository.freezeById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[教师]冻结教师成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[教师]冻结教师失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 根据id解冻
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo unfreezeOgnAccount(Long id) {
+        log.info("[教师]解冻教师开始，id={}。", id);
+        if (organAccountRepository.unfreezeById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[教师]解冻教师成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[教师]解冻教师失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 }

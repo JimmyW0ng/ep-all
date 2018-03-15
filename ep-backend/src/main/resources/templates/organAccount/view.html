@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
->
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head th:replace="~{fragments/header :: common_header}">
 
 </head>
@@ -48,19 +47,6 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" type="text" class="form-control" required="true" th:field="*{status}"
-                                aria-required="true">
-                            <option value="">请选择</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganAccountStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganAccountStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">关联手机号：</label>
                     <div class="col-sm-3">

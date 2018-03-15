@@ -90,6 +90,7 @@ public class MessageCode {
      * 机构账户
      */
     public static final String ERROR_ORGAN_ACCOUNT_NOT_EXISTS = "ERROR_ORGAN_ACCOUNT_NOT_EXISTS";
+    public static final String ERROR_ORGAN_ACCOUNT_CANCEL_EXIST_CLASS = "ERROR_ORGAN_ACCOUNT_CANCEL_EXIST_CLASS";
     /**
      * 系统用户
      */
