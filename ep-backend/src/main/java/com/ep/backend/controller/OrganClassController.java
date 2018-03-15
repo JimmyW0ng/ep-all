@@ -83,4 +83,17 @@ public class OrganClassController extends BackendController {
         EpSystemUserPo userPo = super.getCurrentUser().get();
         return organClassService.openById(userPo, id);
     }
+
+    /**
+     * 结束班次
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("end/{id}")
+    @ResponseBody
+    public ResultDo end(@PathVariable(value = "id") Long id) {
+        return ResultDo.build();
+    }
+
 }

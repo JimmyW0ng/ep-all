@@ -100,8 +100,8 @@
                                 <!--<a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'save')}" th:href="@{/auth/organClass/online/}+${bo.id}">上线</a>-->
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'online')}"
                                    href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
-
-                                <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>-->
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(bo.status,'opening')}" th:onclick="'endBox('+${bo.id}+')'">结束</a>
 
                             </td>
 
@@ -135,10 +135,10 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script>
+    /*开课start*/
     function openingBox(id) {
         parent.layer.alert('确认该班次开课', {
                 icon: 1,
-                skin: 'layer-ext-moon',
             },
             function (index) {
                 openingDo(id);
@@ -152,32 +152,46 @@
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/organClass/index');
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
 
     }
-    function deleteBox(id) {
-        parent.layer.alert('确认删除用户', {
-                icon: 1,
-                skin: 'layer-ext-moon',
+    /*开课end*/
+    /*结束班次start*/
+    function endBox(id) {
+        layer.confirm('确定结束该班次',
+            {icon: 3, btn: ['确定', '取消']},
+            function (index) {
+                endDo(id);
+                layer.close(index);
             },
             function (index) {
-                delDo(id);
-                parent.layer.close(index);
-            })
+                layer.close(index);
+            });
     }
-    function delDo(id) {
+    function endDo(id, index) {
         $.ajax({
             type:"GET",
-            url:"/auth/organClass/delete/"+id,
+            url: "/auth/organClass/end/" + id,
             success:function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/organClass/index');
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
     }
+    /*结束班次end*/
 </script>
 </body>
 </html>
