@@ -349,10 +349,24 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public List<EpOrderPo> findOpeningOrdersByClassId(Long classId) {
         return dslContext.selectFrom(EP_ORDER)
-                .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .fetchInto(EpOrderPo.class);
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .fetchInto(EpOrderPo.class);
+    }
+
+    /**
+     * 根据班次获取未确认的订单
+     *
+     * @param classId
+     * @return
+     */
+    public List<EpOrderPo> findSavedOrdersByClassId(Long classId) {
+        return dslContext.selectFrom(EP_ORDER)
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .fetchInto(EpOrderPo.class);
     }
 }
 

@@ -72,9 +72,20 @@ public class OrganClassService {
             log.error("课程与当前操作机构不匹配, classId={}, classOgnId={}, userOgnId={}", id, classPo.getOgnId(), currentUser.getOgnId());
             return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
         }
-        if (classPo.getEnteredNum().intValue() < BizConstant.DB_NUM_ONE) {
+        if (classPo.getEnteredNum() < BizConstant.DB_NUM_ONE) {
             log.error("成功报名人数小于1, classId={}, enteredNum={}", id, classPo.getEnteredNum());
             return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        // 校验是否还有未处理的订单
+        List<EpOrderPo> savedOrders = orderRepository.findSavedOrdersByClassId(id);
+        if (CollectionsTools.isNotEmpty(savedOrders)) {
+            log.error("存在未处理的订单, classId={}, savedOrderNum={}", id, savedOrders.size());
+            return ResultDo.build(MessageCode.ERROR_COURSE_EXIST_SAVED_ORDER);
+        }
+        List<EpOrderPo> openingOrders = orderRepository.findOpeningOrdersByClassId(id);
+        if (CollectionsTools.isEmpty(openingOrders)) {
+            log.error("班次不存在已开班订单, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CHILD_NOT_EXISTS);
         }
         // 开班
         int num = organClassRepository.openById(id);
@@ -84,11 +95,6 @@ public class OrganClassService {
         // 更新订单状态为已开班
         orderRepository.openOrderByClassId(id);
         // 生成班级孩子记录
-        List<EpOrderPo> openingOrders = orderRepository.findOpeningOrdersByClassId(id);
-        if (CollectionsTools.isEmpty(openingOrders)) {
-            log.error("班次不存在已开班订单, classId={}", id);
-            return ResultDo.build(MessageCode.ERROR_CLASS_CHILD_NOT_EXISTS);
-        }
         for (EpOrderPo orderPo : openingOrders) {
             EpOrganClassChildPo classChildPo = new EpOrganClassChildPo();
             classChildPo.setClassId(id);
