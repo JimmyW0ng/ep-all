@@ -332,13 +332,27 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      *
      * @param classId
      */
-    public int openOrderByClassId(Long classId) {
+    public int openByClassId(Long classId) {
         return dslContext.update(EP_ORDER)
                 .set(EP_ORDER.STATUS, EpOrderStatus.opening)
                 .where(EP_ORDER.CLASS_ID.eq(classId))
                 .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    /**
+     * 根据班次id更新订单状态为已结束
+     *
+     * @param classId
+     */
+    public int endByClassId(Long classId) {
+        return dslContext.update(EP_ORDER)
+                         .set(EP_ORDER.STATUS, EpOrderStatus.end)
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**

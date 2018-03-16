@@ -51,6 +51,21 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
     }
 
     /**
+     * 获取课程和班次状态获取
+     *
+     * @param courseId
+     * @return
+     */
+    public List<EpOrganClassPo> getByCourseIdAndStatus(Long courseId, EpOrganClassStatus... status) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                         .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                         .and(EP_ORGAN_CLASS.STATUS.in(status))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .orderBy(EP_ORGAN_CLASS.SORT.desc(), EP_ORGAN_CLASS.ID.asc())
+                         .fetchInto(EpOrganClassPo.class);
+    }
+
+    /**
      * 下单（没有报名限制）
      *
      * @param classId
@@ -337,6 +352,21 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.online))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    /**
+     * 根据id结束班次
+     *
+     * @param id
+     * @return
+     */
+    public int endById(Long id) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                         .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.end)
+                         .where(EP_ORGAN_CLASS.ID.eq(id))
+                         .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.opening))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**

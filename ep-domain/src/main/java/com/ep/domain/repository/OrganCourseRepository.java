@@ -202,6 +202,20 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
     }
 
     /**
+     * 根据id课程下线
+     *
+     * @param id
+     */
+    public int offlineById(Long id) {
+        return dslContext.update(EP_ORGAN_COURSE)
+                         .set(EP_ORGAN_COURSE.COURSE_STATUS, EpOrganCourseCourseStatus.offline)
+                         .where(EP_ORGAN_COURSE.ID.eq(id))
+                         .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.online))
+                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
      * 根据机构id获取记录
      *
      * @param ognId

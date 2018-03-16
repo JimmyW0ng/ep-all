@@ -93,7 +93,8 @@ public class OrganClassController extends BackendController {
     @GetMapping("end/{id}")
     @ResponseBody
     public ResultDo end(@PathVariable(value = "id") Long id) {
-        return ResultDo.build();
+        EpSystemUserPo userPo = super.getCurrentUser().get();
+        return organClassService.endById(userPo, id);
     }
 
 }

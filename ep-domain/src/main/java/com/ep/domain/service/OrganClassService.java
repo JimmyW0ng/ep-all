@@ -12,6 +12,7 @@ import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.OrganClassChildRepository;
 import com.ep.domain.repository.OrganClassRepository;
+import com.ep.domain.repository.OrganCourseRepository;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -33,6 +34,8 @@ import java.util.List;
 @Slf4j
 public class OrganClassService {
 
+    @Autowired
+    private OrganCourseRepository organCourseRepository;
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
@@ -84,7 +87,7 @@ public class OrganClassService {
         }
         List<EpOrderPo> openingOrders = orderRepository.findSuccessOrdersByClassId(id);
         if (CollectionsTools.isEmpty(openingOrders)) {
-            log.error("班次不存在报名成功的订单, classId={}", id);
+            log.error("班次内未发现报名成功的订单, classId={}", id);
             return ResultDo.build(MessageCode.ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS);
         }
         // 开班
@@ -93,7 +96,7 @@ public class OrganClassService {
             return ResultDo.build();
         }
         // 更新订单状态为已开班
-        orderRepository.openOrderByClassId(id);
+        orderRepository.openByClassId(id);
         // 生成班级孩子记录
         for (EpOrderPo orderPo : openingOrders) {
             EpOrganClassChildPo classChildPo = new EpOrganClassChildPo();
@@ -106,12 +109,43 @@ public class OrganClassService {
     }
 
     /**
-     * 机构下线，该机构下的班次结束
+     * 班次结束
      *
-     * @param ognId
+     * @param currentUser
+     * @param id
+     * @return
      */
-    public void updateClassByOfflineOgn(Long ognId) {
-        organClassRepository.updateClassByOfflineOgn(ognId);
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo endById(EpSystemUserPo currentUser, Long id) {
+        log.info("班次结束, sysUserId={}, classId={}", currentUser.getId(), id);
+        // 校验班次
+        EpOrganClassPo classPo = organClassRepository.getById(id);
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+            log.error("班次不是已开班状态, classId={}, status={}", id, classPo.getStatus());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_OPENING);
+        }
+        if (!classPo.getOgnId().equals(currentUser.getOgnId())) {
+            log.error("课程与当前操作机构不匹配, classId={}, classOgnId={}, userOgnId={}", id, classPo.getOgnId(), currentUser.getOgnId());
+            return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        // 结束班次
+        int num = organClassRepository.endById(id);
+        if (num == BizConstant.DB_NUM_ZERO) {
+            return ResultDo.build();
+        }
+        // 结束订单
+        orderRepository.endByClassId(id);
+        // 如果没有开班状态的班次了则下线课程
+        Long courseId = classPo.getCourseId();
+        List<EpOrganClassPo> openingClasses = organClassRepository.getByCourseIdAndStatus(courseId, EpOrganClassStatus.online, EpOrganClassStatus.opening);
+        if (CollectionsTools.isEmpty(openingClasses)) {
+            log.info("课程班次已全部结束，课程状态更新为下线, courseId={}", courseId);
+            organCourseRepository.offlineById(courseId);
+        }
+        return ResultDo.build();
     }
-
 }
