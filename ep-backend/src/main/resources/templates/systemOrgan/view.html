@@ -114,6 +114,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label"><input id="vipFlag" name="vipFlag" type="checkbox"
+                                                                 th:field="*{vipFlag}">是否开通会员制度：</label>
+                    <div class="col-sm-3">
+                        <input id="vipName" name="vipName" type="text" class="form-control" th:field="*{vipName}">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label">营销权重：</label>
                     <div class="col-sm-3">
                         <input id="marketWeight" name="marketWeight" type="text" class="form-control" required="true" th:field="*{marketWeight}"

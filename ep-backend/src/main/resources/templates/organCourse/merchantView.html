@@ -147,6 +147,9 @@
                                             <label>要求报名人数 </label>
                                             <input name="enterRequireNum" type="text" class=" form-control "
                                                    th:value="${po.enterRequireNum}">
+                                            <label>是否会员才能报名 <span class="required-sign">*</span></label>
+                                            <input name="vipFlag" type="text" class=" form-control "
+                                                   th:value="${po.vipFlag ?'是':'否'}">
                                             <label>总计课时 *</label>
                                             <input name="courseNum" type="Number" class=" form-control "
                                                    th:value="${po.courseNum}">

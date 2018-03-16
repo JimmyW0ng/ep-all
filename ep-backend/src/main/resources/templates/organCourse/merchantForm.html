@@ -264,9 +264,15 @@
                         <option value=false>否</option>
                         <option value=true>是</option>
                     </select>
+
                     <label>要求报名人数 </label>
                     <input name="enterRequireNum" type="text" class=" form-control " value="${enterRequireNum}"
                            readonly="true">
+                    <label>是否会员才能报名 <span class="required-sign">*</span></label>
+                    <select name="vipFlag" type="text" class=" form-control " value="${vipFlag}">
+                        <option value=true>是</option>
+                        <option value=false>否</option>
+                    </select>
                     <label>总计课时 <span class="required-sign">*</span></label>
                     <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
@@ -631,7 +637,8 @@
                     id: organClassBos[i].id, href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),
                     className: organClassBos[i].className, classPrize: organClassBos[i].classPrize,
                     discountAmount: organClassBos[i].discountAmount, enterLimitFlag: organClassBos[i].enterLimitFlag,
-                    enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum
+                    enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum,
+                    vipFlag: organClassBos[i].vipFlag
                 }]
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 
@@ -663,6 +670,10 @@
 
             }
             $("#accordion").find("select[name='enterLimitFlag']").each(function () {
+                var val = $(this).attr("value")
+                $(this).val(val)
+            })
+            $("#accordion").find("select[name='vipFlag']").each(function () {
                 var val = $(this).attr("value")
                 $(this).val(val)
             })

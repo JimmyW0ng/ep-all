@@ -84,6 +84,7 @@
                                   />
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">机构成立日期：</label>
                     <div class="col-sm-3">
@@ -117,6 +118,14 @@
                     <div class="col-sm-3">
                         <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" th:field="*{ognIntroduce}"
                                aria-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><input id="vipFlag" name="vipFlag"
+                                                                 type="checkbox">是否开通会员制度：</label>
+                    <div class="col-sm-3">
+                        <input id="vipName" name="vipName" type="text" class="form-control"
+                               placeholder="会员名称" th:value="${organPo.ognCreateDate}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -179,6 +188,20 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
+    function vipBoxByVipflag() {
+        var vipFlag = $("#vipFlag").is(":checked")
+        if (vipFlag) {
+            $("#vipName").val("会员").attr("readonly", false)
+            $("#vipFlag").attr("value", true)
+        } else {
+            $("#vipName").val("").attr("readonly", true)
+            $("#vipFlag").attr("value", false)
+        }
+    }
+    $("#vipFlag").on("click", function () {
+        vipBoxByVipflag()
+    })
+
     /**
      * 根据省获取市
      */
@@ -224,6 +247,10 @@
                 }
             })
         }
+    }
+
+    function befSubmitFormatField() {
+
     }
     function organFrmSubmit() {
         if (!$("#organFrm").valid()) {
@@ -333,11 +360,12 @@
         }
         $("#city").html(htmls_city).val(cityId)
 
-//        var province=[[${province}]]
         var provinceId=[[${provinceId}]]
         $("#province").val(provinceId)
-//        console.log(district)
-//        console.log(districtId)
+
+        //是否有会员制度
+        vipBoxByVipflag()
+
     })
 
 </script>

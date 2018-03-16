@@ -62,6 +62,8 @@
                             <th>官方电话</th>
                             <th>官方邮箱</th>
                             <th>官方网址</th>
+                            <th>是否开通会员制度</th>
+                            <th>会员称呼</th>
                             <th>综合得分</th>
                             <th>状态</th>
                             <th>备注</th>
@@ -77,6 +79,8 @@
                             <td th:text="${po.ognPhone}"></td>
                             <td th:text="${po.ognEmail}"></td>
                             <td th:text="${po.ognUrl}"></td>
+                            <td th:text="${po.vipFlag==true?'是':'否'}"></td>
+                            <td th:text="${po.vipName}"></td>
                             <td th:text="${po.togetherScore}"></td>
                             <td th:text="#{EpOrganStatus.+${po.status}}"></td>
 
