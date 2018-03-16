@@ -32,7 +32,7 @@ public class GeneratorClass {
                         .withUrl("jdbc:mysql://gz-cdb-h1zql3x3.sql.tencentcdb.com:63058/ep?useUnicode=true&amp;" +
                                 "characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true")
                         .withUser("root")
-                        .withPassword("gdqhENwd6q95Af18"))
+                        .withPassword(""))
                 .withGenerator(new Generator()
                         .withDatabase(new Database()
                                 // .withRecordTimestampFields("create_at")

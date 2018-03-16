@@ -138,6 +138,11 @@ public class Tables {
     public static final EpOrganCourseTeam EP_ORGAN_COURSE_TEAM = com.ep.domain.repository.domain.tables.EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM;
 
     /**
+     * 机构会员信息表
+     */
+    public static final EpOrganVip EP_ORGAN_VIP = com.ep.domain.repository.domain.tables.EpOrganVip.EP_ORGAN_VIP;
+
+    /**
      * 鉴权表
      */
     public static final EpSystemClient EP_SYSTEM_CLIENT = com.ep.domain.repository.domain.tables.EpSystemClient.EP_SYSTEM_CLIENT;

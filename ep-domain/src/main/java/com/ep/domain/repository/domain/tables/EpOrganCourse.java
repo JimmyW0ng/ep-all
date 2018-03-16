@@ -36,7 +36,7 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      * The reference instance of <code>ep.ep_organ_course</code>
      */
     public static final EpOrganCourse EP_ORGAN_COURSE = new EpOrganCourse();
-    private static final long serialVersionUID = -891298582;
+    private static final long serialVersionUID = -1072414784;
     /**
      * The column <code>ep.ep_organ_course.id</code>. 主键
      */
@@ -46,9 +46,9 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      */
     public final TableField<EpOrganCourseRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构ID");
     /**
-     * The column <code>ep.ep_organ_course.course_type</code>. 课程类型：培训课；活动；
+     * The column <code>ep.ep_organ_course.course_type</code>. 课程类型：学习；活动；
      */
-    public final TableField<EpOrganCourseRecord, EpOrganCourseCourseType> COURSE_TYPE = createField("course_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType.class), this, "课程类型：培训课；活动；");
+    public final TableField<EpOrganCourseRecord, EpOrganCourseCourseType> COURSE_TYPE = createField("course_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType.class), this, "课程类型：学习；活动；");
     /**
      * The column <code>ep.ep_organ_course.course_catalog_id</code>. 课程目录ID
      */

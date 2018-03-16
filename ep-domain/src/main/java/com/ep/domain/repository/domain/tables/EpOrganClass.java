@@ -35,7 +35,7 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The reference instance of <code>ep.ep_organ_class</code>
      */
     public static final EpOrganClass EP_ORGAN_CLASS = new EpOrganClass();
-    private static final long serialVersionUID = -1518659586;
+    private static final long serialVersionUID = 861722222;
     /**
      * The column <code>ep.ep_organ_class.id</code>. 主键
      */
@@ -64,6 +64,10 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The column <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
      */
     public final TableField<EpOrganClassRecord, BigDecimal> DISCOUNT_AMOUNT = createField("discount_amount", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).defaultValue(org.jooq.impl.DSL.inline("0.00", org.jooq.impl.SQLDataType.DECIMAL)), this, "折扣优惠");
+    /**
+     * The column <code>ep.ep_organ_class.vip_flag</code>. 是否会员才能报名
+     */
+    public final TableField<EpOrganClassRecord, Boolean> VIP_FLAG = createField("vip_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否会员才能报名");
     /**
      * The column <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
      */

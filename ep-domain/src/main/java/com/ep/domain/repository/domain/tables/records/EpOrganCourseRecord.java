@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord> implements Record21<Long, Long, EpOrganCourseCourseType, Long, String, String, String, BigDecimal, String, String, String, EpOrganCourseCourseStatus, Timestamp, Timestamp, Timestamp, Integer, String, Timestamp, Timestamp, Boolean, Long> {
 
-    private static final long serialVersionUID = -500621684;
+    private static final long serialVersionUID = 1813175938;
 
     /**
      * Create a detached EpOrganCourseRecord
@@ -100,14 +100,14 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_course.course_type</code>. 课程类型：培训课；活动；
+     * Getter for <code>ep.ep_organ_course.course_type</code>. 课程类型：学习；活动；
      */
     public EpOrganCourseCourseType getCourseType() {
         return (EpOrganCourseCourseType) get(2);
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_type</code>. 课程类型：培训课；活动；
+     * Setter for <code>ep.ep_organ_course.course_type</code>. 课程类型：学习；活动；
      */
     public EpOrganCourseRecord setCourseType(EpOrganCourseCourseType value) {
         set(2, value);

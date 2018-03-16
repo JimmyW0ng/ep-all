@@ -54,6 +54,7 @@ public class Keys {
     public static final Identity<EpOrganCourseRecord, Long> IDENTITY_EP_ORGAN_COURSE = Identities0.IDENTITY_EP_ORGAN_COURSE;
     public static final Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = Identities0.IDENTITY_EP_ORGAN_COURSE_TAG;
     public static final Identity<EpOrganCourseTeamRecord, Long> IDENTITY_EP_ORGAN_COURSE_TEAM = Identities0.IDENTITY_EP_ORGAN_COURSE_TEAM;
+    public static final Identity<EpOrganVipRecord, Long> IDENTITY_EP_ORGAN_VIP = Identities0.IDENTITY_EP_ORGAN_VIP;
     public static final Identity<EpSystemClientRecord, Long> IDENTITY_EP_SYSTEM_CLIENT = Identities0.IDENTITY_EP_SYSTEM_CLIENT;
     public static final Identity<EpSystemDictRecord, Long> IDENTITY_EP_SYSTEM_DICT = Identities0.IDENTITY_EP_SYSTEM_DICT;
     public static final Identity<EpSystemMenuRecord, Long> IDENTITY_EP_SYSTEM_MENU = Identities0.IDENTITY_EP_SYSTEM_MENU;
@@ -98,6 +99,7 @@ public class Keys {
     public static final UniqueKey<EpOrganCourseRecord> KEY_EP_ORGAN_COURSE_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_PRIMARY;
     public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TAG_PRIMARY;
     public static final UniqueKey<EpOrganCourseTeamRecord> KEY_EP_ORGAN_COURSE_TEAM_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TEAM_PRIMARY;
+    public static final UniqueKey<EpOrganVipRecord> KEY_EP_ORGAN_VIP_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_VIP_PRIMARY;
     public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_CLIENT_PRIMARY;
     public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID = UniqueKeys0.KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID;
     public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_DICT_PRIMARY;
@@ -143,6 +145,7 @@ public class Keys {
         public static Identity<EpOrganCourseRecord, Long> IDENTITY_EP_ORGAN_COURSE = createIdentity(EpOrganCourse.EP_ORGAN_COURSE, EpOrganCourse.EP_ORGAN_COURSE.ID);
         public static Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = createIdentity(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
         public static Identity<EpOrganCourseTeamRecord, Long> IDENTITY_EP_ORGAN_COURSE_TEAM = createIdentity(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM, EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.ID);
+        public static Identity<EpOrganVipRecord, Long> IDENTITY_EP_ORGAN_VIP = createIdentity(EpOrganVip.EP_ORGAN_VIP, EpOrganVip.EP_ORGAN_VIP.ID);
         public static Identity<EpSystemClientRecord, Long> IDENTITY_EP_SYSTEM_CLIENT = createIdentity(EpSystemClient.EP_SYSTEM_CLIENT, EpSystemClient.EP_SYSTEM_CLIENT.ID);
         public static Identity<EpSystemDictRecord, Long> IDENTITY_EP_SYSTEM_DICT = createIdentity(EpSystemDict.EP_SYSTEM_DICT, EpSystemDict.EP_SYSTEM_DICT.ID);
         public static Identity<EpSystemMenuRecord, Long> IDENTITY_EP_SYSTEM_MENU = createIdentity(EpSystemMenu.EP_SYSTEM_MENU, EpSystemMenu.EP_SYSTEM_MENU.ID);
@@ -185,6 +188,7 @@ public class Keys {
         public static final UniqueKey<EpOrganCourseRecord> KEY_EP_ORGAN_COURSE_PRIMARY = createUniqueKey(EpOrganCourse.EP_ORGAN_COURSE, "KEY_ep_organ_course_PRIMARY", EpOrganCourse.EP_ORGAN_COURSE.ID);
         public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = createUniqueKey(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, "KEY_ep_organ_course_tag_PRIMARY", EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
         public static final UniqueKey<EpOrganCourseTeamRecord> KEY_EP_ORGAN_COURSE_TEAM_PRIMARY = createUniqueKey(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM, "KEY_ep_organ_course_team_PRIMARY", EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM.ID);
+        public static final UniqueKey<EpOrganVipRecord> KEY_EP_ORGAN_VIP_PRIMARY = createUniqueKey(EpOrganVip.EP_ORGAN_VIP, "KEY_ep_organ_vip_PRIMARY", EpOrganVip.EP_ORGAN_VIP.ID);
         public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_PRIMARY = createUniqueKey(EpSystemClient.EP_SYSTEM_CLIENT, "KEY_ep_system_client_PRIMARY", EpSystemClient.EP_SYSTEM_CLIENT.ID);
         public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID = createUniqueKey(EpSystemClient.EP_SYSTEM_CLIENT, "KEY_ep_system_client_unique_clientid", EpSystemClient.EP_SYSTEM_CLIENT.CLIENT_ID);
         public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_PRIMARY = createUniqueKey(EpSystemDict.EP_SYSTEM_DICT, "KEY_ep_system_dict_PRIMARY", EpSystemDict.EP_SYSTEM_DICT.ID);

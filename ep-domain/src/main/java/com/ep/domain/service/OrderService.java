@@ -1,5 +1,6 @@
 package com.ep.domain.service;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
@@ -47,6 +48,8 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrganRepository organRepository;
+    @Autowired
+    private OrganVipRepository organVipRepository;
     @Autowired
     private OrganCourseRepository organCourseRepository;
     @Autowired
@@ -136,6 +139,17 @@ public class OrderService {
             log.error("下单失败，课程已结束！");
             resultDo.setError(MessageCode.ERROR_CLASS_IS_END);
             return resultDo;
+        }
+        // 校验是否会员才能报名
+        if (classPo.getVipFlag()) {
+            Boolean existVip = organVipRepository.existVipByOgnIdAndChildId(classPo.getOgnId(), childId);
+            if (!existVip) {
+                EpOrganPo organPo = organRepository.getById(classPo.getOgnId());
+                String vipName = (organPo != null && !organPo.getDelFlag() && organPo.getVipFlag()) ? organPo.getVipName() : BizConstant.VIP_NAME;
+                String errorMsg = SpringComponent.messageSource(MessageCode.ERROR_CLASS_NEED_VIP, new Object[]{vipName});
+                resultDo.setError(MessageCode.ERROR_CLASS_NEED_VIP).setErrorDescription(errorMsg);
+                return resultDo;
+            }
         }
         // 校验报名时间
         EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());

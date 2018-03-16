@@ -67,6 +67,7 @@ public class MessageCode {
     public static final String ERROR_CLASS_CATALOG_NOT_EXISTS = "ERROR_CLASS_CATALOG_NOT_EXISTS";
     public static final String ERROR_CLASS_IS_OPENING = "ERROR_CLASS_IS_OPENING";
     public static final String ERROR_CLASS_IS_END = "ERROR_CLASS_IS_END";
+    public static final String ERROR_CLASS_NEED_VIP = "ERROR_CLASS_NEED_VIP";
     /**
      * 订单
      */

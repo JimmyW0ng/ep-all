@@ -35,7 +35,7 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
      * The reference instance of <code>ep.ep_organ</code>
      */
     public static final EpOrgan EP_ORGAN = new EpOrgan();
-    private static final long serialVersionUID = -1780370379;
+    private static final long serialVersionUID = 898877346;
     /**
      * The column <code>ep.ep_organ.id</code>. 主键
      */
@@ -84,6 +84,14 @@ public class EpOrgan extends TableImpl<EpOrganRecord> {
      * The column <code>ep.ep_organ.ogn_introduce</code>. 机构简介
      */
     public final TableField<EpOrganRecord, String> OGN_INTRODUCE = createField("ogn_introduce", org.jooq.impl.SQLDataType.CLOB, this, "机构简介");
+    /**
+     * The column <code>ep.ep_organ.vip_flag</code>. 是否开通会员制度
+     */
+    public final TableField<EpOrganRecord, Boolean> VIP_FLAG = createField("vip_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否开通会员制度");
+    /**
+     * The column <code>ep.ep_organ.vip_name</code>. 会员称呼
+     */
+    public final TableField<EpOrganRecord, String> VIP_NAME = createField("vip_name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "会员称呼");
     /**
      * The column <code>ep.ep_organ.market_weight</code>. 营销权重
      */
