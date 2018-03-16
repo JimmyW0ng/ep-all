@@ -7,7 +7,6 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
-import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -155,7 +154,29 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .set(EP_ORGAN_COURSE.ONLINE_TIME, po.getOnlineTime())
                 .set(EP_ORGAN_COURSE.ENTER_TIME_START, po.getEnterTimeStart())
                 .set(EP_ORGAN_COURSE.ENTER_TIME_END, po.getEnterTimeEnd())
-                .set(EP_ORGAN_COURSE.UPDATE_AT, DSL.currentTimestamp())
+                .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
+                .execute();
+    }
+
+    /**
+     * 根据id紧急修改课程对象EpOrganCoursePo
+     *
+     * @param po
+     */
+    public void rectifyByIdLock(EpOrganCoursePo po) {
+        dslContext.selectFrom(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false)).forUpdate();
+        dslContext.update(EP_ORGAN_COURSE)
+//                .set(EP_ORGAN_COURSE.COURSE_NAME, po.getCourseName())
+//                .set(EP_ORGAN_COURSE.COURSE_TYPE, po.getCourseType())
+                .set(EP_ORGAN_COURSE.COURSE_INTRODUCE, po.getCourseIntroduce())
+                .set(EP_ORGAN_COURSE.COURSE_CONTENT, po.getCourseContent())
+//                .set(EP_ORGAN_COURSE.PRIZE_MIN, po.getPrizeMin())
+                .set(EP_ORGAN_COURSE.COURSE_ADDRESS, po.getCourseAddress())
+                .set(EP_ORGAN_COURSE.ONLINE_TIME, po.getOnlineTime())
+                .set(EP_ORGAN_COURSE.ENTER_TIME_START, po.getEnterTimeStart())
+                .set(EP_ORGAN_COURSE.ENTER_TIME_END, po.getEnterTimeEnd())
                 .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
                 .execute();
     }

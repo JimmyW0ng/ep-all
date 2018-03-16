@@ -5,6 +5,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
+import com.ep.domain.pojo.bo.RectifyOrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
@@ -91,6 +92,19 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganClassCatalogPo.class);
+    }
+
+    /**
+     * 根据班次id获取RectifyOrganClassCatalogBo
+     *
+     * @param classId
+     * @return
+     */
+    public List<RectifyOrganClassCatalogBo> findRectifyBoByClassId(Long classId) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS_CATALOG)
+                .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .fetchInto(RectifyOrganClassCatalogBo.class);
     }
 
     /**

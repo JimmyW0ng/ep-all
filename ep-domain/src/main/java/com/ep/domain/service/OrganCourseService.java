@@ -2,16 +2,15 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.OrganAccountBo;
-import com.ep.domain.pojo.bo.OrganClassBo;
-import com.ep.domain.pojo.bo.OrganClassCommentBo;
-import com.ep.domain.pojo.bo.OrganCourseBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import com.ep.domain.pojo.dto.OrganCourseDto;
+import com.ep.domain.pojo.dto.RectifyOrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -406,6 +406,195 @@ public class OrganCourseService {
         }
 
         log.info("[课程]修改课程成功。课程id={}。", organCourseId);
+        return ResultDo.build();
+    }
+
+    /**
+     * 商户后台紧急修改课程
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo rectifyOrganCourseByMerchant(RectifyOrganCourseDto dto) {
+        log.info("[课程]紧急修改课程开始。课程dto={}。", dto);
+        //课程对象
+        EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        Optional<EpOrganCoursePo> optional = organCourseRepository.findById(organCoursePo.getId());
+        if (!optional.isPresent()) {
+            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
+        }
+        //班次
+        List<RectifyOrganClassBo> rectifyorganClassBos = dto.getRectifyOrganClassBos();
+        if (CollectionsTools.isNotEmpty(rectifyorganClassBos)) {
+            for (RectifyOrganClassBo rectifyorganClassBo : rectifyorganClassBos) {
+                List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = rectifyorganClassBo.getRectifyOrganClassCatalogBos();
+                for (int i = 0; i < rectifyOrganClassCatalogBos.size(); i++) {
+                    RectifyOrganClassCatalogBo rectifyOrganClassCatalogBo = rectifyOrganClassCatalogBos.get(i);
+                    if (rectifyOrganClassCatalogBo.getRectifyFlag()) {
+                        Timestamp startTime = rectifyOrganClassCatalogBo.getStartTime();
+                        if (DateTools.getTwoTimeDiffSecond(startTime, DateTools.getCurrentDateTime()) <= 30L) {
+                            log.error("[课程]课程紧急修改失败，班次目录开始时间距离当前时间小于30分钟。startTime={}。", startTime);
+                            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_STARTTIME_TONOW_LT30);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //标签
+        List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+        //内容图片preCode
+        List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
+        //获取最低价格start
+//        BigDecimal priceMin;
+//        if (CollectionsTools.isNotEmpty(organClassBos)) {
+//            BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
+//            for (int i = 0; i < priceArr.length; i++) {
+//                priceArr[i] = organClassBos.get(i).getClassPrize();
+//            }
+//            int index = 0;
+//            for (int j = index + 1; j < priceArr.length; j++) {
+//                if (priceArr[j].compareTo(priceArr[index]) == -1) {
+//                    BigDecimal temp = priceArr[j];
+//                    priceArr[j] = priceArr[index];
+//                    priceArr[index] = temp;
+//                }
+//            }
+//            priceMin = priceArr[index];
+//        } else {
+//            priceMin = BigDecimal.ZERO;
+//        }
+//        //获取最低价格end
+//        organCoursePo.setPrizeMin(priceMin);
+        //机构课程表更新数据
+        log.info("[课程紧急修改]机构课程表ep_organ_course修改数据。{}。", organCoursePo);
+        organCourseRepository.rectifyByIdLock(organCoursePo);
+        //课程id
+        Long organCourseId = organCoursePo.getId();
+        Long ognId = organCoursePo.getOgnId();
+        List<Long> classIds = organClassRepository.findClassIdsByCourseId(organCourseId);
+        //物理删除班次目录
+        organClassCatalogRepository.deletePhysicByClassIds(classIds);
+        //物理删除班次
+//        organClassRepository.deletePhysicByCourseId(organCourseId);
+        //物理删除课程标签
+        organCourseTagRepository.deletePhysicByCourseId(organCourseId);
+        //物理删除 机构类目表 记录
+//        organCatalogRepository.deletePhysicByOgnId(ognId);
+        //物理删除 机构课程团队信息表 记录
+//        organCourseTeamRepository.deletePhysicByCourseId(organCourseId);
+        //课程负责人账户id集合
+//        Set<Long> ognAccountIds = Sets.newHashSet();
+        if (CollectionsTools.isNotEmpty(rectifyorganClassBos)) {
+            for (RectifyOrganClassBo rectifyorganClassBo : rectifyorganClassBos) {
+                List<EpOrganClassCatalogPo> organClassCatalogPos = new ArrayList<EpOrganClassCatalogPo>();
+                List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = rectifyorganClassBo.getRectifyOrganClassCatalogBos();
+                for (int i = 0; i < rectifyOrganClassCatalogBos.size(); i++) {
+                    RectifyOrganClassCatalogBo rectifyOrganClassCatalogBo = rectifyOrganClassCatalogBos.get(i);
+                    if (rectifyOrganClassCatalogBo.getRectifyFlag()) {
+                        Timestamp startTime = rectifyOrganClassCatalogBo.getStartTime();
+                        if (DateTools.getTwoTimeDiffSecond(startTime, DateTools.getCurrentDateTime()) <= 30L) {
+                            log.error("[课程]课程紧急修改失败，班次目录开始时间距离当前时间小于30分钟。startTime={}。", startTime);
+                            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_STARTTIME_TONOW_LT30);
+                        }
+                    }
+
+                    EpOrganClassCatalogPo organClassCatalogPo = new EpOrganClassCatalogPo();
+                    organClassCatalogPo.setId(null);
+                    organClassCatalogPo.setClassId(rectifyorganClassBo.getId());
+                    organClassCatalogPo.setStartTime(rectifyOrganClassCatalogBo.getStartTime());
+                    organClassCatalogPo.setEndTime(rectifyOrganClassCatalogBo.getEndTime());
+                    organClassCatalogPo.setCatalogIndex(rectifyOrganClassCatalogBo.getCatalogIndex());
+                    organClassCatalogPo.setCatalogTitle(rectifyOrganClassCatalogBo.getCatalogTitle());
+                    organClassCatalogPo.setCatalogDesc(rectifyOrganClassCatalogBo.getCatalogDesc());
+                    organClassCatalogPos.add(organClassCatalogPo);
+                }
+                //班次课程内容目录表插入数据
+                log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
+                organClassCatalogRepository.insert(organClassCatalogPos);
+            }
+//            organClassBos.forEach(organClassBo -> {
+//                ognAccountIds.add(organClassBo.getOgnAccountId());
+//                EpOrganClassPo organClassPo = new EpOrganClassPo();
+//                BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
+//                organClassPo.setId(null);
+//                organClassPo.setOgnId(organCoursePo.getOgnId());
+//                organClassPo.setCourseId(organCourseId);
+//                organClassPo.setStatus(EpOrganClassStatus.save);
+//                organClassPo.setEnteredNum(0);
+//                organClassPo.setOrderedNum(0);
+//                //机构课程班次表插入数据
+//                log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
+//                organClassRepository.insert(organClassPo);
+//                Long insertOrganClassId = organClassPo.getId();
+//                List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
+//                for (int i = 0; i < organClassCatalogPos.size(); i++) {
+//                    organClassCatalogPos.get(i).setClassId(organClassBo.getId());
+//                    organClassCatalogPos.get(i).setId(null);
+//                }
+//                //班次课程内容目录表插入数据
+//                log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
+//                organClassCatalogRepository.insert(organClassCatalogPos);
+//            });
+        }
+
+        //机构类目表 插入数据start
+//        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(ognId);
+//        //课程类目去重
+//        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
+//        courseCatalogIdsSet.add(organCoursePo.getCourseCatalogId());
+//        List<EpOrganCatalogPo> organCatalogPos = Lists.newArrayList();
+//        courseCatalogIdsSet.forEach(courseCatalogId -> {
+//            organCatalogPos.add(new EpOrganCatalogPo(null, ognId, courseCatalogId, null, null, null, null, null, null));
+//        });
+//        log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。{}。", organCatalogPos);
+//        organCatalogRepository.insert(organCatalogPos);
+        //机构类目表 插入数据end
+
+        //机构课程团队信息表插入数据start
+//        List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
+//        if (CollectionsTools.isNotEmpty(ognAccountIds)) {
+//            ognAccountIds.forEach(ognAccountId -> {
+//                organCourseTeamPos.add(new EpOrganCourseTeamPo(null, organCourseId, ognAccountId, null, null, null, null, null, null));
+//            });
+//        }
+//        log.info("[课程]机构课程团队信息表ep_organ_course_team插入数据。{}。", organCourseTeamPos);
+//        organCourseTeamRepository.insert(organCourseTeamPos);
+        //机构课程团队信息表插入数据end
+
+        //课程标签表插入数据start
+        List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
+        if (CollectionsTools.isNotEmpty(constantTagPos)) {
+            constantTagPos.forEach(constantTagPo -> {
+                EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
+                insertOrganCourseTagPo.setTagId(constantTagPo.getId());
+                insertOrganCourseTagPo.setCourseId(organCourseId);
+                insertOrganCourseTagPos.add(insertOrganCourseTagPo);
+            });
+        }
+        log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
+        organCourseTagRepository.insert(insertOrganCourseTagPos);
+        //课程标签表插入数据end
+
+        //主图
+        if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, organCourseId);
+            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
+            fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), organCourseId);
+        }
+        //课程内容图片
+        if (CollectionsTools.isNotEmpty(courseDescPicPreCodes)) {
+            courseDescPicPreCodes.forEach(proCode -> {
+                fileRepository.updateSourceIdByPreCode(proCode, organCourseId);
+            });
+            List<String> oldProCodes = fileRepository.getPreCodeByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, organCourseId);
+            //待删除，差集oldProCodes里有，courseDescPicPreCodes里没有
+            Set<String> diffDel = Sets.difference(new HashSet<String>(oldProCodes), new HashSet<String>(courseDescPicPreCodes));
+            fileRepository.deleteLogicByPreCodes(new ArrayList<String>(diffDel));
+            log.info("[课程]文件表ep_file更新数据。原内容图片oldProCodes={},新内容图片courseDescPicPreCodes={}。", oldProCodes, courseDescPicPreCodes);
+        }
+
+        log.info("[课程]紧急修改课程成功。课程id={}。", organCourseId);
         return ResultDo.build();
     }
 

@@ -33,13 +33,13 @@
                                 <input id="ognId" type="hidden" th:value="${organCoursePo.ognId}">
                                 <div class="form-group ">
                                     <label for="courseName">课程名称 <span class="required-sign">*</span></label>
-                                    <input id="courseName" name="organCoursePo.courseName" type="text"
+                                    <input id="courseName" name="organCoursePo.courseName" type="text" disabled="true"
                                            th:value="${organCoursePo.courseName}"
                                            required="true" aria-required="true" class=" form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="courseType">课程类型 <span class="required-sign">*</span></label>
-                                    <select id="courseType" name="organCoursePo.courseType" type="text"
+                                    <select id="courseType" name="organCoursePo.courseType" type="text" disabled="true"
                                             required="true"
                                             class=" form-control ">
                                         <option value="">请选择</option>
@@ -54,6 +54,7 @@
                                 <div class="form-group">
                                     <label for="courseCatalogId">课程所属目录 <span class="required-sign">*</span></label>
                                     <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
+                                            disabled="true"
                                             required="true"
                                             class="form-control" onchange="changeGetTags(this)">
                                         <option value="">请选择</option>
@@ -122,7 +123,7 @@
                         <label class="course-label">课程班次（<span class="required-sign">*为必填</span>）</label>
                     </div>
                     <div class="ibox-content">
-                        <a class="btn btn-success" type="button" onclick="createClassBox()"><i
+                        <a style="display:none" class="btn btn-success" type="button" onclick="createClassBox()"><i
                                 class="glyphicon glyphicon-plus"></i> 添加班次</a>
                         <div class="panel-group" id="accordion">
                         </div>
@@ -132,7 +133,10 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）</label>
+                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用标签</span>
+                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有标签</span>
+                        </label>
                     </div>
                     <div class="ibox-content">
                         <div id="tagBox" style="background: #eee;min-height: 250px;padding: 20px 0px">
@@ -195,14 +199,20 @@
             <input name="id" type="hidden" value=${id}>
             <input name="catalogTitle" class="form-control cursor" value="${catalogTitle}" required="true"/>
             <input name="catalogIndex" type="hidden" value=${len}>
+            <input name="rectifyFlag" type="hidden" value=${rectifyFlag}>
         </div>
         <div class="col-sm-5">
             <label>开始时间<span class="required-sign">*</span></label>
-            <input name="startTime" class="form-control laydateer cursor" value="${startTime}" required="true"/>
+            <input name="startTime" class="form-control laydateer cursor" required="true" value="${startTime}"
+                   disabled="${rectifyFlag}">
         </div>
-        <a style="float:right;" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+
+        <a name="removeCatalogBtn" style="float:right;display:inline-block;margin-left:10px" href="javascript:void(0);"><span
+                class="glyphicon glyphicon-remove"
                                                                  aria-hidden="true"
                                                                  onclick="removeClassCatalogBox(this)"></span></a>
+        <a name="insertCatalogBtn" style="float:right;" href="javascript:void(0);"><span
+                onclick="insertbeforeClassCatalogBox(this)">插入</span></a>
         <div class="col-sm-5">
             <label>结束时间</label>
             <input name="endTime" class="form-control laydateer cursor endTime" value="${endTime}"/>
@@ -234,9 +244,9 @@
         <div class="panel-heading">
             <h5 class="panel-title">
                 <a name="boxTitle" data-toggle="collapse" data-parent="#accordion" href=${href}>${className}</a>
-                <a style="float:right" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                        aria-hidden="true"
-                                                                        onclick="removeClassBox(this)"></span></a>
+                <a style="float:right;display:none" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
+                                                                                     aria-hidden="true"
+                                                                                     onclick="removeClassBox(this)"></span></a>
             </h5>
         </div>
         <div id=${collapse} class="panel-collapse collapse in">
@@ -245,22 +255,25 @@
                     <input name="id" type="hidden" value="${id}">
                     <label>班次名称 <span class="required-sign">*</span></label>
                     <input name="className" type="text" class=" form-control " value="${className}" required="true"
+                           disabled="true"
                            onblur="setClassBoxTitle(this)">
                     <label>课程负责人 <span class="required-sign">*</span></label>
-                    <select name="ognAccountId" type="text" class=" form-control " required="true">
+                    <select name="ognAccountId" type="text" class=" form-control " required="true" disabled="true">
 
                     </select>
                     <label>价格(元) <span class="required-sign">*</span></label>
                     <!--<div class="input-group input-large">-->
-                    <input name="classPrize" type="text" class=" form-control number-input" value="${classPrize}">
+                    <input name="classPrize" type="text" class=" form-control number-input" value="${classPrize}"
+                           disabled="true">
                     <!--</div>-->
                     <label>折扣优惠(%) <span class="required-sign">*</span></label>
                     <!--<div class="input-group input-large">-->
-                    <input name="discountAmount" type="text" class=" form-control number-input"
+                    <input name="discountAmount" type="text" class=" form-control number-input" readonly="true"
                            value="${discountAmount}">
                     <!--</div>-->
                     <label>是否限制报名人数 <span class="required-sign">*</span></label>
-                    <select name="enterLimitFlag" type="text" class=" form-control " value="${enterLimitFlag}">
+                    <select name="enterLimitFlag" type="text" class=" form-control " value="${enterLimitFlag}"
+                            disabled="true">
                         <option value=false>否</option>
                         <option value=true>是</option>
                     </select>
@@ -273,7 +286,8 @@
                 <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
                     <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
                             class="glyphicon glyphicon-plus"></i> 添加课时</a>
-                    <a class="btn btn-success" type="button" onclick="insertClassCatalogBox()"> 插入课时</a>
+                    <a style="display: none" class="btn btn-success" type="button" onclick="insertClassCatalogBox()">
+                        插入课时</a>
                 </div>
             </div>
         </div>
@@ -325,7 +339,18 @@
         })
     }
     function insertClassCatalogBox() {
+        if ($cursor == undefined) {
+            toastr.error("请点击插入位置")
+            return
+        }
         $cursor.parents("div[name='organClassCatalogPos']").eq(0).after($("#classCatalogTmpl").tmpl([{catalogTitle: "课时"}]))
+    }
+
+    function insertbeforeClassCatalogBox(ele) {
+        $(ele).parents("div[name='organClassCatalogPos']").eq(0).before($("#classCatalogTmpl").tmpl([{
+            catalogTitle: "课时",
+            rectifyFlag: false
+        }]))
     }
 
     //教师map
@@ -339,9 +364,9 @@
     function addClassCatalogBox(ele) {
         var len = $(ele).parent().find("div[name='organClassCatalogPos']").length
         var $box = $(ele).parent()
-        var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1}]
-
+        var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1, rectifyFlag: true}]
         $box.append($("#classCatalogTmpl").tmpl(catalog))
+        $("div[name='organClassCatalogPos']").find("input[name='startTime']:last").removeAttr("disabled")
         $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len + 1)
 
         lay('.laydateer').each(function () {
@@ -461,6 +486,35 @@
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
     }
 
+    /*紧急修改初始化，班次目录部分初始化*/
+    function initOrganClassCatalogPos() {
+        $("div[name='organClassCatalogPos']").each(function () {
+            if ($(this).find("input[name='startTime']").eq(0).attr("disabled") == "disabled") {
+                $(this).find("input,textarea").attr("readonly", true)
+            }
+//            var startTime = $(this).find("input[name='startTime']").eq(0).val()
+//            var startDate=new Date(startTime)
+//            var currDate=new Date()
+//            var checkDate=currDate.setMinutes(currDate.getMinutes()+30)
+//            if(checkDate>startDate){
+//                $(this).find("input,textarea").attr("readonly",true)
+//                $(this).find("input[name='startTime']").eq(0)[0].click=null
+//                $(this).find("a").hide()
+//            }else{
+//                $(this).find("input[name='catalogTitle']").attr("readonly",true)
+//                $(this).find("textarea").attr("readonly",true)
+//            }
+        })
+
+    }
+
+    function beforeSubmitAbledOrganClassCatalogPos() {
+        $("div[name='organClassCatalogPos']").find("input[name='startTime']").each(function () {
+            $(this).attr("disabled", false);
+
+        })
+    }
+
     function beforeSubmitFormatDateInputName() {
         if (!$("#enterTimeEnd").val()) {
             $("#enterTimeEnd").attr("name", "")
@@ -476,7 +530,7 @@
         if (!isFrmSubmit) {
             var $organClassBos = $("#accordion").find("div[name='organClassBos']")
             for (var i = 0; i < $organClassBos.length; i++) {
-                $organClassBos.eq(i).attr("name", "organClassBos[" + i + "]")
+                $organClassBos.eq(i).attr("name", "rectifyOrganClassBos[" + i + "]")
                 $organClassBos.eq(i).find("input").each(function () {
                     var oldName = $(this).attr("name")
                     if (oldName) {
@@ -494,17 +548,20 @@
             var $organClassCatalogPosBox = $("#accordion").find("div[name='organClassCatalogPosBox']")
             for (var j = 0; j < $organClassCatalogPosBox.length; j++) {
                 var $organClassCatalogPos = $organClassCatalogPosBox.eq(j).find("div[name='organClassCatalogPos']")
-                for (var i = 0; i < $organClassCatalogPos.length; i++) {
-                    var parentName = $organClassCatalogPos.eq(i).parent().siblings("div[name^='organClassBos']").eq(0).attr("name")
-                    $organClassCatalogPos.eq(i).attr("name", parentName + ".organClassCatalogPos[" + i + "]")
-                    $organClassCatalogPos.eq(i).find("input,textarea").each(function () {
-                        if ($(this).attr("name") == "catalogIndex") {
-                            $(this).val(i + 1)
-                        }
-                        var oldName = $(this).attr("name")
-                        $(this).attr("name", $organClassCatalogPos.eq(i).attr("name") + "." + oldName)
-                    })
+                if ($organClassCatalogPos.length) {
+                    for (var i = 0; i < $organClassCatalogPos.length; i++) {
+                        var parentName = $organClassCatalogPos.eq(i).parent().siblings("div[name^='rectifyOrganClassBos']").eq(0).attr("name")
+                        $organClassCatalogPos.eq(i).attr("name", parentName + ".rectifyOrganClassCatalogBos[" + i + "]")
+                        $organClassCatalogPos.eq(i).find("input,textarea").each(function () {
+                            if ($(this).attr("name") == "catalogIndex") {
+                                $(this).val(i + 1)
+                            }
+                            var oldName = $(this).attr("name")
+                            $(this).attr("name", $organClassCatalogPos.eq(i).attr("name") + "." + oldName)
+                        })
+                    }
                 }
+
             }
 
             var $constantTags = $("#constantTagBox").find("div")
@@ -574,12 +631,39 @@
         $("#courseContent").val(content)
     }
 
+    function beforeSubmitCatalogStartTimeCheck() {
+        var flag = true
+        $("div[name='organClassCatalogPos']").each(function () {
+            var $startTime = $(this).find("input[name='startTime']").eq(0)
+            if ($startTime.attr("readonly") != 'readonly') {
+                var startTime = $startTime.val()
+                var startDate = new Date(startTime)
+                var currDate = new Date()
+                var checkDate = currDate.setMinutes(currDate.getMinutes() + 30)
+                if (checkDate > startDate) {
+                    flag = false
+                    $startTime.css("border-color", "red")
+                }
+
+            }
+        })
+        return flag;
+    }
+
     function frmSubmit() {
+        beforeSubmitAbledOrganClassCatalogPos()
+        if (!$("#courseId").val()) {
+            return
+        }
         if (!$("#frm").valid()) {
             console.log("valid fail")
             return;
         }
         if (!beforeSubmitCheckCourseMainPic()) {
+            return
+        }
+        if (!beforeSubmitCatalogStartTimeCheck()) {
+            toastr.error("班次目录开始时间必须早于当前时间30分钟以上")
             return
         }
         resetFrmDateInputName()
@@ -588,15 +672,14 @@
 
         beforeSubmitCheckCourseDescPic()
         console.log("courseContent" + editor.txt.text())
+
         if (editor.txt.text() == "") {
             toastr.error("请填写课程内容！")
             return
         }
         beforeSubmitCourseContent(editor.txt.html());
-        var url = "/auth/organCourse/merchantCreate"
-        if ($("#courseId").val()) {
-            url = "/auth/organCourse/merchantUpdate"
-        }
+
+        var url = "/auth/organCourse/merchantRectify"
 
         $.ajax({
             type: "POST",
@@ -644,20 +727,25 @@
                     }
                 }
                 $("#accordion").find("div[name='organClassBosBox']:last").find("select[name='ognAccountId']").eq(0).html(htmls);
-                var organClassCatalogPos = organClassBos[i].organClassCatalogPos
+                var organClassCatalogPos = organClassBos[i].rectifyOrganClassCatalogBos
 
                 var $box = $("#accordion").find("div[name='organClassCatalogPosBox']:last")
                 var catalog = []
-                for (var j = 0; j < organClassCatalogPos.length; j++) {
-                    catalog.push({
-                        id: organClassCatalogPos[j].id,
-                        len: j + 1,
-                        startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
-                        catalogTitle: organClassCatalogPos[j].catalogTitle,
-                        catalogDesc: organClassCatalogPos[j].catalogDesc
-                    })
+                if (null != organClassCatalogPos && organClassCatalogPos.length) {
+                    for (var j = 0; j < organClassCatalogPos.length; j++) {
+                        catalog.push({
+                            id: organClassCatalogPos[j].id,
+                            len: j + 1,
+                            startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
+                            catalogTitle: organClassCatalogPos[j].catalogTitle,
+                            catalogDesc: organClassCatalogPos[j].catalogDesc,
+                            rectifyFlag: organClassCatalogPos[j].rectifyFlag
+                        })
+                        console.log("rectifyFlag" + organClassCatalogPos[j].rectifyFlag)
+                    }
+                    $box.append($("#classCatalogTmpl").tmpl(catalog))
                 }
-                $box.append($("#classCatalogTmpl").tmpl(catalog))
+
             }
             $("#accordion").find("select[name='enterLimitFlag']").each(function () {
                 var val = $(this).attr("value")
@@ -682,6 +770,8 @@
                     $enterRequireNum.attr("readonly", true)
                 }
             })
+
+            initOrganClassCatalogPos()
 
             //班次end
             //公用标签start

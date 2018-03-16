@@ -648,16 +648,19 @@
 
                 var $box = $("#accordion").find("div[name='organClassCatalogPosBox']:last")
                 var catalog = []
-                for (var j = 0; j < organClassCatalogPos.length; j++) {
-                    catalog.push({
-                        id: organClassCatalogPos[j].id,
-                        len: j + 1,
-                        startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
-                        catalogTitle: organClassCatalogPos[j].catalogTitle,
-                        catalogDesc: organClassCatalogPos[j].catalogDesc
-                    })
+                if (null != organClassCatalogPos && organClassCatalogPos.length) {
+                    for (var j = 0; j < organClassCatalogPos.length; j++) {
+                        catalog.push({
+                            id: organClassCatalogPos[j].id,
+                            len: j + 1,
+                            startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
+                            catalogTitle: organClassCatalogPos[j].catalogTitle,
+                            catalogDesc: organClassCatalogPos[j].catalogDesc
+                        })
+                    }
+                    $box.append($("#classCatalogTmpl").tmpl(catalog))
                 }
-                $box.append($("#classCatalogTmpl").tmpl(catalog))
+
             }
             $("#accordion").find("select[name='enterLimitFlag']").each(function () {
                 var val = $(this).attr("value")

@@ -213,6 +213,16 @@ public class OrganClassCatalogService {
     }
 
     /**
+     * 根据班次获取
+     *
+     * @param classId
+     * @return
+     */
+    public List<RectifyOrganClassCatalogBo> findRectifyBoByClassId(Long classId) {
+        return organClassCatalogRepository.findRectifyBoByClassId(classId);
+    }
+
+    /**
      * 课时明细
      *
      * @param memberId

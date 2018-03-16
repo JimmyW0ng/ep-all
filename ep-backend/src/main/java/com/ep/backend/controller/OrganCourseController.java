@@ -2,14 +2,14 @@ package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.OrganClassBo;
-import com.ep.domain.pojo.bo.OrganCourseBo;
-import com.ep.domain.pojo.bo.OrganCourseTagBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import com.ep.domain.pojo.dto.FileDto;
+import com.ep.domain.pojo.dto.RectifyOrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
@@ -363,13 +363,18 @@ public class OrganCourseController extends BackendController {
         Long catalogId = organCoursePo.getCourseCatalogId();
 
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
-        List<OrganClassBo> organClassBos = Lists.newArrayList();
+        List<RectifyOrganClassBo> organClassBos = Lists.newArrayList();
         organClassPos.forEach(p -> {
-            OrganClassBo organClassBo = new OrganClassBo();
+            RectifyOrganClassBo organClassBo = new RectifyOrganClassBo();
             BeanTools.copyPropertiesIgnoreNull(p, organClassBo);
-            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassCatalogService.findByClassId(p.getId());
-            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
-                organClassBo.setOrganClassCatalogPos(organClassCatalogPos);
+            List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = organClassCatalogService.findRectifyBoByClassId(p.getId());
+            rectifyOrganClassCatalogBos.forEach(bo -> {
+                Timestamp startTime = bo.getStartTime();
+                boolean flag = DateTools.getTwoTimeDiffSecond(startTime, DateTools.getCurrentDateTime()) >= 30L;
+                bo.setRectifyFlag(new Boolean(flag));
+            });
+            if (CollectionsTools.isNotEmpty(rectifyOrganClassCatalogBos)) {
+                organClassBo.setRectifyOrganClassCatalogBos(rectifyOrganClassCatalogBos);
             }
             organClassBos.add(organClassBo);
 
@@ -410,6 +415,21 @@ public class OrganCourseController extends BackendController {
 
         dto.getOrganCoursePo().setOgnId(ognId);
         return organCourseService.updateOrganCourseByMerchant(dto);
+    }
+
+    /**
+     * 商家后台紧急修改课程
+     *
+     * @return
+     */
+    @PostMapping("/merchantRectify")
+    @ResponseBody
+    public ResultDo merchantRectify(RectifyOrganCourseDto dto) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+
+        dto.getOrganCoursePo().setOgnId(ognId);
+        return organCourseService.rectifyOrganCourseByMerchant(dto);
     }
 
     /**
