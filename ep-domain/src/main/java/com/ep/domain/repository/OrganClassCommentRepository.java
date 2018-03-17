@@ -5,8 +5,7 @@ import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,5 +136,44 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .fetchOneInto(Byte.class);
     }
 
+    /**
+     * 后台机构课程班次评价分页列表
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrganClassCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .leftJoin(EP_ORGAN).on(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_COMMENT.fields());
+        fieldList.add(EP_ORGAN.OGN_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .leftJoin(EP_ORGAN).on(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(condition);
+
+        List<OrganClassCommentBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganClassCommentBo.class);
+        PageImpl<OrganClassCommentBo> pPage = new PageImpl<OrganClassCommentBo>(list, pageable, totalCount);
+        return pPage;
+    }
 }
 

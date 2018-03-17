@@ -88,7 +88,8 @@
                             <td th:text="${po.createAt}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/systemOrgan/view/}+${po.id}">查看</a>
-                                <a class="btn btn-xs btn-primary" th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>
+                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'save')}"
+                                   th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'save')}"
                                    href="javascript:void(0)" th:onclick="'onlineOrganBox('+${po.id}+')'">上线</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'online')}"
@@ -134,13 +135,7 @@
 <script type="text/javascript">
 
     function onlineOrganBox(id) {
-        parent.layer.alert('确认上线', {
-                icon: 1,
-            },
-            function (index) {
-                onlineOrganDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm("确定该机构上线？", 3, onlineOrganDo, id);
     }
     function onlineOrganDo(id) {
         $.ajax({
@@ -148,9 +143,9 @@
             url:"/auth/systemOrgan/online/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/systemOrgan/index');
+                    toastr_success(null, document.referrer);
                 } else {
-                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
+                    toastr.error(data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -159,13 +154,8 @@
         })
     }
     function offlineOrganBox(id) {
-        parent.layer.alert('确认下线', {
-                icon: 1,
-            },
-            function (index) {
-                offlineOrganDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm("确定该机构下线？", 3, offlineOrganDo, id);
+
     }
     function offlineOrganDo(id) {
         $.ajax({
@@ -173,9 +163,9 @@
             url:"/auth/systemOrgan/offline/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/systemOrgan/index');
+                    toastr_success(null, document.referrer);
                 } else {
-                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
+                    toastr.error(data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -184,13 +174,8 @@
         })
     }
     function freezeOrganBox(id) {
-        parent.layer.alert('确认冻结此机构', {
-                icon: 0,
-            },
-            function (index) {
-                freezeOrganDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm("确定冻结该机构？", 3, freezeOrganDo, id);
+
     }
     function freezeOrganDo(id) {
         $.ajax({
@@ -198,9 +183,9 @@
             url: "/auth/systemOrgan/freeze/" + id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/systemOrgan/index');
+                    toastr_success(null, document.referrer);
                 } else {
-                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
+                    toastr.error(data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -209,13 +194,7 @@
         })
     }
     function unfreezeOrganBox(id) {
-        parent.layer.alert('确认解冻此机构', {
-                icon: 0,
-            },
-            function (index) {
-                unfreezeOrganDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm("确定解冻该机构？", 3, unfreezeOrganDo, id);
     }
     function unfreezeOrganDo(id) {
         $.ajax({
@@ -223,9 +202,9 @@
             url: "/auth/systemOrgan/unfreeze/" + id,
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, '/auth/systemOrgan/index');
+                    toastr_success(null, document.referrer);
                 } else {
-                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
+                    toastr.error(data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {

@@ -11,12 +11,14 @@ import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,4 +121,14 @@ public class OrganClassCommentService {
         return ResultDo.build();
     }
 
+    /**
+     * 后台机构课程班次分页列表
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrganClassCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        return organClassCommentRepository.findbyPageAndCondition(pageable, condition);
+    }
 }

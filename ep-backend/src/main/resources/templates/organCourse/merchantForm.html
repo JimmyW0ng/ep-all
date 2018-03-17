@@ -101,7 +101,16 @@
                                            th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
 
                                 </div>
+                                <div class="form-group">
+                                    <label for="vipFlag">是否会员才能报名 <span class="required-sign">*</span></label>
+                                    <select id="vipFlag" name="organCoursePo.vipFlag" type="text"
+                                            required="true" class="form-control" th:value="${organCoursePo.vipFlag}">
+                                        <option th:selected="${organCoursePo.vipFlag==true}" value=true>是</option>
+                                        <option th:selected="${organCoursePo.vipFlag==false}" value=false>否</option>
+                                    </select>
+                                </div>
                             </div>
+
                             <div class="col-sm-9">
                                 <label>课程内容 <span class="required-sign">*</span></label>
 
@@ -272,11 +281,7 @@
                     <input name="enterRequireNum" jprop="enterRequireNum" type="text" class=" form-control "
                            value="${enterRequireNum}"
                            readonly="true">
-                    <label>是否会员才能报名 <span class="required-sign">*</span></label>
-                    <select name="vipFlag" jprop="vipFlag" type="text" class=" form-control " value="${vipFlag}">
-                        <option value=true>是</option>
-                        <option value=false>否</option>
-                    </select>
+
                     <label>总计课时 <span class="required-sign">*</span></label>
                     <input name="courseNum" jprop="courseNum" type="Number" class=" form-control " value="${courseNum}"
                            readonly=true>

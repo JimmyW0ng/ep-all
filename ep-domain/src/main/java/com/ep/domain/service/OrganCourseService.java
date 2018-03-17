@@ -156,9 +156,18 @@ public class OrganCourseService {
      * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_catalog，ep_organ_course_team，ep_organ_course_tag
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo createOrganCourseByMerchant(CreateOrganCourseDto dto) {
+    public ResultDo createOrganCourseByMerchant(CreateOrganCourseDto dto, Long ognId) {
         log.info("[课程]创建课程开始。课程dto={}。", dto);
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        if (null == organCoursePo) {
+            log.error("[课程]新增课程失败。organCoursePo=null。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        organCoursePo.setOgnId(ognId);
+        if (!checkPoParams(organCoursePo)) {
+            log.error("[课程]新增课程失败。请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         //获取最低价格start
@@ -172,7 +181,6 @@ public class OrganCourseService {
         log.info("[课程]机构课程表ep_organ_course插入数据。{}。", organCoursePo);
         organCourseRepository.insert(organCoursePo);
         Long insertOrganCourseId = organCoursePo.getId();
-        Long ognId = organCoursePo.getOgnId();
         //课程负责人账户id集合
         Set<Long> ognAccountIds = Sets.newHashSet();
         if (CollectionsTools.isNotEmpty(organClassBos)) {
@@ -180,7 +188,7 @@ public class OrganCourseService {
                 ognAccountIds.add(organClassBo.getOgnAccountId());
                 EpOrganClassPo organClassPo = new EpOrganClassPo();
                 BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
-                organClassPo.setOgnId(organCoursePo.getOgnId());
+                organClassPo.setOgnId(ognId);
                 organClassPo.setCourseId(insertOrganCourseId);
                 organClassPo.setStatus(EpOrganClassStatus.save);
                 organClassPo.setEnteredNum(0);
@@ -249,10 +257,19 @@ public class OrganCourseService {
      * 商户后台更新课程
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo updateOrganCourseByMerchant(CreateOrganCourseDto dto) {
+    public ResultDo updateOrganCourseByMerchant(CreateOrganCourseDto dto, Long ognId) {
         log.info("[课程]修改课程开始。课程dto={}。", dto);
         //课程对象
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        if (null == organCoursePo) {
+            log.error("[课程]修改课程失败。organCoursePo=null。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        organCoursePo.setOgnId(ognId);
+        if (null == organCoursePo.getId() || !checkPoParams(organCoursePo)) {
+            log.error("[课程]修改课程失败。接受参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         Optional<EpOrganCoursePo> optional = organCourseRepository.findById(organCoursePo.getId());
         if (!optional.isPresent()) {
             log.error("[课程]修改课程失败。该课程不存在。");
@@ -274,7 +291,7 @@ public class OrganCourseService {
         organCourseRepository.updateByIdLock(organCoursePo);
         //课程id
         Long organCourseId = organCoursePo.getId();
-        Long ognId = organCoursePo.getOgnId();
+
         List<Long> classIds = organClassRepository.findClassIdsByCourseId(organCourseId);
         //物理删除班次目录
         organClassCatalogRepository.deletePhysicByClassIds(classIds);
@@ -294,7 +311,7 @@ public class OrganCourseService {
                 EpOrganClassPo organClassPo = new EpOrganClassPo();
                 BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
                 organClassPo.setId(null);
-                organClassPo.setOgnId(organCoursePo.getOgnId());
+                organClassPo.setOgnId(ognId);
                 organClassPo.setCourseId(organCourseId);
                 organClassPo.setStatus(EpOrganClassStatus.save);
                 organClassPo.setEnteredNum(0);
@@ -595,7 +612,12 @@ public class OrganCourseService {
         return priceMin;
     }
 
-
+    /**
+     * 校验po对象属性
+     *
+     * @param po
+     * @return
+     */
     private boolean checkPoParams(EpOrganCoursePo po) {
         if (null == po.getOgnId()) {
             return false;
@@ -609,15 +631,20 @@ public class OrganCourseService {
         if (null == po.getCourseName()) {
             return false;
         }
+        if (null == po.getCourseIntroduce()) {
+            return false;
+        }
         if (null == po.getCourseContent()) {
             return false;
         }
+
         if (null == po.getCourseAddress()) {
             return false;
         }
-        if (null == po.getCourseStatus()) {
+        if (null == po.getVipFlag()) {
             return false;
         }
+
         if (null == po.getOnlineTime()) {
             return false;
         }

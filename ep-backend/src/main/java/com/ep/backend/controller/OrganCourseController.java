@@ -202,9 +202,7 @@ public class OrganCourseController extends BackendController {
     public ResultDo merchantCreate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        dto.getOrganCoursePo().setOgnId(ognId);
-
-        return organCourseService.createOrganCourseByMerchant(dto);
+        return organCourseService.createOrganCourseByMerchant(dto, ognId);
     }
 
     /**
@@ -422,12 +420,8 @@ public class OrganCourseController extends BackendController {
     public ResultDo merchantUpdate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        if (null == dto) {
-            log.error("[课程]紧急修改课程失败。该课程不存在。");
-            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
-        }
-        dto.getOrganCoursePo().setOgnId(ognId);
-        return organCourseService.updateOrganCourseByMerchant(dto);
+
+        return organCourseService.updateOrganCourseByMerchant(dto, ognId);
     }
 
     /**

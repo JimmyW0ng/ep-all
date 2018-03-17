@@ -30,7 +30,6 @@ public class EpOrganClassPo extends AbstractBasePojo {
     private Long ognAccountId;
     private BigDecimal classPrize;
     private BigDecimal discountAmount;
-    private Boolean vipFlag;
     private Boolean enterLimitFlag;
     private Integer enterRequireNum;
     private Integer orderedNum;

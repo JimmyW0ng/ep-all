@@ -102,6 +102,14 @@
                                            th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
 
                                 </div>
+                                <div class="form-group">
+                                    <label for="vipFlag">是否会员才能报名 <span class="required-sign">*</span></label>
+                                    <select id="vipFlag" name="organCoursePo.vipFlag" type="text" disabled="true"
+                                            required="true" class="form-control" th:value="${organCoursePo.vipFlag}">
+                                        <option value=true>是</option>
+                                        <option value=false>否</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-sm-9">
                                 <label>课程内容 <span class="required-sign">*</span></label>

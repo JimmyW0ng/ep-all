@@ -14,6 +14,8 @@ public class OrganClassCommentBo extends EpOrganClassCommentPo {
     private String childAvatar;
     private Integer honorNum;
     private List<String> pics;
+    private String ognName;
+    private String courseName;
 
     public Boolean getExistHonor() {
         if (this.honorNum == null || this.honorNum.equals(BizConstant.DB_NUM_ZERO)) {

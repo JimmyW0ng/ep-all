@@ -32,41 +32,6 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     private static final long serialVersionUID = 367912715;
 
     /**
-     * Create a detached EpSystemDictRecord
-     */
-    public EpSystemDictRecord() {
-        super(EpSystemDict.EP_SYSTEM_DICT);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemDictRecord
-     */
-    public EpSystemDictRecord(Long id, String label, String groupName, String key, String value, String description, Integer sort, EpSystemDictStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemDict.EP_SYSTEM_DICT);
-
-        set(0, id);
-        set(1, label);
-        set(2, groupName);
-        set(3, key);
-        set(4, value);
-        set(5, description);
-        set(6, sort);
-        set(7, status);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_dict.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_dict.id</code>.
      */
     public EpSystemDictRecord setId(Long value) {
@@ -75,10 +40,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.label</code>. 标签名
+     * Getter for <code>ep.ep_system_dict.id</code>.
      */
-    public String getLabel() {
-        return (String) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -90,10 +55,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.group_name</code>. 组名
+     * Getter for <code>ep.ep_system_dict.label</code>. 标签名
      */
-    public String getGroupName() {
-        return (String) get(2);
+    public String getLabel() {
+        return (String) get(1);
     }
 
     /**
@@ -105,10 +70,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.key</code>. key
+     * Getter for <code>ep.ep_system_dict.group_name</code>. 组名
      */
-    public String getKey() {
-        return (String) get(3);
+    public String getGroupName() {
+        return (String) get(2);
     }
 
     /**
@@ -120,10 +85,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.value</code>. 数据值
+     * Getter for <code>ep.ep_system_dict.key</code>. key
      */
-    public String getValue() {
-        return (String) get(4);
+    public String getKey() {
+        return (String) get(3);
     }
 
     /**
@@ -135,10 +100,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.description</code>. 描述
+     * Getter for <code>ep.ep_system_dict.value</code>. 数据值
      */
-    public String getDescription() {
-        return (String) get(5);
+    public String getValue() {
+        return (String) get(4);
     }
 
     /**
@@ -150,10 +115,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.sort</code>. 排序
+     * Getter for <code>ep.ep_system_dict.description</code>. 描述
      */
-    public Integer getSort() {
-        return (Integer) get(6);
+    public String getDescription() {
+        return (String) get(5);
     }
 
     /**
@@ -165,10 +130,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.status</code>.
+     * Getter for <code>ep.ep_system_dict.sort</code>. 排序
      */
-    public EpSystemDictStatus getStatus() {
-        return (EpSystemDictStatus) get(7);
+    public Integer getSort() {
+        return (Integer) get(6);
     }
 
     /**
@@ -180,10 +145,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_dict.status</code>.
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(8);
+    public EpSystemDictStatus getStatus() {
+        return (EpSystemDictStatus) get(7);
     }
 
     /**
@@ -195,10 +160,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_dict.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(9);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -210,10 +175,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.remark</code>. 备注
+     * Getter for <code>ep.ep_system_dict.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(10);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -225,10 +190,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_dict.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_dict.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(11);
+    public String getRemark() {
+        return (String) get(10);
     }
 
     /**
@@ -239,20 +204,12 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_system_dict.version</code>.
+     * Getter for <code>ep.ep_system_dict.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(12);
+    public Boolean getDelFlag() {
+        return (Boolean) get(11);
     }
-
-    // -------------------------------------------------------------------------
-    // Record13 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_system_dict.version</code>.
@@ -263,12 +220,27 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_dict.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(12);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record13 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -602,10 +574,6 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -634,5 +602,37 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
         value12(value12);
         value13(value13);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpSystemDictRecord
+     */
+    public EpSystemDictRecord() {
+        super(EpSystemDict.EP_SYSTEM_DICT);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemDictRecord
+     */
+    public EpSystemDictRecord(Long id, String label, String groupName, String key, String value, String description, Integer sort, EpSystemDictStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemDict.EP_SYSTEM_DICT);
+
+        set(0, id);
+        set(1, label);
+        set(2, groupName);
+        set(3, key);
+        set(4, value);
+        set(5, description);
+        set(6, sort);
+        set(7, status);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 }
