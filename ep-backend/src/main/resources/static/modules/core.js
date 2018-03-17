@@ -97,6 +97,19 @@ function toastr_error_system(msg) {
     toastr.error("系统异常,状态码:" + msg + "。");
 }
 
+function layer_confirm(msg, icon, funDo, id) {
+    layer.confirm(msg, {icon: icon, btn: ['确定', '取消']},
+        function (index) {
+            funDo(id);
+            layer.close(index);
+        },
+        function (index) {
+            layer.close(index);
+        });
+}
+
+
+
 Date.prototype.Format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1,                 //月份

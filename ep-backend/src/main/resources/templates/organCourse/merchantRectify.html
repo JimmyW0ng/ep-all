@@ -144,8 +144,6 @@
 
                             </div>
 
-                            <div id="createTagBox" class="col-sm-12" style="margin-top: 20px">
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -193,33 +191,33 @@
 
 </div>
 <script type="text/template" id='classCatalogTmpl'>
-    <div name="organClassCatalogPos" style="display:inline-block;margin:5px 0px">
+    <div name="organClassCatalogPos" class="" style="display:inline-block;margin:5px 0px">
         <div name="" class="col-sm-5">
             <label>课时<span class="required-sign">*</span></label>
             <input name="id" type="hidden" value=${id}>
-            <input name="catalogTitle" class="form-control cursor" value="${catalogTitle}" required="true"/>
+            <input name="catalogTitle" class="form-control " value="${catalogTitle}" required="true"/>
             <input name="catalogIndex" type="hidden" value=${len}>
             <input name="rectifyFlag" type="hidden" value=${rectifyFlag}>
         </div>
         <div class="col-sm-5">
             <label>开始时间<span class="required-sign">*</span></label>
-            <input name="startTime" class="form-control laydateer cursor" required="true" value="${startTime}"
-                   disabled="${rectifyFlag}">
+            <input name="startTime" class="form-control laydateer " required="true" value="${startTime}"
+                   rectifyflag="${rectifyFlag}">
         </div>
 
-        <a name="removeCatalogBtn" style="float:right;display:inline-block;margin-left:10px" href="javascript:void(0);"><span
+        <a name="removeCatalogBtn" style="float:right;display:none;margin-left:10px" href="javascript:void(0);"><span
                 class="glyphicon glyphicon-remove"
                                                                  aria-hidden="true"
                                                                  onclick="removeClassCatalogBox(this)"></span></a>
-        <a name="insertCatalogBtn" style="float:right;" href="javascript:void(0);"><span
+        <a name="insertCatalogBtn" style="float:right;display: none" href="javascript:void(0);"><span
                 onclick="insertbeforeClassCatalogBox(this)">插入</span></a>
         <div class="col-sm-5">
             <label>结束时间</label>
-            <input name="endTime" class="form-control laydateer cursor endTime" value="${endTime}"/>
+            <input name="endTime" class="form-control laydateer  endTime" value="${endTime}"/>
         </div>
         <div class="col-sm-10">
             <label>目录描述<span class="required-sign">*</span></label>
-            <textarea name="catalogDesc" class="form-control cursor" required="true">${catalogDesc}</textarea>
+            <textarea name="catalogDesc" class="form-control " required="true">${catalogDesc}</textarea>
         </div>
     </div>
 </script>
@@ -284,7 +282,7 @@
                     <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
                 <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
-                    <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
+                    <a style="display: none" class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
                             class="glyphicon glyphicon-plus"></i> 添加课时</a>
                     <a style="display: none" class="btn btn-success" type="button" onclick="insertClassCatalogBox()">
                         插入课时</a>
@@ -303,7 +301,6 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
-    var $cursor;
     //wangEditor富文本
     var E = window.wangEditor
     var editor = new E('#editor')
@@ -338,98 +335,14 @@
             }
         })
     }
-    function insertClassCatalogBox() {
-        if ($cursor == undefined) {
-            toastr.error("请点击插入位置")
-            return
-        }
-        $cursor.parents("div[name='organClassCatalogPos']").eq(0).after($("#classCatalogTmpl").tmpl([{catalogTitle: "课时"}]))
-    }
 
-    function insertbeforeClassCatalogBox(ele) {
-        $(ele).parents("div[name='organClassCatalogPos']").eq(0).before($("#classCatalogTmpl").tmpl([{
-            catalogTitle: "课时",
-            rectifyFlag: false
-        }]))
-    }
 
     //教师map
     var organAccountMap = [[${organAccountMap}]]
     //表单是否提交过
     var isFrmSubmit = false
 
-    /**
-     * 新增班次课时目录
-     */
-    function addClassCatalogBox(ele) {
-        var len = $(ele).parent().find("div[name='organClassCatalogPos']").length
-        var $box = $(ele).parent()
-        var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1, rectifyFlag: true}]
-        $box.append($("#classCatalogTmpl").tmpl(catalog))
-        $("div[name='organClassCatalogPos']").find("input[name='startTime']:last").removeAttr("disabled")
-        $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len + 1)
 
-        lay('.laydateer').each(function () {
-            laydate.render({
-                type: 'datetime',
-                elem: this,
-                trigger: 'click'
-            });
-        });
-    }
-
-    /**
-     * 删除课时
-     */
-    function removeClassCatalogBox(ele) {
-        var len = $(ele).parent().parent().parent().find("div[name='organClassCatalogPos']").length
-        if (len == 1) {
-            return
-        } else {
-            console.log($(ele).parents("div[name='organClassBosBox']").find("input[name='courseNum']").eq(0).val(len - 1))
-            $(ele).parent().parent().remove()
-        }
-    }
-
-    /* 改变课程类目获得公用标签*/
-    function changeGetTags(ele) {
-        $("#constantTagBox").html("")
-        $.ajax({
-            type: "GET",
-            url: "/auth/organCourse/findTagsByCatalog/" + $(ele).val(),
-            success: function (data) {
-                if (data.success) {
-                    var res = data.result
-                    var constantTag = []
-                    var ognTag = []
-                    for (item in res) {
-                        if (res[item].ognFlag) {
-                            ognTag.push({id: res[item].id, tagName: res[item].tagName, ognFlag: res[item].ognFlag})
-                        } else {
-                            constantTag.push({id: res[item].id, tagName: res[item].tagName, ognFlag: res[item].ognFlag})
-                        }
-                    }
-                    $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
-                    $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
-                }
-            }
-        })
-    }
-
-    /* 删除标签*/
-    function removeTag(ele) {
-        $(ele).parent().remove();
-    }
-
-    /* 新增课程标签*/
-    function createTagBox() {
-        var label = $('#createTag').val()
-        if (label == "" || label == undefined) {
-            return
-        }
-        var tag = [{id: "", label: label}]
-        $("#createTagBox").append($("#ognTagTmpl").tmpl(tag));
-    }
 
     /*勾选标签不超过6个*/
     function taglt6(ele) {
@@ -460,9 +373,7 @@
         }
         $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
         bindNumberInput($("#accordion"))
-        $("#accordion").on("click", ".cursor", function () {
-            $cursor = $(this)
-        });
+
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
             var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)
@@ -489,21 +400,11 @@
     /*紧急修改初始化，班次目录部分初始化*/
     function initOrganClassCatalogPos() {
         $("div[name='organClassCatalogPos']").each(function () {
-            if ($(this).find("input[name='startTime']").eq(0).attr("disabled") == "disabled") {
+            var rectify = $(this).find("input[name='startTime']").eq(0).attr("rectifyflag")
+            if (rectify == false || rectify == "false") {
                 $(this).find("input,textarea").attr("readonly", true)
             }
-//            var startTime = $(this).find("input[name='startTime']").eq(0).val()
-//            var startDate=new Date(startTime)
-//            var currDate=new Date()
-//            var checkDate=currDate.setMinutes(currDate.getMinutes()+30)
-//            if(checkDate>startDate){
-//                $(this).find("input,textarea").attr("readonly",true)
-//                $(this).find("input[name='startTime']").eq(0)[0].click=null
-//                $(this).find("a").hide()
-//            }else{
-//                $(this).find("input[name='catalogTitle']").attr("readonly",true)
-//                $(this).find("textarea").attr("readonly",true)
-//            }
+
         })
 
     }
@@ -668,7 +569,6 @@
         }
         resetFrmDateInputName()
         beforeSubmitFormatDateInputName()
-        beforeSubmitFormatInputInnerName()
 
         beforeSubmitCheckCourseDescPic()
         console.log("courseContent" + editor.txt.text())
@@ -751,9 +651,7 @@
                 var val = $(this).attr("value")
                 $(this).val(val)
             })
-            $("#accordion").on("click", ".cursor", function () {
-                $cursor = $(this)
-            });
+
             $("#accordion").find("div[id^='collapse']").removeClass("in");//选项卡折叠
             $("#accordion").find("select[name='enterLimitFlag']").each(function () {
                 var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)

@@ -264,4 +264,20 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                                                          .fetchOneInto(EpOrganClassCatalogPo.class);
         return Optional.ofNullable(classCatalogPo);
     }
+
+    /**
+     * 紧急修改课程时修改班次目录
+     *
+     * @param bo
+     * @return
+     */
+    public int rectifyByRectifyCourse(RectifyOrganClassCatalogBo bo) {
+        return dslContext.update(EP_ORGAN_CLASS_CATALOG)
+                .set(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE, bo.getCatalogTitle())
+                .set(EP_ORGAN_CLASS_CATALOG.CATALOG_DESC, bo.getCatalogDesc())
+                .set(EP_ORGAN_CLASS_CATALOG.START_TIME, bo.getStartTime())
+                .set(EP_ORGAN_CLASS_CATALOG.END_TIME, bo.getEndTime())
+                .where(EP_ORGAN_CLASS_CATALOG.ID.eq(bo.getId()))
+                .execute();
+    }
 }

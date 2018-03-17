@@ -370,8 +370,13 @@ public class OrganCourseController extends BackendController {
             List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = organClassCatalogService.findRectifyBoByClassId(p.getId());
             rectifyOrganClassCatalogBos.forEach(bo -> {
                 Timestamp startTime = bo.getStartTime();
-                boolean flag = DateTools.getTwoTimeDiffSecond(startTime, DateTools.getCurrentDateTime()) >= 30L;
-                bo.setRectifyFlag(new Boolean(flag));
+                if (DateTools.compareTwoTime(DateTools.getCurrentDateTime(), startTime) != -1) {
+                    bo.setRectifyFlag(false);
+                } else {
+                    boolean flag = (DateTools.getTwoTimeDiffSecond(startTime, DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
+                            BizConstant.RECTIFY_CATALOG_STARTTIME_TONOW_LT30;
+                    bo.setRectifyFlag(flag);
+                }
             });
             if (CollectionsTools.isNotEmpty(rectifyOrganClassCatalogBos)) {
                 organClassBo.setRectifyOrganClassCatalogBos(rectifyOrganClassCatalogBos);

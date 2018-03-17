@@ -58,7 +58,7 @@ public class BizConstant {
     public static int DB_NUM_ZERO = 0;
     public static long LONG_ZERO = 0L;
     public static int DB_NUM_ONE = 1;
-    public static long LONG_ONE = 1L;
+    public static int TIME_UNIT = 60;
     /**
      * 短信验证码
      */
@@ -86,4 +86,8 @@ public class BizConstant {
      * 孩子数量控制
      */
     public static int CHILD_LIMIT_NUM = 4;
+    /**
+     * 紧急修改班次目录开始时间距离当前时间不得小于30分钟
+     */
+    public static long RECTIFY_CATALOG_STARTTIME_TONOW_LT30 = 30L;
 }
