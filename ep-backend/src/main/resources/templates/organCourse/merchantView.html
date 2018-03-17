@@ -170,7 +170,7 @@
                                                 <div class="col-sm-5">
                                                     <label>结束时间</label>
                                                     <input name="endTime" class="form-control laydateer cursor endTime"
-                                                           value="${endTime}"/>
+                                                           th:value="${#dates.format(organClassCatalogPo.endTime,'yyyy-MM-dd HH:mm:ss')}"/>
                                                 </div>
                                                 <div class="form-group col-sm-10">
                                                     <label>目录描述<span class="required-sign">*</span></label>

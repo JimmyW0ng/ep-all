@@ -5,6 +5,7 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.CreateOrganCourseDto;
@@ -15,6 +16,7 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +43,7 @@ import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE;
  * @Author: CC.F
  * @Date: 15:46 2018/2/6
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/organCourse")
 public class OrganCourseController extends BackendController {
@@ -362,11 +365,13 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organCoursePo", organCoursePo);
         Long catalogId = organCoursePo.getCourseCatalogId();
 
+        //班次
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<RectifyOrganClassBo> organClassBos = Lists.newArrayList();
         organClassPos.forEach(p -> {
             RectifyOrganClassBo organClassBo = new RectifyOrganClassBo();
             BeanTools.copyPropertiesIgnoreNull(p, organClassBo);
+            //班次目录
             List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = organClassCatalogService.findRectifyBoByClassId(p.getId());
             rectifyOrganClassCatalogBos.forEach(bo -> {
                 Timestamp startTime = bo.getStartTime();
@@ -417,7 +422,10 @@ public class OrganCourseController extends BackendController {
     public ResultDo merchantUpdate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-
+        if (null == dto) {
+            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
+        }
         dto.getOrganCoursePo().setOgnId(ognId);
         return organCourseService.updateOrganCourseByMerchant(dto);
     }
@@ -432,7 +440,10 @@ public class OrganCourseController extends BackendController {
     public ResultDo merchantRectify(RectifyOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-
+        if (null == dto) {
+            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
+        }
         dto.getOrganCoursePo().setOgnId(ognId);
         return organCourseService.rectifyOrganCourseByMerchant(dto);
     }

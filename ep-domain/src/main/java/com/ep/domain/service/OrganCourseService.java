@@ -162,24 +162,7 @@ public class OrganCourseService {
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         //获取最低价格start
-        BigDecimal priceMin;
-        if (CollectionsTools.isNotEmpty(organClassBos)) {
-            BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
-            for (int i = 0; i < priceArr.length; i++) {
-                priceArr[i] = organClassBos.get(i).getClassPrize();
-            }
-            int index = 0;
-            for (int j = index + 1; j < priceArr.length; j++) {
-                if (priceArr[j].compareTo(priceArr[index]) == -1) {
-                    BigDecimal temp = priceArr[j];
-                    priceArr[j] = priceArr[index];
-                    priceArr[index] = temp;
-                }
-            }
-            priceMin = priceArr[index];
-        } else {
-            priceMin = BigDecimal.ZERO;
-        }
+        BigDecimal priceMin = getCoursePriceMin(organClassBos);
         //获取最低价格end
         //机构课程表插入数据
         organCoursePo.setPrizeMin(priceMin);
@@ -282,24 +265,8 @@ public class OrganCourseService {
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         //获取最低价格start
-        BigDecimal priceMin;
-        if (CollectionsTools.isNotEmpty(organClassBos)) {
-            BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
-            for (int i = 0; i < priceArr.length; i++) {
-                priceArr[i] = organClassBos.get(i).getClassPrize();
-            }
-            int index = 0;
-            for (int j = index + 1; j < priceArr.length; j++) {
-                if (priceArr[j].compareTo(priceArr[index]) == -1) {
-                    BigDecimal temp = priceArr[j];
-                    priceArr[j] = priceArr[index];
-                    priceArr[index] = temp;
-                }
-            }
-            priceMin = priceArr[index];
-        } else {
-            priceMin = BigDecimal.ZERO;
-        }
+        BigDecimal priceMin = getCoursePriceMin(organClassBos);
+
         //获取最低价格end
         organCoursePo.setPrizeMin(priceMin);
         //机构课程表更新数据
@@ -413,11 +380,6 @@ public class OrganCourseService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo rectifyOrganCourseByMerchant(RectifyOrganCourseDto dto) {
         log.info("[课程]紧急修改课程开始。课程dto={}。", dto);
-        //课程对象
-        if (null == dto) {
-            log.error("[课程]紧急修改课程失败。该课程不存在。");
-            return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
-        }
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
         if (null == organCoursePo) {
             log.error("[课程]紧急修改课程失败。该课程不存在。");

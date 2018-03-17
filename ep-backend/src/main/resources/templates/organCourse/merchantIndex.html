@@ -131,13 +131,7 @@
 <script th:inline="javascript">
 
     function onlineBox(id) {
-        parent.layer.alert('该课程确认上线', {
-                icon: 1,
-            },
-            function (index) {
-                onlineDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm("确定该课程上线？", 3, onlineDo, id)
     }
     function onlineDo(id) {
         $.ajax({
@@ -145,9 +139,14 @@
             url:"/auth/organCourse/online/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/organCourse/merchantIndex');
+                    toastr_success(null, document.referrer);
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
 
     }
