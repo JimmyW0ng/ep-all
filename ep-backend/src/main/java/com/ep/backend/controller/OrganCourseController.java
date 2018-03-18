@@ -28,7 +28,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -66,6 +65,17 @@ public class OrganCourseController extends BackendController {
     @Autowired
     private OrganService organService;
 
+    /**
+     * 平台课程列表
+     *
+     * @param model
+     * @param pageable
+     * @param courseName
+     * @param courseType
+     * @param crStartTime
+     * @param crEndTime
+     * @return
+     */
     @GetMapping("index")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseName", required = false) String courseName,
@@ -129,6 +139,8 @@ public class OrganCourseController extends BackendController {
         }
         map.put("crEndTime", crEndTime);
         conditions.add(EP.EP_ORGAN_COURSE.DEL_FLAG.eq(false));
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP.EP_ORGAN_COURSE.OGN_ID.eq(ognId));
         Page<OrganCourseBo> page = organCourseService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);
@@ -141,7 +153,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantCreateInit")
-    public String merchantCreateInit(Model model, HttpServletRequest request) {
+    public String merchantCreateInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
@@ -162,8 +174,12 @@ public class OrganCourseController extends BackendController {
         Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
         if (organOptional.isPresent()) {
             organCoursePo.setCourseAddress(organOptional.get().getOgnAddress());
+            //该机构是否有会员制度
+            model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
         }
         model.addAttribute("organCoursePo", organCoursePo);
+
+
         return "organCourse/merchantForm";
     }
 

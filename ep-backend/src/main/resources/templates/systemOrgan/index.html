@@ -143,7 +143,7 @@
             url:"/auth/systemOrgan/online/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null, document.referrer);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -163,7 +163,7 @@
             url:"/auth/systemOrgan/offline/"+id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null, document.referrer);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -183,7 +183,7 @@
             url: "/auth/systemOrgan/freeze/" + id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null, document.referrer);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -202,7 +202,7 @@
             url: "/auth/systemOrgan/unfreeze/" + id,
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, document.referrer);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }

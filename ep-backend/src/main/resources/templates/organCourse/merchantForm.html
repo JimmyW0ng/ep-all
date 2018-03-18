@@ -101,7 +101,7 @@
                                            th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
 
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:if="${organVipFlag}">
                                     <label for="vipFlag">是否会员才能报名 <span class="required-sign">*</span></label>
                                     <select id="vipFlag" name="organCoursePo.vipFlag" type="text"
                                             required="true" class="form-control" th:value="${organCoursePo.vipFlag}">
@@ -110,7 +110,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-sm-9">
                                 <label>课程内容 <span class="required-sign">*</span></label>
 
@@ -121,7 +120,6 @@
                                 <div id="preCodeBox"></div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -141,7 +139,10 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）</label>
+                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用标签</span>
+                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有标签</span>
+                        </label>
                     </div>
                     <div class="ibox-content">
                         <div id="tagBox" style="background: #eee;min-height: 250px;padding: 20px 0px">
@@ -184,14 +185,10 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
-
         </form>
-
     </div>
 
 </div>
@@ -328,6 +325,7 @@
                     $("#mainpic_img_url").attr("src", data.result.fileUrl)
                     $("#mainpic_url").val(data.result.fileUrl)
                     $("#mainpic_url_preCode").val(data.result.preCode)
+                    $("#pic-error").remove()
                 }
             },
             error: function (XMLHttpRequest) {
@@ -412,10 +410,11 @@
 
     /*勾选标签不超过6个*/
     function taglt6(ele) {
-        if ($("#tagBox").find("input[type='checkbox']:checked").length > 6) {
+        var len = $("#tagBox").find("input[type='checkbox']:checked").length
+        if (len > 6) {
             if ($(ele).is(":checked")) {
                 $(ele).attr("checked", false)
-                toastr.error("标签不得超过6个")
+                toastr.error("标签不得超过6个!")
             }
         }
     }
@@ -460,7 +459,7 @@
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
     }
 
-    function beforeSubmitAbledOrganClassCatalogPos() {
+    function beforeValidAbledOrganClassCatalogPos() {
         $("div[name='organClassCatalogPos']").find("input[name='startTime']").each(function () {
             $(this).attr("disabled", false);
 
@@ -558,21 +557,31 @@
     }
 
     function frmSubmit() {
-        beforeSubmitAbledOrganClassCatalogPos()
+        beforeValidAbledOrganClassCatalogPos()
         if (!$("#frm").valid()) {
             console.log("valid fail")
             return;
         }
-        if (!beforeSubmitCheckCourseMainPic()) {
-            return
-        }
+
         resetFrmDateInputName()
 
         beforeSubmitFormatInputInnerName()
         beforeSubmitFormatDateInputName()
-        beforeSubmitCheckCourseDescPic()
         if (editor.txt.text() == "") {
             toastr.error("请填写课程内容！")
+            return
+        }
+        beforeSubmitCheckCourseDescPic()
+        if ($("div[name='organClassBosBox']").length == 0) {
+            toastr.error("请创建班次!")
+            return
+        }
+        if ($("#tagBox").find("input[type='checkbox']:checked").length == 0) {
+            toastr.error("请勾选标签!")
+            return
+        }
+
+        if (!beforeSubmitCheckCourseMainPic()) {
             return
         }
         beforeSubmitCourseContent(editor.txt.html());

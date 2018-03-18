@@ -140,7 +140,7 @@ function checkFormCreateImgRequired(array) {
     for (var item in array) {
         if ($("#" + array[item].eleId).val() == "") {
             flag = false
-            var htmls = '<span style="display: inline-block;margin-left:10px;margin-top: 5px; color: #a94442;"><i class="fa fa-times-circle"></i>  ' + array[item].msg + '</span>'
+            var htmls = '<span id="pic-error" style="display: inline-block;margin-left:10px;margin-top: 5px; color: #a94442;"><i class="fa fa-times-circle"></i>  ' + array[item].msg + '</span>'
             $("." + array[item].eleId).after(htmls)
         }
     }
@@ -185,12 +185,21 @@ $(function () {
     $("#query-button").click(function () {
         $("#query-form input,#query-form select").each(function (i) {
             if (this.value != null && this.value != "") {
-                jsonObj[this.name] = this.value;
+                if (this.tagName == 'INPUT') {
+                    jsonObj[this.name] = this.value.replace(/^\s+|\s+$/g, "");
+                } else {
+                    jsonObj[this.name] = this.value;
+                }
             } else {
                 jsonObj = delJSON(jsonObj, this.name);
             }
         });
+        if ($.isEmptyObject(jsonObj)) {
+            toastr.warning("请输入查询条件!")
+            return
+        }
         jsonObj['page'] = 0;
+
         var href = parseUrl(jsonObj);
         if (href) {
             url += '?' + href;

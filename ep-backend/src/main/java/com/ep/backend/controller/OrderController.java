@@ -37,6 +37,21 @@ public class OrderController extends BackendController {
     @Autowired
     private OrderService orderService;
 
+    /**
+     * 订单列表
+     *
+     * @param model
+     * @param pageable
+     * @param mobile
+     * @param childTrueName
+     * @param childNickName
+     * @param courseName
+     * @param className
+     * @param status
+     * @param crStartTime
+     * @param crEndTime
+     * @return
+     */
     @GetMapping("index")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
@@ -50,44 +65,45 @@ public class OrderController extends BackendController {
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
     ) {
-        Map map = Maps.newHashMap();
+        Map<String, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(mobile)) {
             conditions.add(EP.EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
         }
-        map.put("mobile", mobile);
+        searchMap.put("mobile", mobile);
         if (StringTools.isNotBlank(childTrueName)) {
             conditions.add(EP.EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
         }
-        map.put("childTrueName", childTrueName);
+        searchMap.put("childTrueName", childTrueName);
         if (StringTools.isNotBlank(childNickName)) {
             conditions.add(EP.EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
         }
-        map.put("childNickName", childNickName);
+        searchMap.put("childNickName", childNickName);
         if (StringTools.isNotBlank(courseName)) {
             conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
         }
-        map.put("courseName", courseName);
+        searchMap.put("courseName", courseName);
         if (StringTools.isNotBlank(className)) {
             conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
         }
-        map.put("className", className);
+        searchMap.put("className", className);
         if (StringTools.isNotBlank(status)) {
             conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
         }
-        map.put("status", status);
+        searchMap.put("status", status);
         if (null != crStartTime) {
             conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
         }
-        map.put("crStartTime", crStartTime);
+        searchMap.put("crStartTime", crStartTime);
         if (null != crEndTime) {
             conditions.add(EP.EP_ORDER.CREATE_AT.lessOrEqual(crEndTime));
         }
-        map.put("crEndTime", crEndTime);
-
+        searchMap.put("crEndTime", crEndTime);
+        conditions.add(EP.EP_ORDER.DEL_FLAG.eq(false));
+        conditions.add(EP.EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
         Page<OrderBo> page = orderService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
-        model.addAttribute("map", map);
+        model.addAttribute("searchMap", searchMap);
         return "order/index";
     }
 
@@ -108,13 +124,15 @@ public class OrderController extends BackendController {
     /**
      * 单个订单报名成功
      *
-     * @param po
+     * @param id
+     * @param classId
      */
     @PostMapping("orderSuccess")
     @ResponseBody
-    public ResultDo orderSuccess(
-            EpOrderPo po) {
-        return orderService.orderSuccessById(po.getId(), po.getClassId());
+    public ResultDo orderSuccess(@RequestParam(value = "id") Long id,
+                                 @RequestParam(value = "classId") Long classId
+    ) {
+        return orderService.orderSuccessById(id, classId);
     }
 
     /**

@@ -195,7 +195,10 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）</label>
+                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用标签</span>
+                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有标签</span>
+                        </label>
                     </div>
                     <div class="ibox-content">
                         <div style="background: #eee;min-height: 250px;padding: 20px 0px">
@@ -306,6 +309,8 @@
             },
         }
         editor.create()
+        editor.$textElem.attr('contenteditable', false)
+
 
         $("#frm").find("input,select,textarea").attr("disabled", true)
     });

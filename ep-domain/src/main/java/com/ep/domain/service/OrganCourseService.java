@@ -169,7 +169,15 @@ public class OrganCourseService {
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
+        if (CollectionsTools.isEmpty(organClassBos)) {
+            log.error("[课程]新增课程失败,请求参数异常,organClassBos为空。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+        if (CollectionsTools.isEmpty(constantTagPos)) {
+            log.error("[课程]新增课程失败,请求参数异常,constantTagPos为空。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         //获取最低价格start
         BigDecimal priceMin = getCoursePriceMin(organClassBos);
         //获取最低价格end
@@ -183,29 +191,29 @@ public class OrganCourseService {
         Long insertOrganCourseId = organCoursePo.getId();
         //课程负责人账户id集合
         Set<Long> ognAccountIds = Sets.newHashSet();
-        if (CollectionsTools.isNotEmpty(organClassBos)) {
-            organClassBos.forEach(organClassBo -> {
-                ognAccountIds.add(organClassBo.getOgnAccountId());
-                EpOrganClassPo organClassPo = new EpOrganClassPo();
-                BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
-                organClassPo.setOgnId(ognId);
-                organClassPo.setCourseId(insertOrganCourseId);
-                organClassPo.setStatus(EpOrganClassStatus.save);
-                organClassPo.setEnteredNum(0);
-                organClassPo.setOrderedNum(0);
-                //机构课程班次表插入数据
-                log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
-                organClassRepository.insert(organClassPo);
-                Long insertOrganClassId = organClassPo.getId();
-                List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
+        organClassBos.forEach(organClassBo -> {
+            ognAccountIds.add(organClassBo.getOgnAccountId());
+            EpOrganClassPo organClassPo = new EpOrganClassPo();
+            BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
+            organClassPo.setOgnId(ognId);
+            organClassPo.setCourseId(insertOrganCourseId);
+            organClassPo.setStatus(EpOrganClassStatus.save);
+            organClassPo.setEnteredNum(0);
+            organClassPo.setOrderedNum(0);
+            //机构课程班次表插入数据
+            log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
+            organClassRepository.insert(organClassPo);
+            Long insertOrganClassId = organClassPo.getId();
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
+            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
                 for (int i = 0; i < organClassCatalogPos.size(); i++) {
                     organClassCatalogPos.get(i).setClassId(insertOrganClassId);
                 }
                 //班次课程内容目录表 插入数据
                 log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
                 organClassCatalogRepository.insert(organClassCatalogPos);
-            });
-        }
+            }
+        });
 
         //机构类目表 插入数据
         //是否存在机构id和课程类目id组合的重复,否那么插入
@@ -225,14 +233,12 @@ public class OrganCourseService {
         organCourseTeamRepository.insert(organCourseTeamPos);
 
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
-        if (CollectionsTools.isNotEmpty(constantTagPos)) {
-            constantTagPos.forEach(constantTagPo -> {
-                EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
-                insertOrganCourseTagPo.setTagId(constantTagPo.getId());
-                insertOrganCourseTagPo.setCourseId(insertOrganCourseId);
-                insertOrganCourseTagPos.add(insertOrganCourseTagPo);
-            });
-        }
+        constantTagPos.forEach(constantTagPo -> {
+            EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
+            insertOrganCourseTagPo.setTagId(constantTagPo.getId());
+            insertOrganCourseTagPo.setCourseId(insertOrganCourseId);
+            insertOrganCourseTagPos.add(insertOrganCourseTagPo);
+        });
 
         //课程标签表插入数据
         log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
@@ -277,8 +283,16 @@ public class OrganCourseService {
         }
         //班次
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
+        if (CollectionsTools.isEmpty(organClassBos)) {
+            log.error("[课程]新增课程失败,请求参数异常,organClassBos为空。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         //标签
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
+        if (CollectionsTools.isEmpty(constantTagPos)) {
+            log.error("[课程]新增课程失败,请求参数异常,constantTagPos为空。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         //获取最低价格start
@@ -305,31 +319,29 @@ public class OrganCourseService {
         organCourseTeamRepository.deletePhysicByCourseId(organCourseId);
         //课程负责人账户id集合
         Set<Long> ognAccountIds = Sets.newHashSet();
-        if (CollectionsTools.isNotEmpty(organClassBos)) {
-            organClassBos.forEach(organClassBo -> {
-                ognAccountIds.add(organClassBo.getOgnAccountId());
-                EpOrganClassPo organClassPo = new EpOrganClassPo();
-                BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
-                organClassPo.setId(null);
-                organClassPo.setOgnId(ognId);
-                organClassPo.setCourseId(organCourseId);
-                organClassPo.setStatus(EpOrganClassStatus.save);
-                organClassPo.setEnteredNum(0);
-                organClassPo.setOrderedNum(0);
-                //机构课程班次表插入数据
-                log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
-                organClassRepository.insert(organClassPo);
-                Long insertOrganClassId = organClassPo.getId();
-                List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
-                for (int i = 0; i < organClassCatalogPos.size(); i++) {
-                    organClassCatalogPos.get(i).setClassId(insertOrganClassId);
-                    organClassCatalogPos.get(i).setId(null);
-                }
-                //班次课程内容目录表插入数据
-                log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
-                organClassCatalogRepository.insert(organClassCatalogPos);
-            });
-        }
+        organClassBos.forEach(organClassBo -> {
+            ognAccountIds.add(organClassBo.getOgnAccountId());
+            EpOrganClassPo organClassPo = new EpOrganClassPo();
+            BeanTools.copyPropertiesIgnoreNull(organClassBo, organClassPo);
+            organClassPo.setId(null);
+            organClassPo.setOgnId(ognId);
+            organClassPo.setCourseId(organCourseId);
+            organClassPo.setStatus(EpOrganClassStatus.save);
+            organClassPo.setEnteredNum(0);
+            organClassPo.setOrderedNum(0);
+            //机构课程班次表插入数据
+            log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
+            organClassRepository.insert(organClassPo);
+            Long insertOrganClassId = organClassPo.getId();
+            List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
+            for (int i = 0; i < organClassCatalogPos.size(); i++) {
+                organClassCatalogPos.get(i).setClassId(insertOrganClassId);
+                organClassCatalogPos.get(i).setId(null);
+            }
+            //班次课程内容目录表插入数据
+            log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
+            organClassCatalogRepository.insert(organClassCatalogPos);
+        });
 
         //机构类目表 插入数据start
         List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(ognId);
@@ -357,14 +369,12 @@ public class OrganCourseService {
 
         //课程标签表插入数据start
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
-        if (CollectionsTools.isNotEmpty(constantTagPos)) {
-            constantTagPos.forEach(constantTagPo -> {
-                EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
-                insertOrganCourseTagPo.setTagId(constantTagPo.getId());
-                insertOrganCourseTagPo.setCourseId(organCourseId);
-                insertOrganCourseTagPos.add(insertOrganCourseTagPo);
-            });
-        }
+        constantTagPos.forEach(constantTagPo -> {
+            EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
+            insertOrganCourseTagPo.setTagId(constantTagPo.getId());
+            insertOrganCourseTagPo.setCourseId(organCourseId);
+            insertOrganCourseTagPos.add(insertOrganCourseTagPo);
+        });
         log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
         organCourseTagRepository.insert(insertOrganCourseTagPos);
         //课程标签表插入数据end
@@ -620,35 +630,40 @@ public class OrganCourseService {
      */
     private boolean checkPoParams(EpOrganCoursePo po) {
         if (null == po.getOgnId()) {
+            log.error("接受参数异常，ognId=null。");
             return false;
         }
         if (null == po.getCourseType()) {
+            log.error("接受参数异常，courseType=null。");
             return false;
         }
         if (null == po.getCourseCatalogId()) {
+            log.error("接受参数异常，courseCatalogId=null。");
             return false;
         }
         if (null == po.getCourseName()) {
+            log.error("接受参数异常，courseName=null。");
             return false;
         }
         if (null == po.getCourseIntroduce()) {
+            log.error("接受参数异常，courseIntroduce=null。");
             return false;
         }
         if (null == po.getCourseContent()) {
+            log.error("接受参数异常，courseContent=null。");
             return false;
         }
 
         if (null == po.getCourseAddress()) {
+            log.error("接受参数异常，courseAddress=null。");
             return false;
         }
-        if (null == po.getVipFlag()) {
-            return false;
-        }
-
         if (null == po.getOnlineTime()) {
+            log.error("接受参数异常，onlineTime=null。");
             return false;
         }
         if (null == po.getEnterTimeStart()) {
+            log.error("接受参数异常，enterTimeStart=null。");
             return false;
         }
         return true;

@@ -22,26 +22,29 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"
+                        <input type="text" class="form-control " name="mobile" th:value="${searchMap.get('mobile')}"
                                placeholder="会员账号" >
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control " name="childTrueName" th:value="${map.get('childTrueName')}"
+                        <input type="text" class="form-control " name="childTrueName"
+                               th:value="${searchMap.get('childTrueName')}"
                                placeholder="姓名">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control " name="childNickName"
-                               th:value="${map.get('childNickName')}"
+                               th:value="${searchMap.get('childNickName')}"
                                placeholder="昵称">
                     </div>
 
                     <div class="form-group">
-                        <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
+                        <input type="text" class="form-control " name="courseName"
+                               th:value="${searchMap.get('courseName')}"
                                placeholder="课程">
                     </div>
 
                     <div class="form-group">
-                        <input type="text" class="form-control " name="className" th:value="${map.get('className')}"
+                        <input type="text" class="form-control " name="className"
+                               th:value="${searchMap.get('className')}"
                                placeholder="班次">
                     </div>
 
@@ -50,7 +53,7 @@
                             <option value>订单状态</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderStatus).values()}"
                                     th:value="${state}"
-                                    th:selected="${#stringTools.equals(state,map.get('status'))}"
+                                    th:selected="${#stringTools.equals(state,searchMap.get('status'))}"
                                     th:text="#{EpOrderStatus.+${state.literal}}">
                             </option>
                         </select>
@@ -58,11 +61,11 @@
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
-                                   th:placeholder="创建时间从" th:value="${map.get('crStartTime')}"
+                                   th:placeholder="创建时间从" th:value="${searchMap.get('crStartTime')}"
                             >
                             <span class="input-group-addon">到</span>
                             <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
-                                   th:placeholder="到" th:value="${map.get('crEndTime')}"
+                                   th:placeholder="到" th:value="${searchMap.get('crEndTime')}"
                             >
                         </div>
                     </div>
@@ -75,7 +78,7 @@
 
                 </form>
                 <div style="text-align: right">
-                    <button class="btn btn-info" onclick="batchOrderSuccess()">批量报名</button>
+                    <button style="display: none" class="btn btn-info" onclick="batchOrderSuccess()">批量报名</button>
                 </div>
             </div>
             <div class="panel-body">
@@ -87,7 +90,7 @@
                            aria-describedby="editable_info">
                         <thead>
                         <tr>
-                            <th></th>
+                            <th style="display: none;"></th>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>会员账号</th>
                             <th>姓名</th>
@@ -104,7 +107,8 @@
                         </thead>
                         <tbody id="tbody">
                         <tr th:each="bo:${page.content}">
-                            <td><input  type="checkbox" th:value="${bo.id}" onclick="checkOrderSuccess(this)"></td>
+                            <td style="display: none;"><input type="checkbox" th:value="${bo.id}"
+                                                              onclick="checkOrderSuccess(this)"></td>
                             <td th:text="${bo.id}"></td>
                             <td th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
@@ -113,24 +117,25 @@
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
                             <td th:text="#{EpOrganClassStatus.+${bo.classStatus}}"></td>
+                            <td style="display: none" name="classStatus" th:text="${bo.classStatus}"></td>
                             <td th:text="${bo.prize}"></td>
                             <td name="statusZh" th:text="#{EpOrderStatus.+${bo.status}}"></td>
+                            <td style="display: none" name="status" th:text="${bo.status}"></td>
 
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info"
-                                   th:if="${#strings.equals(bo.status,'save')}"
+
                                    th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
                                 <a name="refuse" class="btn btn-xs btn-danger"
                                    href="javascript:void(0)"
-                                   th:if="${#strings.equals(bo.status,'save')}"
+
                                    th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
                                 <a name="cancel" class="btn btn-xs btn-info"
                                    th:value="${bo.status}"
-                                   th:if="${#strings.equals(bo.classStatus,'online') &&
-                                   #strings.equals(bo.status,'success')||#strings.equals(bo.status,'refuse')}"
+
                                    th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
 
                             </td>
@@ -229,8 +234,8 @@
             }
         })
     }
-    function buttonByStatus($box,status) {
-        if(status=="success"||status=="refuse"){
+    function buttonByStatus($box, status, classStatus) {
+        if ((status == "success" || status == "refuse") && classStatus == "online") {
             $box.find("a").hide()
             $box.find("a[name='cancel']").show()
         }
@@ -250,7 +255,8 @@
                 if(data.success){
                     var orderPo = data.result
                     $(ele).parents("tr").eq(0).find("td[name='statusZh']").html(EpOrderStatus[orderPo.status]);
-                    buttonByStatus($(ele).parent(), orderPo.status)//更新改行按钮的显隐性
+                    var classStatus = $(ele).parents("tr").eq(0).find("td[name='classStatus']").text()
+                    buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }
@@ -271,16 +277,20 @@
             url:"/auth/order/orderRefuse?id="+$("#sourceId").val()+"&remark="+$("#refuseRemark").val(),
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,"/auth/order/index")
-                }else{
-                    toastr_error(null,"/auth/order/index")
+                    toastr_success(null, document.location.href)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
 
     }
     function orderCancelBox(ele,id) {
-        layer.alert('确认取消该订单', {icon: 3, btn: ['确定', '取消']},
+        var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
+        layer.alert('确定取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
             function (index) {
                 orderCancelDo(id,$(ele).attr("value"));
                 layer.close(index);
@@ -295,19 +305,25 @@
             url:"/auth/order/orderCancel?id="+id+"&status="+status,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/order/index');
+                    toastr_success(null, document.location.href)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
 
     }
     $(function () {
-//        $("#tbody tr").each(function () {
-//            var $box=$(this).find("td[name='button']").eq(0)
-//            var status=$(this).find("td[name='status']").eq(0).html()
-//            buttonByStatus($box,status)
-//
-//        })
+        $("#tbody tr").each(function () {
+            var $box = $(this).find("td[name='button']").eq(0)
+            var status = $(this).find("td[name='status']").eq(0).text()
+            var classStatus = $(this).find("td[name='classStatus']").text()
+            buttonByStatus($box, status, classStatus)
+
+        })
     })
 
 </script>
