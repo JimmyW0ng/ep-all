@@ -1,12 +1,14 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.po.EpOrganVipPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganVipRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_VIP;
@@ -32,9 +34,12 @@ public class OrganVipRepository extends AbstractCRUDRepository<EpOrganVipRecord,
      * @return
      */
     public Boolean existVipByOgnIdAndChildId(Long ognId, Long childId) {
+        Timestamp now = DateTools.getCurrentDateTime();
         List<EpOrganVipPo> data = dslContext.selectCount().from(EP_ORGAN_VIP)
                                             .where(EP_ORGAN_VIP.OGN_ID.eq(ognId))
                                             .and(EP_ORGAN_VIP.CHILD_ID.eq(childId))
+                                            .and(EP_ORGAN_VIP.START_TIME.lessThan(now))
+                                            .and(EP_ORGAN_VIP.END_TIME.greaterThan(now))
                                             .and(EP_ORGAN_VIP.DEL_FLAG.eq(false))
                                             .fetchInto(EpOrganVipPo.class);
         return CollectionsTools.isNotEmpty(data);
