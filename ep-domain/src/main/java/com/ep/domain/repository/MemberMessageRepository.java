@@ -37,30 +37,30 @@ public class MemberMessageRepository extends AbstractCRUDRepository<EpMemberMess
     /**
      * 孩子评价类消息未读数
      *
-     * @param childId
+     * @param memberId
      * @param type
      * @return
      */
-    public Integer getUnreadNumByChildId(Long childId, EpMemberMessageType type) {
+    public Integer getUnreadNumByMemberId(Long memberId, EpMemberMessageType type) {
         return dslContext.selectCount()
-                .from(EP_MEMBER_MESSAGE)
-                .where(EP_MEMBER_MESSAGE.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_MESSAGE.TYPE.eq(type))
-                .and(EP_MEMBER_MESSAGE.STATUS.eq(EpMemberMessageStatus.unread))
-                .and(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false))
-                .fetchOneInto(Integer.class);
+                         .from(EP_MEMBER_MESSAGE)
+                         .where(EP_MEMBER_MESSAGE.MEMBER_ID.eq(memberId))
+                         .and(EP_MEMBER_MESSAGE.TYPE.eq(type))
+                         .and(EP_MEMBER_MESSAGE.STATUS.eq(EpMemberMessageStatus.unread))
+                         .and(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false))
+                         .fetchOneInto(Integer.class);
     }
 
     /**
      * 孩子消息-分页
      *
      * @param pageable
-     * @param childId
+     * @param memberId
      * @return
      */
-    public Page<MemberMessageBo> findClassCatalogCommentByChildIdForPage(Pageable pageable, Long childId) {
+    public Page<MemberMessageBo> findClassCatalogCommentByMemberIdForPage(Pageable pageable, Long memberId) {
         Collection<Condition> conditions = Lists.newArrayList();
-        conditions.add(EP_MEMBER_MESSAGE.CHILD_ID.eq(childId));
+        conditions.add(EP_MEMBER_MESSAGE.MEMBER_ID.eq(memberId));
         conditions.add(EP_MEMBER_MESSAGE.TYPE.eq(EpMemberMessageType.class_catalog_comment));
         conditions.add(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false));
         Long count = dslContext.selectCount()
@@ -71,36 +71,38 @@ public class MemberMessageRepository extends AbstractCRUDRepository<EpMemberMess
             return new PageImpl<>(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_MESSAGE.fields());
-        fieldList.add(EP_ORGAN_CLASS_CHILD.ORDER_ID);
-        List<MemberMessageBo> data = dslContext.select()
-                .from(EP_MEMBER_MESSAGE)
-                .leftJoin(EP_ORGAN_CLASS_CATALOG)
-                .on(EP_MEMBER_MESSAGE.SOURCE_ID.eq(EP_ORGAN_CLASS_CATALOG.ID))
-                .leftJoin(EP_ORGAN_CLASS_CHILD)
-                .on(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(EP_ORGAN_CLASS_CHILD.CLASS_ID))
-                .and(EP_ORGAN_CLASS_CHILD.CHILD_ID.eq(childId))
-                .where(conditions)
-                .orderBy(EP_MEMBER_MESSAGE.CREATE_AT.desc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetchInto(MemberMessageBo.class);
+        fieldList.add(EP_ORDER.ID.as("orderId"));
+        List<MemberMessageBo> data = dslContext.select(fieldList)
+                                               .from(EP_MEMBER_MESSAGE)
+                                               .leftJoin(EP_ORGAN_CLASS_CATALOG)
+                                               .on(EP_MEMBER_MESSAGE.SOURCE_ID.eq(EP_ORGAN_CLASS_CATALOG.ID))
+                                               .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                                               .leftJoin(EP_ORDER)
+                                               .on(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(EP_ORDER.CLASS_ID))
+                                               .and(EP_ORDER.CHILD_ID.eq(EP_MEMBER_MESSAGE.CHILD_ID))
+                                               .and(EP_ORDER.DEL_FLAG.eq(false))
+                                               .where(conditions)
+                                               .orderBy(EP_MEMBER_MESSAGE.CREATE_AT.desc())
+                                               .limit(pageable.getPageSize())
+                                               .offset(pageable.getOffset())
+                                               .fetchInto(MemberMessageBo.class);
         return new PageImpl<>(data, pageable, count);
     }
 
     /**
      * 设置已读
      *
-     * @param childId
+     * @param memberId
      * @param type
      * @return
      */
-    public int readAllByChild(Long childId, EpMemberMessageType type) {
+    public int readAllByMemberId(Long memberId, EpMemberMessageType type) {
         return dslContext.update(EP_MEMBER_MESSAGE)
-                .set(EP_MEMBER_MESSAGE.STATUS, EpMemberMessageStatus.read)
-                .where(EP_MEMBER_MESSAGE.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_MESSAGE.TYPE.eq(type))
-                .and(EP_MEMBER_MESSAGE.STATUS.eq(EpMemberMessageStatus.unread))
-                .and(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_MEMBER_MESSAGE.STATUS, EpMemberMessageStatus.read)
+                         .where(EP_MEMBER_MESSAGE.MEMBER_ID.eq(memberId))
+                         .and(EP_MEMBER_MESSAGE.TYPE.eq(type))
+                         .and(EP_MEMBER_MESSAGE.STATUS.eq(EpMemberMessageStatus.unread))
+                         .and(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false))
+                         .execute();
     }
 }

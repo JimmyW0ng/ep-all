@@ -48,28 +48,28 @@ public class MemberMessageService {
     /**
      * 孩子消息未读数
      *
-     * @param childId
+     * @param memberId
      * @param type
      * @return
      */
-    public ResultDo<Integer> getUnreadNumByChildId(Long childId, EpMemberMessageType type) {
+    public ResultDo<Integer> getUnreadNumByMemberId(Long memberId, EpMemberMessageType type) {
         ResultDo<Integer> resultDo = ResultDo.build();
-        Integer count = memberMessageRepository.getUnreadNumByChildId(childId, type);
+        Integer count = memberMessageRepository.getUnreadNumByMemberId(memberId, type);
         return resultDo.setResult(count);
     }
 
     /**
      * 孩子消息-分页
      *
-     * @param childId
+     * @param memberId
      * @return
      */
-    public ResultDo<Page<MemberMessageBo>> findClassCatalogCommentByChildIdForPage(Pageable pageable, Long childId) {
+    public ResultDo<Page<MemberMessageBo>> findClassCatalogCommentByChildIdForPage(Pageable pageable, Long memberId) {
         // 设置已读
-        int num = memberMessageRepository.readAllByChild(childId, EpMemberMessageType.class_catalog_comment);
-        log.info("设置已读课时评价消息数据{}条, childid={}", num, childId);
+        int num = memberMessageRepository.readAllByMemberId(memberId, EpMemberMessageType.class_catalog_comment);
+        log.info("设置已读课时评价消息数据{}条, memberId={}", num, memberId);
         ResultDo<Page<MemberMessageBo>> resultDo = ResultDo.build();
-        Page<MemberMessageBo> page = memberMessageRepository.findClassCatalogCommentByChildIdForPage(pageable, childId);
+        Page<MemberMessageBo> page = memberMessageRepository.findClassCatalogCommentByMemberIdForPage(pageable, memberId);
         List<MemberMessageBo> data = page.getContent();
         if (CollectionsTools.isNotEmpty(data)) {
             for (MemberMessageBo messageBo : data) {

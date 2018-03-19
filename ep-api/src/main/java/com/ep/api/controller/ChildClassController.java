@@ -1,9 +1,7 @@
 package com.ep.api.controller;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
@@ -64,24 +62,9 @@ public class ChildClassController extends ApiController {
     @ApiOperation(value = "孩子行程")
     @PostMapping("/schedule")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<Page<MemberChildScheduleBo>> findChildSchedulePage(@PageableDefault Pageable pageable,
-                                                                       @RequestParam("childId") Long childId) {
-        ResultDo<Page<MemberChildScheduleBo>> resultDo = ResultDo.build();
+    public ResultDo<Page<MemberChildScheduleBo>> findChildSchedulePage(@PageableDefault Pageable pageable) {
         Long memberId = super.getCurrentUser().get().getId();
-        ResultDo<MemberChildBo> checkedChild = memberChildService.getAllByMemberIdAndChildId(memberId, childId);
-        if (checkedChild.isError()) {
-            return resultDo.setError(checkedChild.getError());
-        }
-        Page<MemberChildScheduleBo> data = orderService.findChildSchedulePage(pageable, childId);
-        List<MemberChildScheduleBo> schedules = data.getContent();
-        if (CollectionsTools.isNotEmpty(schedules)) {
-            MemberChildBo childBo = checkedChild.getResult();
-            for (MemberChildScheduleBo schedule : schedules) {
-                schedule.setNickName(childBo.getChildNickName());
-                schedule.setAvatar(childBo.getAvatar());
-            }
-        }
-        return resultDo.setResult(data);
+        return orderService.findChildSchedulePage(pageable, memberId);
     }
 
     @ApiOperation(value = "班次评价")

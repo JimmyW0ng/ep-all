@@ -124,17 +124,17 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * 分页查询孩子的行程
      *
      * @param pageable
-     * @param childId
+     * @param memberId
      * @return
      */
-    public Page<MemberChildScheduleBo> findChildSchedulePage(Pageable pageable, Long childId) {
+    public Page<MemberChildScheduleBo> findChildSchedulePage(Pageable pageable, Long memberId) {
         // 封装条件
         Timestamp time = DateTools.zerolizedTime(DateTools.getCurrentDateTime());
-        Condition condition = EP_ORDER.CHILD_ID.eq(childId)
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterOrEqual(time))
-                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false));
+        Condition condition = EP_ORDER.MEMBER_ID.eq(memberId)
+                                                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                                                .and(EP_ORDER.DEL_FLAG.eq(false))
+                                                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterOrEqual(time))
+                                                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false));
         Long count = dslContext.selectCount()
                 .from(EP_ORDER)
                 .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
@@ -158,7 +158,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                                                      .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
                                                      .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
                                                      .where(condition)
-                                                     .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc())
+                                                     .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc(), EP_ORDER.CHILD_ID.asc())
                                                      .limit(pageable.getPageSize())
                                                      .offset(pageable.getOffset())
                                                      .fetchInto(MemberChildScheduleBo.class);

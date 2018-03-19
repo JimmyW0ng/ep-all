@@ -2,7 +2,6 @@ package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberMessageBo;
-import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.repository.domain.enums.EpMemberMessageType;
 import com.ep.domain.service.MemberChildService;
 import com.ep.domain.service.MemberMessageService;
@@ -16,7 +15,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -38,28 +36,19 @@ public class MemberMessageController extends ApiController {
     @ApiOperation(value = "孩子评价类消息未读数")
     @PostMapping("/comment/unread/num")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<Integer> getClassCommentUnreadNum(@RequestParam("childId") Long childId) {
+    public ResultDo<Integer> getClassCommentUnreadNum() {
         ResultDo<Integer> resultDo = ResultDo.build();
         Long memberId = super.getCurrentUser().get().getId();
-        ResultDo<EpMemberChildPo> checkedChild = memberChildService.getCheckedMemberChild(memberId, childId);
-        if (checkedChild.isError()) {
-            return resultDo.setError(checkedChild.getError());
-        }
-        return memberMessageService.getUnreadNumByChildId(childId, EpMemberMessageType.class_catalog_comment);
+        return memberMessageService.getUnreadNumByMemberId(memberId, EpMemberMessageType.class_catalog_comment);
     }
 
     @ApiOperation(value = "孩子评价类消息-分页")
     @PostMapping("/comment/page")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<Page<MemberMessageBo>> getClassCommentForPage(@PageableDefault Pageable pageable,
-                                                                  @RequestParam("childId") Long childId) {
+    public ResultDo<Page<MemberMessageBo>> getClassCommentForPage(@PageableDefault Pageable pageable) {
         ResultDo<Page<MemberMessageBo>> resultDo = ResultDo.build();
         Long memberId = super.getCurrentUser().get().getId();
-        ResultDo<EpMemberChildPo> checkedChild = memberChildService.getCheckedMemberChild(memberId, childId);
-        if (checkedChild.isError()) {
-            return resultDo.setError(checkedChild.getError());
-        }
-        return memberMessageService.findClassCatalogCommentByChildIdForPage(pageable, childId);
+        return memberMessageService.findClassCatalogCommentByChildIdForPage(pageable, memberId);
     }
 
 }

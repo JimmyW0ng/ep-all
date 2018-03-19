@@ -7,10 +7,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberChildClassBo;
-import com.ep.domain.pojo.bo.MemberChildScheduleBo;
-import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
-import com.ep.domain.pojo.bo.OrderBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -236,25 +233,44 @@ public class OrderService {
      * 分页查询孩子行程
      *
      * @param pageable
-     * @param childId
+     * @param memberId
      * @return
      */
-    public Page<MemberChildScheduleBo> findChildSchedulePage(Pageable pageable, Long childId) {
-        Page<MemberChildScheduleBo> page = orderRepository.findChildSchedulePage(pageable, childId);
-        if (CollectionsTools.isNotEmpty(page.getContent())) {
-            Map<Long, String> courseIdMap = Maps.newHashMap();
-            for (MemberChildScheduleBo bo : page.getContent()) {
-                String mainPicUrl;
-                if (!courseIdMap.containsKey(bo.getCourseId())) {
-                    Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
-                    mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;
-                } else {
-                    mainPicUrl = courseIdMap.get(bo.getCourseId());
-                }
-                bo.setMainPicUrl(mainPicUrl);
-            }
+    public ResultDo<Page<MemberChildScheduleBo>> findChildSchedulePage(Pageable pageable, Long memberId) {
+        ResultDo<Page<MemberChildScheduleBo>> resultDo = ResultDo.build();
+        Page<MemberChildScheduleBo> page = orderRepository.findChildSchedulePage(pageable, memberId);
+        if (CollectionsTools.isEmpty(page.getContent())) {
+            return resultDo.setResult(page);
         }
-        return page;
+        Map<Long, String> courseIdMap = Maps.newHashMap();
+        Map<Long, MemberChildBo> childMap = Maps.newHashMap();
+        for (MemberChildScheduleBo bo : page.getContent()) {
+            // 课程主图
+            if (!courseIdMap.containsKey(bo.getCourseId())) {
+                Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
+                String mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;
+                courseIdMap.put(bo.getCourseId(), mainPicUrl);
+            }
+            bo.setMainPicUrl(courseIdMap.get(bo.getCourseId()));
+            // 孩子头像
+            if (!childMap.containsKey(bo.getChildId())) {
+                EpMemberChildPo childPo = memberChildRepository.getById(bo.getChildId());
+                if (childPo == null || childPo.getDelFlag()) {
+                    log.error("获取孩子行程失败, 孩子不存在，childId={}", bo.getChildId());
+                    return resultDo.setError(MessageCode.ERROR_CHILD_NOT_EXISTS);
+                }
+                Optional<EpFilePo> existAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, bo.getChildId());
+                String childAvatar = existAvatar.isPresent() ? existAvatar.get().getFileUrl() : null;
+                MemberChildBo childBo = new MemberChildBo();
+                childBo.setChildNickName(childPo.getChildNickName());
+                childBo.setAvatar(childAvatar);
+                childMap.put(bo.getChildId(), childBo);
+            }
+            MemberChildBo child = childMap.get(bo.getChildId());
+            bo.setAvatar(child.getAvatar());
+            bo.setNickName(child.getChildNickName());
+        }
+        return resultDo.setResult(page);
     }
 
     /**
