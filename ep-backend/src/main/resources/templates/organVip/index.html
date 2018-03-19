@@ -17,33 +17,30 @@
 
         <div class="panel">
             <div class="panel-heading">
-                <!--<a class="btn btn-success" type="button" th:href="@{/auth/organAccount/createInit}"><i-->
-                        <!--class="glyphicon glyphicon-plus"></i> 新增</a>-->
+                <a class="btn btn-success" type="button" th:href="@{/auth/organVip/createInit}"><i
+                        class="glyphicon glyphicon-plus"></i> 新增</a>
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
-                <form class="form-inline" id="query-form" role="form" >
+                <form class="form-inline" id="query-form" role="form">
                     <div class="form-group">
-                        <input type="text" class="form-control " name="className" th:value="${map.get('className')}"
-                               placeholder="班次名称">
+                        <input type="text" class="form-control " name="mobile" th:value="${searchMap.get('mobile')}"
+                               placeholder="手机号">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="childNickName"
+                               th:value="${searchMap.get('childNickName')}"
+                               placeholder="孩子昵称">
                     </div>
 
-                    <div class="form-group ">
-                        <select class="form-control" name="status" id="type" style="width:182px;" >
-                            <option value>状态</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassStatus).values()}"
-                                    th:value="${state}"
-                                    th:selected="${#stringTools.equals(state,map.get('status'))}"
-                                    th:text="#{EpOrganClassStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
-                            <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"
+                            <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
+                                   th:value="${searchMap.get('crStartTime')}"
                                    th:placeholder="创建时间从"
                             >
                             <span class="input-group-addon">到</span>
-                            <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime" th:value="${map.get('crEndTime')}"
+                            <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
+                                   th:value="${searchMap.get('crEndTime')}"
                                    th:placeholder="到"
                             >
                         </div>
@@ -67,15 +64,12 @@
                         <thead>
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
-                            <th>班次名称</th>
-                            <th>课程名称</th>
-                            <th>价格（元）</th>
-                            <th>折扣优惠(%)</th>
-                            <th>是否限制报名人数</th>
-                            <th>要求报名人数</th>
-                            <th>下单人数</th>
-                            <th>已报名成功人数</th>
-                            <th>总计课时</th>
+                            <th>手机号</th>
+                            <th>孩子昵称</th>
+                            <th>会员开始时间</th>
+                            <th>会员结束时间</th>
+                            <th>会员等级</th>
+                            <th>入会费用</th>
                             <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -84,29 +78,22 @@
                         <tbody>
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.id}"></td>
-                            <td th:text="${bo.className}"></td>
-                            <td th:text="${bo.courseName}"></td>
-                            <td th:text="${bo.classPrize}"></td>
-                            <td th:text="${bo.discountAmount}"></td>
-                            <td th:text="${bo.enterLimitFlag==true?'是':'否'}"></td>
-                            <td th:text="${bo.enterRequireNum}"></td>
-                            <td th:text="${bo.orderedNum}"></td>
-                            <td th:text="${bo.enteredNum}"></td>
-                            <td th:text="${bo.courseNum}"></td>
-                            <td th:text="#{EpOrganClassStatus.+${bo.status}}"></td>
+                            <td th:text="${bo.mobile}"></td>
+                            <td th:text="${bo.childNickName}"></td>
+                            <td th:text="${bo.startTime}"></td>
+                            <td th:text="${bo.endTime}"></td>
+                            <td th:text="${bo.level}"></td>
+                            <td th:text="${bo.prize}"></td>
+                            <td th:text="${bo.status}"></td>
 
                             <td th:text="${bo.createAt}"></td>
                             <td>
-
-                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'online')}"
-                                   href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
-                                <a class="btn btn-xs btn-info" th:if="!${#stringTools.equals(bo.status,'save')}"
-                                   href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+')'">订单详情</a>
-                                <a class="btn btn-xs btn-primary"
-                                   th:if="${#stringTools.equals(bo.status,'opening')||#stringTools.equals(bo.status,'end')}"
-                                   href="javascript:void(0)" th:onclick="'getClassChild('+${bo.id}+')'">班级成员</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
-                                   th:if="${#strings.equals(bo.status,'opening')}" th:onclick="'endBox('+${bo.id}+')'">结束</a>
+                                <!--<a class="btn btn-xs btn-info" th:if="!${#stringTools.equals(bo.status,'save')}"-->
+                                <!--href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+')'">订单详情</a>-->
+                                <!--<a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'opening')||#stringTools.equals(bo.status,'end')}"-->
+                                <!--href="javascript:void(0)" th:onclick="'getClassChild('+${bo.id}+')'">班级成员</a>-->
+                                <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)"-->
+                                <!--th:if="${#strings.equals(bo.status,'opening')}" th:onclick="'endBox('+${bo.id}+')'">结束</a>-->
                             </td>
                         </tr>
                         </tbody>
@@ -223,10 +210,10 @@
     }
     function openingDo(id) {
         $.ajax({
-            type:"GET",
-            url:"/auth/organClass/opening/"+id,
-            success:function (data) {
-                if(data.success){
+            type: "GET",
+            url: "/auth/organClass/opening/" + id,
+            success: function (data) {
+                if (data.success) {
                     toastr_success(null, document.location.href);
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
@@ -252,11 +239,11 @@
     }
     function endDo(id) {
         $.ajax({
-            type:"GET",
+            type: "GET",
             url: "/auth/organClass/end/" + id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null,'/auth/organClass/index');
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, '/auth/organClass/index');
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }

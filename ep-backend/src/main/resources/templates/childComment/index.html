@@ -30,28 +30,16 @@
                                placeholder="班次">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control " name="classCatalogTitle"
-                               th:value="${map.get('classCatalogTitle')}"
-                               placeholder="班次目录">
-                    </div>
-
-
-                    <div class="form-group mr10">
-                        <div class="input-group input-large">
-                            <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
-                                   th:placeholder="创建时间从" th:value="${map.get('crStartTime')}"
-                            >
-                            <span class="input-group-addon">到</span>
-                            <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
-                                   th:placeholder="到" th:value="${map.get('crEndTime')}"
-                            >
-                        </div>
+                        <select type="text" class="form-control " name="classCatalogId"
+                                th:value="${map.get('classCatalogId')}">
+                            <option>班次目录</option>
+                            <option value=71>动手课</option>
+                        </select>
                     </div>
 
 
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="query-button" type="button">查询</button>
-                        <button class="btn btn-warning" id="rest-button" type="button">重置</button>
                     </div>
 
                 </form>

@@ -2,16 +2,23 @@ package com.ep.domain.repository;
 
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.OrganVipBo;
 import com.ep.domain.pojo.po.EpOrganVipPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganVipRecord;
-import org.jooq.DSLContext;
+import com.google.common.collect.Lists;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_VIP;
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description: 机构会员信息表
@@ -43,6 +50,39 @@ public class OrganVipRepository extends AbstractCRUDRepository<EpOrganVipRecord,
                                             .and(EP_ORGAN_VIP.DEL_FLAG.eq(false))
                                             .fetchInto(EpOrganVipPo.class);
         return CollectionsTools.isNotEmpty(data);
+    }
+
+    /**
+     * 分页查询机构会员列表
+     *
+     * @param pageable
+     * @return
+     */
+    public Page<OrganVipBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORGAN_VIP)
+                .leftJoin(EP_MEMBER).on(EP_ORGAN_VIP.MEMBER_ID.eq(EP_MEMBER.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_VIP.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_VIP.fields());
+        fieldList.add(EP_MEMBER.MOBILE);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORGAN_VIP)
+                .leftJoin(EP_MEMBER).on(EP_ORGAN_VIP.MEMBER_ID.eq(EP_MEMBER.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_VIP.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(condition);
+
+        List<OrganVipBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganVipBo.class);
+        PageImpl<OrganVipBo> pPage = new PageImpl<OrganVipBo>(list, pageable, totalCount);
+        return pPage;
     }
 
 }

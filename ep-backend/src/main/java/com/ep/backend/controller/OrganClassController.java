@@ -5,6 +5,7 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -34,6 +35,8 @@ import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
 public class OrganClassController extends BackendController {
     @Autowired
     private OrganClassService organClassService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("index")
     public String index(Model model,
@@ -96,6 +99,33 @@ public class OrganClassController extends BackendController {
     public ResultDo end(@PathVariable(value = "id") Long id) {
         EpSystemUserPo userPo = super.getCurrentUser().get();
         return organClassService.endById(userPo, id);
+    }
+
+    /**
+     * 查看该班次订单
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("findOrders/{id}")
+    @ResponseBody
+    public ResultDo findOrders(@PathVariable("id") Long id) {
+
+        return ResultDo.build().setResult(orderService.findOrdersByClassId(id));
+    }
+
+
+    /**
+     * 查看该班次成员
+     *
+     * @param classId
+     * @return
+     */
+    @GetMapping("findClassChild/{classId}")
+    @ResponseBody
+    public ResultDo findClassChild(@PathVariable("classId") Long classId) {
+
+        return ResultDo.build().setResult(organClassService.findClassChildNickName(classId));
     }
 
 }

@@ -150,7 +150,6 @@
         if(menuIds!=undefined){
             for (var i = 0; i < menuIds.length; i++) {
                 var node = treeObj.getNodeByParam("id", menuIds[i].id, null);
-                console.log(node)
                 treeObj.checkNode(node, true, false,false);
             }
         }
