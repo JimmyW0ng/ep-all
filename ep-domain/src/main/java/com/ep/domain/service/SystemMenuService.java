@@ -64,13 +64,15 @@ public class SystemMenuService {
     public List<SystemMenuBo> getLeftMenuByUserType(EpSystemUserType type, List<Long> roleIds) {
         List<SystemMenuBo> list;
         if (type.equals(EpSystemUserType.platform)) {
+            //后台系统菜单
             list = systemMenuRepository.getAllLeftMenu(BizConstant.PLATFORM_MENU_PARENT_ID, roleIds);
         } else {
+            //商户菜单
             list = systemMenuRepository.getAllLeftMenu(BizConstant.MERCHANT_MENU_PARENT_ID, roleIds);
         }
 
         list.forEach(p -> {
-            p.setChildList(systemMenuRepository.getAllMenu(p.getId()));
+            p.setChildList(systemMenuRepository.findByParentId(p.getId()));
         });
         return list;
     }

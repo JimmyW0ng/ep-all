@@ -95,10 +95,10 @@
                             <td name="button">
                                 <!--<a class="btn btn-xs btn-info"-->
                                 <!--th:href="@{/auth/childHonor/view/}+${bo.id}">查看</a>-->
-                                <!--<a class="btn btn-xs btn-primary"-->
-                                <!--th:href="@{/auth/childHonor/updateInit/}+${bo.id}">修改</a>-->
-                                <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)"-->
-                                <!--th:onclick="'deleteBox('+${bo.id}+')'">删除</a>-->
+                                <a class="btn btn-xs btn-primary" href="javascript:void(0)"
+                                   th:onclick="'chosenBox('+${bo.id}+')'">设为精选</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:onclick="'unchosenBox('+${bo.id}+')'">取消精选</a>
                             </td>
 
                         </tr>
@@ -131,7 +131,46 @@
 
 <script th:replace="~{fragments/scripts}"></script>
 <script th:inline="javascript">
+    function chosenBox(id) {
+        layer_confirm('确定将该条评价设为精选？', 3, freezeDo, id)
+    }
+    function chosenDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/classComment/chosen/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
 
+    }
+    function unchosenBox(id) {
+        layer_confirm('确定将该条评价取消精选？', 3, freezeDo, id)
+    }
+    function unchosenDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/classComment/unchosen/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+
+    }
 </script>
 </body>
 </html>

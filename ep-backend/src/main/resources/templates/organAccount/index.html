@@ -124,13 +124,7 @@
 
 <script>
     function freezeBox(id) {
-        parent.layer.alert('确认冻结用户', {
-                icon: 1,
-            },
-            function (index) {
-                freezeDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm('确定冻结该教师？', 3, freezeDo, id)
     }
     function freezeDo(id) {
         $.ajax({
@@ -138,9 +132,9 @@
             url: "/auth/organAccount/freeze/" + id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/organAccount/index');
+                    toastr_success(null, document.location.href);
                 } else {
-                    toastr.error(data.errorDescription);
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -150,13 +144,7 @@
 
     }
     function unfreezeBox(id) {
-        parent.layer.alert('确认解冻用户', {
-                icon: 1,
-            },
-            function (index) {
-                unfreezeDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm('确定解冻该教师？', 3, unfreezeDo, id)
     }
     function unfreezeDo(id) {
         $.ajax({
@@ -164,9 +152,9 @@
             url: "/auth/organAccount/unfreeze/" + id,
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, '/auth/organAccount/index');
+                    toastr_success(null, document.location.href);
                 } else {
-                    toastr.error(data.errorDescription);
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -176,13 +164,7 @@
 
     }
     function cancelBox(id) {
-        parent.layer.alert('确认注销用户', {
-                icon: 1,
-            },
-            function (index) {
-                cancelDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm('确定注销该教师？', 3, cancelDo, id)
     }
     function cancelDo(id) {
         $.ajax({
@@ -190,7 +172,7 @@
             url: "/auth/organAccount/cancel/" + id,
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, '/auth/organAccount/index');
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }

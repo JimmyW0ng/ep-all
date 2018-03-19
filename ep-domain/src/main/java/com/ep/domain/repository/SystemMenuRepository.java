@@ -39,28 +39,49 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .fetchOneInto(EpSystemMenuPo.class);
     }
 
+    /**
+     * 根据用户类型获取菜单集合
+     *
+     * @param type
+     * @return
+     */
     public List<EpSystemMenuPo> getAllByUserType(EpSystemUserType type) {
         if(type.equals(EpSystemUserType.platform)){
             return dslContext.selectFrom(EP_SYSTEM_MENU)
                     .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                     .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.admin))
+                    .orderBy(EP_SYSTEM_MENU.SORT.asc())
                     .fetchInto(EpSystemMenuPo.class);
         }else{
             return dslContext.selectFrom(EP_SYSTEM_MENU)
                     .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                     .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.backend))
+                    .orderBy(EP_SYSTEM_MENU.SORT.asc())
                     .fetchInto(EpSystemMenuPo.class);
         }
     }
 
-    public List<SystemMenuBo> getAllMenu(Long parentId) {
+    /**
+     * 根据parentId获取集合
+     *
+     * @param parentId
+     * @return
+     */
+    public List<SystemMenuBo> findByParentId(Long parentId) {
         return dslContext.selectFrom(EP_SYSTEM_MENU)
                 .where(EP_SYSTEM_MENU.PARENT_ID.equal(parentId))
                 .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                 .and(EP_SYSTEM_MENU.STATUS.equal(EpSystemMenuStatus.enable))
+                .orderBy(EP_SYSTEM_MENU.SORT.asc())
                 .fetchInto(SystemMenuBo.class);
     }
 
+    /**
+     * 左部菜单的第一级菜单
+     * @param parentId
+     * @param roleIds
+     * @return
+     */
     public List<SystemMenuBo> getAllLeftMenu(Long parentId, List<Long> roleIds) {
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_SYSTEM_MENU.ID);
@@ -93,6 +114,11 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .execute();
     }
 
+    /**
+     * 修改菜单po中的属性
+     * @param po
+     * @return
+     */
     public int updatePo(EpSystemMenuPo po) {
         return dslContext.update(EP_SYSTEM_MENU)
 //                .set(EP_SYSTEM_MENU.PARENT_ID, po.getParentId())
@@ -136,11 +162,13 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
             return dslContext.selectFrom(EP_SYSTEM_MENU)
                     .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                     .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.admin))
+                    .orderBy(EP_SYSTEM_MENU.SORT.asc())
                     .fetchInto(EpSystemMenuPo.class);
         } else if (roleTarget.equals(EpSystemRoleTarget.backend)) {
             return dslContext.selectFrom(EP_SYSTEM_MENU)
                     .where(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                     .and(EP_SYSTEM_MENU.TARGET.eq(EpSystemMenuTarget.backend))
+                    .orderBy(EP_SYSTEM_MENU.SORT.asc())
                     .fetchInto(EpSystemMenuPo.class);
         } else {
             return new ArrayList<EpSystemMenuPo>();

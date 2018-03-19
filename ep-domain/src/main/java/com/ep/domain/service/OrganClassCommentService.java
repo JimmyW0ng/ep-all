@@ -11,6 +11,7 @@ import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import java.util.Optional;
  * @Author: J.W
  * @Date: 下午5:47 2018/2/8
  */
+@Slf4j
 @Service
 public class OrganClassCommentService {
 
@@ -130,5 +132,37 @@ public class OrganClassCommentService {
      */
     public Page<OrganClassCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return organClassCommentRepository.findbyPageAndCondition(pageable, condition);
+    }
+
+    /**
+     * 班次评论设为精选
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo chosen(Long id) {
+        if (organClassCommentRepository.chosenById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[班次评论]班次评论设为精选成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.info("[班次评论]班次评论设为精选失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 班次评论设取消精选
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo unchosen(Long id) {
+        if (organClassCommentRepository.unchosenById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[班次评论]班次评论取消精选成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.info("[班次评论]班次评论取消精选失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 }

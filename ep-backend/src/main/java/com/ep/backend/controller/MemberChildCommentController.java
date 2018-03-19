@@ -87,7 +87,8 @@ public class MemberChildCommentController extends BackendController {
             conditions.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT.lessOrEqual(crEndTime));
         }
         map.put("crEndTime", crEndTime);
-
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId));
         Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);
