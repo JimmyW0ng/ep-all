@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.service.OrganClassCommentService;
 import com.google.common.collect.Lists;
@@ -13,9 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -65,9 +64,35 @@ public class OrganClassCommentController extends BackendController {
         }
         searchMap.put("crEndTime", crEndTime);
         conditions.add(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false));
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(ognId));
         Page<OrganClassCommentBo> page = organClassCommentService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
         return "classComment/index";
+    }
+
+    /**
+     * 评论设为精选
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("chosen/{id}")
+    @ResponseBody
+    public ResultDo chosen(@PathVariable("id") Long id) {
+        return organClassCommentService.chosen(id);
+    }
+
+    /**
+     * 评论取消精选
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("unchosen/{id}")
+    @ResponseBody
+    public ResultDo unchosen(@PathVariable("id") Long id) {
+        return organClassCommentService.unchosen(id);
     }
 }

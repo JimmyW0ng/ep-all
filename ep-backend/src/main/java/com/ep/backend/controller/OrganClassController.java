@@ -64,7 +64,8 @@ public class OrganClassController extends BackendController {
             conditions.add(EP_ORGAN_CLASS.CREATE_AT.lessOrEqual(crEndTime));
         }
         map.put("crEndTime", crEndTime);
-
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP_ORGAN_CLASS.OGN_ID.eq(ognId));
         Page<OrganClassBo> page = organClassService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);

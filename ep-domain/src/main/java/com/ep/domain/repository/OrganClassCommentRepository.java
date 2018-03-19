@@ -175,5 +175,35 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
         PageImpl<OrganClassCommentBo> pPage = new PageImpl<OrganClassCommentBo>(list, pageable, totalCount);
         return pPage;
     }
+
+    /**
+     * 班次评论设为精选
+     *
+     * @param id
+     * @return
+     */
+    public int chosenById(Long id) {
+        return dslContext.update(EP_ORGAN_CLASS_COMMENT)
+                .set(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG, true)
+                .where(EP_ORGAN_CLASS_COMMENT.ID.eq(id))
+                .and(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG.eq(false))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 班次评论取消精选
+     *
+     * @param id
+     * @return
+     */
+    public int unchosenById(Long id) {
+        return dslContext.update(EP_ORGAN_CLASS_COMMENT)
+                .set(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG, false)
+                .where(EP_ORGAN_CLASS_COMMENT.ID.eq(id))
+                .and(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG.eq(true))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

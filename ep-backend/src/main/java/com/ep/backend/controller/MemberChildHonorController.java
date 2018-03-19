@@ -90,7 +90,8 @@ public class MemberChildHonorController extends BackendController {
         }
         map.put("crEndTime", crEndTime);
         conditions.add(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false));
-
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP_MEMBER_CHILD_HONOR.OGN_ID.eq(ognId));
         Page<MemberChildHonorBo> page = memberChildHonorService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);
