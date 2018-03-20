@@ -187,7 +187,7 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .set(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG, true)
                 .where(EP_ORGAN_CLASS_COMMENT.ID.eq(id))
                 .and(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG.eq(false))
-                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .execute();
     }
 
@@ -202,7 +202,7 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .set(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG, false)
                 .where(EP_ORGAN_CLASS_COMMENT.ID.eq(id))
                 .and(EP_ORGAN_CLASS_COMMENT.CHOSEN_FLAG.eq(true))
-                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .execute();
     }
 }

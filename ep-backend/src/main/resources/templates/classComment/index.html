@@ -132,7 +132,7 @@
 <script th:replace="~{fragments/scripts}"></script>
 <script th:inline="javascript">
     function chosenBox(id) {
-        layer_confirm('确定将该条评价设为精选？', 3, freezeDo, id)
+        layer_confirm('确定将该条评价设为精选？', 3, chosenDo, id)
     }
     function chosenDo(id) {
         $.ajax({
@@ -152,7 +152,7 @@
 
     }
     function unchosenBox(id) {
-        layer_confirm('确定将该条评价取消精选？', 3, freezeDo, id)
+        layer_confirm('确定将该条评价取消精选？', 3, unchosenDo, id)
     }
     function unchosenDo(id) {
         $.ajax({
