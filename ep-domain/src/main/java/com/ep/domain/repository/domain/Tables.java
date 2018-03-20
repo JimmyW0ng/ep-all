@@ -123,6 +123,11 @@ public class Tables {
     public static final EpOrganClassComment EP_ORGAN_CLASS_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassComment.EP_ORGAN_CLASS_COMMENT;
 
     /**
+     * 机构配置表
+     */
+    public static final EpOrganConfig EP_ORGAN_CONFIG = com.ep.domain.repository.domain.tables.EpOrganConfig.EP_ORGAN_CONFIG;
+
+    /**
      * 机构课程表
      */
     public static final EpOrganCourse EP_ORGAN_COURSE = com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;

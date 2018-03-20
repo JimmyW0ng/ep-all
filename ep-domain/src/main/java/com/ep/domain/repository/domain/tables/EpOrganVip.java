@@ -31,86 +31,63 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganVip extends TableImpl<EpOrganVipRecord> {
 
-    private static final long serialVersionUID = 1127956838;
-
     /**
      * The reference instance of <code>ep.ep_organ_vip</code>
      */
     public static final EpOrganVip EP_ORGAN_VIP = new EpOrganVip();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganVipRecord> getRecordType() {
-        return EpOrganVipRecord.class;
-    }
-
+    private static final long serialVersionUID = 1127956838;
     /**
      * The column <code>ep.ep_organ_vip.id</code>.
      */
     public final TableField<EpOrganVipRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
     /**
      * The column <code>ep.ep_organ_vip.ogn_id</code>. 机构id
      */
     public final TableField<EpOrganVipRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
-
     /**
      * The column <code>ep.ep_organ_vip.member_id</code>. 会员id
      */
     public final TableField<EpOrganVipRecord, Long> MEMBER_ID = createField("member_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "会员id");
-
     /**
      * The column <code>ep.ep_organ_vip.child_id</code>. 孩子id
      */
     public final TableField<EpOrganVipRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
-
     /**
      * The column <code>ep.ep_organ_vip.start_time</code>. 会员开始时间
      */
     public final TableField<EpOrganVipRecord, Timestamp> START_TIME = createField("start_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "会员开始时间");
-
     /**
      * The column <code>ep.ep_organ_vip.end_time</code>. 会员结束时间
      */
     public final TableField<EpOrganVipRecord, Timestamp> END_TIME = createField("end_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "会员结束时间");
-
     /**
      * The column <code>ep.ep_organ_vip.level</code>. 会员等级
      */
     public final TableField<EpOrganVipRecord, Byte> LEVEL = createField("level", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.TINYINT)), this, "会员等级");
-
     /**
      * The column <code>ep.ep_organ_vip.prize</code>. 入会费用
      */
     public final TableField<EpOrganVipRecord, BigDecimal> PRIZE = createField("prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false).defaultValue(org.jooq.impl.DSL.inline("0.00", org.jooq.impl.SQLDataType.DECIMAL)), this, "入会费用");
-
     /**
      * The column <code>ep.ep_organ_vip.status</code>. 状态：已保存；成功；拒绝；取消；
      */
     public final TableField<EpOrganVipRecord, EpOrganVipStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganVipStatus.class), this, "状态：已保存；成功；拒绝；取消；");
-
     /**
      * The column <code>ep.ep_organ_vip.remark</code>. 备注信息
      */
     public final TableField<EpOrganVipRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
-
     /**
      * The column <code>ep.ep_organ_vip.create_at</code>. 创建时间
      */
     public final TableField<EpOrganVipRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_organ_vip.update_at</code>. 更新时间
      */
     public final TableField<EpOrganVipRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_organ_vip.del_flag</code>. 删除标志
      */
     public final TableField<EpOrganVipRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
-
     /**
      * The column <code>ep.ep_organ_vip.version</code>.
      */
@@ -136,6 +113,14 @@ public class EpOrganVip extends TableImpl<EpOrganVipRecord> {
 
     private EpOrganVip(String alias, Table<EpOrganVipRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构会员信息表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganVipRecord> getRecordType() {
+        return EpOrganVipRecord.class;
     }
 
     /**

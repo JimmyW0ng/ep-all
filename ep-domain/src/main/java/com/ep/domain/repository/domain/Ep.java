@@ -28,13 +28,11 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 140300745;
-
     /**
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-
+    private static final long serialVersionUID = 748974809;
     /**
      * 课程类目表
      */
@@ -136,6 +134,11 @@ public class Ep extends SchemaImpl {
     public final EpOrganClassComment EP_ORGAN_CLASS_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassComment.EP_ORGAN_CLASS_COMMENT;
 
     /**
+     * 机构配置表
+     */
+    public final EpOrganConfig EP_ORGAN_CONFIG = com.ep.domain.repository.domain.tables.EpOrganConfig.EP_ORGAN_CONFIG;
+
+    /**
      * 机构课程表
      */
     public final EpOrganCourse EP_ORGAN_COURSE = com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
@@ -235,6 +238,7 @@ public class Ep extends SchemaImpl {
             EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG,
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
             EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
+                EpOrganConfig.EP_ORGAN_CONFIG,
             EpOrganCourse.EP_ORGAN_COURSE,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,
             EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM,

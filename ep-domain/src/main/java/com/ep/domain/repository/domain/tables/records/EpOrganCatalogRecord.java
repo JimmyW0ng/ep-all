@@ -31,11 +31,26 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     private static final long serialVersionUID = -1570567201;
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.id</code>. 主键
+     * Create a detached EpOrganCatalogRecord
      */
-    public EpOrganCatalogRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrganCatalogRecord() {
+        super(EpOrganCatalog.EP_ORGAN_CATALOG);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganCatalogRecord
+     */
+    public EpOrganCatalogRecord(Long id, Long ognId, Long courseCatalogId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganCatalog.EP_ORGAN_CATALOG);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, courseCatalogId);
+        set(3, createAt);
+        set(4, updateAt);
+        set(5, remark);
+        set(6, delFlag);
+        set(7, version);
     }
 
     /**
@@ -46,10 +61,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.ogn_id</code>. 机构id
+     * Setter for <code>ep.ep_organ_catalog.id</code>. 主键
      */
-    public EpOrganCatalogRecord setOgnId(Long value) {
-        set(1, value);
+    public EpOrganCatalogRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -61,10 +76,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.course_catalog_id</code>. 课程类目id
+     * Setter for <code>ep.ep_organ_catalog.ogn_id</code>. 机构id
      */
-    public EpOrganCatalogRecord setCourseCatalogId(Long value) {
-        set(2, value);
+    public EpOrganCatalogRecord setOgnId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -76,10 +91,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_catalog.course_catalog_id</code>. 课程类目id
      */
-    public EpOrganCatalogRecord setCreateAt(Timestamp value) {
-        set(3, value);
+    public EpOrganCatalogRecord setCourseCatalogId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -91,10 +106,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_catalog.create_at</code>. 创建时间
      */
-    public EpOrganCatalogRecord setUpdateAt(Timestamp value) {
-        set(4, value);
+    public EpOrganCatalogRecord setCreateAt(Timestamp value) {
+        set(3, value);
         return this;
     }
 
@@ -106,10 +121,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_catalog.update_at</code>. 更新时间
      */
-    public EpOrganCatalogRecord setRemark(String value) {
-        set(5, value);
+    public EpOrganCatalogRecord setUpdateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -121,10 +136,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_catalog.remark</code>. 备注
      */
-    public EpOrganCatalogRecord setDelFlag(Boolean value) {
-        set(6, value);
+    public EpOrganCatalogRecord setRemark(String value) {
+        set(5, value);
         return this;
     }
 
@@ -136,12 +151,16 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     /**
-     * Setter for <code>ep.ep_organ_catalog.version</code>.
+     * Setter for <code>ep.ep_organ_catalog.del_flag</code>. 删除标记
      */
-    public EpOrganCatalogRecord setVersion(Long value) {
-        set(7, value);
+    public EpOrganCatalogRecord setDelFlag(Boolean value) {
+        set(6, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_catalog.version</code>.
@@ -151,8 +170,16 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record8 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_catalog.version</code>.
+     */
+    public EpOrganCatalogRecord setVersion(Long value) {
+        set(7, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -161,10 +188,6 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record8 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -373,6 +396,10 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -396,32 +423,5 @@ public class EpOrganCatalogRecord extends UpdatableRecordImpl<EpOrganCatalogReco
         value7(value7);
         value8(value8);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganCatalogRecord
-     */
-    public EpOrganCatalogRecord() {
-        super(EpOrganCatalog.EP_ORGAN_CATALOG);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganCatalogRecord
-     */
-    public EpOrganCatalogRecord(Long id, Long ognId, Long courseCatalogId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganCatalog.EP_ORGAN_CATALOG);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, courseCatalogId);
-        set(3, createAt);
-        set(4, updateAt);
-        set(5, remark);
-        set(6, delFlag);
-        set(7, version);
     }
 }
