@@ -73,9 +73,9 @@ public class OrganClassCatalogService {
             log.error("班次不存在, classId={}", classCatalogPo.getClassId());
             return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
-        if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+        if (!classPo.getStatus().equals(EpOrganClassStatus.opening) && !classPo.getStatus().equals(EpOrganClassStatus.end)) {
             log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
-            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_OPENING);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_START);
         }
         // 校验班次负责人
         Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());

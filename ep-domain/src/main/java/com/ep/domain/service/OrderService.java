@@ -62,9 +62,10 @@ public class OrderService {
     public ResultDo<OrderInitDto> initInfo(Long memberId, Long courseId) {
         ResultDo<OrderInitDto> resultDo = ResultDo.build();
         EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
+        log.info("加载会员下单需要的数据, coursePo={}", coursePo);
         if (coursePo == null || coursePo.getDelFlag()) {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
-        } else if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.online)) {
+        } else if (coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.save)) {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         List<MemberCourseOrderInitBo> data = orderRepository.findChildrenAndOrders(memberId, courseId);
