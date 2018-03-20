@@ -22,18 +22,27 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form">
                     <div class="form-group">
-                        <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
-                               placeholder="课程">
+                        <select type="text" class="form-control " name="courseId" onchange="changeCourse(this)">
+                            <option>课程</option>
+                            <option th:each="key : ${courseMap.keySet()}"
+                                    th:value="${key}"
+                                    th:text="${courseMap.get(key)}">
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control " name="className" th:value="${map.get('className')}"
-                               placeholder="班次">
+                        <select type="text" class="form-control " name="classId">
+                            <option>班次</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <select type="text" class="form-control " name="classCatalogId"
                                 th:value="${map.get('classCatalogId')}">
                             <option>班次目录</option>
                             <option value=71>动手课</option>
+                        </select>
+                        <select type="text" class="form-control " name="classCatalogId">
+                            <option>班次目录</option>
                         </select>
                     </div>
 
@@ -91,8 +100,8 @@
                                    href="javascript:void(0)"
                                    th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.classCatalogId}+')'">修改</a>
                                 <!--<a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"-->
-                                   <!--href="javascript:void(0)"-->
-                                   <!--th:onclick="'updateChildTagInit(this)'">标签</a>-->
+                                <!--href="javascript:void(0)"-->
+                                <!--th:onclick="'updateChildTagInit(this)'">标签</a>-->
 
                             </td>
 
@@ -128,8 +137,8 @@
         <div class="modal-content animated bounceInRight">
 
             <input type="hidden" id="sourceId">
-            <input id="childId" type="hidden" >
-            <input id="classCatalogId" type="hidden" >
+            <input id="childId" type="hidden">
+            <input id="classCatalogId" type="hidden">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
@@ -191,6 +200,33 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 
 <script>
+    function changeCourse(ele) {
+        var courseId = $(ele).val()
+        if (!courseId) {
+            return
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/auth/childComment/changeCourse/' + courseId,
+            success: function (data) {
+                if (data.success) {
+                    debugger
+                    var htmls = '<option>课程</option>'
+                    for (var i = 0; i < data.result.length; i++) {
+
+                    }
+//                    htmls=htmls+
+                    $("#classId").html()
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+
+    }
+
+
     /**
      * 修改标签初始化
      * @param ele
@@ -206,16 +242,16 @@
                 if (data.success) {
                     console.log(data.result)
                     var tag = data.result.organCourseTagBos
-                    var memberChildTagPos=data.result.memberChildTagPos
+                    var memberChildTagPos = data.result.memberChildTagPos
 
                     $("#uploadChildTagModal").modal("show")
                     $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
                     $("#uploadChildTagBox").find("input[type='checkbox']").each(function () {
-                        var id=$(this).val()
-                        for(var item in memberChildTagPos){
-                            if(memberChildTagPos[item].tagId==id){
-                                $(this).attr("checked",true)
-                                $(this).after('<input name="id" type="hidden" value="'+memberChildTagPos[item].id+'">')
+                        var id = $(this).val()
+                        for (var item in memberChildTagPos) {
+                            if (memberChildTagPos[item].tagId == id) {
+                                $(this).attr("checked", true)
+                                $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
                             }
                         }
                     })
@@ -245,16 +281,16 @@
                 if (data.success) {
 //                    console.log(data.result)
                     var tag = data.result.organCourseTagBos
-                    var memberChildTagPos=data.result.memberChildTagPos
+                    var memberChildTagPos = data.result.memberChildTagPos
 
 //                    $("#uploadChildTagModal").modal("show")
                     $("#viewChildTagBox").html($("#ognTagTmpl").tmpl(tag));
                     $("#viewChildTagBox").find("input[type='checkbox']").each(function () {
-                        var id=$(this).val()
-                        for(var item in memberChildTagPos){
-                            if(memberChildTagPos[item].tagId==id){
-                                $(this).attr("checked",true)
-                                $(this).after('<input name="id" type="hidden" value="'+memberChildTagPos[item].id+'">')
+                        var id = $(this).val()
+                        for (var item in memberChildTagPos) {
+                            if (memberChildTagPos[item].tagId == id) {
+                                $(this).attr("checked", true)
+                                $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
                             }
                         }
                     })
@@ -266,7 +302,7 @@
     /**
      * 修改评价初始化
      */
-    function updateCommentInit(ele, id,childId,classCatalogId) {
+    function updateCommentInit(ele, id, childId, classCatalogId) {
         $("#uploadModal").modal("show")
         var content = $(ele).parent().siblings("td").find("p[name='content']").eq(0).text()
         $("#updateContent").text(content)
@@ -283,16 +319,16 @@
                 if (data.success) {
                     console.log(data.result)
                     var tag = data.result.organCourseTagBos
-                    var memberChildTagPos=data.result.memberChildTagPos
+                    var memberChildTagPos = data.result.memberChildTagPos
 
 //                    $("#uploadChildTagModal").modal("show")
                     $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
                     $("#uploadChildTagBox").find("input[type='checkbox']").each(function () {
-                        var id=$(this).val()
-                        for(var item in memberChildTagPos){
-                            if(memberChildTagPos[item].tagId==id){
-                                $(this).attr("checked",true)
-                                $(this).after('<input name="id" type="hidden" value="'+memberChildTagPos[item].id+'">')
+                        var id = $(this).val()
+                        for (var item in memberChildTagPos) {
+                            if (memberChildTagPos[item].tagId == id) {
+                                $(this).attr("checked", true)
+                                $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
                             }
                         }
                     })
@@ -305,9 +341,9 @@
      * 修改评价内容提交
      */
     function updateCommentDo() {
-        var tagIds=[]
+        var tagIds = []
         $("#uploadChildTagBox").find("input[name='tagId']").each(function () {
-            if($(this).is(':checked')){
+            if ($(this).is(':checked')) {
                 tagIds.push($(this).val())
             }
         })
@@ -315,8 +351,10 @@
         $.ajax({
             type: "POST",
             url: "/auth/childComment/updateComment",
-            data: {id: $("#sourceId").val(), content: $("#updateContent").val(),childId:$("#childId").val(),
-                classCatalogId:$("#classCatalogId").val(),tagId:tagIds},
+            data: {
+                id: $("#sourceId").val(), content: $("#updateContent").val(), childId: $("#childId").val(),
+                classCatalogId: $("#classCatalogId").val(), tagId: tagIds
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, "/auth/childComment/index")

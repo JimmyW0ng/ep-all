@@ -9,9 +9,8 @@ import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.MemberChildCommentRepository;
-import com.ep.domain.repository.MemberChildTagRepository;
+import com.ep.domain.pojo.po.EpOrganAccountPo;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * @Description: 孩子评价服务接口
@@ -43,6 +43,10 @@ public class MemberChildCommentService {
     private FileRepository fileRepository;
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
+    @Autowired
+    private OrganClassCatalogRepository organClassCatalogRepository;
 
     public Optional<EpMemberChildCommentPo> findById(Long id) {
         return memberChildCommentRepository.findById(id);
@@ -116,7 +120,7 @@ public class MemberChildCommentService {
      * @param conditions
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<Condition> conditions) {
         return memberChildCommentRepository.findbyPageAndCondition(pageable, conditions);
     }
 
@@ -168,6 +172,40 @@ public class MemberChildCommentService {
         memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classCatalogId);
         memberChildTagRepository.insert(insertPos);
         log.info("[评论]修改评论成功，评论id={}。");
+        return ResultDo.build();
+    }
+
+    /**
+     * 后台创建随堂评论
+     *
+     * @param childId
+     * @param ognId
+     * @param courseId
+     * @param classId
+     * @param catalogId
+     * @param content
+     * @param mobile
+     * @return
+     */
+    public ResultDo createCommentLaunch(Long childId, Long ognId, Long courseId, Long classId, Long catalogId, String content, Long mobile) {
+        Optional<EpOrganAccountPo> optional = organAccountRepository.getByOgnIdAndReferMobile(ognId, mobile);
+        if (!optional.isPresent()) {
+            log.error("[随堂评论]新增随堂评论失败，机构用户不存在。");
+            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        }
+        Long ognAccountId = optional.get().getId();
+        EpMemberChildCommentPo po = new EpMemberChildCommentPo();
+        po.setChildId(childId);
+        po.setOgnId(ognId);
+        po.setCourseId(courseId);
+        po.setClassId(classId);
+        po.setClassCatalogId(catalogId);
+        po.setType(EpMemberChildCommentType.launch);
+        po.setContent(content);
+        po.setOgnAccountId(ognAccountId);
+        log.error("[随堂评论]新增随堂评论开始，po={}。", po);
+        memberChildCommentRepository.insert(po);
+        log.info("[随堂评论]新增随堂评论成功，id={}。", po.getId());
         return ResultDo.build();
     }
 }

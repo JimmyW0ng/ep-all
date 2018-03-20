@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 机构课程班次Service
@@ -152,11 +153,22 @@ public class OrganClassService {
     /**
      * 获取班级成员昵称
      *
-     * @param classId
+     * @param id
      * @return
      */
     public List<String> findClassChildNickName(Long id) {
         return organClassRepository.findClassChildNickNameByClassId(id);
+
+    }
+
+    /**
+     * 根据id获取记录
+     *
+     * @param id
+     * @return
+     */
+    public Optional<EpOrganClassPo> findById(Long id) {
+        return organClassRepository.findById(id);
 
     }
 }

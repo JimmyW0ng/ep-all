@@ -149,34 +149,45 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
     public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
 
+
         long totalCount = dslContext.selectCount()
-                .from(EP_MEMBER_CHILD_COMMENT)
-                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
-                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
-                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
+                .from(EP_ORGAN_CLASS_CHILD)
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                .leftJoin(EP_MEMBER_CHILD_COMMENT).on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
                 .where(condition).fetchOne(0, Long.class);
+
+
+//        long totalCount = dslContext.selectCount()
+//                .from(EP_MEMBER_CHILD_COMMENT)
+//                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
+//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
+//                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+//                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
+//                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+//                .where(condition).fetchOne(0, Long.class);
+
+
+
+
+
+
+
         if (totalCount == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
-        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
-        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.as("classCatalogTitle"));
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.as("nickName"));
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
         SelectConditionStep<Record> record = dslContext.select(fieldList)
-                .from(EP_MEMBER_CHILD_COMMENT)
-                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
-                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
-                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
+                .from(EP_ORGAN_CLASS_CHILD)
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                .leftJoin(EP_MEMBER_CHILD_COMMENT).on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
                 .where(condition);
 
-        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_COURSE.ID.desc(), EP_ORGAN_CLASS.ID.desc(), EP_ORGAN_CLASS_CATALOG.ID.desc())
+        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_CLASS_CHILD.ID.asc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(MemberChildCommentBo.class);
@@ -198,4 +209,5 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
                 .execute();
     }
+
 }

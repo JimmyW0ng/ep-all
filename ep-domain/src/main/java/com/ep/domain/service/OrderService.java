@@ -411,6 +411,12 @@ public class OrderService {
         }
     }
 
+    /**
+     * 根据班次id获取该班次下订单详情
+     *
+     * @param classId
+     * @return
+     */
     public List<OrderBo> findOrdersByClassId(Long classId) {
         return orderRepository.findOrdersByClassId(classId);
     }

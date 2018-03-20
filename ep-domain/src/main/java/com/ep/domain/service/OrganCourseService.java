@@ -174,10 +174,7 @@ public class OrganCourseService {
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-        if (CollectionsTools.isEmpty(constantTagPos)) {
-            log.error("[课程]新增课程失败,请求参数异常,constantTagPos为空。");
-            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
-        }
+
         //获取最低价格start
         BigDecimal priceMin = getCoursePriceMin(organClassBos);
         //获取最低价格end
@@ -233,16 +230,20 @@ public class OrganCourseService {
         organCourseTeamRepository.insert(organCourseTeamPos);
 
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
-        constantTagPos.forEach(constantTagPo -> {
-            EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
-            insertOrganCourseTagPo.setTagId(constantTagPo.getId());
-            insertOrganCourseTagPo.setCourseId(insertOrganCourseId);
-            insertOrganCourseTagPos.add(insertOrganCourseTagPo);
-        });
+        if (CollectionsTools.isNotEmpty(constantTagPos)) {
+            constantTagPos.forEach(constantTagPo -> {
+                EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
+                insertOrganCourseTagPo.setTagId(constantTagPo.getId());
+                insertOrganCourseTagPo.setCourseId(insertOrganCourseId);
+                insertOrganCourseTagPos.add(insertOrganCourseTagPo);
+            });
+            //课程标签表插入数据
+            log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
+            organCourseTagRepository.insert(insertOrganCourseTagPos);
+        }
 
-        //课程标签表插入数据
-        log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
-        organCourseTagRepository.insert(insertOrganCourseTagPos);
+
+
         //课程主图
         if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
             log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
@@ -289,10 +290,7 @@ public class OrganCourseService {
         }
         //标签
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-        if (CollectionsTools.isEmpty(constantTagPos)) {
-            log.error("[课程]新增课程失败,请求参数异常,constantTagPos为空。");
-            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
-        }
+
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         //获取最低价格start
@@ -334,13 +332,15 @@ public class OrganCourseService {
             organClassRepository.insert(organClassPo);
             Long insertOrganClassId = organClassPo.getId();
             List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
-            for (int i = 0; i < organClassCatalogPos.size(); i++) {
-                organClassCatalogPos.get(i).setClassId(insertOrganClassId);
-                organClassCatalogPos.get(i).setId(null);
+            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
+                for (int i = 0; i < organClassCatalogPos.size(); i++) {
+                    organClassCatalogPos.get(i).setClassId(insertOrganClassId);
+                    organClassCatalogPos.get(i).setId(null);
+                }
+                //班次课程内容目录表插入数据
+                log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
+                organClassCatalogRepository.insert(organClassCatalogPos);
             }
-            //班次课程内容目录表插入数据
-            log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
-            organClassCatalogRepository.insert(organClassCatalogPos);
         });
 
         //机构类目表 插入数据start
@@ -369,15 +369,19 @@ public class OrganCourseService {
 
         //课程标签表插入数据start
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
-        constantTagPos.forEach(constantTagPo -> {
-            EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
-            insertOrganCourseTagPo.setTagId(constantTagPo.getId());
-            insertOrganCourseTagPo.setCourseId(organCourseId);
-            insertOrganCourseTagPos.add(insertOrganCourseTagPo);
-        });
-        log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
-        organCourseTagRepository.insert(insertOrganCourseTagPos);
-        //课程标签表插入数据end
+        if (CollectionsTools.isNotEmpty(constantTagPos)) {
+            constantTagPos.forEach(constantTagPo -> {
+                EpOrganCourseTagPo insertOrganCourseTagPo = new EpOrganCourseTagPo();
+                insertOrganCourseTagPo.setTagId(constantTagPo.getId());
+                insertOrganCourseTagPo.setCourseId(organCourseId);
+                insertOrganCourseTagPos.add(insertOrganCourseTagPo);
+            });
+            log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
+            organCourseTagRepository.insert(insertOrganCourseTagPos);
+            //课程标签表插入数据end
+        }
+
+
 
         //主图
         if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {

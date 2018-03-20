@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -442,6 +443,21 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
                 .and(EP_MEMBER_CHILD.ID.isNotNull())
                 .fetchInto(String.class);
+    }
+
+
+    /**
+     * 根据id获取记录
+     *
+     * @param id
+     * @return
+     */
+    public Optional<EpOrganClassPo> findById(Long id) {
+        EpOrganClassPo data = dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganClassPo.class);
+        return Optional.ofNullable(data);
     }
 
 }

@@ -238,11 +238,12 @@
         if ((status == "success" || status == "refuse") && classStatus == "online") {
             $box.find("a").hide()
             $box.find("a[name='cancel']").show()
-        }
-        if(status=="save"){
+        } else if (status == "save") {
             $box.find("a").hide()
             $box.find("a[name='success']").show()
             $box.find("a[name='refuse']").show()
+        } else if (status == "opening") {
+            $box.find("a").hide()
         }
 
     }

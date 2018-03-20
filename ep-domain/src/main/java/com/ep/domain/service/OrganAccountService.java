@@ -305,4 +305,16 @@ public class OrganAccountService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
+    /**
+     * 根据机构id和关联手机号获取教师
+     *
+     * @param ognId
+     * @param referMobile
+     * @return
+     */
+    public Optional<EpOrganAccountPo> getByOgnIdAndReferMobile(Long ognId, Long referMobile) {
+        return organAccountRepository.getByOgnIdAndReferMobile(ognId, referMobile);
+    }
+
 }

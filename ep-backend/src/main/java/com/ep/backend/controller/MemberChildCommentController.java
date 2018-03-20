@@ -1,14 +1,14 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
-import com.ep.domain.pojo.po.EpMemberChildTagPo;
-import com.ep.domain.pojo.po.EpSystemUserPo;
-import com.ep.domain.service.MemberChildCommentService;
-import com.ep.domain.service.MemberChildTagService;
-import com.ep.domain.service.OrganCourseTagService;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jooq.Condition;
@@ -22,9 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_COMMENT;
 
@@ -43,21 +41,27 @@ public class MemberChildCommentController extends BackendController {
     @Autowired
     private OrganCourseTagService organCourseTagService;
     @Autowired
+    private OrganCourseService organCourseService;
+    @Autowired
+    private OrganClassService organClassService;
+    @Autowired
+    private OrganClassCatalogService organClassCatalogService;
+    @Autowired
+    private OrganAccountService organAccountService;
+    @Autowired
     ApplicationEventPublisher publisher;
 
     @GetMapping("index")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-//                        @RequestParam(value = "courseName", required = false) String courseName,
-//                        @RequestParam(value = "childTrueName", required = false) String childTrueName,
-//                        @RequestParam(value = "className", required = false) String className,
-//                        @RequestParam(value = "classCatalogTitle", required = false) String classCatalogTitle,
-                        @RequestParam(value = "classCatalogId") Long classCatalogId
-//                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
-//                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
+                        @RequestParam(value = "className", required = false) Long classId,
+                        @RequestParam(value = "classCatalogId", required = false) Long classCatalogId
 
     ) {
-        Map map = Maps.newHashMap();
+        if (null == classId || null == classCatalogId) {
+
+        }
+        Map<Object, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
 //        if (StringTools.isNotBlank(courseName)) {
 //            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
@@ -85,12 +89,32 @@ public class MemberChildCommentController extends BackendController {
 //            conditions.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT.lessOrEqual(crEndTime));
 //        }
 //        map.put("crEndTime", crEndTime);
+
+        //机构id
         Long ognId = super.getCurrentUser().get().getOgnId();
         conditions.add(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId));
         conditions.add(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId));
+        Long mobile = super.getCurrentUser().get().getMobile();
+
+        conditions.add(EP_MEMBER_CHILD_COMMENT.CLASS_ID.eq(classId));
+        conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch));
         Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
-        model.addAttribute("map", map);
+
+        organClassService.findById(classId);
+
+        Optional<EpOrganAccountPo> organAccountOptioal = organAccountService.getByOgnIdAndReferMobile(ognId, mobile);
+        //教师id
+        model.addAttribute("organAccountId", organAccountOptioal.isPresent() ? organAccountOptioal.get().getId() : null);
+        //课程下拉框
+        List<EpOrganCoursePo> organCoursePos = organCourseService.findByOgnIdAndStatus(ognId, EpOrganCourseCourseStatus.online);
+        Map<Long, String> courseMap = Maps.newHashMap();
+        organCoursePos.forEach(p -> {
+            courseMap.put(p.getId(), p.getCourseName());
+        });
+        model.addAttribute("courseMap", courseMap);
+        //查询条件
+        model.addAttribute("searchMap", searchMap);
         return "childComment/index";
     }
 
@@ -151,6 +175,69 @@ public class MemberChildCommentController extends BackendController {
         map.put("memberChildTagPos", memberChildTagPos);
         resultDo.setResult(map);
         return resultDo;
+    }
+
+    /**
+     * 改变课程获取班次下拉框
+     *
+     * @param courseId
+     * @return
+     */
+    @GetMapping("changeCourse/{courseId}")
+    @ResponseBody
+    public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
+        if (CollectionsTools.isEmpty(organClassPos)) {
+            return ResultDo.build().setResult(new HashMap<Long, String>());
+        }
+        Map<Long, String> classMap = Maps.newHashMap();
+        organClassPos.forEach(p -> {
+            classMap.put(p.getId(), p.getClassName());
+        });
+        return ResultDo.build().setResult(classMap);
+    }
+
+    /**
+     * 改变班次获取班次目录下拉框
+     *
+     * @param classId
+     * @return
+     */
+    @GetMapping("changeClass/{classId}")
+    @ResponseBody
+    public ResultDo getCatalogByClassId(@PathVariable("classId") Long classId) {
+        List<EpOrganClassCatalogPo> classCatalogPos = organClassCatalogService.findByClassId(classId);
+        if (CollectionsTools.isEmpty(classCatalogPos)) {
+            return ResultDo.build().setResult(new HashMap<Long, String>());
+        }
+        Map<Long, String> classCatalogMap = Maps.newHashMap();
+        classCatalogPos.forEach(p -> {
+            classCatalogMap.put(p.getId(), p.getCatalogTitle());
+        });
+        return ResultDo.build().setResult(classCatalogMap);
+    }
+
+    /**
+     * 商户后台创建评论
+     *
+     * @param childId
+     * @param courseId
+     * @param classId
+     * @param catalogId
+     * @param content
+     * @return
+     */
+    @PostMapping("createCommentLaunch")
+    @ResponseBody
+    public ResultDo createComment(
+            @RequestParam(value = "childId") Long childId,
+            @RequestParam(value = "courseId") Long courseId,
+            @RequestParam(value = "classId") Long classId,
+            @RequestParam(value = "catalogId") Long catalogId,
+            @RequestParam(value = "content") String content) {
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        Long mobile = super.getCurrentUser().get().getMobile();
+        return memberChildCommentService.createCommentLaunch(childId, ognId, courseId, classId, catalogId, content, mobile);
     }
 
 }

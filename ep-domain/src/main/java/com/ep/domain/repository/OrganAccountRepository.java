@@ -232,5 +232,22 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据机构id和关联手机号获取课程负责人
+     *
+     * @param ognId
+     * @param referMobile
+     * @return
+     */
+    public Optional<EpOrganAccountPo> getByOgnIdAndReferMobile(Long ognId, Long referMobile) {
+        EpOrganAccountPo data = dslContext.selectFrom(EP_ORGAN_ACCOUNT)
+                .where(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_ACCOUNT.REFER_MOBILE.eq(referMobile))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganAccountPo.class);
+        return Optional.ofNullable(data);
+    }
+
 }
 
