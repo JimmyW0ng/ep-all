@@ -131,10 +131,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         // 封装条件
         Timestamp time = DateTools.zerolizedTime(DateTools.getCurrentDateTime());
         Condition condition = EP_ORDER.MEMBER_ID.eq(memberId)
-                                                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
-                                                .and(EP_ORDER.DEL_FLAG.eq(false))
-                                                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterOrEqual(time))
-                                                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false));
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterOrEqual(time))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false));
         Long count = dslContext.selectCount()
                 .from(EP_ORDER)
                 .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
@@ -151,17 +151,17 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_ORGAN_CLASS_CATALOG.START_TIME);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<MemberChildScheduleBo> data = dslContext.select(fieldList)
-                                                     .from(EP_ORDER)
-                                                     .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
-                                                     .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                                                     .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-                                                     .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
-                                                     .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
-                                                     .where(condition)
-                                                     .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc(), EP_ORDER.CHILD_ID.asc())
-                                                     .limit(pageable.getPageSize())
-                                                     .offset(pageable.getOffset())
-                                                     .fetchInto(MemberChildScheduleBo.class);
+                .from(EP_ORDER)
+                .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
+                .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                .where(condition)
+                .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc(), EP_ORDER.CHILD_ID.asc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(MemberChildScheduleBo.class);
         return new PageImpl(data, pageable, count);
     }
 
@@ -220,11 +220,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
     /**
      * 商户后台获取分页
+     *
      * @param pageable
      * @param condition
      * @return
      */
-    public Page<OrderBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition){
+    public Page<OrderBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         long totalCount = dslContext.selectCount()
                 .from(EP_ORDER)
                 .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
@@ -250,7 +251,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
                 .where(condition);
-//
+
         List<OrderBo> list = record.orderBy(getSortFields(pageable.getSort()))
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
@@ -261,26 +262,28 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
     /**
      * 订单报名成功
+     *
      * @param id
      */
-    public int orderSuccessById(Long id){
+    public int orderSuccessById(Long id) {
         return dslContext.update(EP_ORDER)
-                         .set(EP_ORDER.STATUS,EpOrderStatus.success)
-                         .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
-                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                         .and(EP_ORDER.ID.eq(id))
-                         .and(EP_ORDER.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_ORDER.STATUS, EpOrderStatus.success)
+                .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
+                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
     }
 
     /**
      * 批量订单报名成功
+     *
      * @param ids
      */
-    public int orderSuccessByIds(List<Long> ids){
+    public int orderSuccessByIds(List<Long> ids) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS,EpOrderStatus.success)
-                .set(EP_ORDER.REMARK,"")
+                .set(EP_ORDER.STATUS, EpOrderStatus.success)
+                .set(EP_ORDER.REMARK, "")
                 .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                 .and(EP_ORDER.ID.in(ids))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
@@ -289,12 +292,13 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
     /**
      * 订单拒绝
+     *
      * @param id
      */
-    public int orderRefuseById(Long id,String remark){
+    public int orderRefuseById(Long id, String remark) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS,EpOrderStatus.refuse)
-                .set(EP_ORDER.REMARK,remark)
+                .set(EP_ORDER.STATUS, EpOrderStatus.refuse)
+                .set(EP_ORDER.REMARK, remark)
                 .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                 .and(EP_ORDER.ID.eq(id))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
@@ -303,10 +307,11 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
     /**
      * 根据id获取EpOrderPo
+     *
      * @param id
      * @return
      */
-    public EpOrderPo findById(Long id){
+    public EpOrderPo findById(Long id) {
         return dslContext.selectFrom(EP_ORDER)
                 .where(EP_ORDER.ID.eq(id))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
@@ -315,11 +320,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
     /**
      * 根据id取消报名成功/拒绝的订单
+     *
      * @param id
      */
-    public int orderCancelById(Long id,EpOrderStatus status){
+    public int orderCancelById(Long id, EpOrderStatus status) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS,EpOrderStatus.save)
+                .set(EP_ORDER.STATUS, EpOrderStatus.save)
                 .where(EP_ORDER.STATUS.eq(status))
                 .and(EP_ORDER.ID.eq(id))
                 .and(EP_ORDER.STATUS.eq(EpOrderStatus.success).or(EP_ORDER.STATUS.eq(EpOrderStatus.refuse)))
@@ -348,11 +354,11 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int endByClassId(Long classId) {
         return dslContext.update(EP_ORDER)
-                         .set(EP_ORDER.STATUS, EpOrderStatus.end)
-                         .where(EP_ORDER.CLASS_ID.eq(classId))
-                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
-                         .and(EP_ORDER.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_ORDER.STATUS, EpOrderStatus.end)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
     }
 
     /**
@@ -363,10 +369,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public List<EpOrderPo> findSuccessOrdersByClassId(Long classId) {
         return dslContext.selectFrom(EP_ORDER)
-                         .where(EP_ORDER.CLASS_ID.eq(classId))
-                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
-                         .and(EP_ORDER.DEL_FLAG.eq(false))
-                         .fetchInto(EpOrderPo.class);
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(EpOrderPo.class);
     }
 
     /**
@@ -377,10 +383,30 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public List<EpOrderPo> findSavedOrdersByClassId(Long classId) {
         return dslContext.selectFrom(EP_ORDER)
-                         .where(EP_ORDER.CLASS_ID.eq(classId))
-                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                         .and(EP_ORDER.DEL_FLAG.eq(false))
-                         .fetchInto(EpOrderPo.class);
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(EpOrderPo.class);
+    }
+
+    /**
+     * 获取该班次下订单详情
+     *
+     * @param classId
+     * @return
+     */
+    public List<OrderBo> findOrdersByClassId(Long classId) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORDER.ID);
+        fieldList.add(EP_ORDER.CHILD_ID);
+        fieldList.add(EP_ORDER.STATUS);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        return dslContext.select(fieldList).from(EP_ORDER)
+                .leftJoin(EP_MEMBER_CHILD)
+                .on(EP_ORDER.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(OrderBo.class);
     }
 }
 

@@ -148,4 +148,15 @@ public class OrganClassService {
         }
         return ResultDo.build();
     }
+
+    /**
+     * 获取班级成员昵称
+     *
+     * @param classId
+     * @return
+     */
+    public List<String> findClassChildNickName(Long id) {
+        return organClassRepository.findClassChildNickNameByClassId(id);
+
+    }
 }

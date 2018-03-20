@@ -1,13 +1,11 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
-import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.service.MemberChildCommentService;
 import com.ep.domain.service.MemberChildTagService;
 import com.ep.domain.service.OrganCourseTagService;
@@ -24,12 +22,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.ep.domain.repository.domain.Tables.*;
+import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_COMMENT;
 
 /**
  * @Description: 孩子评论控制器
@@ -51,43 +48,45 @@ public class MemberChildCommentController extends BackendController {
     @GetMapping("index")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                        @RequestParam(value = "courseName", required = false) String courseName,
-                        @RequestParam(value = "childTrueName", required = false) String childTrueName,
-                        @RequestParam(value = "className", required = false) String className,
-                        @RequestParam(value = "classCatalogTitle", required = false) String classCatalogTitle,
-                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
-                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
+//                        @RequestParam(value = "courseName", required = false) String courseName,
+//                        @RequestParam(value = "childTrueName", required = false) String childTrueName,
+//                        @RequestParam(value = "className", required = false) String className,
+//                        @RequestParam(value = "classCatalogTitle", required = false) String classCatalogTitle,
+                        @RequestParam(value = "classCatalogId") Long classCatalogId
+//                        @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+//                        @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
     ) {
         Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
-        if (StringTools.isNotBlank(courseName)) {
-            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
-        }
-        map.put("courseName", courseName);
-        if (StringTools.isNotBlank(className)) {
-            conditions.add(EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
-        }
-        map.put("className", className);
-        if (StringTools.isNotBlank(classCatalogTitle)) {
-            conditions.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.like("%" + classCatalogTitle + "%"));
-        }
-        map.put("classCatalogTitle", classCatalogTitle);
-        if (StringTools.isNotBlank(childTrueName)) {
-            conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
-        }
-        map.put("childTrueName", childTrueName);
-
-        conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch));
-        if (null != crStartTime) {
-            conditions.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT.greaterOrEqual(crStartTime));
-        }
-        map.put("crStartTime", crStartTime);
-        if (null != crEndTime) {
-            conditions.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT.lessOrEqual(crEndTime));
-        }
-        map.put("crEndTime", crEndTime);
+//        if (StringTools.isNotBlank(courseName)) {
+//            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
+//        }
+//        map.put("courseName", courseName);
+//        if (StringTools.isNotBlank(className)) {
+//            conditions.add(EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
+//        }
+//        map.put("className", className);
+//        if (StringTools.isNotBlank(classCatalogTitle)) {
+//            conditions.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.like("%" + classCatalogTitle + "%"));
+//        }
+//        map.put("classCatalogTitle", classCatalogTitle);
+//        if (StringTools.isNotBlank(childTrueName)) {
+//            conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
+//        }
+//        map.put("childTrueName", childTrueName);
+//
+//        conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch));
+//        if (null != crStartTime) {
+//            conditions.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT.greaterOrEqual(crStartTime));
+//        }
+//        map.put("crStartTime", crStartTime);
+//        if (null != crEndTime) {
+//            conditions.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT.lessOrEqual(crEndTime));
+//        }
+//        map.put("crEndTime", crEndTime);
         Long ognId = super.getCurrentUser().get().getOgnId();
+        conditions.add(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId));
         conditions.add(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId));
         Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);

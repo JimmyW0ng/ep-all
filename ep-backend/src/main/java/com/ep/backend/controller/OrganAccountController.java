@@ -128,7 +128,6 @@ public class OrganAccountController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "新增初始化")
     @GetMapping("/createInit")
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
     public String createInit(Model model) {

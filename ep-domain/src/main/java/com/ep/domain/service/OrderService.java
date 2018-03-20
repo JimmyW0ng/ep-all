@@ -410,4 +410,8 @@ public class OrderService {
             organRepository.totalParticipateCancel(orderPo.getOgnId(), count);
         }
     }
+
+    public List<OrderBo> findOrdersByClassId(Long classId) {
+        return orderRepository.findOrdersByClassId(classId);
+    }
 }
