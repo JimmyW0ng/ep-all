@@ -51,7 +51,7 @@ public class MessageCaptchaService {
             return checkMsgActionResult;
         }
         // 如果是机构端需要判断手机号是否存在
-        if (!organAccountRepository.checkExistByMobile(sourceId)) {
+        if (EpMessageCaptchaCaptchaScene.organ_account_login.equals(scene) && !organAccountRepository.checkExistByMobile(sourceId)) {
             return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
         // 生成随机码

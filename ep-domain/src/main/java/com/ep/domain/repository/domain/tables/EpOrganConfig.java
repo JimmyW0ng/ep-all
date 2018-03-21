@@ -33,7 +33,7 @@ public class EpOrganConfig extends TableImpl<EpOrganConfigRecord> {
      * The reference instance of <code>ep.ep_organ_config</code>
      */
     public static final EpOrganConfig EP_ORGAN_CONFIG = new EpOrganConfig();
-    private static final long serialVersionUID = -1377216167;
+    private static final long serialVersionUID = -1468474470;
     /**
      * The column <code>ep.ep_organ_config.id</code>.
      */
@@ -42,10 +42,6 @@ public class EpOrganConfig extends TableImpl<EpOrganConfigRecord> {
      * The column <code>ep.ep_organ_config.ogn_id</code>. 机构id
      */
     public final TableField<EpOrganConfigRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
-    /**
-     * The column <code>ep.ep_organ_config.weight</code>. 权重
-     */
-    public final TableField<EpOrganConfigRecord, Byte> WEIGHT = createField("weight", org.jooq.impl.SQLDataType.TINYINT.nullable(false), this, "权重");
     /**
      * The column <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能
      */
