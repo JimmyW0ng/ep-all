@@ -555,6 +555,7 @@
                             id: organClassCatalogPos[j].id,
                             len: j + 1,
                             startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
+                            endTime: organClassCatalogPos[j].endTime == null ? "" : new Date(organClassCatalogPos[j].endTime).Format('yyyy-MM-dd HH:mm:ss'),
                             catalogTitle: organClassCatalogPos[j].catalogTitle,
                             catalogDesc: organClassCatalogPos[j].catalogDesc,
                             rectifyFlag: organClassCatalogPos[j].rectifyFlag
