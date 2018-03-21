@@ -120,8 +120,17 @@ public class MemberChildCommentService {
      * @param conditions
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Long classId, Long classCatalogId, Pageable pageable, Collection<Condition> conditions) {
-        return memberChildCommentRepository.findbyPageAndCondition(classId, classCatalogId, pageable, conditions);
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Long courseId, Long classId, Long classCatalogId, Pageable pageable, Collection<Condition> conditions) {
+        Page<MemberChildCommentBo> page = memberChildCommentRepository.findbyPageAndCondition(classId, classCatalogId, pageable, conditions);
+        page.getContent().forEach(p -> {
+            if (p.getCourseId() == null) {
+                p.setCourseId(courseId);
+                p.setClassId(classId);
+                p.setClassCatalogId(classCatalogId);
+                p.setChildId(p.getClassChildId());
+            }
+        });
+        return page;
     }
 
     /**
