@@ -23,17 +23,19 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input type="text" class="form-control " name="mobile" th:value="${map.get('mobile')}"
+                        <input type="text" class="form-control " name="mobile" th:value="${searchMmap.get('mobile')}"
                                placeholder="手机号">
                     </div>
 
                     <div class="form-group mr10">
                         <div class="input-group input-large">
-                            <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime" th:value="${map.get('crStartTime')}"
+                            <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
+                                   th:value="${searchMmap.get('crStartTime')}"
                                    th:placeholder="创建时间从"
                             >
                             <span class="input-group-addon">到</span>
-                            <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime" th:value="${map.get('crEndTime')}"
+                            <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
+                                   th:value="${searchMmap.get('crEndTime')}"
                                    th:placeholder="到"
                             >
                         </div>
@@ -77,10 +79,12 @@
 
                             <td th:text="${bo.createAt}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info" th:href="@{/auth/member/view/}+${bo.id}">查看</a>
-                                <a class="btn btn-xs btn-primary" th:href="@{/auth/member/updateInit/}+${bo.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
-
+                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.status,'normal')}"
+                                   th:onclick="'freezeBox('+${bo.id}+')'">冻结</a>
+                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.status,'freeze')}"
+                                   th:onclick="'unfreezeBox('+${bo.id}+')'">解冻</a>
+                                <a class="btn btn-xs btn-primary" th:if="!${#strings.equals(bo.status,'cancel')}"
+                                   th:onclick="'cancelBox('+${bo.id}+')'">注销</a>
                             </td>
 
                         </tr>
@@ -113,25 +117,64 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script>
-    function deleteBox(id) {
-        parent.layer.alert('确认删除用户', {
-                icon: 1,
-                skin: 'layer-ext-moon',
-
-            },
-            function (index) {
-                delDo(id);
-                parent.layer.close(index);
-            })
+    function freezeBox(id) {
+        layer_confirm("确定冻结该会员？", 3, freezeDo, id)
     }
-    function delDo(id) {
+    function freezeDo(id) {
         $.ajax({
             type:"GET",
-            url:"/auth/member/delete/"+id,
+            url: "/auth/member/freeze/" + id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/member/index');
+                    toastr_success(null, document.localtion.href);
+                } else {
+                    toastr.error(data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+
+    }
+
+    function unfreezeBox(id) {
+        layer_confirm("确定解冻该会员？", 3, unfreezeDo, id)
+    }
+    function unfreezeDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/member/unfreeze/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.localtion.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+
+    }
+
+    function cancelBox(id) {
+        layer_confirm("确定注销该会员？", 3, cancelDo, id)
+    }
+    function cancelDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/member/cancel/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.localtion.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
 

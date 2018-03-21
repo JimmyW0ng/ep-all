@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+
+</head>
+<header>
+    <th:block layout:fragment="links">
+
+    </th:block>
+</header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 th:text="${memberPo.id} eq null ? '新增会员' : '修改会员'"></h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
+               onclick="history.back()">返回</a>
+
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="frm" th:object="${memberPo}">
+                <input type="hidden" id="id" name="id" th:field="*{id}"/>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">手机号：</label>
+                    <div class="col-sm-3">
+                        <input id="mobile" name="mobile" type="text" class="form-control" required="true"
+                               th:field="*{mobile}"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">昵称：</label>
+                    <div class="col-sm-3">
+                        <input id="nickName" name="nickName" type="text" class="form-control" th:field="*{nickName}"
+                               aria-required="true">
+
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">真实姓名：</label>
+                    <div class="col-sm-3">
+                        <input id="trueName" name="trueName" type="text" class="form-control"
+                               th:field="*{trueName}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">性别：</label>
+                    <div class="col-sm-3">
+                        <select id="sex" name="sex" type="text" class="form-control" required="true" th:field="*{sex}"
+                                aria-required="true">
+                            <option value="man">男</option>
+                            <option value="woman">女</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">邮箱：</label>
+                    <div class="col-sm-3">
+                        <input id="email" name="email" type="text" class="form-control" required="true"
+                               th:field="*{email}">
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注：</label>
+                    <div class="col-sm-3">
+                        <textarea id="remark" name="remark" type="text" class="form-control" th:field="*{remark}"
+                        >
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
+                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:inline="javascript">
+
+
+    function frmSubmit() {
+        if (!$("#frm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+
+
+        var url;
+        if ($("#id").val()) {
+            url = '/auth/member/update'
+        } else {
+            url = '/auth/member/create'
+        }
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $("#frm").serialize(),
+            beforeSend: function () {
+                $("button").attr("disabled", true)
+                addLoadingWrap();
+            },
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.referrer)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                $("button").attr("disabled", false)
+                removeLoadingWrap();
+            }
+        })
+    }
+
+
+    $(function () {
+
+    })
+
+</script>
+</body>
+</html>

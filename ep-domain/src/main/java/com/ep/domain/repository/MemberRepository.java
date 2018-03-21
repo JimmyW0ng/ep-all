@@ -38,12 +38,25 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
     }
 
     /**
-     * 冻结原因
+     * 冻结
      *
      * @param id
      * @return
      */
-    public int freezeMember(Long id) {
+    public int freezeById(Long id) {
+        return dslContext.update(EP_MEMBER)
+                .set(EP_MEMBER.STATUS, EpMemberStatus.freeze)
+                .where(EP_MEMBER.ID.eq(id))
+                .and(EP_MEMBER.DEL_FLAG.eq(false)).execute();
+    }
+
+    /**
+     * 解冻
+     *
+     * @param id
+     * @return
+     */
+    public int unfreezeById(Long id) {
         return dslContext.update(EP_MEMBER)
                 .set(EP_MEMBER.STATUS, EpMemberStatus.freeze)
                 .where(EP_MEMBER.ID.eq(id))
@@ -56,7 +69,7 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
      * @param id
      * @return
      */
-    public int cancelMember(Long id) {
+    public int cancelById(Long id) {
         return dslContext.update(EP_MEMBER)
                 .set(EP_MEMBER.STATUS, EpMemberStatus.cancel)
                 .where(EP_MEMBER.ID.eq(id))
