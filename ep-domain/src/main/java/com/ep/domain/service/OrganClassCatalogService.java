@@ -55,11 +55,12 @@ public class OrganClassCatalogService {
     /**
      * 课时评价初始化
      *
-     * @param mobile
+     * @param organAccountPo
      * @param classCatalogId
      * @return
      */
-    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(Long mobile, Long classCatalogId) {
+    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(EpOrganAccountPo organAccountPo, Long classCatalogId) {
+        log.info("课时评价初始化, accountId={}, classCatalogId={}", organAccountPo.getId(), classCatalogId);
         ResultDo<OrganClassCatalogCommentDto> resultDo = ResultDo.build();
         // 课时信息
         EpOrganClassCatalogPo classCatalogPo = organClassCatalogRepository.getById(classCatalogId);
@@ -75,13 +76,12 @@ public class OrganClassCatalogService {
         }
         if (!classPo.getStatus().equals(EpOrganClassStatus.opening) && !classPo.getStatus().equals(EpOrganClassStatus.end)) {
             log.error("班次不是进行中状态, classId={}, status={}", classCatalogPo.getClassId(), classPo.getStatus().getName());
-            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_START);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_START);
         }
         // 校验班次负责人
-        Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
-        if (!existAccount.isPresent()) {
-            log.error("当前用户无机构账户数据, mobile={}", mobile);
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classPo.getId());
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
         // 课程标签
         List<OrganCourseTagBo> courseTagList = organCourseTagRepository.findBosByCourseId(classPo.getCourseId());
@@ -103,7 +103,7 @@ public class OrganClassCatalogService {
     /**
      * 课时评价
      *
-     * @param mobile
+     * @param organAccountPo
      * @param classCatalogId
      * @param childId
      * @param tagIds
@@ -111,8 +111,8 @@ public class OrganClassCatalogService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo doClassCatalogComment(Long mobile, Long classCatalogId, Long childId, List<Long> tagIds, String comment) {
-        log.info("老师课时评价开始, mobile={}, classCatalogId={}, childId={}, tagIds={}, comment={}", mobile, classCatalogId, childId, tagIds, childId);
+    public ResultDo doClassCatalogComment(EpOrganAccountPo organAccountPo, Long classCatalogId, Long childId, List<Long> tagIds, String comment) {
+        log.info("老师课时评价开始, accountId={}, classCatalogId={}, childId={}, tagIds={}, comment={}", organAccountPo.getId(), classCatalogId, childId, tagIds, childId);
         if (CollectionsTools.isEmpty(tagIds) && StringTools.isBlank(comment)) {
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
@@ -138,15 +138,14 @@ public class OrganClassCatalogService {
             return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
         }
         // 校验班次负责人
-        Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
-        if (!existAccount.isPresent()) {
-            log.error("当前用户无机构账户数据, mobile={}", mobile);
-            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classPo.getId());
+            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
         // 加锁
-        EpOrganAccountPo accountPo = organAccountRepository.getByIdForLock(existAccount.get().getId());
+        EpOrganAccountPo accountPo = organAccountRepository.getByIdForLock(organAccountPo.getId());
         if (accountPo == null || accountPo.getDelFlag()) {
-            log.error("加锁失败，当前用户无机构账户数据, mobile={}", mobile);
+            log.error("加锁失败，当前用户无机构账户数据, accountId={}", organAccountPo.getId());
             return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
         // 检查是否已经存在评价标签
@@ -252,10 +251,10 @@ public class OrganClassCatalogService {
      * 查看班次全部课时
      *
      * @param classId
-     * @param mobile
+     * @param organAccountPo
      * @return
      */
-    public ResultDo<List<OrganAccountClassBo>> getClassAllCatalog(Long classId, Long mobile) {
+    public ResultDo<List<OrganAccountClassBo>> getClassAllCatalog(Long classId, EpOrganAccountPo organAccountPo) {
         ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classId);
@@ -268,10 +267,9 @@ public class OrganClassCatalogService {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
         }
         // 校验班次负责人
-        Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
-        if (!existAccount.isPresent()) {
-            log.error("当前用户无机构账户数据, mobile={}", mobile);
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
         List<OrganAccountClassBo> classCatalogs = organClassCatalogRepository.findByClassIdForOgnAccount(classId);
         return resultDo.setResult(classCatalogs);

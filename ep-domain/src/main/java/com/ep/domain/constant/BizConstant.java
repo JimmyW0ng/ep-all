@@ -29,9 +29,21 @@ public class BizConstant {
     public static String KEY_SPLIT = "KEY_SPLIT";
     public static String STRING_SPLIT = ",";
     /**
-     * 用户信息
+     * 客户端小程序标识
+     */
+    public static String WECHAT_APP_MEMBER_CLIENT = "WECHAT_APP_MEMBER_CLIENT";
+    /**
+     * 机构端小程序标识
+     */
+    public static String WECHAT_APP_ORGAN_CLIENT = "WECHAT_APP_ORGAN_CLIENT";
+    /**
+     * 当前会话中的用户信息
      */
     public static String CURENT_USER = "CURENT_USER";
+    /**
+     * 当前会话中的机构账户信息
+     */
+    public static String CURENT_ORGAN_ACCOUNT = "CURENT_ORGAN_ACCOUNT";
     /**
      * 用户信息生成密码盐的方法generateShortUrl()的入参minlength
      */

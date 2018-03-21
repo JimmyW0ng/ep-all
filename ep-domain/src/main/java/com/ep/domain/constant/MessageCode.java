@@ -31,6 +31,12 @@ public class MessageCode {
      */
     public static final String ERROR_GET_CAPTCHA_NUM_OUT_LIMIT = "ERROR_GET_CAPTCHA_NUM_OUT_LIMIT";
     /**
+     * 会员不存在
+     */
+    public static final String ERROR_MEMBER_NOT_EXISTS = "ERROR_MEMBER_NOT_EXISTS";
+    public static final String ERROR_MEMBER_IS_CANCEL = "ERROR_MEMBER_IS_CANCEL";
+    public static final String ERROR_MEMBER_IS_FREEZE = "ERROR_MEMBER_IS_FREEZE";
+    /**
      * 机构
      */
     public static final String ERROR_ORGAN_EXISTS = "ERROR_ORGAN_EXISTS";
@@ -94,6 +100,9 @@ public class MessageCode {
      * 机构账户
      */
     public static final String ERROR_ORGAN_ACCOUNT_NOT_EXISTS = "ERROR_ORGAN_ACCOUNT_NOT_EXISTS";
+    public static final String ERROR_ORGAN_ACCOUNT_IS_CANCEL = "ERROR_ORGAN_ACCOUNT_IS_CANCEL";
+    public static final String ERROR_ORGAN_ACCOUNT_IS_FREEZE = "ERROR_ORGAN_ACCOUNT_IS_FREEZE";
+    public static final String ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS = "ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS";
     public static final String ERROR_ORGAN_ACCOUNT_CANCEL_EXIST_CLASS = "ERROR_ORGAN_ACCOUNT_CANCEL_EXIST_CLASS";
     /**
      * 系统用户

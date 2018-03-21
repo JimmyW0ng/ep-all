@@ -7,7 +7,7 @@ import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
-import com.ep.domain.pojo.po.EpMemberPo;
+import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.service.MemberChildService;
 import com.ep.domain.service.OrganAccountService;
 import com.ep.domain.service.OrganClassCatalogService;
@@ -54,24 +54,24 @@ public class OrganAccountController extends ApiController {
     @PostMapping("/info")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrganAccountBo> getOrganAccountInfo() {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return organAccountService.getOrganAccountInfo(memberPo.getMobile());
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organAccountService.getOrganAccountInfo(organAccountPo);
     }
 
     @ApiOperation(value = "今日课时")
     @PostMapping("/class/today")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<List<OrganAccountClassBo>> findTodayClassByOrganAccount() {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return organAccountService.findTodayClassByOrganAccount(memberPo.getMobile());
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organAccountService.findTodayClassByOrganAccount(organAccountPo);
     }
 
     @ApiOperation(value = "课时评价初始化")
     @PostMapping("/class/catalog/init")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(@RequestParam("classCatalogId") Long classCatalogId) {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return organClassCatalogService.getClassCatalogCommentView(memberPo.getMobile(), classCatalogId);
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organClassCatalogService.getClassCatalogCommentView(organAccountPo, classCatalogId);
     }
 
     @ApiOperation(value = "课时评价")
@@ -81,8 +81,8 @@ public class OrganAccountController extends ApiController {
                                           @RequestParam("childId") Long childId,
                                           @RequestParam("tagIds") List<Long> tagIds,
                                           @RequestParam("comment") String comment) {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        ResultDo resultDo = organClassCatalogService.doClassCatalogComment(memberPo.getMobile(),
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        ResultDo resultDo = organClassCatalogService.doClassCatalogComment(organAccountPo,
                 classCatalogId,
                 childId,
                 tagIds,
@@ -98,24 +98,24 @@ public class OrganAccountController extends ApiController {
     @PostMapping("/class/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(@PageableDefault Pageable pageable) {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return organAccountService.findAllClassByOrganAccountForPage(pageable, memberPo.getMobile());
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organAccountService.findAllClassByOrganAccountForPage(pageable, organAccountPo);
     }
 
     @ApiOperation(value = "查看班次全部课时")
     @PostMapping("/class/catalog/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<List<OrganAccountClassBo>> getClassAllCatalog(@RequestParam("classId") Long classId) {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return organClassCatalogService.getClassAllCatalog(classId, memberPo.getMobile());
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organClassCatalogService.getClassAllCatalog(classId, organAccountPo);
     }
 
     @ApiOperation(value = "查看班次学员")
     @PostMapping("/class/child/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<List<MemberChildBo>> findChildrenByClassId(@RequestParam("classId") Long classId) {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return organClassChildService.findChildrenByClassId(classId, memberPo.getMobile());
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organClassChildService.findChildrenByClassId(classId, organAccountPo);
     }
 
     @ApiOperation(value = "查看班次孩子摘要信息")
@@ -123,8 +123,8 @@ public class OrganAccountController extends ApiController {
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<ClassChildAbstractBo> getClassChildAbstract(@RequestParam("classId") Long classId,
                                                                 @RequestParam("childId") Long childId) {
-        EpMemberPo memberPo = super.getCurrentUser().get();
-        return memberChildService.getClassChildAbstract(classId, childId, memberPo.getMobile());
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return memberChildService.getClassChildAbstract(classId, childId, organAccountPo);
     }
 
 }

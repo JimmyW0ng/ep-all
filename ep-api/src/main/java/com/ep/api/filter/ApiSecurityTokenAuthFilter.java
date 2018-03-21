@@ -55,15 +55,20 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
         }
         authHeader = authHeader.substring(tokenHeaderPrefix.length() + 1);
         // 解析token
-        ResultDo<ApiPrincipalBo> resultDo = securityAuthComponent.getTokenInfo(authHeader);
-        if (resultDo.isError()) {
-            log.error("验证token不通过, error={}, desc={}", resultDo.getError(), resultDo.getErrorDescription());
+        ResultDo<ApiPrincipalBo> checkToken = securityAuthComponent.getTokenInfo(authHeader);
+        if (checkToken.isError()) {
+            log.error("验证token不通过, error={}, desc={}", checkToken.getError(), checkToken.getErrorDescription());
             chain.doFilter(request, response);
             return;
         }
-        ApiPrincipalBo principalBo = resultDo.getResult();
+        ApiPrincipalBo principalBo = checkToken.getResult();
         // 加载当前用户信息
-        securityAuthComponent.loadCurrentUserInfo(principalBo);
+        ResultDo checkUser = securityAuthComponent.loadCurrentUserInfo(principalBo);
+        if (checkUser.isError()) {
+            log.error("加载当前用户信息不通过, error={}, desc={}", checkToken.getError(), checkToken.getErrorDescription());
+            chain.doFilter(request, response);
+            return;
+        }
         // 加载当前用户权限
         Collection<GrantedAuthority> authorities = securityAuthComponent.getPermissionByRoleCode(principalBo.getRole());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);

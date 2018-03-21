@@ -2,7 +2,6 @@ package com.ep.domain.repository;
 
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
-import com.ep.domain.repository.domain.enums.EpMemberType;
 import com.ep.domain.repository.domain.tables.records.EpMemberRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,6 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
     public EpMemberPo getByMobile(Long mobile) {
         return dslContext.selectFrom(EP_MEMBER)
                 .where(EP_MEMBER.MOBILE.eq(mobile))
-                .and(EP_MEMBER.DEL_FLAG.eq(false))
                 .fetchOneInto(EpMemberPo.class);
     }
 
@@ -63,21 +61,6 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
                 .set(EP_MEMBER.STATUS, EpMemberStatus.cancel)
                 .where(EP_MEMBER.ID.eq(id))
                 .and(EP_MEMBER.DEL_FLAG.eq(false)).execute();
-    }
-
-    /**
-     * 变更会员类型为机构账户
-     *
-     * @param id
-     */
-    public int changeTypeToOrganAccount(Long id) {
-        return dslContext.update(EP_MEMBER)
-                .set(EP_MEMBER.TYPE, EpMemberType.organ_account)
-                .where(EP_MEMBER.ID.eq(id))
-                .and(EP_MEMBER.TYPE.eq(EpMemberType.member))
-                .and(EP_MEMBER.DEL_FLAG.eq(false))
-                .execute();
-
     }
 
 }

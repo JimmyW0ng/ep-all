@@ -9,6 +9,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.repository.MessageCaptchaRepository;
+import com.ep.domain.repository.OrganAccountRepository;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ public class MessageCaptchaService {
 
     @Autowired
     private MessageCaptchaRepository messageCaptchaRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
 
     /**
      * 获取短信验证码
@@ -46,6 +49,10 @@ public class MessageCaptchaService {
         ResultDo checkMsgActionResult = this.checkMsgAction(sourceId, type);
         if (checkMsgActionResult.isError()) {
             return checkMsgActionResult;
+        }
+        // 如果是机构端需要判断手机号是否存在
+        if (!organAccountRepository.checkExistByMobile(sourceId)) {
+            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
         // 生成随机码
         String captchaContent = RandomStringUtils.randomNumeric(BizConstant.CAPTCHA_SHORT_MSG_LENGTH);
@@ -96,17 +103,24 @@ public class MessageCaptchaService {
      * 验证码校验
      *
      * @param sourceId
+     * @param type
      * @param captchaCode
      * @param captchaContent
      */
-    public void checkAndHandleCaptcha(Long sourceId, String captchaCode, String captchaContent) {
+    public void checkAndHandleCaptcha(Long sourceId, String type, String captchaCode, String captchaContent) {
         // 测试环境支持通用验证码
         if (!SpringComponent.isProduct() && BizConstant.MESSAGE_CAPTCHA_IN_TEST.equals(captchaContent)) {
             return;
         }
+        EpMessageCaptchaCaptchaScene scene = EpMessageCaptchaCaptchaScene.member_login;
+        if (BizConstant.WECHAT_APP_MEMBER_CLIENT.equals(type)) {
+            scene = EpMessageCaptchaCaptchaScene.member_login;
+        } else {
+            scene = EpMessageCaptchaCaptchaScene.organ_account_login;
+        }
         EpMessageCaptchaPo captchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaCode(sourceId,
                 EpMessageCaptchaCaptchaType.short_msg,
-                EpMessageCaptchaCaptchaScene.login,
+                scene,
                 captchaCode);
         if (captchaPo == null || captchaPo.getExpireTime().before(DateTools.getCurrentDateTime())) {
             throw new BadCredentialsException("验证码无效，请重新获取");
@@ -116,7 +130,7 @@ public class MessageCaptchaService {
         // 验证码使用后删除
         messageCaptchaRepository.delBySourceIdAndTypeAndSence(sourceId,
                 EpMessageCaptchaCaptchaType.short_msg,
-                EpMessageCaptchaCaptchaScene.login);
+                scene);
     }
 
 

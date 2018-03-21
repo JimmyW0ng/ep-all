@@ -42,10 +42,10 @@ public class OrganClassChildService {
      * 查看班次学员
      *
      * @param classId
-     * @param mobile
+     * @param organAccountPo
      * @return
      */
-    public ResultDo<List<MemberChildBo>> findChildrenByClassId(Long classId, Long mobile) {
+    public ResultDo<List<MemberChildBo>> findChildrenByClassId(Long classId, EpOrganAccountPo organAccountPo) {
         ResultDo<List<MemberChildBo>> resultDo = ResultDo.build();
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classId);
@@ -58,10 +58,9 @@ public class OrganClassChildService {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
         }
         // 校验班次负责人
-        Optional<EpOrganAccountPo> existAccount = organAccountRepository.getByMobileAndOgnId(mobile, classPo.getOgnId());
-        if (!existAccount.isPresent()) {
-            log.error("当前用户无机构账户数据, mobile={}", mobile);
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
         // 孩子信息
         List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classId);

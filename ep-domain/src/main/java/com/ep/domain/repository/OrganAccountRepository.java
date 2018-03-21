@@ -3,12 +3,15 @@ package com.ep.domain.repository;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
+import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
+import com.ep.domain.repository.domain.enums.EpOrganStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganAccountRecord;
 import com.google.common.collect.Lists;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -59,23 +62,6 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .orderBy(EP_ORGAN_ACCOUNT.CREATE_AT.asc())
                 .fetchInto(EpOrganAccountPo.class);
     }
-
-    /**
-     * 根据手机号和机构id获取机构账户
-     *
-     * @param mobile
-     * @param ognId
-     * @return
-     */
-    public Optional<EpOrganAccountPo> getByMobileAndOgnId(Long mobile, Long ognId) {
-        EpOrganAccountPo accountPo = dslContext.selectFrom(EP_ORGAN_ACCOUNT)
-                .where(EP_ORGAN_ACCOUNT.REFER_MOBILE.eq(mobile))
-                .and(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
-                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
-                .fetchOneInto(EpOrganAccountPo.class);
-        return Optional.ofNullable(accountPo);
-    }
-
 
     /**
      * 获取课程团队
@@ -249,5 +235,43 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
         return Optional.ofNullable(data);
     }
 
+    /**
+     * 根据手机号获取机构账户归属机构列表
+     *
+     * @param mobile
+     * @return
+     */
+    public List<EpOrganPo> getOrgansByRefferMobile(Long mobile) {
+        return dslContext.select(EP_ORGAN.ID, EP_ORGAN.OGN_NAME)
+                         .from(EP_ORGAN_ACCOUNT)
+                         .leftJoin(EP_ORGAN)
+                         .on(EP_ORGAN_ACCOUNT.OGN_ID.eq(EP_ORGAN.ID))
+                         .where(EP_ORGAN_ACCOUNT.REFER_MOBILE.eq(mobile))
+                         .and(EP_ORGAN_ACCOUNT.STATUS.eq(EpOrganAccountStatus.normal))
+                         .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                         .and(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
+                         .and(EP_ORGAN.DEL_FLAG.eq(false))
+                         .orderBy(EP_ORGAN_ACCOUNT.ID)
+                         .fetchInto(EpOrganPo.class);
+    }
+
+    /**
+     * 判断手机号是否存在
+     *
+     * @param mobile
+     * @return
+     */
+    public boolean checkExistByMobile(Long mobile) {
+        Long count = dslContext.select(DSL.count(EP_ORGAN_ACCOUNT.ID)).from(EP_ORGAN_ACCOUNT)
+                               .leftJoin(EP_ORGAN)
+                               .on(EP_ORGAN_ACCOUNT.OGN_ID.eq(EP_ORGAN.ID))
+                               .where(EP_ORGAN_ACCOUNT.REFER_MOBILE.eq(mobile))
+                               .and(EP_ORGAN_ACCOUNT.STATUS.eq(EpOrganAccountStatus.normal))
+                               .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                               .and(EP_ORGAN.STATUS.eq(EpOrganStatus.online))
+                               .and(EP_ORGAN.DEL_FLAG.eq(false))
+                               .fetchOneInto(Long.class);
+        return count > BizConstant.LONG_ZERO;
+    }
 }
 

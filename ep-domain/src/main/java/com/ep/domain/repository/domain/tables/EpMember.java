@@ -8,7 +8,6 @@ import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpMemberSex;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
-import com.ep.domain.repository.domain.enums.EpMemberType;
 import com.ep.domain.repository.domain.tables.records.EpMemberRecord;
 import org.jooq.*;
 import org.jooq.impl.TableImpl;
@@ -36,7 +35,7 @@ public class EpMember extends TableImpl<EpMemberRecord> {
      * The reference instance of <code>ep.ep_member</code>
      */
     public static final EpMember EP_MEMBER = new EpMember();
-    private static final long serialVersionUID = 454578222;
+    private static final long serialVersionUID = 803922272;
     /**
      * The column <code>ep.ep_member.id</code>. 主键
      */
@@ -65,10 +64,6 @@ public class EpMember extends TableImpl<EpMemberRecord> {
      * The column <code>ep.ep_member.status</code>. 状态：正常；已冻结；已注销；
      */
     public final TableField<EpMemberRecord, EpMemberStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberStatus.class), this, "状态：正常；已冻结；已注销；");
-    /**
-     * The column <code>ep.ep_member.type</code>. 类型：会员；机构账户
-     */
-    public final TableField<EpMemberRecord, EpMemberType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberType.class), this, "类型：会员；机构账户");
     /**
      * The column <code>ep.ep_member.create_at</code>. 创建时间
      */

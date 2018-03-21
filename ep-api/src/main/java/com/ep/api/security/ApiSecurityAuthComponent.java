@@ -8,15 +8,13 @@ import com.ep.domain.pojo.bo.ApiCredentialBo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import com.ep.domain.pojo.dto.ApiLoginDto;
 import com.ep.domain.pojo.po.EpMemberPo;
+import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpSystemClientPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
-import com.ep.domain.repository.SystemClientRepository;
-import com.ep.domain.repository.SystemMenuRepository;
-import com.ep.domain.repository.SystemRoleRepository;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
-import com.ep.domain.repository.domain.enums.EpMemberType;
+import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.enums.EpSystemClientLoginSource;
-import com.ep.domain.service.MemberService;
 import com.ep.domain.service.MessageCaptchaService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +36,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 鉴权组件（Spring Security）
@@ -59,7 +58,9 @@ public class ApiSecurityAuthComponent {
     @Autowired
     private SystemClientRepository systemClientRepository;
     @Autowired
-    private MemberService memberService;
+    private MemberRepository memberRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
     @Autowired
     private MessageCaptchaService messageCaptchaService;
     @Autowired
@@ -75,6 +76,8 @@ public class ApiSecurityAuthComponent {
      * @param captchaContent
      * @param clientId
      * @param clientSecret
+     * @param type
+     * @param ognId
      * @return
      */
     public ResultDo<ApiLoginDto> loginFromApi(String userName,
@@ -82,12 +85,14 @@ public class ApiSecurityAuthComponent {
                                               String captchaContent,
                                               String clientId,
                                               String clientSecret,
-                                              EpMemberType type) {
+                                              String type,
+                                              Long ognId) {
         if (StringTools.isBlank(userName)
                 || StringTools.isBlank(captchaCode)
                 || StringTools.isBlank(captchaContent)
                 || StringTools.isBlank(clientId)
-                || StringTools.isBlank(clientSecret)) {
+                || StringTools.isBlank(clientSecret)
+                || (BizConstant.WECHAT_APP_ORGAN_CLIENT.equals(type) && ognId == null)) {
             log.error("登录获取token失败，入参缺失！");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
@@ -95,7 +100,8 @@ public class ApiSecurityAuthComponent {
         ApiPrincipalBo principal = new ApiPrincipalBo();
         principal.setUserName(userName);
         principal.setClientId(clientId);
-        principal.setMemberType(type);
+        principal.setType(type);
+        principal.setOgnId(ognId);
         // 验证码业务编码
         principal.setCaptchaCode(captchaCode);
         ApiCredentialBo credentials = new ApiCredentialBo(captchaContent, clientSecret);
@@ -107,7 +113,7 @@ public class ApiSecurityAuthComponent {
             // 生成token
             ApiPrincipalBo principalBo = (ApiPrincipalBo) authToken.getPrincipal();
             String accessToken = this.buildAccessToken(principalBo);
-            ApiLoginDto loginDto = new ApiLoginDto(accessToken, principalBo.getMemberType());
+            ApiLoginDto loginDto = new ApiLoginDto(accessToken);
             return resultDo.setResult(loginDto);
         } catch (GeneralSecurityException e) {
             return ResultDo.build(MessageCode.ERROR_ENCODE);
@@ -137,7 +143,7 @@ public class ApiSecurityAuthComponent {
             log.error("token解析失败，token={}", token, e);
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
-        if (StringTools.isBlank(principalBo.getUserName())
+        if (principalBo.getMobile() == null
                 || StringTools.isBlank(principalBo.getClientId())
                 || StringTools.isBlank(principalBo.getRole())
                 || principalBo.getCreateTime() == null
@@ -158,9 +164,37 @@ public class ApiSecurityAuthComponent {
      *
      * @param principalBo
      */
-    public void loadCurrentUserInfo(ApiPrincipalBo principalBo) {
-        EpMemberPo mbrInfoPo = memberService.getByMobile(Long.parseLong(principalBo.getUserName()));
-        WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_USER, mbrInfoPo);
+    public ResultDo loadCurrentUserInfo(ApiPrincipalBo principalBo) {
+        if (BizConstant.WECHAT_APP_MEMBER_CLIENT.equals(principalBo.getType())) {
+            EpMemberPo mbrInfoPo = memberRepository.getByMobile(principalBo.getMobile());
+            if (mbrInfoPo == null) {
+                log.error("当前Token会员不存在, mobile={}", principalBo.getMobile());
+                return ResultDo.build(MessageCode.ERROR_MEMBER_NOT_EXISTS);
+            } else if (mbrInfoPo.getDelFlag() || EpMemberStatus.cancel.equals(mbrInfoPo.getStatus())) {
+                log.error("当前Token会员已注销, mobile={}", principalBo.getMobile());
+                return ResultDo.build(MessageCode.ERROR_MEMBER_IS_CANCEL);
+            } else if (EpMemberStatus.freeze.equals(mbrInfoPo.getStatus())) {
+                log.error("当前Token会员已冻结, mobile={}", principalBo.getMobile());
+                return ResultDo.build(MessageCode.ERROR_MEMBER_IS_FREEZE);
+            }
+            WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_USER, mbrInfoPo);
+        } else if (BizConstant.WECHAT_APP_ORGAN_CLIENT.equals(principalBo.getType())) {
+            Optional<EpOrganAccountPo> existOrganAccount = organAccountRepository.getByOgnIdAndReferMobile(principalBo.getOgnId(), principalBo.getMobile());
+            if (!existOrganAccount.isPresent()) {
+                log.error("当前Token机构账户不存在, mobile={}, ognId={}", principalBo.getMobile(), principalBo.getOgnId());
+                return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
+            }
+            EpOrganAccountPo organAccountPo = existOrganAccount.get();
+            if (EpOrganAccountStatus.cancel.equals(organAccountPo.getStatus())) {
+                log.error("当前Token机构账户不注销, mobile={}, ognId={}", principalBo.getMobile(), principalBo.getOgnId());
+                return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_IS_CANCEL);
+            } else if (EpOrganAccountStatus.freeze.equals(organAccountPo.getStatus())) {
+                log.error("当前Token机构账户不冻结, mobile={}, ognId={}", principalBo.getMobile(), principalBo.getOgnId());
+                return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_IS_FREEZE);
+            }
+            WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_ORGAN_ACCOUNT, organAccountPo);
+        }
+        return ResultDo.build();
     }
 
     /**
@@ -191,17 +225,16 @@ public class ApiSecurityAuthComponent {
         }
         // 校验用户信息
         Long mobile = Long.valueOf(principalBo.getUserName());
+        principalBo.setMobile(mobile);
         // 校验验证码
-        messageCaptchaService.checkAndHandleCaptcha(mobile, principalBo.getCaptchaCode(), credentialBo.getPassword());
+        messageCaptchaService.checkAndHandleCaptcha(mobile, principalBo.getType(), principalBo.getCaptchaCode(), credentialBo.getPassword());
         // 校验会员
-        EpMemberPo mbrInfoPo = memberService.checkExistAndType(mobile, principalBo.getMemberType());
-        if (mbrInfoPo.getStatus().equals(EpMemberStatus.cancel)) {
-            throw new UsernameNotFoundException("账号已被注销");
-        } else if (mbrInfoPo.getStatus().equals(EpMemberStatus.freeze)) {
-            throw new LockedException("账号已被锁定");
-        }
+        this.checkExistAndType(principalBo);
         // 定位角色
         principalBo.setRole(sysClientPo.getRole());
+        // 清空不必要的数据
+        principalBo.setCaptchaCode(null);
+        principalBo.setUserName(null);
     }
 
     /**
@@ -263,6 +296,46 @@ public class ApiSecurityAuthComponent {
         principal.setExpireTime(DateTools.addSecond(now, tokenExpiration).getTime());
         String tokenJsonStr = JsonTools.encode(principal);
         return CryptTools.aesEncrypt(tokenJsonStr, tokenSecret);
+    }
+
+    /**
+     * 校验登录主体的身份
+     *
+     * @param principalBo
+     * @throws AuthenticationException
+     */
+    private void checkExistAndType(ApiPrincipalBo principalBo) throws AuthenticationException {
+        if (BizConstant.WECHAT_APP_MEMBER_CLIENT.equals(principalBo.getType())) {
+            // 客户端
+            EpMemberPo memberPo = memberRepository.getByMobile(principalBo.getMobile());
+            // 新增会员信息
+            if (memberPo == null) {
+                EpMemberPo insertPo = new EpMemberPo();
+                insertPo.setMobile(principalBo.getMobile());
+                insertPo.setStatus(EpMemberStatus.normal);
+                memberRepository.insert(insertPo);
+                return;
+            }
+            if (memberPo.getDelFlag() || EpMemberStatus.cancel.equals(memberPo.getStatus())) {
+                throw new UsernameNotFoundException("会员已被注销");
+            } else if (EpMemberStatus.freeze.equals(memberPo.getStatus())) {
+                throw new LockedException("会员已被锁定");
+            }
+        } else if (BizConstant.WECHAT_APP_ORGAN_CLIENT.equals(principalBo.getType())) {
+            // 机构端
+            Optional<EpOrganAccountPo> existOrganAccount = organAccountRepository.getByOgnIdAndReferMobile(principalBo.getOgnId(), principalBo.getMobile());
+            if (!existOrganAccount.isPresent()) {
+                throw new UsernameNotFoundException("机构账户不存在");
+            }
+            EpOrganAccountPo organAccountPo = existOrganAccount.get();
+            if (organAccountPo.getDelFlag() || EpOrganAccountStatus.cancel.equals(organAccountPo.getStatus())) {
+                throw new UsernameNotFoundException("机构账户已被注销");
+            } else if (EpOrganAccountStatus.freeze.equals(organAccountPo.getStatus())) {
+                throw new LockedException("机构账户已被锁定");
+            }
+        } else {
+            throw new UsernameNotFoundException("登录类型不合法");
+        }
     }
 
 }

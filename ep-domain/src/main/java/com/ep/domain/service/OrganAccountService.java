@@ -49,25 +49,20 @@ public class OrganAccountService {
 
 
     /**
-     * 根据手机号获取详情
+     * 获取机构账户详情
      *
-     * @param mobile
+     * @param organAccountPo
      * @return
      */
-    public ResultDo<OrganAccountBo> getOrganAccountInfo(Long mobile) {
+    public ResultDo<OrganAccountBo> getOrganAccountInfo(EpOrganAccountPo organAccountPo) {
         ResultDo<OrganAccountBo> resultDo = ResultDo.build();
-        List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
-        if (CollectionsTools.isEmpty(accountList)) {
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
-        }
-        EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
         OrganAccountBo accountBo = new OrganAccountBo();
         // 认证编号
-        accountBo.setId(accountPo.getId());
+        accountBo.setId(organAccountPo.getId());
         // 昵称
-        accountBo.setNickName(accountPo.getNickName());
+        accountBo.setNickName(organAccountPo.getNickName());
         // 机构名
-        EpOrganPo organPo = organRepository.getById(accountPo.getOgnId());
+        EpOrganPo organPo = organRepository.getById(organAccountPo.getOgnId());
         accountBo.setOgnName(organPo.getOgnName());
         // 头像
         Optional<EpFilePo> optAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, accountBo.getId());
@@ -172,21 +167,15 @@ public class OrganAccountService {
     /**
      * 根据账户id获取今日课程
      *
-     * @param mobile
+     * @param organAccountPo
      * @return
      */
-    public ResultDo<List<OrganAccountClassBo>> findTodayClassByOrganAccount(Long mobile) {
+    public ResultDo<List<OrganAccountClassBo>> findTodayClassByOrganAccount(EpOrganAccountPo organAccountPo) {
         ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
         Timestamp now = DateTools.getCurrentDateTime();
         Timestamp startTime = DateTools.zerolizedTime(now);
         Timestamp endTime = DateTools.getEndTime(now);
-        List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
-        if (CollectionsTools.isEmpty(accountList)) {
-            log.error("机构账户不存在, mobile={}", mobile);
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
-        }
-        EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
-        List<OrganAccountClassBo> todayClasses = organClassRepository.findClassByOgnAccountId(accountPo.getId(), startTime, endTime);
+        List<OrganAccountClassBo> todayClasses = organClassRepository.findClassByOgnAccountId(organAccountPo.getId(), startTime, endTime);
         if (CollectionsTools.isNotEmpty(todayClasses)) {
             for (OrganAccountClassBo classBo : todayClasses) {
                 // 加载课程图片
@@ -199,20 +188,15 @@ public class OrganAccountService {
     }
 
     /**
-     * 根据账户id获取全部课程
+     * 根据当前账户获取全部课程
      *
-     * @param mobile
+     * @param pageable
+     * @param organAccountPo
      * @return
      */
-    public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(Pageable pageable, Long mobile) {
+    public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(Pageable pageable, EpOrganAccountPo organAccountPo) {
         ResultDo<Page<OrganAccountClassBo>> resultDo = ResultDo.build();
-        List<EpOrganAccountPo> accountList = organAccountRepository.getByMobile(mobile);
-        if (CollectionsTools.isEmpty(accountList)) {
-            log.error("机构账户不存在, mobile={}", mobile);
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
-        }
-        EpOrganAccountPo accountPo = accountList.get(BizConstant.DB_NUM_ZERO);
-        Page<OrganAccountClassBo> page = organClassRepository.findAllClassByOrganAccountForPage(pageable, accountPo.getId());
+        Page<OrganAccountClassBo> page = organClassRepository.findAllClassByOrganAccountForPage(pageable, organAccountPo.getId());
         List<OrganAccountClassBo> data = page.getContent();
         if (CollectionsTools.isEmpty(data)) {
             return resultDo.setResult(page);
@@ -315,6 +299,18 @@ public class OrganAccountService {
      */
     public Optional<EpOrganAccountPo> getByOgnIdAndReferMobile(Long ognId, Long referMobile) {
         return organAccountRepository.getByOgnIdAndReferMobile(ognId, referMobile);
+    }
+
+    /**
+     * 根据手机号获取机构账户归属机构列表
+     *
+     * @param mobile
+     * @return
+     */
+    public ResultDo<List<EpOrganPo>> getOrgansByRefferMobile(Long mobile) {
+        ResultDo<List<EpOrganPo>> resultDo = ResultDo.build();
+        List<EpOrganPo> data = organAccountRepository.getOrgansByRefferMobile(mobile);
+        return resultDo.setResult(data);
     }
 
 }

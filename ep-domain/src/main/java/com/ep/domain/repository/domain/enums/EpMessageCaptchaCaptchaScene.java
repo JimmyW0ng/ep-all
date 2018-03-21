@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 验证场景：登录
+ * 验证场景：客户端登录，机构端登录
  */
 @Generated(
     value = {
@@ -24,7 +24,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum EpMessageCaptchaCaptchaScene implements EnumType {
 
-    login("login");
+    member_login("member_login"),
+
+    organ_account_login("organ_account_login");
 
     private final String literal;
 
