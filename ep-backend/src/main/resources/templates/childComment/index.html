@@ -27,18 +27,18 @@
                             <option value="">课程</option>
                             <option th:each="key : ${courseMap.keySet()}"
                                     th:value="${key}"
-                                    th:selected="${courseMap.get('courseId')}"
+                                    th:selected="${#strings.equals(key,searchMap.get('courseId'))}"
                                     th:text="${courseMap.get(key)}">
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <select type="text" class="form-control" style="width:250px" id="classId" name="classId"
+                        <select type="text" class="form-control" style="width:250px" name="classId" id="classId"
                                 onchange="changeClass(this)">
                             <option value="">班级</option>
                             <option th:each="key : ${classMap.keySet()}"
                                     th:value="${key}"
-                                    th:selected="${classMap.get('classId')}"
+                                    th:selected="${#strings.equals(key,searchMap.get('classId'))}"
                                     th:text="${classMap.get(key)}">
                             </option>
                         </select>
@@ -49,13 +49,13 @@
                             <option value="">课时目录</option>
                             <option th:each="key : ${classCatalogMap.keySet()}"
                                     th:value="${key}"
-                                    th:selected="${classCatalogMap.get('classCatalogId')}"
+                                    th:selected="${#strings.equals(key,searchMap.get('classCatalogId'))}"
                                     th:text="${classCatalogMap.get(key)}">
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control " style="width:200px" id="childNickName"
+                        <input type="text" class="form-control " style="width:200px" id="childNickName" placeholder="昵称"
                                name="childNickName">
                         </input>
                     </div>
@@ -77,9 +77,6 @@
                         <thead>
                         <tr>
                             <th>昵称</th>
-                            <th>课程</th>
-                            <th>班次</th>
-                            <th>班次目录</th>
                             <th style="width:500px">内容</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -87,15 +84,14 @@
                         </thead>
                         <tbody id="tbody">
                         <tr th:each="bo:${page.content}">
-                            <!--<form>-->
-                            <!--<input name="childId" type="hidden" th:value="${bo.childId}">-->
-                            <!--<input name="courseId" type="hidden" th:value="${bo.courseId}">-->
-                            <!--<input name="classCatalogId" type="hidden" th:value="${bo.classCatalogId}">-->
-                            <!--</form>-->
-                            <td th:text="${bo.childNickName}"></td>
-                            <td th:text="${bo.courseName}"></td>
-                            <td th:text="${bo.className}"></td>
-                            <td th:text="${bo.classCatalogTitle}"></td>
+                            <form>
+                                <input name="childId" type="hidden" th:value="${bo.childId}">
+                                <input name="courseId" type="hidden" th:value="${bo.courseId}">
+                                <input name="classId" type="hidden" th:value="${bo.classId}">
+                                <input name="classCatalogId" type="hidden" th:value="${bo.classCatalogId}">
+                            </form>
+                            <td th:text="${bo.nickName}"></td>
+
                             <td name="content">
                                 <p th:if="${null!=bo.content}" th:text="'评论:'" style="color:cornflowerblue"></p>
                                 <p name="content" th:title="${bo.content}" th:text="${bo.content}"
@@ -109,9 +105,14 @@
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.type,'launch')}"
                                    href="javascript:void(0)"
                                    th:onclick="'viewContent(this)'">查看</a>
-                                <a class="btn btn-xs btn-info" th:if="${null==bo.replyId}"
+                                <a class="btn btn-xs btn-info"
+                                   th:if="${null==bo.replyId&&null==bo.id&&organAccountId==classOgnAccountId&&organAccountId!=null}"
                                    href="javascript:void(0)"
-                                   th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.classCatalogId}+')'">修改</a>
+                                   th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">添加</a>
+                                <a class="btn btn-xs btn-info"
+                                   th:if="${null==bo.replyId&&null!=bo.id&&organAccountId==classOgnAccountId&&organAccountId!=null}"
+                                   href="javascript:void(0)"
+                                   th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>
                                 <!--<a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"-->
                                 <!--href="javascript:void(0)"-->
                                 <!--th:onclick="'updateChildTagInit(this)'">标签</a>-->
@@ -151,7 +152,8 @@
 
             <input type="hidden" id="sourceId">
             <input id="childId" type="hidden">
-            <input id="classCatalogId" type="hidden">
+            <input id="courseId" type="hidden">
+            <input id="commentClassId" type="hidden">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
@@ -160,7 +162,7 @@
 
             </div>
             <div class="modal-body">
-                <label>内容：</label>
+                <label>评论内容：</label>
                 <textarea class="form-control" id="updateContent" style="height: 100px"></textarea>
                 <label style="margin-top: 10px">标签：</label>
                 <div id="uploadChildTagBox" style="background: #eee;min-height: 200px;padding: 20px 0px;"></div>
@@ -336,18 +338,15 @@
         $("#p_content").text(content)
         $("#p_contentReply").text(contentReply)
         var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
-//        console.log($frm)
         $.ajax({
             type: "POST",
             url: "/auth/childComment/updateChildTagInit",
             data: $frm.serialize(),
             success: function (data) {
                 if (data.success) {
-//                    console.log(data.result)
                     var tag = data.result.organCourseTagBos
                     var memberChildTagPos = data.result.memberChildTagPos
 
-//                    $("#uploadChildTagModal").modal("show")
                     $("#viewChildTagBox").html($("#ognTagTmpl").tmpl(tag));
                     $("#viewChildTagBox").find("input[type='checkbox']").each(function () {
                         var id = $(this).val()
@@ -364,45 +363,63 @@
     }
 
     /**
-     * 修改评价初始化
+     * 新增/修改评价初始化
      */
-    function updateCommentInit(ele, id, childId, classCatalogId) {
-        $("#uploadModal").modal("show")
-        var content = $(ele).parent().siblings("td").find("p[name='content']").eq(0).text()
-        $("#updateContent").text(content)
+    function updateCommentInit(ele, id, childId, courseId, classId, classCatalogId) {
         $("#sourceId").val(id)
         $("#childId").val(childId)
+        $("#courseId").val(courseId)
+        $("#commentClassId").val(classId)
         $("#classCatalogId").val(classCatalogId)
-        var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
-//        console.log($frm)
-        $.ajax({
-            type: "POST",
-            url: "/auth/childComment/updateChildTagInit",
-            data: $frm.serialize(),
-            success: function (data) {
-                if (data.success) {
-                    console.log(data.result)
-                    var tag = data.result.organCourseTagBos
-                    var memberChildTagPos = data.result.memberChildTagPos
+        if (id) {
+            $("#uploadModal").modal("show")
+            var content = $(ele).parent().siblings("td").find("p[name='content']").eq(0).text()
+            $("#updateContent").text(content)
 
-//                    $("#uploadChildTagModal").modal("show")
-                    $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
-                    $("#uploadChildTagBox").find("input[type='checkbox']").each(function () {
-                        var id = $(this).val()
-                        for (var item in memberChildTagPos) {
-                            if (memberChildTagPos[item].tagId == id) {
-                                $(this).attr("checked", true)
-                                $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
+            var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
+            $.ajax({
+                type: "POST",
+                url: "/auth/childComment/updateChildTagInit",
+                data: $frm.serialize(),
+                success: function (data) {
+                    if (data.success) {
+                        console.log(data.result)
+                        var tag = data.result.organCourseTagBos
+                        var memberChildTagPos = data.result.memberChildTagPos
+
+                        $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
+                        $("#uploadChildTagBox").find("input[type='checkbox']").each(function () {
+                            var id = $(this).val()
+                            for (var item in memberChildTagPos) {
+                                if (memberChildTagPos[item].tagId == id) {
+                                    $(this).attr("checked", true)
+                                    $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
-            }
-        })
-    }
+            })
+        } else {
+            $("#uploadModal").modal("show")
+            var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
+            $.ajax({
+                type: "POST",
+                url: "/auth/childComment/createChildTagInit",
+                data: $frm.serialize(),
+                success: function (data) {
+                    if (data.success) {
+                        var tag = data.result
 
+                        $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
+                    }
+                }
+            })
+        }
+
+    }
     /**
-     * 修改评价内容提交
+     * 新增/修改评价内容提交
      */
     function updateCommentDo() {
         var tagIds = []
@@ -411,22 +428,46 @@
                 tagIds.push($(this).val())
             }
         })
-//        console.log(tagIds)
-        $.ajax({
-            type: "POST",
-            url: "/auth/childComment/updateComment",
-            data: {
-                id: $("#sourceId").val(), content: $("#updateContent").val(), childId: $("#childId").val(),
-                classCatalogId: $("#classCatalogId").val(), tagId: tagIds
-            },
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, "/auth/childComment/index")
-                } else {
-                    toastr_error(null, "/auth/childComment/index")
+        if ($("#sourceId").val()) {
+            $.ajax({
+                type: "POST",
+                url: "/auth/childComment/updateComment",
+                data: {
+                    id: $("#sourceId").val(), content: $("#updateContent").val(),
+                    childId: $("#childId").val(),
+                    classCatalogId: $("#classCatalogId").val(), tagId: tagIds
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr_success(null, "/auth/childComment/index")
+                    } else {
+                        toastr_error(null, "/auth/childComment/index")
+                    }
                 }
-            }
-        })
+            })
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/auth/childComment/createComment",
+                data: {
+                    id: $("#sourceId").val(),
+                    courseId: $("#courseId").val(),
+                    classId: $("#commentClassId").val(),
+                    content: $("#updateContent").val(),
+                    childId: $("#childId").val(),
+                    classCatalogId: $("#classCatalogId").val(),
+                    tagId: tagIds
+                },
+                success: function (data) {
+                    if (data.success) {
+                        toastr_success(null, document.location.href)
+                    } else {
+                        toastr_error(null, document.location.href)
+                    }
+                }
+            })
+        }
+
     }
 
     //    $(function () {

@@ -21,6 +21,7 @@ public class MemberChildCommentBo extends EpMemberChildCommentPo {
     private Long replyId;
     private String contentReply;
     private Long orderId;
+    private Long classChildId;
 
     public String getCommentTimeFormat() {
         return DateTools.formatDatetoString(super.getCreateAt(), DateTools.DATE_FMT_4);
