@@ -1,5 +1,6 @@
 package com.ep.backend.controller;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
@@ -40,7 +41,7 @@ public class ConstantTagController extends BackendController {
             constantCatalogMap.put(po.getId(),po.getLabel());
             List<ConstantTagBo> constantTagBos = constantTagService.findBosByCatalogIdAndOgnId(po.getId(),null);
             constantTagBos.forEach(bo->{
-                bo.setUsedFlag(bo.getUsedOrganCourseTag()!=null);
+                bo.setUsedFlag(bo.getUsedOrganCourseTag().longValue() > BizConstant.DB_NUM_ZERO);
             });
             constantTagsMap.put(po.getId(),constantTagBos);
         });

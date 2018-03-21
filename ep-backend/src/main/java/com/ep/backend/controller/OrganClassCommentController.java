@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class OrganClassCommentController extends BackendController {
     private OrganClassCommentService organClassCommentService;
 
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('merchant:classComment:index')")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "ognName", required = false) String ognName,
                         @RequestParam(value = "courseName", required = false) String courseName,
@@ -79,6 +81,7 @@ public class OrganClassCommentController extends BackendController {
      * @return
      */
     @GetMapping("chosen/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:classComment:index')")
     @ResponseBody
     public ResultDo chosen(@PathVariable("id") Long id) {
         return organClassCommentService.chosen(id);
@@ -91,6 +94,7 @@ public class OrganClassCommentController extends BackendController {
      * @return
      */
     @GetMapping("unchosen/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:classComment:index')")
     @ResponseBody
     public ResultDo unchosen(@PathVariable("id") Long id) {
         return organClassCommentService.unchosen(id);

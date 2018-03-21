@@ -196,7 +196,6 @@
         if ($("#act_type").val() == 'c_act') {
             var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
             var nodes = treeObj.getSelectedNodes();
-            console.log(nodes[0])
             $("#parentId").val(nodes[0].id)
             $("#parentName").val(nodes[0].name)
             $("#buttonBox").find("button").data("id", nodes[0].id).show()
@@ -226,7 +225,6 @@
             url: '/auth/menu/view/' + id,
             success: function (data) {
                 if (data.success) {
-                    console.log(data.result)
                     var menu = data.result
                     $("#id").val(menu.id)
                     $("#parentId").val(menu.parentId)
@@ -258,7 +256,6 @@
         $("#menuBox").show()
         $("#act_type").val(titleClazz)
         var clazz = $("#act_type").val()
-        console.log($("#act_type").parent())
         $("#act_type").parent().children().hide()
         $("#act_type").parent().find("." + clazz).show()
         if($("#saveBtn").hasClass(titleClazz)){
@@ -277,7 +274,7 @@
     function updateMenuShow(ele) {
         resetFrmField();
         menuBoxTitle("u_act")
-        $("#permission").attr("readonly",true)
+//        $("#permission").attr("readonly",true)
         var id = $(ele).data("id")
         $.ajax({
             type: 'GET',
@@ -330,7 +327,6 @@
     }
 
     function delMenuDo(ids) {
-        console.log(ids)
         $.ajax({
             type:"POST",
             url:"/auth/menu/delete",
@@ -380,7 +376,6 @@
         var nodes = treeObj.getSelectedNodes();
         //获取鼠标点击的标签（单个）END
 
-        console.log(nodes[0].id)
         readMenuShow(nodes[0].id);
 
     }

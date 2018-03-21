@@ -52,10 +52,9 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
     public List<ConstantTagBo> findBosByCatalogIdAndOgnId(Long catalogId, Long ognId) {
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_CONSTANT_TAG.ID);
-        fieldList.add(EP_CONSTANT_TAG.CATALOG_ID);
         fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
 
-        fieldList.add(EP_ORGAN_COURSE_TAG.ID.as("usedOrganCourseTag"));
+        fieldList.add(EP_ORGAN_COURSE_TAG.ID.count().as("usedOrganCourseTag"));
         return dslContext.select(fieldList)
                 .from(EP_CONSTANT_TAG)
                 .leftJoin(EP_ORGAN_COURSE_TAG)

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +54,7 @@ public class OrderController extends BackendController {
      * @return
      */
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
@@ -114,6 +116,7 @@ public class OrderController extends BackendController {
      * @return
      */
     @PostMapping("batchOrderSuccess")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo batchOrderSuccess(
             @RequestBody List<EpOrderPo> pos) {
@@ -128,6 +131,7 @@ public class OrderController extends BackendController {
      * @param classId
      */
     @PostMapping("orderSuccess")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo orderSuccess(@RequestParam(value = "id") Long id,
                                  @RequestParam(value = "classId") Long classId
@@ -141,6 +145,7 @@ public class OrderController extends BackendController {
      * @param id
      */
     @GetMapping("orderRefuse")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo orderRefuse(
             @RequestParam(value = "id") Long id,
@@ -161,6 +166,7 @@ public class OrderController extends BackendController {
      * @param id
      */
     @GetMapping("orderCancel")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo orderCancel(
             @RequestParam(value = "id") Long id,
