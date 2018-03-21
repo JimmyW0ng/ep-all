@@ -167,7 +167,6 @@ public class OrganService {
         }
         EpOrganConfigPo organConfigPo = new EpOrganConfigPo();
         organConfigPo.setOgnId(po.getId());
-        organConfigPo.setWeight(Byte.valueOf("1"));
         organConfigPo.setSupportTag(bo.getSupportTag());
         organConfigRepository.insert(organConfigPo);
         log.info("[机构]新增机构成功，id={}。", po.getId());
