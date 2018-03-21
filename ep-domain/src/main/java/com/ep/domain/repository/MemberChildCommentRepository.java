@@ -167,7 +167,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
-        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.as("nickName"));
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
         SelectConditionStep<Record> record = dslContext.select(fieldList)

@@ -88,7 +88,8 @@ public class MemberChildCommentController extends BackendController {
         });
         model.addAttribute("courseMap", courseMap);
         //班次下拉框
-        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, EpOrganClassStatus.opening);
+        EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
         Map<Long, String> classMap = Maps.newHashMap();
         organClassPos.forEach(p -> {
             classMap.put(p.getId(), p.getClassName());
@@ -101,6 +102,9 @@ public class MemberChildCommentController extends BackendController {
         });
         model.addAttribute("classCatalogMap", classCatalogMap);
         //查询条件
+        searchMap.put("courseId", courseId);
+        searchMap.put("classId", classId);
+        searchMap.put("classCatalogId", classCatalogId);
         model.addAttribute("searchMap", searchMap);
         return "childComment/index";
     }
@@ -173,7 +177,8 @@ public class MemberChildCommentController extends BackendController {
     @GetMapping("changeCourse/{courseId}")
     @ResponseBody
     public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
-        List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
+        EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
         if (CollectionsTools.isEmpty(organClassPos)) {
             return ResultDo.build().setResult(new HashMap<Long, String>());
         }
