@@ -106,17 +106,17 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_ORGAN_CLASS_CHILD.COURSE_COMMENT_FLAG);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<MemberChildClassBo> data = dslContext.select(fieldList)
-                .from(EP_ORDER)
-                .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-                .leftJoin(EP_ORGAN_CLASS_CHILD).on(EP_ORDER.ID.eq(EP_ORGAN_CLASS_CHILD.ORDER_ID))
-                .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
-                .where(condition)
-                .orderBy(EP_ORGAN.CREATE_AT.desc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetchInto(MemberChildClassBo.class);
+                                                  .from(EP_ORDER)
+                                                  .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
+                                                  .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                                                  .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                                                  .leftJoin(EP_ORGAN_CLASS_CHILD).on(EP_ORDER.ID.eq(EP_ORGAN_CLASS_CHILD.ORDER_ID))
+                                                  .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                                                  .where(condition)
+                                                  .orderBy(EP_ORDER.CREATE_AT.desc())
+                                                  .limit(pageable.getPageSize())
+                                                  .offset(pageable.getOffset())
+                                                  .fetchInto(MemberChildClassBo.class);
         return new PageImpl(data, pageable, count);
     }
 
