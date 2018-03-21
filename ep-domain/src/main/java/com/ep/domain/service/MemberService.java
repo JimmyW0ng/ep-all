@@ -1,5 +1,8 @@
 package com.ep.domain.service;
 
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.OrganAccountRepository;
@@ -37,13 +40,35 @@ public class MemberService {
         return memberRepository.findByPageable(pageable, conditions);
     }
 
+
     /**
      * 冻结会员
      *
      * @param id
      */
-    public int freezeMember(Long id) {
-        return memberRepository.freezeMember(id);
+    public ResultDo freezeById(Long id) {
+        if (memberRepository.freezeById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[平台会员]冻结成功。id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[平台会员]冻结失败。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 解冻会员
+     *
+     * @param id
+     */
+    public ResultDo unfreezeById(Long id) {
+        if (memberRepository.unfreezeById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[平台会员]解冻成功。id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[平台会员]解冻失败。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     /**
@@ -52,8 +77,14 @@ public class MemberService {
      * @param id
      * @return
      */
-    public int cancelMember(Long id) {
-        return memberRepository.cancelMember(id);
+    public ResultDo cancelById(Long id) {
+        if (memberRepository.cancelById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[平台会员]注销成功。id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[平台会员]注销失败。id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
 }
