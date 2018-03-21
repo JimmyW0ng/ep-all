@@ -120,8 +120,8 @@ public class MemberChildCommentService {
      * @param conditions
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<Condition> conditions) {
-        return memberChildCommentRepository.findbyPageAndCondition(pageable, conditions);
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Long classId, Long classCatalogId, Pageable pageable, Collection<Condition> conditions) {
+        return memberChildCommentRepository.findbyPageAndCondition(classId, classCatalogId, pageable, conditions);
     }
 
     /**

@@ -460,5 +460,19 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         return Optional.ofNullable(data);
     }
 
+    /**
+     * 根据课程id和状态获取记录
+     *
+     * @param courseId
+     * @return
+     */
+    public List<EpOrganClassPo> findByCourseIdAndStatus(Long courseId, EpOrganClassStatus status) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS.STATUS.eq(status))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganClassPo.class);
+    }
+
 }
 

@@ -30,16 +30,6 @@
                                aria-required="true">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">孩子昵称：</label>
-                    <div class="col-sm-3">
-                        <input id="childNickName" name="childNickName" type="text" class="form-control" required="true"
-                               th:field="*{childNickName}"
-                               aria-required="true">
-
-                        </input>
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">会员开始时间：</label>
@@ -61,34 +51,31 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">会员等级：</label>
                     <div class="col-sm-3">
-                        <input id="level" name="level" type="text" class="form-control" required="true"
-                               th:field="*{level}"
-                               aria-required="true">
-                        </input>
+                        <select id="level" name="level" type="text" class="form-control" required="true"
+                                th:field="*{level}" aria-required="true">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">入会费用（元）：</label>
                     <div class="col-sm-3">
-                        <input id="prize" name="prize" type="text" class="form-control" required="true"
+                        <input id="prize" name="prize" type="number" class="form-control" required="true"
                                th:field="*{prize}"
                                aria-required="true">
                         </input>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">状态：</label>
-                    <div class="col-sm-3">
-                        <select id="status" name="status" type="text" class="form-control" required="true"
-                                th:field="*{status}"
-                                aria-required="true">
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganVipStatus).values()}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganVipStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-3">
@@ -113,49 +100,18 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
 
-    /**
-     * 上传教师头像
-     */
-    function uploadAvatarImg($btn, ele) {
-        $(ele).attr("disabled", true);
-        data = new FormData();
-        data.append("file", $("#avatar_img")[0].files[0]);
-        $.ajax({
-            type: "POST",
-            url: "/auth/organAccount/uploadAvatar",
-            data: data,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                if (data.success) {
-                    console.log(data.result)
-                    $("#avatar_img_url").attr("src", data.result.fileUrl)
-                    $("#avatar_url").val(data.result.fileUrl)
-                    $("#avatar_url_preCode").val(data.result.preCode)
-                }
-                $(ele).attr("disabled", false);
-            },
-            error: function (XMLHttpRequest) {
-                $(ele).attr("disabled", false);
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
-    }
 
     function frmSubmit() {
         if (!$("#frm").valid()) {
             console.log("valid fail")
             return;
         }
-        if (!checkFormCreateImgRequired([{eleId: "avatar_url", msg: "请上传教师头像"}])) {
-            return
-        }
 
         var url;
         if ($("#id").val()) {
-            url = '/auth/organAccount/update'
+            url = '/auth/organVip/update'
         } else {
-            url = '/auth/organAccount/create'
+            url = '/auth/organVip/create'
         }
         $.ajax({
             type: 'POST',
@@ -184,6 +140,20 @@
 
 
     $(function () {
+        jQuery.validator.addMethod("isMobile", function (value, element) {
+            var length = value.length;
+            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
+            return this.optional(element) || (length == 11 && mobile.test(value));
+        }, "请填写正确的手机号码!");
+        $("#frm").validate({
+            rules: {
+                mobile: {isMobile: true}
+            },
+            messages: {
+                isMobile: "请填写正确的手机号码!"
+            },
+
+        })
 
     })
 

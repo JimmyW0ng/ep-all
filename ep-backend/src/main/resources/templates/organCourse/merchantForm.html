@@ -136,7 +136,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12" th:if="${supportTag}">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）
@@ -683,35 +683,42 @@
             })
 
             //班次end
-            //公用标签start
-            var tagList = [[${ognTagList}]]
-            var constantTag = []
-            var ognTag = []
+            if ([[${supportTag}]]) {
+                //公用标签start
+                var tagList = [[${ognTagList}]]
+                var constantTag = []
+                var ognTag = []
 
-            for (item in tagList) {
-                if (tagList[item].ognFlag) {
-                    ognTag.push({id: tagList[item].id, tagName: tagList[item].tagName, ognFlag: tagList[item].ognFlag})
-                } else {
-                    constantTag.push({
-                        id: tagList[item].id,
-                        tagName: tagList[item].tagName,
-                        ognFlag: tagList[item].ognFlag
+                for (item in tagList) {
+                    if (tagList[item].ognFlag) {
+                        ognTag.push({
+                            id: tagList[item].id,
+                            tagName: tagList[item].tagName,
+                            ognFlag: tagList[item].ognFlag
+                        })
+                    } else {
+                        constantTag.push({
+                            id: tagList[item].id,
+                            tagName: tagList[item].tagName,
+                            ognFlag: tagList[item].ognFlag
+                        })
+                    }
+                }
+                $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+                $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
+                //公用标签end
+                //课程标签start
+                var organCourseTagBos = [[${organCourseTagBos}]]
+                for (item in organCourseTagBos) {
+                    $("#constantTagBox").find("input[name='id']").each(function () {
+                        if ($(this).val() == organCourseTagBos[item].tagId) {
+                            $(this).attr("checked", true)
+                        }
                     })
                 }
+                //课程标签end
             }
-            $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
-            $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
-            //公用标签end
-            //课程标签start
-            var organCourseTagBos = [[${organCourseTagBos}]]
-            for (item in organCourseTagBos) {
-                $("#constantTagBox").find("input[name='id']").each(function () {
-                    if ($(this).val() == organCourseTagBos[item].tagId) {
-                        $(this).attr("checked", true)
-                    }
-                })
-            }
-            //课程标签end
+
         }
         //修改页面初始化end
 

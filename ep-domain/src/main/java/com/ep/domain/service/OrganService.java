@@ -10,6 +10,7 @@ import com.ep.domain.pojo.bo.OrganBo;
 import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.OrganInfoDto;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpOrganConfigPo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
@@ -47,6 +48,8 @@ public class OrganService {
     private OrganClassRepository organClassRepository;
     @Autowired
     private SystemUserRepository systemUserRepository;
+    @Autowired
+    private OrganConfigRepository organConfigRepository;
 
     /**
      * 机构详情(基本信息＋banner列表＋课程列表)
@@ -122,6 +125,9 @@ public class OrganService {
             bo.setVipFlag(false);
             bo.setVipName(null);
         }
+        if (bo.getSupportTag() == null) {
+            bo.setSupportTag(false);
+        }
         if (StringTools.isBlank(bo.getOgnName()) || StringTools.isBlank(bo.getOgnAddress())
                 || null == bo.getOgnRegion() || null == bo.getMarketWeight()) {
             log.error("[机构]新增机构失败。请求参数异常。");
@@ -159,6 +165,11 @@ public class OrganService {
         if (StringTools.isNotBlank(bo.getLogoUrlPreCode())) {
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
+        EpOrganConfigPo organConfigPo = new EpOrganConfigPo();
+        organConfigPo.setOgnId(po.getId());
+        organConfigPo.setWeight(Byte.valueOf("1"));
+        organConfigPo.setSupportTag(bo.getSupportTag());
+        organConfigRepository.insert(organConfigPo);
         log.info("[机构]新增机构成功，id={}。", po.getId());
         return ResultDo.build();
     }
@@ -175,6 +186,9 @@ public class OrganService {
         if (bo.getVipFlag() == null) {
             bo.setVipFlag(false);
             bo.setVipName(null);
+        }
+        if (bo.getSupportTag() == null) {
+            bo.setSupportTag(false);
         }
         if (null == bo.getId() || StringTools.isBlank(bo.getOgnName())
                 || StringTools.isBlank(bo.getOgnAddress()) || null == bo.getOgnRegion()) {
@@ -220,15 +234,14 @@ public class OrganService {
             fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, po.getId());
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
-        if (organRepository.updateSystemOrgan(po) == BizConstant.DB_NUM_ONE) {
+        if (organRepository.updateSystemOrgan(po) == BizConstant.DB_NUM_ONE &&
+                organConfigRepository.updateSupportTagByOgnId(bo.getSupportTag(), bo.getId()) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]更新机构成功，id={}。", po.getId());
             return ResultDo.build();
         } else {
             log.error("[机构]更新机构失败，id={}。", po.getId());
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
-
         }
-
     }
 
     /**

@@ -64,6 +64,8 @@ public class OrganCourseController extends BackendController {
     private FileService fileService;
     @Autowired
     private OrganService organService;
+    @Autowired
+    private OrganConfigService organConfigService;
 
     /**
      * 平台课程列表
@@ -179,7 +181,8 @@ public class OrganCourseController extends BackendController {
         }
         model.addAttribute("organCoursePo", organCoursePo);
 
-
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
+        model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
         return "organCourse/merchantForm";
     }
 
@@ -342,6 +345,8 @@ public class OrganCourseController extends BackendController {
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
+        model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
         return "organCourse/merchantForm";
     }
 
@@ -423,6 +428,8 @@ public class OrganCourseController extends BackendController {
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
+        model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
         return "organCourse/merchantRectify";
     }
 

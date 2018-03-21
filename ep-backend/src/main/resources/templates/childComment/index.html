@@ -22,33 +22,46 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form">
                     <div class="form-group">
-                        <select type="text" class="form-control " name="courseId" onchange="changeCourse(this)">
-                            <option>课程</option>
+                        <select type="text" class="form-control" style="width:250px" name="courseId"
+                                onchange="changeCourse(this)">
+                            <option value="">课程</option>
                             <option th:each="key : ${courseMap.keySet()}"
                                     th:value="${key}"
+                                    th:selected="${courseMap.get('courseId')}"
                                     th:text="${courseMap.get(key)}">
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <select type="text" class="form-control " name="classId">
-                            <option>班次</option>
+                        <select type="text" class="form-control" style="width:250px" id="classId" name="classId"
+                                onchange="changeClass(this)">
+                            <option value="">班级</option>
+                            <option th:each="key : ${classMap.keySet()}"
+                                    th:value="${key}"
+                                    th:selected="${classMap.get('classId')}"
+                                    th:text="${classMap.get(key)}">
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <select type="text" class="form-control " name="classCatalogId"
-                                th:value="${map.get('classCatalogId')}">
-                            <option>班次目录</option>
-                            <option value=71>动手课</option>
-                        </select>
-                        <select type="text" class="form-control " name="classCatalogId">
-                            <option>班次目录</option>
+                        <select type="text" class="form-control " style="width:250px" id="classCatalogId"
+                                name="classCatalogId">
+                            <option value="">课时目录</option>
+                            <option th:each="key : ${classCatalogMap.keySet()}"
+                                    th:value="${key}"
+                                    th:selected="${classCatalogMap.get('classCatalogId')}"
+                                    th:text="${classCatalogMap.get(key)}">
+                            </option>
                         </select>
                     </div>
-
+                    <div class="form-group">
+                        <input type="text" class="form-control " style="width:200px" id="childNickName"
+                               name="childNickName">
+                        </input>
+                    </div>
 
                     <div class="form-group" style="vertical-align: top;">
-                        <button class="btn btn-primary" id="query-button" type="button">查询</button>
+                        <button class="btn btn-primary" id="" type="button" onclick="search()">查询</button>
                     </div>
 
                 </form>
@@ -63,7 +76,7 @@
                            aria-describedby="editable_info">
                         <thead>
                         <tr>
-                            <th>姓名</th>
+                            <th>昵称</th>
                             <th>课程</th>
                             <th>班次</th>
                             <th>班次目录</th>
@@ -74,12 +87,12 @@
                         </thead>
                         <tbody id="tbody">
                         <tr th:each="bo:${page.content}">
-                            <form>
-                                <input name="childId" type="hidden" th:value="${bo.childId}">
-                                <input name="courseId" type="hidden" th:value="${bo.courseId}">
-                                <input name="classCatalogId" type="hidden" th:value="${bo.classCatalogId}">
-                            </form>
-                            <td th:text="${bo.childTrueName}"></td>
+                            <!--<form>-->
+                            <!--<input name="childId" type="hidden" th:value="${bo.childId}">-->
+                            <!--<input name="courseId" type="hidden" th:value="${bo.courseId}">-->
+                            <!--<input name="classCatalogId" type="hidden" th:value="${bo.classCatalogId}">-->
+                            <!--</form>-->
+                            <td th:text="${bo.childNickName}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
                             <td th:text="${bo.classCatalogTitle}"></td>
@@ -200,6 +213,34 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 
 <script>
+    function search() {
+        if (!$("#classCatalogId").val()) {
+            toastr.warning("请选择课时目录!")
+            return
+        }
+        $("#query-form input,#query-form select").each(function (i) {
+            if (this.value != null && this.value != "") {
+                if (this.tagName == 'INPUT') {
+                    jsonObj[this.name] = this.value.replace(/^\s+|\s+$/g, "");
+                } else {
+                    jsonObj[this.name] = this.value;
+                }
+            } else {
+                jsonObj = delJSON(jsonObj, this.name);
+            }
+        });
+        if ($.isEmptyObject(jsonObj)) {
+            return
+        }
+        jsonObj['page'] = 0;
+
+        var href = parseUrl(jsonObj);
+        if (href) {
+            url += '?' + href;
+        }
+
+        window.location = url
+    }
     function changeCourse(ele) {
         var courseId = $(ele).val()
         if (!courseId) {
@@ -210,13 +251,12 @@
             url: '/auth/childComment/changeCourse/' + courseId,
             success: function (data) {
                 if (data.success) {
-                    debugger
-                    var htmls = '<option>课程</option>'
-                    for (var i = 0; i < data.result.length; i++) {
-
+                    var res = data.result
+                    var htmls = '<option value="">班级</option>'
+                    for (var item in res) {
+                        htmls = htmls + '<option value="' + item + '">' + res[item] + '</option>'
                     }
-//                    htmls=htmls+
-                    $("#classId").html()
+                    $("#classId").html(htmls)
                 }
             },
             error: function (XMLHttpRequest) {
@@ -226,6 +266,30 @@
 
     }
 
+    function changeClass(ele) {
+        var classId = $(ele).val()
+        if (!classId) {
+            return
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/auth/childComment/changeClass/' + classId,
+            success: function (data) {
+                if (data.success) {
+                    var res = data.result
+                    var htmls = '<option value="">课时目录</option>'
+                    for (var item in res) {
+                        htmls = htmls + '<option value="' + item + '">' + res[item] + '</option>'
+                    }
+                    $("#classCatalogId").html(htmls)
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+
+    }
 
     /**
      * 修改标签初始化

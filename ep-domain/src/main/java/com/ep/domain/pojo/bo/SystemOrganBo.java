@@ -17,5 +17,6 @@ public class SystemOrganBo extends EpOrganPo {
     private String ognCreateDateStr;
     private String mainpicUrlPreCode;
     private String logoUrlPreCode;
+    private Boolean supportTag;
 
 }

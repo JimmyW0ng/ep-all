@@ -146,46 +146,39 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      * @param condition
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Long classId, Long classCatalogId, Pageable pageable, Collection<? extends Condition> condition) {
+
         EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
 
 
         long totalCount = dslContext.selectCount()
                 .from(EP_ORGAN_CLASS_CHILD)
                 .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
-                .leftJoin(EP_MEMBER_CHILD_COMMENT).on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID).and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId).or(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.isNull())))
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
-                .where(condition).fetchOne(0, Long.class);
-
-
-//        long totalCount = dslContext.selectCount()
-//                .from(EP_MEMBER_CHILD_COMMENT)
-//                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_MEMBER_CHILD_COMMENT.CHILD_ID))
-//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_MEMBER_CHILD_COMMENT.COURSE_ID))
-//                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
-//                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORGAN_CLASS_CATALOG.ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID))
-//                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
-//                .where(condition).fetchOne(0, Long.class);
-
-
-
-
-
+                .where(condition)
+                .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
+                .fetchOne(0, Long.class);
 
 
         if (totalCount == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
-        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.as("nickName"));
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS_CHILD)
                 .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
-                .leftJoin(EP_MEMBER_CHILD_COMMENT).on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID).and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId).or(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.isNull())))
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
-                .where(condition);
+                .where(condition)
+                .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId));
 
         List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_CLASS_CHILD.ID.asc())
                 .limit(pageable.getPageSize())

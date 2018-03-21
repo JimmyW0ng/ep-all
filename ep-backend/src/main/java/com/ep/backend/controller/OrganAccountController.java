@@ -160,7 +160,6 @@ public class OrganAccountController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "新增")
     @PostMapping("/create")
     @ResponseBody
 //    @PreAuthorize("hasAnyAuthority('admin:organ:page')")

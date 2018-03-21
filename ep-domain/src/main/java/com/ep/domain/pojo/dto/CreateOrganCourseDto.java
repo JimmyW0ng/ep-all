@@ -24,5 +24,6 @@ public class CreateOrganCourseDto extends AbstractBasePojo {
     private List<EpConstantTagPo> constantTagPos;
     private String mainpicUrlPreCode;
     private List<String> courseDescPicPreCodes;
+    private Boolean supportTag;
 
 }

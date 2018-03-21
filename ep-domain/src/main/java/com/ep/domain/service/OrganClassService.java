@@ -171,4 +171,14 @@ public class OrganClassService {
         return organClassRepository.findById(id);
 
     }
+
+    /**
+     * 根据课程id和状态获取记录
+     *
+     * @param courseId
+     * @return
+     */
+    public List<EpOrganClassPo> findByCourseIdAndStatus(Long courseId, EpOrganClassStatus status) {
+        return organClassRepository.findByCourseIdAndStatus(courseId, status);
+    }
 }
