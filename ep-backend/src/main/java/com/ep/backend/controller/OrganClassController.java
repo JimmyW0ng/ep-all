@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class OrganClassController extends BackendController {
     private OrderService orderService;
 
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "className", required = false) String className,
@@ -82,6 +84,7 @@ public class OrganClassController extends BackendController {
      * @return
      */
     @GetMapping("opening/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     @ResponseBody
     public ResultDo opening(@PathVariable(value = "id") Long id) {
         EpSystemUserPo userPo = super.getCurrentUser().get();
@@ -95,6 +98,7 @@ public class OrganClassController extends BackendController {
      * @return
      */
     @GetMapping("end/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     @ResponseBody
     public ResultDo end(@PathVariable(value = "id") Long id) {
         EpSystemUserPo userPo = super.getCurrentUser().get();
@@ -108,6 +112,7 @@ public class OrganClassController extends BackendController {
      * @return
      */
     @GetMapping("findOrders/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     @ResponseBody
     public ResultDo findOrders(@PathVariable("id") Long id) {
 
@@ -122,6 +127,7 @@ public class OrganClassController extends BackendController {
      * @return
      */
     @GetMapping("findClassChild/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     @ResponseBody
     public ResultDo findClassChild(@PathVariable("classId") Long classId) {
 

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,7 @@ public class OrganAccountController extends BackendController {
      */
     @ApiOperation(value = "列表")
     @GetMapping("/index")
-//    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:index','platform:organAccount:index'})")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "mobile", required = false) String mobile,
                         @RequestParam(value = "ognName", required = false) String ognName,
@@ -110,7 +111,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @GetMapping("/view/{id}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String view(Model model, @PathVariable("id") Long id) {
 
         model.addAttribute("organAccountPo", organAccountService.getById(id));
@@ -129,7 +130,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @GetMapping("/createInit")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String createInit(Model model) {
 
         model.addAttribute("organAccountPo", new EpOrganAccountPo());
@@ -143,7 +144,7 @@ public class OrganAccountController extends BackendController {
      */
     @ApiOperation(value = "修改初始化")
     @GetMapping("/updateInit/{id}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String updateInit(Model model, @PathVariable("id") Long id) {
 
         model.addAttribute("organAccountPo", organAccountService.getById(id));
@@ -162,7 +163,7 @@ public class OrganAccountController extends BackendController {
      */
     @PostMapping("/create")
     @ResponseBody
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public ResultDo create(OrganAccountBo bo) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         bo.setOgnId(currentUser.getOgnId());
@@ -177,7 +178,7 @@ public class OrganAccountController extends BackendController {
     @ApiOperation(value = "修改")
     @PostMapping("/update")
     @ResponseBody
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public ResultDo update(OrganAccountBo bo) {
 
         return organAccountService.updateOgnAccount(bo);
@@ -189,7 +190,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @GetMapping("/delete/{id}")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo updateInit(@PathVariable("id") Long id) {
         return organAccountService.deleteOgnAccount(id);
@@ -203,7 +204,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @PostMapping("uploadAvatar")
-//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo uploadAvatar(@RequestParam("file") MultipartFile file) throws Exception {
         return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR, null);
@@ -216,7 +217,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @GetMapping("cancel/{id}")
-//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo cancel(@PathVariable("id") Long id) {
         return organAccountService.cancelOgnAccount(id);
@@ -229,7 +230,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @GetMapping("freeze/{id}")
-//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id) {
         return organAccountService.freezeOgnAccount(id);
@@ -242,7 +243,7 @@ public class OrganAccountController extends BackendController {
      * @return
      */
     @GetMapping("unfreeze/{id}")
-//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo unfreeze(@PathVariable("id") Long id) {
         return organAccountService.unfreezeOgnAccount(id);

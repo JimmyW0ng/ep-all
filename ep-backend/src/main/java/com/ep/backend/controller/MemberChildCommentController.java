@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,7 @@ public class MemberChildCommentController extends BackendController {
     ApplicationEventPublisher publisher;
 
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseId", required = false) Long courseId,
@@ -126,6 +128,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("updateComment")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo updateComment(@RequestParam(value = "id") Long id,
                                   @RequestParam(value = "childId") Long childId,
@@ -154,6 +157,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("createComment")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo createComment(
             @RequestParam(value = "childId") Long childId,
@@ -188,6 +192,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("updateChildTagInit")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo updateChildTagInit(
             @RequestParam(value = "childId") Long childId,
@@ -214,6 +219,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("createChildTagInit")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo createChildTagInit(
             @RequestParam(value = "courseId") Long courseId
@@ -232,6 +238,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @GetMapping("changeCourse/{courseId}")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
         EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
@@ -253,6 +260,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @GetMapping("changeClass/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo getCatalogByClassId(@PathVariable("classId") Long classId) {
         List<EpOrganClassCatalogPo> classCatalogPos = organClassCatalogService.findByClassId(classId);
@@ -277,6 +285,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("createCommentLaunch")
+    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
     @ResponseBody
     public ResultDo createComment(
             @RequestParam(value = "childId") Long childId,

@@ -1,11 +1,9 @@
 package com.ep.backend.controller;
 
-import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.MemberService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Collection;
 import java.util.Map;
 
-import static com.ep.domain.repository.domain.Ep.EP;
+import static com.ep.domain.repository.domain.Tables.EP_MEMBER;
 
 /**
  * @Description: 后台会员信息控制器
@@ -41,7 +40,7 @@ public class MemberController extends BackendController {
      * @return
      */
     @GetMapping("/index")
-//    @PreAuthorize("hasAnyAuthority('admin:organ:page')")
+    @PreAuthorize("hasAnyAuthority('platform:member:index')")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 //                         , @RequestParam(value = "mobile", required = false) String mobile,
 //                        @RequestParam(value = "type", required = false) String type,
@@ -51,7 +50,7 @@ public class MemberController extends BackendController {
         Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
 
-        conditions.add(EP.EP_MEMBER.DEL_FLAG.eq(false));
+        conditions.add(EP_MEMBER.DEL_FLAG.eq(false));
         Page<EpMemberPo> page = memberService.getByPage(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("map", map);

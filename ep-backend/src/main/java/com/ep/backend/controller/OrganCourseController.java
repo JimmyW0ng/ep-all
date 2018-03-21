@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +80,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('platform:organCourse:index')")
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseName", required = false) String courseName,
                         @RequestParam(value = "courseType", required = false) String courseType,
@@ -116,6 +118,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantIndex")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantIndex(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
             , @RequestParam(value = "courseName", required = false) String courseName
             , @RequestParam(value = "courseType", required = false) String courseType
@@ -155,6 +158,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantCreateInit")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantCreateInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
@@ -193,6 +197,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("findTagsByCatalog/{catalogId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo<List<EpConstantTagPo>> findTagsByConstantCatalog(
             @PathVariable("catalogId") Long catalogId) {
@@ -217,6 +222,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @PostMapping("/merchantCreate")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo merchantCreate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -230,6 +236,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantview/{courseId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         //机构课程
@@ -285,6 +292,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantUpdateInit/{courseId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantUpdateInit(Model model, @PathVariable(value = "courseId") Long courseId) {
 
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -356,6 +364,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantRectifyInit/{courseId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantRectifyInit(Model model, @PathVariable(value = "courseId") Long courseId) {
 
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -439,6 +448,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @PostMapping("/merchantUpdate")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo merchantUpdate(CreateOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -453,6 +463,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @PostMapping("/merchantRectify")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo merchantRectify(RectifyOrganCourseDto dto) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -472,6 +483,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo deleteByCourseId(@PathVariable(value = "id") Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
@@ -499,19 +511,19 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @PostMapping("uploadMainpic")
-//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo uploadMainpic(@RequestParam("file") MultipartFile file) throws Exception {
         return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, null);
     }
 
     /**
-     * 上传课程内容图片
+     * 上传课程内容图片wangEditor
      *
      * @return
      */
     @PostMapping("uploadCourseDescPic")
-//    @PreAuthorize("hasAnyAuthority('platform:organ:index')")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public String uploadCourseDescPic(@RequestParam("file") MultipartFile file
     ) throws Exception {
