@@ -121,12 +121,9 @@ public class OrganService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo createSystemOrgan(SystemOrganBo bo) {
         log.info("[机构]新增机构开始。机构对象={}。", bo);
-        if (bo.getVipFlag() == null) {
+        if (!bo.getVipFlag()) {
             bo.setVipFlag(false);
             bo.setVipName(null);
-        }
-        if (bo.getSupportTag() == null) {
-            bo.setSupportTag(false);
         }
         if (StringTools.isBlank(bo.getOgnName()) || StringTools.isBlank(bo.getOgnAddress())
                 || null == bo.getOgnRegion() || null == bo.getMarketWeight()) {
@@ -182,13 +179,11 @@ public class OrganService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo updateSystemOrgan(SystemOrganBo bo) {
         log.info("[机构]修改机构开始。机构对象={}。", bo);
-        if (bo.getVipFlag() == null) {
+        if (!bo.getVipFlag()) {
             bo.setVipFlag(false);
             bo.setVipName(null);
         }
-        if (bo.getSupportTag() == null) {
-            bo.setSupportTag(false);
-        }
+
         if (null == bo.getId() || StringTools.isBlank(bo.getOgnName())
                 || StringTools.isBlank(bo.getOgnAddress()) || null == bo.getOgnRegion()) {
             log.error("[机构]修改机构失败。请求参数异常。");
@@ -222,7 +217,6 @@ public class OrganService {
         po.setMarketWeight(bo.getMarketWeight());
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
         po.setOgnCreateDate(DateTools.stringToTimestamp(bo.getOgnCreateDateStr(), "yyyy-MM-dd"));
-        System.out.println(po);
         //主图
         if (StringTools.isNotBlank(bo.getMainpicUrlPreCode())) {
             fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, po.getId());

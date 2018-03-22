@@ -15,22 +15,23 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5 th:text="${organPo.id} eq null ? '注册商家' : '修改商家'"></h5>
+            <h5 th:text="${organBo.id} eq null ? '注册商家' : '修改商家'"></h5><h5>(<span class="required-sign">*为必填</span>)
+        </h5>
             <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="history.back()">返回</a>
 
         </div>
         <div class="ibox-content">
-            <form class="form-horizontal m-t" id="organFrm" th:object="${organPo}">
+            <form class="form-horizontal m-t" id="organFrm" th:object="${organBo}">
                 <input type="hidden" id="id" name="id" th:field="*{id}"/>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构名称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构名称</label>
                     <div class="col-sm-3">
                         <input id="ognName" name="ognName" type="text" class="form-control" required="true" th:field="*{ognName}"
-                               aria-required="true">
+                               maxlength="30" aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构地区：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构地区</label>
                     <div style="width: 100px;display: inline-block;margin-left: 15px" >
                         <select id="province" name="province" type="text" class="form-control" required="true" onchange="getCityByProvince()"
                                aria-required="true">
@@ -56,80 +57,81 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构地址：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构地址</label>
                     <div class="col-sm-3">
                         <input id="ognAddress" name="ognAddress" type="text" class="form-control" required="true" th:field="*{ognAddress}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">地区经度：</label>
+                    <label class="col-sm-2 control-label">地区经度</label>
                     <div class="col-sm-3">
                         <input id="ognLng" name="ognLng" type="text" class="form-control" th:field="*{ognLng}"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">地区纬度：</label>
+                    <label class="col-sm-2 control-label">地区纬度</label>
                     <div class="col-sm-3">
                         <input id="ognLat" name="ognLat" type="text" class="form-control" th:field="*{ognLat}"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构简介：</label>
+                    <label class="col-sm-2 control-label">机构简介</label>
                     <div class="col-sm-3">
                         <textarea id="ognShortIntroduce" name="ognShortIntroduce" type="text" class="form-control"
-                                  th:field="*{ognShortIntroduce}"
+                                  maxlength="50" th:field="*{ognShortIntroduce}"
                                   />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构成立日期：</label>
+                    <label class="col-sm-2 control-label">机构成立日期</label>
                     <div class="col-sm-3">
-                        <input id="ognCreateDateStr" name="ognCreateDateStr" type="text" class="form-control datetimepicker_date" th:value="${organPo.ognCreateDate}"
+                        <input id="ognCreateDateStr" name="ognCreateDateStr" type="text"
+                               class="form-control datetimepicker_date" th:value="${organBo.ognCreateDate}"
                                 >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构官方电话：</label>
+                    <label class="col-sm-2 control-label">机构官方电话</label>
                     <div class="col-sm-3">
                         <input id="ognPhone" name="ognPhone" type="text" class="form-control" th:field="*{ognPhone}"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构官方邮箱：</label>
+                    <label class="col-sm-2 control-label">机构官方邮箱</label>
                     <div class="col-sm-3">
                         <input id="ognEmail" name="ognEmail" type="email" class="form-control" th:field="*{ognEmail}"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构官方网址：</label>
+                    <label class="col-sm-2 control-label">机构官方网址</label>
                     <div class="col-sm-3">
                         <input id="ognUrl" name="ognUrl" type="text" class="form-control" th:field="*{ognUrl}"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构介绍：</label>
+                    <label class="col-sm-2 control-label">机构介绍</label>
                     <div class="col-sm-3">
                         <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" th:field="*{ognIntroduce}"
                                aria-required="true"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label"><input id="vipFlag" name="vipFlag"
-                                                                 type="checkbox">是否开通会员制度：</label>
+                    <label class="col-sm-2 control-label"><input id="vipFlag" name="vipFlag" th:field="*{vipFlag}"
+                                                                 type="checkbox">是否开通会员制度</label>
                     <div class="col-sm-3">
                         <input id="vipName" name="vipName" type="text" class="form-control"
-                               placeholder="会员名称" th:value="${organPo.ognCreateDate}">
+                               placeholder="会员名称" th:field="*{vipName}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">营销权重：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>营销权重</label>
                     <div class="col-sm-3">
                         <input id="marketWeight" name="marketWeight" type="number" class="form-control" required="true"
                                th:field="*{marketWeight}"
@@ -138,25 +140,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">备注：</label>
+                    <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-3">
                         <textarea id="remark" name="remark" type="text" class="form-control"  th:field="*{remark}"
                                />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">功能配置：</label>
+                    <label class="col-sm-2 control-label">功能配置</label>
                     <div class="col-sm-offset-2"
                          style="width:500px;height:250px;background-color: ghostwhite;border-radius: 10px">
                         <div style="display:inline-block;width: 200px;margin: 10px 20px">
-                            <input type="checkbox" name="supportTag">
+                            <input type="checkbox" name="supportTag" th:field="*{supportTag}">
                             <span class="label">是否支持标签功能</span>
                         </div>
 
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">商家宣传图:</label>
+                    <label class="col-sm-2 control-label">商家宣传图</label>
                     <button  type="button" class="btn btn-info" id="mainpic_img_btn" onclick="$('#mainpic_img').click()">
                         <span>选择图片</span>
 
@@ -210,7 +212,11 @@
     function vipBoxByVipflag() {
         var vipFlag = $("#vipFlag").is(":checked")
         if (vipFlag) {
-            $("#vipName").val("会员").attr("readonly", false)
+            if (!$("#vipName").val()) {
+                $("#vipName").val("会员")
+            }
+            $("#vipName").attr("readonly", false)
+
             $("#vipFlag").attr("value", true)
         } else {
             $("#vipName").val("").attr("readonly", true)
@@ -232,14 +238,18 @@
                 url:"/auth/systemOrgan/getCityByProvince/"+provinceId,
                 success:function (data) {
                     if(data.success){
-                        console.log(data.result)
                         var res=data.result;
                         var htmls="<option value=''>市</option>";
                         for(var key in res){
                             htmls=htmls+"<option value='"+key+"'>"+res[key]+"</option>"
                         }
                         $("#city").html(htmls)
+                    } else {
+                        toastr.error(data.errorDescription);
                     }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
                 }
             })
         }
@@ -255,22 +265,24 @@
                 url:"/auth/systemOrgan/getDistrictByCity/"+cityId,
                 success:function (data) {
                     if(data.success){
-                        console.log(data.result)
                         var res=data.result;
                         var htmls="<option value=''>区</option>";
                         for(var key in res){
                             htmls=htmls+"<option value='"+key+"'>"+res[key]+"</option>"
                         }
                         $("#ognRegion").html(htmls)
+                    } else {
+                        toastr.error(data.errorDescription);
                     }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
                 }
             })
         }
     }
 
-    function befSubmitFormatField() {
 
-    }
     function organFrmSubmit() {
         if (!$("#organFrm").valid()) {
             console.log("valid fail")
@@ -289,9 +301,9 @@
             data:$("#organFrm").serialize(),
             success: function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/systemOrgan/index')
+                    toastr_success(null, document.referrer)
                 } else {
-                    toastr_error(data.errorDescription, '/auth/systemOrgan/index');
+                    toastr_error(data.errorDescription, document.referrer);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -319,6 +331,8 @@
                     $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px").attr("src", data.result.fileUrl)
                     $("#mainpic_url").val(data.result.fileUrl)
                     $("#mainpic_url_preCode").val(data.result.preCode)
+                } else {
+                    toastr.error(data.errorDescription);
                 }
                 $(ele).attr("disabled", false);
             },
@@ -343,10 +357,11 @@
             processData: false,
             success: function (data) {
                 if(data.success){
-                    console.log(data.result)
                     $("#logo_img_url").attr("style", "margin: 10px;height:140px;width: 140px;border-radius:50%").attr("src", data.result.fileUrl)
                     $("#logo_url").val(data.result.fileUrl)
                     $("#logo_url_preCode").val(data.result.preCode)
+                } else {
+                    toastr.error(data.errorDescription);
                 }
                 $(ele).attr("disabled", false);
             },
@@ -384,6 +399,19 @@
 
         //是否有会员制度
         vipBoxByVipflag()
+
+
+        $("#organFrm").validate({
+            rules: {
+                ognLng: {number: true, max: 90, min: -90},
+                ognLat: {number: true, max: 180, min: -180},
+            },
+            messages: {
+                ognLng: "经度为-90~90的数字!",
+                ognLat: "纬度为-180~180的数字!",
+            },
+
+        })
 
     })
 

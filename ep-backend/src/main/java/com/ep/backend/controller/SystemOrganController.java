@@ -1,5 +1,6 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.BeanTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.ConstantRegionComponent;
 import com.ep.domain.constant.BizConstant;
@@ -8,9 +9,11 @@ import com.ep.domain.pojo.bo.SystemOrganBo;
 import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.po.EpConstantRegionPo;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpOrganConfigPo;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.repository.domain.enums.EpConstantRegionRegionType;
 import com.ep.domain.service.FileService;
+import com.ep.domain.service.OrganConfigService;
 import com.ep.domain.service.OrganService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -50,6 +53,8 @@ public class SystemOrganController extends BackendController {
     private ConstantRegionComponent constantRegionComponent;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private OrganConfigService organConfigService;
 
 
     @GetMapping("index")
@@ -91,7 +96,7 @@ public class SystemOrganController extends BackendController {
     @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     public String createInit(Model model
     ) {
-        model.addAttribute("organPo", new EpOrganPo());
+        model.addAttribute("organBo", new SystemOrganBo());
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
         model.addAttribute("district", null);
         model.addAttribute("city", null);
@@ -179,7 +184,14 @@ public class SystemOrganController extends BackendController {
         model.addAttribute("cityId", cityId);
         model.addAttribute("province", constantRegionComponent.getMapByType(EpConstantRegionRegionType.province));
         model.addAttribute("provinceId", provinceId);
-        model.addAttribute("organPo", po);
+        //机构配置
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(id);
+        SystemOrganBo bo = new SystemOrganBo();
+        BeanTools.copyPropertiesIgnoreNull(po, bo);
+        if (organConfigOptional.isPresent()) {
+            bo.setSupportTag(organConfigOptional.get().getSupportTag());
+        }
+        model.addAttribute("organBo", bo);
         //主图
         Optional<EpFilePo> mainpicImgOptional = organService.getOgnMainpic(id);
         if (mainpicImgOptional.isPresent()) {
@@ -216,7 +228,14 @@ public class SystemOrganController extends BackendController {
         //省
         EpConstantRegionPo constantRegionPoProvince = constantRegionComponent.getById(provinceId);
         model.addAttribute("province", constantRegionPoProvince.getRegionName());
-        model.addAttribute("organPo", po);
+        //机构配置
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(id);
+        SystemOrganBo bo = new SystemOrganBo();
+        BeanTools.copyPropertiesIgnoreNull(po, bo);
+        if (organConfigOptional.isPresent()) {
+            bo.setSupportTag(organConfigOptional.get().getSupportTag());
+        }
+        model.addAttribute("organBo", bo);
         //主图
         Optional<EpFilePo> mainpicImgOptional = organService.getOgnMainpic(id);
         if (mainpicImgOptional.isPresent()) {

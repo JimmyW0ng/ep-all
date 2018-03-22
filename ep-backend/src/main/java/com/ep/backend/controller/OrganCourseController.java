@@ -385,9 +385,7 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organAccountMap", organAccountMap);
 
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
-        if (!courseOptional.isPresent()) {
-            return "errorErupt";
-        }
+
         EpOrganCoursePo organCoursePo = courseOptional.get();
         //课程对象
         model.addAttribute("organCoursePo", organCoursePo);

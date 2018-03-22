@@ -20,17 +20,17 @@
 
         </div>
         <div class="ibox-content">
-            <form class="form-horizontal m-t" id="organFrm" th:object="${organPo}">
+            <form class="form-horizontal m-t" id="organFrm" th:object="${organBo}">
                 <input type="hidden" id="id" name="id" th:field="*{id}"/>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构名称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构名称</label>
                     <div class="col-sm-3">
                         <input id="organName" name="organName" type="text" class="form-control" required="true" th:field="*{ognName}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构地区：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构地区</label>
                     <div style="width: 100px;display: inline-block;margin-left: 15px">
                         <input id="province" name="province" type="text" class="form-control" required="true" th:value="${province}"
                                 aria-required="true">
@@ -51,63 +51,63 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构地址：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构地址</label>
                     <div class="col-sm-3">
                         <input id="ognAddress" name="ognAddress" type="text" class="form-control" required="true" th:field="*{ognAddress}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">地区经度：</label>
+                    <label class="col-sm-2 control-label">地区经度</label>
                     <div class="col-sm-3">
                         <input  name="ognLng" type="text" class="form-control" required="true" th:field="*{ognLng}"
                                 aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">地区纬度：</label>
+                    <label class="col-sm-2 control-label">地区纬度</label>
                     <div class="col-sm-3">
                         <input  name="ognLat" type="text" class="form-control" required="true" th:field="*{ognLat}"
                                 aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构简介：</label>
+                    <label class="col-sm-2 control-label">机构简介</label>
                     <div class="col-sm-3">
                         <textarea id="ognShortIntroduce"  name="ognShortIntroduce" type="text" class="form-control" required="true" th:field="*{ognShortIntroduce}"
                                   aria-required="true"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构成立日期：</label>
+                    <label class="col-sm-2 control-label">机构成立日期</label>
                     <div class="col-sm-3">
                         <input id="ognCreateDate" name="ognCreateDate" type="text" class="form-control" required="true" th:field="*{ognCreateDate}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构官方电话：</label>
+                    <label class="col-sm-2 control-label">机构官方电话</label>
                     <div class="col-sm-3">
                         <input id="ognPhone" name="ognPhone" type="text" class="form-control" required="true" th:field="*{ognPhone}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构官方邮箱：</label>
+                    <label class="col-sm-2 control-label">机构官方邮箱</label>
                     <div class="col-sm-3">
                         <input id="ognEmail" name="ognEmail" type="text" class="form-control" required="true" th:field="*{ognEmail}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构官方网址：</label>
+                    <label class="col-sm-2 control-label">机构官方网址</label>
                     <div class="col-sm-3">
                         <input id="ognUrl" name="ognUrl" type="text" class="form-control" required="true" th:field="*{ognUrl}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构介绍：</label>
+                    <label class="col-sm-2 control-label">机构介绍</label>
                     <div class="col-sm-3">
                         <textarea id="ognIntroduce" name="ognIntroduce" type="text" class="form-control" required="true" th:field="*{ognIntroduce}"
                                   aria-required="true"/>
@@ -115,27 +115,38 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><input id="vipFlag" name="vipFlag" type="checkbox"
-                                                                 th:field="*{vipFlag}">是否开通会员制度：</label>
+                                                                 th:field="*{vipFlag}">是否开通会员制度</label>
                     <div class="col-sm-3">
                         <input id="vipName" name="vipName" type="text" class="form-control" th:field="*{vipName}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">营销权重：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>营销权重</label>
                     <div class="col-sm-3">
                         <input id="marketWeight" name="marketWeight" type="text" class="form-control" required="true" th:field="*{marketWeight}"
                                aria-required="true"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">备注：</label>
+                    <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-3">
                         <textarea id="remark" name="remark" type="text" class="form-control" required="true" th:field="*{remark}"
                                   aria-required="true"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">商家宣传图:</label>
+                    <label class="col-sm-2 control-label">功能配置</label>
+                    <div class="col-sm-offset-2"
+                         style="width:500px;height:250px;background-color: ghostwhite;border-radius: 10px">
+                        <div style="display:inline-block;width: 200px;margin: 10px 20px">
+                            <input type="checkbox" name="supportTag" th:field="*{supportTag}">
+                            <span class="label">是否支持标签功能</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商家宣传图</label>
                 </div>
                 <div class="col-sm-offset-2" style="border:3px dashed #e6e6e6;height:240px;width: 405px">
                     <img id="mainpic_img_url" th:src="${mainpicImgUrl}"/>
