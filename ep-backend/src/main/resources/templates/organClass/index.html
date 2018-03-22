@@ -68,7 +68,7 @@
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>班次名称</th>
-                            <th>课程名称</th>
+                            <th>产品名称</th>
                             <th>价格（元）</th>
                             <th>折扣优惠(%)</th>
                             <th>是否限制报名人数</th>
@@ -97,11 +97,10 @@
 
                             <td th:text="${bo.createAt}"></td>
                             <td>
-
-                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'online')}"
-                                   href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
                                 <a class="btn btn-xs btn-info" th:if="!${#stringTools.equals(bo.status,'save')}"
                                    href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+')'">订单详情</a>
+                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'online')}"
+                                   href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
                                 <a class="btn btn-xs btn-primary"
                                    th:if="${#stringTools.equals(bo.status,'opening')||#stringTools.equals(bo.status,'end')}"
                                    href="javascript:void(0)" th:onclick="'getClassChild('+${bo.id}+')'">班级成员</a>

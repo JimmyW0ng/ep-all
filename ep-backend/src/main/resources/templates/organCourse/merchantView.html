@@ -20,7 +20,7 @@
             <div class="col-sm-12 ">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">课程详情（<span class="required-sign">*为必填</span>）</label>
+                        <label class="course-label">产品详情（<span class="required-sign">*为必填</span>）</label>
                         <a style="display: inline-block;float: right" class="btn btn-xs btn-danger"
                            href="javascript:void(0)" onclick="history.back()">返回</a>
 
@@ -29,13 +29,13 @@
                         <div class="row" th:object="${organCoursePo}">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="courseName">课程名称 <span class="required-sign">*</span></label>
+                                    <label for="courseName">产品名称 <span class="required-sign">*</span></label>
                                     <input id="courseName" name="organCoursePo.courseName" type="text"
                                            th:field="*{courseName}"
                                            class=" form-control ">
                                 </div>
                                 <div class="form-group">
-                                    <label for="courseType">课程类型 <span class="required-sign">*</span></label>
+                                    <label for="courseType">产品类型 <span class="required-sign">*</span></label>
                                     <select id="courseType" name="organCoursePo.courseType" type="text"
                                             th:field="*{courseType}"
                                             class=" form-control ">
@@ -47,7 +47,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="courseCatalogId">课程所属目录 <span class="required-sign">*</span></label>
+                                    <label for="courseCatalogId">产品所属目录 <span class="required-sign">*</span></label>
                                     <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
                                             th:field="*{courseCatalogId}"
                                             class="form-control">
@@ -59,7 +59,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="courseIntroduce">课程简介 <span class="required-sign">*</span></label>
+                                    <label for="courseIntroduce">产品简介 <span class="required-sign">*</span></label>
                                     <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"
                                               th:field="*{courseIntroduce}"
                                               class="form-control "></textarea>
@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-9">
-                                <label>课程内容 <span class="required-sign">*</span></label>
+                                <label>产品内容 <span class="required-sign">*</span></label>
                                 <div id="editor">
                                 </div>
                                 <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
@@ -119,7 +119,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">课程班次（<span class="required-sign">*为必填</span>）</label>
+                        <label class="course-label">产品班次（<span class="required-sign">*为必填</span>）</label>
                     </div>
                     <div class="ibox-content">
                         <div class="panel-group" id="accordion">
@@ -138,7 +138,7 @@
                                             <input name="className" type="text" class=" form-control "
                                                    th:value="${po.className}"
                                                    onblur="setClassBoxTitle(this)">
-                                            <label>课程负责人 <span class="required-sign">*</span></label>
+                                            <label>产品负责人 <span class="required-sign">*</span></label>
                                             <input name="ognAccountId" type="text" class=" form-control "
                                                    th:value="${organAccountMap.get(po.ognAccountId)}">
 
@@ -223,7 +223,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="form-group">
-                                <label class="col-sm-2">课程主图:</label>
+                                <label class="col-sm-2">产品主图:</label>
 
                             </div>
                             <div class="col-sm-offset-2 course-mainpic-box">

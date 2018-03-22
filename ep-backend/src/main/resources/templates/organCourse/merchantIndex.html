@@ -26,12 +26,12 @@
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
                         <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
-                               placeholder="课名">
+                               placeholder="产品名称">
                     </div>
 
                     <div class="form-group ">
                         <select class="form-control" name="courseType" id="courseType" style="width:182px;" >
-                            <option value>课程类型</option>
+                            <option value>产品类型</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
                                     th:value="${state}"
                                     th:selected="${#stringTools.equals(state,map.get('courseType'))}"
@@ -69,10 +69,9 @@
                         <thead>
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
-                            <th>课名</th>
-                            <th>课程类型</th>
-                            <th>机构</th>
-                            <th>课程类目</th>
+                            <th>产品名称</th>
+                            <th>产品类型</th>
+                            <th>产品类目</th>
                             <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -83,7 +82,6 @@
                             <td th:text="${bo.id}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="#{EpOrganCourseCourseType.+${bo.courseType}}"></td>
-                            <td th:text="${bo.ognName}"></td>
                             <td th:text="${bo.courseCatalogName}"></td>
                             <td th:text="#{EpOrganCourseCourseStatus.+${bo.courseStatus}}"></td>
 
@@ -131,7 +129,7 @@
 <script th:inline="javascript">
 
     function onlineBox(id) {
-        layer_confirm("确定该课程上线？", 3, onlineDo, id)
+        layer_confirm("确定该产品上线？", 3, onlineDo, id)
     }
     function onlineDo(id) {
         $.ajax({
@@ -151,7 +149,7 @@
 
     }
     function deleteBox(id) {
-        layer_confirm("确定删除该课程？", 3, delDo, id)
+        layer_confirm("确定删除该产品？", 3, delDo, id)
     }
     function delDo(id) {
         $.ajax({

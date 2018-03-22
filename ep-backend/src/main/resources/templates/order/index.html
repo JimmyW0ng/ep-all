@@ -122,7 +122,7 @@
                             <td name="statusZh" th:text="#{EpOrderStatus.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
 
-                            <td th:text="${bo.remark}"></td>
+                            <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info"
@@ -255,8 +255,11 @@
             success:function (data) {
                 if(data.success){
                     var orderPo = data.result
-                    $(ele).parents("tr").eq(0).find("td[name='statusZh']").html(EpOrderStatus[orderPo.status]);
-                    var classStatus = $(ele).parents("tr").eq(0).find("td[name='classStatus']").text()
+                    var $tr = $(ele).parents("tr").eq(0)
+                    $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
+                    $tr.find("td[name='status']").eq(0).text(orderPo.status);
+                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark);
+                    var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
                     buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);

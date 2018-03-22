@@ -22,14 +22,9 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form">
                     <div class="form-group">
-                        <input type="text" class="form-control " name="ognName"
-                               th:value="${searchMap.get('ognName')}"
-                               placeholder="机构名称">
-                    </div>
-                    <div class="form-group">
                         <input type="text" class="form-control " name="courseName"
                                th:value="${searchMap.get('courseName')}"
-                               placeholder="课程名称">
+                               placeholder="产品名称">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control " name="className"
@@ -68,8 +63,7 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>机构名称</th>
-                            <th>课程名称</th>
+                            <th>产品名称</th>
                             <th>班次名称</th>
                             <th>评分</th>
                             <th>评论者</th>
@@ -83,7 +77,6 @@
                         <tbody id="tbody">
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.id}"></td>
-                            <td th:text="${bo.ognName}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
                             <td th:text="${bo.score}"></td>
@@ -93,11 +86,9 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${bo.createAt}"></td>
                             <td name="button">
-                                <!--<a class="btn btn-xs btn-info"-->
-                                <!--th:href="@{/auth/childHonor/view/}+${bo.id}">查看</a>-->
-                                <a class="btn btn-xs btn-primary" href="javascript:void(0)"
+                                <a class="btn btn-xs btn-primary" href="javascript:void(0)" th:if="!${bo.chosenFlag}"
                                    th:onclick="'chosenBox('+${bo.id}+')'">设为精选</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:if="${bo.chosenFlag}"
                                    th:onclick="'unchosenBox('+${bo.id}+')'">取消精选</a>
                             </td>
 
