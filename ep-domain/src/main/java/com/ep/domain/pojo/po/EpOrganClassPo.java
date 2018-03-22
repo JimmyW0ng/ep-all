@@ -27,6 +27,10 @@ public class EpOrganClassPo extends AbstractBasePojo {
     private Long ognId;
     private Long courseId;
     private String className;
+    private String phone;
+    private String address;
+    private String addressLng;
+    private String addressLat;
     private Long ognAccountId;
     private BigDecimal classPrize;
     private BigDecimal discountAmount;

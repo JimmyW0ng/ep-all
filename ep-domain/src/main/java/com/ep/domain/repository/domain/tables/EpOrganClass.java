@@ -35,7 +35,7 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The reference instance of <code>ep.ep_organ_class</code>
      */
     public static final EpOrganClass EP_ORGAN_CLASS = new EpOrganClass();
-    private static final long serialVersionUID = -1518659586;
+    private static final long serialVersionUID = 1500487985;
     /**
      * The column <code>ep.ep_organ_class.id</code>. 主键
      */
@@ -52,6 +52,22 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The column <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
     public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "班次名称");
+    /**
+     * The column <code>ep.ep_organ_class.phone</code>. 联系电话
+     */
+    public final TableField<EpOrganClassRecord, String> PHONE = createField("phone", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "联系电话");
+    /**
+     * The column <code>ep.ep_organ_class.address</code>. 地址
+     */
+    public final TableField<EpOrganClassRecord, String> ADDRESS = createField("address", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "地址");
+    /**
+     * The column <code>ep.ep_organ_class.address_lng</code>. 地址经度
+     */
+    public final TableField<EpOrganClassRecord, String> ADDRESS_LNG = createField("address_lng", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "地址经度");
+    /**
+     * The column <code>ep.ep_organ_class.address_lat</code>. 地址纬度
+     */
+    public final TableField<EpOrganClassRecord, String> ADDRESS_LAT = createField("address_lat", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "地址纬度");
     /**
      * The column <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
      */
