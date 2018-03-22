@@ -813,11 +813,11 @@
         }
         editor.create()
 
-        $.validator.addMethod("isMobile", function (value, element) {
-            var length = value.length;
-            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
-            return this.optional(element) || (length == 11 && mobile.test(value));
-        }, "请填写正确的手机号码!");
+//        $.validator.addMethod("isMobile", function (value, element) {
+//            var length = value.length;
+//            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
+//            return this.optional(element) || (length == 11 && mobile.test(value));
+//        }, "请填写正确的手机号码!");
         $("#frm").validate({
             rules: {
 //                phone: {isMobile: true},
