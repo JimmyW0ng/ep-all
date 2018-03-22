@@ -236,16 +236,21 @@
     }
     function buttonByStatus($box, status, classStatus) {
         if ((status == "success" || status == "refuse") && classStatus == "online") {
+            //班次opening,订单success或者refuse,显示取消按钮，其他隐藏
             $box.find("a").hide()
             $box.find("a[name='cancel']").show()
         } else if (status == "save") {
+            //订单save,显示报名成功，拒绝按钮，其他隐藏
             $box.find("a").hide()
             $box.find("a[name='success']").show()
             $box.find("a[name='refuse']").show()
         } else if (status == "opening") {
+            //订单opening所有按钮隐藏
+            $box.find("a").hide()
+        } else if (classStatus == "end") {
+            //班次end所有按钮隐藏
             $box.find("a").hide()
         }
-
     }
     function orderSuccess(ele,id,classId) {
         $.ajax({
