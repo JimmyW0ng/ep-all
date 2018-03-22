@@ -88,7 +88,7 @@
                             <td th:text="${po.createAt}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/systemOrgan/view/}+${po.id}">查看</a>
-                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'save')}"
+                                <a class="btn btn-xs btn-primary" th:if="!${#strings.equals(po.status,'offline')}"
                                    th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'save')}"
                                    href="javascript:void(0)" th:onclick="'onlineOrganBox('+${po.id}+')'">上线</a>
