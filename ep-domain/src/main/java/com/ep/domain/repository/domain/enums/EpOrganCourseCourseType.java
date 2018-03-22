@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 课程类型：学习；活动；
+ * 课程类型：课程；活动；
  */
 @Generated(
     value = {

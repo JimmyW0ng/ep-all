@@ -32,18 +32,17 @@ public class EpOrganCoursePo extends AbstractBasePojo {
     private String courseIntroduce;
     private String courseContent;
     private BigDecimal prizeMin;
-    private String courseAddress;
     private Boolean vipFlag;
+    private String courseAddress;
     private String addressLng;
     private String addressLat;
+    private String phone;
     private EpOrganCourseCourseStatus courseStatus;
     private Timestamp onlineTime;
     private Timestamp enterTimeStart;
     private Timestamp enterTimeEnd;
     private Integer totalParticipate;
-    @JsonIgnore
     private String remark;
-    @JsonIgnore
     private Timestamp createAt;
     @JsonIgnore
     private Timestamp updateAt;
