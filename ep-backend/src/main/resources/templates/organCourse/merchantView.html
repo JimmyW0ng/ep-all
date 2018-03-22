@@ -69,13 +69,7 @@
                                     <input id="prizeMin" name="organCoursePo.prizeMin" type="text"
                                            class="form-control" th:field="*{prizeMin}">
                                 </div>
-                                <div class="form-group">
-                                    <label for="courseAddress">上课地址 <span class="required-sign">*</span></label>
-                                    <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
 
-                                              class="form-control" th:field="*{courseAddress}">
-                            </textarea>
-                                </div>
                                 <div class="form-group">
                                     <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
                                     <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
@@ -95,8 +89,9 @@
                                            th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}"
                                            class="form-control datetimepicker">
                                 </div>
-                                <div class="form-group">
-                                    <label for="vipFlag">是否会员才能报名 <span class="required-sign">*</span></label>
+                                <div class="form-group" th:if="${organVipFlag}">
+                                    <label for="vipFlag">是否<span th:text="${organVipName}"></span>才能报名 <span
+                                            class="required-sign">*</span></label>
                                     <select id="vipFlag" name="organCoursePo.vipFlag" type="text"
                                             required="true" class="form-control" th:value="${organCoursePo.vipFlag}">
                                         <option th:selected="${organCoursePo.vipFlag==true}" value=true>是</option>
@@ -111,6 +106,50 @@
                                 <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
                                        th:value="${organCoursePo.courseContent}">
                                 <div id="preCodeBox"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用标签</span>
+                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有标签</span>
+                        </label>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="background: #eee;min-height: 250px;padding: 20px 0px">
+                            <div id="constantTagBox" class="col-sm-12">
+                                <div class="col-sm-2" th:each="bo:${organCourseTagBos}">
+                                    <span th:if="${bo.ognFlag}" class="label ogn-tag" th:text="${bo.tagName}"></span>
+                                    <span th:if="${!bo.ognFlag}" class="label constant-tag"
+                                          th:text="${bo.tagName}"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">设置图片（<span class="required-sign">必需</span>）</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2">宣传图:</label>
+
+                            </div>
+                            <div class="col-sm-offset-2 course-mainpic-box">
+                                <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
+                                <input type="hidden" name="mainpic_url" id="mainpic_url">
+                                <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
                         </div>
                     </div>
@@ -152,6 +191,31 @@
                                             <label>是否限制报名人数 <span class="required-sign">*</span></label>
                                             <input name="enterLimitFlag" type="text" class=" form-control "
                                                    th:value="${po.enterLimitFlag ?'是':'否'}">
+                                            <div>
+                                                <label>联系电话 <span class="required-sign">*</span></label>
+                                                <input name="phone" jprop="phone" type="text" class="form-control"
+                                                       th:value="${po.phone}">
+                                            </div>
+
+                                            <div>
+                                                <label>上课地址 <span class="required-sign">*</span></label>
+                                                <input name="address" jprop="address" type="text" class="form-control"
+                                                       th:value="${po.address}">
+                                            </div>
+
+                                            <div>
+                                                <label>经度 <span class="required-sign">*</span></label>
+                                                <input name="addressLng" jprop="addressLng" type="text"
+                                                       class="form-control"
+                                                       th:value="${po.addressLng}">
+                                            </div>
+
+                                            <div>
+                                                <label>纬度 <span class="required-sign">*</span></label>
+                                                <input name="addressLat" jprop="addressLat" type="text"
+                                                       class="form-control"
+                                                       th:value="${po.addressLat}">
+                                            </div>
                                             <label>要求报名人数 </label>
                                             <input name="enterRequireNum" type="text" class=" form-control "
                                                    th:value="${po.enterRequireNum}">
@@ -187,49 +251,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <label class="course-label">选择标签（<span class="required-sign">必需，不超过6个</span>）
-                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用标签</span>
-                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有标签</span>
-                        </label>
-                    </div>
-                    <div class="ibox-content">
-                        <div style="background: #eee;min-height: 250px;padding: 20px 0px">
-                            <div id="constantTagBox" class="col-sm-12">
-                                <div class="col-sm-2" th:each="bo:${organCourseTagBos}">
-                                    <span th:if="${bo.ognFlag}" class="label ogn-tag" th:text="${bo.tagName}"></span>
-                                    <span th:if="${!bo.ognFlag}" class="label constant-tag"
-                                          th:text="${bo.tagName}"></span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <label class="course-label">设置图片（<span class="required-sign">必需</span>）</label>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="col-sm-2">产品主图:</label>
-
-                            </div>
-                            <div class="col-sm-offset-2 course-mainpic-box">
-                                <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
-                                <input type="hidden" name="mainpic_url" id="mainpic_url">
-                                <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
                         </div>
                     </div>

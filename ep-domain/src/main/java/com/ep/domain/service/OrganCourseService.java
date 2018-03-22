@@ -657,11 +657,6 @@ public class OrganCourseService {
             log.error("接受参数异常，courseContent=null。");
             return false;
         }
-
-        if (null == po.getCourseAddress()) {
-            log.error("接受参数异常，courseAddress=null。");
-            return false;
-        }
         if (null == po.getOnlineTime()) {
             log.error("接受参数异常，onlineTime=null。");
             return false;

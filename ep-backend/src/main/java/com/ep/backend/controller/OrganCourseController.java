@@ -161,12 +161,13 @@ public class OrganCourseController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantCreateInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
         constantCatalogList.forEach(p -> {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(ognId);
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
@@ -177,14 +178,25 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organAccountMap", organAccountMap);
         //课程对象
         EpOrganCoursePo organCoursePo = new EpOrganCoursePo();
-        Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
-        if (organOptional.isPresent()) {
-            organCoursePo.setCourseAddress(organOptional.get().getOgnAddress());
-            //该机构是否有会员制度
-            model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
-        }
+
         model.addAttribute("organCoursePo", organCoursePo);
 
+        Optional<EpOrganPo> organOptional = organService.getById(ognId);
+        if (organOptional.isPresent()) {
+            //该机构是否有会员制度
+            model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
+            model.addAttribute("organVipName", organOptional.get().getVipName());
+            //机构电话
+            model.addAttribute("ognPhone", organOptional.get().getOgnPhone());
+            //机构经度
+            model.addAttribute("ognLng", organOptional.get().getOgnLng());
+            //机构纬度
+            model.addAttribute("ognLat", organOptional.get().getOgnLat());
+            //上课地址
+            model.addAttribute("ognAddress", organOptional.get().getOgnAddress());
+        }
+
+        //是否支持标签
         Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
         model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
         return "organCourse/merchantForm";
@@ -241,10 +253,14 @@ public class OrganCourseController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         //机构课程
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
-        if (!courseOptional.isPresent()) {
-            return "errorErupt";
-        }
+
         model.addAttribute("organCoursePo", courseOptional.get());
+        Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
+        if (organOptional.isPresent()) {
+            //该机构是否有会员制度
+            model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
+            model.addAttribute("organVipName", organOptional.get().getVipName());
+        }
 
         //课程类目
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
@@ -313,10 +329,14 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organAccountMap", organAccountMap);
 
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
-        if (!courseOptional.isPresent()) {
-            return "errorErupt";
-        }
+
         EpOrganCoursePo organCoursePo = courseOptional.get();
+        Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
+        if (organOptional.isPresent()) {
+            //该机构是否有会员制度
+            model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
+            model.addAttribute("organVipName", organOptional.get().getVipName());
+        }
         //课程对象
         model.addAttribute("organCoursePo", organCoursePo);
         Long catalogId = organCoursePo.getCourseCatalogId();
@@ -385,6 +405,13 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("organAccountMap", organAccountMap);
 
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
+
+        Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
+        if (organOptional.isPresent()) {
+            //该机构是否有会员制度
+            model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
+            model.addAttribute("organVipName", organOptional.get().getVipName());
+        }
 
         EpOrganCoursePo organCoursePo = courseOptional.get();
         //课程对象

@@ -8,6 +8,7 @@ import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.ConstantCatalogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class ConstantCatalogController extends BackendController {
     private ConstantCatalogService constantCatalogService;
 
     @GetMapping("index")
+    @PreAuthorize("hasAnyAuthority('platform:catalog:index')")
     public String index(Model model){
         List<EpConstantCatalogPo> catalogList = constantCatalogService.getAll();
         model.addAttribute("catalogList",catalogList);
@@ -41,23 +43,21 @@ public class ConstantCatalogController extends BackendController {
      * @return
      */
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('platform:catalog:index')")
     @ResponseBody
     public ResultDo<String> create(HttpServletRequest request, EpConstantCatalogPo po) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
 
         ResultDo<String> resultDo = ResultDo.build();
         if (po.getId() == null) {//新增课程类目
-
             EpConstantCatalogPo insertPo=constantCatalogService.insert(po);
             log.info("[课程类目]，新增课程类目成功，课程类目={},currentUserId={}。", insertPo.getId(),currentUser.getId());
             return resultDo;
-
         }
         //更新课程类目
         constantCatalogService.update(po);
         log.info("[课程类目]，修改课程类目成功，课程类目id={},currentUserId={}。", po.getId(),currentUser.getId());
         return resultDo;
-
     }
 
     /**
@@ -66,6 +66,7 @@ public class ConstantCatalogController extends BackendController {
      * @return
      */
     @GetMapping("/view/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:catalog:index')")
     @ResponseBody
     public ResultDo<ConstantCatalogBo> viewAjax(@PathVariable(value = "id") Long id) {
         ResultDo<ConstantCatalogBo> resultDo = ResultDo.build();
@@ -81,20 +82,19 @@ public class ConstantCatalogController extends BackendController {
 
     /**
      * 删除
-     * @param request
      * @param ids
      * @return
      */
     @PostMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('platform:catalog:index')")
     @ResponseBody
-    public ResultDo delete(HttpServletRequest request, @RequestParam("ids[]") Long[] ids) {
+    public ResultDo delete(@RequestParam("ids[]") Long[] ids) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         ResultDo resultDo = ResultDo.build();
         for(int i=0;i<ids.length;i++){
             constantCatalogService.delete(ids[i]);
             log.info("[菜单]，删除菜单成功，菜单id={},currentUserId={}。", ids[i].toString(),currentUser.getId());
         }
-
         return resultDo;
     }
 }

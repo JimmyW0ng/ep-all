@@ -16,6 +16,10 @@
 <body class="gray-bg">
 <div class="col-sm-11 ">
     <div style="padding-left: 40px" class="row ">
+        <input id="ognPhone" th:value="${ognPhone}" type="hidden">
+        <input id="ognLng" th:value="${ognLng}" type="hidden">
+        <input id="ognLat" th:value="${ognLat}" type="hidden">
+        <input id="ognAddress" th:value="${ognAddress}" type="hidden">
         <form id="frm">
             <div class="col-sm-12 ">
                 <div class="ibox float-e-margins">
@@ -73,13 +77,7 @@
                                               th:text="${organCoursePo.courseIntroduce}"></textarea>
 
                                 </div>
-                                <div class="form-group">
-                                    <label for="courseAddress">上课地址 </label>
-                                    <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
-                                              class="form-control " th:text="${organCoursePo.courseAddress}">
-                            </textarea>
 
-                                </div>
                                 <div class="form-group">
                                     <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
                                     <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
@@ -102,7 +100,8 @@
 
                                 </div>
                                 <div class="form-group" th:if="${organVipFlag}">
-                                    <label for="vipFlag">是否会员才能报名 <span class="required-sign">*</span></label>
+                                    <label for="vipFlag">是否<span th:text="${organVipName}"></span>才能报名 <span
+                                            class="required-sign">*</span></label>
                                     <select id="vipFlag" name="organCoursePo.vipFlag" type="text"
                                             required="true" class="form-control" th:value="${organCoursePo.vipFlag}">
                                         <option th:selected="${organCoursePo.vipFlag==true}" value=true>是</option>
@@ -123,19 +122,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <label class="course-label">产品班次（<span class="required-sign">*为必填</span>）</label>
-                    </div>
-                    <div class="ibox-content">
-                        <a class="btn btn-success" type="button" onclick="createClassBox()"><i
-                                class="glyphicon glyphicon-plus"></i> 添加班次</a>
-                        <div class="panel-group" id="accordion">
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-sm-12" th:if="${supportTag}">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -162,7 +149,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="form-group">
-                                <label class="col-sm-2">产品主图
+                                <label class="col-sm-2">宣传图
                                     <soan class="required-sign">*</soan>
                                 </label>
                                 <button type="button" class="btn btn-info mainpic_url" id="mainpic_img_btn"
@@ -177,13 +164,27 @@
                                 <input type="hidden" name="mainpic_url" id="mainpic_url" class="required">
                                 <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
-                            <div class="col-sm-12">
-                                <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
-                                    <button style="width:150px" class="btn-lg btn btn-primary" type="button"
-                                            onclick="frmSubmit()">提 交
-                                    </button>
-                                </div>
-                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">产品班次（<span class="required-sign">*为必填</span>）</label>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-success" type="button" onclick="createClassBox()"><i
+                                class="glyphicon glyphicon-plus"></i> 添加班次</a>
+                        <div class="panel-group" id="accordion">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
+                            <button style="width:150px" class="btn-lg btn btn-primary" type="button"
+                                    onclick="frmSubmit()">提 交
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -253,35 +254,79 @@
             <div class="panel-body ">
                 <div name="organClassBos" class="form-group col-sm-4 organClassBos">
                     <input name="id" type="hidden" value="${id}">
-                    <label>班次名称 <span class="required-sign">*</span></label>
-                    <input name="className" jprop="className" type="text" class=" form-control " value="${className}"
-                           required="true"
-                           onblur="setClassBoxTitle(this)">
-                    <label>产品负责人 <span class="required-sign">*</span></label>
-                    <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control " required="true">
+                    <div>
+                        <label>班次名称 <span class="required-sign">*</span></label>
+                        <input name="className" jprop="className" type="text" class=" form-control "
+                               value="${className}"
+                               required="true"
+                               onblur="setClassBoxTitle(this)">
+                    </div>
+                    <div>
+                        <label>产品负责人 <span class="required-sign">*</span></label>
+                        <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control "
+                                required="true">
 
-                    </select>
-                    <label>价格(元) <span class="required-sign">*</span></label>
-                    <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
-                           value="${classPrize}">
-                    <label>折扣优惠(%) <span class="required-sign">*</span></label>
-                    <input name="discountAmount" jprop="discountAmount" type="text" class=" form-control number-input"
-                           value="${discountAmount}">
-                    <label>是否限制报名人数 <span class="required-sign">*</span></label>
-                    <select name="enterLimitFlag" jprop="enterLimitFlag" type="text" class=" form-control "
-                            value="${enterLimitFlag}">
-                        <option value=false>否</option>
-                        <option value=true>是</option>
-                    </select>
+                        </select>
+                    </div>
+                    <div>
+                        <label>价格(元) <span class="required-sign">*</span></label>
+                        <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
+                               value="${classPrize}">
+                    </div>
+                    <div>
+                        <label>折扣优惠(%) <span class="required-sign">*</span></label>
+                        <input name="discountAmount" jprop="discountAmount" type="text"
+                               class=" form-control number-input"
+                               value="${discountAmount}">
+                    </div>
 
-                    <label>要求报名人数 </label>
-                    <input name="enterRequireNum" jprop="enterRequireNum" type="text" class=" form-control "
-                           value="${enterRequireNum}"
-                           readonly="true">
+                    <div>
+                        <label>是否限制报名人数 <span class="required-sign">*</span></label>
+                        <select name="enterLimitFlag" jprop="enterLimitFlag" type="text" class=" form-control "
+                                value="${enterLimitFlag}">
+                            <option value=false>否</option>
+                            <option value=true>是</option>
+                        </select>
+                    </div>
 
-                    <label>总计课时 <span class="required-sign">*</span></label>
-                    <input name="courseNum" jprop="courseNum" type="Number" class=" form-control " value="${courseNum}"
-                           readonly=true>
+                    <div>
+                        <label>要求报名人数 </label>
+                        <input name="enterRequireNum" jprop="enterRequireNum" type="text" class="form-control"
+                               value="${enterRequireNum}"
+                               readonly="true">
+                    </div>
+
+                    <div>
+                        <label>联系电话 <span class="required-sign">*</span></label>
+                        <input name="phone" jprop="phone" type="text" class="form-control" required="true"
+                               value="${phone}">
+                    </div>
+
+                    <div>
+                        <label>上课地址 <span class="required-sign">*</span></label>
+                        <input name="address" jprop="address" type="text" class="form-control" required="true"
+                               value="${address}">
+                    </div>
+
+                    <div>
+                        <label>经度 <span class="required-sign">*</span></label>
+                        <input name="addressLng" jprop="addressLng" type="text" class="form-control" required="true"
+                               value="${addressLng}">
+                    </div>
+
+                    <div>
+                        <label>纬度 <span class="required-sign">*</span></label>
+                        <input name="addressLat" jprop="addressLat" type="text" class="form-control" required="true"
+                               value="${addressLat}">
+                    </div>
+
+                    <div>
+                        <label>总计课时 <span class="required-sign">*</span></label>
+                        <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
+                               value="${courseNum}"
+                               readonly=true>
+                    </div>
+
                 </div>
                 <div name="organClassCatalogPosBox" class="form-group col-sm-8 well ">
                     <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
@@ -307,7 +352,7 @@
     var editor = new E('#editor')
 
     /**
-     * 上传产品主图
+     * 上传宣传图
      */
     function uploadMainpicImg($btn, ele) {
         $btn.attr("disabled", true)
@@ -428,7 +473,11 @@
             collapse: "collapse" + (len + 1),
             className: "班次",
             discountAmount: 0,
-            classPrize: 0
+            classPrize: 0,
+            phone: $("#ognPhone").val(),
+            addressLng: $("#ognLng").val(),
+            addressLat: $("#ognLat").val(),
+            address: $("#ognAddress").val()
         }]
         $("#accordion").append($("#classTmpl").tmpl(classes));
         var htmls = '';
@@ -541,13 +590,13 @@
     function beforeSubmitCheckCourseMainPic() {
         if ($("#courseId").val()) {
             if (!$("#mainpic_img_url").attr("src")) {
-                return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传产品主图"}])
+                return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传宣传图"}])
             }
             {
                 return true
             }
         } else {
-            return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传产品主图"}])
+            return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传宣传图"}])
         }
 
     }
@@ -590,6 +639,7 @@
             url = "/auth/organCourse/merchantUpdate"
         }
 
+
         $.ajax({
             type: "POST",
             data: $("#frm").serialize(),
@@ -624,7 +674,8 @@
                     className: organClassBos[i].className, classPrize: organClassBos[i].classPrize,
                     discountAmount: organClassBos[i].discountAmount, enterLimitFlag: organClassBos[i].enterLimitFlag,
                     enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum,
-                    vipFlag: organClassBos[i].vipFlag
+                    vipFlag: organClassBos[i].vipFlag, phone: organClassBos[i].phone, address: organClassBos[i].address,
+                    addressLng: organClassBos[i].addressLng, addressLat: organClassBos[i].addressLat,
                 }]
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 
@@ -761,6 +812,26 @@
             },
         }
         editor.create()
+
+//        $.validator.addMethod("isMobile", function (value, element) {
+//            var length = value.length;
+//            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
+//            return this.optional(element) || (length == 11 && mobile.test(value));
+//        }, "请填写正确的手机号码!");
+//        $("#frm").validate({
+//            rules: {
+//                phone: {isMobile: true},
+//                addressLng: {number: true, max: 180, min: -180},
+//                addressLat: {number: true, max: 90, min: -90},
+//            },
+//            messages: {
+//                addressLng: "经度为-180到180的数字!",
+//                addressLat: "纬度为-90到90的数字!",
+//                phone: "请填写正确的手机号码!"
+//            },
+//
+//        })
+
     });
 
 </script>

@@ -191,9 +191,7 @@
     </div>
 </div>
 
-
 <script th:replace="~{fragments/scripts}"></script>
-
 
 <script th:inline="javascript">
     var EpOrderStatus={save:"保存",
@@ -229,7 +227,7 @@
             data: JSON.stringify(batchOrder),
             contentType: "application/json;charset=utf-8",
             success:function () {
-                toastr_success(null,"/auth/order/index")
+                toastr_success(null, document.location.href)
 
             }
         })

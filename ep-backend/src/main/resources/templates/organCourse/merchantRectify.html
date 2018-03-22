@@ -74,13 +74,7 @@
                                               th:text="${organCoursePo.courseIntroduce}"></textarea>
 
                                 </div>
-                                <div class="form-group">
-                                    <label for="courseAddress">上课地址 </label>
-                                    <textarea id="courseAddress" name="organCoursePo.courseAddress" type="text"
-                                              class="form-control " th:text="${organCoursePo.courseAddress}">
-                            </textarea>
 
-                                </div>
                                 <div class="form-group">
                                     <label for="onlineTime">上线时间 <span class="required-sign">*</span></label>
                                     <input id="onlineTime" name="organCoursePo.onlineTime" type="text"
@@ -102,8 +96,9 @@
                                            th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
 
                                 </div>
-                                <div class="form-group">
-                                    <label for="vipFlag">是否会员才能报名 <span class="required-sign">*</span></label>
+                                <div class="form-group" th:if="${organVipFlag}">
+                                    <label for="vipFlag">是否<span th:text="${organVipName}"></span>才能报名 <span
+                                            class="required-sign">*</span></label>
                                     <select id="vipFlag" name="organCoursePo.vipFlag" type="text" disabled="true"
                                             required="true" class="form-control" th:value="${organCoursePo.vipFlag}">
                                         <option value=true>是</option>
@@ -125,19 +120,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <label class="course-label">产品班次（<span class="required-sign">*为必填</span>）</label>
-                    </div>
-                    <div class="ibox-content">
-                        <a style="display:none" class="btn btn-success" type="button" onclick="createClassBox()"><i
-                                class="glyphicon glyphicon-plus"></i> 添加班次</a>
-                        <div class="panel-group" id="accordion">
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -164,7 +147,7 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="form-group">
-                                <label class="col-sm-2">产品主图
+                                <label class="col-sm-2">宣传图
                                     <soan class="required-sign">*</soan>
                                 </label>
                                 <button type="button" class="btn btn-info mainpic_url" id="mainpic_img_btn"
@@ -179,18 +162,32 @@
                                 <input type="hidden" name="mainpic_url" id="mainpic_url" class="required">
                                 <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
-                            <div class="col-sm-12">
-                                <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
-                                    <button style="width:150px" class="btn-lg btn btn-primary" type="button"
-                                            onclick="frmSubmit()">紧急修改
-                                    </button>
-                                </div>
-                            </div>
+
                         </div>
 
                     </div>
                 </div>
 
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <label class="course-label">产品班次（<span class="required-sign">*为必填</span>）</label>
+                    </div>
+                    <div class="ibox-content">
+                        <a style="display:none" class="btn btn-success" type="button" onclick="createClassBox()"><i
+                                class="glyphicon glyphicon-plus"></i> 添加班次</a>
+                        <div class="panel-group" id="accordion">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
+                            <button style="width:150px" class="btn-lg btn btn-primary" type="button"
+                                    onclick="frmSubmit()">紧急修改
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </form>
@@ -314,7 +311,7 @@
     var E = window.wangEditor
     var editor = new E('#editor')
 
-    /* 上传产品主图*/
+    /* 上传宣传图*/
     function uploadMainpicImg($btn, ele) {
         $btn.attr("disabled", true)
         data = new FormData();
@@ -431,16 +428,16 @@
         }
     }
 
-    /*校验产品主图为空*/
+    /*校验宣传图为空*/
     function beforeSubmitCheckCourseMainPic() {
         if ($("#courseId").val()) {
             if (!$("#mainpic_img_url").attr("src")) {
-                return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传产品主图"}])
+                return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传宣传图"}])
             } else {
                 return true
             }
         } else {
-            return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传产品主图"}])
+            return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传宣传图"}])
         }
     }
 
