@@ -293,10 +293,11 @@
 
     }
     function orderCancelBox(ele,id) {
+        var $tr = $(ele).parents("tr").eq(0)
         var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
         layer.alert('确定取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
             function (index) {
-                orderCancelDo(id,$(ele).attr("value"));
+                orderCancelDo(id, $tr.find("td[name='status']").eq(0).text());
                 layer.close(index);
             }),
             function (index) {

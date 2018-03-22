@@ -64,23 +64,26 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">地区经度</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>地区经度</label>
                     <div class="col-sm-3">
                         <input id="ognLng" name="ognLng" type="text" class="form-control" th:field="*{ognLng}"
+                               required="true"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">地区纬度</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>地区纬度</label>
                     <div class="col-sm-3">
                         <input id="ognLat" name="ognLat" type="text" class="form-control" th:field="*{ognLat}"
+                               required="true"
                                >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构简介</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>机构简介</label>
                     <div class="col-sm-3">
                         <textarea id="ognShortIntroduce" name="ognShortIntroduce" type="text" class="form-control"
+                                  required="true"
                                   maxlength="50" th:field="*{ognShortIntroduce}"
                                   />
                     </div>
@@ -403,12 +406,12 @@
 
         $("#organFrm").validate({
             rules: {
-                ognLng: {number: true, max: 90, min: -90},
-                ognLat: {number: true, max: 180, min: -180},
+                ognLng: {number: true, max: 180, min: -180},
+                ognLat: {number: true, max: 90, min: -90},
             },
             messages: {
-                ognLng: "经度为-90~90的数字!",
-                ognLat: "纬度为-180~180的数字!",
+                ognLng: "经度为-180到180的数字!",
+                ognLat: "纬度为-90到90的数字!",
             },
 
         })
