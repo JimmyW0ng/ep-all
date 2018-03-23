@@ -88,7 +88,7 @@ public class OrganCourseService {
         ognCourseBo.setOgnName(organPo.getOgnName());
         ognCourseBo.setOgnPhone(organPo.getOgnPhone());
         // 获取班次信息
-        List<EpOrganClassPo> classes = organClassRepository.getByCourseId(courseId);
+        List<OrganClassEnterBo> classes = organClassRepository.getClassEnterInfoByCourseId(courseId);
         // 老师介绍
         List<OrganAccountBo> team = organAccountRepository.getByCourseId(courseId);
         if (CollectionsTools.isNotEmpty(team)) {
