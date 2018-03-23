@@ -16,6 +16,10 @@
 <body class="gray-bg">
 <div class="col-sm-11 ">
     <div style="padding-left: 40px" class="row ">
+        <input id="ognPhone" th:value="${ognPhone}" type="hidden">
+        <input id="ognLng" th:value="${ognLng}" type="hidden">
+        <input id="ognLat" th:value="${ognLat}" type="hidden">
+        <input id="ognAddress" th:value="${ognAddress}" type="hidden">
         <form id="frm">
             <div class="col-sm-12 ">
                 <div class="ibox float-e-margins">
@@ -286,6 +290,33 @@
                     <label>要求报名人数 </label>
                     <input name="enterRequireNum" type="text" class=" form-control " value="${enterRequireNum}"
                            readonly="true">
+                    <div>
+                        <label>联系电话 <span class="required-sign">*</span></label>
+                        <input name="phone" jprop="phone" type="text" class="form-control" required="true"
+                               readonly="true"
+                               value="${phone}">
+                    </div>
+
+                    <div>
+                        <label>上课地址 <span class="required-sign">*</span></label>
+                        <input name="address" jprop="address" type="text" class="form-control" required="true"
+                               readonly="true"
+                               value="${address}">
+                    </div>
+
+                    <div>
+                        <label>经度 <span class="required-sign">*</span></label>
+                        <input name="addressLng" jprop="addressLng" type="text" class="form-control" required="true"
+                               readonly="true"
+                               value="${addressLng}">
+                    </div>
+
+                    <div>
+                        <label>纬度 <span class="required-sign">*</span></label>
+                        <input name="addressLat" jprop="addressLat" type="text" class="form-control" required="true"
+                               readonly="true"
+                               value="${addressLat}">
+                    </div>
                     <label>总计课时 <span class="required-sign">*</span></label>
                     <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
@@ -529,7 +560,9 @@
                     id: organClassBos[i].id, href: "#collapse" + (len + 1), collapse: "collapse" + (len + 1),
                     className: organClassBos[i].className, classPrize: organClassBos[i].classPrize,
                     discountAmount: organClassBos[i].discountAmount, enterLimitFlag: organClassBos[i].enterLimitFlag,
-                    enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum
+                    enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum,
+                    phone: organClassBos[i].phone, address: organClassBos[i].address,
+                    addressLng: organClassBos[i].addressLng, addressLat: organClassBos[i].addressLat,
                 }]
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 

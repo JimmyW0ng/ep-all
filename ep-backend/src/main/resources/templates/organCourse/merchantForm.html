@@ -252,35 +252,35 @@
         </div>
         <div id=${collapse} class="panel-collapse collapse in">
             <div class="panel-body ">
-                <div name="organClassBos" class="form-group col-sm-4 organClassBos">
+                <div name="organClassBos" class="col-sm-4 organClassBos">
                     <input name="id" type="hidden" value="${id}">
-                    <div>
+                    <div class="form-group">
                         <label>班次名称 <span class="required-sign">*</span></label>
                         <input name="className" jprop="className" type="text" class=" form-control "
                                value="${className}"
                                required="true"
                                onblur="setClassBoxTitle(this)">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>产品负责人 <span class="required-sign">*</span></label>
                         <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control "
                                 required="true">
 
                         </select>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>价格(元) <span class="required-sign">*</span></label>
                         <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
                                value="${classPrize}">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>折扣优惠(%) <span class="required-sign">*</span></label>
                         <input name="discountAmount" jprop="discountAmount" type="text"
                                class=" form-control number-input"
                                value="${discountAmount}">
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>是否限制报名人数 <span class="required-sign">*</span></label>
                         <select name="enterLimitFlag" jprop="enterLimitFlag" type="text" class=" form-control "
                                 value="${enterLimitFlag}">
@@ -289,38 +289,38 @@
                         </select>
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>要求报名人数 </label>
                         <input name="enterRequireNum" jprop="enterRequireNum" type="text" class="form-control"
                                value="${enterRequireNum}"
                                readonly="true">
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>联系电话 <span class="required-sign">*</span></label>
                         <input name="phone" jprop="phone" type="text" class="form-control" required="true"
                                value="${phone}">
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>上课地址 <span class="required-sign">*</span></label>
                         <input name="address" jprop="address" type="text" class="form-control" required="true"
                                value="${address}">
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>经度 <span class="required-sign">*</span></label>
                         <input name="addressLng" jprop="addressLng" type="text" class="form-control" required="true"
                                value="${addressLng}">
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>纬度 <span class="required-sign">*</span></label>
                         <input name="addressLat" jprop="addressLat" type="text" class="form-control" required="true"
                                value="${addressLat}">
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <label>总计课时 <span class="required-sign">*</span></label>
                         <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
                                value="${courseNum}"
@@ -818,19 +818,19 @@
 //            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
 //            return this.optional(element) || (length == 11 && mobile.test(value));
 //        }, "请填写正确的手机号码!");
-//        $("#frm").validate({
-//            rules: {
+        $("#frm").validate({
+            rules: {
 //                phone: {isMobile: true},
-//                addressLng: {number: true, max: 180, min: -180},
-//                addressLat: {number: true, max: 90, min: -90},
-//            },
-//            messages: {
-//                addressLng: "经度为-180到180的数字!",
-//                addressLat: "纬度为-90到90的数字!",
+                addressLng: {number: true, max: 180, min: -180},
+                addressLat: {number: true, max: 90, min: -90},
+            },
+            messages: {
+                addressLng: "经度为-180到180的数字!",
+                addressLat: "纬度为-90到90的数字!",
 //                phone: "请填写正确的手机号码!"
-//            },
-//
-//        })
+            },
+
+        })
 
     });
 

@@ -3,13 +3,10 @@ package com.ep.domain.repository;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
 import com.ep.domain.repository.domain.tables.records.EpConstantCatalogRecord;
 import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_CATALOG;
 
@@ -32,19 +29,46 @@ public class ConstantCatalogRepository extends AbstractCRUDRepository<EpConstant
                 .fetchInto(EpConstantCatalogPo.class);
     }
 
-    public int updateConstantCatalogPo(EpConstantCatalogPo po){
+    /**
+     * 修改po
+     *
+     * @param po
+     * @return
+     */
+    public int updateConstantCatalogPo(EpConstantCatalogPo po) {
         return dslContext.update(EP_CONSTANT_CATALOG)
-                .set(EP_CONSTANT_CATALOG.LABEL,po.getLabel())
-                .set(EP_CONSTANT_CATALOG.REMARK,po.getRemark())
-                .set(EP_CONSTANT_CATALOG.UPDATE_AT, DSL.currentTimestamp())
+                .set(EP_CONSTANT_CATALOG.LABEL, po.getLabel())
+                .set(EP_CONSTANT_CATALOG.REMARK, po.getRemark())
                 .where(EP_CONSTANT_CATALOG.ID.eq(po.getId()))
+                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
                 .execute();
     }
 
-    public void deleteById(Long id){
-        dslContext.update(EP_CONSTANT_CATALOG)
-                .set(EP_CONSTANT_CATALOG.DEL_FLAG,true)
+    /**
+     * 根据id删除类目
+     *
+     * @param id
+     * @return
+     */
+    public int deleteById(Long id) {
+        return dslContext.update(EP_CONSTANT_CATALOG)
+                .set(EP_CONSTANT_CATALOG.DEL_FLAG, true)
                 .where(EP_CONSTANT_CATALOG.ID.eq(id))
+                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据ids删除类目
+     *
+     * @param ids
+     * @return
+     */
+    public int deleteByIds(Long[] ids) {
+        return dslContext.update(EP_CONSTANT_CATALOG)
+                .set(EP_CONSTANT_CATALOG.DEL_FLAG, true)
+                .where(EP_CONSTANT_CATALOG.ID.in(ids))
+                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
                 .execute();
     }
 
