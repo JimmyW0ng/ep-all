@@ -191,6 +191,9 @@
                                             <label>是否限制报名人数 <span class="required-sign">*</span></label>
                                             <input name="enterLimitFlag" type="text" class=" form-control "
                                                    th:value="${po.enterLimitFlag ?'是':'否'}">
+                                            <label>要求报名人数 </label>
+                                            <input name="enterRequireNum" type="text" class=" form-control "
+                                                   th:value="${po.enterRequireNum}">
                                             <div>
                                                 <label>联系电话 <span class="required-sign">*</span></label>
                                                 <input name="phone" jprop="phone" type="text" class="form-control"
@@ -216,9 +219,7 @@
                                                        class="form-control"
                                                        th:value="${po.addressLat}">
                                             </div>
-                                            <label>要求报名人数 </label>
-                                            <input name="enterRequireNum" type="text" class=" form-control "
-                                                   th:value="${po.enterRequireNum}">
+
                                             <label>总计课时 *</label>
                                             <input name="courseNum" type="Number" class=" form-control "
                                                    th:value="${po.courseNum}">
