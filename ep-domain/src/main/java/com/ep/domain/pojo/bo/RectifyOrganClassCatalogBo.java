@@ -20,6 +20,6 @@ public class RectifyOrganClassCatalogBo extends AbstractBasePojo {
     private String catalogTitle;
     private String catalogDesc;
     private Timestamp startTime;
-    private Timestamp endTime;
+    private Integer duration;
     private Boolean rectifyFlag;
 }

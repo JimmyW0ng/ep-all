@@ -31,36 +31,6 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     private static final long serialVersionUID = 452736027;
 
     /**
-     * Create a detached EpMemberChildSignRecord
-     */
-    public EpMemberChildSignRecord() {
-        super(EpMemberChildSign.EP_MEMBER_CHILD_SIGN);
-    }
-
-    /**
-     * Create a detached, initialised EpMemberChildSignRecord
-     */
-    public EpMemberChildSignRecord(Long id, Long childId, String content, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMemberChildSign.EP_MEMBER_CHILD_SIGN);
-
-        set(0, id);
-        set(1, childId);
-        set(2, content);
-        set(3, createAt);
-        set(4, updateAt);
-        set(5, remark);
-        set(6, delFlag);
-        set(7, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_sign.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_member_child_sign.id</code>. 主键
      */
     public EpMemberChildSignRecord setId(Long value) {
@@ -69,10 +39,10 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.child_id</code>. 孩子id
+     * Getter for <code>ep.ep_member_child_sign.id</code>. 主键
      */
-    public Long getChildId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -84,10 +54,10 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.content</code>. 签名内容
+     * Getter for <code>ep.ep_member_child_sign.child_id</code>. 孩子id
      */
-    public String getContent() {
-        return (String) get(2);
+    public Long getChildId() {
+        return (Long) get(1);
     }
 
     /**
@@ -99,10 +69,10 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_child_sign.content</code>. 签名内容
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(3);
+    public String getContent() {
+        return (String) get(2);
     }
 
     /**
@@ -114,10 +84,10 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_child_sign.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(3);
     }
 
     /**
@@ -129,10 +99,10 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.remark</code>. 备注
+     * Getter for <code>ep.ep_member_child_sign.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(5);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
     }
 
     /**
@@ -144,10 +114,10 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_sign.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_member_child_sign.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(6);
+    public String getRemark() {
+        return (String) get(5);
     }
 
     /**
@@ -158,20 +128,12 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_member_child_sign.version</code>.
+     * Getter for <code>ep.ep_member_child_sign.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(7);
+    public Boolean getDelFlag() {
+        return (Boolean) get(6);
     }
-
-    // -------------------------------------------------------------------------
-    // Record8 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_member_child_sign.version</code>.
@@ -182,12 +144,27 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
     }
 
     /**
+     * Getter for <code>ep.ep_member_child_sign.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(7);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record8 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -396,10 +373,6 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -423,5 +396,32 @@ public class EpMemberChildSignRecord extends UpdatableRecordImpl<EpMemberChildSi
         value7(value7);
         value8(value8);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpMemberChildSignRecord
+     */
+    public EpMemberChildSignRecord() {
+        super(EpMemberChildSign.EP_MEMBER_CHILD_SIGN);
+    }
+
+    /**
+     * Create a detached, initialised EpMemberChildSignRecord
+     */
+    public EpMemberChildSignRecord(Long id, Long childId, String content, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberChildSign.EP_MEMBER_CHILD_SIGN);
+
+        set(0, id);
+        set(1, childId);
+        set(2, content);
+        set(3, createAt);
+        set(4, updateAt);
+        set(5, remark);
+        set(6, delFlag);
+        set(7, version);
     }
 }

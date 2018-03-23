@@ -14,20 +14,22 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 style="display: inline-block" th:text="${systemRolePo.id} eq null ? '查看角色' : '查看角色'"></h5>
-            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/role/index" >返回</a>
+            <h5>（<span class="required-sign">*为必填</span>）</h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
+               onclick="history.back()">返回</a>
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="roleFrm" th:object="${systemRolePo}">
                 <input type="hidden" id="id" name="id" th:value="${systemRolePo.id}">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">角色名称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>角色名称</label>
                     <div class="col-sm-3">
                         <input id="roleName" name="roleName" type="text" class="form-control" required="true"
                                aria-required="true" th:value="${systemRolePo.roleName}" th:field="*{roleName}" >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">目标：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>目标</label>
                     <div class="col-sm-3">
                         <select id="target" name="target" class="form-control" required="true" aria-required="true" th:field="*{target}">
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemRoleTarget).values()}"
@@ -38,29 +40,25 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">角色标识：</label>
+                    <label class="col-sm-2 control-label">角色标识</label>
                     <div class="col-sm-3">
                         <input id="roleCode" name="roleCode" type="text" class="form-control" required="true"
                                aria-required="true" th:value="${systemRolePo.roleCode}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">备注：</label>
+                    <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-3">
                         <textarea id="remark" name="remark" type="text" class="form-control" th:text="${systemRolePo.remark}"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">菜单：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>菜单</label>
                     <div class="col-sm-6">
                         <ul id="treeDemo" class="ztree"></ul>
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3 col-sm-offset-2">-->
-                        <!--<button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>-->
-                    <!--</div>-->
-                <!--</div>-->
+
             </form>
         </div>
     </div>

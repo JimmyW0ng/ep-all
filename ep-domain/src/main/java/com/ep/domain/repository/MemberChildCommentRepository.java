@@ -168,6 +168,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.as("nickName"));
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
         fieldList.add(EP_ORGAN_CLASS_CHILD.CHILD_ID.as("classChildId"));
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));

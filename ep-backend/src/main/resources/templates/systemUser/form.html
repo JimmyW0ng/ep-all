@@ -16,28 +16,29 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text="${systemUserPo.id} eq null ? '新增用户' : '修改用户'"></h5>
-            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/user/index" >返回</a>
-
+            <h5>（<span class="required-sign">*为必填</span>）</h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
+               onclick="history.back()">返回</a>
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="userFrm" th:object="${systemUserPo}">
                 <input type="hidden" id="id" name="id" th:field="*{id}"/>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">手机号：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>手机号</label>
                     <div class="col-sm-3">
                         <input id="mobile" name="mobile" type="text" class="form-control" required="true" th:field="*{mobile}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">用户名：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>用户名</label>
                     <div class="col-sm-3">
                         <input id="userName" name="userName" type="text" class="form-control" required="true" th:field="*{userName}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">密码：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>密码</label>
                     <div class="col-sm-3">
                         <input id="password" name="password" type="text" class="form-control" required="true" th:field="*{password}"
                                aria-required="true">
@@ -45,13 +46,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">邮箱：</label>
+                    <label class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-3">
                         <input id="email" name="email" type="text" class="form-control" th:field="*{email}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">类型：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>类型</label>
                     <div class="col-sm-3">
                         <select id="type" name="type" class="form-control" required="true" aria-required="true" onchange="changeType(this)" th:field="*{type}"
                        th:disabled="${systemUserPo.id!=null} ">
@@ -64,7 +65,7 @@
                     </div>
                 </div>
                 <div class="form-group" id="organIdBox" style="display: none">
-                    <label class="col-sm-2 control-label">商户id：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>商户id</label>
                     <div class="col-sm-3">
                         <input id="ognId" name="ognId" type="text" class="form-control" required="true"
                                aria-required="true" th:field="*{ognId}">
@@ -72,7 +73,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">角色：</label>
+                    <label class="col-sm-2 control-label">角色</label>
                     <div class="col-sm-4">
                         <table class="table table-striped table-hover table-bordered dataTable" id="editable"
                                aria-describedby="editable_info">
@@ -93,7 +94,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-3 col-sm-offset-2">
-                        <button class="btn btn-primary" type="button" onclick="userFrmSubmit()">提交</button>
+                        <button class="btn btn-primary" type="button" onclick="userFrmSubmit()">提 交</button>
                     </div>
                 </div>
             </form>
@@ -157,7 +158,6 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             }
-
         })
     }
     

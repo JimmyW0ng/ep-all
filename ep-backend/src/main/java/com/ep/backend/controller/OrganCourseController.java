@@ -12,6 +12,7 @@ import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.dto.RectifyOrganCourseDto;
 import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
@@ -167,7 +168,8 @@ public class OrganCourseController extends BackendController {
         constantCatalogList.forEach(p -> {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(ognId);
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(ognId,
+                new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
@@ -248,7 +250,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantview/{courseId}")
-    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex','platform:organCourse:index')")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         //机构课程
@@ -269,7 +271,8 @@ public class OrganCourseController extends BackendController {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
         model.addAttribute("constantCatalogMap", constantCatalogMap);
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
+                new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
@@ -318,7 +321,8 @@ public class OrganCourseController extends BackendController {
         constantCatalogList.forEach(p -> {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
+                new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
@@ -394,7 +398,8 @@ public class OrganCourseController extends BackendController {
         constantCatalogList.forEach(p -> {
             constantCatalogMap.put(p.getId(), p.getLabel());
         });
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnId(currentUser.getOgnId());
+        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
+                new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());

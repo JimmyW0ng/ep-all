@@ -89,7 +89,7 @@
                             <td th:text="#{EpSystemUserStatus.+${bo.status}}"></td>
 
                             <td th:text="${bo.remark}"></td>
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.status,'normal')}"
                                    th:href="@{/auth/user/view/}+${bo.id}">查看</a>

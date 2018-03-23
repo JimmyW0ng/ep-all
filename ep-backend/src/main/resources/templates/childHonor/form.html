@@ -16,14 +16,15 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text="${memberChildHonerPo.id} eq null ? '新增荣誉' : '修改荣誉'"></h5>
-            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger"
-               href="/auth/childHonor/index">返回</a>
+            <h5>（<span class="required-sign">*为必填</span>）</h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
+               onclick="history.back()">返回</a>
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="frm" th:object="${memberChildHonerPo}">
                 <input type="hidden" id="id" name="id" th:field="*{id}"/>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">课程：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>课程</label>
                     <div class="col-sm-3">
                         <select th:if="${memberChildHonerPo.id==null}" id="courseId" name="courseId"
                                 class="form-control" required="true" aria-required="true"
@@ -39,7 +40,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">班级：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>班级</label>
                     <div class="col-sm-3">
                         <select th:if="${memberChildHonerPo.id==null}" id="classId" name="classId" class="form-control"
                                 required="true" aria-required="true"
@@ -51,8 +52,9 @@
 
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">昵称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>昵称</label>
                     <div class="col-sm-3">
                         <select th:if="${memberChildHonerPo.id==null}" id="childId" name="childId" class="form-control"
                                 required="true" aria-required="true"
@@ -66,7 +68,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">荣誉内容：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>荣誉内容</label>
                     <div class="col-sm-5">
                         <textarea style="height:250px" id="content" name="content" class="form-control" required="true"
                                   aria-required="true"
@@ -78,7 +80,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-3 col-sm-offset-2">
-                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
+                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提 交</button>
                     </div>
                 </div>
             </form>
@@ -108,8 +110,13 @@
             data: $("#frm").serialize(),
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, '/auth/childHonor/index')
+                    toastr_success(null, document.referrer)
+                } else {
+                    toastr.error(data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
             }
         })
     }
@@ -127,7 +134,12 @@
                             htmls = htmls + '<option value=' + item + '>' + childMap[item] + '</option>'
                         }
                         $("#childId").html(htmls)
+                    } else {
+                        toastr.error(data.errorDescription);
                     }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
                 }
             })
         }
@@ -147,7 +159,12 @@
                             htmls = htmls + '<option value=' + item + '>' + classMap[item] + '</option>'
                         }
                         $("#classId").html(htmls)
+                    } else {
+                        toastr.error(data.errorDescription);
                     }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
                 }
             })
         }
