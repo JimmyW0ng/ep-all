@@ -4,6 +4,7 @@ import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.bo.OrganClassEnterBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
@@ -49,6 +50,20 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .orderBy(EP_ORGAN_CLASS.SORT.desc(), EP_ORGAN_CLASS.ID.asc())
                 .fetchInto(EpOrganClassPo.class);
+    }
+
+    /**
+     * 获取课程班次报名相关信息
+     *
+     * @param courseId
+     * @return
+     */
+    public List<OrganClassEnterBo> getClassEnterInfoByCourseId(Long courseId) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                         .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .orderBy(EP_ORGAN_CLASS.SORT.desc(), EP_ORGAN_CLASS.ID.asc())
+                         .fetchInto(OrganClassEnterBo.class);
     }
 
     /**
