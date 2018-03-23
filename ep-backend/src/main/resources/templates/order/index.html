@@ -123,7 +123,7 @@
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
 
                             <td name="remark" th:text="${bo.remark}"></td>
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info"
 

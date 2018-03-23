@@ -109,7 +109,7 @@
                                 <p name="contentReply" th:title="${bo.contentReply}" th:text="${bo.contentReply}"
                                    style="width:500px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;"></p>
                             </td>
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.type,'launch')}"
                                    href="javascript:void(0)"
@@ -122,9 +122,7 @@
                                    th:if="${null==bo.replyId&&null!=bo.id&&organAccountId==classOgnAccountId&&organAccountId!=null}"
                                    href="javascript:void(0)"
                                    th:onclick="'updateCommentInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>
-                                <!--<a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.type,'launch')}"-->
-                                <!--href="javascript:void(0)"-->
-                                <!--th:onclick="'updateChildTagInit(this)'">标签</a>-->
+
 
                             </td>
 
@@ -263,15 +261,15 @@
             success: function (data) {
                 if (data.success) {
                     var res = data.result
+                    var htmls = '<option value="">班级</option>'
                     if (res == undefined || res.length == 0) {
                         toastr.warning("该产品下没有进行中的班次!")
                     } else {
-                        var htmls = '<option value="">班级</option>'
                         for (var item in res) {
                             htmls = htmls + '<option value="' + item + '">' + res[item] + '</option>'
                         }
-                        $("#classId").html(htmls)
                     }
+                    $("#classId").html(htmls)
                 }
             },
             error: function (XMLHttpRequest) {

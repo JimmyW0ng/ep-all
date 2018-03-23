@@ -17,7 +17,8 @@
         <div class="ibox-title">
             <h5 th:text="${systemUserPo.id} eq null ? '新增用户' : '修改用户'"></h5>
             <h5>（<span class="required-sign">*为必填</span>）</h5>
-            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="/auth/user/index" >返回</a>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
+               onclick="history.back()">返回</a>
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t" id="userFrm" th:object="${systemUserPo}">
@@ -157,7 +158,6 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             }
-
         })
     }
     

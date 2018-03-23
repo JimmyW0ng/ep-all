@@ -167,9 +167,10 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .execute();
     }
 
-    public List<EpOrganAccountPo> findByOgnId(Long ognId){
+    public List<EpOrganAccountPo> findByOgnIdAndStatus(Long ognId, EpOrganAccountStatus[] status) {
         return dslContext.selectFrom(EP_ORGAN_ACCOUNT)
                 .where(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_ACCOUNT.STATUS.in(status))
                 .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganAccountPo.class);
     }

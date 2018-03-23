@@ -84,7 +84,7 @@
                             <td th:text="${bo.childId}"></td>
                             <td th:text="${bo.chosenFlag==true?'是':'否'}"></td>
                             <td th:text="${bo.remark}"></td>
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a class="btn btn-xs btn-primary" href="javascript:void(0)" th:if="!${bo.chosenFlag}"
                                    th:onclick="'chosenBox('+${bo.id}+')'">设为精选</a>

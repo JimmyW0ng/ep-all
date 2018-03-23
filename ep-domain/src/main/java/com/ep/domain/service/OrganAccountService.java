@@ -160,8 +160,8 @@ public class OrganAccountService {
         }
     }
 
-    public List<EpOrganAccountPo> findByOgnId(Long ognId) {
-        return organAccountRepository.findByOgnId(ognId);
+    public List<EpOrganAccountPo> findByOgnIdAndStatus(Long ognId, EpOrganAccountStatus[] status) {
+        return organAccountRepository.findByOgnIdAndStatus(ognId, status);
     }
 
     /**

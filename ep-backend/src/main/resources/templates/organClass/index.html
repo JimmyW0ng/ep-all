@@ -95,7 +95,7 @@
                             <td th:text="${bo.courseNum}"></td>
                             <td th:text="#{EpOrganClassStatus.+${bo.status}}"></td>
 
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:if="!${#stringTools.equals(bo.status,'save')}"
                                    href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+')'">订单详情</a>
