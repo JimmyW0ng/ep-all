@@ -28,11 +28,13 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
+    private static final long serialVersionUID = 748974809;
+
     /**
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-    private static final long serialVersionUID = 748974809;
+
     /**
      * 课程类目表
      */

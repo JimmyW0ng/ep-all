@@ -48,7 +48,7 @@
                                             class=" form-control ">
                                         <option value="">请选择</option>
                                         <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
-                                                th:field="*{courseType}"
+                                                th:selected="${#strings.equals(organCoursePo.courseType,state)}"
                                                 th:value="${state}"
                                                 th:text="#{EpOrganCourseCourseType.+${state.literal}}">
                                         </option>
@@ -62,7 +62,7 @@
                                             class="form-control" onchange="changeGetTags(this)">
                                         <option value="">请选择</option>
                                         <option th:each="state : ${constantCatalogMap.keySet()}"
-                                                th:field="*{courseCatalogId}"
+                                                th:selected="${#strings.equals(organCoursePo.courseCatalogId,state)}"
                                                 th:value="${state}"
                                                 th:text="${constantCatalogMap.get(state)}">
                                         </option>
@@ -195,14 +195,14 @@
 </div>
 <script type="text/template" id='classCatalogTmpl'>
     <div name="organClassCatalogPos" class="organClassCatalogPos" style="display:inline-block;margin:5px 0px">
-        <div name="" class="col-sm-5">
+        <div name="" class="col-sm-5 form-group">
             <label>课时<span class="required-sign">*</span></label>
             <input name="id" type="hidden" jprop="id" value=${id}>
             <input name="catalogTitle" jprop="catalogTitle" class="form-control " value="${catalogTitle}"
                    required="true"/>
             <input name="catalogIndex" jprop="catalogIndex" type="hidden" value=${len}>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-5 form-group">
             <label>开始时间<span class="required-sign">*</span></label>
             <input name="startTime" jprop="startTime" class="form-control laydateer " value="${startTime}"
                    required="true"/>
@@ -213,11 +213,12 @@
                 onclick="removeClassCatalogBox(this)"></span></a>
         <a name="insertCatalogBtn" style="float:right;" href="javascript:void(0);"><span
                 onclick="insertbeforeClassCatalogBox(this)">插入</span></a>
-        <div class="col-sm-5">
-            <label>结束时间</label>
-            <input name="endTime" jprop="endTime" class="form-control laydateer  endTime" value="${endTime}"/>
+        <div class="col-sm-5 form-group">
+            <label>持续时长（分钟）</label>
+            <input name="duration" jprop="duration" class="form-control " value="${duration}" required="true">
+
         </div>
-        <div class="col-sm-10">
+        <div class="col-sm-10 form-group">
             <label>目录描述<span class="required-sign">*</span></label>
             <textarea name="catalogDesc" jprop="catalogDesc" class="form-control "
                       required="true">${catalogDesc}</textarea>
@@ -519,11 +520,11 @@
         if (!$("#enterTimeEnd").val()) {
             $("#enterTimeEnd").attr("name", "")
         }
-        $("#accordion").find("input.endTime").each(function () {
-            if (!$(this).val()) {
-                $(this).attr("name", "")
-            }
-        })
+//        $("#accordion").find("input.endTime").each(function () {
+//            if (!$(this).val()) {
+//                $(this).attr("name", "")
+//            }
+//        })
     }
 
     function beforeSubmitFormatInputInnerName() {
@@ -570,11 +571,11 @@
         if (!$("#enterTimeEnd").attr("name")) {
             $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
         }
-        $("#accordion").find("input.endTime").each(function () {
-            if (!$(this).attr("name")) {
-                $(this).attr("name", "endTime")
-            }
-        })
+//        $("#accordion").find("input.endTime").each(function () {
+//            if (!$(this).attr("name")) {
+//                $(this).attr("name", "endTime")
+//            }
+//        })
     }
 
     function beforeSubmitCheckCourseDescPic() {
@@ -698,7 +699,7 @@
                             id: organClassCatalogPos[j].id,
                             len: j + 1,
                             startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
-                            endTime: organClassCatalogPos[j].endTime == null ? "" : new Date(organClassCatalogPos[j].endTime).Format('yyyy-MM-dd HH:mm:ss'),
+                            duration: organClassCatalogPos[j].duration,
                             catalogTitle: organClassCatalogPos[j].catalogTitle,
                             catalogDesc: organClassCatalogPos[j].catalogDesc
                         })
@@ -821,6 +822,7 @@
         $("#frm").validate({
             rules: {
 //                phone: {isMobile: true},
+                duration: {digits: true},
                 addressLng: {number: true, max: 180, min: -180},
                 addressLat: {number: true, max: 90, min: -90},
             },

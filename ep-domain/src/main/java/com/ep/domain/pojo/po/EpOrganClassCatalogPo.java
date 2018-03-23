@@ -27,6 +27,7 @@ public class EpOrganClassCatalogPo extends AbstractBasePojo {
     private String catalogDesc;
     private Integer catalogIndex;
     private Timestamp startTime;
+    private Integer duration;
     private Timestamp endTime;
     private Integer childEvaluatedNum;
     private String remark;
