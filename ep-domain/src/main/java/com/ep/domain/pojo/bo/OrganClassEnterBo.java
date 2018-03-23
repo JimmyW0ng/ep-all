@@ -37,7 +37,7 @@ public class OrganClassEnterBo extends EpOrganClassPo {
         } else if (EpOrganClassStatus.end.equals(super.getStatus())) {
             return "已结束";
         } else if (EpOrganClassStatus.online.equals(super.getStatus())) {
-            if (super.getEnteredNum() >= super.getEnterRequireNum()) {
+            if (super.getEnterLimitFlag() && super.getEnteredNum() >= super.getEnterRequireNum()) {
                 return "已满额";
             }
         }
