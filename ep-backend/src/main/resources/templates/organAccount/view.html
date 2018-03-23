@@ -15,6 +15,7 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5 th:text=" '查看教师'"></h5>
+            <h5>（<span class="required-sign">*为必填</span>）</h5>
             <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="history.back()">返回</a>
 
         </div>
@@ -22,14 +23,14 @@
             <form class="form-horizontal m-t" id="frm" th:object="${organAccountPo}">
                 <input type="hidden" id="id" name="id" th:field="*{id}"/>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">机构内部名称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>姓名</label>
                     <div class="col-sm-3">
                         <input id="accountName" name="accountName" type="text" class="form-control" required="true" th:field="*{accountName}"
                                aria-required="true">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">对外昵称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>对外昵称</label>
                     <div class="col-sm-3">
                         <input id="nickName" name="nickName" type="text" class="form-control" required="true" th:field="*{nickName}"
                                 aria-required="true">
@@ -39,7 +40,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">介绍：</label>
+                    <label class="col-sm-2 control-label">介绍</label>
                     <div class="col-sm-3">
                         <textarea id="introduce" name="introduce" type="text" class="form-control" required="true" th:field="*{introduce}"
                                aria-required="true">
@@ -48,7 +49,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">关联手机号：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>关联手机号</label>
                     <div class="col-sm-3">
                         <input id="referMobile" name="referMobile" type="text" class="form-control" required="true" th:field="*{referMobile}"
                                 aria-required="true">
@@ -56,7 +57,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">备注：</label>
+                    <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-3">
                         <textarea id="remark" name="remark" type="text" class="form-control" required="true" th:field="*{remark}"
                                aria-required="true">

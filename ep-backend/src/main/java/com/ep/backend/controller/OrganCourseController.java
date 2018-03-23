@@ -248,7 +248,7 @@ public class OrganCourseController extends BackendController {
      * @return
      */
     @GetMapping("/merchantview/{courseId}")
-    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
+    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex','platform:organCourse:index')")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         //机构课程

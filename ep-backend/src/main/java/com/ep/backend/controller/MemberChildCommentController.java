@@ -63,7 +63,8 @@ public class MemberChildCommentController extends BackendController {
                         @RequestParam(value = "courseId", required = false) Long courseId,
                         @RequestParam(value = "classId", required = false) Long classId,
                         @RequestParam(value = "classCatalogId", required = false) Long classCatalogId,
-                        @RequestParam(value = "childNickName", required = false) String childNickName
+                        @RequestParam(value = "childNickName", required = false) String childNickName,
+                        @RequestParam(value = "childTrueName", required = false) String childTrueName
 
     ) {
         Map<Object, Object> searchMap = Maps.newHashMap();
@@ -78,6 +79,10 @@ public class MemberChildCommentController extends BackendController {
                 conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.eq(childNickName));
             }
             searchMap.put("childNickName", childNickName);
+            if (StringTools.isNotBlank(childTrueName)) {
+                conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.eq(childTrueName));
+            }
+            searchMap.put("childTrueName", childTrueName);
             conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch).or(EP_MEMBER_CHILD_COMMENT.TYPE.isNull()));
             Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(courseId, classId, classCatalogId, pageable, conditions);
             model.addAttribute("page", page);
@@ -244,7 +249,7 @@ public class MemberChildCommentController extends BackendController {
         EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
         if (CollectionsTools.isEmpty(organClassPos)) {
-            return ResultDo.build().setResult(new HashMap<Long, String>());
+            return ResultDo.build().setResult(new HashMap<Long, String>(0));
         }
         Map<Long, String> classMap = Maps.newHashMap();
         organClassPos.forEach(p -> {
@@ -265,7 +270,7 @@ public class MemberChildCommentController extends BackendController {
     public ResultDo getCatalogByClassId(@PathVariable("classId") Long classId) {
         List<EpOrganClassCatalogPo> classCatalogPos = organClassCatalogService.findByClassId(classId);
         if (CollectionsTools.isEmpty(classCatalogPos)) {
-            return ResultDo.build().setResult(new HashMap<Long, String>());
+            return ResultDo.build().setResult(new HashMap<Long, String>(0));
         }
         Map<Long, String> classCatalogMap = Maps.newHashMap();
         classCatalogPos.forEach(p -> {

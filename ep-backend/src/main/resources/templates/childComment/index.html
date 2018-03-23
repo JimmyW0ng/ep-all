@@ -59,7 +59,11 @@
                                name="childNickName" th:value="${searchMap.get('childNickName')}">
                         </input>
                     </div>
-
+                    <div class="form-group">
+                        <input type="text" class="form-control " style="width:200px" id="childTrueName" placeholder="姓名"
+                               name="childTrueName" th:value="${searchMap.get('childTrueName')}">
+                        </input>
+                    </div>
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="" type="button" onclick="search()">查询</button>
                         <button class="btn btn-warning" onclick="location.href='/auth/childComment/index'"
@@ -80,6 +84,7 @@
                         <thead>
                         <tr>
                             <th>昵称</th>
+                            <th>姓名</th>
                             <th style="width:500px">内容</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -94,6 +99,7 @@
                                 <input name="classCatalogId" type="hidden" th:value="${bo.classCatalogId}">
                             </form>
                             <td th:text="${bo.nickName}"></td>
+                            <td th:text="${bo.childTrueName}"></td>
 
                             <td name="content">
                                 <p th:if="${null!=bo.content}" th:text="'评论:'" style="color:cornflowerblue"></p>

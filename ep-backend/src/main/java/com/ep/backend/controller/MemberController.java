@@ -94,4 +94,17 @@ public class MemberController extends BackendController {
     public ResultDo unfreeze(@PathVariable("id") Long id) {
         return memberService.unfreezeById(id);
     }
+
+    /**
+     * 解冻平台会员
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("cancel/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:member:index')")
+    @ResponseBody
+    public ResultDo cancel(@PathVariable("id") Long id) {
+        return memberService.cancelById(id);
+    }
 }

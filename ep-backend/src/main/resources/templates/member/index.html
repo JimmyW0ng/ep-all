@@ -17,25 +17,25 @@
 
         <div class="panel">
             <div class="panel-heading">
-                <a class="btn btn-success" type="button" th:href="@{/auth/member/createInit}"><i
-                        class="glyphicon glyphicon-plus"></i> 新增</a>
+                <!--<a class="btn btn-success" type="button" th:href="@{/auth/member/createInit}"><i-->
+                <!--class="glyphicon glyphicon-plus"></i> 新增</a>-->
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input type="text" class="form-control " name="mobile" th:value="${searchMmap.get('mobile')}"
+                        <input type="text" class="form-control " name="mobile" th:value="${searchMap.get('mobile')}"
                                placeholder="手机号">
                     </div>
 
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
-                                   th:value="${searchMmap.get('crStartTime')}"
+                                   th:value="${searchMap.get('crStartTime')}"
                                    th:placeholder="创建时间从"
                             >
                             <span class="input-group-addon">到</span>
                             <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
-                                   th:value="${searchMmap.get('crEndTime')}"
+                                   th:value="${searchMap.get('crEndTime')}"
                                    th:placeholder="到"
                             >
                         </div>
@@ -77,13 +77,16 @@
                             <td th:text="${bo.sex}"></td>
                             <td th:text="#{EpMemberStatus.+${bo.status}}"></td>
 
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
-                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.status,'normal')}"
+                                <a class="btn btn-xs btn-danger" th:if="${#strings.equals(bo.status,'normal')}"
+                                   href="javascript:void(0)"
                                    th:onclick="'freezeBox('+${bo.id}+')'">冻结</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.status,'freeze')}"
+                                   href="javascript:void(0)"
                                    th:onclick="'unfreezeBox('+${bo.id}+')'">解冻</a>
-                                <a class="btn btn-xs btn-primary" th:if="!${#strings.equals(bo.status,'cancel')}"
+                                <a class="btn btn-xs btn-danger" th:if="!${#strings.equals(bo.status,'cancel')}"
+                                   href="javascript:void(0)"
                                    th:onclick="'cancelBox('+${bo.id}+')'">注销</a>
                             </td>
 
@@ -91,21 +94,17 @@
                         </tbody>
                     </table>
                     <!--Userlist end-->
-
                     <div class="row mt15">
                         <div class="col-lg-6">
                             <label class="fl" sd:page-size-selector="dropdown">
                                 <select size="1" name="editable-sample_length" aria-controls="editable-sample"
                                         class="form-control xsmall" sd:page-size-selector="default">
-
                                 </select>
                             </label>
                             <span class="fl pl15 pt10" sd:pagination-summary=""></span>
                         </div>
-
                         <div class="col-lg-6">
                             <ul class="pagination pagination-sm pull-right" sd:pagination="full">
-
                             </ul>
                         </div>
                     </div>
@@ -126,7 +125,7 @@
             url: "/auth/member/freeze/" + id,
             success:function (data) {
                 if(data.success){
-                    toastr_success(null, document.localtion.href);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -147,7 +146,7 @@
             url: "/auth/member/unfreeze/" + id,
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, document.localtion.href);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -168,7 +167,7 @@
             url: "/auth/member/cancel/" + id,
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, document.localtion.href);
+                    toastr_success(null, document.location.href);
                 } else {
                     toastr.error(data.errorDescription);
                 }

@@ -87,7 +87,7 @@
                             <td th:text="${bo.roleCode}"></td>
                             <td th:text="#{EpSystemMenuTarget.+${bo.target}}"></td>
                             <td th:text="${bo.remark}"></td>
-                            <td th:text="${bo.createAt}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/role/view/}+${bo.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:href="@{/auth/role/updateInit/}+${bo.id}">修改</a>

@@ -85,7 +85,7 @@
                             <td th:text="#{EpOrganStatus.+${po.status}}"></td>
 
                             <td th:text="${po.remark}"></td>
-                            <td th:text="${po.createAt}"></td>
+                            <td th:text="${#dates.format(po.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:href="@{/auth/systemOrgan/view/}+${po.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:if="!${#strings.equals(po.status,'offline')}"
@@ -98,8 +98,6 @@
                                    href="javascript:void(0)" th:onclick="'freezeOrganBox('+${po.id}+')'">冻结</a>
                                 <a class="btn btn-xs btn-danger" th:if="${#strings.equals(po.status,'freeze')}"
                                    href="javascript:void(0)" th:onclick="'unfreezeOrganBox('+${po.id}+')'">解冻</a>
-
-
                             </td>
 
                         </tr>

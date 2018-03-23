@@ -14,7 +14,8 @@
 <div class="col-sm-12">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5 th:text="${memberPo.id} eq null ? '新增会员' : '修改会员'"></h5>
+            <h5 th:text="${memberPo.id} eq null ? '新增会员' : '修改会员'">
+                <h5>（<span class="required-sign">*为必填</span>）</h5>
             <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
                onclick="history.back()">返回</a>
 
@@ -23,7 +24,7 @@
             <form class="form-horizontal m-t" id="frm" th:object="${memberPo}">
                 <input type="hidden" id="id" name="id" th:field="*{id}"/>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">手机号：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>手机号</label>
                     <div class="col-sm-3">
                         <input id="mobile" name="mobile" type="text" class="form-control" required="true"
                                th:field="*{mobile}"
@@ -31,7 +32,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">昵称：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>昵称</label>
                     <div class="col-sm-3">
                         <input id="nickName" name="nickName" type="text" class="form-control" th:field="*{nickName}"
                                aria-required="true">
@@ -40,14 +41,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">真实姓名：</label>
+                    <label class="col-sm-2 control-label">真实姓名</label>
                     <div class="col-sm-3">
                         <input id="trueName" name="trueName" type="text" class="form-control"
                                th:field="*{trueName}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">性别：</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>性别</label>
                     <div class="col-sm-3">
                         <select id="sex" name="sex" type="text" class="form-control" required="true" th:field="*{sex}"
                                 aria-required="true">
@@ -59,7 +60,7 @@
 
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">邮箱：</label>
+                    <label class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-3">
                         <input id="email" name="email" type="text" class="form-control" required="true"
                                th:field="*{email}">
@@ -77,7 +78,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
-                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提交</button>
+                        <button class="btn btn-primary" type="button" onclick="frmSubmit()">提 交</button>
                     </div>
                 </div>
             </form>
