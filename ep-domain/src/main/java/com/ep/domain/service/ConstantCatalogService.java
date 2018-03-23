@@ -5,6 +5,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
 import com.ep.domain.repository.ConstantCatalogRepository;
+import com.ep.domain.repository.OrganCourseRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ import java.util.List;
 public class ConstantCatalogService {
     @Autowired
     private ConstantCatalogRepository constantCatalogRepository;
+    @Autowired
+    private OrganCourseRepository organCourseRepository;
 
     public List<EpConstantCatalogPo> getAll(){
         return constantCatalogRepository.getAll();
@@ -81,6 +84,10 @@ public class ConstantCatalogService {
      */
     public ResultDo delete(Long[] ids) {
         log.info("[课程类目]，删除课程类目开始，ids={}。", ids);
+        if (organCourseRepository.countByCatalogIds(ids) > BizConstant.DB_NUM_ZERO) {
+            log.info("[课程类目]，删除课程类目失败，存在课程类目正在使用中。", ids);
+            return ResultDo.build(MessageCode.ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED);
+        }
         if (constantCatalogRepository.deleteByIds(ids) == ids.length) {
             log.info("[课程类目]，删除课程类目成功，ids={}。", ids);
             return ResultDo.build();

@@ -318,5 +318,18 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                          .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                          .execute();
     }
+
+    /**
+     * 根据课程目录ID统计记录数
+     *
+     * @param catalogIds
+     * @return
+     */
+    public long countByCatalogIds(Long[] catalogIds) {
+        return dslContext.selectCount().from(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.COURSE_CATALOG_ID.in(catalogIds))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
 }
 

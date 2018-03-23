@@ -84,7 +84,7 @@ public class ConstantTagService {
         log.info("[标签]删除标签开始，id={}。", id);
         if (organCourseTagRepository.constantTagIsUesd(id)) {
             log.error("[标签]删除标签失败，标签正在被使用。");
-            return ResultDo.build(MessageCode.ERROR_CONSTANT_DELETE_WHEN_USED);
+            return ResultDo.build(MessageCode.ERROR_CONSTANT_TAG_DELETE_WHEN_USED);
         }
         if (constantTagRepository.deleteById(id) == BizConstant.DB_NUM_ONE) {
             log.info("[标签]删除标签成功，id={}。", id);

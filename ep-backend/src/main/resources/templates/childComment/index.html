@@ -394,7 +394,6 @@
                 data: $frm.serialize(),
                 success: function (data) {
                     if (data.success) {
-                        console.log(data.result)
                         var tag = data.result.organCourseTagBos
                         var memberChildTagPos = data.result.memberChildTagPos
 
@@ -409,7 +408,10 @@
                             }
                         })
                     }
-                }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
+                },
             })
         } else {
             $("#uploadModal").modal("show")
@@ -424,7 +426,10 @@
 
                         $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
                     }
-                }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
+                },
             })
         }
 
@@ -450,11 +455,14 @@
                 },
                 success: function (data) {
                     if (data.success) {
-                        toastr_success(null, "/auth/childComment/index")
+                        toastr_success(null, document.location.href)
                     } else {
-                        toastr_error(null, "/auth/childComment/index")
+                        toastr.error("操作失败，原因：" + data.errorDescription);
                     }
-                }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
+                },
             })
         } else {
             $.ajax({
@@ -473,18 +481,17 @@
                     if (data.success) {
                         toastr_success(null, document.location.href)
                     } else {
-                        toastr_error(null, document.location.href)
+                        toastr.error("操作失败，原因：" + data.errorDescription);
                     }
-                }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
+                },
             })
         }
 
     }
 
-    //    $(function () {
-    //        var create=[[${create}]]
-    //        console.log(create);
-    //    })
 
 </script>
 </body>

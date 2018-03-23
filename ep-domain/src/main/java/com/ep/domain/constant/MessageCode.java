@@ -118,5 +118,10 @@ public class MessageCode {
     /**
      * 标签
      */
-    public static final String ERROR_CONSTANT_DELETE_WHEN_USED = "ERROR_CONSTANT_DELETE_WHEN_USED";
+    public static final String ERROR_CONSTANT_TAG_DELETE_WHEN_USED = "ERROR_CONSTANT_TAG_DELETE_WHEN_USED";
+
+    /**
+     * 课程类目
+     */
+    public static final String ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED = "ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED";
 }

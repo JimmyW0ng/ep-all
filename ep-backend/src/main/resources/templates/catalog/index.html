@@ -251,15 +251,7 @@
                 ids.push(nodes[i].id)
             }
         }
-        parent.layer.alert('确认删除勾选菜单？', {
-                icon: 1,
-                skin: 'layer-ext-moon',
-
-            },
-            function (index) {
-                delDo(ids);
-                parent.layer.close(index);
-            })
+        layer_confirm("确定删除勾选类目？", 3, delDo, ids)
 
     }
 
@@ -271,9 +263,15 @@
             data:{ids:ids},
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/catalog/index')
+                    toastr_success(null, document.location.href)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+
         })
     }
 
