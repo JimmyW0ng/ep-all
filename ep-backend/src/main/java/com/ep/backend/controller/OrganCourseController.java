@@ -340,7 +340,16 @@ public class OrganCourseController extends BackendController {
             //该机构是否有会员制度
             model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
             model.addAttribute("organVipName", organOptional.get().getVipName());
+            //机构电话
+            model.addAttribute("ognPhone", organOptional.get().getOgnPhone());
+            //机构经度
+            model.addAttribute("ognLng", organOptional.get().getOgnLng());
+            //机构纬度
+            model.addAttribute("ognLat", organOptional.get().getOgnLat());
+            //上课地址
+            model.addAttribute("ognAddress", organOptional.get().getOgnAddress());
         }
+
         //课程对象
         model.addAttribute("organCoursePo", organCoursePo);
         Long catalogId = organCoursePo.getCourseCatalogId();
