@@ -12,7 +12,7 @@ public class OrganClassEnterBo extends EpOrganClassPo {
      *
      * @return
      */
-    public Boolean canEnterFlag() {
+    public Boolean getCanEnterFlag() {
         // 不是上线状态不允许报名
         if (EpOrganClassStatus.online.equals(super.getStatus())) {
             if (!super.getEnterLimitFlag()) {
