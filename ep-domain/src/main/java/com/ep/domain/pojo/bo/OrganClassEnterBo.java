@@ -33,7 +33,7 @@ public class OrganClassEnterBo extends EpOrganClassPo {
         if (EpOrganClassStatus.save.equals(super.getStatus())) {
             return "未上线";
         } else if (EpOrganClassStatus.opening.equals(super.getStatus())) {
-            return "已开班";
+            return "报名已结束";
         } else if (EpOrganClassStatus.end.equals(super.getStatus())) {
             return "已结束";
         } else if (EpOrganClassStatus.online.equals(super.getStatus())) {

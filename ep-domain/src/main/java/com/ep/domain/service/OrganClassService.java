@@ -13,6 +13,7 @@ import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.OrganClassChildRepository;
 import com.ep.domain.repository.OrganClassRepository;
 import com.ep.domain.repository.OrganCourseRepository;
+import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -118,29 +119,40 @@ public class OrganClassService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo endById(EpSystemUserPo currentUser, Long id) {
-        log.info("班次结束, sysUserId={}, classId={}", currentUser.getId(), id);
+        log.info("班次结束开始, sysUserId={}, classId={}", currentUser.getId(), id);
         // 校验班次
         EpOrganClassPo classPo = organClassRepository.getById(id);
+        log.info("班次状态, status={}, classId={}", classPo.getStatus(), id);
         if (classPo == null || classPo.getDelFlag()) {
             log.error("班次不存在, classId={}", id);
             return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
         }
-        if (!classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+        if (!classPo.getStatus().equals(EpOrganClassStatus.online) && !classPo.getStatus().equals(EpOrganClassStatus.opening)) {
             log.error("班次不是已开班状态, classId={}, status={}", id, classPo.getStatus());
-            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_OPENING);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_ONLINE_OR_OPENING);
         }
         if (!classPo.getOgnId().equals(currentUser.getOgnId())) {
             log.error("课程与当前操作机构不匹配, classId={}, classOgnId={}, userOgnId={}", id, classPo.getOgnId(), currentUser.getOgnId());
             return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        // 未开班的不允许存在未处理和成功的订单
+        if (classPo.getStatus().equals(EpOrganClassStatus.online)) {
+            List<EpOrderPo> orders = orderRepository.findByClassIdAndOrderStatus(id, EpOrderStatus.save, EpOrderStatus.success);
+            if (CollectionsTools.isNotEmpty(orders)) {
+                return ResultDo.build(MessageCode.ERROR_CLASS_EXIST_SAVED_SUCCESS_ORDER);
+            }
         }
         // 结束班次
         int num = organClassRepository.endById(id);
         if (num == BizConstant.DB_NUM_ZERO) {
             return ResultDo.build();
         }
-        // 结束订单
-        orderRepository.endByClassId(id);
-        // 如果没有开班状态的班次了则下线课程
+        if (classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+            // 结束订单
+            int endNum = orderRepository.endByClassId(id);
+            log.info("结束订单数{}笔, classId={}", endNum, id);
+        }
+        // 如果没有上线、开班状态的班次了则下线课程
         Long courseId = classPo.getCourseId();
         List<EpOrganClassPo> openingClasses = organClassRepository.getByCourseIdAndStatus(courseId, EpOrganClassStatus.online, EpOrganClassStatus.opening);
         if (CollectionsTools.isEmpty(openingClasses)) {

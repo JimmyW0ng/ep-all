@@ -380,7 +380,7 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         return dslContext.update(EP_ORGAN_CLASS)
                          .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.end)
                          .where(EP_ORGAN_CLASS.ID.eq(id))
-                         .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.opening))
+                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online, EpOrganClassStatus.opening))
                          .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                          .execute();
     }

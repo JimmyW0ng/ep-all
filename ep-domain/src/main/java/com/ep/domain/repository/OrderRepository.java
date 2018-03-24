@@ -390,6 +390,20 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 根据班次和订单状态获取数据
+     *
+     * @param classId
+     * @return
+     */
+    public List<EpOrderPo> findByClassIdAndOrderStatus(Long classId, EpOrderStatus... orderStatuses) {
+        return dslContext.selectFrom(EP_ORDER)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.in(orderStatuses))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(EpOrderPo.class);
+    }
+
+    /**
      * 获取该班次下订单详情
      *
      * @param classId
