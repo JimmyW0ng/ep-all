@@ -253,86 +253,91 @@
         </div>
         <div id=${collapse} class="panel-collapse collapse in">
             <div class="panel-body ">
-                <div name="organClassBos" class="col-sm-4 organClassBos">
-                    <input name="id" type="hidden" value="${id}">
-                    <div class="form-group">
-                        <label>班次名称 <span class="required-sign">*</span></label>
-                        <input name="className" jprop="className" type="text" class=" form-control "
-                               value="${className}"
-                               required="true"
-                               onblur="setClassBoxTitle(this)">
-                    </div>
-                    <div class="form-group">
-                        <label>产品负责人 <span class="required-sign">*</span></label>
-                        <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control "
-                                required="true">
+                <div name="organClassBos" class=" organClassBos">
+                    <div class="col-sm-4">
+                        <input name="id" type="hidden" value="${id}">
+                        <div class="form-group">
+                            <label>班次名称 <span class="required-sign">*</span></label>
+                            <input name="className" jprop="className" type="text" class=" form-control "
+                                   value="${className}"
+                                   required="true"
+                                   onblur="setClassBoxTitle(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>产品负责人 <span class="required-sign">*</span></label>
+                            <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control "
+                                    required="true">
 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>价格(元) <span class="required-sign">*</span></label>
-                        <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
-                               value="${classPrize}">
-                    </div>
-                    <div class="form-group">
-                        <label>折扣优惠(%) <span class="required-sign">*</span></label>
-                        <input name="discountAmount" jprop="discountAmount" type="text"
-                               class=" form-control number-input"
-                               value="${discountAmount}">
-                    </div>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>价格(元) <span class="required-sign">*</span></label>
+                            <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
+                                   value="${classPrize}">
+                        </div>
+                        <div class="form-group">
+                            <label>折扣优惠(%) <span class="required-sign">*</span></label>
+                            <input name="discountAmount" jprop="discountAmount" type="text"
+                                   class=" form-control number-input"
+                                   value="${discountAmount}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>是否限制报名人数 <span class="required-sign">*</span></label>
-                        <select name="enterLimitFlag" jprop="enterLimitFlag" type="text" class=" form-control "
-                                value="${enterLimitFlag}">
-                            <option value=false>否</option>
-                            <option value=true>是</option>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>是否限制报名人数 <span class="required-sign">*</span></label>
+                            <select name="enterLimitFlag" jprop="enterLimitFlag" type="text" class=" form-control "
+                                    value="${enterLimitFlag}">
+                                <option value=false>否</option>
+                                <option value=true>是</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>要求报名人数 </label>
-                        <input name="enterRequireNum" jprop="enterRequireNum" type="text" class="form-control"
-                               value="${enterRequireNum}"
-                               readonly="true">
-                    </div>
+                        <div class="form-group">
+                            <label>要求报名人数 </label>
+                            <input name="enterRequireNum" jprop="enterRequireNum" type="text" class="form-control"
+                                   value="${enterRequireNum}"
+                                   readonly="true">
+                        </div>
 
-                    <div class="form-group">
-                        <label>联系电话 <span class="required-sign">*</span></label>
-                        <input name="phone" jprop="phone" type="text" class="form-control" required="true"
-                               value="${phone}">
-                    </div>
+                        <div class="form-group">
+                            <label>联系电话 <span class="required-sign">*</span></label>
+                            <input name="phone" jprop="phone" type="text" class="form-control" required="true"
+                                   value="${phone}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>上课地址 <span class="required-sign">*</span></label>
-                        <input name="address" jprop="address" type="text" class="form-control" required="true"
-                               value="${address}">
-                    </div>
+                        <div class="form-group">
+                            <label>上课地址 <span class="required-sign">*</span></label>
+                            <input name="address" jprop="address" type="text" class="form-control" required="true"
+                                   value="${address}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>经度 <span class="required-sign">*</span></label>
-                        <input name="addressLng" jprop="addressLng" type="text" class="form-control" required="true"
-                               value="${addressLng}">
-                    </div>
+                        <div class="form-group">
+                            <label>经度 <span class="required-sign">*</span></label>
+                            <input name="addressLng" jprop="addressLng" type="text" class="form-control digit"
+                                   required="true"
+                                   value="${addressLng}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>纬度 <span class="required-sign">*</span></label>
-                        <input name="addressLat" jprop="addressLat" type="text" class="form-control" required="true"
-                               value="${addressLat}">
-                    </div>
+                        <div class="form-group">
+                            <label>纬度 <span class="required-sign">*</span></label>
+                            <input name="addressLat" jprop="addressLat" type="text" class="form-control digit"
+                                   required="true"
+                                   value="${addressLat}">
+                        </div>
 
-                    <div class="form-group">
-                        <label>总计课时 <span class="required-sign">*</span></label>
-                        <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
-                               value="${courseNum}"
-                               readonly=true>
+                        <div class="form-group">
+                            <label>总计课时 <span class="required-sign">*</span></label>
+                            <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
+                                   value="${courseNum}"
+                                   readonly=true>
+                        </div>
+                    </div>
+                    <div name="organClassCatalogPosBox" class="form-group col-sm-8 well ">
+                        <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
+                                class="glyphicon glyphicon-plus"></i> 添加课时</a>
                     </div>
 
                 </div>
-                <div name="organClassCatalogPosBox" class="form-group col-sm-8 well ">
-                    <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
-                            class="glyphicon glyphicon-plus"></i> 添加课时</a>
-                </div>
+
             </div>
         </div>
     </div>
@@ -488,6 +493,10 @@
         $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
         bindNumberInput($("#accordion"))
 
+        classBoxDynamicInit()
+    }
+
+    function classBoxDynamicInit() {
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
             var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
@@ -496,6 +505,10 @@
             } else {
                 $enterRequireNum.removeAttr("readonly")
             }
+        })
+
+        $("#accordion").find(".organClassBos:last").find("input.digit").on("blur", function () {
+            $(this).val(parseFloat($(this).val()))
         })
     }
     /*删除班次
@@ -534,21 +547,20 @@
             $organClassBos.eq(i).find("input,select").each(function () {
                 $(this).attr("name", $organClassBos.eq(i).attr("name") + "." + $(this).attr("jprop"))
             })
-        }
 
-        var $organClassCatalogPos = $("div.organClassCatalogPos")
-        for (var j = 0; j < $organClassCatalogPos.length; j++) {
-            for (var i = 0; i < $organClassCatalogPos.length; i++) {
-                var parentName = $organClassCatalogPos.eq(i).parent().siblings("div.organClassBos").eq(0).attr("name")
-                $organClassCatalogPos.eq(i).attr("name", parentName + ".organClassCatalogPos[" + i + "]")
-                $organClassCatalogPos.eq(i).find("input,textarea").each(function () {
+            var $organClassCatalogPos = $organClassBos.eq(i).find("div.organClassCatalogPos")
+            for (var j = 0; j < $organClassCatalogPos.length; j++) {
+                var parentName = $organClassCatalogPos.eq(j).parents("div.organClassBos").eq(0).attr("name")
+                $organClassCatalogPos.eq(j).attr("name", parentName + ".organClassCatalogPos[" + j + "]")
+                $organClassCatalogPos.eq(j).find("input,textarea").each(function () {
                     if ($(this).attr("name") == "catalogIndex") {
-                        $(this).val(i + 1)
+                        $(this).val(j + 1)
                     }
-                    $(this).attr("name", $organClassCatalogPos.eq(i).attr("name") + "." + $(this).attr("jprop"))
+                    $(this).attr("name", $organClassCatalogPos.eq(j).attr("name") + "." + $(this).attr("jprop"))
                 })
             }
         }
+
 
         var $constantTags = $("div.constantTagPos")
         var tagCount = 0
@@ -592,7 +604,6 @@
         var flag = true
         var $box = $("div[name='organClassCatalogPosBox']")
         for (var i = 0; i < $box.length; i++) {
-            debugger
             if ($box.eq(i).find("div.organClassCatalogPos").length == 0) {
                 flag = false
             }
@@ -743,15 +754,8 @@
                     $enterRequireNum.attr("readonly", true)
                 }
             })
-            //是否限制报名人数 框绑定事件
-            $("#accordion").on("change", "select[name='enterLimitFlag']", function () {
-                var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)
-                if ($(this).val() == "true") {
-                    $enterRequireNum.removeAttr("readonly")
-                } else {
-                    $enterRequireNum.attr("readonly", true)
-                }
-            })
+
+            classBoxDynamicInit()
 
             //班次end
             if ([[${supportTag}]]) {
@@ -838,16 +842,30 @@
 //            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
 //            return this.optional(element) || (length == 11 && mobile.test(value));
 //        }, "请填写正确的手机号码!");
+        $.validator.addMethod("decimalLen6", function (value, element) {
+            var decimalLen6 = /^\d+(\.\d{0,6})?$/
+            return this.optional(element) || decimalLen6.test(value);
+        }, "小数位数为1-6位!");
         $("#frm").validate({
             rules: {
 //                phone: {isMobile: true},
                 duration: {digits: true},
-                addressLng: {number: true, max: 180, min: -180},
-                addressLat: {number: true, max: 90, min: -90},
+                addressLng: {number: true, max: 180, min: -180, decimalLen6: true},
+                addressLat: {number: true, max: 90, min: -90, decimalLen6: true},
             },
             messages: {
-                addressLng: "经度为-180到180的数字!",
-                addressLat: "纬度为-90到90的数字!",
+                addressLng: {
+                    number: "经度为-180到180的数字!",
+                    max: "经度为-180到180的数字!",
+                    min: "经度为-180到180的数字!",
+                    decimalLen6: "小数位数为1-6位!"
+                },
+                addressLat: {
+                    number: "纬度为-90到90的数字!",
+                    max: "纬度为-90到90的数字!",
+                    min: "纬度为-90到90的数字!",
+                    decimalLen6: "小数位数为1-6位!"
+                }
 //                phone: "请填写正确的手机号码!"
             },
 
