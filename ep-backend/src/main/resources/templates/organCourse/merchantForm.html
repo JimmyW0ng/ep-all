@@ -588,6 +588,21 @@
         }
     }
 
+    function beforeSubmitClassRequiredCatalog() {
+        var flag = true
+        var $box = $("div[name='organClassCatalogPosBox']")
+        for (var i = 0; i < $box.length; i++) {
+            debugger
+            if ($box.eq(i).find("div.organClassCatalogPos").length == 0) {
+                flag = false
+            }
+            if (!flag) {
+                break
+            }
+        }
+        return flag
+    }
+
     function beforeSubmitCheckCourseMainPic() {
         if ($("#courseId").val()) {
             if (!$("#mainpic_img_url").attr("src")) {
@@ -624,6 +639,10 @@
         beforeSubmitCheckCourseDescPic()
         if ($("div[name='organClassBosBox']").length == 0) {
             toastr.error("请创建班次!")
+            return
+        }
+        if (!beforeSubmitClassRequiredCatalog()) {
+            toastr.error("请添加班次课时!")
             return
         }
 //        if ($("#tagBox").find("input[type='checkbox']:checked").length == 0) {
