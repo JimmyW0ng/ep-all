@@ -47,6 +47,8 @@ public class OrganService {
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
+    private OrganClassCommentRepository organClassCommentRepository;
+    @Autowired
     private SystemUserRepository systemUserRepository;
     @Autowired
     private OrganConfigRepository organConfigRepository;
@@ -71,7 +73,7 @@ public class OrganService {
         Optional<EpFilePo> logoOpt = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_LOGO, id);
         String logo = logoOpt.isPresent() ? logoOpt.get().getFileUrl() : null;
         // 总评论数
-        Long totalCommentNum = orderRepository.countByOgnId(id);
+        Long totalCommentNum = organClassCommentRepository.countByOgnId(id);
         OrganInfoDto ognInfoDto = new OrganInfoDto(ognInfoPojo.get(), logo, mainPic, totalCommentNum);
         return resultDo.setResult(ognInfoDto);
     }

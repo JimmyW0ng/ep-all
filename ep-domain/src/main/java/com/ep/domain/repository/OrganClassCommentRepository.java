@@ -205,5 +205,19 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据机构统计总评论数
+     *
+     * @param ognId
+     * @return
+     */
+    public Long countByOgnId(Long ognId) {
+        return dslContext.selectCount()
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .where(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
 }
 
