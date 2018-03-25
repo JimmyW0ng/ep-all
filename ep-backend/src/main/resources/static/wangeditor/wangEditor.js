@@ -548,9 +548,14 @@
     var config = {
 
         // 默认菜单配置
-        menus: ['head', 'bold', 'fontSize', 'fontName', 'italic', 'underline', 'strikeThrough', 'foreColor', 'backColor', 'link', 'list', 'justify', 'quote',
+        menus: ['head', 'bold', 'fontSize', 'fontName', 'italic', 'underline', 'strikeThrough', 'foreColor', 'backColor',
+            // 'link', 'list',
+            'justify',
+            // 'quote',
             // 'emoticon',
-            'image', 'table', 'video', 'code', 'undo', 'redo'],
+            'image', 'table',
+            // 'video',
+            'code', 'undo', 'redo'],
 
         fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 

@@ -490,7 +490,7 @@
 
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
-            var $enterRequireNum = $(this).siblings("input[name='enterRequireNum']").eq(0)
+            var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
             if ($(this).val() == "false") {
                 $enterRequireNum.attr("readonly", true)
             } else {
