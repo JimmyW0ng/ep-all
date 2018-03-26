@@ -66,7 +66,7 @@ public class ConstantTagService {
      */
     public ResultDo createConstantTag(EpConstantTagPo po) {
         log.info("[标签]新增标签开始，标签对象={}。", po);
-        if (null == po.getCatalogId() || StringTools.isBlank(po.getTagName())) {
+        if (StringTools.isBlank(po.getTagName())) {
             log.error("[标签]新增标签失败，请求参数异常。");
             ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }

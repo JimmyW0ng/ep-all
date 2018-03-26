@@ -98,7 +98,6 @@ public class ConstantTagController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
-        constantTagPo.setCatalogId(catalogId);
         constantTagPo.setOgnId(ognId);
         constantTagPo.setTagName(tagName);
 
@@ -121,7 +120,6 @@ public class ConstantTagController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
-        constantTagPo.setCatalogId(catalogId);
         constantTagPo.setOgnId(ognId);
         constantTagPo.setOgnFlag(true);
         constantTagPo.setTagName(tagName);

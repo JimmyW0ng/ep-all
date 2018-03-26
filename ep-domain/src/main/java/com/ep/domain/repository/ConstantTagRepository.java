@@ -36,8 +36,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      */
     public List<EpConstantTagPo> findByCatalogIdAndOgnId(Long catalogId, Long ognId) {
         return dslContext.selectFrom(EP_CONSTANT_TAG)
-                .where(EP_CONSTANT_TAG.CATALOG_ID.eq(catalogId))
-                .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                .where(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .fetchInto(EpConstantTagPo.class);
     }
@@ -59,7 +58,6 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .from(EP_CONSTANT_TAG)
                 .leftJoin(EP_ORGAN_COURSE_TAG)
                 .on(EP_CONSTANT_TAG.ID.eq(EP_ORGAN_COURSE_TAG.TAG_ID))
-                .where(EP_CONSTANT_TAG.CATALOG_ID.eq(catalogId))
                 .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .groupBy(EP_CONSTANT_TAG.ID)
