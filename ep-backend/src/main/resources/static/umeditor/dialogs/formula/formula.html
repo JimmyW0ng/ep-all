@@ -15,7 +15,6 @@
             width: 1024px;
             height: 1024px;
         }
-
         .mathquill-editable,
         .mathquill-rendered-math {
             border: 0px;
@@ -55,12 +54,10 @@
             }
             return null;
         }
-
         /* 获得当前url上的hash存储的参数值 */
         function getLatex() {
             return $iframe.attr('data-latex') || '';
         }
-
         /* 保存场景 */
         function saveScene() {
             timer && clearTimeout(timer);
@@ -71,14 +68,12 @@
                 timer = null;
             }, 300);
         }
-
         /* 设置编辑器可编辑 */
         function enableEditor() {
             if (editor.body.contentEditable == 'false') {
                 editor.setEnabled();
             }
         }
-
         /* 设置编辑器不可编辑 */
         function disableEditor() {
             if (editor.body.contentEditable == 'true') {

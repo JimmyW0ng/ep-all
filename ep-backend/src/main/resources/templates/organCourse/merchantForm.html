@@ -363,7 +363,9 @@
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
 
-    var um = UM.getEditor('umeditor');
+    var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic",});
+
+
     //wangEditor富文本
     //    var E = window.wangEditor
     //    var editor = new E('#editor')

@@ -6,26 +6,21 @@
     height: auto;
     *height: 31px;
 }
-
 .edui-popup-formula .edui-formula-wrapper .edui-tab-text {
     font-size: 12px;
 }
-
 .edui-popup-formula .edui-formula-wrapper .edui-formula-clearboth {
     clear: both;
     width: 0;
     height: 0;
 }
-
 .edui-popup-formula .edui-formula-wrapper .edui-tab-pane ul {
     margin: 0px;
     padding: 0px;
 }
-
 .edui-popup-formula .edui-formula-wrapper .edui-tab-content {
     padding: 5px 0px 0px 0px;
 }
-
 .edui-popup-formula .edui-formula-wrapper .edui-tab-pane .edui-formula-latex-item {
     display: block;
     float: left;

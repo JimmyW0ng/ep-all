@@ -1736,7 +1736,7 @@
 
                         return rootMathCommand;
                     })
-            ;
+                ;
 
             var escapedDollar = string('\\$').result('$');
             var textChar = escapedDollar.or(regex(/^[^$]/)).map(VanillaSymbol);
@@ -1995,8 +1995,7 @@
                 _.createLeftOf = function (cursor) {
                     if (!this.replacedFragment) {
                         var leftward = cursor[L];
-                        while (leftward &&
-                        !(
+                        while (leftward && !(
                             leftward instanceof BinaryOperator ||
                             leftward instanceof TextBlock ||
                             leftward instanceof BigSymbol ||
@@ -2977,6 +2976,7 @@
     LatexCmds['∫'] = LatexCmds['int'] = LatexCmds.integral = bind(BigSymbol, '\\int ', '&int;');
 
 
+
 //the canonical sets of numbers
     LatexCmds.N = LatexCmds.naturals = LatexCmds.Naturals =
         bind(VanillaSymbol, '\\mathbb{N}', '&#8469;');
@@ -3291,28 +3291,28 @@
         var symbol = regex(/^[^${}\\_^]/).map(VanillaSymbol);
 
         var controlSequence =
-            regex(/^[^\\a-eg-zA-Z]/) // hotfix #164; match MathBlock::write
-                .or(string('\\').then(
-                    regex(/^[a-z]+/i)
-                        .or(regex(/^\s+/).result(' '))
-                        .or(any)
-                )).then(function (ctrlSeq) {
-                var cmdKlass = LatexCmds[ctrlSeq];
+                regex(/^[^\\a-eg-zA-Z]/) // hotfix #164; match MathBlock::write
+                    .or(string('\\').then(
+                        regex(/^[a-z]+/i)
+                            .or(regex(/^\s+/).result(' '))
+                            .or(any)
+                    )).then(function (ctrlSeq) {
+                    var cmdKlass = LatexCmds[ctrlSeq];
 
-                if (cmdKlass) {
-                    return cmdKlass(ctrlSeq).parser();
-                }
-                else {
-                    return fail('unknown command: \\' + ctrlSeq);
-                }
-            })
-        ;
+                    if (cmdKlass) {
+                        return cmdKlass(ctrlSeq).parser();
+                    }
+                    else {
+                        return fail('unknown command: \\' + ctrlSeq);
+                    }
+                })
+            ;
 
         var command =
-            controlSequence
-                .or(variable)
-                .or(symbol)
-        ;
+                controlSequence
+                    .or(variable)
+                    .or(symbol)
+            ;
 
         // Parsers yielding MathBlocks
         var mathGroup = string('{').then(function () {
@@ -3322,13 +3322,13 @@
         var mathSequence = mathBlock.many().map(joinBlocks).skip(optWhitespace);
 
         var optMathBlock =
-            string('[').then(
-                mathBlock.then(function (block) {
-                    return block.join('latex') !== ']' ? succeed(block) : fail();
-                })
-                    .many().map(joinBlocks).skip(optWhitespace)
-            ).skip(string(']'))
-        ;
+                string('[').then(
+                    mathBlock.then(function (block) {
+                        return block.join('latex') !== ']' ? succeed(block) : fail();
+                    })
+                        .many().map(joinBlocks).skip(optWhitespace)
+                ).skip(string(']'))
+            ;
 
         var latexMath = mathSequence;
 
