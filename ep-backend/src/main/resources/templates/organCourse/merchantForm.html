@@ -404,10 +404,12 @@
         })
     }
     function insertbeforeClassCatalogBox(ele) {
-        $(ele).parents("div[name='organClassCatalogPos']").eq(0).before($("#classCatalogTmpl").tmpl([{
+        $(ele).parents(".organClassCatalogPos").eq(0).before($("#classCatalogTmpl").tmpl([{
             catalogTitle: "课时",
         }]))
-        $(ele).parents("div[name='organClassCatalogPos']").eq(0).prev("div[name='organClassCatalogPos").find(".laydateer").each(function () {
+        var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
+        $(ele).parents(".organClassBos").eq(0).find("input[name='courseNum']").eq(0).val(len)
+        $(ele).parents(".organClassCatalogPos").eq(0).prev(".organClassCatalogPos").find(".laydateer").each(function () {
             laydate.render({
                 type: 'datetime',
                 elem: this,
@@ -421,30 +423,35 @@
     /* 新增班次课时目录
      */
     function addClassCatalogBox(ele) {
-        var len = $(ele).parent().find("div[name='organClassCatalogPos']").length
-        var $box = $(ele).parent()
+        var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
+        var $box = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0)
         var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1}]
 
         $box.append($("#classCatalogTmpl").tmpl(catalog))
-        $(ele).parent().parent().find("input[name='courseNum']").eq(0).val(len + 1)
+        $(ele).parents(".organClassBos").eq(0).find("input[name='courseNum']").eq(0).val(len + 1)
 
-        lay('.laydateer').each(function () {
+        $box.find(".organClassCatalogPos:last").find(".laydateer").each(function () {
             laydate.render({
                 type: 'datetime',
+
                 elem: this,
                 trigger: 'click'
             });
         });
+
     }
 
     /* 删除课时
      */
     function removeClassCatalogBox(ele) {
-        var len = $(ele).parent().parent().parent().find("div[name='organClassCatalogPos']").length
+        var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
+        var $box = $(ele).parents(".organClassBos").eq(0)
         if (len == 1) {
             return
         } else {
-            $(ele).parent().parent().remove()
+            $(ele).parents(".organClassCatalogPos").eq(0).remove()
+            var lenRes = $box.find(".organClassCatalogPos").length
+            $box.find("input[name='courseNum']").eq(0).val(lenRes)
         }
     }
 
@@ -648,8 +655,7 @@
         if ($("#courseId").val()) {
             if (!$("#mainpic_img_url").attr("src")) {
                 return checkFormCreateImgRequired([{eleId: "mainpic_url", msg: "请上传宣传图"}])
-            }
-            {
+            } else {
                 return true
             }
         } else {

@@ -5,6 +5,7 @@
 </head>
 <header>
     <th:block layout:fragment="links">
+        <link th:href="@{/umeditor/themes/default/css/umeditor.css}" rel="stylesheet">
     </th:block>
     <style>
         .course-label {
@@ -101,7 +102,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <label>产品内容 <span class="required-sign">*</span></label>
-                                <div id="editor">
+                                <div id="umeditor">
                                 </div>
                                 <input id="courseContent" name="organCoursePo.courseContent" type="hidden"
                                        th:value="${organCoursePo.courseContent}">
@@ -302,36 +303,43 @@
 </script>
 
 <script th:replace="~{fragments/scripts}"></script>
-<script th:src="@{/wangeditor/wangEditor.js}"></script>
+<script th:src="@{/umeditor/umeditor.config.js}"></script>
+<script th:src="@{/umeditor/umeditor.js}"></script>
+<script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>
+<!--<script th:src="@{/wangeditor/wangEditor.js}"></script>-->
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+    var um = UM.getEditor('umeditor', {height: 350});
+    UM.getEditor('umeditor').setDisabled('');
+    //    disableBtn("enable");
+    $(".edui-btn-toolbar").hide()
 
     $(document).ready(function () {
 
-        $("#editor").html($("#courseContent").val())
+        $("#umeditor").html($("#courseContent").val())
 
-        var E = window.wangEditor
-        var editor = new E('#editor')
-        // 或者 var editor = new E( document.getElementById('#editor') )
-        //自定义菜单为空
-        editor.customConfig.menus = []
-        // 配置服务器端地址
-        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-        editor.customConfig.uploadFileName = 'file'
-        editor.customConfig.uploadImgMaxLength = 1
-        editor.customConfig.uploadImgHooks = {
-            success: function (xhr, editor, result) {
-                // 图片上传并返回结果，图片插入成功之后触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-                var $img = $("#editor").find("img[name=" + result.name + "]")
-                if ($img.length == 1) {
-                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
-                }
-
-            },
-        }
-        editor.create()
-        editor.$textElem.attr('contenteditable', false)
+//        var E = window.wangEditor
+//        var editor = new E('#editor')
+//        // 或者 var editor = new E( document.getElementById('#editor') )
+//        //自定义菜单为空
+//        editor.customConfig.menus = []
+//        // 配置服务器端地址
+//        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
+//        editor.customConfig.uploadFileName = 'file'
+//        editor.customConfig.uploadImgMaxLength = 1
+//        editor.customConfig.uploadImgHooks = {
+//            success: function (xhr, editor, result) {
+//                // 图片上传并返回结果，图片插入成功之后触发
+//                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+//                var $img = $("#editor").find("img[name=" + result.name + "]")
+//                if ($img.length == 1) {
+//                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
+//                }
+//
+//            },
+//        }
+//        editor.create()
+//        editor.$textElem.attr('contenteditable', false)
 
 
         $("#frm").find("input,select,textarea").attr("disabled", true)

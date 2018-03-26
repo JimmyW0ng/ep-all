@@ -5,6 +5,7 @@
 </head>
 <header>
     <th:block layout:fragment="links">
+        <link th:href="@{/umeditor/themes/default/css/umeditor.css}" rel="stylesheet">
     </th:block>
     <style>
         .course-label {
@@ -112,6 +113,9 @@
                             </div>
                             <div class="col-sm-9">
                                 <label>产品内容 <span class="required-sign">*</span></label>
+                                <div id="umeditor" name="content" style="height:350px">
+                                    <p>请填写您的产品内容</p>
+                                </div>
 
                                 <div id="editor">
                                 </div>
@@ -330,17 +334,21 @@
 </script>
 
 <script th:replace="~{fragments/scripts}"></script>
-<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
+<!--<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>-->
+<script th:src="@{/umeditor/umeditor.config.js}"></script>
+<script th:src="@{/umeditor/umeditor.js}"></script>
+<script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
-<script th:src="@{/wangeditor/wangEditor.js}"></script>
+<!--<script th:src="@{/wangeditor/wangEditor.js}"></script>-->
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
+    var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic"});
     //wangEditor富文本
-    var E = window.wangEditor
-    var editor = new E('#editor')
+    //    var E = window.wangEditor
+    //    var editor = new E('#editor')
 
     /* 上传宣传图*/
     function uploadMainpicImg($btn, ele) {
@@ -450,10 +458,11 @@
 
     /*校验产品内容的图片*/
     function beforeSubmitCheckCourseDescPic() {
-        var $imgArray = $("#editor").find("img")
+        var $imgArray = $("#umeditor").find("img")
         var $preCodes = $("#preCodeBox")
         for (var i = 0; i < $imgArray.length; i++) {
-            var preCode = $imgArray.eq(i).attr("precode")
+//            var preCode = $imgArray.eq(i).attr("precode")
+            var preCode = $imgArray.eq(i).attr("_src")
             var htmls = '<input type="hidden" name="courseDescPicPreCodes" value="' + preCode + '">'
             $preCodes.append(htmls)
         }
@@ -517,13 +526,17 @@
         beforeSubmitFormatDateInputName()
 
         beforeSubmitCheckCourseDescPic()
-        console.log("courseContent" + editor.txt.text())
 
-        if (editor.txt.text() == "") {
+//        if (editor.txt.text() == "") {
+//            toastr.error("请填写产品内容！")
+//            return
+//        }
+        if (UM.getEditor('umeditor').getContentTxt() == "") {
             toastr.error("请填写产品内容！")
             return
         }
-        beforeSubmitCourseContent(editor.txt.html());
+        beforeSubmitCourseContent($("#umeditor").html());
+//        beforeSubmitCourseContent(editor.txt.html());
 
         var url = "/auth/organCourse/merchantRectify"
 
@@ -551,7 +564,7 @@
         //修改页面初始化start
         if ([[${organCoursePo.id}]]) {
 
-            $("#editor").html($("#courseContent").val())
+            $("#umeditor").html($("#courseContent").val())
             //班次start
             var organClassBos = [[${organClassBos}]]
             for (var i = 0; i < organClassBos.length; i++) {
@@ -683,21 +696,21 @@
 
         // 或者 var editor = new E( document.getElementById('#editor') )
         // 配置服务器端地址
-        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-        editor.customConfig.uploadFileName = 'file'
-        editor.customConfig.uploadImgMaxLength = 1
-        editor.customConfig.uploadImgHooks = {
-            success: function (xhr, editor, result) {
-                // 图片上传并返回结果，图片插入成功之后触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-                var $img = $("#editor").find("img[name=" + result.name + "]")
-                if ($img.length == 1) {
-                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
-                }
-
-            },
-        }
-        editor.create()
+//        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
+//        editor.customConfig.uploadFileName = 'file'
+//        editor.customConfig.uploadImgMaxLength = 1
+//        editor.customConfig.uploadImgHooks = {
+//            success: function (xhr, editor, result) {
+//                // 图片上传并返回结果，图片插入成功之后触发
+//                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+//                var $img = $("#editor").find("img[name=" + result.name + "]")
+//                if ($img.length == 1) {
+//                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
+//                }
+//
+//            },
+//        }
+//        editor.create()
 
         $("#frm").validate({
             rules: {
