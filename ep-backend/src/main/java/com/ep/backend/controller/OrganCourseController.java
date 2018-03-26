@@ -1,9 +1,6 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.BeanTools;
-import com.ep.common.tool.CollectionsTools;
-import com.ep.common.tool.DateTools;
-import com.ep.common.tool.StringTools;
+import com.ep.common.tool.*;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -556,24 +553,73 @@ public class OrganCourseController extends BackendController {
         return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, null);
     }
 
+//    /**
+//     * 上传课程内容图片wangEditor
+//     *
+//     * @return
+//     */
+//    @PostMapping("uploadCourseDescPic")
+//    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
+//    @ResponseBody
+//    public String uploadCourseDescPic(@RequestParam("file") MultipartFile file
+//    ) throws Exception {
+//        ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
+//        FileDto fileDto = (FileDto) resultDo.getResult();
+//        String fileUrl = fileDto.getFileUrl();
+//        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
+//        String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
+//                "\", \"name\":\"" + name + "\"}";
+//
+//        return result.replaceAll("\\\\", "\\\\");
+//    }
+
+//    /**
+//     * 上传课程内容图片uEditor
+//     *
+//     * @return
+//     */
+//    @GetMapping("uploadCourseDescPic")
+//    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
+//    @ResponseBody
+//    public String uEditorUploadCourseDescPic(
+////            @RequestParam("upfile") MultipartFile file,
+//            HttpServletRequest request,HttpServletResponse response
+//    ) throws Exception {
+////        ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
+////        FileDto fileDto = (FileDto) resultDo.getResult();
+////        String fileUrl = fileDto.getFileUrl();
+////        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
+////        String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
+////                "\", \"name\":\"" + name + "\"}";
+//        String result="";
+//        result = "{\"name\":\""+ "ccc" +"\", \"originalName\": \""+ "cccc" +"\", \"size\": "+ 1200
+//                +", \"state\": \"SUCCESS\", \"type\": \""+ "jpg"+"\", \"url\": \""+"http://ost0qtman.bkt.clouddn.com/41ad8f0781b545578e6551851c4d953c.jpg" + "\"}";
+//        result = result.replaceAll( "\\\\", "\\\\" );
+//        return result;
+//    }
+
     /**
-     * 上传课程内容图片wangEditor
+     * 上传课程内容图片uEditor
      *
      * @return
      */
     @PostMapping("uploadCourseDescPic")
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
-    public String uploadCourseDescPic(@RequestParam("file") MultipartFile file
+    public String umEditorUploadCourseDescPic(
+            @RequestParam("upfile") MultipartFile file
     ) throws Exception {
         ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
         FileDto fileDto = (FileDto) resultDo.getResult();
         String fileUrl = fileDto.getFileUrl();
-        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
-        String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
-                "\", \"name\":\"" + name + "\"}";
+        String filePreCode = fileDto.getPreCode();
+//        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
 
-        return result.replaceAll("\\\\", "\\\\");
+        String result = "";
+        result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() + "\", \"size\": " + file.getSize()
+                + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getOriginalFilename()) + "\", \"url\": \"" + fileUrl + "\", \"preCode\":\"" + filePreCode + "\"}";
+        result = result.replaceAll("\\\\", "\\\\");
+        return result;
     }
 }
 
