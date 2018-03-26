@@ -15,6 +15,7 @@ public class OrganCourseBo extends EpOrganCoursePo {
     private String ognName;
     private String ognPhone;
     private String courseCatalogName;
+    private String vipName;
 
     public Long getEnterTimeStampStart() {
         if (super.getEnterTimeStart() != null) {
