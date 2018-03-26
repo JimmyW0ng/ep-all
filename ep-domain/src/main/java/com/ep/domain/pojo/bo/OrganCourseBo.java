@@ -3,6 +3,7 @@ package com.ep.domain.pojo.bo;
 
 import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.po.EpOrganCoursePo;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,13 @@ public class OrganCourseBo extends EpOrganCoursePo {
 
     public Long getServerTimeStamp() {
         return DateTools.getCurrentDateTime().getTime();
+    }
+
+    public String getCourseStatusText() {
+        if (EpOrganCourseCourseStatus.offline.equals(super.getCourseStatus())) {
+            return "已结束";
+        }
+        return null;
     }
 
 }
