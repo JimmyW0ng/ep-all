@@ -368,6 +368,9 @@
     //    var E = window.wangEditor
     //    var editor = new E('#editor')
 
+    //教师map
+    var organAccountMap = [[${organAccountMap}]]
+
     /* 上传宣传图
      */
     function uploadMainpicImg($btn, ele) {
@@ -411,8 +414,7 @@
         })
     }
 
-    //教师map
-    var organAccountMap = [[${organAccountMap}]]
+
 
     /* 新增班次课时目录
      */
@@ -726,7 +728,7 @@
         //修改页面初始化start
         if ([[${organCoursePo.id}]]) {
 
-            $("#editor").html($("#courseContent").val())
+            $("#umeditor").html($("#courseContent").val())
             //班次start
             var organClassBos = [[${organClassBos}]]
             for (var i = 0; i < organClassBos.length; i++) {
