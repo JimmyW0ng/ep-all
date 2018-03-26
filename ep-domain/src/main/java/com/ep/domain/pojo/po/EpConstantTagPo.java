@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 public class EpConstantTagPo extends AbstractBasePojo {
 
     private Long id;
-    private Long catalogId;
     private String tagName;
     private Byte tagLevel;
     private Long sort;

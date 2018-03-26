@@ -83,7 +83,17 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
         if (count == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, count);
         }
-        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.fields());
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.ID);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_CATALOG_ID);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_TYPE);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_INTRODUCE);
+        fieldList.add(EP_ORGAN_COURSE.PRIZE_MIN);
+        fieldList.add(EP_ORGAN_COURSE.VIP_FLAG);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_STATUS);
+        fieldList.add(EP_ORGAN_COURSE.ONLINE_TIME);
+        fieldList.add(EP_ORGAN_COURSE.ENTER_TIME_START);
+        fieldList.add(EP_ORGAN_COURSE.TOTAL_PARTICIPATE);
         fieldList.add(EP_ORGAN.VIP_NAME);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<OrganCourseBo> pList = dslContext.select(fieldList).from(EP_ORGAN_COURSE)

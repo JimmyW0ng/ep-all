@@ -32,11 +32,34 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     private static final long serialVersionUID = -1316448510;
 
     /**
-     * Setter for <code>ep.ep_member_child.id</code>. 主键
+     * Create a detached EpMemberChildRecord
      */
-    public EpMemberChildRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpMemberChildRecord() {
+        super(EpMemberChild.EP_MEMBER_CHILD);
+    }
+
+    /**
+     * Create a detached, initialised EpMemberChildRecord
+     */
+    public EpMemberChildRecord(Long id, Long memberId, String childNickName, String childTrueName, EpMemberChildChildSex childSex, Timestamp childBirthday, String childIdentity, String currentSchool, String currentClass, String relationship, Timestamp showAt, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberChild.EP_MEMBER_CHILD);
+
+        set(0, id);
+        set(1, memberId);
+        set(2, childNickName);
+        set(3, childTrueName);
+        set(4, childSex);
+        set(5, childBirthday);
+        set(6, childIdentity);
+        set(7, currentSchool);
+        set(8, currentClass);
+        set(9, relationship);
+        set(10, showAt);
+        set(11, createAt);
+        set(12, updateAt);
+        set(13, remark);
+        set(14, delFlag);
+        set(15, version);
     }
 
     /**
@@ -47,10 +70,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.member_id</code>. 会员id
+     * Setter for <code>ep.ep_member_child.id</code>. 主键
      */
-    public EpMemberChildRecord setMemberId(Long value) {
-        set(1, value);
+    public EpMemberChildRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -62,10 +85,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.child_nick_name</code>. 昵称
+     * Setter for <code>ep.ep_member_child.member_id</code>. 会员id
      */
-    public EpMemberChildRecord setChildNickName(String value) {
-        set(2, value);
+    public EpMemberChildRecord setMemberId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -77,10 +100,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.child_true_name</code>. 真实姓名
+     * Setter for <code>ep.ep_member_child.child_nick_name</code>. 昵称
      */
-    public EpMemberChildRecord setChildTrueName(String value) {
-        set(3, value);
+    public EpMemberChildRecord setChildNickName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -92,10 +115,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.child_sex</code>. 性别
+     * Setter for <code>ep.ep_member_child.child_true_name</code>. 真实姓名
      */
-    public EpMemberChildRecord setChildSex(EpMemberChildChildSex value) {
-        set(4, value);
+    public EpMemberChildRecord setChildTrueName(String value) {
+        set(3, value);
         return this;
     }
 
@@ -107,10 +130,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.child_birthday</code>. 生日
+     * Setter for <code>ep.ep_member_child.child_sex</code>. 性别
      */
-    public EpMemberChildRecord setChildBirthday(Timestamp value) {
-        set(5, value);
+    public EpMemberChildRecord setChildSex(EpMemberChildChildSex value) {
+        set(4, value);
         return this;
     }
 
@@ -122,10 +145,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.child_identity</code>. 身份证号
+     * Setter for <code>ep.ep_member_child.child_birthday</code>. 生日
      */
-    public EpMemberChildRecord setChildIdentity(String value) {
-        set(6, value);
+    public EpMemberChildRecord setChildBirthday(Timestamp value) {
+        set(5, value);
         return this;
     }
 
@@ -137,10 +160,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.current_school</code>. 当前就读学校
+     * Setter for <code>ep.ep_member_child.child_identity</code>. 身份证号
      */
-    public EpMemberChildRecord setCurrentSchool(String value) {
-        set(7, value);
+    public EpMemberChildRecord setChildIdentity(String value) {
+        set(6, value);
         return this;
     }
 
@@ -152,10 +175,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.current_class</code>. 所在班级
+     * Setter for <code>ep.ep_member_child.current_school</code>. 当前就读学校
      */
-    public EpMemberChildRecord setCurrentClass(String value) {
-        set(8, value);
+    public EpMemberChildRecord setCurrentSchool(String value) {
+        set(7, value);
         return this;
     }
 
@@ -167,10 +190,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.relationship</code>. 关系
+     * Setter for <code>ep.ep_member_child.current_class</code>. 所在班级
      */
-    public EpMemberChildRecord setRelationship(String value) {
-        set(9, value);
+    public EpMemberChildRecord setCurrentClass(String value) {
+        set(8, value);
         return this;
     }
 
@@ -182,10 +205,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.show_at</code>. 展示时间
+     * Setter for <code>ep.ep_member_child.relationship</code>. 关系
      */
-    public EpMemberChildRecord setShowAt(Timestamp value) {
-        set(10, value);
+    public EpMemberChildRecord setRelationship(String value) {
+        set(9, value);
         return this;
     }
 
@@ -197,10 +220,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_member_child.show_at</code>. 展示时间
      */
-    public EpMemberChildRecord setCreateAt(Timestamp value) {
-        set(11, value);
+    public EpMemberChildRecord setShowAt(Timestamp value) {
+        set(10, value);
         return this;
     }
 
@@ -212,10 +235,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_member_child.create_at</code>. 创建时间
      */
-    public EpMemberChildRecord setUpdateAt(Timestamp value) {
-        set(12, value);
+    public EpMemberChildRecord setCreateAt(Timestamp value) {
+        set(11, value);
         return this;
     }
 
@@ -227,10 +250,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.remark</code>. 备注
+     * Setter for <code>ep.ep_member_child.update_at</code>. 更新时间
      */
-    public EpMemberChildRecord setRemark(String value) {
-        set(13, value);
+    public EpMemberChildRecord setUpdateAt(Timestamp value) {
+        set(12, value);
         return this;
     }
 
@@ -242,10 +265,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_member_child.remark</code>. 备注
      */
-    public EpMemberChildRecord setDelFlag(Boolean value) {
-        set(14, value);
+    public EpMemberChildRecord setRemark(String value) {
+        set(13, value);
         return this;
     }
 
@@ -257,12 +280,16 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Setter for <code>ep.ep_member_child.version</code>.
+     * Setter for <code>ep.ep_member_child.del_flag</code>. 删除标记
      */
-    public EpMemberChildRecord setVersion(Long value) {
-        set(15, value);
+    public EpMemberChildRecord setDelFlag(Boolean value) {
+        set(14, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_member_child.version</code>.
@@ -272,8 +299,16 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record16 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_member_child.version</code>.
+     */
+    public EpMemberChildRecord setVersion(Long value) {
+        set(15, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -282,10 +317,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record16 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -694,6 +725,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -725,40 +760,5 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         value15(value15);
         value16(value16);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpMemberChildRecord
-     */
-    public EpMemberChildRecord() {
-        super(EpMemberChild.EP_MEMBER_CHILD);
-    }
-
-    /**
-     * Create a detached, initialised EpMemberChildRecord
-     */
-    public EpMemberChildRecord(Long id, Long memberId, String childNickName, String childTrueName, EpMemberChildChildSex childSex, Timestamp childBirthday, String childIdentity, String currentSchool, String currentClass, String relationship, Timestamp showAt, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMemberChild.EP_MEMBER_CHILD);
-
-        set(0, id);
-        set(1, memberId);
-        set(2, childNickName);
-        set(3, childTrueName);
-        set(4, childSex);
-        set(5, childBirthday);
-        set(6, childIdentity);
-        set(7, currentSchool);
-        set(8, currentClass);
-        set(9, relationship);
-        set(10, showAt);
-        set(11, createAt);
-        set(12, updateAt);
-        set(13, remark);
-        set(14, delFlag);
-        set(15, version);
     }
 }

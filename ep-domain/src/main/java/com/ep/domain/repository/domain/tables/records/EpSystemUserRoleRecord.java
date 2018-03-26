@@ -31,11 +31,25 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     private static final long serialVersionUID = -534667689;
 
     /**
-     * Setter for <code>ep.ep_system_user_role.id</code>.
+     * Create a detached EpSystemUserRoleRecord
      */
-    public EpSystemUserRoleRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpSystemUserRoleRecord() {
+        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemUserRoleRecord
+     */
+    public EpSystemUserRoleRecord(Long id, Long userId, Long roleId, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
+
+        set(0, id);
+        set(1, userId);
+        set(2, roleId);
+        set(3, createAt);
+        set(4, updateAt);
+        set(5, delFlag);
+        set(6, version);
     }
 
     /**
@@ -46,10 +60,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.user_id</code>. 用户id
+     * Setter for <code>ep.ep_system_user_role.id</code>.
      */
-    public EpSystemUserRoleRecord setUserId(Long value) {
-        set(1, value);
+    public EpSystemUserRoleRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -61,10 +75,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.role_id</code>. 角色id
+     * Setter for <code>ep.ep_system_user_role.user_id</code>. 用户id
      */
-    public EpSystemUserRoleRecord setRoleId(Long value) {
-        set(2, value);
+    public EpSystemUserRoleRecord setUserId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -76,10 +90,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_system_user_role.role_id</code>. 角色id
      */
-    public EpSystemUserRoleRecord setCreateAt(Timestamp value) {
-        set(3, value);
+    public EpSystemUserRoleRecord setRoleId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -91,10 +105,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
      */
-    public EpSystemUserRoleRecord setUpdateAt(Timestamp value) {
-        set(4, value);
+    public EpSystemUserRoleRecord setCreateAt(Timestamp value) {
+        set(3, value);
         return this;
     }
 
@@ -106,10 +120,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
      */
-    public EpSystemUserRoleRecord setDelFlag(Boolean value) {
-        set(5, value);
+    public EpSystemUserRoleRecord setUpdateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -121,12 +135,16 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.version</code>.
+     * Setter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
      */
-    public EpSystemUserRoleRecord setVersion(Long value) {
-        set(6, value);
+    public EpSystemUserRoleRecord setDelFlag(Boolean value) {
+        set(5, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_user_role.version</code>.
@@ -136,8 +154,16 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record7 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_user_role.version</code>.
+     */
+    public EpSystemUserRoleRecord setVersion(Long value) {
+        set(6, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -146,10 +172,6 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record7 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -333,6 +355,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -355,31 +381,5 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
         value6(value6);
         value7(value7);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemUserRoleRecord
-     */
-    public EpSystemUserRoleRecord() {
-        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemUserRoleRecord
-     */
-    public EpSystemUserRoleRecord(Long id, Long userId, Long roleId, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
-
-        set(0, id);
-        set(1, userId);
-        set(2, roleId);
-        set(3, createAt);
-        set(4, updateAt);
-        set(5, delFlag);
-        set(6, version);
     }
 }

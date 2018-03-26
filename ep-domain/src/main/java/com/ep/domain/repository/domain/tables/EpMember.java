@@ -31,76 +31,55 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMember extends TableImpl<EpMemberRecord> {
 
-    private static final long serialVersionUID = 803922272;
-
     /**
      * The reference instance of <code>ep.ep_member</code>
      */
     public static final EpMember EP_MEMBER = new EpMember();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpMemberRecord> getRecordType() {
-        return EpMemberRecord.class;
-    }
-
+    private static final long serialVersionUID = 803922272;
     /**
      * The column <code>ep.ep_member.id</code>. 主键
      */
     public final TableField<EpMemberRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
-
     /**
      * The column <code>ep.ep_member.mobile</code>. 手机号
      */
     public final TableField<EpMemberRecord, Long> MOBILE = createField("mobile", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "手机号");
-
     /**
      * The column <code>ep.ep_member.nick_name</code>. 昵称
      */
     public final TableField<EpMemberRecord, String> NICK_NAME = createField("nick_name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "昵称");
-
     /**
      * The column <code>ep.ep_member.true_name</code>. 真实姓名
      */
     public final TableField<EpMemberRecord, String> TRUE_NAME = createField("true_name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "真实姓名");
-
     /**
      * The column <code>ep.ep_member.sex</code>. 性别
      */
     public final TableField<EpMemberRecord, EpMemberSex> SEX = createField("sex", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberSex.class), this, "性别");
-
     /**
      * The column <code>ep.ep_member.email</code>. 邮箱
      */
     public final TableField<EpMemberRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "邮箱");
-
     /**
      * The column <code>ep.ep_member.status</code>. 状态：正常；已冻结；已注销；
      */
     public final TableField<EpMemberRecord, EpMemberStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberStatus.class), this, "状态：正常；已冻结；已注销；");
-
     /**
      * The column <code>ep.ep_member.create_at</code>. 创建时间
      */
     public final TableField<EpMemberRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_member.update_at</code>. 更新时间
      */
     public final TableField<EpMemberRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_member.remark</code>. 备注
      */
     public final TableField<EpMemberRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
-
     /**
      * The column <code>ep.ep_member.del_flag</code>. 删除标志
      */
     public final TableField<EpMemberRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
-
     /**
      * The column <code>ep.ep_member.version</code>.
      */
@@ -126,6 +105,14 @@ public class EpMember extends TableImpl<EpMemberRecord> {
 
     private EpMember(String alias, Table<EpMemberRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "会员信息表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpMemberRecord> getRecordType() {
+        return EpMemberRecord.class;
     }
 
     /**
