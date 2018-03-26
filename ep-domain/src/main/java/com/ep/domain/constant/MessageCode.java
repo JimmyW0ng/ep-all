@@ -56,7 +56,7 @@ public class MessageCode {
     public static final String ERROR_CHILD_LIMIT_NUM = "ERROR_CHILD_LIMIT_NUM";
     public static final String ERROR_CHILD_UPLOAD_AVATAR = "ERROR_CHILD_UPLOAD_AVATAR";
     /**
-     * 课程
+     * 产品
      */
     public static final String ERROR_COURSE_NOT_EXIST = "ERROR_COURSE_NOT_EXIST";
     public static final String ERROR_COURSE_ENTER_NOT_START = "ERROR_COURSE_ENTER_NOT_START";
@@ -77,6 +77,7 @@ public class MessageCode {
     public static final String ERROR_CLASS_IS_END = "ERROR_CLASS_IS_END";
     public static final String ERROR_CLASS_NEED_VIP = "ERROR_CLASS_NEED_VIP";
     public static final String ERROR_CLASS_EXIST_SAVED_SUCCESS_ORDER = "ERROR_CLASS_EXIST_SAVED_SUCCESS_ORDER";
+    public static final String ERROR_CLASS_NOT_EXIST_SUCCESS_ORDER = "ERROR_CLASS_NOT_EXIST_SUCCESS_ORDER";
     public static final String ERROR_CLASS_CATALOG_STARTTIME_TONOW_LT30 = "ERROR_CLASS_CATALOG_STARTTIME_TONOW_LT30";
     /**
      * 订单
@@ -88,11 +89,11 @@ public class MessageCode {
     public static final String ERROR_ORDER_ORDERED_NUM_FULL = "ERROR_ORDER_ORDERED_NUM_FULL";
     public static final String ERROR_ORDER_NOT_END = "ERROR_ORDER_NOT_END";
     /**
-     * 课程评论
+     * 产品评论
      */
     public static final String ERROR_COURSE_COMMENT_DUPLICATE = "ERROR_COURSE_COMMENT_DUPLICATE";
     /**
-     * 课时评论
+     * 随堂评论
      */
     public static final String ERROR_CLASS_CATALOG_COMMENT_IS_EXIST = "ERROR_CLASS_CATALOG_COMMENT_IS_EXIST";
     public static final String ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST = "ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST";
@@ -123,7 +124,7 @@ public class MessageCode {
     public static final String ERROR_CONSTANT_TAG_DELETE_WHEN_USED = "ERROR_CONSTANT_TAG_DELETE_WHEN_USED";
 
     /**
-     * 课程类目
+     * 产品类目
      */
     public static final String ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED = "ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED";
 }

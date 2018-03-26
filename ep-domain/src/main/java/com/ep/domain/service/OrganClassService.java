@@ -79,7 +79,7 @@ public class OrganClassService {
         }
         if (classPo.getEnteredNum() < BizConstant.DB_NUM_ONE) {
             log.error("成功报名人数小于1, classId={}, enteredNum={}", id, classPo.getEnteredNum());
-            return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST_SUCCESS_ORDER);
         }
         // 校验是否还有未处理的订单
         List<EpOrderPo> savedOrders = orderRepository.findSavedOrdersByClassId(id);
