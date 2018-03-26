@@ -621,7 +621,8 @@
         var $imgArray = $("#umeditor").find("img")
         var $preCodes = $("#preCodeBox")
         for (var i = 0; i < $imgArray.length; i++) {
-            var preCode = $imgArray.eq(i).attr("precode")
+//            var preCode = $imgArray.eq(i).attr("precode")
+            var preCode = $imgArray.eq(i).attr("_src")
             var htmls = '<input type="hidden" name="courseDescPicPreCodes" value="' + preCode + '">'
             $preCodes.append(htmls)
         }
