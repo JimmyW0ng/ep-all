@@ -1,14 +1,18 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.repository.domain.tables.records.EpConstantTagRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.ep.domain.repository.domain.tables.EpConstantTag.EP_CONSTANT_TAG;
@@ -98,5 +102,33 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .where(EP_CONSTANT_TAG.ID.eq(id))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    public Page<ConstantTagBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.selectCount()
+                .from(EP_CONSTANT_TAG)
+                .where(condition)
+                .fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_CONSTANT_TAG.fields());
+
+        fieldList.add(EP_ORGAN_COURSE_TAG.ID.count().as("usedOrganCourseTag"));
+
+        SelectHavingStep<Record> record = dslContext.select(fieldList)
+                .from(EP_CONSTANT_TAG)
+                .leftJoin(EP_ORGAN_COURSE_TAG)
+                .on(EP_CONSTANT_TAG.ID.eq(EP_ORGAN_COURSE_TAG.TAG_ID))
+                .where(condition)
+                .groupBy(EP_CONSTANT_TAG.ID);
+
+
+        List<ConstantTagBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(ConstantTagBo.class);
+        PageImpl<ConstantTagBo> pPage = new PageImpl<ConstantTagBo>(list, pageable, totalCount);
+        return pPage;
     }
 }

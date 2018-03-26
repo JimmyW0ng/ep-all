@@ -9,9 +9,13 @@ import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.repository.ConstantTagRepository;
 import com.ep.domain.repository.OrganCourseTagRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -93,5 +97,16 @@ public class ConstantTagService {
             log.error("[标签]删除标签失败，id={}。", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+    }
+
+    /**
+     * 分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<ConstantTagBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+        return constantTagRepository.findbyPageAndCondition(pageable, conditions);
     }
 }

@@ -8,15 +8,25 @@ import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.ConstantCatalogService;
 import com.ep.domain.service.ConstantTagService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_TAG;
 
 /**
  * @Description: 标签控制器
@@ -50,12 +60,53 @@ public class ConstantTagController extends BackendController {
         return "constantTag/index";
     }
 
+//    @GetMapping("merchantIndex")
+//    public String merchantIndex(Model model) {
+//        List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
+//        model.addAttribute("constantCatalogPos", constantCatalogPos);
+//        return "constantTag/merchantIndex";
+//    }
+
+
     @GetMapping("merchantIndex")
-    public String merchantIndex(Model model) {
-        List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
-        model.addAttribute("constantCatalogPos", constantCatalogPos);
+//    @PreAuthorize("hasAnyAuthority('platform:organCourse:index')")
+    public String merchantIndex(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                @RequestParam(value = "courseName", required = false) String courseName,
+                                @RequestParam(value = "courseType", required = false) String courseType,
+                                @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+                                @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
+    ) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        Map<String, Object> searchMap = Maps.newHashMap();
+        Collection<Condition> conditions = Lists.newArrayList();
+//        if (StringTools.isNotBlank(courseName)) {
+//            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
+//        }
+//        searchMap.put("courseName", courseName);
+//        if (StringTools.isNotBlank(courseType)) {
+//            conditions.add(EP_ORGAN_COURSE.COURSE_TYPE.eq(EpOrganCourseCourseType.valueOf(courseType)));
+//        }
+//        searchMap.put("courseType", courseType);
+        if (null != crStartTime) {
+            conditions.add(EP_CONSTANT_TAG.CREATE_AT.greaterOrEqual(crStartTime));
+        }
+        searchMap.put("crStartTime", crStartTime);
+        if (null != crEndTime) {
+            conditions.add(EP_CONSTANT_TAG.CREATE_AT.lessOrEqual(crEndTime));
+        }
+        searchMap.put("crEndTime", crEndTime);
+        conditions.add(EP_CONSTANT_TAG.OGN_ID.eq(ognId));
+        conditions.add(EP_CONSTANT_TAG.DEL_FLAG.eq(false));
+        Page<ConstantTagBo> page = constantTagService.findbyPageAndCondition(pageable, conditions);
+        page.getContent().forEach(p -> {
+            p.setUsedFlag(p.getUsedOrganCourseTag().longValue() > BizConstant.DB_NUM_ZERO);
+        });
+        model.addAttribute("page", page);
+        model.addAttribute("searchMap", searchMap);
         return "constantTag/merchantIndex";
     }
+
 
     /**
      * 根据类目获得标签

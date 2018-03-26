@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConstantTagBo extends EpConstantTagPo {
-    private boolean usedFlag;
+    private Boolean usedFlag;
     private Long usedOrganCourseTag;
+    private String ognName;
 }
