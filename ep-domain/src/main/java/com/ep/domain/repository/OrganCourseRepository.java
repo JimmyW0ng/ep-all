@@ -84,20 +84,24 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
             return new PageImpl<>(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.fields());
+        fieldList.add(EP_ORGAN.VIP_NAME);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<OrganCourseBo> pList = dslContext.select(fieldList).from(EP_ORGAN_COURSE)
-                .leftJoin(EP_CONSTANT_CATALOG)
-                .on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
-                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
-                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
-                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
+                                              .leftJoin(EP_ORGAN)
+                                              .on(EP_ORGAN_COURSE.OGN_ID.eq(EP_ORGAN.ID))
+                                              .and(EP_ORGAN.DEL_FLAG.eq(false))
+                                              .leftJoin(EP_CONSTANT_CATALOG)
+                                              .on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                                              .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                                              .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                                              .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                                              .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline))
-                .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.online,
+                                              .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline), EP_ORGAN_COURSE.ONLINE_TIME.desc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetchInto(OrganCourseBo.class);
+                                              .limit(pageable.getPageSize())
+                                              .offset(pageable.getOffset())
+                                              .fetchInto(OrganCourseBo.class);
         return new PageImpl<>(pList, pageable, count);
     }
 
