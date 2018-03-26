@@ -5,6 +5,7 @@
 </head>
 <header>
     <th:block layout:fragment="links">
+        <link th:href="@{/umeditor/themes/default/css/umeditor.css}" rel="stylesheet">
     </th:block>
     <style>
         .course-label {
@@ -111,6 +112,10 @@
                             </div>
                             <div class="col-sm-9">
                                 <label>产品内容 <span class="required-sign">*</span></label>
+                                <div id="umeditor" name="content" style="height:350px">
+                                    <p>请填写您的产品内容</p>
+                                </div>
+
 
                                 <div id="editor">
                                 </div>
@@ -344,21 +349,26 @@
 </script>
 
 <script th:replace="~{fragments/scripts}"></script>
-<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>
+<!--<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>-->
+
+<!--<script th:src="@{/wangeditor/wangEditor.js}"></script>-->
+<script th:src="@{/umeditor/umeditor.config.js}"></script>
+<script th:src="@{/umeditor/umeditor.js}"></script>
+<script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
-<script th:src="@{/wangeditor/wangEditor.js}"></script>
+
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
 
+    var um = UM.getEditor('umeditor');
     //wangEditor富文本
-    var E = window.wangEditor
-    var editor = new E('#editor')
+    //    var E = window.wangEditor
+    //    var editor = new E('#editor')
 
-    /**
-     * 上传宣传图
+    /* 上传宣传图
      */
     function uploadMainpicImg($btn, ele) {
         $btn.attr("disabled", true)
@@ -493,21 +503,36 @@
         $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
         bindNumberInput($("#accordion"))
 
-        classBoxDynamicInit()
+        classBoxDynamicInitLast()
     }
 
-    function classBoxDynamicInit() {
+    function classBoxDynamicInitLast() {
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
             var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
             if ($(this).val() == "false") {
                 $enterRequireNum.attr("readonly", true)
             } else {
-                $enterRequireNum.removeAttr("readonly")
+                $enterRequireNum.removeAttr("readonly").attr("required", true)
             }
         })
 
         $("#accordion").find(".organClassBos:last").find("input.digit").on("blur", function () {
+            $(this).val(parseFloat($(this).val()))
+        })
+    }
+    function classBoxDynamicInitAll() {
+        //是否限制报名人数 框绑定事件
+        $("#accordion").find("select[name='enterLimitFlag']").on("change", function () {
+            var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
+            if ($(this).val() == "false") {
+                $enterRequireNum.attr("readonly", true)
+            } else {
+                $enterRequireNum.removeAttr("readonly").attr("required", true)
+            }
+        })
+
+        $("#accordion").find(".organClassBos").find("input.digit").on("blur", function () {
             $(this).val(parseFloat($(this).val()))
         })
     }
@@ -591,7 +616,7 @@
     }
 
     function beforeSubmitCheckCourseDescPic() {
-        var $imgArray = $("#editor").find("img")
+        var $imgArray = $("#umeditor").find("img")
         var $preCodes = $("#preCodeBox")
         for (var i = 0; i < $imgArray.length; i++) {
             var preCode = $imgArray.eq(i).attr("precode")
@@ -634,6 +659,7 @@
 
     function frmSubmit() {
         beforeValidAbledOrganClassCatalogPos()
+
         if (!$("#frm").valid()) {
             console.log("valid fail")
             return;
@@ -643,7 +669,11 @@
 
         beforeSubmitFormatInputInnerName()
         beforeSubmitFormatDateInputName()
-        if (editor.txt.text() == "") {
+//        if (editor.txt.text() == "") {
+//            toastr.error("请填写产品内容！")
+//            return
+//        }
+        if (UM.getEditor('umeditor').getContentTxt() == "") {
             toastr.error("请填写产品内容！")
             return
         }
@@ -664,7 +694,8 @@
         if (!beforeSubmitCheckCourseMainPic()) {
             return
         }
-        beforeSubmitCourseContent(editor.txt.html());
+        beforeSubmitCourseContent($("#umeditor").html());
+//        beforeSubmitCourseContent(editor.txt.html());
         var url = "/auth/organCourse/merchantCreate"
         if ($("#courseId").val()) {
             url = "/auth/organCourse/merchantUpdate"
@@ -755,7 +786,7 @@
                 }
             })
 
-            classBoxDynamicInit()
+            classBoxDynamicInitAll()
 
             //班次end
             if ([[${supportTag}]]) {
@@ -821,21 +852,23 @@
 
         // 或者 var editor = new E( document.getElementById('#editor') )
         // 配置服务器端地址
-        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-        editor.customConfig.uploadFileName = 'file'
-        editor.customConfig.uploadImgMaxLength = 1
-        editor.customConfig.uploadImgHooks = {
-            success: function (xhr, editor, result) {
-                // 图片上传并返回结果，图片插入成功之后触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-                var $img = $("#editor").find("img[name=" + result.name + "]")
-                if ($img.length == 1) {
-                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
-                }
+//        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
+//        editor.customConfig.uploadFileName = 'file'
+//        editor.customConfig.uploadImgMaxLength = 1
+//        editor.customConfig.uploadImgHooks = {
+//            success: function (xhr, editor, result) {
+//                // 图片上传并返回结果，图片插入成功之后触发
+//                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+//                var $img = $("#editor").find("img[name=" + result.name + "]")
+//                if ($img.length == 1) {
+//                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
+//                }
+//
+//            },
+//        }
+//        editor.create()
+//
 
-            },
-        }
-        editor.create()
 
 //        $.validator.addMethod("isMobile", function (value, element) {
 //            var length = value.length;
@@ -846,32 +879,10 @@
             var decimalLen6 = /^\d+(\.\d{0,6})?$/
             return this.optional(element) || decimalLen6.test(value);
         }, "小数位数为1-6位!");
-        $("#frm").validate({
-            rules: {
-//                phone: {isMobile: true},
-                duration: {digits: true},
-                addressLng: {number: true, max: 180, min: -180, decimalLen6: true},
-                addressLat: {number: true, max: 90, min: -90, decimalLen6: true},
-            },
-            messages: {
-                addressLng: {
-                    number: "经度为-180到180的数字!",
-                    max: "经度为-180到180的数字!",
-                    min: "经度为-180到180的数字!",
-                    decimalLen6: "小数位数为1-6位!"
-                },
-                addressLat: {
-                    number: "纬度为-90到90的数字!",
-                    max: "纬度为-90到90的数字!",
-                    min: "纬度为-90到90的数字!",
-                    decimalLen6: "小数位数为1-6位!"
-                }
-//                phone: "请填写正确的手机号码!"
-            },
 
-        })
 
     });
+
 
 </script>
 </body>
