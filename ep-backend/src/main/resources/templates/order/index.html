@@ -232,6 +232,7 @@
             }
         })
     }
+    /*控制按钮*/
     function buttonByStatus($box, status, classStatus) {
         if ((status == "success" || status == "refuse") && classStatus == "online") {
             //班次opening,订单success或者refuse,显示取消按钮，其他隐藏
@@ -245,7 +246,10 @@
         } else if (status == "opening") {
             //订单opening所有按钮隐藏
             $box.find("a").hide()
-        } else if (classStatus == "end") {
+        } else if (status == "cancel") {
+            //订单cancel所有按钮隐藏
+            $box.find("a").hide()
+        } else if (classStatus == "end" || classStatus == "opening") {
             //班次end所有按钮隐藏
             $box.find("a").hide()
         }

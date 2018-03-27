@@ -84,13 +84,13 @@ public class ConstantTagService {
      *
      * @param id
      */
-    public ResultDo deleteById(Long id) {
+    public ResultDo deleteById(Long id, Long ognId) {
         log.info("[标签]删除标签开始，id={}。", id);
         if (organCourseTagRepository.constantTagIsUesd(id)) {
             log.error("[标签]删除标签失败，标签正在被使用。");
             return ResultDo.build(MessageCode.ERROR_CONSTANT_TAG_DELETE_WHEN_USED);
         }
-        if (constantTagRepository.deleteById(id) == BizConstant.DB_NUM_ONE) {
+        if (constantTagRepository.deleteById(id, ognId) == BizConstant.DB_NUM_ONE) {
             log.info("[标签]删除标签成功，id={}。", id);
             return ResultDo.build();
         } else {
@@ -100,13 +100,35 @@ public class ConstantTagService {
     }
 
     /**
-     * 分页
+     * 机构标签分页
      *
      * @param pageable
      * @param conditions
      * @return
      */
-    public Page<ConstantTagBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+    public Page<ConstantTagBo> findOgnTagbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+        return constantTagRepository.findbyPageAndCondition(pageable, conditions);
+    }
+
+    /**
+     * 机构获取公用标签分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<EpConstantTagPo> findConstantTagbyPageAndConditionForOgn(Pageable pageable, Collection<? extends Condition> conditions) {
+        return constantTagRepository.findByPageable(pageable, conditions);
+    }
+
+    /**
+     * 后台公用标签分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<ConstantTagBo> findConstantTagbyPageAndConditionForBackend(Pageable pageable, Collection<? extends Condition> conditions) {
         return constantTagRepository.findbyPageAndCondition(pageable, conditions);
     }
 }
