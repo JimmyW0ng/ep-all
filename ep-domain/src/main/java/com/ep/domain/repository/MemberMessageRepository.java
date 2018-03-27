@@ -71,16 +71,16 @@ public class MemberMessageRepository extends AbstractCRUDRepository<EpMemberMess
             return new PageImpl<>(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_MESSAGE.fields());
-        fieldList.add(EP_ORDER.ID.as("orderId"));
+        fieldList.add(EP_ORGAN_CLASS_CHILD.ORDER_ID.as("orderId"));
         List<MemberMessageBo> data = dslContext.select(fieldList)
                                                .from(EP_MEMBER_MESSAGE)
                                                .leftJoin(EP_ORGAN_CLASS_CATALOG)
                                                .on(EP_MEMBER_MESSAGE.SOURCE_ID.eq(EP_ORGAN_CLASS_CATALOG.ID))
                                                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
-                                               .leftJoin(EP_ORDER)
-                                               .on(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(EP_ORDER.CLASS_ID))
-                                               .and(EP_ORDER.CHILD_ID.eq(EP_MEMBER_MESSAGE.CHILD_ID))
-                                               .and(EP_ORDER.DEL_FLAG.eq(false))
+                                               .leftJoin(EP_ORGAN_CLASS_CHILD)
+                                               .on(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(EP_ORGAN_CLASS_CHILD.CLASS_ID))
+                                               .and(EP_ORGAN_CLASS_CHILD.CHILD_ID.eq(EP_MEMBER_MESSAGE.CHILD_ID))
+                                               .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
                                                .where(conditions)
                                                .orderBy(EP_MEMBER_MESSAGE.CREATE_AT.desc())
                                                .limit(pageable.getPageSize())
