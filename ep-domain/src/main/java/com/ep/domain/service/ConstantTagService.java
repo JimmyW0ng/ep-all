@@ -100,13 +100,35 @@ public class ConstantTagService {
     }
 
     /**
-     * 分页
+     * 机构标签分页
      *
      * @param pageable
      * @param conditions
      * @return
      */
-    public Page<ConstantTagBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+    public Page<ConstantTagBo> findOgnTagbyPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+        return constantTagRepository.findbyPageAndCondition(pageable, conditions);
+    }
+
+    /**
+     * 机构获取公用标签分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<EpConstantTagPo> findConstantTagbyPageAndConditionForOgn(Pageable pageable, Collection<? extends Condition> conditions) {
+        return constantTagRepository.findByPageable(pageable, conditions);
+    }
+
+    /**
+     * 后台公用标签分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<ConstantTagBo> findConstantTagbyPageAndConditionForBackend(Pageable pageable, Collection<? extends Condition> conditions) {
         return constantTagRepository.findbyPageAndCondition(pageable, conditions);
     }
 }

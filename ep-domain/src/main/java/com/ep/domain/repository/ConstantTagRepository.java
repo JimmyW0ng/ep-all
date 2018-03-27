@@ -104,6 +104,13 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .execute();
     }
 
+    /**
+     * 机构标签分页/后台公用标签分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
     public Page<ConstantTagBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         long totalCount = dslContext.selectCount()
                 .from(EP_CONSTANT_TAG)
