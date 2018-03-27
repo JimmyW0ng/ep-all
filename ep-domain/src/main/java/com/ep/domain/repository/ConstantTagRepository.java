@@ -169,7 +169,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      */
     public int updatePo(EpConstantTagPo po) {
         return dslContext.update(EP_CONSTANT_TAG)
-                .set(EP_CONSTANT_TAG.SORT, po.getSort())
+//                .set(EP_CONSTANT_TAG.SORT, po.getSort())
                 .set(EP_CONSTANT_TAG.TAG_LEVEL, po.getTagLevel())
                 .where(EP_CONSTANT_TAG.ID.eq(po.getId()))
                 .and(po.getOgnId() == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(po.getOgnId()))

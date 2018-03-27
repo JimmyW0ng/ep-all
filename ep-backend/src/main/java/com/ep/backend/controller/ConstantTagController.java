@@ -239,15 +239,15 @@ public class ConstantTagController extends BackendController {
     @ResponseBody
     public ResultDo createConstantTag(
             @RequestParam(value = "tagLevel") Byte tagLevel,
-            @RequestParam(value = "tagName") String tagName,
-            @RequestParam(value = "sort") Long sort
+            @RequestParam(value = "tagName") String tagName
+//            @RequestParam(value = "sort") Long sort
     ) {
         EpConstantTagPo constantTagPo = new EpConstantTagPo();
         constantTagPo.setOgnId(null);
         constantTagPo.setOgnFlag(false);
         constantTagPo.setTagName(tagName);
         constantTagPo.setTagLevel(tagLevel);
-        constantTagPo.setSort(sort);
+//        constantTagPo.setSort(sort);
 
         return constantTagService.createConstantTag(constantTagPo);
     }
@@ -264,8 +264,8 @@ public class ConstantTagController extends BackendController {
     @ResponseBody
     public ResultDo createOgnTag(
             @RequestParam(value = "tagLevel") Byte tagLevel,
-            @RequestParam(value = "tagName") String tagName,
-            @RequestParam(value = "sort") Long sort
+            @RequestParam(value = "tagName") String tagName
+//            @RequestParam(value = "sort") Long sort
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
@@ -274,7 +274,7 @@ public class ConstantTagController extends BackendController {
         constantTagPo.setOgnFlag(true);
         constantTagPo.setTagName(tagName);
         constantTagPo.setTagLevel(tagLevel);
-        constantTagPo.setSort(sort);
+//        constantTagPo.setSort(sort);
         ResultDo resultDo = constantTagService.createConstantTag(constantTagPo);
         return resultDo;
     }
@@ -292,8 +292,8 @@ public class ConstantTagController extends BackendController {
     public ResultDo updateTag(
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "tagLevel") Byte tagLevel,
-            @RequestParam(value = "tagName") String tagName,
-            @RequestParam(value = "sort") Long sort
+            @RequestParam(value = "tagName") String tagName
+//            @RequestParam(value = "sort") Long sort
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
@@ -302,7 +302,7 @@ public class ConstantTagController extends BackendController {
         constantTagPo.setOgnId(ognId);
         constantTagPo.setTagName(tagName);
         constantTagPo.setTagLevel(tagLevel);
-        constantTagPo.setSort(sort);
+//        constantTagPo.setSort(sort);
         ResultDo resultDo = constantTagService.updateConstantTag(constantTagPo);
         return resultDo;
     }
