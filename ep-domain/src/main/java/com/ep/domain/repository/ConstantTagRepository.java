@@ -70,6 +70,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
 
     /**
      * 根据机构id获取标签
+     *
      * @param ognId
      * @return
      */
@@ -82,11 +83,12 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
 
     /**
      * 根据id删除课程私有标签
+     *
      * @param id
      */
-    public void deleteOgnTagByIds(List<Long> id){
+    public void deleteOgnTagByIds(List<Long> id) {
         dslContext.update(EP_CONSTANT_TAG)
-                .set(EP_CONSTANT_TAG.DEL_FLAG,true)
+                .set(EP_CONSTANT_TAG.DEL_FLAG, true)
                 .where(EP_CONSTANT_TAG.OGN_FLAG.eq(true))
                 .and(EP_CONSTANT_TAG.ID.in(id))
                 .execute();
@@ -94,12 +96,14 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
 
     /**
      * 根据id逻辑删除
+     *
      * @param id
      */
-    public int deleteById(Long id) {
+    public int deleteById(Long id, Long ognId) {
         return dslContext.update(EP_CONSTANT_TAG)
-                .set(EP_CONSTANT_TAG.DEL_FLAG,true)
+                .set(EP_CONSTANT_TAG.DEL_FLAG, true)
                 .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .execute();
     }

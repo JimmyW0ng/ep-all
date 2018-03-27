@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +70,7 @@ public class ConstantTagController extends BackendController {
      * @return
      */
     @GetMapping("constantIndex")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:constantIndex','merchant:constantTag:merchantIndex')")
     public String constantIndex(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                 @RequestParam(value = "tagName", required = false) String tagName,
                                 @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
@@ -124,8 +126,18 @@ public class ConstantTagController extends BackendController {
 //    }
 
 
+    /**
+     * 商户标签分页
+     *
+     * @param model
+     * @param pageable
+     * @param tagName
+     * @param crStartTime
+     * @param crEndTime
+     * @return
+     */
     @GetMapping("merchantIndex")
-//    @PreAuthorize("hasAnyAuthority('platform:organCourse:index')")
+    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex')")
     public String merchantIndex(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                 @RequestParam(value = "tagName", required = false) String tagName,
                                 @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
@@ -170,6 +182,7 @@ public class ConstantTagController extends BackendController {
      * @return
      */
     @GetMapping("findTags")
+    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex')")
     @ResponseBody
     public ResultDo findTags(
             @RequestParam(value = "catalogId") Long catalogId
@@ -196,6 +209,7 @@ public class ConstantTagController extends BackendController {
      * @return
      */
     @GetMapping("createConstantTag")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:index')")
     @ResponseBody
     public ResultDo createConstantTag(
             @RequestParam(value = "tagLevel") Byte tagLevel,
@@ -220,6 +234,7 @@ public class ConstantTagController extends BackendController {
      * @return
      */
     @GetMapping("createOgnTag")
+    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex')")
     @ResponseBody
     public ResultDo createOgnTag(
             @RequestParam(value = "tagLevel") Byte tagLevel,
@@ -245,10 +260,12 @@ public class ConstantTagController extends BackendController {
      * @return
      */
     @GetMapping("deleteTag/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:constantIndex','merchant:constantTag:merchantIndex')")
     @ResponseBody
     public ResultDo deleteOgnTag(@PathVariable("id") Long id) {
-
-        return constantTagService.deleteById(id);
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        return constantTagService.deleteById(id,ognId);
     }
 
 }
