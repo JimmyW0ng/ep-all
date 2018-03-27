@@ -77,8 +77,9 @@
                             <td th:text="${#dates.format(po.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
 
-                                <!--<a class="btn btn-xs btn-primary" href="javascript:void(0)" onclick="createInit('修改标签',$(this).attr('value'))"-->
-                                <!--th:value="${po.id}">修改</a>-->
+                                <a class="btn btn-xs btn-primary" href="javascript:void(0)"
+                                   onclick="createInit('修改标签',$(this).attr('value'))" th:value="${po.id}">修改</a>
+
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:if="!${po.usedFlag}"
                                    th:onclick="'deleteBox('+${po.id}+')'">删除</a>
 
@@ -129,19 +130,20 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label"><span class="required-sign">*</span>名称</label>
                         <div class="col-sm-6">
-                            <input class="form-control" id="tagName" name="tagName" maxlength="20">
+                            <input class="form-control" id="tagName" name="tagName" maxlength="20" required="true">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label"><span class="required-sign">*</span>等级</label>
                         <div class="col-sm-6">
-                            <input class="form-control digit" type="number " id="tagLevel" name="tagLevel">
+                            <input class="form-control digit" type="number" id="tagLevel" name="tagLevel"
+                                   required="true">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label"><span class="required-sign">*</span>排序</label>
                         <div class="col-sm-6">
-                            <input class="form-control digit" type="number" id="sort" name="sort">
+                            <input class="form-control digit" type="number" id="sort" name="sort" required="true">
                         </div>
                     </div>
 
@@ -173,18 +175,32 @@
     </div>
 </script>
 <script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
     /* 新增课程标签
      */
     function createDo() {
+        if (!$("#frm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        var sourceId = $("#sourceId").val()
         var tagName = $('#tagName').val()
         var tagLevel = $('#tagLevel').val()
         var sort = $('#sort').val()
-
+        var url;
+        if (sourceId) {
+            url = "/auth/constantTag/updateTag?" + "tagLevel=" + tagLevel + "&tagName=" + tagName + "&sort=" + sort + "&id=" + sourceId
+        } else {
+            url = "/auth/constantTag/createOgnTag?" + "tagLevel=" + tagLevel + "&tagName=" + tagName + "&sort=" + sort
+        }
         $.ajax({
             type:"GET",
-            url: "/auth/constantTag/createOgnTag?" + "tagLevel=" + tagLevel + "&tagName=" + tagName + "&sort=" + sort,
+            url: url,
             success:function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href);
@@ -222,10 +238,32 @@
         })
     }
     function createInit(title, sourceId) {
-        $("#createModal").find("input").val("");
+        $("#frm").validate().resetForm()
+        $("#createModal").find("input").val("").attr("readonly", false);
         $("#createModal").modal("show")
         $("#modalTitle").text(title)
-        $("#sourceId").val(sourceId)
+        if (sourceId) {
+            $("#createModal").find("#tagName").attr("readonly", true);
+            $.ajax({
+                type: "GET",
+                url: "/auth/constantTag/getTag/" + sourceId,
+                success: function (data) {
+                    if (data.success) {
+                        var po = data.result;
+                        $("#sourceId").val(po.id)
+                        $("#tagName").val(po.tagName)
+                        $("#tagLevel").val(po.tagLevel)
+                        $("#sort").val(po.sort)
+                    } else {
+                        toastr.error(data.errorDescription);
+                    }
+                },
+                error: function (XMLHttpRequest) {
+                    toastr_error_system(XMLHttpRequest.status);
+                }
+            })
+        }
+
     }
     $(function () {
         $(".digit").on("blur", function () {

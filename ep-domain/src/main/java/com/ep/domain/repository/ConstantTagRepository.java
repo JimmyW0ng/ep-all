@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.tables.EpConstantTag.EP_CONSTANT_TAG;
 import static com.ep.domain.repository.domain.tables.EpOrganCourseTag.EP_ORGAN_COURSE_TAG;
@@ -82,6 +83,23 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
     }
 
     /**
+     * 根据id获取标签
+     *
+     * @param id
+     * @param ognId
+     * @return
+     */
+    public Optional<EpConstantTagPo> findById(Long id, Long ognId) {
+        EpConstantTagPo data = dslContext.selectFrom(EP_CONSTANT_TAG)
+                .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .fetchOneInto(EpConstantTagPo.class);
+        return Optional.ofNullable(data);
+    }
+
+
+    /**
      * 根据id删除课程私有标签
      *
      * @param id
@@ -141,5 +159,20 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .fetchInto(ConstantTagBo.class);
         PageImpl<ConstantTagBo> pPage = new PageImpl<ConstantTagBo>(list, pageable, totalCount);
         return pPage;
+    }
+
+    /**
+     * 根据id修改标签
+     *
+     * @param po
+     * @return
+     */
+    public int updatePo(EpConstantTagPo po) {
+        return dslContext.update(EP_CONSTANT_TAG)
+                .set(EP_CONSTANT_TAG.SORT, po.getSort())
+                .set(EP_CONSTANT_TAG.TAG_LEVEL, po.getTagLevel())
+                .where(EP_CONSTANT_TAG.ID.eq(po.getId()))
+                .and(po.getOgnId() == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(po.getOgnId()))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false)).execute();
     }
 }

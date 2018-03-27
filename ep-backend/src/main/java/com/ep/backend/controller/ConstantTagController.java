@@ -2,6 +2,7 @@ package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
@@ -27,6 +28,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_CONSTANT_TAG;
 
@@ -202,6 +204,30 @@ public class ConstantTagController extends BackendController {
     }
 
     /**
+     * 根据id获得标签
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("getTag/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex','platform:constantTag:constantIndex')")
+    @ResponseBody
+    public ResultDo findById(
+            @PathVariable(value = "id") Long id
+    ) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        ResultDo resultDo = ResultDo.build();
+        Optional<EpConstantTagPo> constantTagOptional = constantTagService.findById(id, ognId);
+        if (constantTagOptional.isPresent()) {
+            resultDo.setResult(constantTagOptional.get());
+        } else {
+            return resultDo.setError(MessageCode.ERROR_CONSTANT_TAG_NOT_EXISTS);
+        }
+        return resultDo;
+    }
+
+    /**
      * 后台创建公用标签
      *
      * @param
@@ -250,6 +276,34 @@ public class ConstantTagController extends BackendController {
         constantTagPo.setTagLevel(tagLevel);
         constantTagPo.setSort(sort);
         ResultDo resultDo = constantTagService.createConstantTag(constantTagPo);
+        return resultDo;
+    }
+
+    /**
+     * 修改标签
+     *
+     * @param tagLevel
+     * @param tagName
+     * @return
+     */
+    @GetMapping("updateTag")
+    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex',)")
+    @ResponseBody
+    public ResultDo updateTag(
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "tagLevel") Byte tagLevel,
+            @RequestParam(value = "tagName") String tagName,
+            @RequestParam(value = "sort") Long sort
+    ) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        EpConstantTagPo constantTagPo = new EpConstantTagPo();
+        constantTagPo.setId(id);
+        constantTagPo.setOgnId(ognId);
+        constantTagPo.setTagName(tagName);
+        constantTagPo.setTagLevel(tagLevel);
+        constantTagPo.setSort(sort);
+        ResultDo resultDo = constantTagService.updateConstantTag(constantTagPo);
         return resultDo;
     }
 

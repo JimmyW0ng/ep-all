@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 标签服务类
@@ -64,19 +65,50 @@ public class ConstantTagService {
     }
 
     /**
+     * 根据id获取标签
+     *
+     * @param ognId
+     * @return
+     */
+    public Optional<EpConstantTagPo> findById(Long id, Long ognId) {
+        return constantTagRepository.findById(id, ognId);
+    }
+
+    /**
      * 新增EpConstantTagPo
      *
      * @param po
      */
     public ResultDo createConstantTag(EpConstantTagPo po) {
         log.info("[标签]新增标签开始，标签对象={}。", po);
-        if (StringTools.isBlank(po.getTagName())) {
+        if (StringTools.isBlank(po.getTagName()) || po.getSort() == null || po.getTagLevel() == null) {
             log.error("[标签]新增标签失败，请求参数异常。");
             ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
         constantTagRepository.insert(po);
         log.info("[标签]新增标签成功，id={}。", po.getId());
-        return ResultDo.build().setResult(po.getTagName());
+        return ResultDo.build();
+    }
+
+
+    /**
+     * 修改EpConstantTagPo
+     *
+     * @param po
+     */
+    public ResultDo updateConstantTag(EpConstantTagPo po) {
+        log.info("[标签]修改标签开始，标签对象={}。", po);
+        if (StringTools.isBlank(po.getTagName()) || po.getSort() == null || po.getTagLevel() == null || po.getId() == null) {
+            log.error("[标签]修改标签失败，请求参数异常。");
+            ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+        if (constantTagRepository.updatePo(po) == BizConstant.DB_NUM_ONE) {
+            log.info("[标签]修改标签成功，id={}。", po.getId());
+            return ResultDo.build();
+        } else {
+            log.info("[标签]修改标签失败，id={}。", po.getId());
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     /**

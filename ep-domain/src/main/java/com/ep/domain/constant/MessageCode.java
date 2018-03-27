@@ -122,6 +122,7 @@ public class MessageCode {
     /**
      * 标签
      */
+    public static final String ERROR_CONSTANT_TAG_NOT_EXISTS = "ERROR_CONSTANT_TAG_NOT_EXISTS";
     public static final String ERROR_CONSTANT_TAG_DELETE_WHEN_USED = "ERROR_CONSTANT_TAG_DELETE_WHEN_USED";
 
     /**
