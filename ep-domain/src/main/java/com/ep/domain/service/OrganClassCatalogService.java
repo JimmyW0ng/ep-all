@@ -79,7 +79,7 @@ public class OrganClassCatalogService {
             return resultDo.setError(MessageCode.ERROR_CLASS_NOT_START);
         }
         // 校验班次负责人
-        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+        if (!organAccountPo.getId().equals(classPo.getOgnAccountId())) {
             log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classPo.getId());
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
@@ -138,7 +138,7 @@ public class OrganClassCatalogService {
             return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
         }
         // 校验班次负责人
-        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+        if (!organAccountPo.getId().equals(classPo.getOgnAccountId())) {
             log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classPo.getId());
             return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
@@ -267,7 +267,7 @@ public class OrganClassCatalogService {
             return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
         }
         // 校验班次负责人
-        if (!organAccountPo.getOgnId().equals(classPo.getOgnAccountId())) {
+        if (!organAccountPo.getId().equals(classPo.getOgnAccountId())) {
             log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
