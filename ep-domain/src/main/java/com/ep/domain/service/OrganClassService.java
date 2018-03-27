@@ -15,6 +15,7 @@ import com.ep.domain.repository.OrganClassRepository;
 import com.ep.domain.repository.OrganCourseRepository;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,15 @@ public class OrganClassService {
         if (CollectionsTools.isEmpty(openingOrders)) {
             log.error("班次内未发现报名成功的订单, classId={}", id);
             return ResultDo.build(MessageCode.ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS);
+        }
+        // 校验是否有重复的孩子成功订单
+        List<Long> childMap = Lists.newArrayList();
+        for (EpOrderPo orderPo : openingOrders) {
+            if (childMap.contains(orderPo.getChildId())) {
+                log.error("存在重复的班次成员成功订单, classId={}, childId={}", id, orderPo.getChildId());
+                return ResultDo.build(MessageCode.ERROR_CLASS_OPENING_ORDER_DUPLICATE);
+            }
+            childMap.add(orderPo.getChildId());
         }
         // 开班
         int num = organClassRepository.openById(id);
