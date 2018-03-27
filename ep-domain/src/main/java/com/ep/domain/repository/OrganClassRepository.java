@@ -89,10 +89,11 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      */
     public int orderWithNoLimit(Long classId) {
         return dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.ORDERED_NUM, EP_ORGAN_CLASS.ORDERED_NUM.add(BizConstant.DB_NUM_ONE))
-                .where(EP_ORGAN_CLASS.ID.eq(classId))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORGAN_CLASS.ORDERED_NUM, EP_ORGAN_CLASS.ORDERED_NUM.add(BizConstant.DB_NUM_ONE))
+                         .where(EP_ORGAN_CLASS.ID.eq(classId))
+                         .and(EP_ORGAN_CLASS.ORDERED_NUM.lessOrEqual(BizConstant.ORDER_BEYOND_NUM))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
@@ -103,13 +104,13 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      */
     public int orderWithLimit(Long classId) {
         return dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.ORDERED_NUM, EP_ORGAN_CLASS.ORDERED_NUM.add(BizConstant.DB_NUM_ONE))
-                .where(EP_ORGAN_CLASS.ID.eq(classId))
-                .and(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG.eq(true))
-                .and(EP_ORGAN_CLASS.ENTERED_NUM.lessThan(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM))
-                .and(EP_ORGAN_CLASS.ORDERED_NUM.lessThan(BizConstant.ORDER_BEYOND_NUM))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORGAN_CLASS.ORDERED_NUM, EP_ORGAN_CLASS.ORDERED_NUM.add(BizConstant.DB_NUM_ONE))
+                         .where(EP_ORGAN_CLASS.ID.eq(classId))
+                         .and(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG.eq(true))
+                         .and(EP_ORGAN_CLASS.ENTERED_NUM.lessThan(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM))
+                         .and(EP_ORGAN_CLASS.ORDERED_NUM.lessOrEqual(BizConstant.ORDER_BEYOND_NUM))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
@@ -270,12 +271,30 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      * @param classId
      * @param orderCount
      */
-    public void updateEnteredNumByorderSuccess(Long classId, int orderCount) {
-        dslContext.update(EP_ORGAN_CLASS)
-                .set(EP_ORGAN_CLASS.ENTERED_NUM, EP_ORGAN_CLASS.ENTERED_NUM.add(orderCount))
-                .where(EP_ORGAN_CLASS.ID.eq(classId))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .execute();
+    public int updateEnteredNumWithEnterLimit(Long classId, int orderCount) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                         .set(EP_ORGAN_CLASS.ENTERED_NUM, EP_ORGAN_CLASS.ENTERED_NUM.add(orderCount))
+                         .where(EP_ORGAN_CLASS.ID.eq(classId))
+                         .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.online))
+                         .and(EP_ORGAN_CLASS.ENTER_LIMIT_FLAG.eq(true))
+                         .and(EP_ORGAN_CLASS.ENTERED_NUM.lessThan(EP_ORGAN_CLASS.ENTER_REQUIRE_NUM))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
+     * 报名成功更新entered_num字段
+     *
+     * @param classId
+     * @param orderCount
+     */
+    public int updateEnteredNumWithEnterNotLimit(Long classId, int orderCount) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                         .set(EP_ORGAN_CLASS.ENTERED_NUM, EP_ORGAN_CLASS.ENTERED_NUM.add(orderCount))
+                         .where(EP_ORGAN_CLASS.ID.eq(classId))
+                         .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.online))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**

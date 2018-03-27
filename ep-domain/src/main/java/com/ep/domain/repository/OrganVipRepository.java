@@ -1,6 +1,5 @@
 package com.ep.domain.repository;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganVipBo;
@@ -42,14 +41,14 @@ public class OrganVipRepository extends AbstractCRUDRepository<EpOrganVipRecord,
      */
     public Boolean existVipByOgnIdAndChildId(Long ognId, Long childId) {
         Timestamp now = DateTools.getCurrentDateTime();
-        List<EpOrganVipPo> data = dslContext.selectCount().from(EP_ORGAN_VIP)
-                                            .where(EP_ORGAN_VIP.OGN_ID.eq(ognId))
-                                            .and(EP_ORGAN_VIP.CHILD_ID.eq(childId))
-                                            .and(EP_ORGAN_VIP.START_TIME.lessThan(now))
-                                            .and(EP_ORGAN_VIP.END_TIME.greaterThan(now))
-                                            .and(EP_ORGAN_VIP.DEL_FLAG.eq(false))
-                                            .fetchInto(EpOrganVipPo.class);
-        return CollectionsTools.isNotEmpty(data);
+        Long count = dslContext.selectCount().from(EP_ORGAN_VIP)
+                               .where(EP_ORGAN_VIP.OGN_ID.eq(ognId))
+                               .and(EP_ORGAN_VIP.CHILD_ID.eq(childId))
+                               .and(EP_ORGAN_VIP.START_TIME.lessThan(now))
+                               .and(EP_ORGAN_VIP.END_TIME.greaterThan(now))
+                               .and(EP_ORGAN_VIP.DEL_FLAG.eq(false))
+                               .fetchOneInto(Long.class);
+        return count > BizConstant.LONG_ZERO;
     }
 
     /**

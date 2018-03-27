@@ -93,7 +93,7 @@ public class BizConstant {
     /**
      * 订单数量控制
      */
-    public static int ORDER_BEYOND_NUM = 10;
+    public static int ORDER_BEYOND_NUM = 200;
     /**
      * 孩子数量控制
      */

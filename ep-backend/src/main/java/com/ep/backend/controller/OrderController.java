@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpOrderPo;
@@ -128,15 +130,13 @@ public class OrderController extends BackendController {
      * 单个订单报名成功
      *
      * @param id
-     * @param classId
      */
     @PostMapping("orderSuccess")
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
-    public ResultDo orderSuccess(@RequestParam(value = "id") Long id,
-                                 @RequestParam(value = "classId") Long classId
+    public ResultDo orderSuccess(@RequestParam(value = "id") Long id
     ) {
-        return orderService.orderSuccessById(id, classId);
+        return orderService.orderSuccessById(id);
     }
 
     /**
@@ -151,11 +151,10 @@ public class OrderController extends BackendController {
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "remark", required = false) String remark) {
         ResultDo resultDo = ResultDo.build();
-        if (orderService.orderRefuseById(id, remark) == 1) {
+        if (orderService.orderRefuseById(id, remark) == BizConstant.DB_NUM_ONE) {
             return resultDo;
         } else {
-            resultDo.setSuccess(false);
-            return resultDo;
+            return resultDo.setError(MessageCode.ERROR_OPERATE_FAIL);
         }
 
     }
@@ -173,9 +172,11 @@ public class OrderController extends BackendController {
             @RequestParam(value = "status") String status
     ) {
         ResultDo resultDo = ResultDo.build();
-        orderService.orderCancelById(id, EpOrderStatus.valueOf(status));
-        return resultDo;
-
+        if (orderService.orderCancelById(id, EpOrderStatus.valueOf(status)) == BizConstant.DB_NUM_ONE) {
+            return resultDo;
+        } else {
+            return resultDo.setError(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
 

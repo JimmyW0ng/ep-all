@@ -14,7 +14,6 @@ import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -195,7 +194,7 @@ public class OrderService {
         orderPo.setOgnId(classPo.getOgnId());
         orderPo.setCourseId(classPo.getCourseId());
         orderPo.setClassId(classId);
-        orderPo.setPrize(classPo.getClassPrize());
+        orderPo.setPrize(classPo.getDiscountAmount() != null ? classPo.getDiscountAmount() : classPo.getClassPrize());
         orderPo.setStatus(EpOrderStatus.save);
         orderRepository.insert(orderPo);
         return resultDo;
@@ -291,23 +290,21 @@ public class OrderService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo orderSuccessById(Long id, Long classId) {
-        log.info("[订单]订单报名开始，订单id={},班次classId={}。", id, classId);
-        //行锁班次记录，防止班次下线并发
-        organClassRepository.getByIdAndStatusLock(classId, EpOrganClassStatus.online);
+    public ResultDo orderSuccessById(Long id) {
+        log.info("[订单报名成功]开始，订单id={}", id);
         int count = orderRepository.orderSuccessById(id);
         if (count == BizConstant.DB_NUM_ONE) {
             EpOrderPo orderPo = orderRepository.getById(id);
             // 增加班次成功报名人数
-            organClassRepository.updateEnteredNumByorderSuccess(classId, count);
+            organClassRepository.updateEnteredNumWithEnterNotLimit(orderPo.getClassId(), count);
             // 增加课程总参与人数
             organCourseRepository.addTotalParticipate(orderPo.getCourseId(), count);
             // 增加机构总参与人数
             organRepository.addTotalParticipate(orderPo.getOgnId(), count);
-            log.info("[订单]订单报名成功，订单id={},班次classId={}。", id, classId);
+            log.info("[订单]订单报名成功，订单id={},班次classId={}。", id, orderPo.getClassId());
             return ResultDo.build().setResult(orderPo);
         } else {
-            log.error("[订单]订单报名失败，订单id={},班次classId={}。", id, classId);
+            log.error("[订单]订单报名失败，订单id={}", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
@@ -319,49 +316,49 @@ public class OrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo batchOrderSuccess(List<EpOrderPo> pos) {
-        //按classId排序
-        Collections.sort(pos, new Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                EpOrderPo po1 = (EpOrderPo) o1;
-                EpOrderPo po2 = (EpOrderPo) o2;
-                if (po1.getClassId().longValue() > po2.getClassId().longValue()) {
-                    return 1;
-                } else if (po1.getClassId().longValue() == po2.getClassId().longValue()) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-        });
-        //不同classId的记录封装在不同的map中
-        Map<Long, Object> map = Maps.newHashMap();
-        List<EpOrderPo> list = Lists.newArrayList();
-        Long classId = pos.get(0).getClassId();
-        for (int i = 0; i < pos.size(); i++) {
-            if (classId.longValue() == pos.get(i).getClassId().longValue()) {
-                list.add(pos.get(i));
-            } else {
-                map.put(classId, list);
-                list = Lists.newArrayList();
-                classId = pos.get(i).getClassId();
-                list.add(pos.get(i));
-            }
-            map.put(classId, list);
-        }
-        //不同班次的孩子批量报名
-        log.info("[订单],订单批量报名成功，pos={}。", pos);
-        //相同班次批量报名
-        map.keySet().forEach(key -> {
-            List<EpOrderPo> orderPos = (List<EpOrderPo>) map.get(key);
-            List<Long> classlist = Lists.newArrayList();
-            for (int i = 0; i < orderPos.size(); i++) {
-                classlist.add(orderPos.get(i).getId());
-            }
-            int count = orderRepository.orderSuccessByIds(classlist);
-            organClassRepository.updateEnteredNumByorderSuccess(key, count);
-        });
-        log.info("[订单],订单批量报名成功，pos={}。", pos);
+//        //按classId排序
+//        Collections.sort(pos, new Comparator() {
+//            @Override
+//            public int compare(Object o1, Object o2) {
+//                EpOrderPo po1 = (EpOrderPo) o1;
+//                EpOrderPo po2 = (EpOrderPo) o2;
+//                if (po1.getClassId().longValue() > po2.getClassId().longValue()) {
+//                    return 1;
+//                } else if (po1.getClassId().longValue() == po2.getClassId().longValue()) {
+//                    return 0;
+//                } else {
+//                    return -1;
+//                }
+//            }
+//        });
+//        //不同classId的记录封装在不同的map中
+//        Map<Long, Object> map = Maps.newHashMap();
+//        List<EpOrderPo> list = Lists.newArrayList();
+//        Long classId = pos.get(0).getClassId();
+//        for (int i = 0; i < pos.size(); i++) {
+//            if (classId.longValue() == pos.get(i).getClassId().longValue()) {
+//                list.add(pos.get(i));
+//            } else {
+//                map.put(classId, list);
+//                list = Lists.newArrayList();
+//                classId = pos.get(i).getClassId();
+//                list.add(pos.get(i));
+//            }
+//            map.put(classId, list);
+//        }
+//        //不同班次的孩子批量报名
+//        log.info("[订单],订单批量报名成功，pos={}。", pos);
+//        //相同班次批量报名
+//        map.keySet().forEach(key -> {
+//            List<EpOrderPo> orderPos = (List<EpOrderPo>) map.get(key);
+//            List<Long> classlist = Lists.newArrayList();
+//            for (int i = 0; i < orderPos.size(); i++) {
+//                classlist.add(orderPos.get(i).getId());
+//            }
+//            int count = orderRepository.orderSuccessByIds(classlist);
+//            organClassRepository.updateEnteredNumByorderSuccess(key, count);
+//        });
+//        log.info("[订单],订单批量报名成功，pos={}。", pos);
         return ResultDo.build();
     }
 
@@ -372,12 +369,7 @@ public class OrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public int orderRefuseById(Long id, String remark) {
-//        Optional<EpOrderPo> optional = orderRepository.findById(id);
-//        if(optional.isPresent()){
-//
-//        }
-//        //行锁班次记录，防止班次下线并发
-//        organClassRepository.getByIdAndStatusLock(classId, EpOrganClassStatus.online);
+        log.error("[订单]订单取消报名成功/拒绝操作开始，订单id={}", id);
         return orderRepository.orderRefuseById(id, remark);
     }
 
@@ -398,8 +390,15 @@ public class OrderService {
      * @param status
      */
     @Transactional(rollbackFor = Exception.class)
-    public void orderCancelById(Long id, EpOrderStatus status) {
+    public int orderCancelById(Long id, EpOrderStatus status) {
+        log.error("[订单]订单取消报名成功/拒绝操作开始，订单id={}", id);
         EpOrderPo orderPo = orderRepository.findById(id);
+        //行锁班次记录，防止班次下线并发
+        EpOrganClassPo classPo = organClassRepository.getByIdAndStatusLock(orderPo.getClassId(), EpOrganClassStatus.online);
+        if (classPo == null) {
+            log.error("[订单]订单取消报名成功/拒绝操作失败，未获取到班次行级锁，订单id={},班次classId={}。", id, orderPo.getClassId());
+            return BizConstant.DB_NUM_ZERO;
+        }
         int count = orderRepository.orderCancelById(id, status);
         if (count > BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.success)) {
             // 班次成功报名人数扣减
@@ -409,6 +408,7 @@ public class OrderService {
             // 机构总参加人数扣减
             organRepository.totalParticipateCancel(orderPo.getOgnId(), count);
         }
+        return count;
     }
 
     /**
