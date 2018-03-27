@@ -287,7 +287,7 @@ public class ConstantTagController extends BackendController {
      * @return
      */
     @GetMapping("updateTag")
-    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex',)")
+    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex','platform:constantTag:constantIndex')")
     @ResponseBody
     public ResultDo updateTag(
             @RequestParam(value = "id") Long id,
