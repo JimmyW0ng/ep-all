@@ -23,6 +23,7 @@ public class EpOrganClassSchedulePo extends AbstractBasePojo {
     private Long orderId;
     private Timestamp startTime;
     private Integer duration;
+    private Integer catalogIndex;
     private EpOrganClassScheduleStatus status;
     private Long classCatalogId;
     private Timestamp createAt;

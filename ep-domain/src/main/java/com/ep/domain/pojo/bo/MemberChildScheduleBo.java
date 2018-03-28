@@ -16,6 +16,7 @@ public class MemberChildScheduleBo extends EpOrderPo {
 
     private String ognName;
     private String courseName;
+    private String className;
     private Integer courseNum;
     private Integer catalogIndex;
     private String label;

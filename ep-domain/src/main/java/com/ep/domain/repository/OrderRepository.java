@@ -9,6 +9,7 @@ import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -100,6 +101,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER.fields());
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_TYPE);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
         fieldList.add(EP_ORGAN_CLASS_CHILD.HONOR_NUM);
         fieldList.add(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM);
@@ -131,41 +133,43 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         // 封装条件
         Timestamp time = DateTools.zerolizedTime(DateTools.getCurrentDateTime());
         Condition condition = EP_ORDER.MEMBER_ID.eq(memberId)
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterOrEqual(time))
-                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false));
-        Long count = dslContext.selectCount()
-                .from(EP_ORDER)
-                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
-                .where(condition)
-                .fetchOneInto(Long.class);
+                                                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                                                .and(EP_ORDER.DEL_FLAG.eq(false))
+                                                .and(EP_ORGAN_CLASS_SCHEDULE.START_TIME.greaterOrEqual(time))
+                                                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait, EpOrganClassScheduleStatus.normal))
+                                                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false));
+        Long count = dslContext.select(DSL.count(EP_ORDER.ID))
+                               .from(EP_ORDER)
+                               .leftJoin(EP_ORGAN_CLASS_SCHEDULE).on(EP_ORDER.ID.eq(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID))
+                               .where(condition)
+                               .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
             return new PageImpl(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER.fields());
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
         fieldList.add(EP_ORGAN_CLASS.PHONE);
         fieldList.add(EP_ORGAN_CLASS.ADDRESS);
         fieldList.add(EP_ORGAN_CLASS.ADDRESS_LAT);
         fieldList.add(EP_ORGAN_CLASS.ADDRESS_LNG);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.START_TIME);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<MemberChildScheduleBo> data = dslContext.select(fieldList)
-                .from(EP_ORDER)
-                .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-                .leftJoin(EP_ORGAN_CLASS_CATALOG).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
-                .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
-                .where(condition)
-                .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc(), EP_ORDER.CHILD_ID.asc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetchInto(MemberChildScheduleBo.class);
+                                                     .from(EP_ORDER)
+                                                     .leftJoin(EP_ORGAN).on(EP_ORDER.OGN_ID.eq(EP_ORGAN.ID))
+                                                     .leftJoin(EP_ORGAN_COURSE).on(EP_ORDER.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                                                     .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                                                     .leftJoin(EP_ORGAN_CLASS_SCHEDULE).on(EP_ORDER.ID.eq(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID))
+                                                     .leftJoin(EP_CONSTANT_CATALOG).on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                                                     .where(condition)
+                                                     .orderBy(EP_ORGAN_CLASS_SCHEDULE.START_TIME.asc(), EP_ORDER.CHILD_ID.asc())
+                                                     .limit(pageable.getPageSize())
+                                                     .offset(pageable.getOffset())
+                                                     .fetchInto(MemberChildScheduleBo.class);
         return new PageImpl(data, pageable, count);
     }
 

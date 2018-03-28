@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 状态：正常；迟到；缺勤；调整；关闭
+ * 状态：等待；正常；迟到；缺勤；请假；关闭
  */
 @Generated(
         value = {
@@ -24,13 +24,15 @@ import javax.annotation.Generated;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpOrganClassScheduleStatus implements EnumType {
 
+    wait("wait"),
+
     normal("normal"),
 
     late("late"),
 
     absent("absent"),
 
-    adjust("adjust"),
+    leave("leave"),
 
     close("close");
 

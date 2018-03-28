@@ -39,8 +39,6 @@ public class OrderService {
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
-    private OrganClassCatalogRepository organClassCatalogRepository;
-    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private OrganRepository organRepository;
@@ -212,18 +210,10 @@ public class OrderService {
         Page<MemberChildClassBo> page = orderRepository.findChildClassPage(pageable, childId, statusEnum);
         if (CollectionsTools.isNotEmpty(page.getContent())) {
             for (MemberChildClassBo bo : page.getContent()) {
+                // 课程宣传图
                 Optional<EpFilePo> existPic = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, bo.getCourseId());
                 String mainPicUrl = existPic.isPresent() ? existPic.get().getFileUrl() : null;
                 bo.setMainPicUrl(mainPicUrl);
-                // 上课进度
-                if (bo.getStatus().equals(EpOrderStatus.opening)) {
-                    Optional<EpOrganClassCatalogPo> existCatalog = organClassCatalogRepository.getLastByClassId(bo.getClassId());
-                    bo.setLastCatalogIndex(existCatalog.isPresent() ? existCatalog.get().getCatalogIndex() : BizConstant.DB_NUM_ZERO);
-                } else if (bo.getStatus().equals(EpOrderStatus.end)) {
-                    bo.setLastCatalogIndex(bo.getCourseNum());
-                } else {
-                    bo.setLastCatalogIndex(BizConstant.DB_NUM_ZERO);
-                }
             }
         }
         return page;

@@ -1,6 +1,5 @@
 package com.ep.domain.repository;
 
-import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogBo;
@@ -17,7 +16,6 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -246,24 +244,6 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .where(EP_ORGAN_CLASS_CATALOG.ID.eq(id))
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .execute();
-    }
-
-    /**
-     * 获取班次最近上过的课时
-     *
-     * @param classId
-     * @return
-     */
-    public Optional<EpOrganClassCatalogPo> getLastByClassId(Long classId) {
-        Timestamp now = DateTools.getCurrentDateTime();
-        EpOrganClassCatalogPo classCatalogPo = dslContext.selectFrom(EP_ORGAN_CLASS_CATALOG)
-                                                         .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
-                                                         .and(EP_ORGAN_CLASS_CATALOG.START_TIME.lessThan(now))
-                                                         .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
-                                                         .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.desc())
-                                                         .limit(BizConstant.DB_NUM_ONE)
-                                                         .fetchOneInto(EpOrganClassCatalogPo.class);
-        return Optional.ofNullable(classCatalogPo);
     }
 
     /**

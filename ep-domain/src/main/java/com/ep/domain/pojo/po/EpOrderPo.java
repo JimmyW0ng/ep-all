@@ -48,7 +48,7 @@ public class EpOrderPo extends AbstractBasePojo {
         } else if (EpOrderStatus.success.equals(status)) {
             return "报名成功";
         } else if (EpOrderStatus.opening.equals(status)) {
-            return "学习中";
+            return "进行中";
         } else if (EpOrderStatus.end.equals(status)) {
             return "已结束";
         } else if (EpOrderStatus.cancel.equals(status)) {
