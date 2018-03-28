@@ -29,7 +29,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClassScheduleRecord> implements Record13<Long, Long, Long, Long, Timestamp, Integer, EpOrganClassScheduleStatus, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 70153644;
+    private static final long serialVersionUID = -723547778;
 
     /**
      * Create a detached EpOrganClassScheduleRecord
@@ -150,14 +150,14 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_schedule.status</code>. 状态：正常；迟到；缺勤；调整
+     * Getter for <code>ep.ep_organ_class_schedule.status</code>. 状态：正常；迟到；缺勤；调整；关闭
      */
     public EpOrganClassScheduleStatus getStatus() {
         return (EpOrganClassScheduleStatus) get(6);
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.status</code>. 状态：正常；迟到；缺勤；调整
+     * Setter for <code>ep.ep_organ_class_schedule.status</code>. 状态：正常；迟到；缺勤；调整；关闭
      */
     public EpOrganClassScheduleRecord setStatus(EpOrganClassScheduleStatus value) {
         set(6, value);

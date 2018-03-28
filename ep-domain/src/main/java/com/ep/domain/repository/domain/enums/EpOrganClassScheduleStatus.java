@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 状态：正常；迟到；缺勤；调整
+ * 状态：正常；迟到；缺勤；调整；关闭
  */
 @Generated(
         value = {
@@ -30,7 +30,9 @@ public enum EpOrganClassScheduleStatus implements EnumType {
 
     absent("absent"),
 
-    adjust("adjust");
+    adjust("adjust"),
+
+    close("close");
 
     private final String literal;
 

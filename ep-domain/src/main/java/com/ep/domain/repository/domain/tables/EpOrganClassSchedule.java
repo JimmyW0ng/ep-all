@@ -34,7 +34,7 @@ public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> 
      * The reference instance of <code>ep.ep_organ_class_schedule</code>
      */
     public static final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = new EpOrganClassSchedule();
-    private static final long serialVersionUID = -1963285296;
+    private static final long serialVersionUID = 1884990190;
     /**
      * The column <code>ep.ep_organ_class_schedule.id</code>. 主键
      */
@@ -60,9 +60,9 @@ public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> 
      */
     public final TableField<EpOrganClassScheduleRecord, Integer> DURATION = createField("duration", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "持续时长");
     /**
-     * The column <code>ep.ep_organ_class_schedule.status</code>. 状态：正常；迟到；缺勤；调整
+     * The column <code>ep.ep_organ_class_schedule.status</code>. 状态：正常；迟到；缺勤；调整；关闭
      */
-    public final TableField<EpOrganClassScheduleRecord, EpOrganClassScheduleStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus.class), this, "状态：正常；迟到；缺勤；调整");
+    public final TableField<EpOrganClassScheduleRecord, EpOrganClassScheduleStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus.class), this, "状态：正常；迟到；缺勤；调整；关闭");
     /**
      * The column <code>ep.ep_organ_class_schedule.class_catalog_id</code>. 班次课程内容目录id
      */
