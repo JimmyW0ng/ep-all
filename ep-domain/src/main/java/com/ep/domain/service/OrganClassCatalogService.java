@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
@@ -121,6 +122,11 @@ public class OrganClassCatalogService {
         if (classCatalogPo == null || classCatalogPo.getDelFlag()) {
             log.error("课时信息不存在, classCatalogId={}", classCatalogId);
             return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_NOT_EXISTS);
+        }
+        // 不允许在课时未开始的
+        if (DateTools.getCurrentDateTime().before(classCatalogPo.getStartTime())) {
+            log.error("课时未开始, classCatalogId={}", classCatalogId);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_NOT_START);
         }
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());

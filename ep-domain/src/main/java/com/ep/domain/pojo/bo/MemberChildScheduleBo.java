@@ -24,6 +24,10 @@ public class MemberChildScheduleBo extends EpOrderPo {
     private String mainPicUrl;
     private String nickName;
     private String avatar;
+    private String phone;
+    private String address;
+    private String addressLng;
+    private String addressLat;
 
     /**
      * 开课时间格式化

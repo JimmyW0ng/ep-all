@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Description:机构课程api控制类
+ * @Description: 机构课程api控制类
  * @Author: J.W
  * @Date: 下午7:04 2018/1/15
  */

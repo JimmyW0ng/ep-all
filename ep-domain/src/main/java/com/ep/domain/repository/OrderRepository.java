@@ -147,6 +147,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
+        fieldList.add(EP_ORGAN_CLASS.PHONE);
+        fieldList.add(EP_ORGAN_CLASS.ADDRESS);
+        fieldList.add(EP_ORGAN_CLASS.ADDRESS_LAT);
+        fieldList.add(EP_ORGAN_CLASS.ADDRESS_LNG);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX);
         fieldList.add(EP_ORGAN_CLASS_CATALOG.START_TIME);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
