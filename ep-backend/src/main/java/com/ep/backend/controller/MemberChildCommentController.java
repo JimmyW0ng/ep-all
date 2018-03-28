@@ -28,8 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
-import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD_COMMENT;
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description: 孩子评论控制器
@@ -84,7 +83,8 @@ public class MemberChildCommentController extends BackendController {
             }
             searchMap.put("childTrueName", childTrueName);
             conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch).or(EP_MEMBER_CHILD_COMMENT.TYPE.isNull()));
-            Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(courseId, classId, classCatalogId, pageable, conditions);
+            conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.eq(classCatalogId));
+            Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(courseId, pageable, conditions);
             model.addAttribute("page", page);
         }
 

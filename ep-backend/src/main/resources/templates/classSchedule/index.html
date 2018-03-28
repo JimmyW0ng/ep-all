@@ -85,8 +85,7 @@
                         <tr>
                             <th>昵称</th>
                             <th>姓名</th>
-                            <th>考勤</th>
-                            <th style="width:500px">评论内容</th>
+                            <th style="width:500px">内容</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -101,7 +100,6 @@
                             </form>
                             <td th:text="${bo.nickName}"></td>
                             <td th:text="${bo.childTrueName}"></td>
-                            <td th:text="#{EpOrganClassScheduleStatus.+${bo.scheduleStatus}}"></td>
 
                             <td name="content">
                                 <p th:if="${null!=bo.content}" th:text="'评论:'" style="color:cornflowerblue"></p>

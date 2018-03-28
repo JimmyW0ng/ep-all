@@ -139,6 +139,53 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         return count > BizConstant.DB_NUM_ZERO;
     }
 
+//    /**
+//     * 商户后台获取分页
+//     *
+//     * @param pageable
+//     * @param condition
+//     * @return
+//     */
+//    public Page<MemberChildCommentBo> findbyPageAndCondition(Long classId, Long classCatalogId, Pageable pageable, Collection<? extends Condition> condition) {
+//        EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
+//        long totalCount = dslContext.selectCount()
+//                .from(EP_ORGAN_CLASS_CHILD)
+//                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+//                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+//                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID).and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+//                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId).or(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.isNull())))
+//                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+//                .where(condition)
+//                .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
+//                .fetchOne(0, Long.class);
+//
+//        if (totalCount == BizConstant.DB_NUM_ZERO) {
+//            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+//        }
+//        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
+//        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.as("nickName"));
+//        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+//        fieldList.add(EP_ORGAN_CLASS_CHILD.CHILD_ID.as("classChildId"));
+//        fieldList.add(memberChildCommentCopy.ID.as("replyId"));
+//        fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
+//        SelectConditionStep<Record> record = dslContext.select(fieldList)
+//                .from(EP_ORGAN_CLASS_CHILD)
+//                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+//                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+//                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID).and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
+//                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId).or(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.isNull())))
+//                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+//                .where(condition)
+//                .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId));
+//
+//        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_CLASS_CHILD.ID.asc())
+//                .limit(pageable.getPageSize())
+//                .offset(pageable.getOffset())
+//                .fetchInto(MemberChildCommentBo.class);
+//        PageImpl<MemberChildCommentBo> pPage = new PageImpl<MemberChildCommentBo>(list, pageable, totalCount);
+//        return pPage;
+//    }
+
     /**
      * 商户后台获取分页
      *
@@ -146,43 +193,43 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      * @param condition
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Long classId, Long classCatalogId, Pageable pageable, Collection<? extends Condition> condition) {
-
+    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
-
-
         long totalCount = dslContext.selectCount()
-                .from(EP_ORGAN_CLASS_CHILD)
-                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                .from(EP_ORGAN_CLASS_SCHEDULE)
                 .leftJoin(EP_MEMBER_CHILD_COMMENT)
-                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID).and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
-                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId).or(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.isNull())))
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID)))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
                 .where(condition)
-                .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
                 .fetchOne(0, Long.class);
-
 
         if (totalCount == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }
-        List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.fields());
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS.as("scheduleStatus"));
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.as("nickName"));
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
-        fieldList.add(EP_ORGAN_CLASS_CHILD.CHILD_ID.as("classChildId"));
+
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
         SelectConditionStep<Record> record = dslContext.select(fieldList)
-                .from(EP_ORGAN_CLASS_CHILD)
-                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                .from(EP_ORGAN_CLASS_SCHEDULE)
                 .leftJoin(EP_MEMBER_CHILD_COMMENT)
-                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID).and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(EP_MEMBER_CHILD_COMMENT.CLASS_ID))
-                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId).or(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.isNull())))
-                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
-                .where(condition)
-                .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId));
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID)))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
 
-        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_CLASS_CHILD.ID.asc())
+                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+                .where(condition);
+
+        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_CLASS_SCHEDULE.ID.asc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(MemberChildCommentBo.class);
