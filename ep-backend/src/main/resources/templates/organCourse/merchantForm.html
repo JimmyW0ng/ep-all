@@ -153,7 +153,7 @@
                         <label class="course-label">设置图片（<span class="required-sign">必需</span>)</label>
                     </div>
                     <div class="ibox-content">
-                        <div class="row">
+                        <div class="row" style="position:relative">
                             <div class="form-group">
                                 <label class="col-sm-2">宣传图
                                     <soan class="required-sign">*</soan>
@@ -165,12 +165,12 @@
                                 <input style="display:none" id="mainpic_img" type="file"
                                        onchange="uploadMainpicImg($('#mainpic_img_btn'),this)"/>
                             </div>
-                            <div class="col-sm-offset-2 course-mainpic-box">
+                            <div class="col-sm-offset-2 course-mainpic-box" style="display:inline-block;">
                                 <img id="mainpic_img_url" class="course-mainpic-img-url" th:src="${mainpicImgUrl}"/>
                                 <input type="hidden" name="mainpic_url" id="mainpic_url" class="required">
                                 <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
-
+                            <div style="display:inline-block;width:120px;position:absolute;bottom:0;">推荐尺寸188*335</div>
                         </div>
                     </div>
                 </div>
@@ -281,10 +281,10 @@
                             <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
                                    value="${classPrize}">
                         </div>
-                        <div class="form-group">
-                            <label>折扣优惠(元) <span class="required-sign">*</span></label>
-                            <input name="discountAmount" jprop="discountAmount" type="text"
-                                   class=" form-control number-input"
+                        <div class="form-group discountAmount">
+                            <label><input type="checkbox" class="isDiscount">折扣优惠(元) </label>
+                            <input name="discountAmount" jprop="discountAmount" type="text" readonly="true"
+                                   class=" form-control"
                                    value="${discountAmount}">
                         </div>
 
@@ -500,7 +500,7 @@
             href: "#collapse" + (len + 1),
             collapse: "collapse" + (len + 1),
             className: "班次",
-            discountAmount: 0,
+            discountAmount: "",
             classPrize: 0,
             phone: $("#ognPhone").val(),
             addressLng: $("#ognLng").val(),
@@ -528,10 +528,20 @@
                 $enterRequireNum.removeAttr("readonly").attr("required", true)
             }
         })
-
+        //数字框去尾部0绑定
         $("#accordion").find(".organClassBos:last").find("input.digit").on("blur", function () {
             $(this).val(parseFloat($(this).val()))
         })
+        //优惠价格勾选绑定
+        $("#accordion").find(".organClassBos:last").find(".isDiscount").eq(0).on("click", function () {
+            var isDiscount = $(this).is(":checked")
+            if (isDiscount) {
+                $(this).parents(".discountAmount").eq(0).find("input[name='discountAmount']").attr("readonly", false).attr("required", true)
+            } else {
+                $(this).parents(".discountAmount").eq(0).find("input[name='discountAmount']").val("").attr("readonly", true).attr("required", false)
+            }
+        })
+
     }
     function classBoxDynamicInitAll() {
         //是否限制报名人数 框绑定事件
@@ -546,6 +556,24 @@
 
         $("#accordion").find(".organClassBos").find("input.digit").on("blur", function () {
             $(this).val(parseFloat($(this).val()))
+        })
+
+        //优惠价格勾选
+        $(".organClassBos").find("input[name='discountAmount']").each(function () {
+            if ($(this).val()) {
+                $(this).parents(".discountAmount").eq(0).find(".isDiscount").eq(0).attr("checked", true)
+                $(this).attr("readonly", false).attr("required", true)
+            } else {
+                $(this).val("").attr("readonly", true).attr("required", false)
+            }
+        })
+        $(".organClassBos").find(".isDiscount").eq(0).on("click", function () {
+            var isDiscount = $(this).is(":checked")
+            if (isDiscount) {
+                $(this).parents(".discountAmount").eq(0).find("input[name='discountAmount']").attr("readonly", false).attr("required", true)
+            } else {
+                $(this).parents(".discountAmount").eq(0).find("input[name='discountAmount']").val("").attr("readonly", true).attr("required", false)
+            }
         })
     }
     /*删除班次

@@ -266,7 +266,7 @@
         </div>
         <div id=${collapse} class="panel-collapse collapse in">
             <div class="panel-body ">
-                <div name="organClassBos" class="form-group col-sm-4">
+                <div name="organClassBos" class="form-group col-sm-4 organClassBos">
                     <input name="id" type="hidden" value="${id}">
                     <label>班次名称 <span class="required-sign">*</span></label>
                     <input name="className" type="text" class=" form-control " value="${className}" required="true"
@@ -279,9 +279,13 @@
                     <label>价格(元) <span class="required-sign">*</span></label>
                     <input name="classPrize" type="text" class=" form-control number-input" value="${classPrize}"
                            disabled="true">
-                    <label>折扣优惠(元) <span class="required-sign">*</span></label>
-                    <input name="discountAmount" type="text" class=" form-control number-input" readonly="true"
-                           value="${discountAmount}">
+                    <div class="form-group discountAmount">
+                        <label><input type="checkbox" class="isDiscount">折扣优惠(元) </label>
+                        <input name="discountAmount" jprop="discountAmount" type="text" readonly="true"
+                               class=" form-control"
+                               value="${discountAmount}">
+                    </div>
+
                     <label>是否限制报名人数 <span class="required-sign">*</span></label>
                     <select name="enterLimitFlag" type="text" class=" form-control " value="${enterLimitFlag}"
                             disabled="true">
@@ -412,6 +416,17 @@
             }
         }
     }
+
+    function classBoxDynamicInitAll() {
+        //优惠价格勾选
+        $(".organClassBos").find("input[name='discountAmount']").each(function () {
+            if ($(this).val()) {
+                $(this).parents(".discountAmount").eq(0).find(".isDiscount").eq(0).attr("checked", true)
+            }
+            $(this).parents(".discountAmount").eq(0).find(".isDiscount").eq(0).attr("disabled", true)
+        })
+    }
+    
     /*紧急修改初始化，班次目录部分初始化*/
     function initOrganClassCatalogPos() {
         $("div[name='organClassCatalogPos']").each(function () {
@@ -435,22 +450,14 @@
         if (!$("#enterTimeEnd").val()) {
             $("#enterTimeEnd").attr("name", "")
         }
-//        $("#accordion").find("input.endTime").each(function () {
-//            if (!$(this).val()) {
-//                $(this).attr("name", "")
-//            }
-//        })
+
     }
 
     function resetFrmDateInputName() {
         if (!$("#enterTimeEnd").attr("name")) {
             $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
         }
-//        $("#accordion").find("input.endTime").each(function () {
-//            if (!$(this).attr("name")) {
-//                $(this).attr("name", "endTime")
-//            }
-//        })
+
     }
 
     /*校验产品内容的图片*/
@@ -626,7 +633,7 @@
                     $enterRequireNum.attr("readonly", true)
                 }
             })
-
+            classBoxDynamicInitAll()
             initOrganClassCatalogPos()
 
             //班次end

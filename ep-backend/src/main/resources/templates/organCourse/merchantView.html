@@ -187,7 +187,7 @@
                                             <label>价格(元) <span class="required-sign">*</span></label>
                                             <input name="classPrize" type="text" class=" form-control "
                                                    th:value="${po.classPrize}">
-                                            <label>折扣优惠(元) <span class="required-sign">*</span></label>
+                                            <label><input type="checkbox" th:checked="${po.discountAmount!=null}">折扣优惠(元)</label>
                                             <input name="discountAmount" type="text" class=" form-control "
                                                    th:value="${po.discountAmount}">
                                             <label>是否限制报名人数 <span class="required-sign">*</span></label>
