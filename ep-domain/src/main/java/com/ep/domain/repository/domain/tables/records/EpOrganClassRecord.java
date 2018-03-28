@@ -5,6 +5,7 @@ package com.ep.domain.repository.domain.tables.records;
 
 
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.tables.EpOrganClass;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -27,7 +28,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = 2560045;
+    private static final long serialVersionUID = -2090892035;
 
     /**
      * Create a detached EpOrganClassRecord
@@ -39,32 +40,33 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     /**
      * Create a detached, initialised EpOrganClassRecord
      */
-    public EpOrganClassRecord(Long id, Long ognId, Long courseId, String className, String phone, String address, String addressLng, String addressLat, Long ognAccountId, BigDecimal classPrize, BigDecimal discountAmount, Boolean enterLimitFlag, Integer enterRequireNum, Integer orderedNum, Integer enteredNum, Integer courseNum, Long sort, EpOrganClassStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+    public EpOrganClassRecord(Long id, Long ognId, Long courseId, String className, EpOrganClassType type, String phone, String address, String addressLng, String addressLat, Long ognAccountId, BigDecimal classPrize, BigDecimal discountAmount, Boolean enterLimitFlag, Integer enterRequireNum, Integer orderedNum, Integer enteredNum, Integer courseNum, Long sort, EpOrganClassStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
         super(EpOrganClass.EP_ORGAN_CLASS);
 
         set(0, id);
         set(1, ognId);
         set(2, courseId);
         set(3, className);
-        set(4, phone);
-        set(5, address);
-        set(6, addressLng);
-        set(7, addressLat);
-        set(8, ognAccountId);
-        set(9, classPrize);
-        set(10, discountAmount);
-        set(11, enterLimitFlag);
-        set(12, enterRequireNum);
-        set(13, orderedNum);
-        set(14, enteredNum);
-        set(15, courseNum);
-        set(16, sort);
-        set(17, status);
-        set(18, remark);
-        set(19, createAt);
-        set(20, updateAt);
-        set(21, delFlag);
-        set(22, version);
+        set(4, type);
+        set(5, phone);
+        set(6, address);
+        set(7, addressLng);
+        set(8, addressLat);
+        set(9, ognAccountId);
+        set(10, classPrize);
+        set(11, discountAmount);
+        set(12, enterLimitFlag);
+        set(13, enterRequireNum);
+        set(14, orderedNum);
+        set(15, enteredNum);
+        set(16, courseNum);
+        set(17, sort);
+        set(18, status);
+        set(19, remark);
+        set(20, createAt);
+        set(21, updateAt);
+        set(22, delFlag);
+        set(23, version);
     }
 
     /**
@@ -128,17 +130,32 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_organ_class.type</code>. 类型：正常；预约；
+     */
+    public EpOrganClassType getType() {
+        return (EpOrganClassType) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class.type</code>. 类型：正常；预约；
+     */
+    public EpOrganClassRecord setType(EpOrganClassType value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_organ_class.phone</code>. 联系电话
      */
     public String getPhone() {
-        return (String) get(4);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.phone</code>. 联系电话
      */
     public EpOrganClassRecord setPhone(String value) {
-        set(4, value);
+        set(5, value);
         return this;
     }
 
@@ -146,14 +163,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.address</code>. 地址
      */
     public String getAddress() {
-        return (String) get(5);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.address</code>. 地址
      */
     public EpOrganClassRecord setAddress(String value) {
-        set(5, value);
+        set(6, value);
         return this;
     }
 
@@ -161,14 +178,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.address_lng</code>. 地址经度
      */
     public String getAddressLng() {
-        return (String) get(6);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.address_lng</code>. 地址经度
      */
     public EpOrganClassRecord setAddressLng(String value) {
-        set(6, value);
+        set(7, value);
         return this;
     }
 
@@ -176,14 +193,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.address_lat</code>. 地址纬度
      */
     public String getAddressLat() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.address_lat</code>. 地址纬度
      */
     public EpOrganClassRecord setAddressLat(String value) {
-        set(7, value);
+        set(8, value);
         return this;
     }
 
@@ -191,14 +208,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
      */
     public Long getOgnAccountId() {
-        return (Long) get(8);
+        return (Long) get(9);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.ogn_account_id</code>. 课程负责人账户id
      */
     public EpOrganClassRecord setOgnAccountId(Long value) {
-        set(8, value);
+        set(9, value);
         return this;
     }
 
@@ -206,14 +223,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.class_prize</code>. 价格
      */
     public BigDecimal getClassPrize() {
-        return (BigDecimal) get(9);
+        return (BigDecimal) get(10);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.class_prize</code>. 价格
      */
     public EpOrganClassRecord setClassPrize(BigDecimal value) {
-        set(9, value);
+        set(10, value);
         return this;
     }
 
@@ -221,14 +238,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.discount_amount</code>. 优惠价
      */
     public BigDecimal getDiscountAmount() {
-        return (BigDecimal) get(10);
+        return (BigDecimal) get(11);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.discount_amount</code>. 优惠价
      */
     public EpOrganClassRecord setDiscountAmount(BigDecimal value) {
-        set(10, value);
+        set(11, value);
         return this;
     }
 
@@ -236,14 +253,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
      */
     public Boolean getEnterLimitFlag() {
-        return (Boolean) get(11);
+        return (Boolean) get(12);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.enter_limit_flag</code>. 是否限制报名人数
      */
     public EpOrganClassRecord setEnterLimitFlag(Boolean value) {
-        set(11, value);
+        set(12, value);
         return this;
     }
 
@@ -251,14 +268,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
      */
     public Integer getEnterRequireNum() {
-        return (Integer) get(12);
+        return (Integer) get(13);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.enter_require_num</code>. 要求报名人数
      */
     public EpOrganClassRecord setEnterRequireNum(Integer value) {
-        set(12, value);
+        set(13, value);
         return this;
     }
 
@@ -266,14 +283,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
     public Integer getOrderedNum() {
-        return (Integer) get(13);
+        return (Integer) get(14);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.ordered_num</code>. 下单人数
      */
     public EpOrganClassRecord setOrderedNum(Integer value) {
-        set(13, value);
+        set(14, value);
         return this;
     }
 
@@ -281,14 +298,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
      */
     public Integer getEnteredNum() {
-        return (Integer) get(14);
+        return (Integer) get(15);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.entered_num</code>. 已报名成功人数
      */
     public EpOrganClassRecord setEnteredNum(Integer value) {
-        set(14, value);
+        set(15, value);
         return this;
     }
 
@@ -296,14 +313,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
     public Integer getCourseNum() {
-        return (Integer) get(15);
+        return (Integer) get(16);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.course_num</code>. 总计课时
      */
     public EpOrganClassRecord setCourseNum(Integer value) {
-        set(15, value);
+        set(16, value);
         return this;
     }
 
@@ -311,14 +328,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.sort</code>. 排序
      */
     public Long getSort() {
-        return (Long) get(16);
+        return (Long) get(17);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.sort</code>. 排序
      */
     public EpOrganClassRecord setSort(Long value) {
-        set(16, value);
+        set(17, value);
         return this;
     }
 
@@ -326,14 +343,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.status</code>. 状态：已保存；已上线；进行中；已下线；
      */
     public EpOrganClassStatus getStatus() {
-        return (EpOrganClassStatus) get(17);
+        return (EpOrganClassStatus) get(18);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.status</code>. 状态：已保存；已上线；进行中；已下线；
      */
     public EpOrganClassRecord setStatus(EpOrganClassStatus value) {
-        set(17, value);
+        set(18, value);
         return this;
     }
 
@@ -341,14 +358,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.remark</code>. 备注信息
      */
     public String getRemark() {
-        return (String) get(18);
+        return (String) get(19);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.remark</code>. 备注信息
      */
     public EpOrganClassRecord setRemark(String value) {
-        set(18, value);
+        set(19, value);
         return this;
     }
 
@@ -356,14 +373,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
-        return (Timestamp) get(19);
+        return (Timestamp) get(20);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.create_at</code>. 创建时间
      */
     public EpOrganClassRecord setCreateAt(Timestamp value) {
-        set(19, value);
+        set(20, value);
         return this;
     }
 
@@ -371,14 +388,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
-        return (Timestamp) get(20);
+        return (Timestamp) get(21);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.update_at</code>. 更新时间
      */
     public EpOrganClassRecord setUpdateAt(Timestamp value) {
-        set(20, value);
+        set(21, value);
         return this;
     }
 
@@ -386,14 +403,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
      */
     public Boolean getDelFlag() {
-        return (Boolean) get(21);
+        return (Boolean) get(22);
     }
 
     /**
      * Setter for <code>ep.ep_organ_class.del_flag</code>. 删除标志
      */
     public EpOrganClassRecord setDelFlag(Boolean value) {
-        set(21, value);
+        set(22, value);
         return this;
     }
 
@@ -405,7 +422,7 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Getter for <code>ep.ep_organ_class.version</code>.
      */
     public Long getVersion() {
-        return (Long) get(22);
+        return (Long) get(23);
     }
 
     // -------------------------------------------------------------------------
@@ -416,7 +433,7 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
      * Setter for <code>ep.ep_organ_class.version</code>.
      */
     public EpOrganClassRecord setVersion(Long value) {
-        set(22, value);
+        set(23, value);
         return this;
     }
 

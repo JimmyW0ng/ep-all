@@ -6,6 +6,7 @@ package com.ep.domain.pojo.po;
 
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class EpOrganClassPo extends AbstractBasePojo {
     private Long ognId;
     private Long courseId;
     private String className;
+    private EpOrganClassType type;
     private String phone;
     private String address;
     private String addressLng;

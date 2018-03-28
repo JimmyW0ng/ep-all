@@ -7,6 +7,7 @@ package com.ep.domain.repository.domain.tables;
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
 import org.jooq.*;
 import org.jooq.impl.TableImpl;
@@ -35,7 +36,7 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The reference instance of <code>ep.ep_organ_class</code>
      */
     public static final EpOrganClass EP_ORGAN_CLASS = new EpOrganClass();
-    private static final long serialVersionUID = 667514682;
+    private static final long serialVersionUID = -860089030;
     /**
      * The column <code>ep.ep_organ_class.id</code>. 主键
      */
@@ -52,6 +53,10 @@ public class EpOrganClass extends TableImpl<EpOrganClassRecord> {
      * The column <code>ep.ep_organ_class.class_name</code>. 班次名称
      */
     public final TableField<EpOrganClassRecord, String> CLASS_NAME = createField("class_name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "班次名称");
+    /**
+     * The column <code>ep.ep_organ_class.type</code>. 类型：正常；预约；
+     */
+    public final TableField<EpOrganClassRecord, EpOrganClassType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassType.class), this, "类型：正常；预约；");
     /**
      * The column <code>ep.ep_organ_class.phone</code>. 联系电话
      */
