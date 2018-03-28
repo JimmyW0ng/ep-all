@@ -145,9 +145,10 @@ public class SystemOrganController extends BackendController {
     @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
-        return
-                organService.createSystemOrgan(bo);
+        System.out.println(bo);
+        return organService.createSystemOrgan(bo);
     }
+
 
     /**
      * 修改机构

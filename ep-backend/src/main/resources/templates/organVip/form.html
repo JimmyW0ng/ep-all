@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><span class="required-sign">*</span>入会费用（元）</label>
                     <div class="col-sm-3">
-                        <input id="prize" name="prize" type="number" class="form-control" required="true"
+                        <input id="prize" name="prize" class="form-control" required="true"
                                th:field="*{prize}"
                                aria-required="true">
                         </input>
@@ -124,7 +124,7 @@
             },
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null, '/auth/organAccount/index')
+                    toastr_success(null, document.referrer)
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -148,12 +148,12 @@
         }, "请填写正确的手机号码!");
         $("#frm").validate({
             rules: {
+                prize: {number: true, min: 0},
                 mobile: {isMobile: true}
             },
             messages: {
                 mobile: "请填写正确的手机号码!"
             },
-
         })
 
     })

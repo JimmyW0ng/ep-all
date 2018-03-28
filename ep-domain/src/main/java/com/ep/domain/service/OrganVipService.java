@@ -36,11 +36,4 @@ public class OrganVipService {
         return organVipRepository.findbyPageAndCondition(pageable, condition);
     }
 
-//    public ResultDo createOgnVip(OrganVipBo bo){
-//        System.out.println(bo);
-//        memberRepository.findByPageable()
-//        EpOrganVipPo po = new EpOrganVipPo();
-//        po.set
-//
-//    }
 }

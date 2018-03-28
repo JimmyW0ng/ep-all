@@ -101,7 +101,6 @@ public class SystemRoleController extends BackendController {
     @GetMapping("view/{id}")
     @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String read(Model model, @PathVariable("id") Long id) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
         Optional<EpSystemRolePo> systemRolePoOptional = systemRoleService.findById(id);
         if (systemRolePoOptional.isPresent()) {
             model.addAttribute("systemRolePo", systemRolePoOptional.get());
@@ -125,7 +124,6 @@ public class SystemRoleController extends BackendController {
     @GetMapping("createInit")
     @PreAuthorize("hasAnyAuthority('platform:role:index')")
     public String createInit(Model model) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
         model.addAttribute("systemRolePo", new EpSystemRolePo());
         //所有菜单,默认商户菜单
         List<EpSystemMenuPo> menuList = systemMenuService.getAllByRoleTarget(EpSystemRoleTarget.backend);

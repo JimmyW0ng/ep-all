@@ -1,9 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
-import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganVipBo;
-import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.OrganVipService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -15,7 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -71,29 +71,6 @@ public class OrganVipController extends BackendController {
         return "organVip/index";
     }
 
-    /**
-     * 新增初始化
-     *
-     * @return
-     */
-    @GetMapping("/createInit")
-    public String createInit(Model model) {
 
-        model.addAttribute("organVipBo", new OrganVipBo());
-        return "organVip/form";
-    }
 
-    /**
-     * 新增
-     *
-     * @return
-     */
-    @PostMapping("/create")
-    @ResponseBody
-    public ResultDo create(OrganVipBo bo) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        bo.setOgnId(currentUser.getOgnId());
-//        return organVipService.createOgnVip(bo);
-        return ResultDo.build();
-    }
 }

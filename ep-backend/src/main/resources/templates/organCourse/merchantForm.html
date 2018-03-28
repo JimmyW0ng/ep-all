@@ -259,7 +259,7 @@
         </div>
         <div id=${collapse} class="panel-collapse collapse in">
             <div class="panel-body ">
-                <div name="organClassBos" class=" organClassBos">
+                <div name="organClassBos" class="organClassBos">
                     <div class="col-sm-4">
                         <input name="id" type="hidden" value="${id}">
                         <div class="form-group">
@@ -270,10 +270,17 @@
                                    onblur="setClassBoxTitle(this)">
                         </div>
                         <div class="form-group">
+                            <label>类型 <span class="required-sign">*</span></label>
+                            <select name="type" jprop="type" type="text" class="form-control classType" value="${type}"
+                                    required="true">
+                                <option value="normal">正常</option>
+                                <option value="bespeak">预约</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>产品负责人 <span class="required-sign">*</span></label>
                             <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control "
                                     required="true">
-
                             </select>
                         </div>
                         <div class="form-group">
@@ -287,7 +294,6 @@
                                    class=" form-control"
                                    value="${discountAmount}">
                         </div>
-
                         <div class="form-group">
                             <label>是否限制报名人数 <span class="required-sign">*</span></label>
                             <select name="enterLimitFlag" jprop="enterLimitFlag" type="text" class=" form-control "
@@ -296,40 +302,34 @@
                                 <option value=true>是</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label>要求报名人数 </label>
                             <input name="enterRequireNum" jprop="enterRequireNum" type="text" class="form-control"
                                    value="${enterRequireNum}"
                                    readonly="true">
                         </div>
-
                         <div class="form-group">
                             <label>联系电话 <span class="required-sign">*</span></label>
                             <input name="phone" jprop="phone" type="text" class="form-control" required="true"
                                    value="${phone}">
                         </div>
-
                         <div class="form-group">
                             <label>上课地址 <span class="required-sign">*</span></label>
                             <input name="address" jprop="address" type="text" class="form-control" required="true"
                                    value="${address}">
                         </div>
-
                         <div class="form-group">
                             <label>经度 <span class="required-sign">*</span></label>
                             <input name="addressLng" jprop="addressLng" type="text" class="form-control digit"
                                    required="true"
                                    value="${addressLng}">
                         </div>
-
                         <div class="form-group">
                             <label>纬度 <span class="required-sign">*</span></label>
                             <input name="addressLat" jprop="addressLat" type="text" class="form-control digit"
                                    required="true"
                                    value="${addressLat}">
                         </div>
-
                         <div class="form-group">
                             <label>总计课时 <span class="required-sign">*</span></label>
                             <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
@@ -341,18 +341,13 @@
                         <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
                                 class="glyphicon glyphicon-plus"></i> 添加课时</a>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
 </script>
 
 <script th:replace="~{fragments/scripts}"></script>
-<!--<script th:src="@{/js/plugins/staps/jquery.steps.min.js}"></script>-->
-
-<!--<script th:src="@{/wangeditor/wangEditor.js}"></script>-->
 <script th:src="@{/umeditor/umeditor.config.js}"></script>
 <script th:src="@{/umeditor/umeditor.js}"></script>
 <script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>
@@ -363,9 +358,7 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
-
     var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic",});
-
 
     //wangEditor富文本
     //    var E = window.wangEditor
@@ -374,8 +367,7 @@
     //教师map
     var organAccountMap = [[${organAccountMap}]]
 
-    /* 上传宣传图
-     */
+    /* 上传宣传图 */
     function uploadMainpicImg($btn, ele) {
         $btn.attr("disabled", true)
 
@@ -404,6 +396,8 @@
             }
         })
     }
+
+    /*向前插入课时*/
     function insertbeforeClassCatalogBox(ele) {
         $(ele).parents(".organClassCatalogPos").eq(0).before($("#classCatalogTmpl").tmpl([{
             catalogTitle: "课时",
@@ -419,10 +413,7 @@
         })
     }
 
-
-
-    /* 新增班次课时目录
-     */
+    /* 向后新增班次课时目录*/
     function addClassCatalogBox(ele) {
         var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
         var $box = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0)
@@ -434,7 +425,6 @@
         $box.find(".organClassCatalogPos:last").find(".laydateer").each(function () {
             laydate.render({
                 type: 'datetime',
-
                 elem: this,
                 trigger: 'click'
             });
@@ -442,8 +432,7 @@
 
     }
 
-    /* 删除课时
-     */
+    /* 删除课时*/
     function removeClassCatalogBox(ele) {
         var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
         var $box = $(ele).parents(".organClassBos").eq(0)
@@ -491,8 +480,7 @@
             }
         }
     }
-    /* 增加班次
-     */
+    /* 增加班次*/
     function createClassBox() {
         var len = $("#accordion").find("div[name='organClassBosBox']").length
 
@@ -516,8 +504,11 @@
         bindNumberInput($("#accordion"))
 
         classBoxDynamicInitLast()
+        bindChangeClassTypeEvent($("#accordion").find("div.organClassBos:last"))
+
     }
 
+    /* 增加班次时其下字段的绑定事件*/
     function classBoxDynamicInitLast() {
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
@@ -543,6 +534,7 @@
         })
 
     }
+    /* 班次初始化时其下字段的绑定事件*/
     function classBoxDynamicInitAll() {
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']").on("change", function () {
@@ -576,17 +568,47 @@
             }
         })
     }
-    /*删除班次
-     */
+    /*删除班次*/
     function removeClassBox(ele) {
         $(ele).parents("div[name='organClassBosBox']").remove();
     }
-    /* 设置班次名称
-     */
+    /* 设置班次名称*/
     function setClassBoxTitle(ele) {
         $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
     }
-
+    /*班次类型绑定事件*/
+    function bindChangeClassTypeEvent($box) {
+        if ($box != undefined) {
+            $box.on("change", "select.classType", function () {
+                var type = $(this).val()
+                var $div = $(this).parents("div.organClassBos").eq(0)
+                if (type == "normal") {
+                    $div.find("div[name='organClassCatalogPosBox']").show();
+                    $div.find("input[name='courseNum']").eq(0).val("").attr("readonly", true).attr("required", false)
+                } else if (type == "bespeak") {
+                    $div.find("div[name='organClassCatalogPosBox']").hide();
+                    $div.find("input[name='courseNum']").attr("readonly", false).attr("required", true)
+                    $div.find("div.organClassCatalogPos").remove()
+                }
+            })
+        }
+    }
+    /*班次类型初始化事件*/
+    function initChangeClassTypeEvent($box) {
+        if ($box != undefined) {
+            $box.each(function () {
+                var type = $(this).find("select.classType").eq(0).val()
+                var $div = $(this)
+                if (type == "normal") {
+                    $div.find("div[name='organClassCatalogPosBox']").show();
+                    $div.find("input[name='courseNum']").eq(0).attr("readonly", true).attr("required", false)
+                } else if (type == "bespeak") {
+                    $div.find("div[name='organClassCatalogPosBox']").hide();
+                    $div.find("input[name='courseNum']").attr("readonly", false).attr("required", true)
+                }
+            })
+        }
+    }
     function beforeValidAbledOrganClassCatalogPos() {
         $("div[name='organClassCatalogPos']").find("input[name='startTime']").each(function () {
             $(this).attr("disabled", false);
@@ -648,11 +670,6 @@
         if (!$("#enterTimeEnd").attr("name")) {
             $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
         }
-//        $("#accordion").find("input.endTime").each(function () {
-//            if (!$(this).attr("name")) {
-//                $(this).attr("name", "endTime")
-//            }
-//        })
     }
 
     function beforeSubmitCheckCourseDescPic() {
@@ -665,12 +682,14 @@
             $preCodes.append(htmls)
         }
     }
-
+    /*提交前正常班次下课时不为0*/
     function beforeSubmitClassRequiredCatalog() {
         var flag = true
         var $box = $("div[name='organClassCatalogPosBox']")
         for (var i = 0; i < $box.length; i++) {
-            if ($box.eq(i).find("div.organClassCatalogPos").length == 0) {
+            var $div = $box.parents("div.organClassBos").eq(0)
+            var classType = $div.find(".classType").eq(0).val()
+            if ($box.eq(i).find("div.organClassCatalogPos").length == 0 && classType == "normal") {
                 flag = false
             }
             if (!flag) {
@@ -699,6 +718,7 @@
 
     function frmSubmit() {
         beforeValidAbledOrganClassCatalogPos()
+
 
         if (!$("#frm").valid()) {
             console.log("valid fail")
@@ -777,7 +797,9 @@
                     discountAmount: organClassBos[i].discountAmount, enterLimitFlag: organClassBos[i].enterLimitFlag,
                     enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum,
                     vipFlag: organClassBos[i].vipFlag, phone: organClassBos[i].phone, address: organClassBos[i].address,
-                    addressLng: organClassBos[i].addressLng, addressLat: organClassBos[i].addressLat,
+                    addressLng: organClassBos[i].addressLng,
+                    addressLat: organClassBos[i].addressLat,
+                    type: organClassBos[i].type
                 }]
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 
@@ -817,6 +839,10 @@
                 var val = $(this).attr("value")
                 $(this).val(val)
             })
+            $("#accordion").find("select[name='type']").each(function () {
+                var val = $(this).attr("value")
+                $(this).val(val)
+            })
 
             $("#accordion").find("div[id^='collapse']").removeClass("in");//选项卡折叠
             $("#accordion").find("select[name='enterLimitFlag']").each(function () {
@@ -827,7 +853,8 @@
             })
 
             classBoxDynamicInitAll()
-
+            initChangeClassTypeEvent($("div.organClassBos"))
+            bindChangeClassTypeEvent($("div.organClassBos"))
             //班次end
             if ([[${supportTag}]]) {
                 //公用标签start
@@ -919,7 +946,29 @@
             var decimalLen6 = /^\d+(\.\d{0,6})?$/
             return this.optional(element) || decimalLen6.test(value);
         }, "小数位数为1-6位!");
-
+        $("#frm").validate({
+            rules: {
+                duration: {digits: true},
+                addressLng: {number: true, max: 180, min: -180, decimalLen6: true},
+                addressLat: {number: true, max: 90, min: -90, decimalLen6: true},
+                classPrize: {number: true, min: 0},
+                discountAmount: {number: true, min: 0},
+            },
+            messages: {
+                addressLng: {
+                    number: "经度为-180到180的数字!",
+                    max: "经度为-180到180的数字!",
+                    min: "经度为-180到180的数字!",
+                    decimalLen6: "小数位数为1-6位!"
+                },
+                addressLat: {
+                    number: "纬度为-90到90的数字!",
+                    max: "纬度为-90到90的数字!",
+                    min: "纬度为-90到90的数字!",
+                    decimalLen6: "小数位数为1-6位!"
+                }
+            },
+        })
 
     });
 

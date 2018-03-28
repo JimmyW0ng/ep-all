@@ -97,7 +97,7 @@ public class BeanTools {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static void BeanStringPropertyNullValue(Object src) throws IllegalAccessException, InvocationTargetException {
+    public static void beanStringPropertyNullValue(Object src) throws IllegalAccessException, InvocationTargetException {
         Field[] srcfields = src.getClass().getDeclaredFields();
         for (int i = 0; i < srcfields.length; i++) {
             Field field = srcfields[i];

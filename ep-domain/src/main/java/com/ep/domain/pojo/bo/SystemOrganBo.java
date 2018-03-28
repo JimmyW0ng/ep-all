@@ -4,12 +4,14 @@ import com.ep.domain.pojo.po.EpOrganPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @Description:
  * @Author: CC.F
  * @Date: 15:28 2018/2/1
  */
+@ToString(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -237,11 +237,8 @@
 
                     $("#status").val(menu.status)
                     $("#remark").val(menu.remark)
-
                 }
-
             }
-
         })
     }
     /**
@@ -293,11 +290,8 @@
 
                     $("#status").val(menu.status)
                     $("#remark").val(menu.remark)
-
                 }
-
             }
-
         })
     }
 
@@ -314,15 +308,7 @@
                 ids.push(nodes[i].id)
             }
         }
-        parent.layer.alert('确认删除勾选菜单？', {
-                icon: 1,
-                skin: 'layer-ext-moon',
-
-            },
-            function (index) {
-               delMenuDo(ids);
-                parent.layer.close(index);
-            })
+        layer_confirm("确认删除勾选菜单？", 3, delMenuDo, ids)
 
     }
 
@@ -333,9 +319,9 @@
             data:{ids:ids},
             success:function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/menu/index')
+                    toastr_success(null, document.location.href)
                 } else {
-                    toastr_error(data.errorDescription, '/auth/menu/index');
+                    toastr_error(data.errorDescription, document.location.href);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -359,12 +345,15 @@
             data: $("#menuFrm").serialize(),
             success: function (data) {
                 if (data.success) {
-                    toastr_success(null,'/auth/menu/index')
+                    toastr_success(null, document.location.href)
+                } else {
+                    toastr_error(data.errorDescription, document.location.href);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
-
-
     }
 
     /**
@@ -384,18 +373,12 @@
 
     $(document).ready(function () {
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-//            $("#menuFrm").validate({
-//                rules: {
-//                    target: {
-//                        require: true,
-//                    },
-//                },
-//                messages:{
-//                    target: {
-//                        require: "11111",
-//                    },
-//                }
-//            });
+        $("#menuFrm").validate({
+            rules: {
+                sort: {digits: true},
+            },
+            messages: {},
+        })
     });
 
 

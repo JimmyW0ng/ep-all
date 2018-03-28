@@ -118,7 +118,6 @@
         var type=$("#type").val();
         var res=[[${roleList}]];
         var roleIds=[[${roleIds}]];
-        console.log(roleIds)
         var htmls="";
         if(res!=undefined&&res.length>0){
             for(var i=0;i<res.length;i++){
@@ -132,7 +131,7 @@
                 $("#role_tb_body").find("input[value="+roleIds[i]+"]").attr("checked",true)
             }
         }
-        $("#userFrm").find("input").attr("readonly",true)
+        $("#userFrm").find("input").attr("disabled", true)
         $("#userFrm").find("select").attr("disabled",true)
     })
 </script>

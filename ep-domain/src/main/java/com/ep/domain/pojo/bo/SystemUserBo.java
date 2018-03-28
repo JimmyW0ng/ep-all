@@ -5,6 +5,7 @@ import com.ep.domain.pojo.po.EpSystemUserPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @Author: CC.F
  * @Date: 13:59 2018/1/26
  */
+@ToString(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
