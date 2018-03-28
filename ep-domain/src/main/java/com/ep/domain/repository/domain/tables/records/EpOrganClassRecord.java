@@ -27,7 +27,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> {
 
-    private static final long serialVersionUID = -2085403251;
+    private static final long serialVersionUID = 2560045;
 
     /**
      * Create a detached EpOrganClassRecord
@@ -218,14 +218,14 @@ public class EpOrganClassRecord extends UpdatableRecordImpl<EpOrganClassRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     * Getter for <code>ep.ep_organ_class.discount_amount</code>. 优惠价
      */
     public BigDecimal getDiscountAmount() {
         return (BigDecimal) get(10);
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class.discount_amount</code>. 折扣优惠
+     * Setter for <code>ep.ep_organ_class.discount_amount</code>. 优惠价
      */
     public EpOrganClassRecord setDiscountAmount(BigDecimal value) {
         set(10, value);
