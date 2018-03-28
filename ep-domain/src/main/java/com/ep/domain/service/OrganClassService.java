@@ -5,16 +5,12 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
-import com.ep.domain.pojo.po.EpOrderPo;
-import com.ep.domain.pojo.po.EpOrganClassChildPo;
-import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.pojo.po.EpSystemUserPo;
-import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.OrganClassChildRepository;
-import com.ep.domain.repository.OrganClassRepository;
-import com.ep.domain.repository.OrganCourseRepository;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -44,6 +40,10 @@ public class OrganClassService {
     @Autowired
     private OrganClassChildRepository organClassChildRepository;
     @Autowired
+    private OrganClassCatalogRepository organClassCatalogRepository;
+    @Autowired
+    private OrganClassScheduleRepository organClassScheduleRepository;
+    @Autowired
     private OrderRepository orderRepository;
 
     public List<EpOrganClassPo> findByCourseId(Long courseId){
@@ -69,6 +69,11 @@ public class OrganClassService {
         if (classPo == null || classPo.getDelFlag()) {
             log.error("班次不存在, classId={}", id);
             return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        // 预约类班次不允许开班操作
+        if (classPo.getType().equals(EpOrganClassType.bespeak)) {
+            log.error("预约类班次不允许开班操作, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_BESPEAK_NOT_ALLOW_OPEN);
         }
         if (!classPo.getStatus().equals(EpOrganClassStatus.online)) {
             log.error("班次不是已上线状态, classId={}, status={}", id, classPo.getStatus());
@@ -116,6 +121,21 @@ public class OrganClassService {
             classChildPo.setChildId(orderPo.getChildId());
             classChildPo.setOrderId(orderPo.getId());
             organClassChildRepository.insert(classChildPo);
+        }
+        // 生成班级行程记录
+        List<EpOrganClassCatalogPo> catalogPos = organClassCatalogRepository.findByClassId(id);
+        for (EpOrderPo orderPo : openingOrders) {
+            for (EpOrganClassCatalogPo catalogPo : catalogPos) {
+                EpOrganClassSchedulePo schedulePo = new EpOrganClassSchedulePo();
+                schedulePo.setChildId(orderPo.getChildId());
+                schedulePo.setClassId(orderPo.getClassId());
+                schedulePo.setOrderId(orderPo.getId());
+                schedulePo.setClassCatalogId(catalogPo.getId());
+                schedulePo.setStartTime(catalogPo.getStartTime());
+                schedulePo.setDuration(catalogPo.getDuration());
+                schedulePo.setStatus(EpOrganClassScheduleStatus.normal);
+                organClassScheduleRepository.insert(schedulePo);
+            }
         }
         return ResultDo.build();
     }

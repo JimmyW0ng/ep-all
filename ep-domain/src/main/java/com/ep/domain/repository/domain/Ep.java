@@ -32,7 +32,7 @@ public class Ep extends SchemaImpl {
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-    private static final long serialVersionUID = 748974809;
+    private static final long serialVersionUID = -869238115;
     /**
      * 课程类目表
      */
@@ -132,6 +132,11 @@ public class Ep extends SchemaImpl {
      * 机构课程班次评分表
      */
     public final EpOrganClassComment EP_ORGAN_CLASS_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassComment.EP_ORGAN_CLASS_COMMENT;
+
+    /**
+     * 班次行程表
+     */
+    public final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = com.ep.domain.repository.domain.tables.EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE;
 
     /**
      * 机构配置表
@@ -238,6 +243,7 @@ public class Ep extends SchemaImpl {
             EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG,
             EpOrganClassChild.EP_ORGAN_CLASS_CHILD,
             EpOrganClassComment.EP_ORGAN_CLASS_COMMENT,
+                EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE,
                 EpOrganConfig.EP_ORGAN_CONFIG,
             EpOrganCourse.EP_ORGAN_COURSE,
             EpOrganCourseTag.EP_ORGAN_COURSE_TAG,

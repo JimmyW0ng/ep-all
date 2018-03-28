@@ -47,12 +47,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public List<EpOrderPo> findByChildIdAndClassId(Long childId, Long classId) {
         return dslContext.selectFrom(EP_ORDER)
-                .where(EP_ORDER.CHILD_ID.eq(childId))
-                .and(EP_ORDER.CLASS_ID.eq(classId))
-                .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.success))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .orderBy(EP_ORDER.ID.desc())
-                .fetchInto(EpOrderPo.class);
+                         .where(EP_ORDER.CHILD_ID.eq(childId))
+                         .and(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.refuse))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .orderBy(EP_ORDER.ID.desc())
+                         .fetchInto(EpOrderPo.class);
     }
 
     /**

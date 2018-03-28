@@ -123,6 +123,11 @@ public class Tables {
     public static final EpOrganClassComment EP_ORGAN_CLASS_COMMENT = com.ep.domain.repository.domain.tables.EpOrganClassComment.EP_ORGAN_CLASS_COMMENT;
 
     /**
+     * 班次行程表
+     */
+    public static final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = com.ep.domain.repository.domain.tables.EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE;
+
+    /**
      * 机构配置表
      */
     public static final EpOrganConfig EP_ORGAN_CONFIG = com.ep.domain.repository.domain.tables.EpOrganConfig.EP_ORGAN_CONFIG;

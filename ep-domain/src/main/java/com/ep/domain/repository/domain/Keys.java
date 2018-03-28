@@ -51,6 +51,7 @@ public class Keys {
     public static final Identity<EpOrganClassCatalogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATALOG = Identities0.IDENTITY_EP_ORGAN_CLASS_CATALOG;
     public static final Identity<EpOrganClassChildRecord, Long> IDENTITY_EP_ORGAN_CLASS_CHILD = Identities0.IDENTITY_EP_ORGAN_CLASS_CHILD;
     public static final Identity<EpOrganClassCommentRecord, Long> IDENTITY_EP_ORGAN_CLASS_COMMENT = Identities0.IDENTITY_EP_ORGAN_CLASS_COMMENT;
+    public static final Identity<EpOrganClassScheduleRecord, Long> IDENTITY_EP_ORGAN_CLASS_SCHEDULE = Identities0.IDENTITY_EP_ORGAN_CLASS_SCHEDULE;
     public static final Identity<EpOrganConfigRecord, Long> IDENTITY_EP_ORGAN_CONFIG = Identities0.IDENTITY_EP_ORGAN_CONFIG;
     public static final Identity<EpOrganCourseRecord, Long> IDENTITY_EP_ORGAN_COURSE = Identities0.IDENTITY_EP_ORGAN_COURSE;
     public static final Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = Identities0.IDENTITY_EP_ORGAN_COURSE_TAG;
@@ -97,6 +98,7 @@ public class Keys {
     public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID = UniqueKeys0.KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID;
     public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY;
     public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID = UniqueKeys0.KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID;
+    public static final UniqueKey<EpOrganClassScheduleRecord> KEY_EP_ORGAN_CLASS_SCHEDULE_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CLASS_SCHEDULE_PRIMARY;
     public static final UniqueKey<EpOrganConfigRecord> KEY_EP_ORGAN_CONFIG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_CONFIG_PRIMARY;
     public static final UniqueKey<EpOrganCourseRecord> KEY_EP_ORGAN_COURSE_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_PRIMARY;
     public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = UniqueKeys0.KEY_EP_ORGAN_COURSE_TAG_PRIMARY;
@@ -144,6 +146,7 @@ public class Keys {
         public static Identity<EpOrganClassCatalogRecord, Long> IDENTITY_EP_ORGAN_CLASS_CATALOG = createIdentity(EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG, EpOrganClassCatalog.EP_ORGAN_CLASS_CATALOG.ID);
         public static Identity<EpOrganClassChildRecord, Long> IDENTITY_EP_ORGAN_CLASS_CHILD = createIdentity(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ID);
         public static Identity<EpOrganClassCommentRecord, Long> IDENTITY_EP_ORGAN_CLASS_COMMENT = createIdentity(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ID);
+        public static Identity<EpOrganClassScheduleRecord, Long> IDENTITY_EP_ORGAN_CLASS_SCHEDULE = createIdentity(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE, EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE.ID);
         public static Identity<EpOrganConfigRecord, Long> IDENTITY_EP_ORGAN_CONFIG = createIdentity(EpOrganConfig.EP_ORGAN_CONFIG, EpOrganConfig.EP_ORGAN_CONFIG.ID);
         public static Identity<EpOrganCourseRecord, Long> IDENTITY_EP_ORGAN_COURSE = createIdentity(EpOrganCourse.EP_ORGAN_COURSE, EpOrganCourse.EP_ORGAN_COURSE.ID);
         public static Identity<EpOrganCourseTagRecord, Long> IDENTITY_EP_ORGAN_COURSE_TAG = createIdentity(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
@@ -188,6 +191,7 @@ public class Keys {
         public static final UniqueKey<EpOrganClassChildRecord> KEY_EP_ORGAN_CLASS_CHILD_UNIQUE_ORDER_ID = createUniqueKey(EpOrganClassChild.EP_ORGAN_CLASS_CHILD, "KEY_ep_organ_class_child_UNIQUE_ORDER_ID", EpOrganClassChild.EP_ORGAN_CLASS_CHILD.ORDER_ID);
         public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_PRIMARY = createUniqueKey(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, "KEY_ep_organ_class_comment_PRIMARY", EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ID);
         public static final UniqueKey<EpOrganClassCommentRecord> KEY_EP_ORGAN_CLASS_COMMENT_UNIQUE_ORDER_ID = createUniqueKey(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT, "KEY_ep_organ_class_comment_UNIQUE_ORDER_ID", EpOrganClassComment.EP_ORGAN_CLASS_COMMENT.ORDER_ID);
+        public static final UniqueKey<EpOrganClassScheduleRecord> KEY_EP_ORGAN_CLASS_SCHEDULE_PRIMARY = createUniqueKey(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE, "KEY_ep_organ_class_schedule_PRIMARY", EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE.ID);
         public static final UniqueKey<EpOrganConfigRecord> KEY_EP_ORGAN_CONFIG_PRIMARY = createUniqueKey(EpOrganConfig.EP_ORGAN_CONFIG, "KEY_ep_organ_config_PRIMARY", EpOrganConfig.EP_ORGAN_CONFIG.ID);
         public static final UniqueKey<EpOrganCourseRecord> KEY_EP_ORGAN_COURSE_PRIMARY = createUniqueKey(EpOrganCourse.EP_ORGAN_COURSE, "KEY_ep_organ_course_PRIMARY", EpOrganCourse.EP_ORGAN_COURSE.ID);
         public static final UniqueKey<EpOrganCourseTagRecord> KEY_EP_ORGAN_COURSE_TAG_PRIMARY = createUniqueKey(EpOrganCourseTag.EP_ORGAN_COURSE_TAG, "KEY_ep_organ_course_tag_PRIMARY", EpOrganCourseTag.EP_ORGAN_COURSE_TAG.ID);
