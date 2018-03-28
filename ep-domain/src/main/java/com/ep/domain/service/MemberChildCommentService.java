@@ -6,6 +6,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
+import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
@@ -120,8 +121,8 @@ public class MemberChildCommentService {
      * @param conditions
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Long courseId, Pageable pageable, Collection<Condition> conditions) {
-        Page<MemberChildCommentBo> page = memberChildCommentRepository.findbyPageAndCondition(pageable, conditions);
+    public Page<OrganClassScheduleDto> findbyPageAndCondition(Long courseId, Pageable pageable, Collection<Condition> conditions) {
+        Page<OrganClassScheduleDto> page = memberChildCommentRepository.findbyPageAndCondition(pageable, conditions);
         page.getContent().forEach(p -> {
             if (p.getCourseId() == null) {
                 p.setCourseId(courseId);

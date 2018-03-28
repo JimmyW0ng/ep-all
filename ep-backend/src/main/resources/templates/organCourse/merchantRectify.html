@@ -272,6 +272,14 @@
                     <input name="className" type="text" class=" form-control " value="${className}" required="true"
                            disabled="true"
                            onblur="setClassBoxTitle(this)">
+                    <div class="form-group">
+                        <label>类型 <span class="required-sign">*</span></label>
+                        <select name="type" jprop="type" type="text" class="form-control classType" value="${type}"
+                                required="true" disabled="true">
+                            <option value="normal">正常</option>
+                            <option value="bespeak">预约</option>
+                        </select>
+                    </div>
                     <label>产品负责人 <span class="required-sign">*</span></label>
                     <select name="ognAccountId" type="text" class=" form-control " required="true" disabled="true">
 
@@ -579,7 +587,9 @@
                     discountAmount: organClassBos[i].discountAmount, enterLimitFlag: organClassBos[i].enterLimitFlag,
                     enterRequireNum: organClassBos[i].enterRequireNum, courseNum: organClassBos[i].courseNum,
                     phone: organClassBos[i].phone, address: organClassBos[i].address,
-                    addressLng: organClassBos[i].addressLng, addressLat: organClassBos[i].addressLat,
+                    addressLng: organClassBos[i].addressLng,
+                    addressLat: organClassBos[i].addressLat,
+                    type: organClassBos[i].type
                 }]
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 
@@ -613,6 +623,10 @@
 
             }
             $("#accordion").find("select[name='enterLimitFlag']").each(function () {
+                var val = $(this).attr("value")
+                $(this).val(val)
+            })
+            $("#accordion").find("select[name='type']").each(function () {
                 var val = $(this).attr("value")
                 $(this).val(val)
             })

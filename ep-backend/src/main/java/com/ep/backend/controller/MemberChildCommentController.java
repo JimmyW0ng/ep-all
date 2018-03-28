@@ -3,8 +3,8 @@ package com.ep.backend.controller;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
+import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
@@ -71,8 +71,8 @@ public class MemberChildCommentController extends BackendController {
         //机构id
         Long ognId = super.getCurrentUser().get().getOgnId();
         Long mobile = super.getCurrentUser().get().getMobile();
-        if (null == classCatalogId || null == classId) {
-            model.addAttribute("page", new PageImpl<MemberChildCommentBo>(new ArrayList<MemberChildCommentBo>()));
+        if (null == classId) {
+            model.addAttribute("page", new PageImpl<OrganClassScheduleDto>(new ArrayList<OrganClassScheduleDto>()));
         } else {
             if (StringTools.isNotBlank(childNickName)) {
                 conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.eq(childNickName));
@@ -83,8 +83,14 @@ public class MemberChildCommentController extends BackendController {
             }
             searchMap.put("childTrueName", childTrueName);
             conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch).or(EP_MEMBER_CHILD_COMMENT.TYPE.isNull()));
-            conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.eq(classCatalogId));
-            Page<MemberChildCommentBo> page = memberChildCommentService.findbyPageAndCondition(courseId, pageable, conditions);
+            if (null != classCatalogId) {
+                conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.eq(classCatalogId));
+            }
+            if (null != classId) {
+                conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId));
+            }
+
+            Page<OrganClassScheduleDto> page = memberChildCommentService.findbyPageAndCondition(courseId, pageable, conditions);
             model.addAttribute("page", page);
         }
 
@@ -106,11 +112,11 @@ public class MemberChildCommentController extends BackendController {
         //班次下拉框
         EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
-        Map<Long, String> classMap = Maps.newHashMap();
-        organClassPos.forEach(p -> {
-            classMap.put(p.getId(), p.getClassName());
-        });
-        model.addAttribute("classMap", classMap);
+//        Map<Long, String> classMap = Maps.newHashMap();
+//        organClassPos.forEach(p -> {
+//            classMap.put(p.getId(), p.getClassName());
+//        });
+        model.addAttribute("organClassPos", organClassPos);
         List<EpOrganClassCatalogPo> organClassCatalogPos = organClassCatalogService.findByClassId(classId);
         Map<Long, String> classCatalogMap = Maps.newHashMap();
         organClassCatalogPos.forEach(p -> {
@@ -251,11 +257,8 @@ public class MemberChildCommentController extends BackendController {
         if (CollectionsTools.isEmpty(organClassPos)) {
             return ResultDo.build().setResult(new HashMap<Long, String>(0));
         }
-        Map<Long, String> classMap = Maps.newHashMap();
-        organClassPos.forEach(p -> {
-            classMap.put(p.getId(), p.getClassName());
-        });
-        return ResultDo.build().setResult(classMap);
+
+        return ResultDo.build().setResult(organClassPos);
     }
 
     /**

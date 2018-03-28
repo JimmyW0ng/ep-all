@@ -2,6 +2,7 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
+import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.tables.EpMemberChildComment;
@@ -193,7 +194,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      * @param condition
      * @return
      */
-    public Page<MemberChildCommentBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+    public Page<OrganClassScheduleDto> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
         long totalCount = dslContext.selectCount()
                 .from(EP_ORGAN_CLASS_SCHEDULE)
@@ -212,10 +213,15 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID);
-        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS.as("scheduleStatus"));
-        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.as("nickName"));
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.ID.as("launchId"));
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.TYPE);
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.CONTENT.as("contentLaunch"));
 
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
@@ -229,11 +235,11 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
                 .where(condition);
 
-        List<MemberChildCommentBo> list = record.orderBy(EP_ORGAN_CLASS_SCHEDULE.ID.asc())
+        List<OrganClassScheduleDto> list = record.orderBy(EP_ORGAN_CLASS_SCHEDULE.ID.asc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
-                .fetchInto(MemberChildCommentBo.class);
-        PageImpl<MemberChildCommentBo> pPage = new PageImpl<MemberChildCommentBo>(list, pageable, totalCount);
+                .fetchInto(OrganClassScheduleDto.class);
+        PageImpl<OrganClassScheduleDto> pPage = new PageImpl<OrganClassScheduleDto>(list, pageable, totalCount);
         return pPage;
     }
 

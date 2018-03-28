@@ -1,12 +1,22 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.po.EpOrganClassSchedulePo;
+import com.ep.domain.repository.domain.tables.EpMemberChildComment;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleRecord;
-import org.jooq.DSLContext;
+import com.google.common.collect.Lists;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS_SCHEDULE;
+import java.util.Collection;
+import java.util.List;
+
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description: 班次行程表Repository
@@ -22,43 +32,57 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     }
 
     /**
-     * 后台机构班次随堂分页列表
+     * 商户后台获取分页
      *
      * @param pageable
      * @param condition
      * @return
      */
-//    public Page<OrganClassScheduleBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
-//        long totalCount = dslContext.selectCount()
-//                .from(EP_ORGAN_CLASS_SCHEDULE)
-//                .leftJoin(EP_ORGAN).on(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(EP_ORGAN.ID))
-//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-//                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-//                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
-//                .where(condition).fetchOne(0, Long.class);
-//        if (totalCount == BizConstant.DB_NUM_ZERO) {
-//            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
-//        }
-//        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_COMMENT.fields());
-//        fieldList.add(EP_ORGAN.OGN_NAME);
-//        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-//        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
-//        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
-//
-//        SelectConditionStep<Record> record = dslContext.select(fieldList)
-//                .from(EP_ORGAN_CLASS_COMMENT)
-//                .leftJoin(EP_ORGAN).on(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(EP_ORGAN.ID))
-//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-//                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-//                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
-//                .where(condition);
-//
-//        List<OrganClassCommentBo> list = record.orderBy(getSortFields(pageable.getSort()))
-//                .limit(pageable.getPageSize())
-//                .offset(pageable.getOffset())
-//                .fetchInto(OrganClassCommentBo.class);
-//        PageImpl<OrganClassCommentBo> pPage = new PageImpl<OrganClassCommentBo>(list, pageable, totalCount);
-//        return pPage;
-//    }
+    public Page<OrganClassScheduleBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORGAN_CLASS_SCHEDULE)
+                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID)))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+
+                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+                .where(condition)
+                .fetchOne(0, Long.class);
+
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS.as("scheduleStatus"));
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.as("nickName"));
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD_COMMENT.CONTENT);
+
+        fieldList.add(memberChildCommentCopy.ID.as("replyId"));
+        fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_SCHEDULE)
+                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID)))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+
+                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+                .where(condition);
+
+        List<OrganClassScheduleBo> list = record.orderBy(EP_ORGAN_CLASS_SCHEDULE.ID.asc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganClassScheduleBo.class);
+        PageImpl<OrganClassScheduleBo> pPage = new PageImpl<OrganClassScheduleBo>(list, pageable, totalCount);
+        return pPage;
+    }
 
 }

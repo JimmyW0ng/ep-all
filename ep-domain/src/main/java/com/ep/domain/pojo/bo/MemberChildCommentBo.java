@@ -6,7 +6,11 @@ import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.sql.Timestamp;
+
+@ToString(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,8 +26,9 @@ public class MemberChildCommentBo extends EpMemberChildCommentPo {
     private Long replyId;
     private String contentReply;
     private Long orderId;
-    private Long classChildId;
     private EpOrganClassScheduleStatus scheduleStatus;
+    private Timestamp startTime;
+    private Integer catalogIndex;
 
     public String getCommentTimeFormat() {
         return DateTools.formatDatetoString(super.getCreateAt(), DateTools.DATE_FMT_4);

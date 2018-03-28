@@ -178,7 +178,13 @@
                                             <label>班次名称 <span class="required-sign">*</span></label>
                                             <input name="className" type="text" class=" form-control "
                                                    th:value="${po.className}"
-                                                   onblur="setClassBoxTitle(this)">
+                                            >
+                                            <div class="form-group">
+                                                <label>类型 <span class="required-sign">*</span></label>
+                                                <input name="type" type="text" class="form-control"
+                                                       th:value="#{EpOrganClassType.+${po.type}}">
+                                                </input>
+                                            </div>
                                             <label>产品负责人 <span class="required-sign">*</span></label>
                                             <input name="ognAccountId" type="text" class=" form-control "
                                                    th:value="${organAccountMap.get(po.ognAccountId)}">
