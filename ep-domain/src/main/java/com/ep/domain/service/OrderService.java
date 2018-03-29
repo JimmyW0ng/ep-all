@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
+import com.ep.common.exception.ServiceRuntimeException;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
@@ -13,6 +14,7 @@ import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,8 @@ public class OrderService {
     private OrganVipRepository organVipRepository;
     @Autowired
     private OrganCourseRepository organCourseRepository;
+    @Autowired
+    private OrganClassChildRepository organClassChildRepository;
     @Autowired
     private FileRepository fileRepository;
 
@@ -357,10 +361,15 @@ public class OrderService {
      *
      * @param id
      */
-    @Transactional(rollbackFor = Exception.class)
-    public int orderRefuseById(Long id, String remark) {
-        log.error("[订单]订单取消报名成功/拒绝操作开始，订单id={}", id);
-        return orderRepository.orderRefuseById(id, remark);
+    public ResultDo orderRefuseById(Long id, String remark) {
+        log.info("[订单]订单拒绝操作开始，订单id={},remark={}。", id, remark);
+        if (orderRepository.orderRefuseById(id, remark) == BizConstant.DB_NUM_ONE) {
+            log.info("[订单]订单拒绝操作成功，订单id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.info("[订单]订单拒绝操作失败，订单id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     /**
@@ -377,28 +386,53 @@ public class OrderService {
      * 根据id取消报名成功/拒绝的订单
      *
      * @param id
-     * @param status
      */
     @Transactional(rollbackFor = Exception.class)
-    public int orderCancelById(Long id, EpOrderStatus status) {
-        log.error("[订单]订单取消报名成功/拒绝操作开始，订单id={}", id);
+    public ResultDo orderCancelById(Long id) {
+        Optional<OrderTypeBo> orderOptional = orderRepository.getOrderTypeBoById(id);
+        if (!orderOptional.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        EpOrderStatus status = orderOptional.get().getStatus();
+        EpOrganClassType type = orderOptional.get().getType();
+        String logAction = "";
+        if ((status.equals(EpOrderStatus.success) || status.equals(EpOrderStatus.refuse)) && type.equals(EpOrganClassType.normal)) {
+            logAction = status.equals(EpOrderStatus.success) ? "报名成功" : "拒绝";
+            log.info("[订单]订单取消{}操作开始，订单id={}，status={}。", logAction, id, status);
+        } else {
+            log.error("[订单]订单取消报名成功/拒绝操作失败，订单状态或班次类型错误，订单id={}，status={}，type={}。", id, status, type);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
         EpOrderPo orderPo = orderRepository.findById(id);
         //行锁班次记录，防止班次下线并发
         EpOrganClassPo classPo = organClassRepository.getByIdAndStatusLock(orderPo.getClassId(), EpOrganClassStatus.online);
         if (classPo == null) {
-            log.error("[订单]订单取消报名成功/拒绝操作失败，未获取到班次行级锁，订单id={},班次classId={}。", id, orderPo.getClassId());
-            return BizConstant.DB_NUM_ZERO;
+            log.error("[订单]订单取消{}操作失败，未获取到班次行级锁(班次不存在)，订单id={},班次classId={}。", logAction, id, orderPo.getClassId());
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
         int count = orderRepository.orderCancelById(id, status);
-        if (count > BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.success)) {
+        if (count == BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.success)) {
             // 班次成功报名人数扣减
-            organClassRepository.enteredNumByOrderCancel(orderPo.getClassId(), count);
+            int subEnteredNum = organClassRepository.enteredNumByOrderCancel(orderPo.getClassId(), count);
             // 课程总参加人数扣减
-            organCourseRepository.totalParticipateCancel(orderPo.getCourseId(), count);
+            int subCourseTotalParticipate = organCourseRepository.totalParticipateCancel(orderPo.getCourseId(), count);
             // 机构总参加人数扣减
-            organRepository.totalParticipateCancel(orderPo.getOgnId(), count);
+            int subOrganTotalParticipate = organRepository.totalParticipateCancel(orderPo.getOgnId(), count);
+            if (subEnteredNum == BizConstant.DB_NUM_ONE && subCourseTotalParticipate == BizConstant.DB_NUM_ONE
+                    && subOrganTotalParticipate == BizConstant.DB_NUM_ONE) {
+                log.info("[订单]订单取消{}操作成功，订单id={}。", logAction, id);
+                return ResultDo.build();
+            } else {
+                log.error("[订单]订单取消{}操作失败，班次成功报名人数扣减或课程总参加人数扣减或机构总参加人数扣减失败。", logAction);
+                throw new ServiceRuntimeException("班次成功报名人数扣减或课程总参加人数扣减或机构总参加人数扣减异常");
+            }
+        } else if (count == BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.refuse)) {
+            log.info("[订单]订单取消{}操作成功，订单id={}。", logAction, id);
+            return ResultDo.build();
+        } else {
+            log.error("[订单]订单取消{}操作失败，订单id={}。", logAction, id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
-        return count;
     }
 
     /**
@@ -410,4 +444,40 @@ public class OrderService {
     public List<OrderBo> findOrdersByClassId(Long classId) {
         return orderRepository.findOrdersByClassId(classId);
     }
+
+    /**
+     * 提交预约
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo orderBespeakById(Long id) {
+        log.info("[订单]订单提前预约开始，订单id={}。", id);
+        Optional<OrderTypeBo> orderOptional = orderRepository.getOrderTypeBoById(id);
+        if (!orderOptional.isPresent()) {
+            log.info("[订单]订单提前预约失败，订单不存在，订单id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        if (!orderOptional.get().getType().equals(EpOrganClassType.bespeak)) {
+            log.error("[订单]订单提前预约失败，班次类型不是预约类型，订单id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        if (orderRepository.orderBespeakById(id) == BizConstant.DB_NUM_ONE) {
+            EpOrganClassChildPo epOrganClassChildPo = new EpOrganClassChildPo();
+            OrderTypeBo orderTypeBo = orderOptional.get();
+            epOrganClassChildPo.setChildId(orderTypeBo.getChildId());
+            epOrganClassChildPo.setClassId(orderTypeBo.getClassId());
+            epOrganClassChildPo.setOrderId(orderTypeBo.getId());
+            //班次孩子表插入数据
+            organClassChildRepository.insert(epOrganClassChildPo);
+            log.info("[订单]订单提前预约成功，订单id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[订单]订单提前预约失败，订单id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+
 }

@@ -3,10 +3,7 @@ package com.ep.domain.repository;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.enums.ChildClassStatusEnum;
-import com.ep.domain.pojo.bo.MemberChildClassBo;
-import com.ep.domain.pojo.bo.MemberChildScheduleBo;
-import com.ep.domain.pojo.bo.MemberCourseOrderInitBo;
-import com.ep.domain.pojo.bo.OrderBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -250,6 +248,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS.TYPE.as("classType"));
         fieldList.add(EP_ORGAN_CLASS.STATUS.as("classStatus"));
 
         SelectConditionStep<Record> record = dslContext.select(fieldList)
@@ -429,6 +428,44 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .where(EP_ORDER.CLASS_ID.eq(classId))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .fetchInto(OrderBo.class);
+    }
+
+    /**
+     * 根据id 提交预约
+     *
+     * @param id
+     * @return
+     */
+    public int orderBespeakById(Long id) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS, EpOrderStatus.opening)
+                .where(EP_ORDER.STATUS.eq(EpOrderStatus.success))
+                .and(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id获取不同类型订单Bo
+     *
+     * @param id
+     * @return
+     */
+    public Optional<OrderTypeBo> getOrderTypeBoById(Long id) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORDER.ID);
+        fieldList.add(EP_ORDER.CLASS_ID);
+        fieldList.add(EP_ORDER.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS.TYPE);
+        fieldList.add(EP_ORDER.STATUS);
+        OrderTypeBo data = dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_ORGAN_CLASS)
+                .on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .where(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(OrderTypeBo.class);
+        return Optional.ofNullable(data);
     }
 }
 

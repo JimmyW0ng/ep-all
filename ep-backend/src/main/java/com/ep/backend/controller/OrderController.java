@@ -1,12 +1,11 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
-import com.ep.domain.constant.BizConstant;
-import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.service.OrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
 
 
 /**
@@ -64,9 +64,86 @@ public class OrderController extends BackendController {
                         @RequestParam(value = "childNickName", required = false) String childNickName,
                         @RequestParam(value = "courseName", required = false) String courseName,
                         @RequestParam(value = "className", required = false) String className,
+                        @RequestParam(value = "classType", required = false) String classType,
                         @RequestParam(value = "status", required = false) String status,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
+
+    ) {
+        Map<String, Object> searchMap = Maps.newHashMap();
+        Collection<Condition> conditions = Lists.newArrayList();
+        if (StringTools.isNotBlank(mobile)) {
+            conditions.add(EP.EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
+        }
+        searchMap.put("mobile", mobile);
+        if (StringTools.isNotBlank(childTrueName)) {
+            conditions.add(EP.EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
+        }
+        searchMap.put("childTrueName", childTrueName);
+        if (StringTools.isNotBlank(childNickName)) {
+            conditions.add(EP.EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
+        }
+        searchMap.put("childNickName", childNickName);
+        if (StringTools.isNotBlank(courseName)) {
+            conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
+        }
+        searchMap.put("courseName", courseName);
+        if (StringTools.isNotBlank(className)) {
+            conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
+        }
+        searchMap.put("className", className);
+        if (StringTools.isNotBlank(classType)) {
+            conditions.add(EP.EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.valueOf(classType)));
+        }
+        searchMap.put("classType", classType);
+        if (StringTools.isNotBlank(status)) {
+            conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
+        }
+        searchMap.put("status", status);
+        if (null != crStartTime) {
+            conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
+        }
+        searchMap.put("crStartTime", crStartTime);
+        if (null != crEndTime) {
+            conditions.add(EP.EP_ORDER.CREATE_AT.lessOrEqual(crEndTime));
+        }
+        searchMap.put("crEndTime", crEndTime);
+        conditions.add(EP.EP_ORDER.DEL_FLAG.eq(false));
+        conditions.add(EP.EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
+
+        Page<OrderBo> page = orderService.findbyPageAndCondition(pageable, conditions);
+        model.addAttribute("page", page);
+        model.addAttribute("searchMap", searchMap);
+        return "order/index";
+    }
+
+    /**
+     * 预约订单列表
+     *
+     * @param model
+     * @param pageable
+     * @param mobile
+     * @param childTrueName
+     * @param childNickName
+     * @param courseName
+     * @param className
+     * @param status
+     * @param crStartTime
+     * @param crEndTime
+     * @return
+     */
+    @GetMapping("bespeakIndex")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    public String bespeakIndex(Model model,
+                               @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                               @RequestParam(value = "mobile", required = false) String mobile,
+                               @RequestParam(value = "childTrueName", required = false) String childTrueName,
+                               @RequestParam(value = "childNickName", required = false) String childNickName,
+                               @RequestParam(value = "courseName", required = false) String courseName,
+                               @RequestParam(value = "className", required = false) String className,
+                               @RequestParam(value = "status", required = false) String status,
+                               @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+                               @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
     ) {
         Map<String, Object> searchMap = Maps.newHashMap();
@@ -104,11 +181,14 @@ public class OrderController extends BackendController {
         }
         searchMap.put("crEndTime", crEndTime);
         conditions.add(EP.EP_ORDER.DEL_FLAG.eq(false));
+        conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.opening));
         conditions.add(EP.EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
+        conditions.add(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak));
+
         Page<OrderBo> page = orderService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
-        return "order/index";
+        return "order/bespeakIndex";
     }
 
     /**
@@ -150,13 +230,7 @@ public class OrderController extends BackendController {
     public ResultDo orderRefuse(
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "remark", required = false) String remark) {
-        ResultDo resultDo = ResultDo.build();
-        if (orderService.orderRefuseById(id, remark) == BizConstant.DB_NUM_ONE) {
-            return resultDo;
-        } else {
-            return resultDo.setError(MessageCode.ERROR_OPERATE_FAIL);
-        }
-
+        return orderService.orderRefuseById(id, remark);
     }
 
     /**
@@ -168,16 +242,22 @@ public class OrderController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo orderCancel(
-            @RequestParam(value = "id") Long id,
-            @RequestParam(value = "status") String status
+            @RequestParam(value = "id") Long id
     ) {
-        ResultDo resultDo = ResultDo.build();
-        if (orderService.orderCancelById(id, EpOrderStatus.valueOf(status)) == BizConstant.DB_NUM_ONE) {
-            return resultDo;
-        } else {
-            return resultDo.setError(MessageCode.ERROR_OPERATE_FAIL);
-        }
+        return orderService.orderCancelById(id);
     }
 
-
+    /**
+     * 提交预约
+     *
+     * @param id
+     */
+    @GetMapping("orderBespeak/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo orderBespeak(
+            @PathVariable("id") Long id
+    ) {
+        return orderService.orderBespeakById(id);
+    }
 }
