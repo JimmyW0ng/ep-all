@@ -104,6 +104,7 @@
                             <th>昵称</th>
                             <th>课程</th>
                             <th>班次</th>
+                            <th>课时</th>
 
                             <th>价格</th>
                             <th>备注</th>
@@ -122,6 +123,7 @@
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
+                            <td th:text="${bo.courseNum}"></td>
 
                             <td style="display: none" name="classStatus" th:text="${bo.classStatus}"></td>
                             <td th:text="${bo.prize}"></td>
@@ -131,17 +133,7 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info"
-                                   th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
-                                <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
-                                <a name="refuse" class="btn btn-xs btn-danger"
-                                   href="javascript:void(0)"
-                                   th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
-                                <a name="cancel" class="btn btn-xs btn-info"
-                                   th:value="${bo.status}"
-                                   th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
-                                <a name="bespeak" class="btn btn-xs btn-info"
-                                   th:if="${#strings.equals(bo.classType,'bespeak')}"
-                                   th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>
+                                   th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">预约</a>
                             </td>
 
                         </tr>
@@ -195,151 +187,151 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script th:inline="javascript">
-    var EpOrderStatus = {
-        save: "保存",
-        success: "成功",
-        opening: "已开班",
-        end: "结束",
-        refuse: "拒绝",
-        cancel: "取消"
-    }
-
-    function checkOrderSuccess(ele) {
-        var status = $(ele).parent().siblings("td[name='status']").eq(0).html()
-        if (status == "save" && $(ele).is(':checked')) {
-            $(ele).attr("checked", true)
-        } else {
-            $(ele).attr("checked", false)
-        }
-    }
-
-
-    /*控制按钮*/
-    function buttonByStatus($box, status, classStatus) {
-        if ((status == "success" || status == "refuse") && classStatus == "online") {
-            //班次opening,订单success或者refuse,显示取消按钮，其他隐藏
-            $box.find("a").hide()
-            $box.find("a[name='cancel']").show()
-            $box.find("a[name='bespeak']").show()
-        } else if (status == "save") {
-            //订单save,显示报名成功，拒绝按钮，其他隐藏
-            $box.find("a").hide()
-            $box.find("a[name='success']").show()
-            $box.find("a[name='refuse']").show()
-        } else if (status == "opening") {
-            //订单opening所有按钮隐藏
-            $box.find("a").hide()
-        } else if (status == "cancel") {
-            //订单cancel所有按钮隐藏
-            $box.find("a").hide()
-        } else if (classStatus == "end" || classStatus == "opening") {
-            //班次end所有按钮隐藏
-            $box.find("a").hide()
-        }
-    }
-    function orderSuccess(ele, id, classId) {
-        $.ajax({
-            type: "POST",
-            url: "/auth/order/orderSuccess",
-            data: {id: id, classId: classId},
-            success: function (data) {
-                if (data.success) {
-                    var orderPo = data.result
-                    var $tr = $(ele).parents("tr").eq(0)
-                    $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
-                    $tr.find("td[name='status']").eq(0).text(orderPo.status);
-                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark);
-                    var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
-                    buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
-    }
-
-    function bespeakBox(sourceId) {
-        layer_confirm("确定提交预约该订单？", 3, bespeakDo, sourceId)
-    }
-    function bespeakDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/order/orderBespeak/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href)
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
-
-    }
-
-    function refuseBox(sourceId) {
-        $("#uploadModal").modal("show")
-        $("#sourceId").val(sourceId)
-    }
-    function refuseDo() {
-        $.ajax({
-            type: "GET",
-            url: "/auth/order/orderRefuse?id=" + $("#sourceId").val() + "&remark=" + $("#refuseRemark").val(),
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href)
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
-
-    }
-    function orderCancelBox(ele, id) {
-        var $tr = $(ele).parents("tr").eq(0)
-        var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
-        layer.alert('确定取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
-            function (index) {
-                orderCancelDo(id);
-                layer.close(index);
-            }),
-            function (index) {
-                layer.close(index);
-            }
-    }
-    function orderCancelDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/order/orderCancel?id=" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href)
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
-
-    }
+    //    var EpOrderStatus = {
+    //        save: "保存",
+    //        success: "成功",
+    //        opening: "已开班",
+    //        end: "结束",
+    //        refuse: "拒绝",
+    //        cancel: "取消"
+    //    }
+    //
+    //    function checkOrderSuccess(ele) {
+    //        var status = $(ele).parent().siblings("td[name='status']").eq(0).html()
+    //        if (status == "save" && $(ele).is(':checked')) {
+    //            $(ele).attr("checked", true)
+    //        } else {
+    //            $(ele).attr("checked", false)
+    //        }
+    //    }
+    //
+    //
+    //    /*控制按钮*/
+    //    function buttonByStatus($box, status, classStatus) {
+    //        if ((status == "success" || status == "refuse") && classStatus == "online") {
+    //            //班次opening,订单success或者refuse,显示取消按钮，其他隐藏
+    //            $box.find("a").hide()
+    //            $box.find("a[name='cancel']").show()
+    //            $box.find("a[name='bespeak']").show()
+    //        } else if (status == "save") {
+    //            //订单save,显示报名成功，拒绝按钮，其他隐藏
+    //            $box.find("a").hide()
+    //            $box.find("a[name='success']").show()
+    //            $box.find("a[name='refuse']").show()
+    //        } else if (status == "opening") {
+    //            //订单opening所有按钮隐藏
+    //            $box.find("a").hide()
+    //        } else if (status == "cancel") {
+    //            //订单cancel所有按钮隐藏
+    //            $box.find("a").hide()
+    //        } else if (classStatus == "end" || classStatus == "opening") {
+    //            //班次end所有按钮隐藏
+    //            $box.find("a").hide()
+    //        }
+    //    }
+    //    function orderSuccess(ele, id, classId) {
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "/auth/order/orderSuccess",
+    //            data: {id: id, classId: classId},
+    //            success: function (data) {
+    //                if (data.success) {
+    //                    var orderPo = data.result
+    //                    var $tr = $(ele).parents("tr").eq(0)
+    //                    $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
+    //                    $tr.find("td[name='status']").eq(0).text(orderPo.status);
+    //                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark);
+    //                    var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
+    //                    buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
+    //                } else {
+    //                    toastr.error("操作失败，原因：" + data.errorDescription);
+    //                }
+    //            },
+    //            error: function (XMLHttpRequest) {
+    //                toastr_error_system(XMLHttpRequest.status);
+    //            }
+    //        })
+    //    }
+    //
+    //    function bespeakBox(sourceId) {
+    //        layer_confirm("确定提交预约该订单？", 3, bespeakDo, sourceId)
+    //    }
+    //    function bespeakDo(id) {
+    //        $.ajax({
+    //            type: "GET",
+    //            url: "/auth/order/orderBespeak/" + id,
+    //            success: function (data) {
+    //                if (data.success) {
+    //                    toastr_success(null, document.location.href)
+    //                } else {
+    //                    toastr.error("操作失败，原因：" + data.errorDescription);
+    //                }
+    //            },
+    //            error: function (XMLHttpRequest) {
+    //                toastr_error_system(XMLHttpRequest.status);
+    //            },
+    //        })
+    //
+    //    }
+    //
+    //    function refuseBox(sourceId) {
+    //        $("#uploadModal").modal("show")
+    //        $("#sourceId").val(sourceId)
+    //    }
+    //    function refuseDo() {
+    //        $.ajax({
+    //            type: "GET",
+    //            url: "/auth/order/orderRefuse?id=" + $("#sourceId").val() + "&remark=" + $("#refuseRemark").val(),
+    //            success: function (data) {
+    //                if (data.success) {
+    //                    toastr_success(null, document.location.href)
+    //                } else {
+    //                    toastr.error("操作失败，原因：" + data.errorDescription);
+    //                }
+    //            },
+    //            error: function (XMLHttpRequest) {
+    //                toastr_error_system(XMLHttpRequest.status);
+    //            },
+    //        })
+    //
+    //    }
+    //    function orderCancelBox(ele, id) {
+    //        var $tr = $(ele).parents("tr").eq(0)
+    //        var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
+    //        layer.alert('确定取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
+    //            function (index) {
+    //                orderCancelDo(id);
+    //                layer.close(index);
+    //            }),
+    //            function (index) {
+    //                layer.close(index);
+    //            }
+    //    }
+    //    function orderCancelDo(id) {
+    //        $.ajax({
+    //            type: "GET",
+    //            url: "/auth/order/orderCancel?id=" + id,
+    //            success: function (data) {
+    //                if (data.success) {
+    //                    toastr_success(null, document.location.href)
+    //                } else {
+    //                    toastr.error("操作失败，原因：" + data.errorDescription);
+    //                }
+    //            },
+    //            error: function (XMLHttpRequest) {
+    //                toastr_error_system(XMLHttpRequest.status);
+    //            },
+    //        })
+    //
+    //    }
     $(function () {
-        $("#tbody tr").each(function () {
-            var $box = $(this).find("td[name='button']").eq(0)
-            var status = $(this).find("td[name='status']").eq(0).text()
-            var classStatus = $(this).find("td[name='classStatus']").text()
-            buttonByStatus($box, status, classStatus)
-
-        })
+//        $("#tbody tr").each(function () {
+//            var $box = $(this).find("td[name='button']").eq(0)
+//            var status = $(this).find("td[name='status']").eq(0).text()
+//            var classStatus = $(this).find("td[name='classStatus']").text()
+//            buttonByStatus($box, status, classStatus)
+//
+//        })
     })
 
 </script>

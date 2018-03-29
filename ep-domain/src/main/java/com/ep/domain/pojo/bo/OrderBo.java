@@ -18,4 +18,5 @@ public class OrderBo extends EpOrderPo {
     private String className;
     private EpOrganClassType classType;
     private EpOrganClassStatus classStatus;
+    private Integer courseNum;
 }
