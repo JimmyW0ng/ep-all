@@ -106,7 +106,7 @@ public class MemberChildCommentService {
         replay.setOgnId(commentPo.getOgnId());
         replay.setCourseId(commentPo.getCourseId());
         replay.setClassId(commentPo.getClassId());
-        replay.setClassCatalogId(commentPo.getClassCatalogId());
+        replay.setClassScheduleId(commentPo.getClassScheduleId());
         replay.setType(EpMemberChildCommentType.reply);
         replay.setContent(content);
         replay.setReplyMemberId(memberId);
@@ -147,14 +147,14 @@ public class MemberChildCommentService {
      * @param id
      * @param content
      * @param childId
-     * @param classCatalogId
+     * @param classScheduleId
      * @param ognId
      * @param tagIds
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo updateComment(Long id, String content, Long childId, Long classCatalogId, Long ognId, List<Long> tagIds) {
+    public ResultDo updateComment(Long id, String content, Long childId, Long classScheduleId, Long ognId, List<Long> tagIds) {
         log.info("[评论]修改评论开始，评论id={},评论内容content={},childId={},classCatalogId={},ognId={},tagIds={}。", id,
-                content, childId, classCatalogId, ognId, tagIds);
+                content, childId, classScheduleId, ognId, tagIds);
         Optional<EpMemberChildCommentPo> optional = memberChildCommentRepository.findById(id);
         if (!optional.isPresent()) {
             log.error("[评论]修改评论失败，次评论不存在，id={}。", id);
@@ -169,14 +169,14 @@ public class MemberChildCommentService {
                 po.setOgnId(ognId);
                 po.setCourseId(memberChildCommentPo.getCourseId());
                 po.setClassId(memberChildCommentPo.getClassId());
-                po.setClassCatalogId(classCatalogId);
+                po.setClassScheduleId(classScheduleId);
                 po.setTagId(p);
                 insertPos.add(po);
             });
         }
         memberChildCommentRepository.updateContent(id, content);
         //先物理删除孩子标签，再插入
-        memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classCatalogId);
+        memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classScheduleId);
         memberChildTagRepository.insert(insertPos);
         log.info("[评论]修改评论成功，评论id={}。");
         return ResultDo.build();
@@ -189,12 +189,12 @@ public class MemberChildCommentService {
      * @param ognId
      * @param courseId
      * @param classId
-     * @param catalogId
+     * @param scheduleId
      * @param content
      * @param mobile
      * @return
      */
-    public ResultDo createCommentLaunch(Long childId, Long ognId, Long courseId, Long classId, Long catalogId, String content, Long mobile) {
+    public ResultDo createCommentLaunch(Long childId, Long ognId, Long courseId, Long classId, Long scheduleId, String content, Long mobile) {
         Optional<EpOrganAccountPo> optional = organAccountRepository.getByOgnIdAndReferMobile(ognId, mobile);
         if (!optional.isPresent()) {
             log.error("[随堂评论]新增随堂评论失败，机构用户不存在。");
@@ -206,7 +206,7 @@ public class MemberChildCommentService {
         po.setOgnId(ognId);
         po.setCourseId(courseId);
         po.setClassId(classId);
-        po.setClassCatalogId(catalogId);
+        po.setClassScheduleId(scheduleId);
         po.setType(EpMemberChildCommentType.launch);
         po.setContent(content);
         po.setOgnAccountId(ognAccountId);

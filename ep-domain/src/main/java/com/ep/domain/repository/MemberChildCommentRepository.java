@@ -97,18 +97,18 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      */
     public List<MemberChildCommentBo> findByChildIdAndClassId(Long childId, Long classId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_COMMENT.CONTENT);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_TITLE.as("classCatalogTitle"));
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE.as("classCatalogTitle"));
         fieldList.add(EP_MEMBER_CHILD_COMMENT.CREATE_AT);
         return dslContext.select(fieldList)
-                .from(EP_MEMBER_CHILD_COMMENT)
-                .leftJoin(EP_ORGAN_CLASS_CATALOG)
-                .on(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_CATALOG.ID))
-                .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_COMMENT.CLASS_ID.eq(classId))
-                .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
-                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
-                .fetchInto(MemberChildCommentBo.class);
+                         .from(EP_MEMBER_CHILD_COMMENT)
+                         .leftJoin(EP_ORGAN_CLASS_SCHEDULE)
+                         .on(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID))
+                         .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
+                         .and(EP_MEMBER_CHILD_COMMENT.CLASS_ID.eq(classId))
+                         .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
+                         .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                         .orderBy(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX.asc())
+                         .fetchInto(MemberChildCommentBo.class);
     }
 
     /**
@@ -122,22 +122,6 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .where(EP_MEMBER_CHILD_COMMENT.P_ID.eq(pId))
                 .fetchOneInto(EpMemberChildCommentPo.class);
         return Optional.ofNullable(commentPo);
-    }
-
-    /**
-     * 根据孩子id课时目录id判断是否存在评价
-     *
-     * @param childId
-     * @param classCatalogId
-     * @return
-     */
-    public boolean existByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
-        int count = dslContext.selectCount().from(EP_MEMBER_CHILD_COMMENT)
-                .where(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(classCatalogId))
-                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                .fetchOneInto(Integer.class);
-        return count > BizConstant.DB_NUM_ZERO;
     }
 
 //    /**
@@ -200,7 +184,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .from(EP_ORGAN_CLASS_SCHEDULE)
                 .leftJoin(EP_MEMBER_CHILD_COMMENT)
                 .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
-                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID)))
+                                                    .and(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID)))
                 .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
 
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
@@ -229,7 +213,7 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .from(EP_ORGAN_CLASS_SCHEDULE)
                 .leftJoin(EP_MEMBER_CHILD_COMMENT)
                 .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
-                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID)))
+                                                    .and(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID)))
                 .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
 
                 .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))

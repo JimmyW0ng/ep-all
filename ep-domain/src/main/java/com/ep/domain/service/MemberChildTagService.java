@@ -21,11 +21,11 @@ public class MemberChildTagService {
      * 根据孩子childId和班次目录ClassCatalogId获取孩子的标签
      *
      * @param childId
-     * @param classCatalogId
+     * @param classScheduleId
      * @return
      */
-    public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
-        return memberChildTagRepository.findByChildIdAndClassCatalogId(childId, classCatalogId);
+    public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classScheduleId) {
+        return memberChildTagRepository.findByChildIdAndClassCatalogId(childId, classScheduleId);
     }
 
     /**

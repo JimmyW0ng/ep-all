@@ -34,7 +34,7 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      * The reference instance of <code>ep.ep_member_child_comment</code>
      */
     public static final EpMemberChildComment EP_MEMBER_CHILD_COMMENT = new EpMemberChildComment();
-    private static final long serialVersionUID = 1568653282;
+    private static final long serialVersionUID = -708543326;
     /**
      * The column <code>ep.ep_member_child_comment.id</code>. 主键
      */
@@ -60,9 +60,9 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      */
     public final TableField<EpMemberChildCommentRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
     /**
-     * The column <code>ep.ep_member_child_comment.class_catalog_id</code>. 课程内容目录id
+     * The column <code>ep.ep_member_child_comment.class_schedule_id</code>. 班次行程id
      */
-    public final TableField<EpMemberChildCommentRecord, Long> CLASS_CATALOG_ID = createField("class_catalog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程内容目录id");
+    public final TableField<EpMemberChildCommentRecord, Long> CLASS_SCHEDULE_ID = createField("class_schedule_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次行程id");
     /**
      * The column <code>ep.ep_member_child_comment.type</code>. 评论类型: 评论；回复
      */

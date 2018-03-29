@@ -33,7 +33,7 @@ public class MemberMessageService {
     @Autowired
     private FileRepository fileRepository;
     @Autowired
-    private OrganClassCatalogRepository organClassCatalogRepository;
+    private OrganClassScheduleRepository organClassScheduleRepository;
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
@@ -84,19 +84,19 @@ public class MemberMessageService {
     /**
      * 发送课时评论消息
      *
-     * @param classCatalogId
+     * @param classScheduleId
      * @param childId
      * @param tagIds
      * @param comment
      */
-    public void sendClassCatalogCommentMessage(Long classCatalogId, Long childId, Set<Long> tagIds, String comment) {
+    public void sendClassCatalogCommentMessage(Long classScheduleId, Long childId, Set<Long> tagIds, String comment) {
         if (CollectionsTools.isEmpty(tagIds) && StringTools.isBlank(comment)) {
             return;
         }
         // 课时信息
-        EpOrganClassCatalogPo classCatalogPo = organClassCatalogRepository.getById(classCatalogId);
+        EpOrganClassSchedulePo schedulePo = organClassScheduleRepository.getById(classScheduleId);
         // 班次
-        EpOrganClassPo classPo = organClassRepository.getById(classCatalogPo.getClassId());
+        EpOrganClassPo classPo = organClassRepository.getById(schedulePo.getClassId());
         // 课程
         EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
         // 发送者-机构账户
@@ -121,7 +121,7 @@ public class MemberMessageService {
         messagePo.setType(EpMemberMessageType.class_catalog_comment);
         messagePo.setStatus(EpMemberMessageStatus.unread);
         messagePo.setContent(content);
-        messagePo.setSourceId(classCatalogId);
+        messagePo.setSourceId(classScheduleId);
         memberMessageRepository.insert(messagePo);
     }
 }

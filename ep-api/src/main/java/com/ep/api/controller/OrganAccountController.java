@@ -1,17 +1,11 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.ClassChildAbstractBo;
-import com.ep.domain.pojo.bo.MemberChildBo;
-import com.ep.domain.pojo.bo.OrganAccountBo;
-import com.ep.domain.pojo.bo.OrganAccountClassBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
-import com.ep.domain.service.MemberChildService;
-import com.ep.domain.service.OrganAccountService;
-import com.ep.domain.service.OrganClassCatalogService;
-import com.ep.domain.service.OrganClassChildService;
+import com.ep.domain.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +38,8 @@ public class OrganAccountController extends ApiController {
     @Autowired
     private OrganClassCatalogService organClassCatalogService;
     @Autowired
+    private OrganClassScheduleService organClassScheduleService;
+    @Autowired
     private OrganClassChildService organClassChildService;
     @Autowired
     private MemberChildService memberChildService;
@@ -69,26 +65,28 @@ public class OrganAccountController extends ApiController {
     @ApiOperation(value = "课时评价初始化")
     @PostMapping("/class/catalog/init")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(@RequestParam("classCatalogId") Long classCatalogId) {
+    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(
+            @RequestParam("classId") Long classId,
+            @RequestParam("startTimeStamp") Long startTimeStamp) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        return organClassCatalogService.getClassCatalogCommentView(organAccountPo, classCatalogId);
+        return organClassScheduleService.getClassCatalogCommentView(organAccountPo, classId, startTimeStamp);
     }
 
     @ApiOperation(value = "课时评价")
     @PostMapping("/class/catalog/comment")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo doClassCatalogComment(@RequestParam("classCatalogId") Long classCatalogId,
+    public ResultDo doClassCatalogComment(@RequestParam("classScheduleId") Long classScheduleId,
                                           @RequestParam("childId") Long childId,
                                           @RequestParam("tagIds") List<Long> tagIds,
                                           @RequestParam("comment") String comment) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        ResultDo resultDo = organClassCatalogService.doClassCatalogComment(organAccountPo,
-                classCatalogId,
+        ResultDo resultDo = organClassScheduleService.doClassCatalogComment(organAccountPo,
+                classScheduleId,
                 childId,
                 tagIds,
                 comment);
         if (resultDo.isSuccess()) {
-            ClassCatalogCommentEventBo eventBo = new ClassCatalogCommentEventBo(classCatalogId, childId, tagIds, comment);
+            ClassCatalogCommentEventBo eventBo = new ClassCatalogCommentEventBo(classScheduleId, childId, tagIds, comment);
             publisher.publishEvent(eventBo);
         }
         return resultDo;
@@ -97,17 +95,17 @@ public class OrganAccountController extends ApiController {
     @ApiOperation(value = "全部课程-分页")
     @PostMapping("/class/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(@PageableDefault Pageable pageable) {
+    public ResultDo<Page<OrganAccountAllClassBo>> findAllClassByOrganAccountForPage(@PageableDefault Pageable pageable) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
         return organAccountService.findAllClassByOrganAccountForPage(pageable, organAccountPo);
     }
 
-    @ApiOperation(value = "查看班次全部课时")
-    @PostMapping("/class/catalog/all")
+    @ApiOperation(value = "查看正常（固定课时）班次全部课时")
+    @PostMapping("/nomal/class/catalog/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<OrganAccountClassBo>> getClassAllCatalog(@RequestParam("classId") Long classId) {
+    public ResultDo<List<OrganAccountClassBo>> getNomalClassAllCatalog(@RequestParam("classId") Long classId) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        return organClassCatalogService.getClassAllCatalog(classId, organAccountPo);
+        return organClassCatalogService.getNomalClassAllCatalog(classId, organAccountPo);
     }
 
     @ApiOperation(value = "查看班次学员")

@@ -34,7 +34,7 @@ public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> 
      * The reference instance of <code>ep.ep_organ_class_schedule</code>
      */
     public static final EpOrganClassSchedule EP_ORGAN_CLASS_SCHEDULE = new EpOrganClassSchedule();
-    private static final long serialVersionUID = 764159215;
+    private static final long serialVersionUID = -852076631;
     /**
      * The column <code>ep.ep_organ_class_schedule.id</code>. 主键
      */
@@ -60,6 +60,14 @@ public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> 
      */
     public final TableField<EpOrganClassScheduleRecord, Integer> DURATION = createField("duration", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "持续时长");
     /**
+     * The column <code>ep.ep_organ_class_schedule.catalog_title</code>. 目录标题
+     */
+    public final TableField<EpOrganClassScheduleRecord, String> CATALOG_TITLE = createField("catalog_title", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "目录标题");
+    /**
+     * The column <code>ep.ep_organ_class_schedule.catalog_desc</code>. 目录描述
+     */
+    public final TableField<EpOrganClassScheduleRecord, String> CATALOG_DESC = createField("catalog_desc", org.jooq.impl.SQLDataType.VARCHAR.length(3000), this, "目录描述");
+    /**
      * The column <code>ep.ep_organ_class_schedule.catalog_index</code>. 目录索引
      */
     public final TableField<EpOrganClassScheduleRecord, Integer> CATALOG_INDEX = createField("catalog_index", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "目录索引");
@@ -67,6 +75,10 @@ public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> 
      * The column <code>ep.ep_organ_class_schedule.status</code>. 状态：等待；正常；迟到；缺勤；请假；关闭
      */
     public final TableField<EpOrganClassScheduleRecord, EpOrganClassScheduleStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus.class), this, "状态：等待；正常；迟到；缺勤；请假；关闭");
+    /**
+     * The column <code>ep.ep_organ_class_schedule.evaluate_flag</code>. 随堂评价标记
+     */
+    public final TableField<EpOrganClassScheduleRecord, Boolean> EVALUATE_FLAG = createField("evaluate_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "随堂评价标记");
     /**
      * The column <code>ep.ep_organ_class_schedule.class_catalog_id</code>. 班次课程内容目录id
      */

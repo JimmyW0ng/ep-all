@@ -28,7 +28,7 @@ public class EpMemberChildCommentPo extends AbstractBasePojo {
     private Long ognId;
     private Long courseId;
     private Long classId;
-    private Long classCatalogId;
+    private Long classScheduleId;
     private EpMemberChildCommentType type;
     private String content;
     private Long ognAccountId;

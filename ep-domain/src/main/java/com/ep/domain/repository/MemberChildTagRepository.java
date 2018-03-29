@@ -1,6 +1,5 @@
 package com.ep.domain.repository;
 
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildTagBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildTagRecord;
@@ -33,52 +32,36 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
      * 根据孩子和获取课时标签
      *
      * @param childId
-     * @param classCatalogId
+     * @param classScheduleId
      * @return
      */
-    public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+    public List<EpMemberChildTagPo> findByChildIdAndClassCatalogId(Long childId, Long classScheduleId) {
         return dslContext.selectFrom(EP_MEMBER_CHILD_TAG)
-                .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
-                .fetchInto(EpMemberChildTagPo.class);
+                         .where(EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID.eq(classScheduleId))
+                         .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                         .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                         .fetchInto(EpMemberChildTagPo.class);
     }
 
     /**
      * 根据孩子和获取课时标签和便签名
      *
      * @param childId
-     * @param classCatalogId
+     * @param classScheduleId
      * @return
      */
-    public List<MemberChildTagBo> findDetailByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+    public List<MemberChildTagBo> findDetailByChildIdAndClassScheduleId(Long childId, Long classScheduleId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_TAG.fields());
         fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
         return dslContext.select(fieldList)
-                .from(EP_MEMBER_CHILD_TAG)
-                .leftJoin(EP_CONSTANT_TAG)
-                .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
-                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
-                .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
-                .fetchInto(MemberChildTagBo.class);
-    }
-
-    /**
-     * 根据孩子和判断是否存在课时标签
-     *
-     * @param childId
-     * @param classCatalogId
-     * @return
-     */
-    public boolean existByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
-        int count = dslContext.selectCount().from(EP_MEMBER_CHILD_TAG)
-                .where(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
-                .fetchOneInto(Integer.class);
-        return count > BizConstant.DB_NUM_ZERO;
+                         .from(EP_MEMBER_CHILD_TAG)
+                         .leftJoin(EP_CONSTANT_TAG)
+                         .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
+                         .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                         .where(EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID.eq(classScheduleId))
+                         .and(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                         .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                         .fetchInto(MemberChildTagBo.class);
     }
 
     /**
@@ -128,27 +111,27 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     }
 
     /**
-     * 根据孩子childId和班次目录ClassCatalogId获取孩子的标签
+     * 根据孩子childId和班次目录classScheduleId获取孩子的标签
      *
      * @param childId
-     * @param classCatalogId
+     * @param classScheduleId
      * @return
      */
-    public List<MemberChildTagBo> findBosByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+    public List<MemberChildTagBo> findBosByChildIdAndClassCatalogId(Long childId, Long classScheduleId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD_TAG.TAG_ID);
         fieldList.add(EP_CONSTANT_TAG.ID);
         fieldList.add(EP_CONSTANT_TAG.TAG_NAME);
         return dslContext.select(fieldList)
-                .from(EP_MEMBER_CHILD_TAG)
-                .innerJoin(EP_CONSTANT_TAG)
-                .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
-                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
-                .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
-                .groupBy(EP_MEMBER_CHILD_TAG.TAG_ID)
-                .orderBy(DSL.max(EP_MEMBER_CHILD_TAG.CREATE_AT).desc())
-                .fetchInto(MemberChildTagBo.class);
+                         .from(EP_MEMBER_CHILD_TAG)
+                         .innerJoin(EP_CONSTANT_TAG)
+                         .on(EP_MEMBER_CHILD_TAG.TAG_ID.eq(EP_CONSTANT_TAG.ID))
+                         .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                         .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                         .and(EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID.eq(classScheduleId))
+                         .and(EP_MEMBER_CHILD_TAG.DEL_FLAG.eq(false))
+                         .groupBy(EP_MEMBER_CHILD_TAG.TAG_ID)
+                         .orderBy(DSL.max(EP_MEMBER_CHILD_TAG.CREATE_AT).desc())
+                         .fetchInto(MemberChildTagBo.class);
     }
 
     /**
@@ -166,12 +149,12 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     /**
      * 根据孩子childId和课程目录classCatalogId物理删除孩子标签
      * @param childId
-     * @param classCatalogId
+     * @param classScheduleId
      */
-    public void deletePhysicByChildIdAndClassCatalogId(Long childId, Long classCatalogId) {
+    public void deletePhysicByChildIdAndClassCatalogId(Long childId, Long classScheduleId) {
         dslContext.delete(EP_MEMBER_CHILD_TAG)
-                .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                .and(EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID.eq(classCatalogId))
-                .execute();
+                  .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
+                  .and(EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID.eq(classScheduleId))
+                  .execute();
     }
 }

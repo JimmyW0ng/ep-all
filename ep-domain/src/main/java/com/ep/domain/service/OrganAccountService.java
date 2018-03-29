@@ -6,15 +6,13 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganAccountAllClassBo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganPo;
-import com.ep.domain.repository.FileRepository;
-import com.ep.domain.repository.OrganAccountRepository;
-import com.ep.domain.repository.OrganClassRepository;
-import com.ep.domain.repository.OrganRepository;
+import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +44,8 @@ public class OrganAccountService {
     private OrganAccountRepository organAccountRepository;
     @Autowired
     private OrganClassRepository organClassRepository;
+    @Autowired
+    private OrganClassScheduleRepository organClassScheduleRepository;
 
 
     /**
@@ -175,7 +175,7 @@ public class OrganAccountService {
         Timestamp now = DateTools.getCurrentDateTime();
         Timestamp startTime = DateTools.zerolizedTime(now);
         Timestamp endTime = DateTools.getEndTime(now);
-        List<OrganAccountClassBo> todayClasses = organClassRepository.findClassByOgnAccountId(organAccountPo.getId(), startTime, endTime);
+        List<OrganAccountClassBo> todayClasses = organClassScheduleRepository.findClassByOgnAccountId(organAccountPo.getId(), startTime, endTime);
         if (CollectionsTools.isNotEmpty(todayClasses)) {
             for (OrganAccountClassBo classBo : todayClasses) {
                 // 加载课程图片
@@ -194,14 +194,14 @@ public class OrganAccountService {
      * @param organAccountPo
      * @return
      */
-    public ResultDo<Page<OrganAccountClassBo>> findAllClassByOrganAccountForPage(Pageable pageable, EpOrganAccountPo organAccountPo) {
-        ResultDo<Page<OrganAccountClassBo>> resultDo = ResultDo.build();
-        Page<OrganAccountClassBo> page = organClassRepository.findAllClassByOrganAccountForPage(pageable, organAccountPo.getId());
-        List<OrganAccountClassBo> data = page.getContent();
+    public ResultDo<Page<OrganAccountAllClassBo>> findAllClassByOrganAccountForPage(Pageable pageable, EpOrganAccountPo organAccountPo) {
+        ResultDo<Page<OrganAccountAllClassBo>> resultDo = ResultDo.build();
+        Page<OrganAccountAllClassBo> page = organClassRepository.findAllClassByOrganAccountForPage(pageable, organAccountPo.getId());
+        List<OrganAccountAllClassBo> data = page.getContent();
         if (CollectionsTools.isEmpty(data)) {
             return resultDo.setResult(page);
         }
-        for (OrganAccountClassBo classBo : data) {
+        for (OrganAccountAllClassBo classBo : data) {
             // 加载课程图片
             Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, classBo.getCourseId());
             String mainPicUrl = optional.isPresent() ? optional.get().getFileUrl() : null;

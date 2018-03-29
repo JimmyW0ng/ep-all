@@ -33,7 +33,7 @@ public class EpOrganClassCatalog extends TableImpl<EpOrganClassCatalogRecord> {
      * The reference instance of <code>ep.ep_organ_class_catalog</code>
      */
     public static final EpOrganClassCatalog EP_ORGAN_CLASS_CATALOG = new EpOrganClassCatalog();
-    private static final long serialVersionUID = -1648778506;
+    private static final long serialVersionUID = 597074996;
     /**
      * The column <code>ep.ep_organ_class_catalog.id</code>. 主键
      */
@@ -62,10 +62,6 @@ public class EpOrganClassCatalog extends TableImpl<EpOrganClassCatalogRecord> {
      * The column <code>ep.ep_organ_class_catalog.duration</code>. 持续时长
      */
     public final TableField<EpOrganClassCatalogRecord, Integer> DURATION = createField("duration", org.jooq.impl.SQLDataType.INTEGER, this, "持续时长");
-    /**
-     * The column <code>ep.ep_organ_class_catalog.child_evaluated_num</code>. 已经评价过的孩子数量
-     */
-    public final TableField<EpOrganClassCatalogRecord, Integer> CHILD_EVALUATED_NUM = createField("child_evaluated_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "已经评价过的孩子数量");
     /**
      * The column <code>ep.ep_organ_class_catalog.remark</code>. 备注信息
      */

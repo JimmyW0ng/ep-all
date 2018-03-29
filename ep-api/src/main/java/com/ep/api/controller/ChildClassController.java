@@ -41,7 +41,7 @@ public class ChildClassController extends ApiController {
     @Autowired
     private OrganClassCommentService organClassCommentService;
     @Autowired
-    private OrganClassCatalogService organClassCatalogService;
+    private OrganClassScheduleService organClassScheduleService;
 
     @ApiOperation(value = "孩子全部课程分页列表")
     @PostMapping("/page")
@@ -83,7 +83,7 @@ public class ChildClassController extends ApiController {
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrganClassCatalogDetailDto> getCatalogDetail(@RequestParam("orderId") Long orderId) {
         Long memberId = super.getCurrentUser().get().getId();
-        return organClassCatalogService.getCatalogDetail(memberId, orderId);
+        return organClassScheduleService.getCatalogDetail(memberId, orderId);
     }
 
     @ApiOperation(value = "班次老师评价回复")

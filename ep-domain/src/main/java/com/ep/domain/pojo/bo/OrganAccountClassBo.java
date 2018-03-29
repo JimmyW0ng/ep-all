@@ -15,13 +15,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class OrganAccountClassBo extends EpOrganClassPo {
 
-    private String ognName;
+    private Long classId;
     private String courseName;
     private String mainPicUrl;
     private Long classCatalogId;
     private String catalogTitle;
     private String catalogDesc;
     private Timestamp startTime;
+    private Integer childNum;
     private Integer childEvaluatedNum;
 
     public Boolean getWaitCommentFlag() {
@@ -49,15 +50,9 @@ public class OrganAccountClassBo extends EpOrganClassPo {
         return false;
     }
 
-    public String getStatusText() {
-        if (EpOrganClassStatus.save.equals(super.getStatus())) {
-            return "报名中";
-        } else if (EpOrganClassStatus.online.equals(super.getStatus())) {
-            return "确认开班";
-        } else if (EpOrganClassStatus.opening.equals(super.getStatus())) {
-            return "学习中";
-        } else if (EpOrganClassStatus.end.equals(super.getStatus())) {
-            return "已结束";
+    public Long getStartTimeStamp() {
+        if (this.getStartTime() != null) {
+            return this.getStartTime().getTime();
         }
         return null;
     }

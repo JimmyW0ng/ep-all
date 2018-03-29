@@ -30,7 +30,7 @@ public class ClassCatalogCommentEventHandle {
         log.info("课时评价事件处理开始, event={}", event);
         Set<Long> tagIds = CollectionsTools.isNotEmpty(event.getTagIds()) ? Sets.newHashSet(event.getTagIds()) : null;
         // 发送课时评论消息
-        memberMessageService.sendClassCatalogCommentMessage(event.getClassCatalogId(), event.getChildId(), tagIds, event.getComment());
+        memberMessageService.sendClassCatalogCommentMessage(event.getClassScheduleId(), event.getChildId(), tagIds, event.getComment());
     }
 
 }

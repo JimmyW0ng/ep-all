@@ -1,8 +1,7 @@
 package com.ep.domain.repository;
 
-import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
-import com.ep.domain.pojo.bo.OrganAccountClassBo;
+import com.ep.domain.pojo.bo.OrganAccountAllClassBo;
 import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.bo.OrganClassEnterBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -114,45 +112,13 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
     }
 
     /**
-     * 根据课程负责人获取今日班次
-     *
-     * @param ognAccountId
-     * @return
-     */
-    public List<OrganAccountClassBo> findClassByOgnAccountId(Long ognAccountId, Timestamp startTime, Timestamp endTime) {
-        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
-        fieldList.add(EP_ORGAN.OGN_NAME);
-        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.ID.as("classCatalogId"));
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX);
-        fieldList.add(EP_ORGAN_CLASS_CATALOG.CHILD_EVALUATED_NUM);
-        return dslContext.select(fieldList)
-                .from(EP_ORGAN_CLASS)
-                .leftJoin(EP_ORGAN)
-                .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
-                .leftJoin(EP_ORGAN_COURSE)
-                .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                .leftJoin(EP_ORGAN_CLASS_CATALOG)
-                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
-                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
-                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
-                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
-                        EpOrganClassStatus.opening,
-                        EpOrganClassStatus.end))
-                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.between(startTime, endTime))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .orderBy(EP_ORGAN_CLASS_CATALOG.START_TIME.asc())
-                .fetchInto(OrganAccountClassBo.class);
-    }
-
-    /**
      * 根据课程负责人获取全部班次-分页
      *
      * @param pageable
      * @param ognAccountId
      * @return
      */
-    public Page<OrganAccountClassBo> findAllClassByOrganAccountForPage(Pageable pageable, Long ognAccountId) {
+    public Page<OrganAccountAllClassBo> findAllClassByOrganAccountForPage(Pageable pageable, Long ognAccountId) {
         Long count = dslContext.selectCount()
                 .from(EP_ORGAN_CLASS)
                 .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
@@ -165,30 +131,21 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
             return new PageImpl(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
-        fieldList.add(EP_ORGAN.OGN_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(DSL.ifnull(DSL.max(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX), BizConstant.DB_NUM_ZERO).as("catalogIndex"));
-        List<OrganAccountClassBo> data = dslContext.select(fieldList)
-                .from(EP_ORGAN_CLASS)
-                .leftJoin(EP_ORGAN)
-                .on(EP_ORGAN_CLASS.OGN_ID.eq(EP_ORGAN.ID))
-                .leftJoin(EP_ORGAN_COURSE)
-                .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                .leftJoin(EP_ORGAN_CLASS_CATALOG)
-                .on(EP_ORGAN_CLASS.ID.eq(EP_ORGAN_CLASS_CATALOG.CLASS_ID))
-                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.le(DateTools.getCurrentDateTime()))
-                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
-                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
-                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
+        List<OrganAccountAllClassBo> data = dslContext.select(fieldList)
+                                                      .from(EP_ORGAN_CLASS)
+                                                      .leftJoin(EP_ORGAN_COURSE)
+                                                      .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                                                      .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                                                      .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
                         EpOrganClassStatus.opening,
                         EpOrganClassStatus.end))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .groupBy(EP_ORGAN_CLASS.ID)
-                .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
+                                                      .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                                                      .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
                         EpOrganClassStatus.opening,
                         EpOrganClassStatus.end),
                         EP_ORGAN_COURSE.ONLINE_TIME.desc())
-                .fetchInto(OrganAccountClassBo.class);
+                                                      .fetchInto(OrganAccountAllClassBo.class);
         return new PageImpl(data, pageable, count);
     }
 

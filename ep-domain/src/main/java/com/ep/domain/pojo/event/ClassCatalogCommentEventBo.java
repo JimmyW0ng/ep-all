@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClassCatalogCommentEventBo extends AbstractBasePojo {
 
-    private Long classCatalogId;
+    private Long classScheduleId;
     private Long childId;
     private List<Long> tagIds;
     private String comment;

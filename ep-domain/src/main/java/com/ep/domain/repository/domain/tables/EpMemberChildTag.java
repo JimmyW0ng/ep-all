@@ -33,7 +33,7 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      * The reference instance of <code>ep.ep_member_child_tag</code>
      */
     public static final EpMemberChildTag EP_MEMBER_CHILD_TAG = new EpMemberChildTag();
-    private static final long serialVersionUID = -620900094;
+    private static final long serialVersionUID = -2097291516;
     /**
      * The column <code>ep.ep_member_child_tag.id</code>. 主键
      */
@@ -55,9 +55,9 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      */
     public final TableField<EpMemberChildTagRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次id");
     /**
-     * The column <code>ep.ep_member_child_tag.class_catalog_id</code>. 课程内容目录id
+     * The column <code>ep.ep_member_child_tag.class_schedule_id</code>. 班次行程id
      */
-    public final TableField<EpMemberChildTagRecord, Long> CLASS_CATALOG_ID = createField("class_catalog_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "课程内容目录id");
+    public final TableField<EpMemberChildTagRecord, Long> CLASS_SCHEDULE_ID = createField("class_schedule_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "班次行程id");
     /**
      * The column <code>ep.ep_member_child_tag.tag_id</code>. 标签id
      */

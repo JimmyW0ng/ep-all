@@ -74,7 +74,6 @@ public class MessageCode {
     public static final String ERROR_CLASS_BESPEAK_NOT_ALLOW_OPEN = "ERROR_CLASS_BESPEAK_NOT_ALLOW_OPEN";
     public static final String ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS = "ERROR_CLASS_SUCCESS_ORDER_NOT_EXISTS";
     public static final String ERROR_CLASS_CATALOG_NOT_EXISTS = "ERROR_CLASS_CATALOG_NOT_EXISTS";
-    public static final String ERROR_CLASS_CATALOG_NOT_START = "ERROR_CLASS_CATALOG_NOT_START";
     public static final String ERROR_CLASS_IS_OPENING = "ERROR_CLASS_IS_OPENING";
     public static final String ERROR_CLASS_IS_END = "ERROR_CLASS_IS_END";
     public static final String ERROR_CLASS_NEED_VIP = "ERROR_CLASS_NEED_VIP";
@@ -82,6 +81,8 @@ public class MessageCode {
     public static final String ERROR_CLASS_NOT_EXIST_SUCCESS_ORDER = "ERROR_CLASS_NOT_EXIST_SUCCESS_ORDER";
     public static final String ERROR_CLASS_OPENING_ORDER_DUPLICATE = "ERROR_CLASS_OPENING_ORDER_DUPLICATE";
     public static final String ERROR_CLASS_CATALOG_STARTTIME_TONOW_LT30 = "ERROR_CLASS_CATALOG_STARTTIME_TONOW_LT30";
+    public static final String ERROR_CLASS_SCHEDULE_NOT_EXIST = "ERROR_CLASS_SCHEDULE_NOT_EXIST";
+    public static final String ERROR_CLASS_SCHEDULE_NOT_START = "ERROR_CLASS_SCHEDULE_NOT_START";
     /**
      * 订单
      */

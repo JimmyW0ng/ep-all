@@ -29,7 +29,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChildCommentRecord> implements Record16<Long, Long, Long, Long, Long, Long, Long, EpMemberChildCommentType, String, Long, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = -1944839500;
+    private static final long serialVersionUID = -1161695736;
 
     /**
      * Create a detached EpMemberChildCommentRecord
@@ -41,7 +41,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     /**
      * Create a detached, initialised EpMemberChildCommentRecord
      */
-    public EpMemberChildCommentRecord(Long id, Long pId, Long childId, Long ognId, Long courseId, Long classId, Long classCatalogId, EpMemberChildCommentType type, String content, Long ognAccountId, Long replyMemberId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpMemberChildCommentRecord(Long id, Long pId, Long childId, Long ognId, Long courseId, Long classId, Long classScheduleId, EpMemberChildCommentType type, String content, Long ognAccountId, Long replyMemberId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
         super(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT);
 
         set(0, id);
@@ -50,7 +50,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
         set(3, ognId);
         set(4, courseId);
         set(5, classId);
-        set(6, classCatalogId);
+        set(6, classScheduleId);
         set(7, type);
         set(8, content);
         set(9, ognAccountId);
@@ -153,16 +153,16 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.class_catalog_id</code>. 课程内容目录id
+     * Getter for <code>ep.ep_member_child_comment.class_schedule_id</code>. 班次行程id
      */
-    public Long getClassCatalogId() {
+    public Long getClassScheduleId() {
         return (Long) get(6);
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_comment.class_catalog_id</code>. 课程内容目录id
+     * Setter for <code>ep.ep_member_child_comment.class_schedule_id</code>. 班次行程id
      */
-    public EpMemberChildCommentRecord setClassCatalogId(Long value) {
+    public EpMemberChildCommentRecord setClassScheduleId(Long value) {
         set(6, value);
         return this;
     }
@@ -387,7 +387,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     @Override
     public Field<Long> field7() {
-        return EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_CATALOG_ID;
+        return EpMemberChildComment.EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID;
     }
 
     /**
@@ -515,7 +515,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     @Override
     public Long value7() {
-        return getClassCatalogId();
+        return getClassScheduleId();
     }
 
     /**
@@ -649,7 +649,7 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
      */
     @Override
     public EpMemberChildCommentRecord value7(Long value) {
-        setClassCatalogId(value);
+        setClassScheduleId(value);
         return this;
     }
 

@@ -39,6 +39,8 @@ import static com.ep.domain.repository.domain.Tables.*;
 @RequestMapping("auth/childComment")
 public class MemberChildCommentController extends BackendController {
     @Autowired
+    ApplicationEventPublisher publisher;
+    @Autowired
     private MemberChildCommentService memberChildCommentService;
     @Autowired
     private MemberChildTagService memberChildTagService;
@@ -52,8 +54,6 @@ public class MemberChildCommentController extends BackendController {
     private OrganClassCatalogService organClassCatalogService;
     @Autowired
     private OrganAccountService organAccountService;
-    @Autowired
-    ApplicationEventPublisher publisher;
 
     @GetMapping("index")
     @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
@@ -143,17 +143,17 @@ public class MemberChildCommentController extends BackendController {
     @ResponseBody
     public ResultDo updateComment(@RequestParam(value = "id") Long id,
                                   @RequestParam(value = "childId") Long childId,
-                                  @RequestParam(value = "classCatalogId") Long classCatalogId,
+                                  @RequestParam(value = "classScheduleId") Long classScheduleId,
                                   @RequestParam(value = "content") String content,
                                   @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = memberChildCommentService.updateComment(id, content, childId, classCatalogId, ognId, tagIds);
+        ResultDo resultDo = memberChildCommentService.updateComment(id, content, childId, classScheduleId, ognId, tagIds);
         //课时评价事件start
         ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
         eventPojo.setChildId(childId);
-        eventPojo.setClassCatalogId(classCatalogId);
+        eventPojo.setClassScheduleId(classScheduleId);
         eventPojo.setComment(content);
         eventPojo.setTagIds(tagIds);
         this.publisher.publishEvent(eventPojo);
@@ -174,18 +174,18 @@ public class MemberChildCommentController extends BackendController {
             @RequestParam(value = "childId") Long childId,
             @RequestParam(value = "courseId") Long courseId,
             @RequestParam(value = "classId") Long classId,
-            @RequestParam(value = "classCatalogId") Long classCatalogId,
+            @RequestParam(value = "classScheduleId") Long classScheduleId,
             @RequestParam(value = "content") String content,
             @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
     ) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         Long mobile = currentUser.getMobile();
-        ResultDo resultDo = memberChildCommentService.createCommentLaunch(childId, ognId, courseId, classId, classCatalogId, content, mobile);
+        ResultDo resultDo = memberChildCommentService.createCommentLaunch(childId, ognId, courseId, classId, classScheduleId, content, mobile);
         //课时评价事件start
         ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
         eventPojo.setChildId(childId);
-        eventPojo.setClassCatalogId(classCatalogId);
+        eventPojo.setClassScheduleId(classScheduleId);
         eventPojo.setComment(content);
         eventPojo.setTagIds(tagIds);
         this.publisher.publishEvent(eventPojo);
@@ -199,7 +199,7 @@ public class MemberChildCommentController extends BackendController {
      *
      * @param childId
      * @param courseId
-     * @param classCatalogId
+     * @param classScheduleId
      * @return
      */
     @PostMapping("updateChildTagInit")
@@ -208,7 +208,7 @@ public class MemberChildCommentController extends BackendController {
     public ResultDo updateChildTagInit(
             @RequestParam(value = "childId") Long childId,
             @RequestParam(value = "courseId") Long courseId,
-            @RequestParam(value = "classCatalogId") Long classCatalogId
+            @RequestParam(value = "classCatalogId") Long classScheduleId
     ) {
         ResultDo resultDo = ResultDo.build();
         Map<String, Object> map = Maps.newHashMap();
@@ -216,7 +216,7 @@ public class MemberChildCommentController extends BackendController {
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
 
 
-        List<EpMemberChildTagPo> memberChildTagPos = memberChildTagService.findByChildIdAndClassCatalogId(childId, classCatalogId);
+        List<EpMemberChildTagPo> memberChildTagPos = memberChildTagService.findByChildIdAndClassCatalogId(childId, classScheduleId);
         map.put("organCourseTagBos", organCourseTagBos);
         map.put("memberChildTagPos", memberChildTagPos);
         resultDo.setResult(map);

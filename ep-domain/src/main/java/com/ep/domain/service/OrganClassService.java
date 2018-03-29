@@ -133,6 +133,8 @@ public class OrganClassService {
                 schedulePo.setClassCatalogId(catalogPo.getId());
                 schedulePo.setStartTime(catalogPo.getStartTime());
                 schedulePo.setDuration(catalogPo.getDuration());
+                schedulePo.setCatalogTitle(catalogPo.getCatalogTitle());
+                schedulePo.setCatalogDesc(catalogPo.getCatalogDesc());
                 schedulePo.setCatalogIndex(catalogPo.getCatalogIndex());
                 schedulePo.setStatus(EpOrganClassScheduleStatus.normal);
                 organClassScheduleRepository.insert(schedulePo);

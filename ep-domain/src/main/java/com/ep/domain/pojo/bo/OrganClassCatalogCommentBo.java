@@ -1,7 +1,5 @@
 package com.ep.domain.pojo.bo;
 
-import com.ep.common.tool.CollectionsTools;
-import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.AbstractBasePojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,14 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 public class OrganClassCatalogCommentBo extends AbstractBasePojo {
 
+    private Long classScheduleId;
+    private Long catalogTitle;
+    private Long catalogDesc;
     private Long childId;
     private String childNickName;
     private String avatar;
     private String comment;
     private List<MemberChildTagBo> tags;
-
-    public Boolean getWaitComment() {
-        return CollectionsTools.isEmpty(tags) && StringTools.isBlank(comment);
-    }
 
 }

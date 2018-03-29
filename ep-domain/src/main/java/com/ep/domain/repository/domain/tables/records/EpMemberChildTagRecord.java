@@ -28,7 +28,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTagRecord> implements Record12<Long, Long, Long, Long, Long, Long, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 143534859;
+    private static final long serialVersionUID = -1482039637;
 
     /**
      * Create a detached EpMemberChildTagRecord
@@ -40,7 +40,7 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     /**
      * Create a detached, initialised EpMemberChildTagRecord
      */
-    public EpMemberChildTagRecord(Long id, Long childId, Long ognId, Long courseId, Long classId, Long classCatalogId, Long tagId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpMemberChildTagRecord(Long id, Long childId, Long ognId, Long courseId, Long classId, Long classScheduleId, Long tagId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
         super(EpMemberChildTag.EP_MEMBER_CHILD_TAG);
 
         set(0, id);
@@ -48,7 +48,7 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
         set(2, ognId);
         set(3, courseId);
         set(4, classId);
-        set(5, classCatalogId);
+        set(5, classScheduleId);
         set(6, tagId);
         set(7, createAt);
         set(8, updateAt);
@@ -133,16 +133,16 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_tag.class_catalog_id</code>. 课程内容目录id
+     * Getter for <code>ep.ep_member_child_tag.class_schedule_id</code>. 班次行程id
      */
-    public Long getClassCatalogId() {
+    public Long getClassScheduleId() {
         return (Long) get(5);
     }
 
     /**
-     * Setter for <code>ep.ep_member_child_tag.class_catalog_id</code>. 课程内容目录id
+     * Setter for <code>ep.ep_member_child_tag.class_schedule_id</code>. 班次行程id
      */
-    public EpMemberChildTagRecord setClassCatalogId(Long value) {
+    public EpMemberChildTagRecord setClassScheduleId(Long value) {
         set(5, value);
         return this;
     }
@@ -314,7 +314,7 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      */
     @Override
     public Field<Long> field6() {
-        return EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_CATALOG_ID;
+        return EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID;
     }
 
     /**
@@ -410,7 +410,7 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      */
     @Override
     public Long value6() {
-        return getClassCatalogId();
+        return getClassScheduleId();
     }
 
     /**
@@ -511,7 +511,7 @@ public class EpMemberChildTagRecord extends UpdatableRecordImpl<EpMemberChildTag
      */
     @Override
     public EpMemberChildTagRecord value6(Long value) {
-        setClassCatalogId(value);
+        setClassScheduleId(value);
         return this;
     }
 
