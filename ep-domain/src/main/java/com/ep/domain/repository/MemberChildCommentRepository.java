@@ -2,18 +2,20 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
+import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.tables.EpMemberChildComment;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildCommentRecord;
 import com.google.common.collect.Lists;
-import org.jooq.DSLContext;
-import org.jooq.Field;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -207,14 +209,14 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
         fieldList.add(memberChildCommentCopy.ID.as("replyId"));
         fieldList.add(memberChildCommentCopy.CONTENT.as("contentReply"));
         SelectConditionStep<Record> record = dslContext.select(fieldList)
-                .from(EP_ORGAN_CLASS_SCHEDULE)
-                .leftJoin(EP_MEMBER_CHILD_COMMENT)
-                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
+                                                       .from(EP_ORGAN_CLASS_SCHEDULE)
+                                                       .leftJoin(EP_MEMBER_CHILD_COMMENT)
+                                                       .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
                                                     .and(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID)))
-                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+                                                       .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
 
-                .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
-                .where(condition);
+                                                       .leftJoin(memberChildCommentCopy).on(memberChildCommentCopy.P_ID.eq(EP_MEMBER_CHILD_COMMENT.ID))
+                                                       .where(condition);
 
         List<OrganClassScheduleDto> list = record.orderBy(EP_ORGAN_CLASS_SCHEDULE.ID.asc())
                 .limit(pageable.getPageSize())

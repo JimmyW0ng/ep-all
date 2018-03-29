@@ -3,11 +3,9 @@ package com.ep.backend.controller;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
-import com.ep.domain.pojo.event.ClassCatalogCommentEventBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.service.*;
 import com.google.common.collect.Maps;
@@ -47,36 +45,35 @@ public class MemberChildCommentController extends BackendController {
     private OrganAccountService organAccountService;
 
 
-
-    /**
-     * 修改评价(评论内容，标签)
-     *
-     * @param id
-     * @param content
-     * @return
-     */
-    @PostMapping("updateComment")
-    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
-    @ResponseBody
-    public ResultDo updateComment(@RequestParam(value = "id") Long id,
-                                  @RequestParam(value = "childId") Long childId,
-                                  @RequestParam(value = "classScheduleId") Long classScheduleId,
-                                  @RequestParam(value = "content") String content,
-                                  @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
-    ) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = memberChildCommentService.updateComment(id, content, childId, classScheduleId, ognId, tagIds);
-        //课时评价事件start
-        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
-        eventPojo.setChildId(childId);
-        eventPojo.setClassScheduleId(classScheduleId);
-        eventPojo.setComment(content);
-        eventPojo.setTagIds(tagIds);
-        this.publisher.publishEvent(eventPojo);
-        //课时评价事件end
-        return resultDo;
-    }
+//    /**
+//     * 修改评价(评论内容，标签)
+//     *
+//     * @param id
+//     * @param content
+//     * @return
+//     */
+//    @PostMapping("updateComment")
+//    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
+//    @ResponseBody
+//    public ResultDo updateComment(@RequestParam(value = "id") Long id,
+//                                  @RequestParam(value = "childId") Long childId,
+//                                  @RequestParam(value = "classScheduleId") Long classScheduleId,
+//                                  @RequestParam(value = "content") String content,
+//                                  @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
+//    ) {
+//        EpSystemUserPo currentUser = super.getCurrentUser().get();
+//        Long ognId = currentUser.getOgnId();
+//        ResultDo resultDo = memberChildCommentService.updateComment(id, content, childId, classScheduleId, ognId, tagIds);
+//        //课时评价事件start
+//        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
+//        eventPojo.setChildId(childId);
+//        eventPojo.setClassScheduleId(classScheduleId);
+//        eventPojo.setComment(content);
+//        eventPojo.setTagIds(tagIds);
+//        this.publisher.publishEvent(eventPojo);
+//        //课时评价事件end
+//        return resultDo;
+//    }
 
     /**
      * 添加评价(评论内容，标签)
@@ -84,33 +81,33 @@ public class MemberChildCommentController extends BackendController {
      * @param content
      * @return
      */
-    @PostMapping("createComment")
-    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
-    @ResponseBody
-    public ResultDo createComment(
-            @RequestParam(value = "childId") Long childId,
-            @RequestParam(value = "courseId") Long courseId,
-            @RequestParam(value = "classId") Long classId,
-            @RequestParam(value = "classScheduleId") Long classScheduleId,
-            @RequestParam(value = "content") String content,
-            @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
-    ) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
-        Long mobile = currentUser.getMobile();
-        ResultDo resultDo = memberChildCommentService.createCommentLaunch(childId, ognId, courseId, classId, classScheduleId, content, mobile);
-//        ResultDo resultDo = memberChildCommentService.createCommentLaunchByOgn(childId, ognId, courseId, classId,
-//                classCatalogId, content, currentUser.getId(), tagIds);tagIds
-        //课时评价事件start
-        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
-        eventPojo.setChildId(childId);
-        eventPojo.setClassScheduleId(classScheduleId);
-        eventPojo.setComment(content);
-        eventPojo.setTagIds(tagIds);
-        this.publisher.publishEvent(eventPojo);
-        //课时评价事件end
-        return resultDo;
-    }
+//    @PostMapping("createComment")
+//    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
+//    @ResponseBody
+//    public ResultDo createComment(
+//            @RequestParam(value = "childId") Long childId,
+//            @RequestParam(value = "courseId") Long courseId,
+//            @RequestParam(value = "classId") Long classId,
+//            @RequestParam(value = "classScheduleId") Long classScheduleId,
+//            @RequestParam(value = "content") String content,
+//            @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
+//    ) {
+//        EpSystemUserPo currentUser = super.getCurrentUser().get();
+//        Long ognId = currentUser.getOgnId();
+//        Long mobile = currentUser.getMobile();
+//        ResultDo resultDo = memberChildCommentService.createCommentLaunch(childId, ognId, courseId, classId, classScheduleId, content, mobile);
+////        ResultDo resultDo = memberChildCommentService.createCommentLaunchByOgn(childId, ognId, courseId, classId,
+////                classCatalogId, content, currentUser.getId(), tagIds);tagIds
+//        //课时评价事件start
+//        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
+//        eventPojo.setChildId(childId);
+//        eventPojo.setClassScheduleId(classScheduleId);
+//        eventPojo.setComment(content);
+//        eventPojo.setTagIds(tagIds);
+//        this.publisher.publishEvent(eventPojo);
+//        //课时评价事件end
+//        return resultDo;
+//    }
 
 
     /**
