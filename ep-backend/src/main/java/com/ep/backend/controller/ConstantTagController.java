@@ -120,13 +120,6 @@ public class ConstantTagController extends BackendController {
     }
 
 
-//    @GetMapping("merchantIndex")
-//    public String merchantIndex(Model model) {
-//        List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
-//        model.addAttribute("constantCatalogPos", constantCatalogPos);
-//        return "constantTag/merchantIndex";
-//    }
-
 
     /**
      * 商户标签分页

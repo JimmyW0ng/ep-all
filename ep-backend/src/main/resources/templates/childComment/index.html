@@ -22,7 +22,7 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form">
                     <div class="form-group">
-                        <select type="text" class="form-control" style="width:250px" name="courseId"
+                        <select type="text" class="form-control" style="width:250px" name="courseId" id="searchcourseId"
                                 onchange="changeCourse(this)">
                             <option value="">课程</option>
                             <option th:each="key : ${courseMap.keySet()}"
@@ -119,12 +119,20 @@
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.type,'launch')}"
                                    href="javascript:void(0)"
                                    th:onclick="'viewContent(this)'">查看</a>
+                                <!--<a class="btn btn-xs btn-info"-->
+                                <!--th:if="${null==bo.replyId&&null==bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"-->
+                                <!--href="javascript:void(0)"-->
+                                <!--th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">添加</a>-->
                                 <a class="btn btn-xs btn-info"
-                                   th:if="${null==bo.replyId&&null==bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"
+                                   th:if="${null==bo.replyId&&null==bo.launchId}"
                                    href="javascript:void(0)"
                                    th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">添加</a>
+                                <!--<a class="btn btn-xs btn-info"-->
+                                <!--th:if="${null==bo.replyId&&null!=bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"-->
+                                <!--href="javascript:void(0)"-->
+                                <!--th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>-->
                                 <a class="btn btn-xs btn-info"
-                                   th:if="${null==bo.replyId&&null!=bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"
+                                   th:if="${null==bo.replyId&&null!=bo.launchId}"
                                    href="javascript:void(0)"
                                    th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>
 
@@ -228,14 +236,21 @@
 
 <script>
     function search() {
+        if (!$("#searchcourseId").val()) {
+            toastr.warning("请选择课程!")
+            return
+        }
+        if (!$("#classId").val()) {
+            toastr.warning("请选择班次!")
+            return
+        }
         var classId = $("#classId").val()
         var type = $("#classId").find("option[value='" + classId + "']").eq(0).attr("name")
         if (type == "bespeak") {
-            if (!$("#classCId").val()) {
-                toastr.warning("请选择班次!")
-                return
-            }
+            $("#classCatalogId").hide()
+            $("#classCatalogId").val("")
         } else if (type == "normal") {
+            $("#classCatalogId").show()
             if (!$("#classCatalogId").val()) {
                 toastr.warning("请选择课时目录!")
                 return

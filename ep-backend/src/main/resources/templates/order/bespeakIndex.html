@@ -20,10 +20,10 @@
 
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
-                <form class="form-inline" id="query-form" role="form" >
+                <form class="form-inline" id="query-form" role="form">
                     <div class="form-group">
                         <input type="text" class="form-control " name="mobile" th:value="${searchMap.get('mobile')}"
-                               placeholder="会员账号" >
+                               placeholder="会员账号">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control " name="childTrueName"
@@ -47,26 +47,26 @@
                                th:value="${searchMap.get('className')}"
                                placeholder="班次">
                     </div>
-                    <div class="form-group">
-                        <select type="text" class="form-control " name="classType" style="width:182px;">
-                            <option value="">班次类型</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassType).values()}"
-                                    th:selected="${#strings.equals(searchMap.get('classType'),state)}"
-                                    th:value="${state}"
-                                    th:text="#{EpOrganClassType.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group ">
-                        <select class="form-control" name="status" style="width:182px;">
-                            <option value>订单状态</option>
-                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderStatus).values()}"
-                                    th:value="${state}"
-                                    th:selected="${#stringTools.equals(state,searchMap.get('status'))}"
-                                    th:text="#{EpOrderStatus.+${state.literal}}">
-                            </option>
-                        </select>
-                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<select type="text" class="form-control " name="classType" style="width:182px;">-->
+                    <!--<option value="">班次类型</option>-->
+                    <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassType).values()}"-->
+                    <!--th:selected="${#strings.equals(searchMap.get('classType'),state)}"-->
+                    <!--th:value="${state}"-->
+                    <!--th:text="#{EpOrganClassType.+${state.literal}}">-->
+                    <!--</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="form-group ">-->
+                    <!--<select class="form-control" name="status" style="width:182px;" >-->
+                    <!--<option value>订单状态</option>-->
+                    <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderStatus).values()}"-->
+                    <!--th:value="${state}"-->
+                    <!--th:selected="${#stringTools.equals(state,searchMap.get('status'))}"-->
+                    <!--th:text="#{EpOrderStatus.+${state.literal}}">-->
+                    <!--</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
@@ -86,9 +86,7 @@
                     </div>
 
                 </form>
-                <div style="text-align: right">
-                    <button style="display: none" class="btn btn-info" onclick="batchOrderSuccess()">批量报名</button>
-                </div>
+
             </div>
             <div class="panel-body">
 
@@ -106,10 +104,8 @@
                             <th>昵称</th>
                             <th>课程</th>
                             <th>班次</th>
-                            <th>班次类型</th>
-                            <th>班次状态</th>
+
                             <th>价格</th>
-                            <th>订单状态</th>
                             <th>备注</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -126,11 +122,9 @@
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
-                            <td th:text="#{EpOrganClassType.+${bo.classType}}"></td>
-                            <td th:text="#{EpOrganClassStatus.+${bo.classStatus}}"></td>
+
                             <td style="display: none" name="classStatus" th:text="${bo.classStatus}"></td>
                             <td th:text="${bo.prize}"></td>
-                            <td name="statusZh" th:text="#{EpOrderStatus.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
 
                             <td name="remark" th:text="${bo.remark}"></td>
@@ -179,7 +173,8 @@
 
             <input type="hidden" id="sourceId">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
                 </button>
                 <h3 style="text-align: left">确认拒绝</h3>
 
@@ -200,44 +195,25 @@
 <script th:replace="~{fragments/scripts}"></script>
 
 <script th:inline="javascript">
-    var EpOrderStatus={save:"保存",
-        success:"成功",
-    opening:"已开班",
-    end:"结束",
-    refuse:"拒绝",
-    cancel:"取消"}
-    
-    function checkOrderSuccess(ele) {
-        var status=$(ele).parent().siblings("td[name='status']").eq(0).html()
-        if(status=="save"&&$(ele).is(':checked')){
-            $(ele).attr("checked",true)
-        }else{
-            $(ele).attr("checked",false)
-        }
+    var EpOrderStatus = {
+        save: "保存",
+        success: "成功",
+        opening: "已开班",
+        end: "结束",
+        refuse: "拒绝",
+        cancel: "取消"
     }
-    
-    function batchOrderSuccess() {
-        var batchOrder=[]
-        $("#tbody tr").find("input[type='checkbox']:checked").each(function () {
-            var id=$(this).attr("value")
-            var classId=$(this).parent().siblings("td[name='classId']").eq(0).html()
-            batchOrder.push({id:id,classId:classId});
-        })
-        if(batchOrder.length==0){
-            toastr.error("请先勾选名单");
-        }
-//        console.log(batchOrder)
-        $.ajax({
-            type:"POST",
-            url:"/auth/order/batchOrderSuccess",
-            data: JSON.stringify(batchOrder),
-            contentType: "application/json;charset=utf-8",
-            success:function () {
-                toastr_success(null, document.location.href)
 
-            }
-        })
+    function checkOrderSuccess(ele) {
+        var status = $(ele).parent().siblings("td[name='status']").eq(0).html()
+        if (status == "save" && $(ele).is(':checked')) {
+            $(ele).attr("checked", true)
+        } else {
+            $(ele).attr("checked", false)
+        }
     }
+
+
     /*控制按钮*/
     function buttonByStatus($box, status, classStatus) {
         if ((status == "success" || status == "refuse") && classStatus == "online") {
@@ -261,13 +237,13 @@
             $box.find("a").hide()
         }
     }
-    function orderSuccess(ele,id,classId) {
+    function orderSuccess(ele, id, classId) {
         $.ajax({
-            type:"POST",
-            url:"/auth/order/orderSuccess",
-            data:{id:id,classId:classId},
-            success:function (data) {
-                if(data.success){
+            type: "POST",
+            url: "/auth/order/orderSuccess",
+            data: {id: id, classId: classId},
+            success: function (data) {
+                if (data.success) {
                     var orderPo = data.result
                     var $tr = $(ele).parents("tr").eq(0)
                     $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
@@ -312,10 +288,10 @@
     }
     function refuseDo() {
         $.ajax({
-            type:"GET",
-            url:"/auth/order/orderRefuse?id="+$("#sourceId").val()+"&remark="+$("#refuseRemark").val(),
-            success:function (data) {
-                if(data.success){
+            type: "GET",
+            url: "/auth/order/orderRefuse?id=" + $("#sourceId").val() + "&remark=" + $("#refuseRemark").val(),
+            success: function (data) {
+                if (data.success) {
                     toastr_success(null, document.location.href)
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
@@ -327,7 +303,7 @@
         })
 
     }
-    function orderCancelBox(ele,id) {
+    function orderCancelBox(ele, id) {
         var $tr = $(ele).parents("tr").eq(0)
         var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
         layer.alert('确定取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
@@ -341,10 +317,10 @@
     }
     function orderCancelDo(id) {
         $.ajax({
-            type:"GET",
+            type: "GET",
             url: "/auth/order/orderCancel?id=" + id,
-            success:function (data) {
-                if(data.success){
+            success: function (data) {
+                if (data.success) {
                     toastr_success(null, document.location.href)
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
