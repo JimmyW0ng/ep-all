@@ -4,7 +4,6 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
-import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpOrganClassSchedulePo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
@@ -101,6 +100,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CREATE_AT);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
         fieldList.add(EP_MEMBER_CHILD_COMMENT.ID.as("launchId"));

@@ -133,7 +133,7 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info"
-                                   th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">预约</a>
+                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.courseNum}+','+${bo.classId}+')'">预约</a>
                             </td>
 
                         </tr>
@@ -159,8 +159,8 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal inmodal" id="bespeakModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content animated bounceInRight">
 
             <input type="hidden" id="sourceId">
@@ -168,12 +168,31 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h3 style="text-align: left">确认拒绝</h3>
+                <h3 style="text-align: left">预约详情</h3>
 
             </div>
             <div class="modal-body">
-                <label>备注：</label>
-                <textarea class="form-control" id="refuseRemark"></textarea>
+                <div style="overflow:hidden">
+                    <div name="" class="col-sm-3 form-group">
+                        <label>课时<span class="required-sign">*</span></label>
+                        <input name="catalogIndex" class="form-control " value=${catalogIndex}>
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label>目录标题<span class="required-sign">*</span></label>
+                        <input name="catalogTitle" class="form-control" value="${catalogTitle}"
+                        >
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label>开始时间<span class="required-sign">*</span></label>
+                        <input name="startTime" class="form-control" value="${startTime}"
+                               required="true"/>
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label>持续时长<span class="required-sign">*</span></label>
+                        <input name="startTime" class="form-control" value="${startTime}"
+                               required="true"/>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -183,10 +202,18 @@
         </div>
     </div>
 </div>
-
+<script type="text/template" id='scheduleTmpl'></script>
 <script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+    function bespeakInit(id, courseNum, classId) {
+        $("#bespeakModal").modal("show")
+
+    }
     //    var EpOrderStatus = {
     //        save: "保存",
     //        success: "成功",

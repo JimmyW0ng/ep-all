@@ -3,10 +3,12 @@ package com.ep.domain.pojo.bo;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
 @Data
+@ToString(callSuper = true)
 public class OrganClassCommentBo extends EpOrganClassCommentPo {
 
     private String childNickName;

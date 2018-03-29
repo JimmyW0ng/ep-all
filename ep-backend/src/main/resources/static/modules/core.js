@@ -128,10 +128,12 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
+//增加遮罩
 function addLoadingWrap() {
     $('<div class="loadingWrap"></div>').appendTo("body");
 }
 
+//去遮罩
 function removeLoadingWrap() {
     $(".loadingWrap").remove();
 }
@@ -219,40 +221,7 @@ $(function () {
     //     return false;
     // });
     //
-    // // 3秒自动关闭提示
-    // function gAlert() {
-    //     $(".alert").hide();
-    // }
-    //
-    // setTimeout(gAlert, 3000);
-    //
-    //
-    //
-    // //成功提示绑定
-    // $("#success").click(function () {
-    //     toastr.success("祝贺你成功了");
-    // });
-    //
-    // //信息提示绑定
-    // $("#info").click(function () {
-    //     toastr.info("这是一个提示信息");
-    // });
-    //
-    // //敬告提示绑定
-    // $("#warning").click(function () {
-    //     toastr.warning("警告你别来烦我了");
-    // });
-    //
-    // //错语提示绑定
-    // $("#error").click(function () {
-    //     toastr.error("出现错误，请更改");
-    // });
-    //
-    // //清除窗口绑定
-    // $("#clear").click(function () {
-    //     toastr.clear();
-    // });
-    //
+
     //datetimepicker时间区间START
     $('.startTime').datetimepicker({
         locale: 'zh-CN',

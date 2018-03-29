@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
@@ -22,9 +24,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -122,5 +122,46 @@ public class OrganClassScheduleController extends BackendController {
         model.addAttribute("searchMap", searchMap);
         return "classSchedule/index";
     }
+
+    /**
+     * 改变课程获取班次下拉框
+     *
+     * @param courseId
+     * @return
+     */
+    @GetMapping("changeCourse/{courseId}")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    @ResponseBody
+    public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
+        EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
+        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
+        if (CollectionsTools.isEmpty(organClassPos)) {
+            return ResultDo.build().setResult(new HashMap<Long, String>(0));
+        }
+
+        return ResultDo.build().setResult(organClassPos);
+    }
+
+    /**
+     * 改变班次获取班次目录下拉框
+     *
+     * @param classId
+     * @return
+     */
+    @GetMapping("changeClass/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    @ResponseBody
+    public ResultDo getCatalogByClassId(@PathVariable("classId") Long classId) {
+        List<EpOrganClassCatalogPo> classCatalogPos = organClassCatalogService.findByClassId(classId);
+        if (CollectionsTools.isEmpty(classCatalogPos)) {
+            return ResultDo.build().setResult(new HashMap<Long, String>(0));
+        }
+        Map<Long, String> classCatalogMap = Maps.newHashMap();
+        classCatalogPos.forEach(p -> {
+            classCatalogMap.put(p.getId(), p.getCatalogTitle());
+        });
+        return ResultDo.build().setResult(classCatalogMap);
+    }
+
 
 }

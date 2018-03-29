@@ -508,9 +508,9 @@ public class OrganCourseService {
         //班次表 逻辑删除
         List<Long> classIds = organClassRepository.deleteLogicByCourseId(courseId);
         //班次目录表 逻辑删除
-        organClassCatalogRepository.deleteByClassIds(classIds);
+        organClassCatalogRepository.deleteLogicByClassIds(classIds);
         //课程标签 逻辑删除
-        organCourseTagRepository.deletePhysicByCourseId(courseId);
+        organCourseTagRepository.deleteLogicByCourseId(courseId);
         //机构类目 逻辑删除
         Long courseCatalogId = optional.get().getCourseCatalogId();
         long count = organCourseRepository.countByCourseCatalogIdAndOgnId(optional.get().getCourseCatalogId(), ognId);

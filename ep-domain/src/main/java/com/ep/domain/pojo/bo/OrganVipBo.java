@@ -4,6 +4,7 @@ import com.ep.domain.pojo.po.EpOrganVipPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @Description:
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  * @Date: 23:58 2018/3/19
  */
 @Data
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganVipBo extends EpOrganVipPo {

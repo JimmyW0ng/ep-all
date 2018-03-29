@@ -116,7 +116,7 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
      *
      * @param classIds
      */
-    public void deleteByClassIds(List<Long> classIds) {
+    public void deleteLogicByClassIds(List<Long> classIds) {
         dslContext.update(EP_ORGAN_CLASS_CATALOG)
                 .set(EP_ORGAN_CLASS_CATALOG.DEL_FLAG, true)
                 .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.in(classIds))

@@ -112,18 +112,21 @@
             data: data,
             contentType: false,
             processData: false,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
-                    console.log(data.result)
                     $("#avatar_img_url").attr("src", data.result.fileUrl)
                     $("#avatar_url").val(data.result.fileUrl)
                     $("#avatar_url_preCode").val(data.result.preCode)
                 }
-                $(ele).attr("disabled", false);
             },
             error: function (XMLHttpRequest) {
-                $(ele).attr("disabled", false);
                 toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }
@@ -148,22 +151,20 @@
             url: url,
             data:$("#frm").serialize(),
             beforeSend: function () {
-                $("button").attr("disabled", true)
-                addLoadingWrap();
+                layer.load(2, {shade: [0.1, '#fff']});
             },
             success: function (data) {
                 if(data.success){
-                    toastr_success(null,'/auth/organAccount/index')
+                    toastr_success(null, document.referrer)
                 } else {
-                    toastr.error(data.errorDescription);
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
             complete: function () {
-                $("button").attr("disabled", false)
-                removeLoadingWrap();
+                layer.closeAll();
             }
         })
     }

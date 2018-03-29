@@ -200,30 +200,37 @@
 
 </div>
 <script type="text/template" id='classCatalogTmpl'>
-    <div name="organClassCatalogPos" class="organClassCatalogPos" style="display:inline-block;margin:5px 0px">
-        <div name="" class="col-sm-5 form-group">
-            <label>课时<span class="required-sign">*</span></label>
-            <input name="id" type="hidden" jprop="id" value=${id}>
-            <input name="catalogTitle" jprop="catalogTitle" class="form-control " value="${catalogTitle}"
-                   required="true"/>
-            <input name="catalogIndex" jprop="catalogIndex" type="hidden" value=${len}>
+    <div name="organClassCatalogPos" class="organClassCatalogPos" style="margin:5px 0px">
+        <div style="overflow:hidden">
+            <div name="" class="col-sm-5 form-group">
+                <label>课时<span class="required-sign">*</span></label>
+                <input name="id" type="hidden" jprop="id" value=${id}>
+                <input name="catalogTitle" jprop="catalogTitle" class="form-control " value="${catalogTitle}"
+                       required="true"/>
+                <input name="catalogIndex" jprop="catalogIndex" type="hidden" value=${len}>
+            </div>
+            <div class="col-sm-5 form-group">
+                <label>开始时间<span class="required-sign">*</span></label>
+                <input name="startTime" jprop="startTime" class="form-control laydateer " value="${startTime}"
+                       required="true"/>
+            </div>
+            <div class="col-sm-2">
+                <a style="float:right;display:inline-block;margin-left:10px" href="javascript:void(0);"><span
+                        class="glyphicon glyphicon-remove"
+                        aria-hidden="true"
+                        onclick="removeClassCatalogBox(this)"></span></a>
+                <a name="insertCatalogBtn" style="float:right;" href="javascript:void(0);"><span
+                        onclick="insertbeforeClassCatalogBox(this)">插入</span></a>
+            </div>
         </div>
-        <div class="col-sm-5 form-group">
-            <label>开始时间<span class="required-sign">*</span></label>
-            <input name="startTime" jprop="startTime" class="form-control laydateer " value="${startTime}"
-                   required="true"/>
-        </div>
-        <a style="float:right;display:inline-block;margin-left:10px" href="javascript:void(0);"><span
-                class="glyphicon glyphicon-remove"
-                aria-hidden="true"
-                onclick="removeClassCatalogBox(this)"></span></a>
-        <a name="insertCatalogBtn" style="float:right;" href="javascript:void(0);"><span
-                onclick="insertbeforeClassCatalogBox(this)">插入</span></a>
+
+
         <div class="col-sm-5 form-group">
             <label>持续时长（分钟）<span class="required-sign">*</span></label>
             <input name="duration" jprop="duration" class="form-control " value="${duration}" required="true">
 
         </div>
+
         <div class="col-sm-10 form-group">
             <label>目录描述<span class="required-sign">*</span></label>
             <textarea name="catalogDesc" jprop="catalogDesc" class="form-control "
@@ -338,8 +345,11 @@
                         </div>
                     </div>
                     <div name="organClassCatalogPosBox" class="form-group col-sm-8 well ">
-                        <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
-                                class="glyphicon glyphicon-plus"></i> 添加课时</a>
+                        <div>
+                            <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
+                                    class="glyphicon glyphicon-plus"></i> 添加课时</a>
+                        </div>
+
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import com.ep.domain.pojo.po.EpSystemMenuPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(callSuper = true)
 @Data
 public class SystemMenuBo extends EpSystemMenuPo {
     private String parentName;

@@ -3,10 +3,12 @@ package com.ep.domain.pojo.bo;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import lombok.Data;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Data
+@ToString(callSuper = true)
 public class OrganClassCatalogBo extends EpOrganClassCatalogPo {
 
     private Long commentId;

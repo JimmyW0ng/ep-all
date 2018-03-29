@@ -7,10 +7,12 @@ import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrganAccountClassBo extends EpOrganClassPo {

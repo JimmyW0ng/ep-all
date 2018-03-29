@@ -4,7 +4,7 @@ import com.ep.domain.pojo.po.EpOrganCourseTagPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.ToString;
 
 /**
  * @Description:
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Date: 21:14 2018/2/15
  */
 @Data
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganCourseTagBo extends EpOrganCourseTagPo {

@@ -5,8 +5,10 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpOrganPo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
 public class OrganBo extends EpOrganPo {
 
     private String catalogIds;

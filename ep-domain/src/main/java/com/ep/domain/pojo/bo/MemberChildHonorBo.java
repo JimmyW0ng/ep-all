@@ -3,8 +3,10 @@ package com.ep.domain.pojo.bo;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.po.EpMemberChildHonorPo;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
 public class MemberChildHonorBo extends EpMemberChildHonorPo {
 
     private Long courseId;

@@ -7,8 +7,10 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class OrganCourseBo extends EpOrganCoursePo {
 

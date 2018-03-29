@@ -45,6 +45,20 @@ public class OrganCatalogRepository extends AbstractCRUDRepository<EpOrganCatalo
     }
 
     /**
+     * 根据机构id和courseCatalogId逻辑删除记录
+     *
+     * @param ognId
+     */
+    public int deleteLogicByOgnIdAndCatalogId(Long ognId, Long courseCatalogId) {
+        return dslContext.update(EP_ORGAN_CATALOG)
+                .set(EP_ORGAN_CATALOG.DEL_FLAG, true)
+                .where(EP_ORGAN_CATALOG.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_CATALOG.COURSE_CATALOG_ID.eq(courseCatalogId))
+                .and(EP_ORGAN_CATALOG.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
      * 是否存在机构id和课程类目id组合的重复
      *
      * @param ognId

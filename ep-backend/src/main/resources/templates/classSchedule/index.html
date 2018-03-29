@@ -66,7 +66,7 @@
                     </div>
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="" type="button" onclick="search()">查询</button>
-                        <button class="btn btn-warning" onclick="location.href='/auth/childComment/index'"
+                        <button class="btn btn-warning" onclick="location.href='/auth/classSchedule/index'"
                                 type="button">重置
                         </button>
                     </div>
@@ -149,15 +149,12 @@
                             <label class="fl" sd:page-size-selector="dropdown">
                                 <select size="1" name="editable-sample_length" aria-controls="editable-sample"
                                         class="form-control xsmall" sd:page-size-selector="default">
-
                                 </select>
                             </label>
                             <span class="fl pl15 pt10" sd:pagination-summary=""></span>
                         </div>
-
                         <div class="col-lg-6">
                             <ul class="pagination pagination-sm pull-right" sd:pagination="full">
-
                             </ul>
                         </div>
                     </div>
@@ -291,7 +288,7 @@
         }
         $.ajax({
             type: 'GET',
-            url: '/auth/childComment/changeCourse/' + courseId,
+            url: '/auth/classSchedule/changeCourse/' + courseId,
             success: function (data) {
                 if (data.success) {
                     var res = data.result
@@ -329,7 +326,7 @@
         }
         $.ajax({
             type: 'GET',
-            url: '/auth/childComment/changeClass/' + classId,
+            url: '/auth/classSchedule/changeClass/' + classId,
             success: function (data) {
                 if (data.success) {
                     var res = data.result

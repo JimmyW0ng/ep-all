@@ -3,8 +3,10 @@ package com.ep.domain.pojo.bo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
 public class OrganClassEnterBo extends EpOrganClassPo {
 
     /**

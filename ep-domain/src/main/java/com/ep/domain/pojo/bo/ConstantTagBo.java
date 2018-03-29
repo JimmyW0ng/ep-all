@@ -4,6 +4,7 @@ import com.ep.domain.pojo.po.EpConstantTagPo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @Description:
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  * @Date: 14:13 2018/3/5
  */
 @Data
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConstantTagBo extends EpConstantTagPo {

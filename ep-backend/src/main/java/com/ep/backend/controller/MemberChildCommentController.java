@@ -1,21 +1,19 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.CollectionsTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
-import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
-import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.service.*;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -158,45 +156,6 @@ public class MemberChildCommentController extends BackendController {
         return resultDo;
     }
 
-    /**
-     * 改变课程获取班次下拉框
-     *
-     * @param courseId
-     * @return
-     */
-    @GetMapping("changeCourse/{courseId}")
-    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
-    @ResponseBody
-    public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
-        EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
-        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
-        if (CollectionsTools.isEmpty(organClassPos)) {
-            return ResultDo.build().setResult(new HashMap<Long, String>(0));
-        }
-
-        return ResultDo.build().setResult(organClassPos);
-    }
-
-    /**
-     * 改变班次获取班次目录下拉框
-     *
-     * @param classId
-     * @return
-     */
-    @GetMapping("changeClass/{classId}")
-    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
-    @ResponseBody
-    public ResultDo getCatalogByClassId(@PathVariable("classId") Long classId) {
-        List<EpOrganClassCatalogPo> classCatalogPos = organClassCatalogService.findByClassId(classId);
-        if (CollectionsTools.isEmpty(classCatalogPos)) {
-            return ResultDo.build().setResult(new HashMap<Long, String>(0));
-        }
-        Map<Long, String> classCatalogMap = Maps.newHashMap();
-        classCatalogPos.forEach(p -> {
-            classCatalogMap.put(p.getId(), p.getCatalogTitle());
-        });
-        return ResultDo.build().setResult(classCatalogMap);
-    }
 
 
 }
