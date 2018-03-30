@@ -136,16 +136,16 @@
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
-                                <a name="success" class="btn btn-xs btn-info"
+                                <a name="success" class="btn btn-xs btn-info" style="display: none"
                                    th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
                                 <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
-                                <a name="refuse" class="btn btn-xs btn-danger"
+                                <a name="refuse" class="btn btn-xs btn-danger" style="display: none"
                                    href="javascript:void(0)"
                                    th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
-                                <a name="cancel" class="btn btn-xs btn-info"
+                                <a name="cancel" class="btn btn-xs btn-info" style="display: none"
                                    th:value="${bo.status}"
                                    th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
-                                <a name="bespeak" class="btn btn-xs btn-info"
+                                <a name="bespeak" class="btn btn-xs btn-info" style="display: none"
                                    th:if="${#strings.equals(bo.classType,'bespeak')}"
                                    th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>
                             </td>
@@ -269,10 +269,11 @@
             success:function (data) {
                 if(data.success){
                     var orderPo = data.result
+                    console.log(orderPo)
                     var $tr = $(ele).parents("tr").eq(0)
                     $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
                     $tr.find("td[name='status']").eq(0).text(orderPo.status);
-                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark);
+                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark == undefined ? "" : orderPo.remark);
                     var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
                     buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
                 } else {

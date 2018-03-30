@@ -260,4 +260,19 @@ public class OrderController extends BackendController {
     ) {
         return orderService.orderBespeakById(id);
     }
+
+    /**
+     * 预约行程
+     *
+     * @param id
+     */
+    @GetMapping("orderBespeakSchedule/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo orderBespeakSchedule(
+            @PathVariable("id") Long id
+    ) {
+        return orderService.orderBespeakSchedule(id);
+    }
 }
+
