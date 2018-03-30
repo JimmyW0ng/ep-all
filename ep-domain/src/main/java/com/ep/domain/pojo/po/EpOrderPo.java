@@ -54,7 +54,7 @@ public class EpOrderPo extends AbstractBasePojo {
         } else if (EpOrderStatus.cancel.equals(status)) {
             return "用户取消";
         } else if (EpOrderStatus.refuse.equals(status)) {
-            return "机构驳回";
+            return "未入选";
         }
         return null;
     }
