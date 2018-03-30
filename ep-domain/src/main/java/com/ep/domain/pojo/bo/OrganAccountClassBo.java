@@ -21,6 +21,7 @@ public class OrganAccountClassBo extends EpOrganClassPo {
     private String courseName;
     private String mainPicUrl;
     private Long classCatalogId;
+    private Integer catalogIndex;
     private String catalogTitle;
     private String catalogDesc;
     private Timestamp startTime;

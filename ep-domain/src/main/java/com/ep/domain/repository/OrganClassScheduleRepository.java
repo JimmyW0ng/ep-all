@@ -138,10 +138,13 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS.TYPE);
+        fieldList.add(EP_ORGAN_CLASS.COURSE_ID);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(DSL.max(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX).as("catalogIndex"));
         fieldList.add(DSL.max(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID).as("classCatalogId"));
         fieldList.add(DSL.count(EP_ORGAN_CLASS_SCHEDULE.ID).as("childNum"));
+        fieldList.add(DSL.sum(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG.cast(Byte.class)).as("childEvaluatedNum"));
         return dslContext.select(fieldList)
                          .from(EP_ORGAN_CLASS_SCHEDULE)
                          .innerJoin(EP_ORGAN_CLASS)
