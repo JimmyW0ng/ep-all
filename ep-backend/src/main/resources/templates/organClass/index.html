@@ -68,6 +68,7 @@
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>班次名称</th>
+                            <th>类型</th>
                             <th>产品名称</th>
                             <th>价格（元）</th>
                             <th>折扣优惠(元)</th>
@@ -85,6 +86,7 @@
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.id}"></td>
                             <td th:text="${bo.className}"></td>
+                            <td th:text="#{EpOrganClassType.+${bo.type}}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.classPrize}"></td>
                             <td th:text="${bo.discountAmount}"></td>
@@ -98,8 +100,9 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-info" th:if="!${#stringTools.equals(bo.status,'save')}"
-                                   href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+')'">订单详情</a>
-                                <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'online')}"
+                                   href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+',\''+${bo.type}+'\')'">订单详情</a>
+                                <a class="btn btn-xs btn-primary"
+                                   th:if="${#stringTools.equals(bo.status,'online')&&#stringTools.equals(bo.type,'normal')}"
                                    href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
                                 <a class="btn btn-xs btn-primary"
                                    th:if="${#stringTools.equals(bo.status,'opening')||#stringTools.equals(bo.status,'end')}"
@@ -146,6 +149,7 @@
                            aria-describedby="editable_info">
                         <thead>
                         <tr>
+                            <th>真实姓名</th>
                             <th>孩子昵称</th>
                             <th>订单状态</th>
                             <th>备注</th>
@@ -189,6 +193,7 @@
 </div>
 <script type="text/template" id='orderTmpl'>
     <tr>
+        <td>${childTrueName}</td>
         <td>${childNickName}</td>
         <td>${status}</td>
         <td>${remark}</td>
@@ -206,6 +211,14 @@
         save: "保存",
         success: "成功",
         opening: '已开班',
+        end: '结束',
+        refuse: '拒绝',
+        cancel: '取消'
+    }
+    var bespeakorderStatus = {
+        save: "保存",
+        success: "成功",
+        opening: '预约中',
         end: '结束',
         refuse: '拒绝',
         cancel: '取消'
@@ -269,7 +282,7 @@
     /*结束班次end*/
 
     /*查看班次订单*/
-    function findOrders(id) {
+    function findOrders(id, type) {
         $("#classOrdersBody").children().remove()
         $("#ordersModal").modal("show")
 
@@ -282,8 +295,9 @@
                     var order = []
                     for (var item in res) {
                         order.push({
+                            childTrueName: res[item].childTrueName,
                             childNickName: res[item].childNickName,
-                            status: orderStatus[res[item].status],
+                            status: type == "bespeak" ? bespeakorderStatus[res[item].status] : orderStatus[res[item].status],
                             remark: res[item].remark
                         })
                     }

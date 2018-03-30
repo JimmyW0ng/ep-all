@@ -4,10 +4,7 @@ import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
-import com.ep.domain.pojo.po.EpOrganAccountPo;
-import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
-import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.pojo.po.EpOrganCoursePo;
+import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
@@ -161,6 +158,47 @@ public class OrganClassScheduleController extends BackendController {
             classCatalogMap.put(p.getId(), p.getCatalogTitle());
         });
         return ResultDo.build().setResult(classCatalogMap);
+    }
+
+    /**
+     * 新增行程
+     *
+     * @param po
+     * @return
+     */
+    @PostMapping("createSchedule")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    @ResponseBody
+    public ResultDo createSchedule(EpOrganClassSchedulePo po) {
+        return organClassScheduleService.createSchedule(po);
+    }
+
+    /**
+     * 修改行程
+     *
+     * @param po
+     * @return
+     */
+    @PostMapping("updateSchedule")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    @ResponseBody
+    public ResultDo updateSchedule(EpOrganClassSchedulePo po) {
+        return organClassScheduleService.updateSchedule(po);
+    }
+
+
+    /**
+     * 修改行程
+     *
+     * @param orderId
+     * @return
+     */
+    @GetMapping("bespeakInit/{orderId}")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    @ResponseBody
+    public ResultDo bespeakInit(@PathVariable("orderId") Long orderId) {
+        Optional<List<EpOrganClassSchedulePo>> optional = organClassScheduleService.findByOrderId(orderId);
+        return ResultDo.build().setResult(optional.isPresent() ? optional.get() : null);
     }
 
 

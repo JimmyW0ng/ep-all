@@ -422,6 +422,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_ORDER.ID);
         fieldList.add(EP_ORDER.CHILD_ID);
         fieldList.add(EP_ORDER.STATUS);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         return dslContext.select(fieldList).from(EP_ORDER)
                 .leftJoin(EP_MEMBER_CHILD)

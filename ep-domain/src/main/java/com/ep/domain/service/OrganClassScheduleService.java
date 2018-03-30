@@ -12,13 +12,13 @@ import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
+import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.google.common.collect.Sets;
-import com.ep.domain.pojo.dto.OrganClassScheduleDto;
-import com.ep.domain.repository.OrganClassScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import java.util.Collection;
 
 /**
  * @Description: 班次行程服务
@@ -242,6 +241,87 @@ public class OrganClassScheduleService {
         // 孩子班次评价数+1
         organClassChildRepository.addScheduleCommentNum(existChild.get().getOrderId());
         return ResultDo.build();
+    }
+
+    /**
+     * 创建行程
+     *
+     * @param po
+     * @return
+     */
+    public ResultDo createSchedule(EpOrganClassSchedulePo po) {
+        log.info("[预约行程]新增预约行程开始，po={}。", po);
+        if (!checkPoParams(po)) {
+            log.error("[预约行程]新增预约行程失败，请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        po.setStatus(EpOrganClassScheduleStatus.wait);
+        organClassScheduleRepository.insert(po);
+        log.info("[预约行程]新增预约行程成功，id={}。", po.getId());
+        return ResultDo.build().setResult(po);
+    }
+
+    /**
+     * 更新行程
+     *
+     * @param po
+     * @return
+     */
+    public ResultDo updateSchedule(EpOrganClassSchedulePo po) {
+        log.info("[预约行程]修改预约行程开始，po={}。", po);
+
+        if (!checkPoParams(po) || po.getId() == null) {
+            log.error("[预约行程]修改预约行程失败，请求参数异常。");
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        if (organClassScheduleRepository.updateClassSchedule(po) == BizConstant.DB_NUM_ONE) {
+            log.info("[预约行程]修改预约行程成功，id={}。", po.getId());
+            return ResultDo.build().setResult(po);
+        } else {
+            log.error("[预约行程]修改预约行程失败，id={}。", po.getId());
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 根据订单id获取记录
+     *
+     * @param orderId
+     * @return
+     */
+    public Optional<List<EpOrganClassSchedulePo>> findByOrderId(Long orderId) {
+        return organClassScheduleRepository.findByOrderId(orderId);
+    }
+
+    /**
+     * 校验po对象入参
+     *
+     * @param po
+     * @return
+     */
+    private boolean checkPoParams(EpOrganClassSchedulePo po) {
+        if (po.getChildId() == null) {
+            return false;
+        }
+        if (po.getClassId() == null) {
+            return false;
+        }
+        if (po.getOrderId() == null) {
+            return false;
+        }
+        if (po.getStartTime() == null) {
+            return false;
+        }
+        if (po.getDuration() == null) {
+            return false;
+        }
+        if (po.getCatalogTitle() == null) {
+            return false;
+        }
+        if (po.getCatalogIndex() == null) {
+            return false;
+        }
+        return true;
     }
 
 }

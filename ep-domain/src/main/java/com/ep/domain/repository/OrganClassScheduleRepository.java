@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -95,6 +96,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         }
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
@@ -226,5 +228,35 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                          .groupBy(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID, EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX)
                          .orderBy(BizConstant.DB_NUM_ONE)
                          .fetchInto(OrganAccountClassBo.class);
+    }
+
+    /**
+     * 根据id更新行程
+     *
+     * @param po
+     * @return
+     */
+    public int updateClassSchedule(EpOrganClassSchedulePo po) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                .set(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE, po.getCatalogTitle())
+                .set(EP_ORGAN_CLASS_SCHEDULE.START_TIME, po.getStartTime())
+                .set(EP_ORGAN_CLASS_SCHEDULE.DURATION, po.getDuration())
+                .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(po.getId()))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据订单id获取记录
+     *
+     * @param orderId
+     * @return
+     */
+    public Optional<List<EpOrganClassSchedulePo>> findByOrderId(Long orderId) {
+        List<EpOrganClassSchedulePo> data = dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
+                .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganClassSchedulePo.class);
+        return Optional.ofNullable(data);
     }
 }
