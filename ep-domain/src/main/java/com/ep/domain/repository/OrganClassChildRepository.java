@@ -88,6 +88,21 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
     }
 
     /**
+     * 孩子班次评价数+1
+     *
+     * @param orderId
+     */
+    public int subtractScheduleCommentNum(Long orderId) {
+        return dslContext.update(EP_ORGAN_CLASS_CHILD)
+                         .set(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM,
+                                 EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM.subtract(BizConstant.DB_NUM_ONE))
+                         .where(EP_ORGAN_CLASS_CHILD.ORDER_ID.eq(orderId))
+                         .and(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM.greaterThan(BizConstant.DB_NUM_ZERO))
+                         .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
      * 根据班级id获取该班孩子记录
      *
      * @param classId

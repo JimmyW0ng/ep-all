@@ -147,14 +147,13 @@ public class MemberChildTagRepository extends AbstractCRUDRepository<EpMemberChi
     }
 
     /**
-     * 根据孩子childId和课程目录classCatalogId物理删除孩子标签
-     * @param childId
+     * 根据行程id物理删除
      * @param classScheduleId
      */
-    public void deletePhysicByChildIdAndClassCatalogId(Long childId, Long classScheduleId) {
-        dslContext.delete(EP_MEMBER_CHILD_TAG)
-                  .where(EP_MEMBER_CHILD_TAG.CHILD_ID.eq(childId))
-                  .and(EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID.eq(classScheduleId))
+    public int physicalDeleteByScheduleId(Long classScheduleId) {
+        return dslContext.delete(EP_MEMBER_CHILD_TAG)
+                         .where(EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID.eq(classScheduleId))
                   .execute();
     }
+
 }

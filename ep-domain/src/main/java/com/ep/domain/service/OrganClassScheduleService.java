@@ -12,13 +12,14 @@ import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
+import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.enums.EpMemberMessageType;
+import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.google.common.collect.Sets;
-import com.ep.domain.pojo.dto.OrganClassScheduleDto;
-import com.ep.domain.repository.OrganClassScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import java.util.Collection;
 
 /**
  * @Description: 班次行程服务
@@ -44,21 +44,23 @@ import java.util.Collection;
 public class OrganClassScheduleService {
 
     @Autowired
-    private OrganClassCatalogRepository organClassCatalogRepository;
-    @Autowired
     private FileRepository fileRepository;
     @Autowired
     private OrganCourseTagRepository organCourseTagRepository;
     @Autowired
     private OrganClassChildRepository organClassChildRepository;
     @Autowired
-    private OrganAccountRepository organAccountRepository;
-    @Autowired
     private MemberChildCommentRepository memberChildCommentRepository;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private OrganClassScheduleRepository organClassScheduleRepository;
+    @Autowired
+    private MemberMessageRepository memberMessageRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
+    @Autowired
+    private MemberChildTagRepository memberChildTagRepository;
 
     /**
      * 商户后台获取分页
@@ -76,10 +78,6 @@ public class OrganClassScheduleService {
         });
         return page;
     }
-    @Autowired
-    private OrganClassRepository organClassRepository;
-    @Autowired
-    private MemberChildTagRepository memberChildTagRepository;
 
     /**
      * 课时明细
@@ -163,20 +161,23 @@ public class OrganClassScheduleService {
      *
      * @param organAccountPo
      * @param classScheduleId
-     * @param childId
      * @param tagIds
      * @param comment
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo doClassCatalogComment(EpOrganAccountPo organAccountPo, Long classScheduleId, Long childId, List<Long> tagIds, String comment) {
-        log.info("老师课时评价开始, accountId={}, classScheduleId={}, childId={}, tagIds={}, comment={}", organAccountPo.getId(), classScheduleId, childId, tagIds, childId);
+    public ResultDo doClassCatalogComment(EpOrganAccountPo organAccountPo, Long classScheduleId, List<Long> tagIds, String comment) {
+        log.info("新增随堂评价开始, accountId={}, classScheduleId={}, tagIds={}, comment={}", organAccountPo.getId(), classScheduleId, tagIds, comment);
         if (CollectionsTools.isEmpty(tagIds) && StringTools.isBlank(comment)) {
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
-        // 课时信息
+        // 行程信息
         EpOrganClassSchedulePo schedulePo = organClassScheduleRepository.getById(classScheduleId);
-        if (schedulePo == null || schedulePo.getDelFlag()) {
+        if (schedulePo == null
+                || schedulePo.getDelFlag()
+                || schedulePo.getStatus().equals(EpOrganClassScheduleStatus.absent)
+                || schedulePo.getStatus().equals(EpOrganClassScheduleStatus.leave)
+                || schedulePo.getStatus().equals(EpOrganClassScheduleStatus.close)) {
             log.error("班次行程信息不存在, classScheduleId={}", classScheduleId);
             return ResultDo.build(MessageCode.ERROR_CLASS_SCHEDULE_NOT_EXIST);
         }
@@ -184,6 +185,10 @@ public class OrganClassScheduleService {
         if (DateTools.getCurrentDateTime().before(schedulePo.getStartTime())) {
             log.error("班次行程未开始, classScheduleId={}", classScheduleId);
             return ResultDo.build(MessageCode.ERROR_CLASS_SCHEDULE_NOT_START);
+        }
+        if (schedulePo.getEvaluateFlag()) {
+            log.error("随堂信息不存在, classScheduleId={}", classScheduleId);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_IS_EXIST);
         }
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(schedulePo.getClassId());
@@ -195,15 +200,14 @@ public class OrganClassScheduleService {
             log.error("班次未上线, classId={}, status={}", schedulePo.getClassId(), classPo.getStatus().getName());
             return ResultDo.build(MessageCode.ERROR_CLASS_NOT_START);
         }
-        // 孩子信息
-        Optional<EpOrganClassChildPo> existChild = organClassChildRepository.getByClassIdAndChildId(schedulePo.getClassId(), childId);
-        if (!existChild.isPresent()) {
-            return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
-        }
         // 校验班次负责人
         if (!organAccountPo.getId().equals(classPo.getOgnAccountId())) {
             log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classPo.getId());
             return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
+        }
+        int num = organClassScheduleRepository.evaluate(classScheduleId);
+        if (num == BizConstant.DB_NUM_ZERO) {
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
         Set<Long> tagSet;
         if (CollectionsTools.isNotEmpty(tagIds)) {
@@ -217,7 +221,7 @@ public class OrganClassScheduleService {
             // 插入标签
             for (Long tagId : tagSet) {
                 EpMemberChildTagPo tagPo = new EpMemberChildTagPo();
-                tagPo.setChildId(childId);
+                tagPo.setChildId(schedulePo.getChildId());
                 tagPo.setOgnId(classPo.getOgnId());
                 tagPo.setCourseId(classPo.getCourseId());
                 tagPo.setClassId(classPo.getId());
@@ -229,7 +233,7 @@ public class OrganClassScheduleService {
         // 插入评论内容
         if (StringTools.isNotBlank(comment)) {
             EpMemberChildCommentPo commentPo = new EpMemberChildCommentPo();
-            commentPo.setChildId(childId);
+            commentPo.setChildId(schedulePo.getChildId());
             commentPo.setOgnId(classPo.getOgnId());
             commentPo.setCourseId(classPo.getCourseId());
             commentPo.setClassId(classPo.getId());
@@ -240,8 +244,42 @@ public class OrganClassScheduleService {
             memberChildCommentRepository.insert(commentPo);
         }
         // 孩子班次评价数+1
-        organClassChildRepository.addScheduleCommentNum(existChild.get().getOrderId());
+        organClassChildRepository.addScheduleCommentNum(schedulePo.getOrderId());
         return ResultDo.build();
     }
 
+    /**
+     * 撤销随堂评价
+     *
+     * @param organAccountPo
+     * @param classScheduleId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo cancelClassCatalogComment(EpOrganAccountPo organAccountPo, Long classScheduleId) {
+        log.info("撤销随堂评价开始, accountId={}, classScheduleId={}", organAccountPo.getId(), classScheduleId);
+        // 行程信息
+        EpOrganClassSchedulePo schedulePo = organClassScheduleRepository.getById(classScheduleId);
+        if (schedulePo == null || schedulePo.getDelFlag()) {
+            log.error("班次行程信息不存在, classScheduleId={}", classScheduleId);
+            return ResultDo.build(MessageCode.ERROR_CLASS_SCHEDULE_NOT_EXIST);
+        }
+        if (!schedulePo.getEvaluateFlag()) {
+            log.error("随堂信息不存在, classScheduleId={}", classScheduleId);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST);
+        }
+        int num = organClassScheduleRepository.cancelEvaluate(classScheduleId);
+        if (num == BizConstant.DB_NUM_ZERO) {
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+        // 物理删除评论
+        memberChildCommentRepository.physicalDeleteByScheduleId(classScheduleId);
+        // 物理删除标签
+        memberChildTagRepository.physicalDeleteByScheduleId(classScheduleId);
+        // 孩子班次评价数-1
+        organClassChildRepository.subtractScheduleCommentNum(schedulePo.getOrderId());
+        // 删除消息
+        memberMessageRepository.physicalDeleteBySourceIdAndType(classScheduleId, EpMemberMessageType.class_schedule_comment);
+        return ResultDo.build();
+    }
 }

@@ -28,6 +28,7 @@ public class EpOrganClassSchedulePo extends AbstractBasePojo {
     private String catalogDesc;
     private Integer catalogIndex;
     private EpOrganClassScheduleStatus status;
+    private Boolean evaluateFlag;
     private Long classCatalogId;
     @JsonIgnore
     private Timestamp createAt;

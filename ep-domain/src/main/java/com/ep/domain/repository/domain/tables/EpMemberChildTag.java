@@ -33,7 +33,7 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      * The reference instance of <code>ep.ep_member_child_tag</code>
      */
     public static final EpMemberChildTag EP_MEMBER_CHILD_TAG = new EpMemberChildTag();
-    private static final long serialVersionUID = -2097291516;
+    private static final long serialVersionUID = -246673875;
     /**
      * The column <code>ep.ep_member_child_tag.id</code>. 主键
      */
@@ -142,7 +142,7 @@ public class EpMemberChildTag extends TableImpl<EpMemberChildTagRecord> {
      */
     @Override
     public List<UniqueKey<EpMemberChildTagRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpMemberChildTagRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_TAG_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_TAG_UNIQUE_CATELOG_CHILD_TAG);
+        return Arrays.<UniqueKey<EpMemberChildTagRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_TAG_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_TAG_UNIQUE_SCHEDULE_TAG);
     }
 
     /**

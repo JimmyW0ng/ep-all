@@ -13,7 +13,6 @@ import java.util.List;
 public class ClassCatalogCommentEventBo extends AbstractBasePojo {
 
     private Long classScheduleId;
-    private Long childId;
     private List<Long> tagIds;
     private String comment;
 

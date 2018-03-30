@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 类型：上课评价
+ * 类型：随堂评价
  */
 @Generated(
     value = {
@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum EpMemberMessageType implements EnumType {
 
-    class_catalog_comment("class_catalog_comment");
+    class_schedule_comment("class_schedule_comment");
 
     private final String literal;
 

@@ -35,7 +35,7 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
      * The reference instance of <code>ep.ep_member_message</code>
      */
     public static final EpMemberMessage EP_MEMBER_MESSAGE = new EpMemberMessage();
-    private static final long serialVersionUID = 1670652659;
+    private static final long serialVersionUID = 609575315;
     /**
      * The column <code>ep.ep_member_message.id</code>.
      */
@@ -61,9 +61,9 @@ public class EpMemberMessage extends TableImpl<EpMemberMessageRecord> {
      */
     public final TableField<EpMemberMessageRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT, this, "孩子id");
     /**
-     * The column <code>ep.ep_member_message.type</code>. 类型：上课评价
+     * The column <code>ep.ep_member_message.type</code>. 类型：随堂评价
      */
-    public final TableField<EpMemberMessageRecord, EpMemberMessageType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberMessageType.class), this, "类型：上课评价");
+    public final TableField<EpMemberMessageRecord, EpMemberMessageType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMemberMessageType.class), this, "类型：随堂评价");
     /**
      * The column <code>ep.ep_member_message.status</code>. 状态：未读；已读；
      */

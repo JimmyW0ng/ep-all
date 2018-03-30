@@ -30,7 +30,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRecord> implements Record15<Long, Long, String, String, Long, Long, EpMemberMessageType, EpMemberMessageStatus, String, Long, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = 1327714213;
+    private static final long serialVersionUID = -1147876091;
 
     /**
      * Create a detached EpMemberMessageRecord
@@ -153,14 +153,14 @@ public class EpMemberMessageRecord extends UpdatableRecordImpl<EpMemberMessageRe
     }
 
     /**
-     * Getter for <code>ep.ep_member_message.type</code>. 类型：上课评价
+     * Getter for <code>ep.ep_member_message.type</code>. 类型：随堂评价
      */
     public EpMemberMessageType getType() {
         return (EpMemberMessageType) get(6);
     }
 
     /**
-     * Setter for <code>ep.ep_member_message.type</code>. 类型：上课评价
+     * Setter for <code>ep.ep_member_message.type</code>. 类型：随堂评价
      */
     public EpMemberMessageRecord setType(EpMemberMessageType value) {
         set(6, value);

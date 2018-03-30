@@ -240,4 +240,15 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .execute();
     }
 
+    /**
+     * 根据行程id物理删除
+     *
+     * @param classScheduleId
+     * @return
+     */
+    public int physicalDeleteByScheduleId(Long classScheduleId) {
+        return dslContext.delete(EP_MEMBER_CHILD_COMMENT)
+                         .where(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(classScheduleId))
+                         .execute();
+    }
 }

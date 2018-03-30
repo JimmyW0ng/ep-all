@@ -66,7 +66,7 @@ public class MemberMessageService {
      */
     public ResultDo<Page<MemberMessageBo>> findClassCatalogCommentByChildIdForPage(Pageable pageable, Long memberId) {
         // 设置已读
-        int num = memberMessageRepository.readAllByMemberId(memberId, EpMemberMessageType.class_catalog_comment);
+        int num = memberMessageRepository.readAllByMemberId(memberId, EpMemberMessageType.class_schedule_comment);
         log.info("设置已读课时评价消息数据{}条, memberId={}", num, memberId);
         ResultDo<Page<MemberMessageBo>> resultDo = ResultDo.build();
         Page<MemberMessageBo> page = memberMessageRepository.findClassCatalogCommentByMemberIdForPage(pageable, memberId);
@@ -85,11 +85,10 @@ public class MemberMessageService {
      * 发送课时评论消息
      *
      * @param classScheduleId
-     * @param childId
      * @param tagIds
      * @param comment
      */
-    public void sendClassCatalogCommentMessage(Long classScheduleId, Long childId, Set<Long> tagIds, String comment) {
+    public void sendClassCatalogCommentMessage(Long classScheduleId, Set<Long> tagIds, String comment) {
         if (CollectionsTools.isEmpty(tagIds) && StringTools.isBlank(comment)) {
             return;
         }
@@ -104,7 +103,7 @@ public class MemberMessageService {
         // 发送者机构
         EpOrganPo organPo = organRepository.getById(classPo.getOgnId());
         // 孩子
-        EpMemberChildPo childPo = memberChildRepository.getById(childId);
+        EpMemberChildPo childPo = memberChildRepository.getById(schedulePo.getChildId());
         // 消息内容
         String content = String.format(BizConstant.MESSAGE_CONTENT_CLASS_CATALOG_COMMENT,
                 childPo.getChildNickName(),
@@ -117,8 +116,8 @@ public class MemberMessageService {
         // 此处显示机构名称
         messagePo.setSenderDesc(organPo.getOgnName());
         messagePo.setMemberId(childPo.getMemberId());
-        messagePo.setChildId(childId);
-        messagePo.setType(EpMemberMessageType.class_catalog_comment);
+        messagePo.setChildId(schedulePo.getChildId());
+        messagePo.setType(EpMemberMessageType.class_schedule_comment);
         messagePo.setStatus(EpMemberMessageStatus.unread);
         messagePo.setContent(content);
         messagePo.setSourceId(classScheduleId);

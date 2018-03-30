@@ -34,7 +34,7 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      * The reference instance of <code>ep.ep_member_child_comment</code>
      */
     public static final EpMemberChildComment EP_MEMBER_CHILD_COMMENT = new EpMemberChildComment();
-    private static final long serialVersionUID = -708543326;
+    private static final long serialVersionUID = -1929562945;
     /**
      * The column <code>ep.ep_member_child_comment.id</code>. 主键
      */
@@ -159,7 +159,7 @@ public class EpMemberChildComment extends TableImpl<EpMemberChildCommentRecord> 
      */
     @Override
     public List<UniqueKey<EpMemberChildCommentRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpMemberChildCommentRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_CHILD_TYPE);
+        return Arrays.<UniqueKey<EpMemberChildCommentRecord>>asList(Keys.KEY_EP_MEMBER_CHILD_COMMENT_PRIMARY, Keys.KEY_EP_MEMBER_CHILD_COMMENT_UNIQUE_CATALOG_TYPE);
     }
 
     /**

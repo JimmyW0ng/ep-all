@@ -13,8 +13,8 @@ import java.util.List;
 public class OrganClassCatalogCommentBo extends AbstractBasePojo {
 
     private Long classScheduleId;
-    private Long catalogTitle;
-    private Long catalogDesc;
+    private String catalogTitle;
+    private String catalogDesc;
     private Boolean evaluateFlag;
     private Long childId;
     private String childNickName;

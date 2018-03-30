@@ -39,7 +39,7 @@ public class MemberMessageController extends ApiController {
     public ResultDo<Integer> getClassCommentUnreadNum() {
         ResultDo<Integer> resultDo = ResultDo.build();
         Long memberId = super.getCurrentUser().get().getId();
-        return memberMessageService.getUnreadNumByMemberId(memberId, EpMemberMessageType.class_catalog_comment);
+        return memberMessageService.getUnreadNumByMemberId(memberId, EpMemberMessageType.class_schedule_comment);
     }
 
     @ApiOperation(value = "孩子评价类消息-分页")

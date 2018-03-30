@@ -134,7 +134,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                                                 .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
                                                 .and(EP_ORDER.DEL_FLAG.eq(false))
                                                 .and(EP_ORGAN_CLASS_SCHEDULE.START_TIME.greaterOrEqual(time))
-                                                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait, EpOrganClassScheduleStatus.normal))
+                                                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
+                                                        EpOrganClassScheduleStatus.normal,
+                                                        EpOrganClassScheduleStatus.late,
+                                                        EpOrganClassScheduleStatus.absent))
                                                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false));
         Long count = dslContext.select(DSL.count(EP_ORDER.ID))
                                .from(EP_ORDER)

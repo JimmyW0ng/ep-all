@@ -76,20 +76,26 @@ public class OrganAccountController extends ApiController {
     @PostMapping("/class/catalog/comment")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo doClassCatalogComment(@RequestParam("classScheduleId") Long classScheduleId,
-                                          @RequestParam("childId") Long childId,
                                           @RequestParam("tagIds") List<Long> tagIds,
                                           @RequestParam("comment") String comment) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
         ResultDo resultDo = organClassScheduleService.doClassCatalogComment(organAccountPo,
                 classScheduleId,
-                childId,
                 tagIds,
                 comment);
         if (resultDo.isSuccess()) {
-            ClassCatalogCommentEventBo eventBo = new ClassCatalogCommentEventBo(classScheduleId, childId, tagIds, comment);
+            ClassCatalogCommentEventBo eventBo = new ClassCatalogCommentEventBo(classScheduleId, tagIds, comment);
             publisher.publishEvent(eventBo);
         }
         return resultDo;
+    }
+
+    @ApiOperation(value = "课时评价(撤销)")
+    @PostMapping("/class/catalog/comment/cancel")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo doClassCatalogComment(@RequestParam("classScheduleId") Long classScheduleId) {
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organClassScheduleService.cancelClassCatalogComment(organAccountPo, classScheduleId);
     }
 
     @ApiOperation(value = "全部课程-分页")
@@ -100,12 +106,20 @@ public class OrganAccountController extends ApiController {
         return organAccountService.findAllClassByOrganAccountForPage(pageable, organAccountPo);
     }
 
-    @ApiOperation(value = "查看正常（固定课时）班次全部课时")
-    @PostMapping("/nomal/class/catalog/all")
+    @ApiOperation(value = "查看正常（固定课时）班次全部行程")
+    @PostMapping("/normal/class/catalog/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<List<OrganAccountClassBo>> getNomalClassAllCatalog(@RequestParam("classId") Long classId) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
         return organClassCatalogService.getNomalClassAllCatalog(classId, organAccountPo);
+    }
+
+    @ApiOperation(value = "查看预约类班次全部行程")
+    @PostMapping("/bespeak/class/schedule/all")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<List<OrganAccountClassBo>> getBespeakClassAllCatalog(@RequestParam("classId") Long classId) {
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organClassCatalogService.getBespeakClassAllCatalog(classId, organAccountPo);
     }
 
     @ApiOperation(value = "查看班次学员")

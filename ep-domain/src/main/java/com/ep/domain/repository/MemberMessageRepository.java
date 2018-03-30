@@ -61,7 +61,7 @@ public class MemberMessageRepository extends AbstractCRUDRepository<EpMemberMess
     public Page<MemberMessageBo> findClassCatalogCommentByMemberIdForPage(Pageable pageable, Long memberId) {
         Collection<Condition> conditions = Lists.newArrayList();
         conditions.add(EP_MEMBER_MESSAGE.MEMBER_ID.eq(memberId));
-        conditions.add(EP_MEMBER_MESSAGE.TYPE.eq(EpMemberMessageType.class_catalog_comment));
+        conditions.add(EP_MEMBER_MESSAGE.TYPE.eq(EpMemberMessageType.class_schedule_comment));
         conditions.add(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false));
         Long count = dslContext.selectCount()
                 .from(EP_MEMBER_MESSAGE)
@@ -103,6 +103,20 @@ public class MemberMessageRepository extends AbstractCRUDRepository<EpMemberMess
                          .and(EP_MEMBER_MESSAGE.TYPE.eq(type))
                          .and(EP_MEMBER_MESSAGE.STATUS.eq(EpMemberMessageStatus.unread))
                          .and(EP_MEMBER_MESSAGE.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
+     * 根据sourceId和类型物理删除
+     *
+     * @param sourceId
+     * @param type
+     * @return
+     */
+    public int physicalDeleteBySourceIdAndType(Long sourceId, EpMemberMessageType type) {
+        return dslContext.delete(EP_MEMBER_MESSAGE)
+                         .where(EP_MEMBER_MESSAGE.SOURCE_ID.eq(sourceId))
+                         .and(EP_MEMBER_MESSAGE.TYPE.eq(type))
                          .execute();
     }
 }

@@ -7,6 +7,7 @@ import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpOrganClassSchedulePo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
+import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.tables.EpMemberChildComment;
@@ -158,6 +159,10 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                          .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
                          .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                          .where(EP_ORGAN_CLASS_SCHEDULE.START_TIME.between(startTime, endTime))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
+                                 EpOrganClassScheduleStatus.normal,
+                                 EpOrganClassScheduleStatus.late,
+                                 EpOrganClassScheduleStatus.absent))
                          .groupBy(EP_ORGAN_CLASS_SCHEDULE.START_TIME, EP_ORGAN_CLASS_SCHEDULE.CLASS_ID)
                          .orderBy(BizConstant.DB_NUM_ONE)
                          .fetchInto(OrganAccountClassBo.class);
@@ -190,6 +195,9 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                          .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
                          .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
                          .and(EP_ORGAN_CLASS_SCHEDULE.START_TIME.eq(startTime))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
+                                 EpOrganClassScheduleStatus.normal,
+                                 EpOrganClassScheduleStatus.late))
                          .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                          .orderBy(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID)
                          .fetchInto(OrganClassCatalogCommentBo.class);
@@ -204,8 +212,11 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     public List<OrganAccountClassBo> findNomalClassScheduleByClassId(Long classId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
-        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
-        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
+        fieldList.add(DSL.max(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE).as("catalogTitle"));
+        fieldList.add(DSL.max(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC).as("catalogDesc"));
+        fieldList.add(DSL.count(EP_ORGAN_CLASS_SCHEDULE.ID).as("childNum"));
+        fieldList.add(DSL.sum(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG.cast(Byte.class)).as("childEvaluatedNum"));
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS.TYPE);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
@@ -223,8 +234,41 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                          .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                          .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
                          .and(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.isNotNull())
-                         .groupBy(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID, EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX)
+                         .groupBy(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID, EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX, EP_ORGAN_CLASS_SCHEDULE.START_TIME)
                          .orderBy(BizConstant.DB_NUM_ONE)
                          .fetchInto(OrganAccountClassBo.class);
+    }
+
+    /**
+     * 新增随堂评价标识
+     *
+     * @param classScheduleId
+     * @return
+     */
+    public int evaluate(Long classScheduleId) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                         .set(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG, true)
+                         .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(classScheduleId))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG.eq(false))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
+                                 EpOrganClassScheduleStatus.normal,
+                                 EpOrganClassScheduleStatus.late))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                         .execute();
+    }
+
+    /**
+     * 撤销随堂评价标识
+     *
+     * @param classScheduleId
+     * @return
+     */
+    public int cancelEvaluate(Long classScheduleId) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                         .set(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG, false)
+                         .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(classScheduleId))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG.eq(true))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                         .execute();
     }
 }
