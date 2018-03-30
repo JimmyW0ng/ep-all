@@ -12,6 +12,7 @@ import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @Description: 机构课程班次Service
@@ -45,6 +47,8 @@ public class OrganClassService {
     private OrganClassScheduleRepository organClassScheduleRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private OrganCatalogRepository organCatalogRepository;
 
     public List<EpOrganClassPo> findByCourseId(Long courseId){
         return organClassRepository.getByCourseId(courseId);
@@ -112,6 +116,15 @@ public class OrganClassService {
         if (num == BizConstant.DB_NUM_ZERO) {
             return ResultDo.build();
         }
+        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(currentUser.getOgnId());
+        //课程类目去重
+        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
+        Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(classPo.getCourseId());
+        if (courseOptional.isPresent() && !courseCatalogIdsSet.contains(courseOptional.get().getCourseCatalogId())) {
+            Long courseCatalogId = courseOptional.get().getCourseCatalogId();
+            organCatalogRepository.insert(new EpOrganCatalogPo(null, currentUser.getOgnId(), courseCatalogId, null, null, null, null, null, null));
+        }
+
         // 更新订单状态为已开班
         orderRepository.openByClassId(id);
         // 生成班级孩子记录

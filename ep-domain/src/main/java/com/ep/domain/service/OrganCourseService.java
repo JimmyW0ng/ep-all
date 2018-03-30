@@ -154,7 +154,7 @@ public class OrganCourseService {
 
     /**
      * 商户后台创建课程
-     * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_catalog，ep_organ_course_team，ep_organ_course_tag
+     * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_course_team，ep_organ_course_tag
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo createOrganCourseByMerchant(CreateOrganCourseDto dto, Long ognId) {
@@ -215,10 +215,10 @@ public class OrganCourseService {
 
         //机构类目表 插入数据
         //是否存在机构id和课程类目id组合的重复,否那么插入
-        if (!organCatalogRepository.existOgnAndCatalog(ognId, organCoursePo.getCourseCatalogId())) {
-            log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。ognId={},courseCatalogId={}。", organCoursePo.getCourseCatalogId());
-            organCatalogRepository.insert(new EpOrganCatalogPo(null, ognId, organCoursePo.getCourseCatalogId(), null, null, null, null, null, null));
-        }
+//        if (!organCatalogRepository.existOgnAndCatalog(ognId, organCoursePo.getCourseCatalogId())) {
+//            log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。ognId={},courseCatalogId={}。", organCoursePo.getCourseCatalogId());
+//            organCatalogRepository.insert(new EpOrganCatalogPo(null, ognId, organCoursePo.getCourseCatalogId(), null, null, null, null, null, null));
+//        }
 
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(ognAccountIds)) {
@@ -263,6 +263,7 @@ public class OrganCourseService {
 
     /**
      * 商户后台更新课程
+     * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_course_team，ep_organ_course_tag
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo updateOrganCourseByMerchant(CreateOrganCourseDto dto, Long ognId) {
@@ -313,7 +314,7 @@ public class OrganCourseService {
         //物理删除课程标签
         organCourseTagRepository.deletePhysicByCourseId(organCourseId);
         //物理删除 机构类目表 记录
-        organCatalogRepository.deletePhysicByOgnId(ognId);
+//        organCatalogRepository.deletePhysicByOgnId(ognId);
         //物理删除 机构课程团队信息表 记录
         organCourseTeamRepository.deletePhysicByCourseId(organCourseId);
         //课程负责人账户id集合
@@ -345,16 +346,16 @@ public class OrganCourseService {
         });
 
         //机构类目表 插入数据start
-        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(ognId);
-        //课程类目去重
-        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
-        courseCatalogIdsSet.add(organCoursePo.getCourseCatalogId());
-        List<EpOrganCatalogPo> organCatalogPos = Lists.newArrayList();
-        courseCatalogIdsSet.forEach(courseCatalogId -> {
-            organCatalogPos.add(new EpOrganCatalogPo(null, ognId, courseCatalogId, null, null, null, null, null, null));
-        });
-        log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。{}。", organCatalogPos);
-        organCatalogRepository.insert(organCatalogPos);
+//        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(ognId);
+//        //课程类目去重
+//        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
+//        courseCatalogIdsSet.add(organCoursePo.getCourseCatalogId());
+//        List<EpOrganCatalogPo> organCatalogPos = Lists.newArrayList();
+//        courseCatalogIdsSet.forEach(courseCatalogId -> {
+//            organCatalogPos.add(new EpOrganCatalogPo(null, ognId, courseCatalogId, null, null, null, null, null, null));
+//        });
+//        log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。{}。", organCatalogPos);
+//        organCatalogRepository.insert(organCatalogPos);
         //机构类目表 插入数据end
 
         //机构课程团队信息表插入数据start
@@ -512,11 +513,11 @@ public class OrganCourseService {
         //课程标签 逻辑删除
         organCourseTagRepository.deleteLogicByCourseId(courseId);
         //机构类目 逻辑删除
-        Long courseCatalogId = optional.get().getCourseCatalogId();
-        long count = organCourseRepository.countByCourseCatalogIdAndOgnId(optional.get().getCourseCatalogId(), ognId);
-        if (count == BizConstant.DB_NUM_ZERO) {
-            organCatalogRepository.deletePhysicByOgnIdAndCatalogId(ognId, courseCatalogId);
-        }
+//        Long courseCatalogId = optional.get().getCourseCatalogId();
+//        long count = organCourseRepository.countByCourseCatalogIdAndOgnId(optional.get().getCourseCatalogId(), ognId);
+//        if (count == BizConstant.DB_NUM_ZERO) {
+//            organCatalogRepository.deletePhysicByOgnIdAndCatalogId(ognId, courseCatalogId);
+//        }
         //主图 逻辑删除
         fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseId);
         //内容图片 逻辑删除

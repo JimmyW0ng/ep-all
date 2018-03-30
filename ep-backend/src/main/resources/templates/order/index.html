@@ -132,6 +132,8 @@
                             <td th:text="${bo.prize}"></td>
                             <td name="statusZh" th:if="!${#strings.equals(bo.classType,'bespeak')}"
                                 th:text="#{EpOrderStatus.+${bo.status}}"></td>
+                            <td name="statusZh" th:if="${#strings.equals(bo.classType,'bespeak')}"
+                                th:text="#{EpOrderStatusBespeak.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
 
                             <td name="remark" th:text="${bo.remark}"></td>
