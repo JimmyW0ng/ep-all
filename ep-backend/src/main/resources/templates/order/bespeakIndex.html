@@ -133,7 +133,7 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info"
-                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.courseNum}+','+${bo.classId}+')'">预约</a>
+                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\',\''+${bo.childTrueName}+'\')'">预约</a>
                             </td>
 
                         </tr>
@@ -169,68 +169,196 @@
                         class="sr-only">关闭</span>
                 </button>
                 <h3 style="text-align: left">预约详情</h3>
+                <h4 style="text-align: left">[<span id="modelOrder"></span>]的订单，共<span id="modelCourseNum"></span>个课时
+                </h4>
 
             </div>
             <div class="modal-body">
-                <div style="overflow:hidden">
-                    <div name="" class="col-sm-3 form-group">
-                        <label>课时<span class="required-sign">*</span></label>
-                        <input name="catalogIndex" class="form-control " value=${catalogIndex}>
+                <div><a class="btn btn-success" type="button" href="javascript:void(0)" onclick="createBespeakBox()"><i
+                        class="glyphicon glyphicon-plus"></i> 添加预约</a></div>
+                <form id="frm">
+                    <input id="orderId" type="hidden">
+                    <input id="childId" type="hidden">
+                    <input id="classId" type="hidden">
+                    <div id="bespeakBox">
+
                     </div>
-                    <div class="col-sm-3 form-group">
-                        <label>目录标题<span class="required-sign">*</span></label>
-                        <input name="catalogTitle" class="form-control" value="${catalogTitle}"
-                        >
-                    </div>
-                    <div class="col-sm-3 form-group">
-                        <label>开始时间<span class="required-sign">*</span></label>
-                        <input name="startTime" class="form-control" value="${startTime}"
-                               required="true"/>
-                    </div>
-                    <div class="col-sm-3 form-group">
-                        <label>持续时长<span class="required-sign">*</span></label>
-                        <input name="startTime" class="form-control" value="${startTime}"
-                               required="true"/>
-                    </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="refuseDo()">保存</button>
+                <!--<button type="button" class="btn btn-primary" onclick="frmSubmit()">保存</button>-->
             </div>
 
         </div>
     </div>
 </div>
-<script type="text/template" id='scheduleTmpl'></script>
+<script type="text/template" id='createScheduleTmpl'>
+    <div style="overflow:hidden" class="createClassSchedulePo">
+        <form>
+            <div class="col-sm-4 form-group">
+                <input name="id" type="hidden" value="${id}">
+                <input name="catalogIndex" type="hidden" value="${catalogIndex}">
+                <label>目录标题<span class="required-sign">*</span></label>
+                <input name="catalogTitle" class="form-control" value="${catalogTitle}" required="true">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>开始时间<span class="required-sign">*</span></label>
+                <input name="startTime" class="form-control laydate" value="${startTime}"
+                       required="true"/>
+            </div>
+            <div class="col-sm-3 form-group">
+                <label>持续时长<span class="required-sign">*</span></label>
+                <input name="duration" class="form-control" value="${duration}"
+                       required="true"/>
+            </div>
+            <div class="col-sm-1">
+                <a style="float:right;display:inline-block;margin-left:10px" href="javascript:void(0);"><span
+                        class="glyphicon glyphicon-remove"
+                        aria-hidden="true"
+                        onclick="removeBespeakBox(this)"></span></a>
+                <button type="button" name="success" class="btn btn-xs btn-info" onclick="frmSubmit(this)">保存</button>
+
+            </div>
+        </form>
+
+    </div>
+</script>
+<script type="text/template" id='scheduleTmpl'>
+    <div style="overflow:hidden" class="classSchedulePo">
+        <form>
+            <div class="col-sm-4 form-group">
+                <input name="id" type="hidden" value="${id}">
+                <input name="catalogIndex" type="hidden" value="${catalogIndex}">
+                <label>目录标题<span class="required-sign">*</span></label>
+                <input name="catalogTitle" class="form-control" value="${catalogTitle}" required="true">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>开始时间<span class="required-sign">*</span></label>
+                <input name="startTime" class="form-control laydate" value="${startTime}"
+                       required="true"/>
+            </div>
+            <div class="col-sm-3 form-group">
+                <label>持续时长<span class="required-sign">*</span></label>
+                <input name="duration" class="form-control" value="${duration}"
+                       required="true"/>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" name="edit" class="btn btn-xs btn-warning" onclick="frmSubmit(this)">变更</button>
+            </div>
+        </form>
+
+    </div>
+</script>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
+<script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
-    function bespeakInit(id, courseNum, classId) {
-        $("#bespeakModal").modal("show")
+    /*删除预约行程*/
+    function removeBespeakBox(ele) {
+        $(ele).parents(".createClassSchedulePo").remove()
+    }
+    /*添加预约行程*/
+    function createBespeakBox() {
+        var len = $("#bespeakBox").find("div.classSchedulePo,div.createClassSchedulePo").length
+        var courseNum = $("#modelCourseNum").val()
+        if (courseNum <= len) {
+            toastr.error("预约已达上限！");
+            return
+        }
+        if ($("#bespeakBox").find("div.createClassSchedulePo") == 1) {
+            toastr.error("请先完成当前预约！");
+        }
+
+        $("#bespeakBox").append($("#createScheduleTmpl").tmpl({}))
+        $(".createClassSchedulePo:last").find(".laydate").each(function () {
+            laydate.render({
+                type: 'datetime',
+                elem: this,
+                trigger: 'click'
+            });
+        })
+    }
+
+    function frmSubmit(ele) {
+        var $frm = $(ele).parents("form").eq(0)
+        if (!$frm.valid()) {
+            console.log("valid fail")
+            return;
+        }
+        debugger
+        var len = $(ele).parents(".createClassSchedulePo").prevAll("div.classSchedulePo").length
+
+        var orderId = $("#orderId").val()
+        var childId = $("#childId").val()
+        var classId = $("#classId").val()
+        var catalogTitle = $frm.find("input[name='catalogTitle']").eq(0).val()
+        var startTime = $frm.find("input[name='startTime']").eq(0).val()
+        var duration = $frm.find("input[name='duration']").eq(0).val()
+        var catalogIndex = $frm.find("input[name='catalogIndex']").eq(0).val()
+        var id = $frm.find("input[name='id']").eq(0).val()
+        var classSchedulePo = {
+            id: id,
+            orderId: orderId,
+            childId: childId,
+            classId: classId,
+            catalogIndex: len + 1,
+            catalogTitle: catalogTitle,
+            startTime: startTime,
+            duration: duration
+        }
+        var url;
+        if (id) {
+            url = "/auth/classSchedule/updateSchedule"
+        } else {
+            url = "/auth/classSchedule/createSchedule"
+        }
         $.ajax({
             type: "POST",
-            url: "/auth/order/orderBespeak",
-            data: {id: id, classId: classId},
+            url: url,
+            data: classSchedulePo,
             success: function (data) {
                 if (data.success) {
-                    var orderPo = data.result
-                    var $tr = $(ele).parents("tr").eq(0)
-                    $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
-                    $tr.find("td[name='status']").eq(0).text(orderPo.status);
-                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark == undefined ? "" : orderPo.remark);
-                    var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
-                    buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
+                    debugger
+                    var po = data.result
+
+                    var classSchedulePo = {
+                        id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
+                        startTime: po.startTime, duration: po.duration
+                    }
+                    $(ele).parents(".classSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
+                    $(ele).parents(".classSchedulePo").eq(0).remove()
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+    function bespeakInit(orderId, childId, courseNum, classId, childNickName, childTrueName) {
+        $("#orderId").val(orderId)
+        $("#childId").val(childId)
+        $("#classId").val(classId)
+        $("#bespeakModal").modal("show")
+        $("#modelOrder").text(childNickName == "" ? childTrueName : childNickName)
+        $("#modelCourseNum").text(courseNum)
+        $.ajax({
+            type: "GET",
+            url: "/auth/classSchedule/bespeakInit/" + orderId,
+            success: function (data) {
+                if (data.success) {
+                    if (data.result == null) {
+                        return
+                    }
+                    debugger
+                    $("#bespeakBox").append($("#scheduleTmpl").tmpl(data.result))
+                }
             }
         })
     }
