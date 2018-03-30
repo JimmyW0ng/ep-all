@@ -1,9 +1,7 @@
 package com.ep.domain.pojo.bo;
 
 import com.ep.common.tool.DateTools;
-import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,31 +26,6 @@ public class OrganAccountClassBo extends EpOrganClassPo {
     private Integer childNum;
     private Integer childEvaluatedNum;
 
-    public Boolean getWaitCommentFlag() {
-        if (EpOrganClassStatus.opening.equals(super.getStatus())) {
-            if (this.childEvaluatedNum == null) {
-                return false;
-            }
-            return this.childEvaluatedNum < super.getEnteredNum();
-        }
-        return false;
-    }
-
-    public Boolean getViewCommentFlag() {
-        if (EpOrganClassStatus.opening.equals(super.getStatus())) {
-            if (this.childEvaluatedNum == null) {
-                return false;
-            }
-            return this.childEvaluatedNum >= super.getEnteredNum();
-        } else if (EpOrganClassStatus.end.equals(super.getStatus())) {
-            if (this.childEvaluatedNum == null) {
-                return false;
-            }
-            return this.childEvaluatedNum > BizConstant.DB_NUM_ZERO;
-        }
-        return false;
-    }
-
     public Long getStartTimeStamp() {
         if (this.getStartTime() != null) {
             return this.getStartTime().getTime();
@@ -61,6 +34,6 @@ public class OrganAccountClassBo extends EpOrganClassPo {
     }
 
     public String getStartTimeFormat() {
-        return DateTools.formatDatetoString(this.getStartTime(), DateTools.DATE_FMT_4);
+        return DateTools.formatDatetoString(this.getStartTime(), DateTools.DATE_FMT_13);
     }
 }

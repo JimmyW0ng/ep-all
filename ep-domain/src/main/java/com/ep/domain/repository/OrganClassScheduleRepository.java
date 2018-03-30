@@ -175,6 +175,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_MEMBER_CHILD_COMMENT.CONTENT.as("comment"));
         return dslContext.select(fieldList)
@@ -184,7 +185,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                          .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
                          .leftJoin(EP_MEMBER_CHILD_COMMENT)
                          .on(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID))
-                         .and(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                         .and(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
                          .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
                          .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
                          .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))

@@ -15,6 +15,7 @@ public class OrganClassCatalogCommentBo extends AbstractBasePojo {
     private Long classScheduleId;
     private Long catalogTitle;
     private Long catalogDesc;
+    private Boolean evaluateFlag;
     private Long childId;
     private String childNickName;
     private String avatar;
