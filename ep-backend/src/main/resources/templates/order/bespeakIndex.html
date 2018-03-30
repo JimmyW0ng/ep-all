@@ -212,7 +212,27 @@
 <script th:inline="javascript">
     function bespeakInit(id, courseNum, classId) {
         $("#bespeakModal").modal("show")
-
+        $.ajax({
+            type: "POST",
+            url: "/auth/order/orderBespeak",
+            data: {id: id, classId: classId},
+            success: function (data) {
+                if (data.success) {
+                    var orderPo = data.result
+                    var $tr = $(ele).parents("tr").eq(0)
+                    $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
+                    $tr.find("td[name='status']").eq(0).text(orderPo.status);
+                    $tr.find("td[name='remark']").eq(0).text(orderPo.remark == undefined ? "" : orderPo.remark);
+                    var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
+                    buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
     }
     //    var EpOrderStatus = {
     //        save: "保存",

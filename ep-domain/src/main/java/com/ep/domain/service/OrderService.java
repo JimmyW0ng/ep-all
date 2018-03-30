@@ -411,7 +411,7 @@ public class OrderService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
         int count = orderRepository.orderCancelById(id, status);
-        if (count == BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.success)) {
+        if (count == BizConstant.DB_NUM_ONE && status.equals(EpOrderStatus.success)) {
             // 班次成功报名人数扣减
             int subEnteredNum = organClassRepository.enteredNumByOrderCancel(orderPo.getClassId(), count);
             // 课程总参加人数扣减
@@ -426,7 +426,7 @@ public class OrderService {
                 log.error("[订单]订单取消{}操作失败，班次成功报名人数扣减或课程总参加人数扣减或机构总参加人数扣减失败。", logAction);
                 throw new ServiceRuntimeException("班次成功报名人数扣减或课程总参加人数扣减或机构总参加人数扣减异常");
             }
-        } else if (count == BizConstant.DB_NUM_ZERO && status.equals(EpOrderStatus.refuse)) {
+        } else if (count == BizConstant.DB_NUM_ONE && status.equals(EpOrderStatus.refuse)) {
             log.info("[订单]订单取消{}操作成功，订单id={}。", logAction, id);
             return ResultDo.build();
         } else {
@@ -453,14 +453,14 @@ public class OrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo orderBespeakById(Long id) {
-        log.info("[订单]订单提前预约开始，订单id={}。", id);
+        log.info("[订单]订单提交预约开始，订单id={}。", id);
         Optional<OrderTypeBo> orderOptional = orderRepository.getOrderTypeBoById(id);
         if (!orderOptional.isPresent()) {
-            log.info("[订单]订单提前预约失败，订单不存在，订单id={}。", id);
+            log.info("[订单]订单提交预约失败，订单不存在，订单id={}。", id);
             return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
         }
         if (!orderOptional.get().getType().equals(EpOrganClassType.bespeak)) {
-            log.error("[订单]订单提前预约失败，班次类型不是预约类型，订单id={}。", id);
+            log.error("[订单]订单提交预约失败，班次类型不是预约类型，订单id={}。", id);
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         if (orderRepository.orderBespeakById(id) == BizConstant.DB_NUM_ONE) {
@@ -471,13 +471,23 @@ public class OrderService {
             epOrganClassChildPo.setOrderId(orderTypeBo.getId());
             //班次孩子表插入数据
             organClassChildRepository.insert(epOrganClassChildPo);
-            log.info("[订单]订单提前预约成功，订单id={}。", id);
+            log.info("[订单]订单提交预约成功，订单id={}。", id);
             return ResultDo.build();
         } else {
-            log.error("[订单]订单提前预约失败，订单id={}。", id);
+            log.error("[订单]订单提交预约失败，订单id={}。", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
 
-
+    /**
+     * 提交预约
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo orderBespeakSchedule(Long id) {
+        Optional<OrderTypeBo> orderOptional = orderRepository.getOrderTypeBoById(id);
+        return ResultDo.build();
+    }
 }

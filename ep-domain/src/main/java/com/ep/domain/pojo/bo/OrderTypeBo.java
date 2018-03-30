@@ -21,4 +21,5 @@ public class OrderTypeBo extends AbstractBasePojo {
     private Long childId;
     private EpOrganClassType type;
     private EpOrderStatus status;
+    private Integer courseNum;
 }
