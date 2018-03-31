@@ -33,6 +33,7 @@ public class EpOrderPo extends AbstractBasePojo {
     private EpOrderStatus status;
     private Timestamp authTime;
     private Timestamp cancelTime;
+    private BigDecimal refundAmount;
     private Timestamp createAt;
     @JsonIgnore
     private Timestamp updateAt;

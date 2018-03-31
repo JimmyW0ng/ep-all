@@ -83,7 +83,7 @@ public class Keys {
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_PRIMARY;
     public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = UniqueKeys0.KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID;
     public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_CHILD_TAG_PRIMARY;
-    public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_UNIQUE_SCHEDULE_TAG = UniqueKeys0.KEY_EP_MEMBER_CHILD_TAG_UNIQUE_SCHEDULE_TAG;
+    public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_UNIQUE_CATELOG_CHILD_TAG = UniqueKeys0.KEY_EP_MEMBER_CHILD_TAG_UNIQUE_CATELOG_CHILD_TAG;
     public static final UniqueKey<EpMemberMessageRecord> KEY_EP_MEMBER_MESSAGE_PRIMARY = UniqueKeys0.KEY_EP_MEMBER_MESSAGE_PRIMARY;
     public static final UniqueKey<EpMessageCaptchaRecord> KEY_EP_MESSAGE_CAPTCHA_PRIMARY = UniqueKeys0.KEY_EP_MESSAGE_CAPTCHA_PRIMARY;
     public static final UniqueKey<EpOrderRecord> KEY_EP_ORDER_PRIMARY = UniqueKeys0.KEY_EP_ORDER_PRIMARY;
@@ -176,7 +176,7 @@ public class Keys {
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_PRIMARY = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_PRIMARY", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.ID);
         public static final UniqueKey<EpMemberChildSignRecord> KEY_EP_MEMBER_CHILD_SIGN_UNIQUE_CHILD_ID = createUniqueKey(EpMemberChildSign.EP_MEMBER_CHILD_SIGN, "KEY_ep_member_child_sign_UNIQUE_CHILD_ID", EpMemberChildSign.EP_MEMBER_CHILD_SIGN.CHILD_ID);
         public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_PRIMARY = createUniqueKey(EpMemberChildTag.EP_MEMBER_CHILD_TAG, "KEY_ep_member_child_tag_PRIMARY", EpMemberChildTag.EP_MEMBER_CHILD_TAG.ID);
-        public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_UNIQUE_SCHEDULE_TAG = createUniqueKey(EpMemberChildTag.EP_MEMBER_CHILD_TAG, "KEY_ep_member_child_tag_UNIQUE_SCHEDULE_TAG", EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID, EpMemberChildTag.EP_MEMBER_CHILD_TAG.TAG_ID);
+        public static final UniqueKey<EpMemberChildTagRecord> KEY_EP_MEMBER_CHILD_TAG_UNIQUE_CATELOG_CHILD_TAG = createUniqueKey(EpMemberChildTag.EP_MEMBER_CHILD_TAG, "KEY_ep_member_child_tag_UNIQUE_CATELOG_CHILD_TAG", EpMemberChildTag.EP_MEMBER_CHILD_TAG.CLASS_SCHEDULE_ID, EpMemberChildTag.EP_MEMBER_CHILD_TAG.CHILD_ID, EpMemberChildTag.EP_MEMBER_CHILD_TAG.TAG_ID);
         public static final UniqueKey<EpMemberMessageRecord> KEY_EP_MEMBER_MESSAGE_PRIMARY = createUniqueKey(EpMemberMessage.EP_MEMBER_MESSAGE, "KEY_ep_member_message_PRIMARY", EpMemberMessage.EP_MEMBER_MESSAGE.ID);
         public static final UniqueKey<EpMessageCaptchaRecord> KEY_EP_MESSAGE_CAPTCHA_PRIMARY = createUniqueKey(EpMessageCaptcha.EP_MESSAGE_CAPTCHA, "KEY_ep_message_captcha_PRIMARY", EpMessageCaptcha.EP_MESSAGE_CAPTCHA.ID);
         public static final UniqueKey<EpOrderRecord> KEY_EP_ORDER_PRIMARY = createUniqueKey(EpOrder.EP_ORDER, "KEY_ep_order_PRIMARY", EpOrder.EP_ORDER.ID);

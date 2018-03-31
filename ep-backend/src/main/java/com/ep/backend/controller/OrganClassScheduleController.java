@@ -104,7 +104,7 @@ public class OrganClassScheduleController extends BackendController {
             courseMap.put(p.getId(), p.getCourseName());
         });
         model.addAttribute("courseMap", courseMap);
-        //班次下拉框
+        //班次下拉框，获取opening/end的正常班次和normal/end的预约班次,提供给随堂评价页面
         List<EpOrganClassPo> organClassPos = organClassService.findProceedClassByCourseId(courseId);
 
         model.addAttribute("organClassPos", organClassPos);
@@ -132,9 +132,10 @@ public class OrganClassScheduleController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
+        //班次下拉框，获取opening/end的正常班次和normal/end的预约班次,提供给随堂评价页面
         List<EpOrganClassPo> organClassPos = organClassService.findProceedClassByCourseId(courseId);
         if (CollectionsTools.isEmpty(organClassPos)) {
-            return ResultDo.build().setResult(new HashMap<Long, String>(0));
+            return ResultDo.build();
         }
 
         return ResultDo.build().setResult(organClassPos);
@@ -198,7 +199,7 @@ public class OrganClassScheduleController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo bespeakInit(@PathVariable("orderId") Long orderId) {
-        List<OrganClassBespeakScheduleBo> bos = organClassScheduleService.findByOrderId(orderId);
+        List<OrganClassBespeakScheduleBo> bos = organClassScheduleService.findBespeakScheduleBoByOrderId(orderId);
         if (bos.isEmpty()) {
             ResultDo.build();
         }

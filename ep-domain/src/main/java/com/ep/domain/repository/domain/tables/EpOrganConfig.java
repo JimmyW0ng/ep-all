@@ -29,39 +29,56 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganConfig extends TableImpl<EpOrganConfigRecord> {
 
+    private static final long serialVersionUID = -1468474470;
+
     /**
      * The reference instance of <code>ep.ep_organ_config</code>
      */
     public static final EpOrganConfig EP_ORGAN_CONFIG = new EpOrganConfig();
-    private static final long serialVersionUID = -1468474470;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrganConfigRecord> getRecordType() {
+        return EpOrganConfigRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_organ_config.id</code>.
      */
     public final TableField<EpOrganConfigRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
     /**
      * The column <code>ep.ep_organ_config.ogn_id</code>. 机构id
      */
     public final TableField<EpOrganConfigRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+
     /**
      * The column <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能
      */
     public final TableField<EpOrganConfigRecord, Boolean> SUPPORT_TAG = createField("support_tag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否支持标签功能");
+
     /**
      * The column <code>ep.ep_organ_config.create_at</code>. 创建时间
      */
     public final TableField<EpOrganConfigRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_organ_config.update_at</code>. 更新时间
      */
     public final TableField<EpOrganConfigRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_organ_config.remark</code>. 备注
      */
     public final TableField<EpOrganConfigRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_organ_config.del_flag</code>. 删除标记
      */
     public final TableField<EpOrganConfigRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_organ_config.version</code>.
      */
@@ -87,14 +104,6 @@ public class EpOrganConfig extends TableImpl<EpOrganConfigRecord> {
 
     private EpOrganConfig(String alias, Table<EpOrganConfigRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "机构配置表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrganConfigRecord> getRecordType() {
-        return EpOrganConfigRecord.class;
     }
 
     /**

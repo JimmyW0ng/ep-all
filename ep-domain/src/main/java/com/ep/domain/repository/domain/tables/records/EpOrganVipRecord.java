@@ -33,42 +33,6 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     private static final long serialVersionUID = -744544601;
 
     /**
-     * Create a detached EpOrganVipRecord
-     */
-    public EpOrganVipRecord() {
-        super(EpOrganVip.EP_ORGAN_VIP);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganVipRecord
-     */
-    public EpOrganVipRecord(Long id, Long ognId, Long memberId, Long childId, Timestamp startTime, Timestamp endTime, Byte level, BigDecimal prize, EpOrganVipStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpOrganVip.EP_ORGAN_VIP);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, memberId);
-        set(3, childId);
-        set(4, startTime);
-        set(5, endTime);
-        set(6, level);
-        set(7, prize);
-        set(8, status);
-        set(9, remark);
-        set(10, createAt);
-        set(11, updateAt);
-        set(12, delFlag);
-        set(13, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_vip.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_vip.id</code>.
      */
     public EpOrganVipRecord setId(Long value) {
@@ -77,10 +41,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_organ_vip.id</code>.
      */
-    public Long getOgnId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -92,10 +56,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.member_id</code>. 会员id
+     * Getter for <code>ep.ep_organ_vip.ogn_id</code>. 机构id
      */
-    public Long getMemberId() {
-        return (Long) get(2);
+    public Long getOgnId() {
+        return (Long) get(1);
     }
 
     /**
@@ -107,10 +71,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.child_id</code>. 孩子id
+     * Getter for <code>ep.ep_organ_vip.member_id</code>. 会员id
      */
-    public Long getChildId() {
-        return (Long) get(3);
+    public Long getMemberId() {
+        return (Long) get(2);
     }
 
     /**
@@ -122,10 +86,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.start_time</code>. 会员开始时间
+     * Getter for <code>ep.ep_organ_vip.child_id</code>. 孩子id
      */
-    public Timestamp getStartTime() {
-        return (Timestamp) get(4);
+    public Long getChildId() {
+        return (Long) get(3);
     }
 
     /**
@@ -137,10 +101,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.end_time</code>. 会员结束时间
+     * Getter for <code>ep.ep_organ_vip.start_time</code>. 会员开始时间
      */
-    public Timestamp getEndTime() {
-        return (Timestamp) get(5);
+    public Timestamp getStartTime() {
+        return (Timestamp) get(4);
     }
 
     /**
@@ -152,10 +116,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.level</code>. 会员等级
+     * Getter for <code>ep.ep_organ_vip.end_time</code>. 会员结束时间
      */
-    public Byte getLevel() {
-        return (Byte) get(6);
+    public Timestamp getEndTime() {
+        return (Timestamp) get(5);
     }
 
     /**
@@ -167,10 +131,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.prize</code>. 入会费用
+     * Getter for <code>ep.ep_organ_vip.level</code>. 会员等级
      */
-    public BigDecimal getPrize() {
-        return (BigDecimal) get(7);
+    public Byte getLevel() {
+        return (Byte) get(6);
     }
 
     /**
@@ -182,10 +146,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.status</code>. 状态：已保存；成功；拒绝；取消；
+     * Getter for <code>ep.ep_organ_vip.prize</code>. 入会费用
      */
-    public EpOrganVipStatus getStatus() {
-        return (EpOrganVipStatus) get(8);
+    public BigDecimal getPrize() {
+        return (BigDecimal) get(7);
     }
 
     /**
@@ -197,10 +161,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.remark</code>. 备注信息
+     * Getter for <code>ep.ep_organ_vip.status</code>. 状态：已保存；成功；拒绝；取消；
      */
-    public String getRemark() {
-        return (String) get(9);
+    public EpOrganVipStatus getStatus() {
+        return (EpOrganVipStatus) get(8);
     }
 
     /**
@@ -212,10 +176,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_vip.remark</code>. 备注信息
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(10);
+    public String getRemark() {
+        return (String) get(9);
     }
 
     /**
@@ -227,10 +191,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_vip.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(11);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -242,10 +206,10 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
-     * Getter for <code>ep.ep_organ_vip.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_organ_vip.update_at</code>. 更新时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -256,20 +220,12 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_organ_vip.version</code>.
+     * Getter for <code>ep.ep_organ_vip.del_flag</code>. 删除标志
      */
-    public Long getVersion() {
-        return (Long) get(13);
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
-
-    // -------------------------------------------------------------------------
-    // Record14 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_organ_vip.version</code>.
@@ -280,12 +236,27 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
     }
 
     /**
+     * Getter for <code>ep.ep_organ_vip.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(13);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record14 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -644,10 +615,6 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -677,5 +644,38 @@ public class EpOrganVipRecord extends UpdatableRecordImpl<EpOrganVipRecord> impl
         value13(value13);
         value14(value14);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpOrganVipRecord
+     */
+    public EpOrganVipRecord() {
+        super(EpOrganVip.EP_ORGAN_VIP);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganVipRecord
+     */
+    public EpOrganVipRecord(Long id, Long ognId, Long memberId, Long childId, Timestamp startTime, Timestamp endTime, Byte level, BigDecimal prize, EpOrganVipStatus status, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpOrganVip.EP_ORGAN_VIP);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, memberId);
+        set(3, childId);
+        set(4, startTime);
+        set(5, endTime);
+        set(6, level);
+        set(7, prize);
+        set(8, status);
+        set(9, remark);
+        set(10, createAt);
+        set(11, updateAt);
+        set(12, delFlag);
+        set(13, version);
     }
 }

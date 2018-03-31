@@ -3,6 +3,7 @@ package com.ep.backend.controller;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
+import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -279,17 +281,18 @@ public class OrderController extends BackendController {
     }
 
     /**
-     * 预约中止
+     * 预约提前结束
      *
      * @param id
      */
-    @GetMapping("orderBespeakBreak/{id}")
+    @PostMapping("orderBespeakBreak")
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo orderBespeakBreak(
-            @PathVariable("id") Long id
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "refundAmount") BigDecimal refundAmount
     ) {
-        return orderService.orderBespeakBreak(id);
+        return orderService.orderBespeakBreak(id, refundAmount);
     }
 
     /**
@@ -297,11 +300,12 @@ public class OrderController extends BackendController {
      *
      * @param id
      */
-//    @GetMapping("breakInit/{id}")
-//    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-//    @ResponseBody
-//    public ResultDo breakInit(@PathVariable("id") Long id){
-//       List<OrganClassScheduleBo> bos=organClassScheduleService.findByOrderId(id);
-//    }
+    @GetMapping("breakInit/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo breakInit(@PathVariable("id") Long id) {
+        List<OrganClassScheduleBo> bos = organClassScheduleService.findBoByOrderId(id);
+        return ResultDo.build().setResult(bos);
+    }
 }
 

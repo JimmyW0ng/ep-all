@@ -229,15 +229,18 @@
                         <th>行程状态</th>
                     </tr>
                     </thead>
-                    <tbody id="classOrdersBody">
+                    <tbody id="ordersBody">
 
                     </tbody>
                 </table>
-                <form>
-                    <div class="col-sm-4 form-group">
-                        <label>退费费用（元）<span class="required-sign">*</span></label>
-                        <input name="startTime" class="form-control" value=""
-                               required="true"/>
+                <form class="form-horizontal m-t" id="breakFrm">
+                    <div class="form-group">
+                        <label style="float: left" class="control-label">退费费用（元）<span
+                                class="required-sign">*</span></label>
+                        <div class="col-sm-4">
+                            <input name="refundAmount" class="form-control" id="refundAmount"
+                                   required="true">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -262,6 +265,10 @@
     </tr>
 </script>
 <script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
     var EpOrderStatus={save:"保存",
@@ -270,6 +277,9 @@
     end:"结束",
     refuse:"拒绝",
     cancel:"取消"}
+    var epOrganClassScheduleStatus = {
+        wait: "等待", normal: "正常", late: "迟到", absent: "缺勤", leave: "请假", close: "关闭"
+    }
     
     function checkOrderSuccess(ele) {
         var status=$(ele).parent().siblings("td[name='status']").eq(0).html()
@@ -430,6 +440,7 @@
 
     /*提前结束*/
     function breakInit(id) {
+        $("#breakModal").find("input").val("")
         $("#breakModal").modal("show")
         $("#breakId").val(id)
         $("#breakIdTxt").text(id)
@@ -437,8 +448,40 @@
             type: "GET",
             url: "/auth/order/breakInit/" + id,
             success: function (data) {
-
-            }
+                if (data.success) {
+                    var res = data.result
+                    for (var item in res) {
+                        res[item].status = epOrganClassScheduleStatus[res[item].status]
+                    }
+                    $("#ordersBody").html($("#scheduleTmpl").tmpl(data.result))
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+    }
+    function breakDo() {
+        if (!$("#breakFrm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/auth/order/orderBespeakBreak",
+            data: {id: $("#breakId").val(), refundAmount: $("#refundAmount").val()},
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
     }
     $(function () {
@@ -447,7 +490,16 @@
             var status = $(this).find("td[name='status']").eq(0).text()
             var classStatus = $(this).find("td[name='classStatus']").text()
             buttonByStatus($box, status, classStatus)
+        })
 
+        $.validator.addMethod("decimal", function (value, element) {
+            var decimal = /^\d{1,10}(\.\d{0,2})?$/
+            return this.optional(element) || decimal.test(value);
+        }, "小数位数最多为两位！");
+        $("#breakFrm").validate({
+            rules: {
+                refundAmount: {number: true, min: 0, decimal: true},
+            },
         })
     })
 

@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -479,11 +480,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param id
      * @return
      */
-    public int endById(Long id) {
+    public int endById(Long id, BigDecimal refundAmount) {
         return dslContext.update(EP_ORDER)
                 .set(EP_ORDER.STATUS, EpOrderStatus.end)
+                .set(EP_ORDER.REFUND_AMOUNT, refundAmount)
                 .where(EP_ORDER.ID.eq(id))
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
     }

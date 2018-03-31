@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -494,18 +495,24 @@ public class OrderService {
     }
 
     /**
-     * 中止预约
+     * 预约提前结束
      *
      * @param id
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo orderBespeakBreak(Long id) {
-        log.info("[订单]订单预约中止，订单id={}。", id);
-        if (orderRepository.endById(id) == BizConstant.DB_NUM_ONE) {
+    public ResultDo orderBespeakBreak(Long id, BigDecimal refundAmount) {
+        log.info("[订单]订单预约提前结束开始，订单id={}。", id);
+        if (orderRepository.endById(id, refundAmount) == BizConstant.DB_NUM_ONE) {
             organClassScheduleRepository.closeByOrderEnd(id);
+
+            log.info("[订单]订单预约提前结束成功，订单id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[订单]订单预约提前结束失败，订单id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
-        return ResultDo.build();
+
     }
 
 

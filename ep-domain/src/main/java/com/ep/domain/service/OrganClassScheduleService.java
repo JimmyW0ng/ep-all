@@ -333,13 +333,23 @@ public class OrganClassScheduleService {
     }
 
     /**
-     * 根据订单id获取记录
+     * 根据订单id获取订单行程Bo
      *
      * @param orderId
      * @return
      */
-    public List<OrganClassBespeakScheduleBo> findByOrderId(Long orderId) {
-        return organClassScheduleRepository.findByOrderId(orderId);
+    public List<OrganClassScheduleBo> findBoByOrderId(Long orderId) {
+        return organClassScheduleRepository.findBoByOrderId(orderId);
+    }
+
+    /**
+     * 根据订单id获取订单行程修改Bo
+     *
+     * @param orderId
+     * @return
+     */
+    public List<OrganClassBespeakScheduleBo> findBespeakScheduleBoByOrderId(Long orderId) {
+        return organClassScheduleRepository.findBespeakScheduleBoByOrderId(orderId);
     }
 
     /**

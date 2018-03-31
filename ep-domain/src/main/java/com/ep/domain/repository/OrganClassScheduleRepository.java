@@ -1,10 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
-import com.ep.domain.pojo.bo.OrganAccountClassBo;
-import com.ep.domain.pojo.bo.OrganClassBespeakScheduleBo;
-import com.ep.domain.pojo.bo.OrganClassCatalogBo;
-import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpOrganClassSchedulePo;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
@@ -258,17 +255,40 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     }
 
     /**
-     * 根据订单id获取记录
+     * 根据订单id获取订单行程Bo
      *
      * @param orderId
      * @return
      */
-    public List<OrganClassBespeakScheduleBo> findByOrderId(Long orderId) {
+    public List<OrganClassScheduleBo> findBoByOrderId(Long orderId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.fields());
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_SCHEDULE)
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX.asc())
+                .fetchInto(OrganClassScheduleBo.class);
+    }
+
+    /**
+     * 根据订单id获取订单行程修改Bo
+     *
+     * @param orderId
+     * @return
+     */
+    public List<OrganClassBespeakScheduleBo> findBespeakScheduleBoByOrderId(Long orderId) {
         return dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
                 .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX.asc())
                 .fetchInto(OrganClassBespeakScheduleBo.class);
     }
+
 
     /**
      * 新增随堂评价标识
@@ -313,7 +333,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
                 .set(EP_ORGAN_CLASS_SCHEDULE.STATUS, EpOrganClassScheduleStatus.close)
                 .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
-                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.eq(EpOrganClassScheduleStatus.wait))
+                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.eq(EpOrganClassScheduleStatus.normal))
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
     }
