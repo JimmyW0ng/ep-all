@@ -298,7 +298,7 @@ public class OrganClassScheduleService {
             log.error("[预约行程]新增预约行程失败，预约行程开始时间距离当前时间不得小于30分钟。");
             return ResultDo.build(MessageCode.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30);
         }
-        po.setStatus(EpOrganClassScheduleStatus.wait);
+        po.setStatus(EpOrganClassScheduleStatus.normal);
         organClassScheduleRepository.insert(po);
         log.info("[预约行程]新增预约行程成功，id={}。", po.getId());
         return ResultDo.build().setResult(po);
@@ -338,7 +338,7 @@ public class OrganClassScheduleService {
      * @param orderId
      * @return
      */
-    public Optional<List<OrganClassBespeakScheduleBo>> findByOrderId(Long orderId) {
+    public List<OrganClassBespeakScheduleBo> findByOrderId(Long orderId) {
         return organClassScheduleRepository.findByOrderId(orderId);
     }
 

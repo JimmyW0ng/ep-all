@@ -7,6 +7,7 @@ import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.service.OrderService;
+import com.ep.domain.service.OrganClassScheduleService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jooq.Condition;
@@ -39,6 +40,8 @@ import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
 public class OrderController extends BackendController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrganClassScheduleService organClassScheduleService;
 
     /**
      * 订单列表
@@ -288,5 +291,17 @@ public class OrderController extends BackendController {
     ) {
         return orderService.orderBespeakBreak(id);
     }
+
+    /**
+     * 提前结束预约初始化
+     *
+     * @param id
+     */
+//    @GetMapping("breakInit/{id}")
+//    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+//    @ResponseBody
+//    public ResultDo breakInit(@PathVariable("id") Long id){
+//       List<OrganClassScheduleBo> bos=organClassScheduleService.findByOrderId(id);
+//    }
 }
 

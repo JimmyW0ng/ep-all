@@ -321,7 +321,9 @@
             var value = $(ele).val()
             var type = $(ele).find("option[value='" + value + "']").eq(0).attr("name")
             if (type == "bespeak") {
-                $("#classCatalogId").html('<option value="">课时目录</option>')
+                $("#classCatalogId").html('<option value="">课时目录</option>').hide()
+            } else {
+                $("#classCatalogId").show()
             }
         }
         $.ajax({

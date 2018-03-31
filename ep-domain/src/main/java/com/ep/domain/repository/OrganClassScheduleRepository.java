@@ -25,7 +25,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -264,12 +263,11 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
      * @param orderId
      * @return
      */
-    public Optional<List<OrganClassBespeakScheduleBo>> findByOrderId(Long orderId) {
-        List<OrganClassBespeakScheduleBo> data = dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
+    public List<OrganClassBespeakScheduleBo> findByOrderId(Long orderId) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
                 .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .fetchInto(OrganClassBespeakScheduleBo.class);
-        return Optional.ofNullable(data);
     }
 
     /**

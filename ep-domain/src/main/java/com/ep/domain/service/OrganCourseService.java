@@ -604,27 +604,27 @@ public class OrganCourseService {
      * @return
      */
     private BigDecimal getCoursePriceMin(List<OrganClassBo> organClassBos) {
-        if (organClassBos.size() == BizConstant.DB_NUM_ONE) {
-            return organClassBos.get(0).getClassPrize();
-        }
         BigDecimal priceMin;
-        if (CollectionsTools.isNotEmpty(organClassBos)) {
-            BigDecimal[] priceArr = new BigDecimal[organClassBos.size()];
-            for (int i = 0; i < priceArr.length; i++) {
-                priceArr[i] = organClassBos.get(i).getClassPrize();
-            }
-            int index = BizConstant.DB_NUM_ZERO;
-            for (int j = index + 1; j < priceArr.length; j++) {
-                if (priceArr[j].compareTo(priceArr[index]) == -1) {
-                    BigDecimal temp = priceArr[j];
-                    priceArr[j] = priceArr[index];
-                    priceArr[index] = temp;
-                }
-            }
-            priceMin = priceArr[index];
-        } else {
+        if (CollectionsTools.isEmpty(organClassBos)) {
             priceMin = BigDecimal.ZERO;
         }
+        List<BigDecimal> priceList = Lists.newArrayList();
+        organClassBos.forEach(bo -> {
+            if (bo.getDiscountAmount() != null) {
+                priceList.add(bo.getDiscountAmount());
+            }
+            priceList.add(bo.getClassPrize());
+        });
+        int index = BizConstant.DB_NUM_ZERO;
+        for (int j = index + 1; j < priceList.size(); j++) {
+            if (priceList.get(j).compareTo(priceList.get(index)) == -1) {
+                BigDecimal min = priceList.get(j);
+                BigDecimal max = priceList.get(index);
+                priceList.set(j, max);
+                priceList.set(index, min);
+            }
+        }
+        priceMin = priceList.get(0);
         return priceMin;
     }
 

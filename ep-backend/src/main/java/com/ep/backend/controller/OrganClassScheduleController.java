@@ -9,7 +9,6 @@ import com.ep.domain.pojo.bo.OrganClassBespeakScheduleBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
-import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
@@ -106,8 +105,7 @@ public class OrganClassScheduleController extends BackendController {
         });
         model.addAttribute("courseMap", courseMap);
         //班次下拉框
-        EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
-        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
+        List<EpOrganClassPo> organClassPos = organClassService.findProceedClassByCourseId(courseId);
 
         model.addAttribute("organClassPos", organClassPos);
         List<EpOrganClassCatalogPo> organClassCatalogPos = organClassCatalogService.findByClassId(classId);
@@ -134,8 +132,7 @@ public class OrganClassScheduleController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo getClassByCourseId(@PathVariable("courseId") Long courseId) {
-        EpOrganClassStatus[] statuses = new EpOrganClassStatus[]{EpOrganClassStatus.opening, EpOrganClassStatus.end};
-        List<EpOrganClassPo> organClassPos = organClassService.findByCourseIdAndStatus(courseId, statuses);
+        List<EpOrganClassPo> organClassPos = organClassService.findProceedClassByCourseId(courseId);
         if (CollectionsTools.isEmpty(organClassPos)) {
             return ResultDo.build().setResult(new HashMap<Long, String>(0));
         }
@@ -201,11 +198,11 @@ public class OrganClassScheduleController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo bespeakInit(@PathVariable("orderId") Long orderId) {
-        Optional<List<OrganClassBespeakScheduleBo>> optional = organClassScheduleService.findByOrderId(orderId);
-        if (!optional.isPresent()) {
+        List<OrganClassBespeakScheduleBo> bos = organClassScheduleService.findByOrderId(orderId);
+        if (bos.isEmpty()) {
             ResultDo.build();
         }
-        optional.get().forEach(bo -> {
+        bos.forEach(bo -> {
             Timestamp startTime = bo.getStartTime();
             if (DateTools.compareTwoTime(DateTools.getCurrentDateTime(), startTime) != -1) {
                 bo.setRectifyFlag(false);
@@ -215,7 +212,7 @@ public class OrganClassScheduleController extends BackendController {
                 bo.setRectifyFlag(flag);
             }
         });
-        return ResultDo.build().setResult(optional.isPresent() ? optional.get() : null);
+        return ResultDo.build().setResult(bos);
     }
 
 

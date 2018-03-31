@@ -7,6 +7,7 @@ import com.ep.domain.pojo.bo.OrganClassEnterBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -461,6 +462,18 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         return dslContext.selectFrom(EP_ORGAN_CLASS)
                 .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
                 .and(EP_ORGAN_CLASS.STATUS.in(statuses))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganClassPo.class);
+    }
+
+    /**
+     * 获取opening/end的正常班次和normal/end的预约班次,提供给随堂评价页面
+     */
+    public List<EpOrganClassPo> findProceedClassByCourseId(Long courseId) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS)
+                .where(EP_ORGAN_CLASS.COURSE_ID.eq(courseId))
+                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.opening, EpOrganClassStatus.end).and(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.normal))
+                        .or(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online, EpOrganClassStatus.end).and(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak))))
                 .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganClassPo.class);
     }

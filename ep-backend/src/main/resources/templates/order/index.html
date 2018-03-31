@@ -151,6 +151,9 @@
                                 <a name="bespeak" class="btn btn-xs btn-info" style="display: none"
                                    th:if="${#strings.equals(bo.classType,'bespeak')}"
                                    th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>
+                                <a name="break" class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   style="display: none"
+                                   th:onclick="'breakInit('+${bo.id}+')'">提前结束</a>
                             </td>
 
                         </tr>
@@ -199,9 +202,67 @@
         </div>
     </div>
 </div>
+<div class="modal inmodal" id="breakModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight">
+            <input type="hidden" id="breakId">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h3 style="text-align: left">订单行程</h3>
+                <h4 style="text-align: left">订单ID:<span id="breakIdTxt"></span></h4>
 
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-bordered dataTable" id="classOrdersTable"
+                       aria-describedby="editable_info">
+                    <thead>
+                    <tr>
+                        <th>真实姓名</th>
+                        <th>孩子昵称</th>
+                        <th>班次</th>
+                        <th>行程</th>
+                        <th>开始时间</th>
+                        <th>持续时长</th>
+                        <th>描述</th>
+                        <th>行程状态</th>
+                    </tr>
+                    </thead>
+                    <tbody id="classOrdersBody">
+
+                    </tbody>
+                </table>
+                <form>
+                    <div class="col-sm-4 form-group">
+                        <label>退费费用（元）<span class="required-sign">*</span></label>
+                        <input name="startTime" class="form-control" value=""
+                               required="true"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="breakDo()">提前结束</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/template" id='scheduleTmpl'>
+    <tr class="classSchedulePo">
+        <td>${childTrueName}</td>
+        <td>${childNickName}</td>
+        <td>${className}</td>
+        <td>${catalogTitle}</td>
+        <td>${startTime}</td>
+        <td>${duration}</td>
+        <td>${catalogDesc}</td>
+        <td>${status}</td>
+    </tr>
+</script>
 <script th:replace="~{fragments/scripts}"></script>
-
+<script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
     var EpOrderStatus={save:"保存",
         success:"成功",
@@ -218,7 +279,8 @@
             $(ele).attr("checked",false)
         }
     }
-    
+
+    /*批量报名*/
     function batchOrderSuccess() {
         var batchOrder=[]
         $("#tbody tr").find("input[type='checkbox']:checked").each(function () {
@@ -256,6 +318,7 @@
         } else if (status == "opening") {
             //订单opening所有按钮隐藏
             $box.find("a").hide()
+            $box.find("a[name='break']").show()
         } else if (status == "cancel") {
             //订单cancel所有按钮隐藏
             $box.find("a").hide()
@@ -264,6 +327,7 @@
             $box.find("a").hide()
         }
     }
+    /*报名成功*/
     function orderSuccess(ele,id,classId) {
         $.ajax({
             type:"POST",
@@ -289,6 +353,7 @@
         })
     }
 
+    /*提交预约*/
     function bespeakBox(sourceId) {
         layer_confirm("确定提交预约该订单？", 3, bespeakDo, sourceId)
     }
@@ -310,6 +375,7 @@
 
     }
 
+    /*拒绝*/
     function refuseBox(sourceId) {
         $("#uploadModal").modal("show")
         $("#sourceId").val(sourceId)
@@ -331,6 +397,7 @@
         })
 
     }
+    /*取消*/
     function orderCancelBox(ele,id) {
         var $tr = $(ele).parents("tr").eq(0)
         var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
@@ -359,6 +426,20 @@
             },
         })
 
+    }
+
+    /*提前结束*/
+    function breakInit(id) {
+        $("#breakModal").modal("show")
+        $("#breakId").val(id)
+        $("#breakIdTxt").text(id)
+        $.ajax({
+            type: "GET",
+            url: "/auth/order/breakInit/" + id,
+            success: function (data) {
+
+            }
+        })
     }
     $(function () {
         $("#tbody tr").each(function () {

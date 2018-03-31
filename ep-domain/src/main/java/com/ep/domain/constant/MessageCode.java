@@ -92,6 +92,8 @@ public class MessageCode {
     public static final String ERROR_ORDER_ENTERED_FULL = "ERROR_ORDER_ENTERED_FULL";
     public static final String ERROR_ORDER_ORDERED_NUM_FULL = "ERROR_ORDER_ORDERED_NUM_FULL";
     public static final String ERROR_ORDER_NOT_END = "ERROR_ORDER_NOT_END";
+    public static final String ERROR_ORDER_CANCEL_STATUS_WRONG = "ERROR_ORDER_CANCEL_STATUS_WRONG";
+
     /**
      * 产品评论
      */

@@ -239,4 +239,11 @@ public class OrganClassService {
     public List<EpOrganClassPo> findByCourseIdAndStatus(Long courseId, EpOrganClassStatus[] statuses) {
         return organClassRepository.findByCourseIdAndStatus(courseId, statuses);
     }
+
+    /**
+     * 获取opening/end的正常班次和normal/end的预约班次,提供给随堂评价页面
+     */
+    public List<EpOrganClassPo> findProceedClassByCourseId(Long courseId) {
+        return organClassRepository.findProceedClassByCourseId(courseId);
+    }
 }

@@ -398,12 +398,12 @@ public class OrderService {
         EpOrderStatus status = orderOptional.get().getStatus();
         EpOrganClassType type = orderOptional.get().getType();
         String logAction = "";
-        if ((status.equals(EpOrderStatus.success) || status.equals(EpOrderStatus.refuse)) && type.equals(EpOrganClassType.normal)) {
+        if ((status.equals(EpOrderStatus.success) || status.equals(EpOrderStatus.refuse))) {
             logAction = status.equals(EpOrderStatus.success) ? "报名成功" : "拒绝";
             log.info("[订单]订单取消{}操作开始，订单id={}，status={}。", logAction, id, status);
         } else {
-            log.error("[订单]订单取消报名成功/拒绝操作失败，订单状态或班次类型错误，订单id={}，status={}，type={}。", id, status, type);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+            log.error("[订单]订单取消报名成功/拒绝操作失败，订单状态错误，订单id={}，status={}。", id, status);
+            return ResultDo.build(MessageCode.ERROR_ORDER_CANCEL_STATUS_WRONG);
         }
         EpOrderPo orderPo = orderRepository.findById(id);
         //行锁班次记录，防止班次下线并发

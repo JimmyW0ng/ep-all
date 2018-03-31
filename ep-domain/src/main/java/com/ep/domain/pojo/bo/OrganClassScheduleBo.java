@@ -18,6 +18,7 @@ import lombok.ToString;
 public class OrganClassScheduleBo extends EpOrganClassSchedulePo {
     private String childNickName;
     private String childTrueName;
+    private String className;
     private Long replyId;
     private String contentReply;
 }
