@@ -272,7 +272,8 @@
     /*添加预约行程*/
     function createBespeakBox() {
         var len = $("#bespeakBox").find("div.classSchedulePo,div.createClassSchedulePo").length
-        var courseNum = $("#modelCourseNum").val()
+        var courseNum = $("#modelCourseNum").text()
+        debugger
         if (courseNum <= len) {
             toastr.error("预约已达上限！");
             return
@@ -351,14 +352,21 @@
             data: classSchedulePo,
             success: function (data) {
                 if (data.success) {
+                    debugger
                     var po = data.result
 
                     var classSchedulePo = {
                         id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
                         startTime: po.startTime, duration: po.duration
                     }
-                    $(ele).parents(".classSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
-                    $(ele).parents(".classSchedulePo").eq(0).remove()
+                    if (id) {
+                        $(ele).parents(".classSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
+                        $(ele).parents(".classSchedulePo").eq(0).remove()
+                    } else {
+                        $(ele).parents(".createClassSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
+                        $(ele).parents(".createClassSchedulePo").eq(0).remove()
+                    }
+
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }
