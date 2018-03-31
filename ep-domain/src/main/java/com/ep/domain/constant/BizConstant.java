@@ -102,4 +102,8 @@ public class BizConstant {
      * 紧急修改班次目录开始时间距离当前时间不得小于30分钟
      */
     public static long RECTIFY_CATALOG_STARTTIME_TONOW_LT30 = 30L;
+    /**
+     * 变更预约的开始时间距离当前时间不得小于30分钟
+     */
+    public static long RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30 = 30L;
 }

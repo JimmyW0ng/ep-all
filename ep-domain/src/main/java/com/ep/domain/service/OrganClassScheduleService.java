@@ -6,10 +6,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.MemberChildTagBo;
-import com.ep.domain.pojo.bo.OrganClassCatalogBo;
-import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
-import com.ep.domain.pojo.bo.OrganCourseTagBo;
+import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrganClassCatalogCommentDto;
 import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
@@ -17,7 +14,6 @@ import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.enums.EpMemberMessageType;
-import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.google.common.collect.Sets;
@@ -296,6 +292,12 @@ public class OrganClassScheduleService {
             log.error("[预约行程]新增预约行程失败，请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
+        boolean flag = (DateTools.getTwoTimeDiffSecond(po.getStartTime(), DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
+                BizConstant.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30;
+        if (!flag) {
+            log.error("[预约行程]新增预约行程失败，预约行程开始时间距离当前时间不得小于30分钟。");
+            return ResultDo.build(MessageCode.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30);
+        }
         po.setStatus(EpOrganClassScheduleStatus.wait);
         organClassScheduleRepository.insert(po);
         log.info("[预约行程]新增预约行程成功，id={}。", po.getId());
@@ -315,6 +317,12 @@ public class OrganClassScheduleService {
             log.error("[预约行程]修改预约行程失败，请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
+        boolean flag = (DateTools.getTwoTimeDiffSecond(po.getStartTime(), DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
+                BizConstant.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30;
+        if (!flag) {
+            log.error("[预约行程]新增预约行程失败，预约行程开始时间距离当前时间不得小于30分钟。");
+            return ResultDo.build(MessageCode.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30);
+        }
         if (organClassScheduleRepository.updateClassSchedule(po) == BizConstant.DB_NUM_ONE) {
             log.info("[预约行程]修改预约行程成功，id={}。", po.getId());
             return ResultDo.build().setResult(po);
@@ -330,7 +338,7 @@ public class OrganClassScheduleService {
      * @param orderId
      * @return
      */
-    public Optional<List<EpOrganClassSchedulePo>> findByOrderId(Long orderId) {
+    public Optional<List<OrganClassBespeakScheduleBo>> findByOrderId(Long orderId) {
         return organClassScheduleRepository.findByOrderId(orderId);
     }
 

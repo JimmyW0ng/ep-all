@@ -472,5 +472,20 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchOneInto(OrderTypeBo.class);
         return Optional.ofNullable(data);
     }
+
+    /**
+     * 根据id结束订单
+     *
+     * @param id
+     * @return
+     */
+    public int endById(Long id) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS, EpOrderStatus.end)
+                .where(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

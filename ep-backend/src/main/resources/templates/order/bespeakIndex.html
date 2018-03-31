@@ -132,8 +132,10 @@
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
-                                <a name="success" class="btn btn-xs btn-info"
+                                <a name="success" class="btn btn-xs btn-info" href="javascript:void(0)"
                                    th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\',\''+${bo.childTrueName}+'\')'">预约</a>
+                                <!--<a name="" class="btn btn-xs btn-danger" href="javascript:void(0)"-->
+                                <!--th:onclick="'breakBox('+${bo.id}+')'">中止</a>-->
                             </td>
 
                         </tr>
@@ -217,7 +219,9 @@
                         class="glyphicon glyphicon-remove"
                         aria-hidden="true"
                         onclick="removeBespeakBox(this)"></span></a>
-                <button type="button" name="success" class="btn btn-xs btn-info" onclick="frmSubmit(this)">保存</button>
+                <button style="display: block;margin-top: 25px" type="button" name="success" class="btn btn-xs btn-info"
+                        onclick="frmSubmit(this)">保存
+                </button>
 
             </div>
         </form>
@@ -244,7 +248,10 @@
                        required="true"/>
             </div>
             <div class="col-sm-1">
-                <button type="button" name="edit" class="btn btn-xs btn-warning" onclick="frmSubmit(this)">变更</button>
+                <input name="rectifyFlag" type="hidden" value="${rectifyFlag}">
+                <button style="display: block;margin-top: 25px" type="button" name="edit" class="btn btn-xs btn-warning"
+                        onclick="frmSubmit(this)">变更
+                </button>
             </div>
         </form>
 
@@ -284,13 +291,34 @@
         })
     }
 
+    /*中止该预约*/
+    function breakBox(id) {
+        layer_confirm('确定中止该预约？', 3, breakDo, id)
+    }
+    function breakDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/order/orderBespeakBreak/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+
+    }
+
     function frmSubmit(ele) {
         var $frm = $(ele).parents("form").eq(0)
         if (!$frm.valid()) {
             console.log("valid fail")
             return;
         }
-        debugger
         var len = $(ele).parents(".createClassSchedulePo").prevAll("div.classSchedulePo").length
 
         var orderId = $("#orderId").val()
@@ -323,7 +351,6 @@
             data: classSchedulePo,
             success: function (data) {
                 if (data.success) {
-                    debugger
                     var po = data.result
 
                     var classSchedulePo = {
@@ -356,8 +383,14 @@
                     if (data.result == null) {
                         return
                     }
-                    debugger
-                    $("#bespeakBox").append($("#scheduleTmpl").tmpl(data.result))
+                    $("#bespeakBox").html($("#scheduleTmpl").tmpl(data.result))
+                    $(".classSchedulePo").each(function () {
+                        var rectifyFlag = $(this).find("input[name='rectifyFlag']").eq(0).val()
+                        if (rectifyFlag == "false" || !rectifyFlag) {
+                            $(this).find("button").hide()
+                            $(this).find("input").attr("readonly", true)
+                        }
+                    })
                 }
             }
         })
@@ -500,13 +533,7 @@
     //
     //    }
     $(function () {
-//        $("#tbody tr").each(function () {
-//            var $box = $(this).find("td[name='button']").eq(0)
-//            var status = $(this).find("td[name='status']").eq(0).text()
-//            var classStatus = $(this).find("td[name='classStatus']").text()
-//            buttonByStatus($box, status, classStatus)
-//
-//        })
+
     })
 
 </script>

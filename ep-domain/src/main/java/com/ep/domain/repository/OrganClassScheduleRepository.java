@@ -2,6 +2,7 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganAccountClassBo;
+import com.ep.domain.pojo.bo.OrganClassBespeakScheduleBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogBo;
 import com.ep.domain.pojo.bo.OrganClassCatalogCommentBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
@@ -263,11 +264,11 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
      * @param orderId
      * @return
      */
-    public Optional<List<EpOrganClassSchedulePo>> findByOrderId(Long orderId) {
-        List<EpOrganClassSchedulePo> data = dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
+    public Optional<List<OrganClassBespeakScheduleBo>> findByOrderId(Long orderId) {
+        List<OrganClassBespeakScheduleBo> data = dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
                 .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
-                .fetchInto(EpOrganClassSchedulePo.class);
+                .fetchInto(OrganClassBespeakScheduleBo.class);
         return Optional.ofNullable(data);
     }
 
@@ -302,5 +303,20 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                          .and(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG.eq(true))
                          .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                          .execute();
+    }
+
+    /**
+     * 根据订单结束关闭预约行程
+     *
+     * @param orderId
+     * @return
+     */
+    public int closeByOrderEnd(Long orderId) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                .set(EP_ORGAN_CLASS_SCHEDULE.STATUS, EpOrganClassScheduleStatus.close)
+                .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.eq(EpOrganClassScheduleStatus.wait))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .execute();
     }
 }

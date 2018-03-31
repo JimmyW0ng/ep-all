@@ -132,4 +132,8 @@ public class MessageCode {
      * 产品类目
      */
     public static final String ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED = "ERROR_CONSTANT_CATALOG_DELETE_WHEN_USED";
+    /**
+     * 预约行程
+     */
+    public static final String RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30 = "RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30";
 }

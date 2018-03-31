@@ -51,6 +51,8 @@ public class OrderService {
     @Autowired
     private OrganClassChildRepository organClassChildRepository;
     @Autowired
+    private OrganClassScheduleRepository organClassScheduleRepository;
+    @Autowired
     private FileRepository fileRepository;
 
     /**
@@ -490,4 +492,22 @@ public class OrderService {
         Optional<OrderTypeBo> orderOptional = orderRepository.getOrderTypeBoById(id);
         return ResultDo.build();
     }
+
+    /**
+     * 中止预约
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo orderBespeakBreak(Long id) {
+        log.info("[订单]订单预约中止，订单id={}。", id);
+        if (orderRepository.endById(id) == BizConstant.DB_NUM_ONE) {
+            organClassScheduleRepository.closeByOrderEnd(id);
+        }
+        return ResultDo.build();
+    }
+
+
+
 }

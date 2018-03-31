@@ -1,8 +1,11 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.OrganClassBespeakScheduleBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -197,7 +201,20 @@ public class OrganClassScheduleController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo bespeakInit(@PathVariable("orderId") Long orderId) {
-        Optional<List<EpOrganClassSchedulePo>> optional = organClassScheduleService.findByOrderId(orderId);
+        Optional<List<OrganClassBespeakScheduleBo>> optional = organClassScheduleService.findByOrderId(orderId);
+        if (!optional.isPresent()) {
+            ResultDo.build();
+        }
+        optional.get().forEach(bo -> {
+            Timestamp startTime = bo.getStartTime();
+            if (DateTools.compareTwoTime(DateTools.getCurrentDateTime(), startTime) != -1) {
+                bo.setRectifyFlag(false);
+            } else {
+                boolean flag = (DateTools.getTwoTimeDiffSecond(startTime, DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
+                        BizConstant.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30;
+                bo.setRectifyFlag(flag);
+            }
+        });
         return ResultDo.build().setResult(optional.isPresent() ? optional.get() : null);
     }
 
