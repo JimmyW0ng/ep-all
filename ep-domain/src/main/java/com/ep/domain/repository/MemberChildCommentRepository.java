@@ -251,4 +251,32 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                          .where(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(classScheduleId))
                          .execute();
     }
+
+    /**
+     * 根据pid获取回复
+     *
+     * @param pid
+     * @return
+     */
+    public Optional<EpMemberChildCommentPo> findReplyByPid(Long pid) {
+        EpMemberChildCommentPo data = dslContext.selectFrom(EP_MEMBER_CHILD_COMMENT)
+                .where(EP_MEMBER_CHILD_COMMENT.P_ID.eq(pid))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildCommentPo.class);
+        return Optional.ofNullable(data);
+    }
+
+    /**
+     * 根据id逻辑删除
+     *
+     * @param id
+     * @return
+     */
+    public int deleteLogicById(Long id) {
+        return dslContext.update(EP_MEMBER_CHILD_COMMENT)
+                .set(EP_MEMBER_CHILD_COMMENT.DEL_FLAG, true)
+                .where(EP_MEMBER_CHILD_COMMENT.ID.eq(id))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .execute();
+    }
 }

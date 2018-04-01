@@ -123,18 +123,18 @@
                                 <!--th:if="${null==bo.replyId&&null==bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"-->
                                 <!--href="javascript:void(0)"-->
                                 <!--th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">添加</a>-->
-                                <a class="btn btn-xs btn-info"
-                                   th:if="${null==bo.replyId&&null==bo.launchId}"
-                                   href="javascript:void(0)"
-                                   th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">添加</a>
+                                <!--<a class="btn btn-xs btn-info"-->
+                                <!--th:if="${null==bo.replyId&&null==bo.launchId}"-->
+                                <!--href="javascript:void(0)"-->
+                                <!--th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">添加</a>-->
                                 <!--<a class="btn btn-xs btn-info"-->
                                 <!--th:if="${null==bo.replyId&&null!=bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"-->
                                 <!--href="javascript:void(0)"-->
                                 <!--th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>-->
-                                <a class="btn btn-xs btn-info"
+                                <a class="btn btn-xs btn-danger"
                                    th:if="${null==bo.replyId&&null!=bo.launchId}"
                                    href="javascript:void(0)"
-                                   th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>
+                                   th:onclick="'deleteBox('+${bo.launchId}+')'">删除</a>
 
 
                             </td>
@@ -160,36 +160,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<div class="modal inmodal" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content animated bounceInRight">
-
-            <input type="hidden" id="sourceId">
-            <input id="childId" type="hidden">
-            <input id="courseId" type="hidden">
-            <input id="commentClassId" type="hidden">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">关闭</span>
-                </button>
-                <h3 style="text-align: left">修改评价</h3>
-
-            </div>
-            <div class="modal-body">
-                <label>评论内容：</label>
-                <textarea class="form-control" id="updateContent" style="height: 100px"></textarea>
-                <label style="margin-top: 10px">标签：</label>
-                <div id="uploadChildTagBox" style="background: #eee;min-height: 200px;padding: 20px 0px;"></div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="updateCommentDo()">保存</button>
-            </div>
-
         </div>
     </div>
 </div>
@@ -346,10 +316,7 @@
 
     }
 
-    /**
-     * 修改标签初始化
-     * @param ele
-     */
+    /*修改标签初始化*/
     function updateChildTagInit(ele) {
         var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
         console.log($frm)
@@ -380,10 +347,7 @@
             }
         })
     }
-    /**
-     * 查看评价详情
-     * @param ele
-     */
+    /* 查看评价详情*/
     function viewContent(ele) {
         $("#viewContentModal").modal("show")
         var content = $(ele).parent().siblings("td").find("p[name='content']").eq(0).text()
@@ -415,122 +379,24 @@
         })
     }
 
-    /**
-     * 新增/修改评价初始化
-     */
-    function updateCommentInit(ele, id, childId, courseId, classId, classCatalogId) {
-        $("#sourceId").val(id)
-        $("#childId").val(childId)
-        $("#courseId").val(courseId)
-        $("#commentClassId").val(classId)
-        $("#classCatalogId").val(classCatalogId)
-        if (id) {
-            $("#uploadModal").modal("show")
-            var content = $(ele).parent().siblings("td").find("p[name='content']").eq(0).text()
-            $("#updateContent").text(content)
-
-            var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
-            $.ajax({
-                type: "POST",
-                url: "/auth/childComment/updateChildTagInit",
-                data: $frm.serialize(),
-                success: function (data) {
-                    if (data.success) {
-                        var tag = data.result.organCourseTagBos
-                        var memberChildTagPos = data.result.memberChildTagPos
-
-                        $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
-                        $("#uploadChildTagBox").find("input[type='checkbox']").each(function () {
-                            var id = $(this).val()
-                            for (var item in memberChildTagPos) {
-                                if (memberChildTagPos[item].tagId == id) {
-                                    $(this).attr("checked", true)
-                                    $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
-                                }
-                            }
-                        })
-                    }
-                },
-                error: function (XMLHttpRequest) {
-                    toastr_error_system(XMLHttpRequest.status);
-                },
-            })
-        } else {
-            $("#uploadModal").modal("show")
-            var $frm = $(ele).parents("tr").eq(0).find("form").eq(0)
-            $.ajax({
-                type: "POST",
-                url: "/auth/childComment/createChildTagInit",
-                data: $frm.serialize(),
-                success: function (data) {
-                    if (data.success) {
-                        var tag = data.result
-
-                        $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
-                    }
-                },
-                error: function (XMLHttpRequest) {
-                    toastr_error_system(XMLHttpRequest.status);
-                },
-            })
-        }
-
+    function deleteBox(id) {
+        layer_confirm('确定删除该评价？', 3, deleteDo, id)
     }
-    /**
-     * 新增/修改评价内容提交
-     */
-    function updateCommentDo() {
-        var tagIds = []
-        $("#uploadChildTagBox").find("input[name='tagId']").each(function () {
-            if ($(this).is(':checked')) {
-                tagIds.push($(this).val())
-            }
+    function deleteDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/childComment/delete/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
-        if ($("#sourceId").val()) {
-            $.ajax({
-                type: "POST",
-                url: "/auth/childComment/updateComment",
-                data: {
-                    id: $("#sourceId").val(), content: $("#updateContent").val(),
-                    childId: $("#childId").val(),
-                    classCatalogId: $("#classCatalogId").val(), tagId: tagIds
-                },
-                success: function (data) {
-                    if (data.success) {
-                        toastr_success(null, document.location.href)
-                    } else {
-                        toastr.error("操作失败，原因：" + data.errorDescription);
-                    }
-                },
-                error: function (XMLHttpRequest) {
-                    toastr_error_system(XMLHttpRequest.status);
-                },
-            })
-        } else {
-            $.ajax({
-                type: "POST",
-                url: "/auth/childComment/createComment",
-                data: {
-                    id: $("#sourceId").val(),
-                    courseId: $("#courseId").val(),
-                    classId: $("#commentClassId").val(),
-                    content: $("#updateContent").val(),
-                    childId: $("#childId").val(),
-                    classCatalogId: $("#classCatalogId").val(),
-                    tagId: tagIds
-                },
-                success: function (data) {
-                    if (data.success) {
-                        toastr_success(null, document.location.href)
-                    } else {
-                        toastr.error("操作失败，原因：" + data.errorDescription);
-                    }
-                },
-                error: function (XMLHttpRequest) {
-                    toastr_error_system(XMLHttpRequest.status);
-                },
-            })
-        }
 
     }
 

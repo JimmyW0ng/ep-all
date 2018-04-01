@@ -8,7 +8,8 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
-import com.ep.domain.repository.*;
+import com.ep.domain.repository.FileRepository;
+import com.ep.domain.repository.MemberChildCommentRepository;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,7 @@ public class MemberChildCommentService {
     private MemberChildService memberChildService;
     @Autowired
     private FileRepository fileRepository;
-    @Autowired
-    private MemberChildTagRepository memberChildTagRepository;
-    @Autowired
-    private OrganAccountRepository organAccountRepository;
-    @Autowired
-    private OrganClassCatalogRepository organClassCatalogRepository;
+
 
     public Optional<EpMemberChildCommentPo> findById(Long id) {
         return memberChildCommentRepository.findById(id);
@@ -107,172 +103,24 @@ public class MemberChildCommentService {
         return ResultDo.build();
     }
 
-
     /**
-     * 商户后台修改评论内容
-     *
+     * 删除评价
      * @param id
-     * @param content
+     * @return
      */
-    public void updateContent(Long id, String content) {
-        memberChildCommentRepository.updateContent(id, content);
+    public ResultDo deleteLogicLaunchById(Long id) {
+        log.info("[评价]评价删除开始，id={}。", id);
+        Optional<EpMemberChildCommentPo> optional = memberChildCommentRepository.findReplyByPid(id);
+        if (optional.isPresent()) {
+            log.error("[评价]评价删除失败，该评价存在回复，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_REPLAY_EXIST);
+        }
+        if (memberChildCommentRepository.deleteLogicById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[评价]评价删除成功，id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[评价]评价删除失败，id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
-
-//    /**
-//     * 商户后台修改评论
-//     *
-//     * @param id
-//     * @param content
-//     * @param childId
-//     * @param classScheduleId
-//     * @param ognId
-//     * @param tagIds
-//     */
-//    @Transactional(rollbackFor = Exception.class)
-//    public ResultDo updateComment(Long id, String content, Long childId, Long classScheduleId, Long ognId, List<Long> tagIds) {
-//        log.info("[评论]修改评论开始，评论id={},评论内容content={},childId={},classCatalogId={},ognId={},tagIds={}。", id,
-//                content, childId, classScheduleId, ognId, tagIds);
-//        Optional<EpMemberChildCommentPo> optional = memberChildCommentRepository.findById(id);
-//        if (!optional.isPresent()) {
-//            log.error("[评论]修改评论失败，次评论不存在，id={}。", id);
-//            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST);
-//        }
-//        EpMemberChildCommentPo memberChildCommentPo = optional.get();
-//        List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
-//        if (CollectionsTools.isNotEmpty(tagIds)) {
-//            tagIds.forEach(p -> {
-//                EpMemberChildTagPo po = new EpMemberChildTagPo();
-//                po.setChildId(childId);
-//                po.setOgnId(ognId);
-//                po.setCourseId(memberChildCommentPo.getCourseId());
-//                po.setClassId(memberChildCommentPo.getClassId());
-//                po.setClassScheduleId(classScheduleId);
-//                po.setTagId(p);
-//                insertPos.add(po);
-//            });
-//        }
-//        if (memberChildCommentRepository.updateContent(id, content) == BizConstant.DB_NUM_ONE) {
-//            //先物理删除孩子标签，再插入
-//            memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classCatalogId);
-//            memberChildTagRepository.insert(insertPos);
-//            log.info("[评论]修改评论成功，评论id={}。");
-//            return ResultDo.build();
-//        } else {
-//            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
-//        }
-//        memberChildCommentRepository.updateContent(id, content);
-//        //先物理删除孩子标签，再插入
-//        memberChildTagRepository.deletePhysicByChildIdAndClassCatalogId(childId, classScheduleId);
-//        memberChildTagRepository.insert(insertPos);
-//        log.info("[评论]修改评论成功，评论id={}。");
-//        return ResultDo.build();
-//    }
-
-//    /**
-//     * 由教师后台创建随堂评论
-//     *
-//     * @param childId
-//     * @param ognId
-//     * @param courseId
-//     * @param classId
-//     * @param scheduleId
-//     * @param content
-//     * @param mobile
-//     * @return
-//     */
-//    public ResultDo createCommentLaunch(Long childId, Long ognId, Long courseId, Long classId, Long scheduleId, String content, Long mobile) {
-//    @Transactional(rollbackFor = Exception.class)
-//    public ResultDo createCommentLaunchByAccount(Long childId, Long ognId, Long courseId, Long classId, Long catalogId, String content, Long mobile, List<Long> tagIds) {
-//        Optional<EpOrganAccountPo> optional = organAccountRepository.getByOgnIdAndReferMobile(ognId, mobile);
-//        if (!optional.isPresent()) {
-//            log.error("[随堂评论]新增随堂评论失败，机构用户不存在。");
-//            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
-//        }
-//        Long ognAccountId = optional.get().getId();
-//        EpMemberChildCommentPo po = new EpMemberChildCommentPo();
-//        po.setChildId(childId);
-//        po.setOgnId(ognId);
-//        po.setCourseId(courseId);
-//        po.setClassId(classId);
-//        po.setClassScheduleId(scheduleId);
-//        po.setType(EpMemberChildCommentType.launch);
-//        po.setContent(content);
-//        po.setOgnAccountId(ognAccountId);
-//        log.error("[随堂评论]新增随堂评论开始，po={}。", po);
-//        memberChildCommentRepository.insert(po);
-//        log.info("[随堂评论]新增随堂评论成功，id={}。", po.getId());
-//        EpMemberChildCommentPo epMemberChildCommentPo = new EpMemberChildCommentPo();
-//        epMemberChildCommentPo.setChildId(childId);
-//        epMemberChildCommentPo.setOgnId(ognId);
-//        epMemberChildCommentPo.setCourseId(courseId);
-//        epMemberChildCommentPo.setClassId(classId);
-//        epMemberChildCommentPo.setClassCatalogId(catalogId);
-//        epMemberChildCommentPo.setType(EpMemberChildCommentType.launch);
-//        epMemberChildCommentPo.setContent(content);
-//        epMemberChildCommentPo.setOgnAccountId(ognAccountId);
-//        log.error("[随堂评论]新增随堂评论开始，epMemberChildCommentPo={},tagIds={}。", epMemberChildCommentPo, tagIds);
-//        memberChildCommentRepository.insert(epMemberChildCommentPo);
-//        List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
-//        if (CollectionsTools.isNotEmpty(tagIds)) {
-//            tagIds.forEach(p -> {
-//                EpMemberChildTagPo po = new EpMemberChildTagPo();
-//                po.setChildId(childId);
-//                po.setOgnId(ognId);
-//                po.setCourseId(courseId);
-//                po.setClassId(classId);
-//                po.setClassCatalogId(catalogId);
-//                po.setTagId(p);
-//                insertPos.add(po);
-//            });
-//        }
-//        memberChildTagRepository.insert(insertPos);
-//        log.info("[评论]修改评论成功，评论id={}。");
-//        log.info("[随堂评论]新增随堂评论成功，id={}。", epMemberChildCommentPo.getId());
-//        return ResultDo.build();
-//    }
-
-//    /**
-//     * 由商户账号后台创建随堂评论
-//     *
-//     * @param childId
-//     * @param ognId
-//     * @param courseId
-//     * @param classId
-//     * @param catalogId
-//     * @param content
-//     * @param userId
-//     * @return
-//     */
-//    @Transactional(rollbackFor = Exception.class)
-//    public ResultDo createCommentLaunchByOgn(Long childId, Long ognId, Long courseId, Long classId, Long catalogId, String content, Long userId, List<Long> tagIds) {
-//
-//        EpMemberChildCommentPo epMemberChildCommentPo = new EpMemberChildCommentPo();
-//        epMemberChildCommentPo.setChildId(childId);
-//        epMemberChildCommentPo.setOgnId(ognId);
-//        epMemberChildCommentPo.setCourseId(courseId);
-//        epMemberChildCommentPo.setClassId(classId);
-//        epMemberChildCommentPo.setClassCatalogId(catalogId);
-//        epMemberChildCommentPo.setType(EpMemberChildCommentType.launch);
-//        epMemberChildCommentPo.setContent(content);
-//        epMemberChildCommentPo.setOgnAccountId(userId);
-//        log.error("[随堂评论]新增随堂评论开始，epMemberChildCommentPo={},tagIds={}。", epMemberChildCommentPo, tagIds);
-//        memberChildCommentRepository.insert(epMemberChildCommentPo);
-//        List<EpMemberChildTagPo> insertPos = Lists.newArrayList();
-//        if (CollectionsTools.isNotEmpty(tagIds)) {
-//            tagIds.forEach(p -> {
-//                EpMemberChildTagPo po = new EpMemberChildTagPo();
-//                po.setChildId(childId);
-//                po.setOgnId(ognId);
-//                po.setCourseId(courseId);
-//                po.setClassId(classId);
-//                po.setClassCatalogId(catalogId);
-//                po.setTagId(p);
-//                insertPos.add(po);
-//            });
-//            memberChildTagRepository.insert(insertPos);
-//        }
-//
-//        log.info("[随堂评论]新增随堂评论成功，id={}。", epMemberChildCommentPo.getId());
-//        return ResultDo.build();
-//    }
 }

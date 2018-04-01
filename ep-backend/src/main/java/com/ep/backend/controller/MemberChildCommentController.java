@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -43,73 +40,11 @@ public class MemberChildCommentController extends BackendController {
     private OrganAccountService organAccountService;
 
 
-//    /**
-//     * 修改评价(评论内容，标签)
-//     *
-//     * @param id
-//     * @param content
-//     * @return
-//     */
-//    @PostMapping("updateComment")
-//    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
-//    @ResponseBody
-//    public ResultDo updateComment(@RequestParam(value = "id") Long id,
-//                                  @RequestParam(value = "childId") Long childId,
-//                                  @RequestParam(value = "classScheduleId") Long classScheduleId,
-//                                  @RequestParam(value = "content") String content,
-//                                  @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
-//    ) {
-//        EpSystemUserPo currentUser = super.getCurrentUser().get();
-//        Long ognId = currentUser.getOgnId();
-//        ResultDo resultDo = memberChildCommentService.updateComment(id, content, childId, classScheduleId, ognId, tagIds);
-//        //课时评价事件start
-//        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
-//        eventPojo.setChildId(childId);
-//        eventPojo.setClassScheduleId(classScheduleId);
-//        eventPojo.setComment(content);
-//        eventPojo.setTagIds(tagIds);
-//        this.publisher.publishEvent(eventPojo);
-//        //课时评价事件end
-//        return resultDo;
-//    }
 
-    /**
-     * 添加评价(评论内容，标签)
-     *
-     * @param content
-     * @return
-     */
-//    @PostMapping("createComment")
-//    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
-//    @ResponseBody
-//    public ResultDo createComment(
-//            @RequestParam(value = "childId") Long childId,
-//            @RequestParam(value = "courseId") Long courseId,
-//            @RequestParam(value = "classId") Long classId,
-//            @RequestParam(value = "classScheduleId") Long classScheduleId,
-//            @RequestParam(value = "content") String content,
-//            @RequestParam(value = "tagId[]", required = false) List<Long> tagIds
-//    ) {
-//        EpSystemUserPo currentUser = super.getCurrentUser().get();
-//        Long ognId = currentUser.getOgnId();
-//        Long mobile = currentUser.getMobile();
-//        ResultDo resultDo = memberChildCommentService.createCommentLaunch(childId, ognId, courseId, classId, classScheduleId, content, mobile);
-////        ResultDo resultDo = memberChildCommentService.createCommentLaunchByOgn(childId, ognId, courseId, classId,
-////                classCatalogId, content, currentUser.getId(), tagIds);tagIds
-//        //课时评价事件start
-//        ClassCatalogCommentEventBo eventPojo = new ClassCatalogCommentEventBo();
-//        eventPojo.setChildId(childId);
-//        eventPojo.setClassScheduleId(classScheduleId);
-//        eventPojo.setComment(content);
-//        eventPojo.setTagIds(tagIds);
-//        this.publisher.publishEvent(eventPojo);
-//        //课时评价事件end
-//        return resultDo;
-//    }
 
 
     /**
-     * 修改评论初始化标签
+     * 查看/修改评论初始化标签
      *
      * @param childId
      * @param courseId
@@ -117,7 +52,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("updateChildTagInit")
-    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo updateChildTagInit(
             @RequestParam(value = "childId") Long childId,
@@ -144,7 +79,7 @@ public class MemberChildCommentController extends BackendController {
      * @return
      */
     @PostMapping("createChildTagInit")
-    @PreAuthorize("hasAnyAuthority('merchant:childComment:index')")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo createChildTagInit(
             @RequestParam(value = "courseId") Long courseId
@@ -156,6 +91,17 @@ public class MemberChildCommentController extends BackendController {
         return resultDo;
     }
 
-
+    /**
+     * 删除评价
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("delete/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    @ResponseBody
+    public ResultDo delete(@PathVariable("id") Long id) {
+        return memberChildCommentService.deleteLogicLaunchById(id);
+    }
 
 }
