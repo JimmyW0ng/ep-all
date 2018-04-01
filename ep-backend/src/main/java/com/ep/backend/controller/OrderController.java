@@ -353,7 +353,19 @@ public class OrderController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo viewEnteredClass(@PathVariable("childId") Long childId) {
-        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId));
+        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId, null));
+    }
+
+    /**
+     * 孩子已参加的预约班次
+     *
+     * @param childId
+     */
+    @GetMapping("viewEnteredBespeakClass/{childId}")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo viewEnteredBespeakClass(@PathVariable("childId") Long childId) {
+        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId, EpOrganClassType.bespeak));
     }
 }
 

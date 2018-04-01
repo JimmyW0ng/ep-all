@@ -532,7 +532,7 @@ public class OrderService {
      *
      * @param childId
      */
-    public List<OrganClassBo> findEnteredClassByChildId(Long childId) {
-        return orderRepository.findEnteredClassByChildId(childId);
+    public List<OrganClassBo> findEnteredClassByChildId(Long childId, EpOrganClassType classType) {
+        return orderRepository.findEnteredClassByChildId(childId, classType);
     }
 }

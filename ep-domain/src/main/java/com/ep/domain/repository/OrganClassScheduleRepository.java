@@ -354,4 +354,19 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据班次id提前结束行程
+     *
+     * @param classId
+     * @return
+     */
+    public int advancedEndByClassId(Long classId) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                .set(EP_ORGAN_CLASS_SCHEDULE.STATUS, EpOrganClassScheduleStatus.close)
+                .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait, EpOrganClassScheduleStatus.normal))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .execute();
+    }
 }

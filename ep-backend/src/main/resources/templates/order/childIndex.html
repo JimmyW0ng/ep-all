@@ -36,18 +36,10 @@
                                th:value="${searchMap.get('childTrueName')}"
                                placeholder="姓名">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control " name="className"
-                               th:value="${searchMap.get('className')}"
-                               placeholder="班次">
-                    </div>
-
-
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="query-button" type="button">查询</button>
                         <button class="btn btn-warning" id="rest-button" type="button">重置</button>
                     </div>
-
                 </form>
             </div>
             <div class="panel-body">
@@ -78,18 +70,12 @@
                             <td th:text="${po.enteredBespeakNum}"></td>
 
                             <td>
-                                <a class="btn btn-xs btn-info" href="javascript:void(0)"
+                                <a class="btn btn-xs btn-info" href="javascript:void(0)" th:if="${po.enteredClassNum>0}"
                                    th:onclick="'viewEnteredClass('+${po.childId}+',\''+${po.childNickName}+'\')'">查看班次</a>
-                                <!--<a class="btn btn-xs btn-primary" th:if="!${#strings.equals(po.status,'offline')}"-->
-                                <!--th:href="@{/auth/systemOrgan/updateInit/}+${po.id}">修改</a>-->
-                                <!--<a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'save')}"-->
-                                <!--href="javascript:void(0)" th:onclick="'onlineOrganBox('+${po.id}+')'">上线</a>-->
-                                <!--<a class="btn btn-xs btn-primary" th:if="${#strings.equals(po.status,'online')}"-->
-                                <!--href="javascript:void(0)" th:onclick="'offlineOrganBox('+${po.id}+')'">下线</a>-->
-                                <!--<a class="btn btn-xs btn-danger" th:if="${#strings.equals(po.status,'online')}"-->
-                                <!--href="javascript:void(0)" th:onclick="'freezeOrganBox('+${po.id}+')'">冻结</a>-->
-                                <!--<a class="btn btn-xs btn-danger" th:if="${#strings.equals(po.status,'freeze')}"-->
-                                <!--href="javascript:void(0)" th:onclick="'unfreezeOrganBox('+${po.id}+')'">解冻</a>-->
+                                <a class="btn btn-xs btn-info" href="javascript:void(0)"
+                                   th:if="${po.enteredBespeakNum>0}"
+                                   th:onclick="'viewEnteredBespeakClass('+${po.childId}+',\''+${po.childNickName}+'\')'">查看预约</a>
+
                             </td>
 
                         </tr>
@@ -182,7 +168,28 @@
         })
     }
 
-
+    function viewEnteredBespeakClass(childId, childNickName) {
+        $("#enteredClassModal").modal("show")
+        $("#childTxt").text(childNickName)
+        $.ajax({
+            type: "GET",
+            url: "/auth/order/viewEnteredBespeakClass/" + childId,
+            success: function (data) {
+                if (data.success) {
+                    var res = data.result
+                    for (var item in res) {
+                        res[item].type = epOrganClassType[res[item].type]
+                    }
+                    $("#classBody").html($("#classTmpl").tmpl(data.result))
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+    }
 </script>
 </body>
 </html>

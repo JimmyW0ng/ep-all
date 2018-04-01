@@ -246,4 +246,31 @@ public class OrganClassService {
     public List<EpOrganClassPo> findProceedClassByCourseId(Long courseId) {
         return organClassRepository.findProceedClassByCourseId(courseId);
     }
+
+    /**
+     * 提前结束班次
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo advancedEndById(Long id) {
+        log.info("[班次]提前结束班次开始，班次id={}。", id);
+        Optional<EpOrganClassPo> classOptional = organClassRepository.findById(id);
+        if (!classOptional.isPresent()) {
+            log.error("[班次]提前结束班次失败，该班次不存在，班次id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        //结束班次
+        if (organClassRepository.advancedEndById(id) == BizConstant.DB_NUM_ONE) {
+            //关闭该班次下的订单
+            orderRepository.advancedEndByClassId(id);
+        }
+        //预约班次行程结束
+        if (classOptional.get().getType().equals(EpOrganClassType.bespeak)) {
+            organClassScheduleRepository.advancedEndByClassId(id);
+        }
+        log.info("[班次]提前结束班次成功，班次id={}。", id);
+        return ResultDo.build();
+    }
 }

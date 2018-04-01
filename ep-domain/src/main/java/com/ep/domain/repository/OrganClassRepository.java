@@ -478,5 +478,20 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .fetchInto(EpOrganClassPo.class);
     }
 
+    /**
+     * 根据id提前结束班次
+     *
+     * @param id
+     * @return
+     */
+    public int advancedEndById(Long id) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.STATUS, EpOrganClassStatus.end)
+                .where(EP_ORGAN_CLASS.ID.eq(id))
+                .and(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.online))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
+
 }
 

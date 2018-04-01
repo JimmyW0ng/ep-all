@@ -134,4 +134,16 @@ public class OrganClassController extends BackendController {
         return ResultDo.build().setResult(organClassService.findClassChildNickName(classId));
     }
 
+    /**
+     * 提前结束该班次
+     *
+     * @param classId
+     * @return
+     */
+    @GetMapping("advancedEnd/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
+    @ResponseBody
+    public ResultDo advancedEnd(@PathVariable("classId") Long classId) {
+        return organClassService.advancedEndById(classId);
+    }
 }

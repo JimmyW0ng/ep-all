@@ -517,8 +517,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_MEMBER.MOBILE);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
-        fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID).as("enteredClassNum"));
-        fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID).filterWhere(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak)).as("enteredBespeakNum"));
+        fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID).filterWhere(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end)).as("enteredClassNum"));
+        fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID)
+                .filterWhere(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak).and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
+                ).as("enteredBespeakNum"));
 
         SelectHavingStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORDER)
@@ -542,20 +544,53 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param childId
      * @return
      */
-    public List<OrganClassBo> findEnteredClassByChildId(Long childId) {
+    public List<OrganClassBo> findEnteredClassByChildId(Long childId, EpOrganClassType classType) {
+
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        return dslContext.select(fieldList)
-                .from(EP_ORDER)
-                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
-                .where(EP_ORDER.CHILD_ID.eq(childId))
-                .and(EP_ORGAN_CLASS.ID.isNotNull())
-                .and(EP_ORGAN_COURSE.ID.isNotNull())
+        if (null == classType) {
+            return dslContext.select(fieldList)
+                    .from(EP_ORDER)
+                    .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                    .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
+                    .where(EP_ORDER.CHILD_ID.eq(childId))
+                    .and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
+                    .and(EP_ORGAN_CLASS.ID.isNotNull())
+                    .and(EP_ORGAN_COURSE.ID.isNotNull())
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                    .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                    .fetchInto(OrganClassBo.class);
+        } else {
+            return dslContext.select(fieldList)
+                    .from(EP_ORDER)
+                    .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                    .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
+                    .where(EP_ORDER.CHILD_ID.eq(childId))
+                    .and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
+                    .and(EP_ORGAN_CLASS.ID.isNotNull())
+                    .and(EP_ORGAN_CLASS.TYPE.eq(classType))
+                    .and(EP_ORGAN_COURSE.ID.isNotNull())
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                    .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                    .fetchInto(OrganClassBo.class);
+        }
+
+    }
+
+    /**
+     * 根据班次id提前结束订单
+     *
+     * @param classId
+     * @return
+     */
+    public int advancedEndByClassId(Long classId) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS, EpOrderStatus.end)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .fetchInto(OrganClassBo.class);
+                .execute();
     }
 }
 
