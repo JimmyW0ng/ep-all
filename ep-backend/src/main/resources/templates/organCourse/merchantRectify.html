@@ -333,9 +333,7 @@
                     <label>总计课时 <span class="required-sign">*</span></label>
                     <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
-                <div name="organClassCatalogPosBox" class="form-group col-sm-8 well ">
-                    <a style="display: none" class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
-                            class="glyphicon glyphicon-plus"></i> 添加课时</a>
+                <div name="organClassCatalogPosBox" class="form-group col-sm-8 well " style="height:auto">
                 </div>
             </div>
         </div>
@@ -619,6 +617,8 @@
                         })
                     }
                     $box.append($("#classCatalogTmpl").tmpl(catalog))
+                } else {
+                    $box.hide()
                 }
 
             }

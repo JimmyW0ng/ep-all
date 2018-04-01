@@ -232,7 +232,8 @@
                                             <input name="courseNum" type="Number" class=" form-control "
                                                    th:value="${po.courseNum}">
                                         </div>
-                                        <div name="organClassCatalogPosBox" class="form-group col-sm-8 well">
+                                        <div name="organClassCatalogPosBox" class="form-group col-sm-8 well"
+                                             th:if="!${#lists.isEmpty(po.organClassCatalogPos)}">
                                             <div name="organClassCatalogPos"
                                                  th:each="organClassCatalogPo:${po.organClassCatalogPos}">
                                                 <div name="" class="col-sm-5">
