@@ -4,9 +4,11 @@ import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.bo.*;
+import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -488,6 +490,72 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    /**
+     * 商户后台获取订单学员统计
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrderChildStatisticsDto> statisticsChild(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.select(EP_ORDER.CHILD_ID.countDistinct())
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_ORDER.MEMBER_ID.eq(EP_MEMBER.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORDER.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .where(condition)
+                .fetchOne(0, Long.class);
+
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORDER.CHILD_ID);
+        fieldList.add(EP_ORDER.MEMBER_ID);
+        fieldList.add(EP_MEMBER.MOBILE);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID).as("enteredClassNum"));
+        fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID).filterWhere(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak)).as("enteredBespeakNum"));
+
+        SelectHavingStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_ORDER.MEMBER_ID.eq(EP_MEMBER.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORDER.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .where(condition)
+                .groupBy(EP_ORDER.CHILD_ID, EP_ORDER.MEMBER_ID);
+
+        List<OrderChildStatisticsDto> list = record.orderBy(EP_ORDER.CHILD_ID.asc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrderChildStatisticsDto.class);
+        PageImpl<OrderChildStatisticsDto> pPage = new PageImpl<OrderChildStatisticsDto>(list, pageable, totalCount);
+        return pPage;
+    }
+
+    /**
+     * 孩子已参加的班次
+     *
+     * @param childId
+     * @return
+     */
+    public List<OrganClassBo> findEnteredClassByChildId(Long childId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
+                .where(EP_ORDER.CHILD_ID.eq(childId))
+                .and(EP_ORGAN_CLASS.ID.isNotNull())
+                .and(EP_ORGAN_COURSE.ID.isNotNull())
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchInto(OrganClassBo.class);
     }
 }
 

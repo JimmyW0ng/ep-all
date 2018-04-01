@@ -9,6 +9,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.*;
+import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -515,6 +516,23 @@ public class OrderService {
 
     }
 
+    /**
+     * 商户后台获取订单学员统计
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrderChildStatisticsDto> statisticsChild(Pageable pageable, Collection<? extends Condition> condition) {
+        return orderRepository.statisticsChild(pageable, condition);
+    }
 
-
+    /**
+     * 孩子已参加的班次
+     *
+     * @param childId
+     */
+    public List<OrganClassBo> findEnteredClassByChildId(Long childId) {
+        return orderRepository.findEnteredClassByChildId(childId);
+    }
 }

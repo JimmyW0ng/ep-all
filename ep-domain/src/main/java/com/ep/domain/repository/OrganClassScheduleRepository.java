@@ -337,4 +337,21 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 紧急修改课程时修改班次目录
+     *
+     * @param bo
+     * @return
+     */
+    public int rectifyByRectifyCatalog(RectifyOrganClassCatalogBo bo) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                .set(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE, bo.getCatalogTitle())
+                .set(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC, bo.getCatalogDesc())
+                .set(EP_ORGAN_CLASS_SCHEDULE.START_TIME, bo.getStartTime())
+                .set(EP_ORGAN_CLASS_SCHEDULE.DURATION, bo.getDuration())
+                .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.eq(bo.getId()))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .execute();
+    }
 }

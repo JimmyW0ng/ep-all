@@ -55,7 +55,8 @@ public class OrganCourseService {
     @Autowired
     private OrganCourseTeamRepository organCourseTeamRepository;
     @Autowired
-    private OrganCatalogRepository organCatalogRepository;
+    private OrganClassScheduleRepository organClassScheduleRepository;
+
 
     /**
      * 根据id获取机构课程
@@ -443,8 +444,9 @@ public class OrganCourseService {
             rectifyOrganClassCatalogBos.forEach(bo -> {
                 if (bo.getRectifyFlag()) {
                     organClassCatalogRepository.rectifyByRectifyCourse(bo);
+                    //同步ep_organ_class_schedule表里数据
+                    organClassScheduleRepository.rectifyByRectifyCatalog(bo);
                 }
-
             });
         }
 

@@ -108,7 +108,10 @@
                                    th:if="${#stringTools.equals(bo.status,'opening')||#stringTools.equals(bo.status,'end')}"
                                    href="javascript:void(0)" th:onclick="'getClassChild('+${bo.id}+')'">班级成员</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
-                                   th:if="${#strings.equals(bo.status,'opening')||#strings.equals(bo.status,'online')}"
+                                   th:if="${#strings.equals(bo.status,'online')}"
+                                   th:onclick="'advancedEndBox('+${bo.id}+')'">提前结束</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(bo.status,'opening')||#strings.equals(bo.type,'normal')}"
                                    th:onclick="'endBox('+${bo.id}+')'">结束</a>
                             </td>
                         </tr>

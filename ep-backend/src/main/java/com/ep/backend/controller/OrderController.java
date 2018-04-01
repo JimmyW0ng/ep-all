@@ -4,6 +4,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
+import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
@@ -29,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
-import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
+import static com.ep.domain.repository.domain.Tables.*;
 
 
 /**
@@ -154,46 +155,81 @@ public class OrderController extends BackendController {
         Map<String, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(mobile)) {
-            conditions.add(EP.EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
+            conditions.add(EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
         }
         searchMap.put("mobile", mobile);
         if (StringTools.isNotBlank(childTrueName)) {
-            conditions.add(EP.EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
+            conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
         }
         searchMap.put("childTrueName", childTrueName);
         if (StringTools.isNotBlank(childNickName)) {
-            conditions.add(EP.EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
+            conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
         }
         searchMap.put("childNickName", childNickName);
         if (StringTools.isNotBlank(courseName)) {
-            conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
+            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
         }
         searchMap.put("courseName", courseName);
         if (StringTools.isNotBlank(className)) {
-            conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
+            conditions.add(EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
         }
         searchMap.put("className", className);
         if (StringTools.isNotBlank(status)) {
-            conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
+            conditions.add(EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
         }
         searchMap.put("status", status);
         if (null != crStartTime) {
-            conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
+            conditions.add(EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
         }
         searchMap.put("crStartTime", crStartTime);
         if (null != crEndTime) {
-            conditions.add(EP.EP_ORDER.CREATE_AT.lessOrEqual(crEndTime));
+            conditions.add(EP_ORDER.CREATE_AT.lessOrEqual(crEndTime));
         }
         searchMap.put("crEndTime", crEndTime);
-        conditions.add(EP.EP_ORDER.DEL_FLAG.eq(false));
-        conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.opening));
-        conditions.add(EP.EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
+        conditions.add(EP_ORDER.DEL_FLAG.eq(false));
+        conditions.add(EP_ORDER.STATUS.eq(EpOrderStatus.opening));
+        conditions.add(EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
         conditions.add(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak));
 
         Page<OrderBo> page = orderService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
         return "order/bespeakIndex";
+    }
+
+    /**
+     * 学员统计
+     *
+     * @return
+     */
+    @GetMapping("childIndex")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    public String childIndex(Model model,
+                             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                             @RequestParam(value = "mobile", required = false) String mobile,
+                             @RequestParam(value = "childTrueName", required = false) String childTrueName,
+                             @RequestParam(value = "childNickName", required = false) String childNickName
+    ) {
+        Map<String, Object> searchMap = Maps.newHashMap();
+        Collection<Condition> conditions = Lists.newArrayList();
+        if (StringTools.isNotBlank(mobile)) {
+            conditions.add(EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
+        }
+        searchMap.put("mobile", mobile);
+        if (StringTools.isNotBlank(childTrueName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
+        }
+        searchMap.put("childTrueName", childTrueName);
+        if (StringTools.isNotBlank(childNickName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
+        }
+        searchMap.put("childNickName", childNickName);
+
+        conditions.add(EP_ORDER.DEL_FLAG.eq(false));
+        Page<OrderChildStatisticsDto> page = orderService.statisticsChild(pageable, conditions);
+        model.addAttribute("page", page);
+        model.addAttribute("searchMap", searchMap);
+        return "order/childIndex";
     }
 
     /**
@@ -306,6 +342,18 @@ public class OrderController extends BackendController {
     public ResultDo breakInit(@PathVariable("id") Long id) {
         List<OrganClassScheduleBo> bos = organClassScheduleService.findBoByOrderId(id);
         return ResultDo.build().setResult(bos);
+    }
+
+    /**
+     * 孩子已参加的班次
+     *
+     * @param childId
+     */
+    @GetMapping("viewEnteredClass/{childId}")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo viewEnteredClass(@PathVariable("childId") Long childId) {
+        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId));
     }
 }
 

@@ -147,6 +147,7 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .set(EP_ORGAN_CLASS_CATALOG.START_TIME, bo.getStartTime())
                 .set(EP_ORGAN_CLASS_CATALOG.DURATION, bo.getDuration())
                 .where(EP_ORGAN_CLASS_CATALOG.ID.eq(bo.getId()))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .execute();
     }
 }
