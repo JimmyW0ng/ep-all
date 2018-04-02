@@ -5,6 +5,7 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
+import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class EpConstantTagPo extends AbstractBasePojo {
     private Long sort;
     private Boolean ognFlag;
     private Long ognId;
+    private EpConstantTagStatus status;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;
