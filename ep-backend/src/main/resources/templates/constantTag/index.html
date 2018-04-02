@@ -41,7 +41,7 @@
             <div class="panel-body">
                 <div style="background: #eee;min-height: 500px;padding: 20px 0px">
                     <div class="col-sm-3">
-                        <input id="createTag" name="" type="text" class="form-control" placeholder="标签名">
+                        <input id="createTag" name="" type="text" class="form-control" placeholder="称号名">
                     </div>
                     <div class="col-sm-3">
                         <select type="text" class="form-control" name="catalogId" id="catalogId" style="width:182px;">
@@ -64,7 +64,7 @@
 </div>
 <script type="text/template" id='tagBoxTmpl'>
     <div  class="col-sm-12" style="padding-top: 20px">
-        <label class="col-sm-2" >${constantCatalog}标签：</label>
+        <label class="col-sm-2">${constantCatalog}称号：</label>
         <input type="hidden" name="constantCatalogId${constantCatalogId}" value="${constantCatalogId}">
         <div name="constantTagBox"></div>
     </div>
@@ -86,7 +86,7 @@
         window.location="/auth/constantTag/index"
     }
     /**
-     * 新增课程标签
+     * 新增课程称号
      */
     function createTagBox() {
         var catalogId=$("#catalogId").val()
@@ -96,7 +96,7 @@
             return
         }
         if (tagName == "" || tagName == undefined) {
-            toastr.error("请填写标签名")
+            toastr.error("请填写称号名")
             return
         }
 
@@ -121,7 +121,7 @@
 
     }
     /**
-     * 删除标签
+     * 删除称号
      * @param ele
      */
     function removeTag(ele) {
