@@ -31,6 +31,7 @@ public class EpMemberPo extends AbstractBasePojo {
     private String email;
     @JsonIgnore
     private EpMemberStatus status;
+    private String channel;
     @JsonIgnore
     private Timestamp createAt;
     @JsonIgnore

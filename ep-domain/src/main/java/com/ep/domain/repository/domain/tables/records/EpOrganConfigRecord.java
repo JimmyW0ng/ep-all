@@ -31,11 +31,26 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     private static final long serialVersionUID = -2103638492;
 
     /**
-     * Setter for <code>ep.ep_organ_config.id</code>.
+     * Create a detached EpOrganConfigRecord
      */
-    public EpOrganConfigRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrganConfigRecord() {
+        super(EpOrganConfig.EP_ORGAN_CONFIG);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganConfigRecord
+     */
+    public EpOrganConfigRecord(Long id, Long ognId, Boolean supportTag, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganConfig.EP_ORGAN_CONFIG);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, supportTag);
+        set(3, createAt);
+        set(4, updateAt);
+        set(5, remark);
+        set(6, delFlag);
+        set(7, version);
     }
 
     /**
@@ -46,10 +61,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.ogn_id</code>. 机构id
+     * Setter for <code>ep.ep_organ_config.id</code>.
      */
-    public EpOrganConfigRecord setOgnId(Long value) {
-        set(1, value);
+    public EpOrganConfigRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -61,10 +76,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能
+     * Setter for <code>ep.ep_organ_config.ogn_id</code>. 机构id
      */
-    public EpOrganConfigRecord setSupportTag(Boolean value) {
-        set(2, value);
+    public EpOrganConfigRecord setOgnId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -76,10 +91,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能
      */
-    public EpOrganConfigRecord setCreateAt(Timestamp value) {
-        set(3, value);
+    public EpOrganConfigRecord setSupportTag(Boolean value) {
+        set(2, value);
         return this;
     }
 
@@ -91,10 +106,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_config.create_at</code>. 创建时间
      */
-    public EpOrganConfigRecord setUpdateAt(Timestamp value) {
-        set(4, value);
+    public EpOrganConfigRecord setCreateAt(Timestamp value) {
+        set(3, value);
         return this;
     }
 
@@ -106,10 +121,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_config.update_at</code>. 更新时间
      */
-    public EpOrganConfigRecord setRemark(String value) {
-        set(5, value);
+    public EpOrganConfigRecord setUpdateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -121,10 +136,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_config.remark</code>. 备注
      */
-    public EpOrganConfigRecord setDelFlag(Boolean value) {
-        set(6, value);
+    public EpOrganConfigRecord setRemark(String value) {
+        set(5, value);
         return this;
     }
 
@@ -136,12 +151,16 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_config.version</code>.
+     * Setter for <code>ep.ep_organ_config.del_flag</code>. 删除标记
      */
-    public EpOrganConfigRecord setVersion(Long value) {
-        set(7, value);
+    public EpOrganConfigRecord setDelFlag(Boolean value) {
+        set(6, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_config.version</code>.
@@ -151,8 +170,16 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record8 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_config.version</code>.
+     */
+    public EpOrganConfigRecord setVersion(Long value) {
+        set(7, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -161,10 +188,6 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record8 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -373,6 +396,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -396,32 +423,5 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
         value7(value7);
         value8(value8);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganConfigRecord
-     */
-    public EpOrganConfigRecord() {
-        super(EpOrganConfig.EP_ORGAN_CONFIG);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganConfigRecord
-     */
-    public EpOrganConfigRecord(Long id, Long ognId, Boolean supportTag, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganConfig.EP_ORGAN_CONFIG);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, supportTag);
-        set(3, createAt);
-        set(4, updateAt);
-        set(5, remark);
-        set(6, delFlag);
-        set(7, version);
     }
 }
