@@ -133,9 +133,9 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">选择标签（<span class="required-sign">不超过6个</span>）
-                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用标签</span>
-                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有标签</span>
+                        <label class="course-label">选择称号（<span class="required-sign">不超过6个</span>）
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用称号</span>
+                            <span style="float:right;margin-top: 5px" class="label ogn-tag">私有称号</span>
                         </label>
                     </div>
                     <div class="ibox-content">
@@ -393,7 +393,7 @@
         if ($("#tagBox").find("input[type='checkbox']:checked").length > 6) {
             if ($(ele).is(":checked")) {
                 $(ele).attr("checked", false)
-                toastr.error("标签不得超过6个")
+                toastr.error("称号不得超过6个")
             }
         }
     }
