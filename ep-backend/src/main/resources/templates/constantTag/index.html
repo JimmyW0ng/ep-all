@@ -146,30 +146,6 @@
 
     }
 
-    function findTags(){
-        var catalogId=$("#catalogId").val()
-        if(catalogId==""||catalogId==undefined){
-            return
-        }
-        $.ajax({
-            type:"GET",
-            url:"/auth/constantTag/findTags?"+"catalogId="+catalogId,
-            success:function (data) {
-                if(data.success){
-                    //公用标签
-                    var constantTag=data.result.constantTag
-                    $("#constantTagBox").html($("#constantTagTmpl").tmpl(constantTag))
-                    $("#constantTagBox").find("a").hide()
-                    //私有标签
-//                    var ognTag=data.result.ognTag
-//                    $("#createTagBox").html($("#ognTagTmpl").tmpl(ognTag))
-
-
-
-                }
-            }
-        })
-    }
 
     $(document).ready(function () {
         var constantCatalogMap = [[${constantCatalogMap}]]

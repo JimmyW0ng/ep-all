@@ -62,6 +62,7 @@
                             <th>标签</th>
                             <th th:if="${ognId==null}">等级</th>
                             <th th:if="${ognId==null}">排序</th>
+                            <th th:if="${ognId==null}">状态</th>
                             <th th:if="${ognId==null}">创建时间</th>
                             <th th:if="${ognId==null}">操作</th>
                         </tr>
@@ -72,6 +73,7 @@
                             <td><span class="label constant-tag" th:text="${po.tagName}"></span></td>
                             <td th:if="${ognId==null}" th:text="${po.tagLevel}"></td>
                             <td th:if="${ognId==null}" th:text="${po.sort}"></td>
+                            <td th:if="${ognId==null}" th:text="#{EpConstantTagStatus.+${po.status}}"></td>
 
                             <td th:if="${ognId==null}"
                                 th:text="${#dates.format(po.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -80,8 +82,14 @@
                                 <!--th:href="@{/auth/organCourse/merchantview/}+${bo.id}">查看</a>-->
                                 <a class="btn btn-xs btn-primary" href="javascript:void(0)"
                                    onclick="createInit('修改标签',$(this).attr('value'))" th:value="${po.id}">修改</a>
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:if="!${po.usedFlag}"
-                                   th:onclick="'deleteBox('+${po.id}+')'">删除</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')}"
+                                   th:onclick="'onlineBox('+${po.id}+')'">上线</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'online')}"
+                                   th:onclick="'offlineBox('+${po.id}+')'">下线</a>
+                                <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)" th:if="!${po.usedFlag}"-->
+                                <!--th:onclick="'deleteBox('+${po.id}+')'">删除</a>-->
 
                             </td>
 
@@ -218,6 +226,47 @@
             }
         })
     }
+
+    function onlineBox(id) {
+        layer_confirm("确认上线该标签？", 3, onlineDo, id)
+    }
+    function onlineDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/constantTag/onlineTag/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
+    function offlineBox(id) {
+        layer_confirm("确认下线该标签？", 3, offlineDo, id)
+    }
+    function offlineDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/constantTag/offlineTag/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
     function createInit(title, sourceId) {
         $("#frm").validate().resetForm()
         $("#createModal").find("input").val("").attr("readonly", false);

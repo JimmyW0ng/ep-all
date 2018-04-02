@@ -8,6 +8,7 @@ import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.repository.ConstantTagRepository;
 import com.ep.domain.repository.OrganCourseTagRepository;
+import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +34,13 @@ public class ConstantTagService {
     private OrganCourseTagRepository organCourseTagRepository;
 
     /**
-     * 根据课程类目id和机构id获取标签
+     * 根据状态和机构id获取标签
      *
-     * @param catalogId
      * @param ognId
      * @return
      */
-    public List<EpConstantTagPo> findByCatalogIdAndOgnId(Long catalogId, Long ognId) {
-        return constantTagRepository.findByCatalogIdAndOgnId(catalogId, ognId);
+    public List<EpConstantTagPo> findByOgnIdAndStatus(Long ognId, EpConstantTagStatus[] status) {
+        return constantTagRepository.findByOgnIdAndStatus(ognId, status);
     }
 
     /**
@@ -162,5 +162,41 @@ public class ConstantTagService {
      */
     public Page<ConstantTagBo> findConstantTagbyPageAndConditionForBackend(Pageable pageable, Collection<? extends Condition> conditions) {
         return constantTagRepository.findbyPageAndCondition(pageable, conditions);
+    }
+
+    /**
+     * 标签上线
+     *
+     * @param id
+     * @param ognId
+     * @return
+     */
+    public ResultDo onlineById(Long id, Long ognId) {
+        log.info("[标签]标签上线开始，标签id={},机构id={}。", id, ognId);
+        if (constantTagRepository.onlineById(id, ognId) == BizConstant.DB_NUM_ONE) {
+            log.info("[标签]标签上线成功，标签id={},机构id={}。", id, ognId);
+            return ResultDo.build();
+        } else {
+            log.error("[标签]标签上线失败，标签id={},机构id={}。", id, ognId);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 标签下线
+     *
+     * @param id
+     * @param ognId
+     * @return
+     */
+    public ResultDo offlineById(Long id, Long ognId) {
+        log.info("[标签]标签下线开始，标签id={},机构id={}。", id, ognId);
+        if (constantTagRepository.offlineById(id, ognId) == BizConstant.DB_NUM_ONE) {
+            log.info("[标签]标签下线成功，标签id={},机构id={}。", id, ognId);
+            return ResultDo.build();
+        } else {
+            log.error("[标签]标签下线失败，标签id={},机构id={}。", id, ognId);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 }

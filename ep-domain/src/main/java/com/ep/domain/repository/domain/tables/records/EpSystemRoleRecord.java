@@ -32,39 +32,6 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     private static final long serialVersionUID = 1774264823;
 
     /**
-     * Create a detached EpSystemRoleRecord
-     */
-    public EpSystemRoleRecord() {
-        super(EpSystemRole.EP_SYSTEM_ROLE);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemRoleRecord
-     */
-    public EpSystemRoleRecord(Long id, EpSystemRoleTarget target, String roleName, String roleCode, Long createBy, Timestamp createAt, Long updateBy, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemRole.EP_SYSTEM_ROLE);
-
-        set(0, id);
-        set(1, target);
-        set(2, roleName);
-        set(3, roleCode);
-        set(4, createBy);
-        set(5, createAt);
-        set(6, updateBy);
-        set(7, updateAt);
-        set(8, remark);
-        set(9, delFlag);
-        set(10, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_role.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_role.id</code>. 主键
      */
     public EpSystemRoleRecord setId(Long value) {
@@ -73,10 +40,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.target</code>. 目标：前台，商户后台，系统后台
+     * Getter for <code>ep.ep_system_role.id</code>. 主键
      */
-    public EpSystemRoleTarget getTarget() {
-        return (EpSystemRoleTarget) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -88,10 +55,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.role_name</code>. 角色名称
+     * Getter for <code>ep.ep_system_role.target</code>. 目标：前台，商户后台，系统后台
      */
-    public String getRoleName() {
-        return (String) get(2);
+    public EpSystemRoleTarget getTarget() {
+        return (EpSystemRoleTarget) get(1);
     }
 
     /**
@@ -103,10 +70,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.role_code</code>. 角色标识
+     * Getter for <code>ep.ep_system_role.role_name</code>. 角色名称
      */
-    public String getRoleCode() {
-        return (String) get(3);
+    public String getRoleName() {
+        return (String) get(2);
     }
 
     /**
@@ -118,10 +85,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.create_by</code>. 创建者
+     * Getter for <code>ep.ep_system_role.role_code</code>. 角色标识
      */
-    public Long getCreateBy() {
-        return (Long) get(4);
+    public String getRoleCode() {
+        return (String) get(3);
     }
 
     /**
@@ -133,10 +100,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_role.create_by</code>. 创建者
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(5);
+    public Long getCreateBy() {
+        return (Long) get(4);
     }
 
     /**
@@ -148,10 +115,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.update_by</code>. 更新者
+     * Getter for <code>ep.ep_system_role.create_at</code>. 创建时间
      */
-    public Long getUpdateBy() {
-        return (Long) get(6);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(5);
     }
 
     /**
@@ -163,10 +130,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_role.update_by</code>. 更新者
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
+    public Long getUpdateBy() {
+        return (Long) get(6);
     }
 
     /**
@@ -178,10 +145,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.remark</code>. 备注信息
+     * Getter for <code>ep.ep_system_role.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(8);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -193,10 +160,10 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_role.del_flag</code>. 删除标志
+     * Getter for <code>ep.ep_system_role.remark</code>. 备注信息
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(9);
+    public String getRemark() {
+        return (String) get(8);
     }
 
     /**
@@ -207,20 +174,12 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_system_role.version</code>.
+     * Getter for <code>ep.ep_system_role.del_flag</code>. 删除标志
      */
-    public Long getVersion() {
-        return (Long) get(10);
+    public Boolean getDelFlag() {
+        return (Boolean) get(9);
     }
-
-    // -------------------------------------------------------------------------
-    // Record11 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_system_role.version</code>.
@@ -231,12 +190,27 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
     }
 
     /**
+     * Getter for <code>ep.ep_system_role.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(10);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record11 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -520,10 +494,6 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -550,5 +520,35 @@ public class EpSystemRoleRecord extends UpdatableRecordImpl<EpSystemRoleRecord> 
         value10(value10);
         value11(value11);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpSystemRoleRecord
+     */
+    public EpSystemRoleRecord() {
+        super(EpSystemRole.EP_SYSTEM_ROLE);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemRoleRecord
+     */
+    public EpSystemRoleRecord(Long id, EpSystemRoleTarget target, String roleName, String roleCode, Long createBy, Timestamp createAt, Long updateBy, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemRole.EP_SYSTEM_ROLE);
+
+        set(0, id);
+        set(1, target);
+        set(2, roleName);
+        set(3, roleCode);
+        set(4, createBy);
+        set(5, createAt);
+        set(6, updateBy);
+        set(7, updateAt);
+        set(8, remark);
+        set(9, delFlag);
+        set(10, version);
     }
 }

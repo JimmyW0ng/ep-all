@@ -3,6 +3,7 @@ package com.ep.domain.repository;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
+import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
 import com.ep.domain.repository.domain.tables.records.EpConstantTagRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -33,15 +34,15 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
     }
 
     /**
-     * 根据课程类目id和机构id获取标签
+     * 根据状态和机构id获取标签
      *
-     * @param catalogId
      * @param ognId
      * @return
      */
-    public List<EpConstantTagPo> findByCatalogIdAndOgnId(Long catalogId, Long ognId) {
+    public List<EpConstantTagPo> findByOgnIdAndStatus(Long ognId, EpConstantTagStatus[] status) {
         return dslContext.selectFrom(EP_CONSTANT_TAG)
                 .where(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                .and(EP_CONSTANT_TAG.STATUS.in(status))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .fetchInto(EpConstantTagPo.class);
     }
@@ -174,5 +175,58 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .where(EP_CONSTANT_TAG.ID.eq(po.getId()))
                 .and(po.getOgnId() == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(po.getOgnId()))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false)).execute();
+    }
+
+    /**
+     * 根据id上线标签
+     *
+     * @param id
+     * @return
+     */
+    public int onlineById(Long id, Long ognId) {
+        if (ognId == null) {
+            return dslContext.update(EP_CONSTANT_TAG)
+                    .set(EP_CONSTANT_TAG.STATUS, EpConstantTagStatus.online)
+                    .where(EP_CONSTANT_TAG.ID.eq(id))
+                    .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.save))
+                    .and(EP_CONSTANT_TAG.OGN_ID.isNull())
+                    .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                    .execute();
+        } else {
+            return dslContext.update(EP_CONSTANT_TAG)
+                    .set(EP_CONSTANT_TAG.STATUS, EpConstantTagStatus.online)
+                    .where(EP_CONSTANT_TAG.ID.eq(id))
+                    .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.save))
+                    .and(EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                    .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                    .execute();
+        }
+
+    }
+
+    /**
+     * 根据id下线标签
+     *
+     * @param id
+     * @return
+     */
+    public int offlineById(Long id, Long ognId) {
+        if (ognId == null) {
+            return dslContext.update(EP_CONSTANT_TAG)
+                    .set(EP_CONSTANT_TAG.STATUS, EpConstantTagStatus.offline)
+                    .where(EP_CONSTANT_TAG.ID.eq(id))
+                    .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.online))
+                    .and(EP_CONSTANT_TAG.OGN_ID.isNull())
+                    .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                    .execute();
+        } else {
+            return dslContext.update(EP_CONSTANT_TAG)
+                    .set(EP_CONSTANT_TAG.STATUS, EpConstantTagStatus.offline)
+                    .where(EP_CONSTANT_TAG.ID.eq(id))
+                    .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.online))
+                    .and(EP_CONSTANT_TAG.OGN_ID.eq(ognId))
+                    .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                    .execute();
+        }
     }
 }

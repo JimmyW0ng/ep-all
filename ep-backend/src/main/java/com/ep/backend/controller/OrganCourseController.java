@@ -9,6 +9,7 @@ import com.ep.domain.pojo.dto.CreateOrganCourseDto;
 import com.ep.domain.pojo.dto.FileDto;
 import com.ep.domain.pojo.dto.RectifyOrganCourseDto;
 import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
@@ -28,10 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE;
@@ -198,33 +196,45 @@ public class OrganCourseController extends BackendController {
         //是否支持标签
         Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
         model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
+        if (organConfigOptional.get().getSupportTag()) {
+            //公用标签
+            List<EpConstantTagPo> constantTagList = constantTagService.findByOgnIdAndStatus(null,
+                    new EpConstantTagStatus[]{EpConstantTagStatus.online});
+            //私有标签
+            List<EpConstantTagPo> ognTagList = constantTagService.findByOgnIdAndStatus(ognId,
+                    new EpConstantTagStatus[]{EpConstantTagStatus.online});
+            ognTagList.addAll(constantTagList);
+
+            model.addAttribute("ognTagList", ognTagList);
+        }
+
         return "organCourse/merchantForm";
     }
 
-    /**
-     * 根据课程类目获得标签
-     *
-     * @param catalogId
-     * @return
-     */
-    @GetMapping("findTagsByCatalog/{catalogId}")
-    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
-    @ResponseBody
-    public ResultDo<List<EpConstantTagPo>> findTagsByConstantCatalog(
-            @PathVariable("catalogId") Long catalogId) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
-        ResultDo<List<EpConstantTagPo>> resultDo = ResultDo.build();
-
-        //公用标签
-        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
-        //私有标签
-        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
-        ognTagList.addAll(constantTagList);
-
-        resultDo.setResult(ognTagList);
-        return resultDo;
-    }
+//    /**
+//     * 根据课程类目获得标签
+//     *
+//     * @param catalogId
+//     * @return
+//     */
+//    @GetMapping("findTagsByCatalog/{catalogId}")
+//    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
+//    @ResponseBody
+//    public ResultDo<List<EpConstantTagPo>> findTagsByConstantCatalog(
+//            @PathVariable("catalogId") Long catalogId) {
+//        EpSystemUserPo currentUser = super.getCurrentUser().get();
+//        Long ognId = currentUser.getOgnId();
+//        ResultDo<List<EpConstantTagPo>> resultDo = ResultDo.build();
+//
+//        //公用标签
+//        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+//        //私有标签
+//        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+//        ognTagList.addAll(constantTagList);
+//
+//        resultDo.setResult(ognTagList);
+//        return resultDo;
+//    }
 
 
     /**
@@ -349,7 +359,6 @@ public class OrganCourseController extends BackendController {
 
         //课程对象
         model.addAttribute("organCoursePo", organCoursePo);
-        Long catalogId = organCoursePo.getCourseCatalogId();
 
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<OrganClassBo> organClassBos = Lists.newArrayList();
@@ -370,10 +379,33 @@ public class OrganCourseController extends BackendController {
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
 
         //公用标签
-        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        List<EpConstantTagPo> constantTagList = constantTagService.findByOgnIdAndStatus(null,
+                new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         //私有标签
-        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+        List<EpConstantTagPo> ognTagList = constantTagService.findByOgnIdAndStatus(ognId,
+                new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         ognTagList.addAll(constantTagList);
+
+        //去除状态为offline且没被用到的标签
+        Iterator<EpConstantTagPo> tagIterator = ognTagList.iterator();
+        while (tagIterator.hasNext()) {
+            EpConstantTagPo e = tagIterator.next();
+            boolean usedflag = false;
+            if (e.getStatus().equals(EpConstantTagStatus.online)) {
+                usedflag = true;
+            } else {
+                for (OrganCourseTagBo bo : organCourseTagBos) {
+                    if (e.getStatus().equals(EpConstantTagStatus.offline)
+                            && e.getId().equals(bo.getId())) {
+                        usedflag = true;
+                        break;
+                    }
+                }
+            }
+            if (!usedflag) {
+                tagIterator.remove();
+            }
+        }
 
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         model.addAttribute("ognTagList", ognTagList);
@@ -460,10 +492,33 @@ public class OrganCourseController extends BackendController {
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
 
         //公用标签
-        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+        List<EpConstantTagPo> constantTagList = constantTagService.findByOgnIdAndStatus(null,
+                new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         //私有标签
-        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+        List<EpConstantTagPo> ognTagList = constantTagService.findByOgnIdAndStatus(ognId,
+                new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         ognTagList.addAll(constantTagList);
+
+        //去除状态为offline且没被用到的标签
+        Iterator<EpConstantTagPo> tagIterator = ognTagList.iterator();
+        while (tagIterator.hasNext()) {
+            EpConstantTagPo e = tagIterator.next();
+            boolean usedflag = false;
+            if (e.getStatus().equals(EpConstantTagStatus.online)) {
+                usedflag = true;
+            } else {
+                for (OrganCourseTagBo bo : organCourseTagBos) {
+                    if (e.getStatus().equals(EpConstantTagStatus.offline)
+                            && e.getId().equals(bo.getId())) {
+                        usedflag = true;
+                        break;
+                    }
+                }
+            }
+            if (!usedflag) {
+                tagIterator.remove();
+            }
+        }
 
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         model.addAttribute("ognTagList", ognTagList);

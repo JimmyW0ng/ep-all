@@ -28,7 +28,7 @@ public enum EpConstantTagStatus implements EnumType {
 
     online("online"),
 
-    offine("offine");
+    offline("offline");
 
     private final String literal;
 

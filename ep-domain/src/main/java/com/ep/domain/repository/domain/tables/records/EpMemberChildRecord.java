@@ -32,44 +32,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     private static final long serialVersionUID = -1316448510;
 
     /**
-     * Create a detached EpMemberChildRecord
-     */
-    public EpMemberChildRecord() {
-        super(EpMemberChild.EP_MEMBER_CHILD);
-    }
-
-    /**
-     * Create a detached, initialised EpMemberChildRecord
-     */
-    public EpMemberChildRecord(Long id, Long memberId, String childNickName, String childTrueName, EpMemberChildChildSex childSex, Timestamp childBirthday, String childIdentity, String currentSchool, String currentClass, String relationship, Timestamp showAt, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMemberChild.EP_MEMBER_CHILD);
-
-        set(0, id);
-        set(1, memberId);
-        set(2, childNickName);
-        set(3, childTrueName);
-        set(4, childSex);
-        set(5, childBirthday);
-        set(6, childIdentity);
-        set(7, currentSchool);
-        set(8, currentClass);
-        set(9, relationship);
-        set(10, showAt);
-        set(11, createAt);
-        set(12, updateAt);
-        set(13, remark);
-        set(14, delFlag);
-        set(15, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_member_child.id</code>. 主键
      */
     public EpMemberChildRecord setId(Long value) {
@@ -78,10 +40,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.member_id</code>. 会员id
+     * Getter for <code>ep.ep_member_child.id</code>. 主键
      */
-    public Long getMemberId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -93,10 +55,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.child_nick_name</code>. 昵称
+     * Getter for <code>ep.ep_member_child.member_id</code>. 会员id
      */
-    public String getChildNickName() {
-        return (String) get(2);
+    public Long getMemberId() {
+        return (Long) get(1);
     }
 
     /**
@@ -108,10 +70,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.child_true_name</code>. 真实姓名
+     * Getter for <code>ep.ep_member_child.child_nick_name</code>. 昵称
      */
-    public String getChildTrueName() {
-        return (String) get(3);
+    public String getChildNickName() {
+        return (String) get(2);
     }
 
     /**
@@ -123,10 +85,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.child_sex</code>. 性别
+     * Getter for <code>ep.ep_member_child.child_true_name</code>. 真实姓名
      */
-    public EpMemberChildChildSex getChildSex() {
-        return (EpMemberChildChildSex) get(4);
+    public String getChildTrueName() {
+        return (String) get(3);
     }
 
     /**
@@ -138,10 +100,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.child_birthday</code>. 生日
+     * Getter for <code>ep.ep_member_child.child_sex</code>. 性别
      */
-    public Timestamp getChildBirthday() {
-        return (Timestamp) get(5);
+    public EpMemberChildChildSex getChildSex() {
+        return (EpMemberChildChildSex) get(4);
     }
 
     /**
@@ -153,10 +115,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.child_identity</code>. 身份证号
+     * Getter for <code>ep.ep_member_child.child_birthday</code>. 生日
      */
-    public String getChildIdentity() {
-        return (String) get(6);
+    public Timestamp getChildBirthday() {
+        return (Timestamp) get(5);
     }
 
     /**
@@ -168,10 +130,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.current_school</code>. 当前就读学校
+     * Getter for <code>ep.ep_member_child.child_identity</code>. 身份证号
      */
-    public String getCurrentSchool() {
-        return (String) get(7);
+    public String getChildIdentity() {
+        return (String) get(6);
     }
 
     /**
@@ -183,10 +145,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.current_class</code>. 所在班级
+     * Getter for <code>ep.ep_member_child.current_school</code>. 当前就读学校
      */
-    public String getCurrentClass() {
-        return (String) get(8);
+    public String getCurrentSchool() {
+        return (String) get(7);
     }
 
     /**
@@ -198,10 +160,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.relationship</code>. 关系
+     * Getter for <code>ep.ep_member_child.current_class</code>. 所在班级
      */
-    public String getRelationship() {
-        return (String) get(9);
+    public String getCurrentClass() {
+        return (String) get(8);
     }
 
     /**
@@ -213,10 +175,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.show_at</code>. 展示时间
+     * Getter for <code>ep.ep_member_child.relationship</code>. 关系
      */
-    public Timestamp getShowAt() {
-        return (Timestamp) get(10);
+    public String getRelationship() {
+        return (String) get(9);
     }
 
     /**
@@ -228,10 +190,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_child.show_at</code>. 展示时间
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(11);
+    public Timestamp getShowAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -243,10 +205,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_child.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(12);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -258,10 +220,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.remark</code>. 备注
+     * Getter for <code>ep.ep_member_child.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(13);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(12);
     }
 
     /**
@@ -273,10 +235,10 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
-     * Getter for <code>ep.ep_member_child.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_member_child.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
+    public String getRemark() {
+        return (String) get(13);
     }
 
     /**
@@ -287,20 +249,12 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_member_child.version</code>.
+     * Getter for <code>ep.ep_member_child.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(15);
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
     }
-
-    // -------------------------------------------------------------------------
-    // Record16 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_member_child.version</code>.
@@ -311,12 +265,27 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
     }
 
     /**
+     * Getter for <code>ep.ep_member_child.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(15);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record16 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -725,10 +694,6 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -760,5 +725,40 @@ public class EpMemberChildRecord extends UpdatableRecordImpl<EpMemberChildRecord
         value15(value15);
         value16(value16);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpMemberChildRecord
+     */
+    public EpMemberChildRecord() {
+        super(EpMemberChild.EP_MEMBER_CHILD);
+    }
+
+    /**
+     * Create a detached, initialised EpMemberChildRecord
+     */
+    public EpMemberChildRecord(Long id, Long memberId, String childNickName, String childTrueName, EpMemberChildChildSex childSex, Timestamp childBirthday, String childIdentity, String currentSchool, String currentClass, String relationship, Timestamp showAt, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberChild.EP_MEMBER_CHILD);
+
+        set(0, id);
+        set(1, memberId);
+        set(2, childNickName);
+        set(3, childTrueName);
+        set(4, childSex);
+        set(5, childBirthday);
+        set(6, childIdentity);
+        set(7, currentSchool);
+        set(8, currentClass);
+        set(9, relationship);
+        set(10, showAt);
+        set(11, createAt);
+        set(12, updateAt);
+        set(13, remark);
+        set(14, delFlag);
+        set(15, version);
     }
 }

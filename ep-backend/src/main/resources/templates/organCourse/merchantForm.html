@@ -60,7 +60,7 @@
                                     <label for="courseCatalogId">产品所属目录 <span class="required-sign">*</span></label>
                                     <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
                                             required="true"
-                                            class="form-control" onchange="changeGetTags(this)">
+                                            class="form-control">
                                         <option value="">请选择</option>
                                         <option th:each="state : ${constantCatalogMap.keySet()}"
                                                 th:selected="${#strings.equals(organCoursePo.courseCatalogId,state)}"
@@ -150,7 +150,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <label class="course-label">设置图片（<span class="required-sign">必需</span>)</label>
+                        <label class="course-label">设置图片（<span class="required-sign">必需</span>）</label>
                     </div>
                     <div class="ibox-content">
                         <div class="row" style="position:relative">
@@ -455,30 +455,6 @@
         }
     }
 
-    /* 改变产品类目获得公用标签*/
-    function changeGetTags(ele) {
-        $("#constantTagBox").html("")
-        $.ajax({
-            type: "GET",
-            url: "/auth/organCourse/findTagsByCatalog/" + $(ele).val(),
-            success: function (data) {
-                if (data.success) {
-                    var res = data.result
-                    var constantTag = []
-                    var ognTag = []
-                    for (item in res) {
-                        if (res[item].ognFlag) {
-                            ognTag.push({id: res[item].id, tagName: res[item].tagName, ognFlag: res[item].ognFlag})
-                        } else {
-                            constantTag.push({id: res[item].id, tagName: res[item].tagName, ognFlag: res[item].ognFlag})
-                        }
-                    }
-                    $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
-                    $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
-                }
-            }
-        })
-    }
 
     /*勾选标签不超过6个*/
     function taglt6(ele) {
@@ -866,31 +842,35 @@
             initChangeClassTypeEvent($("div.organClassBos"))
             bindChangeClassTypeEvent($("div.organClassBos"))
             //班次end
-            if ([[${supportTag}]]) {
-                //公用标签start
-                var tagList = [[${ognTagList}]]
-                var constantTag = []
-                var ognTag = []
 
-                for (item in tagList) {
-                    if (tagList[item].ognFlag) {
-                        ognTag.push({
-                            id: tagList[item].id,
-                            tagName: tagList[item].tagName,
-                            ognFlag: tagList[item].ognFlag
-                        })
-                    } else {
-                        constantTag.push({
-                            id: tagList[item].id,
-                            tagName: tagList[item].tagName,
-                            ognFlag: tagList[item].ognFlag
-                        })
-                    }
+        }
+        //修改页面初始化end
+        if ([[${supportTag}]]) {
+            //公用标签start
+            var tagList = [[${ognTagList}]]
+            var constantTag = []
+            var ognTag = []
+
+            for (item in tagList) {
+                if (tagList[item].ognFlag) {
+                    ognTag.push({
+                        id: tagList[item].id,
+                        tagName: tagList[item].tagName,
+                        ognFlag: tagList[item].ognFlag
+                    })
+                } else {
+                    constantTag.push({
+                        id: tagList[item].id,
+                        tagName: tagList[item].tagName,
+                        ognFlag: tagList[item].ognFlag
+                    })
                 }
-                $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
-                $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
-                //公用标签end
-                //产品标签start
+            }
+            $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+            $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
+            //公用标签end
+            //产品标签start
+            if ([[${organCourseTagBos}]]) {
                 var organCourseTagBos = [[${organCourseTagBos}]]
                 for (item in organCourseTagBos) {
                     $("#constantTagBox").find("input[name='id']").each(function () {
@@ -899,11 +879,10 @@
                         }
                     })
                 }
-                //产品标签end
             }
 
+            //产品标签end
         }
-        //修改页面初始化end
 
 
         laydate.render({

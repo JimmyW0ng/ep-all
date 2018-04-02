@@ -8,6 +8,7 @@ import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
+import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
 import com.ep.domain.service.ConstantCatalogService;
 import com.ep.domain.service.ConstantTagService;
 import com.google.common.collect.Lists;
@@ -170,31 +171,31 @@ public class ConstantTagController extends BackendController {
     }
 
 
-    /**
-     * 根据类目获得标签
-     *
-     * @param catalogId
-     * @return
-     */
-    @GetMapping("findTags")
-    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex')")
-    @ResponseBody
-    public ResultDo findTags(
-            @RequestParam(value = "catalogId") Long catalogId
-    ) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
-        Map<String, Object> map = Maps.newHashMap();
-        //公用标签
-        List<EpConstantTagPo> constantTag = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
-        //私有标签
-        List<EpConstantTagPo> ognTag = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
-        map.put("constantTag", constantTag);
-        map.put("ognTag", ognTag);
-        resultDo.setResult(map);
-        return resultDo;
-    }
+//    /**
+//     * 根据类目获得标签
+//     *
+//     * @param catalogId
+//     * @return
+//     */
+//    @GetMapping("findTags")
+//    @PreAuthorize("hasAnyAuthority('merchant:constantTag:merchantIndex')")
+//    @ResponseBody
+//    public ResultDo findTags(
+//            @RequestParam(value = "catalogId") Long catalogId
+//    ) {
+//        EpSystemUserPo currentUser = super.getCurrentUser().get();
+//        Long ognId = currentUser.getOgnId();
+//        ResultDo resultDo = ResultDo.build();
+//        Map<String, Object> map = Maps.newHashMap();
+//        //公用标签
+//        List<EpConstantTagPo> constantTag = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
+//        //私有标签
+//        List<EpConstantTagPo> ognTag = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
+//        map.put("constantTag", constantTag);
+//        map.put("ognTag", ognTag);
+//        resultDo.setResult(map);
+//        return resultDo;
+//    }
 
     /**
      * 根据id获得标签
@@ -240,6 +241,7 @@ public class ConstantTagController extends BackendController {
         constantTagPo.setOgnFlag(false);
         constantTagPo.setTagName(tagName);
         constantTagPo.setTagLevel(tagLevel);
+        constantTagPo.setStatus(EpConstantTagStatus.save);
 //        constantTagPo.setSort(sort);
 
         return constantTagService.createConstantTag(constantTagPo);
@@ -313,6 +315,37 @@ public class ConstantTagController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         return constantTagService.deleteById(id,ognId);
+    }
+
+
+    /**
+     * 上线标签
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("onlineTag/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:constantIndex','merchant:constantTag:merchantIndex')")
+    @ResponseBody
+    public ResultDo onlineTag(@PathVariable("id") Long id) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        return constantTagService.onlineById(id, ognId);
+    }
+
+    /**
+     * 下线标签
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("offlineTag/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:constantIndex','merchant:constantTag:merchantIndex')")
+    @ResponseBody
+    public ResultDo offlineTag(@PathVariable("id") Long id) {
+        EpSystemUserPo currentUser = super.getCurrentUser().get();
+        Long ognId = currentUser.getOgnId();
+        return constantTagService.offlineById(id, ognId);
     }
 
 }
