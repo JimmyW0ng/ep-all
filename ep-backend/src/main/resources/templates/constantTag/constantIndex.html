@@ -81,15 +81,17 @@
                                 <!--<a class="btn btn-xs btn-info"-->
                                 <!--th:href="@{/auth/organCourse/merchantview/}+${bo.id}">查看</a>-->
                                 <a class="btn btn-xs btn-primary" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')}"
                                    onclick="createInit('修改标签',$(this).attr('value'))" th:value="${po.id}">修改</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
-                                   th:if="${#strings.equals(po.status,'save')}"
+                                   th:if="${#strings.equals(po.status,'save')||#strings.equals(po.status,'offline')}"
                                    th:onclick="'onlineBox('+${po.id}+')'">上线</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    th:if="${#strings.equals(po.status,'online')}"
                                    th:onclick="'offlineBox('+${po.id}+')'">下线</a>
-                                <!--<a class="btn btn-xs btn-danger" href="javascript:void(0)" th:if="!${po.usedFlag}"-->
-                                <!--th:onclick="'deleteBox('+${po.id}+')'">删除</a>-->
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')}"
+                                   th:onclick="'deleteBox('+${po.id}+')'">删除</a>
 
                             </td>
 
@@ -273,7 +275,6 @@
         $("#createModal").modal("show")
         $("#modalTitle").text(title)
         if (sourceId) {
-            $("#createModal").find("#tagName").attr("readonly", true);
             $.ajax({
                 type: "GET",
                 url: "/auth/constantTag/getTag/" + sourceId,

@@ -76,9 +76,16 @@
                             <td>
 
                                 <a class="btn btn-xs btn-primary" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')}"
                                    onclick="createInit('修改标签',$(this).attr('value'))" th:value="${po.id}">修改</a>
-
-                                <a class="btn btn-xs btn-danger" href="javascript:void(0)" th:if="!${po.usedFlag}"
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')||#strings.equals(po.status,'offline')}"
+                                   th:onclick="'onlineBox('+${po.id}+')'">上线</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'online')}"
+                                   th:onclick="'offlineBox('+${po.id}+')'">下线</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')}"
                                    th:onclick="'deleteBox('+${po.id}+')'">删除</a>
 
                             </td>
@@ -218,13 +225,53 @@
             }
         })
     }
+
+    function onlineBox(id) {
+        layer_confirm("确认上线该标签？", 3, onlineDo, id)
+    }
+    function onlineDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/constantTag/onlineTag/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
+    function offlineBox(id) {
+        layer_confirm("确认下线该标签？", 3, offlineDo, id)
+    }
+    function offlineDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/constantTag/offlineTag/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
     function createInit(title, sourceId) {
         $("#frm").validate().resetForm()
         $("#createModal").find("input").val("").attr("readonly", false);
         $("#createModal").modal("show")
         $("#modalTitle").text(title)
         if (sourceId) {
-            $("#createModal").find("#tagName").attr("readonly", true);
             $.ajax({
                 type: "GET",
                 url: "/auth/constantTag/getTag/" + sourceId,

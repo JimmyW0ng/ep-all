@@ -122,6 +122,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
         return dslContext.update(EP_CONSTANT_TAG)
                 .set(EP_CONSTANT_TAG.DEL_FLAG, true)
                 .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.save))
                 .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                 .execute();
@@ -170,9 +171,10 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      */
     public int updatePo(EpConstantTagPo po) {
         return dslContext.update(EP_CONSTANT_TAG)
-//                .set(EP_CONSTANT_TAG.SORT, po.getSort())
+                .set(EP_CONSTANT_TAG.TAG_NAME, po.getTagName())
                 .set(EP_CONSTANT_TAG.TAG_LEVEL, po.getTagLevel())
                 .where(EP_CONSTANT_TAG.ID.eq(po.getId()))
+                .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.save))
                 .and(po.getOgnId() == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(po.getOgnId()))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false)).execute();
     }
@@ -188,7 +190,6 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
             return dslContext.update(EP_CONSTANT_TAG)
                     .set(EP_CONSTANT_TAG.STATUS, EpConstantTagStatus.online)
                     .where(EP_CONSTANT_TAG.ID.eq(id))
-                    .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.save))
                     .and(EP_CONSTANT_TAG.OGN_ID.isNull())
                     .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                     .execute();
@@ -196,7 +197,6 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
             return dslContext.update(EP_CONSTANT_TAG)
                     .set(EP_CONSTANT_TAG.STATUS, EpConstantTagStatus.online)
                     .where(EP_CONSTANT_TAG.ID.eq(id))
-                    .and(EP_CONSTANT_TAG.STATUS.eq(EpConstantTagStatus.save))
                     .and(EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                     .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
                     .execute();

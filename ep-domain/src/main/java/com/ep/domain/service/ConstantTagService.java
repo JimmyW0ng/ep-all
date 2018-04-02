@@ -85,6 +85,7 @@ public class ConstantTagService {
             log.error("[标签]新增标签失败，请求参数异常。");
             ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+        po.setStatus(EpConstantTagStatus.save);
         constantTagRepository.insert(po);
         log.info("[标签]新增标签成功，id={}。", po.getId());
         return ResultDo.build();
@@ -118,10 +119,7 @@ public class ConstantTagService {
      */
     public ResultDo deleteById(Long id, Long ognId) {
         log.info("[标签]删除标签开始，id={}。", id);
-        if (organCourseTagRepository.constantTagIsUesd(id)) {
-            log.error("[标签]删除标签失败，标签正在被使用。");
-            return ResultDo.build(MessageCode.ERROR_CONSTANT_TAG_DELETE_WHEN_USED);
-        }
+
         if (constantTagRepository.deleteById(id, ognId) == BizConstant.DB_NUM_ONE) {
             log.info("[标签]删除标签成功，id={}。", id);
             return ResultDo.build();

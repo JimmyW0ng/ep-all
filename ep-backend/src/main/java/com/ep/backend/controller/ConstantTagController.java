@@ -109,8 +109,8 @@ public class ConstantTagController extends BackendController {
             model.addAttribute("page", page);
         } else {
             //商户后台访问公用标签分页
-            conditions.add(EP_CONSTANT_TAG.OGN_FLAG.eq(true));
-            conditions.add(EP_CONSTANT_TAG.OGN_ID.eq(ognId));
+            conditions.add(EP_CONSTANT_TAG.OGN_FLAG.eq(false));
+            conditions.add(EP_CONSTANT_TAG.OGN_ID.isNull());
             Page<EpConstantTagPo> page = constantTagService.findConstantTagbyPageAndConditionForOgn(pageable, conditions);
             model.addAttribute("page", page);
         }
