@@ -200,10 +200,10 @@
 
 </div>
 <script type="text/template" id='classCatalogTmpl'>
-    <div name="organClassCatalogPos" class="organClassCatalogPos" style="margin:5px 0px">
+    <div name="organClassCatalogPos" class="organClassCatalogPos col-sm-12" style="margin:5px 0px">
         <div style="overflow:hidden">
             <div name="" class="col-sm-5 form-group">
-                <label>课时<span class="required-sign">*</span></label>
+                <label>目录标题<span class="required-sign">*</span></label>
                 <input name="id" type="hidden" jprop="id" value=${id}>
                 <input name="catalogTitle" jprop="catalogTitle" class="form-control " value="${catalogTitle}"
                        required="true"/>
@@ -338,7 +338,7 @@
                                    value="${addressLat}">
                         </div>
                         <div class="form-group">
-                            <label>总计课时 <span class="required-sign">*</span></label>
+                            <label><span name="courseNumLabel">总计目录</span> <span class="required-sign">*</span></label>
                             <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
                                    value="${courseNum}"
                                    readonly=true>
@@ -347,7 +347,7 @@
                     <div name="organClassCatalogPosBox" class="form-group col-sm-8 well ">
                         <div>
                             <a class="btn btn-success" type="button" onclick="addClassCatalogBox(this)"><i
-                                    class="glyphicon glyphicon-plus"></i> 添加课时</a>
+                                    class="glyphicon glyphicon-plus"></i> 添加班次目录</a>
                         </div>
 
                     </div>
@@ -410,7 +410,7 @@
     /*向前插入课时*/
     function insertbeforeClassCatalogBox(ele) {
         $(ele).parents(".organClassCatalogPos").eq(0).before($("#classCatalogTmpl").tmpl([{
-            catalogTitle: "课时",
+            catalogTitle: "目录标题",
         }]))
         var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
         $(ele).parents(".organClassBos").eq(0).find("input[name='courseNum']").eq(0).val(len)
@@ -427,7 +427,7 @@
     function addClassCatalogBox(ele) {
         var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
         var $box = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0)
-        var catalog = [{catalogTitle: "课时" + (len + 1), len: len + 1}]
+        var catalog = [{catalogTitle: "目录标题" + (len + 1), len: len + 1}]
 
         $box.append($("#classCatalogTmpl").tmpl(catalog))
         $(ele).parents(".organClassBos").eq(0).find("input[name='courseNum']").eq(0).val(len + 1)
@@ -571,9 +571,11 @@
                 if (type == "normal") {
                     $div.find("div[name='organClassCatalogPosBox']").show();
                     $div.find("input[name='courseNum']").eq(0).val("").attr("readonly", true).attr("required", false)
+                    $div.find("span[name='courseNumLabel']").eq(0).text("总计目录")
                 } else if (type == "bespeak") {
                     $div.find("div[name='organClassCatalogPosBox']").hide();
                     $div.find("input[name='courseNum']").attr("readonly", false).attr("required", true)
+                    $div.find("span[name='courseNumLabel']").eq(0).text("总预约次数")
                     $div.find("div.organClassCatalogPos").remove()
                 }
             })
@@ -673,7 +675,8 @@
         var flag = true
         var $box = $("div[name='organClassCatalogPosBox']")
         for (var i = 0; i < $box.length; i++) {
-            var $div = $box.parents("div.organClassBos").eq(0)
+            debugger
+            var $div = $box.eq(i).parents("div.organClassBos").eq(0)
             var classType = $div.find(".classType").eq(0).val()
             if ($box.eq(i).find("div.organClassCatalogPos").length == 0 && classType == "normal") {
                 flag = false
@@ -729,7 +732,7 @@
             return
         }
         if (!beforeSubmitClassRequiredCatalog()) {
-            toastr.error("请添加班次课时!")
+            toastr.error("请添加班次目录!")
             return
         }
 //        if ($("#tagBox").find("input[type='checkbox']:checked").length == 0) {

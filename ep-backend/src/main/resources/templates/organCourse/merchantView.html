@@ -228,7 +228,9 @@
                                                        th:value="${po.addressLat}">
                                             </div>
 
-                                            <label>总计课时 *</label>
+                                            <label><span
+                                                    th:text="${#strings.equals(po.type,'normal')}?'总计目录':'总预约次数'"></span>
+                                                <span class="required-sign">*</span></label>
                                             <input name="courseNum" type="Number" class=" form-control "
                                                    th:value="${po.courseNum}">
                                         </div>

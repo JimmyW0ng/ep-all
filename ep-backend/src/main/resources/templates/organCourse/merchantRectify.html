@@ -330,7 +330,8 @@
                                readonly="true"
                                value="${addressLat}">
                     </div>
-                    <label>总计课时 <span class="required-sign">*</span></label>
+                    <label><span name="courseNumLabel">${type == 'normal'?'总计目录':'总预约次数'}</span> <span
+                            class="required-sign">*</span></label>
                     <input name="courseNum" type="Number" class=" form-control " value="${courseNum}" readonly=true>
                 </div>
                 <div name="organClassCatalogPosBox" class="form-group col-sm-8 well " style="height:auto">
