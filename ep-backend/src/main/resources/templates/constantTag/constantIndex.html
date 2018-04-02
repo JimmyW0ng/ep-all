@@ -90,9 +90,14 @@
                                    th:if="${#strings.equals(po.status,'online')}"
                                    th:onclick="'offlineBox('+${po.id}+')'">下线</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'online')}"
+                                   th:onclick="'upTopBox('+${po.id}+')'">置顶</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
+                                   th:if="${#strings.equals(po.status,'save')}"
+                                   th:onclick="'deleteBox('+${po.id}+')'">取消置顶</a>
+                                <a class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    th:if="${#strings.equals(po.status,'save')}"
                                    th:onclick="'deleteBox('+${po.id}+')'">删除</a>
-
                             </td>
 
                         </tr>
