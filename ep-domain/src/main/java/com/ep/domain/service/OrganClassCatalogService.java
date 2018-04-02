@@ -2,7 +2,8 @@ package com.ep.domain.service;
 
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.OrganAccountClassBo;
+import com.ep.domain.pojo.bo.ClassBespeakAllScheduleBo;
+import com.ep.domain.pojo.bo.ClassNormalAllScheduleBo;
 import com.ep.domain.pojo.bo.RectifyOrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
@@ -61,8 +62,9 @@ public class OrganClassCatalogService {
      * @param organAccountPo
      * @return
      */
-    public ResultDo<List<OrganAccountClassBo>> getBespeakClassAllCatalog(Long classId, EpOrganAccountPo organAccountPo) {
-        ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
+
+    public ResultDo<List<ClassBespeakAllScheduleBo>> getBespeakClassAllCatalog(Long classId, EpOrganAccountPo organAccountPo) {
+        ResultDo<List<ClassBespeakAllScheduleBo>> resultDo = ResultDo.build();
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag() || !EpOrganClassType.normal.equals(classPo.getType())) {
@@ -78,7 +80,7 @@ public class OrganClassCatalogService {
             log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
-        List<OrganAccountClassBo> classCatalogs = organClassScheduleRepository.findNomalClassScheduleByClassId(classId);
+        List<ClassBespeakAllScheduleBo> classCatalogs = organClassScheduleRepository.findBespeakClassScheduleByClassId(classId);
         return resultDo.setResult(classCatalogs);
     }
 
@@ -89,8 +91,8 @@ public class OrganClassCatalogService {
      * @param organAccountPo
      * @return
      */
-    public ResultDo<List<OrganAccountClassBo>> getNomalClassAllCatalog(Long classId, EpOrganAccountPo organAccountPo) {
-        ResultDo<List<OrganAccountClassBo>> resultDo = ResultDo.build();
+    public ResultDo<List<ClassNormalAllScheduleBo>> getNomalClassAllCatalog(Long classId, EpOrganAccountPo organAccountPo) {
+        ResultDo<List<ClassNormalAllScheduleBo>> resultDo = ResultDo.build();
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag() || !EpOrganClassType.normal.equals(classPo.getType())) {
@@ -106,7 +108,7 @@ public class OrganClassCatalogService {
             log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
-        List<OrganAccountClassBo> classCatalogs = organClassScheduleRepository.findNomalClassScheduleByClassId(classId);
+        List<ClassNormalAllScheduleBo> classCatalogs = organClassScheduleRepository.findNomalClassScheduleByClassId(classId);
         return resultDo.setResult(classCatalogs);
     }
 }

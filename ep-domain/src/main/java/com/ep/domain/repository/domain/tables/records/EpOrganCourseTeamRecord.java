@@ -31,11 +31,27 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     private static final long serialVersionUID = -1822138853;
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.id</code>. 主键
+     * Create a detached EpOrganCourseTeamRecord
      */
-    public EpOrganCourseTeamRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrganCourseTeamRecord() {
+        super(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganCourseTeamRecord
+     */
+    public EpOrganCourseTeamRecord(Long id, Long courseId, Long ognAccountId, Long sort, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM);
+
+        set(0, id);
+        set(1, courseId);
+        set(2, ognAccountId);
+        set(3, sort);
+        set(4, createAt);
+        set(5, updateAt);
+        set(6, remark);
+        set(7, delFlag);
+        set(8, version);
     }
 
     /**
@@ -46,10 +62,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.course_id</code>. 课程id
+     * Setter for <code>ep.ep_organ_course_team.id</code>. 主键
      */
-    public EpOrganCourseTeamRecord setCourseId(Long value) {
-        set(1, value);
+    public EpOrganCourseTeamRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -61,10 +77,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
+     * Setter for <code>ep.ep_organ_course_team.course_id</code>. 课程id
      */
-    public EpOrganCourseTeamRecord setOgnAccountId(Long value) {
-        set(2, value);
+    public EpOrganCourseTeamRecord setCourseId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -76,10 +92,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.sort</code>. 排序
+     * Setter for <code>ep.ep_organ_course_team.ogn_account_id</code>. 机构账户id
      */
-    public EpOrganCourseTeamRecord setSort(Long value) {
-        set(3, value);
+    public EpOrganCourseTeamRecord setOgnAccountId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -91,10 +107,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_course_team.sort</code>. 排序
      */
-    public EpOrganCourseTeamRecord setCreateAt(Timestamp value) {
-        set(4, value);
+    public EpOrganCourseTeamRecord setSort(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -106,10 +122,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_course_team.create_at</code>. 创建时间
      */
-    public EpOrganCourseTeamRecord setUpdateAt(Timestamp value) {
-        set(5, value);
+    public EpOrganCourseTeamRecord setCreateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -121,10 +137,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_course_team.update_at</code>. 更新时间
      */
-    public EpOrganCourseTeamRecord setRemark(String value) {
-        set(6, value);
+    public EpOrganCourseTeamRecord setUpdateAt(Timestamp value) {
+        set(5, value);
         return this;
     }
 
@@ -136,10 +152,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_course_team.remark</code>. 备注
      */
-    public EpOrganCourseTeamRecord setDelFlag(Boolean value) {
-        set(7, value);
+    public EpOrganCourseTeamRecord setRemark(String value) {
+        set(6, value);
         return this;
     }
 
@@ -151,12 +167,16 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course_team.version</code>.
+     * Setter for <code>ep.ep_organ_course_team.del_flag</code>. 删除标记
      */
-    public EpOrganCourseTeamRecord setVersion(Long value) {
-        set(8, value);
+    public EpOrganCourseTeamRecord setDelFlag(Boolean value) {
+        set(7, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_course_team.version</code>.
@@ -166,8 +186,16 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record9 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_course_team.version</code>.
+     */
+    public EpOrganCourseTeamRecord setVersion(Long value) {
+        set(8, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -176,10 +204,6 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -413,6 +437,10 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -437,33 +465,5 @@ public class EpOrganCourseTeamRecord extends UpdatableRecordImpl<EpOrganCourseTe
         value8(value8);
         value9(value9);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganCourseTeamRecord
-     */
-    public EpOrganCourseTeamRecord() {
-        super(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganCourseTeamRecord
-     */
-    public EpOrganCourseTeamRecord(Long id, Long courseId, Long ognAccountId, Long sort, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganCourseTeam.EP_ORGAN_COURSE_TEAM);
-
-        set(0, id);
-        set(1, courseId);
-        set(2, ognAccountId);
-        set(3, sort);
-        set(4, createAt);
-        set(5, updateAt);
-        set(6, remark);
-        set(7, delFlag);
-        set(8, version);
     }
 }

@@ -32,11 +32,31 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     private static final long serialVersionUID = 367912715;
 
     /**
-     * Setter for <code>ep.ep_system_dict.id</code>.
+     * Create a detached EpSystemDictRecord
      */
-    public EpSystemDictRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpSystemDictRecord() {
+        super(EpSystemDict.EP_SYSTEM_DICT);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemDictRecord
+     */
+    public EpSystemDictRecord(Long id, String label, String groupName, String key, String value, String description, Integer sort, EpSystemDictStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpSystemDict.EP_SYSTEM_DICT);
+
+        set(0, id);
+        set(1, label);
+        set(2, groupName);
+        set(3, key);
+        set(4, value);
+        set(5, description);
+        set(6, sort);
+        set(7, status);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 
     /**
@@ -47,10 +67,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.label</code>. 标签名
+     * Setter for <code>ep.ep_system_dict.id</code>.
      */
-    public EpSystemDictRecord setLabel(String value) {
-        set(1, value);
+    public EpSystemDictRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -62,10 +82,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.group_name</code>. 组名
+     * Setter for <code>ep.ep_system_dict.label</code>. 标签名
      */
-    public EpSystemDictRecord setGroupName(String value) {
-        set(2, value);
+    public EpSystemDictRecord setLabel(String value) {
+        set(1, value);
         return this;
     }
 
@@ -77,10 +97,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.key</code>. key
+     * Setter for <code>ep.ep_system_dict.group_name</code>. 组名
      */
-    public EpSystemDictRecord setKey(String value) {
-        set(3, value);
+    public EpSystemDictRecord setGroupName(String value) {
+        set(2, value);
         return this;
     }
 
@@ -92,10 +112,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.value</code>. 数据值
+     * Setter for <code>ep.ep_system_dict.key</code>. key
      */
-    public EpSystemDictRecord setValue(String value) {
-        set(4, value);
+    public EpSystemDictRecord setKey(String value) {
+        set(3, value);
         return this;
     }
 
@@ -107,10 +127,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.description</code>. 描述
+     * Setter for <code>ep.ep_system_dict.value</code>. 数据值
      */
-    public EpSystemDictRecord setDescription(String value) {
-        set(5, value);
+    public EpSystemDictRecord setValue(String value) {
+        set(4, value);
         return this;
     }
 
@@ -122,10 +142,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.sort</code>. 排序
+     * Setter for <code>ep.ep_system_dict.description</code>. 描述
      */
-    public EpSystemDictRecord setSort(Integer value) {
-        set(6, value);
+    public EpSystemDictRecord setDescription(String value) {
+        set(5, value);
         return this;
     }
 
@@ -137,10 +157,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.status</code>.
+     * Setter for <code>ep.ep_system_dict.sort</code>. 排序
      */
-    public EpSystemDictRecord setStatus(EpSystemDictStatus value) {
-        set(7, value);
+    public EpSystemDictRecord setSort(Integer value) {
+        set(6, value);
         return this;
     }
 
@@ -152,10 +172,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_system_dict.status</code>.
      */
-    public EpSystemDictRecord setCreateAt(Timestamp value) {
-        set(8, value);
+    public EpSystemDictRecord setStatus(EpSystemDictStatus value) {
+        set(7, value);
         return this;
     }
 
@@ -167,10 +187,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_dict.create_at</code>. 创建时间
      */
-    public EpSystemDictRecord setUpdateAt(Timestamp value) {
-        set(9, value);
+    public EpSystemDictRecord setCreateAt(Timestamp value) {
+        set(8, value);
         return this;
     }
 
@@ -182,10 +202,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.remark</code>. 备注
+     * Setter for <code>ep.ep_system_dict.update_at</code>. 更新时间
      */
-    public EpSystemDictRecord setRemark(String value) {
-        set(10, value);
+    public EpSystemDictRecord setUpdateAt(Timestamp value) {
+        set(9, value);
         return this;
     }
 
@@ -197,10 +217,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_system_dict.remark</code>. 备注
      */
-    public EpSystemDictRecord setDelFlag(Boolean value) {
-        set(11, value);
+    public EpSystemDictRecord setRemark(String value) {
+        set(10, value);
         return this;
     }
 
@@ -212,12 +232,16 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     /**
-     * Setter for <code>ep.ep_system_dict.version</code>.
+     * Setter for <code>ep.ep_system_dict.del_flag</code>. 删除标记
      */
-    public EpSystemDictRecord setVersion(Long value) {
-        set(12, value);
+    public EpSystemDictRecord setDelFlag(Boolean value) {
+        set(11, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_dict.version</code>.
@@ -227,8 +251,16 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record13 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_dict.version</code>.
+     */
+    public EpSystemDictRecord setVersion(Long value) {
+        set(12, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -237,10 +269,6 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record13 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -574,6 +602,10 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -602,37 +634,5 @@ public class EpSystemDictRecord extends UpdatableRecordImpl<EpSystemDictRecord> 
         value12(value12);
         value13(value13);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemDictRecord
-     */
-    public EpSystemDictRecord() {
-        super(EpSystemDict.EP_SYSTEM_DICT);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemDictRecord
-     */
-    public EpSystemDictRecord(Long id, String label, String groupName, String key, String value, String description, Integer sort, EpSystemDictStatus status, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpSystemDict.EP_SYSTEM_DICT);
-
-        set(0, id);
-        set(1, label);
-        set(2, groupName);
-        set(3, key);
-        set(4, value);
-        set(5, description);
-        set(6, sort);
-        set(7, status);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
     }
 }
