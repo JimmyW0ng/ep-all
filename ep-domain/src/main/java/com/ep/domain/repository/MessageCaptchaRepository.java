@@ -44,6 +44,23 @@ public class MessageCaptchaRepository extends AbstractCRUDRepository<EpMessageCa
     }
 
     /**
+     * 统计一个IP当天请求短信验证码次数
+     *
+     * @param ip
+     * @return
+     */
+    public int countByIP(String ip) {
+        Timestamp now = DateTools.getCurrentDateTime();
+        Timestamp startTime = DateTools.zerolizedTime(now);
+        Timestamp endTime = DateTools.getEndTime(now);
+        return dslContext.selectCount().from(EP_MESSAGE_CAPTCHA)
+                         .where(EP_MESSAGE_CAPTCHA.IP.eq(ip))
+                         .and(EP_MESSAGE_CAPTCHA.DEL_FLAG.eq(false))
+                         .and(EP_MESSAGE_CAPTCHA.CREATE_AT.between(startTime, endTime))
+                         .fetchOneInto(Integer.class);
+    }
+
+    /**
      * 根据业务ID、类型、场景、业务编码获取验证码信息
      *
      * @param sourceId

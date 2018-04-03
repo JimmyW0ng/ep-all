@@ -76,6 +76,7 @@ public class BizConstant {
      */
     public static int CAPTCHA_SHORT_MSG_LENGTH = 6;
     public static int CAPTCHA_SHORT_MSG_NUM_LIMIT = 10;
+    public static int CAPTCHA_SHORT_MSG_IP_NUM_LIMIT = 100;
     public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
     /**
      * 文件业务类型
@@ -106,4 +107,23 @@ public class BizConstant {
      * 变更预约的开始时间距离当前时间不得小于30分钟
      */
     public static long RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30 = 30L;
+    /**
+     * wechat
+     */
+    public static String DICT_GROUP_WECHAT = "WECHAT";
+
+    public static String DICT_KEY_WECHAT_ACCESS_TOKEN = "WECHAT_ACCESS_TOKEN";
+
+    public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
+
+    public static int WECHAT_SESSION_TIME_OUT_M = -60;
+
+    public static String WECHAT_URL_SESSION = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+
+    public static String WECHAT_URL_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+
+    public static String WECHAT_URL_WECHAT_CODE = "https://api.weixin.qq.com/wxa/getwxacode?access_token=%s";
+
+    public static String WECHAT_URL_WECHAT_CODE_UNLIMIT = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s";
+
 }

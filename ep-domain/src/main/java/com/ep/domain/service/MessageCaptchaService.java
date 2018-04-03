@@ -46,7 +46,7 @@ public class MessageCaptchaService {
             return ResultDo.build(MessageCode.ERROR_MOBILE_FORMAT);
         }
         // 校验手机发送短信频率是否异常
-        ResultDo checkMsgActionResult = this.checkMsgAction(sourceId, type);
+        ResultDo checkMsgActionResult = this.checkMsgAction(sourceId, type, ip);
         if (checkMsgActionResult.isError()) {
             return checkMsgActionResult;
         }
@@ -77,11 +77,16 @@ public class MessageCaptchaService {
      * @param sourceId
      * @return
      */
-    private ResultDo checkMsgAction(Long sourceId, EpMessageCaptchaCaptchaType type) {
+    private ResultDo checkMsgAction(Long sourceId, EpMessageCaptchaCaptchaType type, String ip) {
         if (type.equals(EpMessageCaptchaCaptchaType.short_msg)) {
             // 查看当天已经发送次数
             int count = messageCaptchaRepository.countBySourceId(sourceId);
             if (count > BizConstant.CAPTCHA_SHORT_MSG_NUM_LIMIT) {
+                return ResultDo.build(MessageCode.ERROR_GET_CAPTCHA_NUM_OUT_LIMIT);
+            }
+            // 校验ip
+            int ipCount = messageCaptchaRepository.countByIP(ip);
+            if (ipCount > BizConstant.CAPTCHA_SHORT_MSG_IP_NUM_LIMIT) {
                 return ResultDo.build(MessageCode.ERROR_GET_CAPTCHA_NUM_OUT_LIMIT);
             }
         }
