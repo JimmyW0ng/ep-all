@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -71,15 +72,28 @@ public class OrganAccountService {
         return resultDo.setResult(accountBo);
     }
 
-    public EpOrganAccountPo getById(Long id) {
-        return organAccountRepository.getById(id);
+    public Optional<EpOrganAccountPo> findById(Long id) {
+        return organAccountRepository.findById(id);
 
     }
 
+    /**
+     * 商户获取教师分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
     public Page<OrganAccountBo> merchantFindbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return organAccountRepository.merchantFindbyPageAndCondition(pageable, condition);
     }
 
+    /**
+     * 平台获取教师分页
+     * @param pageable
+     * @param condition
+     * @return
+     */
     public Page<OrganAccountBo> platformFindbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
         return organAccountRepository.platformFindbyPageAndCondition(pageable, condition);
     }
@@ -90,6 +104,7 @@ public class OrganAccountService {
      * @param bo
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo createOgnAccount(OrganAccountBo bo) {
 
         log.info("[教师]新增教师开始。教师对象={}。", bo);
@@ -118,6 +133,7 @@ public class OrganAccountService {
      * @param bo
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo updateOgnAccount(OrganAccountBo bo) {
         log.info("[教师]修改教师开始，教师对象={}。", bo);
         if (null == bo.getId() || StringTools.isBlank(bo.getAccountName()) || StringTools.isBlank(bo.getNickName())
@@ -149,9 +165,11 @@ public class OrganAccountService {
      * @param id
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo deleteOgnAccount(Long id) {
         log.info("[教师]删除教师开始，教师id={}。", id);
         if (organAccountRepository.deleteLogical(id) == BizConstant.DB_NUM_ONE) {
+            fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_TEACHER_AVATAR,id);
             log.info("[教师]删除教师成功，教师id={}。", id);
             return ResultDo.build();
         } else {
@@ -160,6 +178,12 @@ public class OrganAccountService {
         }
     }
 
+    /**
+     * 根据机构id和状态获取教师
+     * @param ognId
+     * @param status
+     * @return
+     */
     public List<EpOrganAccountPo> findByOgnIdAndStatus(Long ognId, EpOrganAccountStatus[] status) {
         return organAccountRepository.findByOgnIdAndStatus(ognId, status);
     }
@@ -312,5 +336,4 @@ public class OrganAccountService {
         List<EpOrganPo> data = organAccountRepository.getOrgansByRefferMobile(mobile);
         return resultDo.setResult(data);
     }
-
 }

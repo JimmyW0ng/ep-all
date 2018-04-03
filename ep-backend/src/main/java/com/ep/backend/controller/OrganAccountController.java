@@ -1,18 +1,20 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganAccountBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
-import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.service.FileService;
 import com.ep.domain.service.OrganAccountService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +41,7 @@ import static com.ep.domain.repository.domain.Tables.EP_ORGAN_ACCOUNT;
  * @Date: 9:42 2018/2/6
  */
 @Controller
+@Slf4j
 @RequestMapping("auth/organAccount")
 public class OrganAccountController extends BackendController {
 
@@ -113,19 +116,16 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/view/{id}")
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String view(Model model, @PathVariable("id") Long id) {
-        Long ognId = super.getCurrentUser().get().getOgnId();
-        EpOrganAccountPo organAccountPo = organAccountService.getById(id);
-        if (organAccountPo.getOgnId().equals(ognId)) {
-            return "redirect:/logout";
+        EpOrganAccountPo organAccountPo = this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId());
+        if (null == organAccountPo) {
+            return "noresource";
         }
-
         model.addAttribute("organAccountPo", organAccountPo);
         //头像
         Optional<EpFilePo> avatarOptional = organAccountService.getTeacherAvatar(id);
         if (avatarOptional.isPresent()) {
             model.addAttribute("avatarImgUrl", avatarOptional.get().getFileUrl());
         }
-        model.addAttribute("organAccountPo", organAccountService.getById(id));
         return "organAccount/view";
     }
 
@@ -151,8 +151,11 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/updateInit/{id}")
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String updateInit(Model model, @PathVariable("id") Long id) {
-
-        model.addAttribute("organAccountPo", organAccountService.getById(id));
+        EpOrganAccountPo organAccountPo = this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId());
+        if (null == organAccountPo) {
+            return "noresource";
+        }
+        model.addAttribute("organAccountPo", organAccountPo);
         //头像
         Optional<EpFilePo> avatarOptional = organAccountService.getTeacherAvatar(id);
         if (avatarOptional.isPresent()) {
@@ -170,8 +173,7 @@ public class OrganAccountController extends BackendController {
     @ResponseBody
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public ResultDo create(OrganAccountBo bo) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        bo.setOgnId(currentUser.getOgnId());
+        bo.setOgnId(super.getCurrentUserOgnId());
         return organAccountService.createOgnAccount(bo);
     }
 
@@ -185,7 +187,10 @@ public class OrganAccountController extends BackendController {
     @ResponseBody
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public ResultDo update(OrganAccountBo bo) {
-
+        EpOrganAccountPo organAccountPo = this.innerOgnOrPlatformReq(bo.getId(), super.getCurrentUserOgnId());
+        if (null == organAccountPo) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organAccountService.updateOgnAccount(bo);
     }
 
@@ -198,6 +203,10 @@ public class OrganAccountController extends BackendController {
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo updateInit(@PathVariable("id") Long id) {
+        EpOrganAccountPo organAccountPo = this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId());
+        if (null == organAccountPo) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organAccountService.deleteOgnAccount(id);
     }
 
@@ -225,6 +234,9 @@ public class OrganAccountController extends BackendController {
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo cancel(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organAccountService.cancelOgnAccount(id);
     }
 
@@ -238,6 +250,9 @@ public class OrganAccountController extends BackendController {
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo freeze(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organAccountService.freezeOgnAccount(id);
     }
 
@@ -251,7 +266,33 @@ public class OrganAccountController extends BackendController {
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     @ResponseBody
     public ResultDo unfreeze(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organAccountService.unfreezeOgnAccount(id);
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpOrganAccountPo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpOrganAccountPo> optional = organAccountService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 
 }

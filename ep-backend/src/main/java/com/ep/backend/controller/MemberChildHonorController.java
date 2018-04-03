@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildHonorBo;
 import com.ep.domain.pojo.bo.OrganClassChildBo;
@@ -14,6 +16,7 @@ import com.ep.domain.service.OrganClassService;
 import com.ep.domain.service.OrganCourseService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +33,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
@@ -39,6 +43,7 @@ import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COUR
  * @Author: CC.F
  * @Date: 23:48 2018/3/5
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/childHonor")
 public class MemberChildHonorController extends BackendController {
@@ -192,9 +197,10 @@ public class MemberChildHonorController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:childHonor:index')")
     @ResponseBody
     public ResultDo update(EpMemberChildHonorPo po) {
-        ResultDo resultDo = ResultDo.build();
-        memberChildHonorService.updateHonor(po);
-        return resultDo;
+        if (null == this.innerOgnOrPlatformReq(po.getId(), super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        return memberChildHonorService.updateHonor(po);
     }
 
     /**
@@ -207,6 +213,9 @@ public class MemberChildHonorController extends BackendController {
     @GetMapping("view/{id}")
     @PreAuthorize("hasAnyAuthority('merchant:childHonor:index')")
     public String view(Model model, @PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return "noresource";
+        }
         EpMemberChildHonorPo bo = memberChildHonorService.findBoById(id);
         model.addAttribute("memberChildHonerPo", bo);
         return "childHonor/view";
@@ -221,6 +230,9 @@ public class MemberChildHonorController extends BackendController {
     @GetMapping("updateInit/{id}")
     @PreAuthorize("hasAnyAuthority('merchant:childHonor:index')")
     public String updateInit(Model model, @PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return "noresource";
+        }
         EpMemberChildHonorPo bo = memberChildHonorService.findBoById(id);
         model.addAttribute("memberChildHonerPo", bo);
         return "childHonor/form";
@@ -235,6 +247,32 @@ public class MemberChildHonorController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:childHonor:index')")
     @ResponseBody
     public ResultDo delete(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return memberChildHonorService.deleteById(id);
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpMemberChildHonorPo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpMemberChildHonorPo> optional = memberChildHonorService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
@@ -12,6 +14,7 @@ import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassScheduleService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +31,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 import static com.ep.domain.repository.domain.Tables.*;
@@ -38,6 +42,7 @@ import static com.ep.domain.repository.domain.Tables.*;
  * @Author: CC.F
  * @Date: 20:59 2018/2/25
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/order")
 public class OrderController extends BackendController {
@@ -257,6 +262,10 @@ public class OrderController extends BackendController {
     @ResponseBody
     public ResultDo orderSuccess(@RequestParam(value = "id") Long id
     ) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+
         return orderService.orderSuccessById(id);
     }
 
@@ -271,6 +280,10 @@ public class OrderController extends BackendController {
     public ResultDo orderRefuse(
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "remark", required = false) String remark) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+
         return orderService.orderRefuseById(id, remark);
     }
 
@@ -285,6 +298,10 @@ public class OrderController extends BackendController {
     public ResultDo orderCancel(
             @RequestParam(value = "id") Long id
     ) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+
         return orderService.orderCancelById(id);
     }
 
@@ -299,22 +316,14 @@ public class OrderController extends BackendController {
     public ResultDo orderBespeak(
             @PathVariable("id") Long id
     ) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+
         return orderService.orderBespeakById(id);
     }
 
-    /**
-     * 预约行程
-     *
-     * @param id
-     */
-    @GetMapping("orderBespeakSchedule/{id}")
-    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-    @ResponseBody
-    public ResultDo orderBespeakSchedule(
-            @PathVariable("id") Long id
-    ) {
-        return orderService.orderBespeakSchedule(id);
-    }
+
 
     /**
      * 预约提前结束
@@ -328,6 +337,10 @@ public class OrderController extends BackendController {
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "refundAmount") BigDecimal refundAmount
     ) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+
         return orderService.orderBespeakBreak(id, refundAmount);
     }
 
@@ -340,6 +353,10 @@ public class OrderController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo breakInit(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+
         List<OrganClassScheduleBo> bos = organClassScheduleService.findBoByOrderId(id);
         return ResultDo.build().setResult(bos);
     }
@@ -366,6 +383,29 @@ public class OrderController extends BackendController {
     @ResponseBody
     public ResultDo viewEnteredBespeakClass(@PathVariable("childId") Long childId) {
         return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId, EpOrganClassType.bespeak));
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpOrderPo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpOrderPo> optional = orderService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 }
 

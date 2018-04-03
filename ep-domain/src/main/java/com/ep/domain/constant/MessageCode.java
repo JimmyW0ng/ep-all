@@ -16,6 +16,8 @@ public class MessageCode {
     public static final String ERROR_SAVE_MISS = "ERROR_SAVE_MISS";
     public static final String ERROR_OPERATE_FAIL = "ERROR_OPERATE_FAIL";
     public static final String ERROR_MOBILE_FORMAT = "ERROR_MOBILE_FORMAT";
+    public static final String ERROR_ILLEGAL_RESOURCE = "ERROR_ILLEGAL_RESOURCE";
+
     /**
      * 鉴权
      */

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -28,6 +29,14 @@ public class MemberChildHonorRepository extends AbstractCRUDRepository<EpMemberC
     @Autowired
     public MemberChildHonorRepository(DSLContext dslContext) {
         super(dslContext, EP_MEMBER_CHILD_HONOR, EP_MEMBER_CHILD_HONOR.ID, EpMemberChildHonorPo.class);
+    }
+
+    public Optional<EpMemberChildHonorPo> findById(Long id) {
+        EpMemberChildHonorPo data = dslContext.selectFrom(EP_MEMBER_CHILD_HONOR)
+                .where(EP_MEMBER_CHILD_HONOR.ID.eq(id))
+                .and(EP_MEMBER_CHILD_HONOR.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildHonorPo.class);
+        return Optional.ofNullable(data);
     }
 
 

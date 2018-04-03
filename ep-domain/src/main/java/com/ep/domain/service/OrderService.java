@@ -382,7 +382,7 @@ public class OrderService {
      * @param id
      * @return
      */
-    public EpOrderPo getById(Long id) {
+    public Optional<EpOrderPo> findById(Long id) {
         return orderRepository.findById(id);
     }
 
@@ -407,7 +407,7 @@ public class OrderService {
             log.error("[订单]订单取消报名成功/拒绝操作失败，订单状态错误，订单id={}，status={}。", id, status);
             return ResultDo.build(MessageCode.ERROR_ORDER_CANCEL_STATUS_WRONG);
         }
-        EpOrderPo orderPo = orderRepository.findById(id);
+        EpOrderPo orderPo = orderRepository.findById(id).get();
         //行锁班次记录，防止班次下线并发
         EpOrganClassPo classPo = organClassRepository.getByIdAndStatusLock(orderPo.getClassId(), EpOrganClassStatus.online);
         if (classPo == null) {
@@ -483,17 +483,6 @@ public class OrderService {
         }
     }
 
-    /**
-     * 提交预约
-     *
-     * @param id
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public ResultDo orderBespeakSchedule(Long id) {
-        Optional<OrderTypeBo> orderOptional = orderRepository.getOrderTypeBoById(id);
-        return ResultDo.build();
-    }
 
     /**
      * 预约提前结束

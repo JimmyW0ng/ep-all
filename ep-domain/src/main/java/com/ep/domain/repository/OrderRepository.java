@@ -325,11 +325,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param id
      * @return
      */
-    public EpOrderPo findById(Long id) {
-        return dslContext.selectFrom(EP_ORDER)
+    public Optional<EpOrderPo> findById(Long id) {
+        EpOrderPo data = dslContext.selectFrom(EP_ORDER)
                 .where(EP_ORDER.ID.eq(id))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .fetchOneInto(EpOrderPo.class);
+        return Optional.ofNullable(data);
     }
 
     /**

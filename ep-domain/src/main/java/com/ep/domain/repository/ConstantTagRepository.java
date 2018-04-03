@@ -33,6 +33,14 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
         super(dslContext, EP_CONSTANT_TAG, EP_CONSTANT_TAG.ID, EpConstantTagPo.class);
     }
 
+    public Optional<EpConstantTagPo> findById(Long id) {
+        EpConstantTagPo data = dslContext.selectFrom(EP_CONSTANT_TAG)
+                .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .fetchOneInto(EpConstantTagPo.class);
+        return Optional.ofNullable(data);
+    }
+
     /**
      * 根据状态和机构id获取标签
      *
@@ -90,7 +98,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      * @param ognId
      * @return
      */
-    public Optional<EpConstantTagPo> findById(Long id, Long ognId) {
+    public Optional<EpConstantTagPo> findByIdAndOgnId(Long id, Long ognId) {
         EpConstantTagPo data = dslContext.selectFrom(EP_CONSTANT_TAG)
                 .where(EP_CONSTANT_TAG.ID.eq(id))
                 .and(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
@@ -118,7 +126,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      *
      * @param id
      */
-    public int deleteById(Long id, Long ognId) {
+    public int deleteByIdAndOgnId(Long id, Long ognId) {
         return dslContext.update(EP_CONSTANT_TAG)
                 .set(EP_CONSTANT_TAG.DEL_FLAG, true)
                 .where(EP_CONSTANT_TAG.ID.eq(id))

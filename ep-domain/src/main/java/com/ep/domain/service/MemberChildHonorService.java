@@ -34,6 +34,10 @@ public class MemberChildHonorService {
     @Autowired
     private FileRepository fileRepository;
 
+    public Optional<EpMemberChildHonorPo> findById(Long id) {
+        return memberChildHonorRepository.findById(id);
+    }
+
     /**
      * 查询孩子获得的最新荣誉-分页
      *

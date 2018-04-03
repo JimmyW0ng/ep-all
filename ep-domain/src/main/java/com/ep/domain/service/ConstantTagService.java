@@ -33,6 +33,10 @@ public class ConstantTagService {
     @Autowired
     private OrganCourseTagRepository organCourseTagRepository;
 
+    public Optional<EpConstantTagPo> findById(Long id) {
+        return constantTagRepository.findById(id);
+    }
+
     /**
      * 根据状态和机构id获取标签
      *
@@ -70,8 +74,8 @@ public class ConstantTagService {
      * @param ognId
      * @return
      */
-    public Optional<EpConstantTagPo> findById(Long id, Long ognId) {
-        return constantTagRepository.findById(id, ognId);
+    public Optional<EpConstantTagPo> findByIdAndOgnId(Long id, Long ognId) {
+        return constantTagRepository.findByIdAndOgnId(id, ognId);
     }
 
     /**
@@ -120,7 +124,7 @@ public class ConstantTagService {
     public ResultDo deleteById(Long id, Long ognId) {
         log.info("[标签]删除标签开始，id={}。", id);
 
-        if (constantTagRepository.deleteById(id, ognId) == BizConstant.DB_NUM_ONE) {
+        if (constantTagRepository.deleteByIdAndOgnId(id, ognId) == BizConstant.DB_NUM_ONE) {
             log.info("[标签]删除标签成功，id={}。", id);
             return ResultDo.build();
         } else {

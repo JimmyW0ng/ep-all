@@ -1,5 +1,6 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.*;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
@@ -211,31 +212,6 @@ public class OrganCourseController extends BackendController {
         return "organCourse/merchantForm";
     }
 
-//    /**
-//     * 根据课程类目获得标签
-//     *
-//     * @param catalogId
-//     * @return
-//     */
-//    @GetMapping("findTagsByCatalog/{catalogId}")
-//    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
-//    @ResponseBody
-//    public ResultDo<List<EpConstantTagPo>> findTagsByConstantCatalog(
-//            @PathVariable("catalogId") Long catalogId) {
-//        EpSystemUserPo currentUser = super.getCurrentUser().get();
-//        Long ognId = currentUser.getOgnId();
-//        ResultDo<List<EpConstantTagPo>> resultDo = ResultDo.build();
-//
-//        //公用标签
-//        List<EpConstantTagPo> constantTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, null);
-//        //私有标签
-//        List<EpConstantTagPo> ognTagList = constantTagService.findByCatalogIdAndOgnId(catalogId, ognId);
-//        ognTagList.addAll(constantTagList);
-//
-//        resultDo.setResult(ognTagList);
-//        return resultDo;
-//    }
-
 
     /**
      * 商家后台新增课程
@@ -259,6 +235,9 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantview/{courseId}")
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex','platform:organCourse:index')")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
+        if (null == this.innerOgnOrPlatformReq(courseId, super.getCurrentUserOgnId())) {
+            return "noresource";
+        }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         //机构课程
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
@@ -320,7 +299,9 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantUpdateInit/{courseId}")
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantUpdateInit(Model model, @PathVariable(value = "courseId") Long courseId) {
-
+        if (null == this.innerOgnOrPlatformReq(courseId, super.getCurrentUserOgnId())) {
+            return "noresource";
+        }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
@@ -430,7 +411,10 @@ public class OrganCourseController extends BackendController {
     public String merchantRectifyInit(Model model, @PathVariable(value = "courseId") Long courseId) {
 
         EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
+        Long ognId = super.getCurrentUserOgnId();
+        if (null == this.innerOgnOrPlatformReq(courseId, ognId)) {
+            return "noresource";
+        }
         List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
         Map<Long, String> constantCatalogMap = Maps.newHashMap();
         constantCatalogList.forEach(p -> {
@@ -542,8 +526,10 @@ public class OrganCourseController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo merchantUpdate(CreateOrganCourseDto dto) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
+        if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        Long ognId = super.getCurrentUserOgnId();
 
         return organCourseService.updateOrganCourseByMerchant(dto, ognId);
     }
@@ -563,6 +549,9 @@ public class OrganCourseController extends BackendController {
             log.error("[课程]紧急修改课程失败。该课程不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
+        if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         dto.getOrganCoursePo().setOgnId(ognId);
         return organCourseService.rectifyOrganCourseByMerchant(dto);
     }
@@ -577,6 +566,9 @@ public class OrganCourseController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo deleteByCourseId(@PathVariable(value = "id") Long courseId) {
+        if (null == this.innerOgnOrPlatformReq(courseId, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         return organCourseService.deleteCourseByCourseId(courseId, ognId);
@@ -591,6 +583,9 @@ public class OrganCourseController extends BackendController {
     @GetMapping("online/{id}")
     @ResponseBody
     public ResultDo onlineById(@PathVariable(value = "id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         EpSystemUserPo userPo = super.getCurrentUser().get();
         return organCourseService.onlineById(userPo, id);
     }
@@ -628,30 +623,7 @@ public class OrganCourseController extends BackendController {
 //        return result.replaceAll("\\\\", "\\\\");
 //    }
 
-//    /**
-//     * 上传课程内容图片uEditor
-//     *
-//     * @return
-//     */
-//    @GetMapping("uploadCourseDescPic")
-//    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
-//    @ResponseBody
-//    public String uEditorUploadCourseDescPic(
-////            @RequestParam("upfile") MultipartFile file,
-//            HttpServletRequest request,HttpServletResponse response
-//    ) throws Exception {
-////        ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
-////        FileDto fileDto = (FileDto) resultDo.getResult();
-////        String fileUrl = fileDto.getFileUrl();
-////        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
-////        String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
-////                "\", \"name\":\"" + name + "\"}";
-//        String result="";
-//        result = "{\"name\":\""+ "ccc" +"\", \"originalName\": \""+ "cccc" +"\", \"size\": "+ 1200
-//                +", \"state\": \"SUCCESS\", \"type\": \""+ "jpg"+"\", \"url\": \""+"http://ost0qtman.bkt.clouddn.com/41ad8f0781b545578e6551851c4d953c.jpg" + "\"}";
-//        result = result.replaceAll( "\\\\", "\\\\" );
-//        return result;
-//    }
+
 
     /**
      * 上传课程内容图片uEditor
@@ -668,13 +640,35 @@ public class OrganCourseController extends BackendController {
         FileDto fileDto = (FileDto) resultDo.getResult();
         String fileUrl = fileDto.getFileUrl();
         String filePreCode = fileDto.getPreCode();
-//        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
 
         String result = "";
         result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() + "\", \"size\": " + file.getSize()
                 + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getOriginalFilename()) + "\", \"url\": \"" + fileUrl + "\", \"preCode\":\"" + filePreCode + "\"}";
         result = result.replaceAll("\\\\", "\\\\");
         return result;
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpOrganCoursePo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpOrganCoursePo> optional = organCourseService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 }
 

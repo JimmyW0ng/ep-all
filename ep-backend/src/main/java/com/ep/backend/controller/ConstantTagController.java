@@ -212,7 +212,7 @@ public class ConstantTagController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         ResultDo resultDo = ResultDo.build();
-        Optional<EpConstantTagPo> constantTagOptional = constantTagService.findById(id, ognId);
+        Optional<EpConstantTagPo> constantTagOptional = constantTagService.findByIdAndOgnId(id, ognId);
         if (constantTagOptional.isPresent()) {
             resultDo.setResult(constantTagOptional.get());
         } else {
@@ -347,5 +347,4 @@ public class ConstantTagController extends BackendController {
         Long ognId = currentUser.getOgnId();
         return constantTagService.offlineById(id, ognId);
     }
-
 }

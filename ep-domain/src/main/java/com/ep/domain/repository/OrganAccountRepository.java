@@ -37,6 +37,13 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
         super(dslContext, EP_ORGAN_ACCOUNT, EP_ORGAN_ACCOUNT.ID, EpOrganAccountPo.class);
     }
 
+    public Optional<EpOrganAccountPo> findById(Long id) {
+        EpOrganAccountPo data = dslContext.selectFrom(EP_ORGAN_ACCOUNT)
+                .where(EP_ORGAN_ACCOUNT.ID.eq(id))
+                .fetchOneInto(EpOrganAccountPo.class);
+        return Optional.ofNullable(data);
+    }
+
     /**
      * 加锁
      *

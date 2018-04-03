@@ -3,10 +3,11 @@ package com.ep.backend.controller;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganCourseTagBo;
 import com.ep.domain.pojo.po.EpMemberChildTagPo;
-import com.ep.domain.service.*;
+import com.ep.domain.service.MemberChildCommentService;
+import com.ep.domain.service.MemberChildTagService;
+import com.ep.domain.service.OrganCourseTagService;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,23 +24,11 @@ import java.util.Map;
 @RequestMapping("auth/childComment")
 public class MemberChildCommentController extends BackendController {
     @Autowired
-    ApplicationEventPublisher publisher;
-    @Autowired
     private MemberChildCommentService memberChildCommentService;
     @Autowired
     private MemberChildTagService memberChildTagService;
     @Autowired
     private OrganCourseTagService organCourseTagService;
-    @Autowired
-    private OrganCourseService organCourseService;
-    @Autowired
-    private OrganClassService organClassService;
-    @Autowired
-    private OrganClassCatalogService organClassCatalogService;
-    @Autowired
-    private OrganAccountService organAccountService;
-
-
 
 
 
