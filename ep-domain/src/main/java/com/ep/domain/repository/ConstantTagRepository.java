@@ -155,7 +155,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .groupBy(EP_CONSTANT_TAG.ID);
 
 
-        List<ConstantTagBo> list = record.orderBy(getSortFields(pageable.getSort()))
+        List<ConstantTagBo> list = record.orderBy(EP_CONSTANT_TAG.SORT.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(ConstantTagBo.class);

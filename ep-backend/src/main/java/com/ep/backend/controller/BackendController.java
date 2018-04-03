@@ -39,4 +39,20 @@ public class BackendController {
         return Optional.ofNullable(currentUser);
     }
 
+    /**
+     * 从session获取当前登录用户的机构id,若非机构用户返回null,若session丢失返回null
+     *
+     * @return
+     */
+    protected Long getCurrentUserOgnId() {
+        Long ognId;
+        Optional<EpSystemUserPo> optional = this.getCurrentUser();
+        if (optional.isPresent()) {
+            ognId = optional.get().getOgnId();
+        } else {
+            ognId = null;
+        }
+        return ognId;
+    }
+
 }

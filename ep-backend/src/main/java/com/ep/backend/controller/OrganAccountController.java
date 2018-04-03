@@ -113,8 +113,13 @@ public class OrganAccountController extends BackendController {
     @GetMapping("/view/{id}")
     @PreAuthorize("hasAnyAuthority({'merchant:organAccount:merchantIndex','platform:organAccount:index'})")
     public String view(Model model, @PathVariable("id") Long id) {
+        Long ognId = super.getCurrentUser().get().getOgnId();
+        EpOrganAccountPo organAccountPo = organAccountService.getById(id);
+        if (organAccountPo.getOgnId().equals(ognId)) {
+            return "redirect:/logout";
+        }
 
-        model.addAttribute("organAccountPo", organAccountService.getById(id));
+        model.addAttribute("organAccountPo", organAccountPo);
         //头像
         Optional<EpFilePo> avatarOptional = organAccountService.getTeacherAvatar(id);
         if (avatarOptional.isPresent()) {
