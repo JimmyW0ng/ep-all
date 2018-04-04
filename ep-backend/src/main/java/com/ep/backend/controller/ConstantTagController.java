@@ -1,11 +1,11 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ConstantTagBo;
-import com.ep.domain.pojo.po.EpConstantCatalogPo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -47,23 +46,23 @@ public class ConstantTagController extends BackendController {
     @Autowired
     private ConstantCatalogService constantCatalogService;
 
-    @GetMapping("index")
-    public String index(Model model) {
-        List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
-        Map<Long, String> constantCatalogMap = Maps.newHashMap();
-        Map<Long, List<ConstantTagBo>> constantTagsMap = Maps.newHashMap();
-        constantCatalogPos.forEach(po -> {
-            constantCatalogMap.put(po.getId(), po.getLabel());
-            List<ConstantTagBo> constantTagBos = constantTagService.findBosByCatalogIdAndOgnId(po.getId(), null);
-            constantTagBos.forEach(bo -> {
-                bo.setUsedFlag(bo.getUsedOrganCourseTag().longValue() > BizConstant.DB_NUM_ZERO);
-            });
-            constantTagsMap.put(po.getId(), constantTagBos);
-        });
-        model.addAttribute("constantCatalogMap", constantCatalogMap);
-        model.addAttribute("constantTagsMap", constantTagsMap);
-        return "constantTag/index";
-    }
+//    @GetMapping("index")
+//    public String index(Model model) {
+//        List<EpConstantCatalogPo> constantCatalogPos = constantCatalogService.findSecondCatalog();
+//        Map<Long, String> constantCatalogMap = Maps.newHashMap();
+//        Map<Long, List<ConstantTagBo>> constantTagsMap = Maps.newHashMap();
+//        constantCatalogPos.forEach(po -> {
+//            constantCatalogMap.put(po.getId(), po.getLabel());
+//            List<ConstantTagBo> constantTagBos = constantTagService.findBosByCatalogIdAndOgnId(po.getId(), null);
+//            constantTagBos.forEach(bo -> {
+//                bo.setUsedFlag(bo.getUsedOrganCourseTag().longValue() > BizConstant.DB_NUM_ZERO);
+//            });
+//            constantTagsMap.put(po.getId(), constantTagBos);
+//        });
+//        model.addAttribute("constantCatalogMap", constantCatalogMap);
+//        model.addAttribute("constantTagsMap", constantTagsMap);
+//        return "constantTag/index";
+//    }
 
     /**
      * 平台后台/商户后台访问公用标签分页
@@ -346,5 +345,63 @@ public class ConstantTagController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         return constantTagService.offlineById(id, ognId);
+    }
+
+    /**
+     * 置顶标签
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("upTopTag/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:constantIndex','merchant:constantTag:merchantIndex')")
+    @ResponseBody
+    public ResultDo upTopTag(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        return constantTagService.upTopById(id);
+    }
+
+    /**
+     * 取消置顶标签
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("unTopTag/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:constantTag:constantIndex','merchant:constantTag:merchantIndex')")
+    @ResponseBody
+    public ResultDo unTopTag(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        return constantTagService.unTopById(id);
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpConstantTagPo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpConstantTagPo> optional = constantTagService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (ognId == null && optional.get().getOgnId() == null) {
+            return optional.get();
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 }

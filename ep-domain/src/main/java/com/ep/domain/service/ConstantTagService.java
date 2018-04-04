@@ -201,4 +201,38 @@ public class ConstantTagService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
+    /**
+     * 标签置顶
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo upTopById(Long id) {
+        log.info("[标签]标签置顶开始，标签id={}}。", id);
+        if (constantTagRepository.upTopById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[标签]标签置顶成功，标签id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[标签]标签置顶失败，标签id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
+
+    /**
+     * 标签取消置顶
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo unTopById(Long id) {
+        log.info("[标签]标签取消置顶开始，标签id={}}。", id);
+        if (constantTagRepository.unTopById(id) == BizConstant.DB_NUM_ONE) {
+            log.info("[标签]标签取消置顶成功，标签id={}。", id);
+            return ResultDo.build();
+        } else {
+            log.error("[标签]标签取消置顶失败，标签id={}。", id);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+    }
 }

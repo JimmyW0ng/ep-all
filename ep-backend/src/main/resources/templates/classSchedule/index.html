@@ -103,7 +103,17 @@
                             </form>
                             <td th:text="${bo.childNickName}"></td>
                             <td th:text="${bo.childTrueName}"></td>
-                            <td th:text="#{EpOrganClassScheduleStatus.+${bo.status}}"></td>
+                            <td style="width: 120px"><span th:text="#{EpOrganClassScheduleStatus.+${bo.status}}"></span>
+                                <select class="btn btn-xs btn-primary"
+                                        th:onchange="'changeClassScheduleStatus(this,'+${bo.id}+','+${bo.classId}+')'">
+                                    <option value="">更改</option>
+                                    <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus).values()}"
+                                            th:value="${state}"
+                                            th:if="!${#strings.equals(state,bo.status)}"
+                                            th:text="#{EpOrganClassScheduleStatus.+${state.literal}}">
+                                    </option>
+                                </select>
+                            </td>
                             <td th:text="${#dates.format(bo.startTime,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.catalogIndex}"></td>
                             <td name="content">
@@ -397,10 +407,38 @@
                 toastr_error_system(XMLHttpRequest.status);
             },
         })
-
     }
 
-
+    function changeClassScheduleStatus(ele, id, classId) {
+        debugger
+        var status = $(ele).val()
+        var statusZh = $(ele).find("option[value='" + status + "']").eq(0).text()
+        layer.confirm("确定将该行程的考勤状态更改为" + statusZh + "?", {icon: 3, btn: ['确定', '取消']},
+            function (index) {
+                changeClassScheduleStatusDo(status, id, classId);
+                layer.close(index);
+            },
+            function (index) {
+                layer.close(index);
+            });
+    }
+    function changeClassScheduleStatusDo(status, id, classId) {
+        $.ajax({
+            type: "POST",
+            url: "/auth/classSchedule/changeClassScheduleStatus",
+            data: {status: status, id: id, classId: classId},
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+        })
+    }
 </script>
 </body>
 </html>

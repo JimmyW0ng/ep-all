@@ -72,7 +72,7 @@
                             <td th:if="${ognId==null}" th:text="${po.id}"></td>
                             <td><span class="label constant-tag" th:text="${po.tagName}"></span></td>
                             <td th:if="${ognId==null}" th:text="${po.tagLevel}"></td>
-                            <td th:if="${ognId==null}" th:text="${po.sort}"></td>
+                            <td th:if="${ognId==null}" th:text="${po.sort>1000000000?'置顶':po.sort}"></td>
                             <td th:if="${ognId==null}" th:text="#{EpConstantTagStatus.+${po.status}}"></td>
 
                             <td th:if="${ognId==null}"
@@ -90,11 +90,11 @@
                                    th:if="${#strings.equals(po.status,'online')}"
                                    th:onclick="'offlineBox('+${po.id}+')'">下线</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
-                                   th:if="${#strings.equals(po.status,'online')}"
-                                   th:onclick="'upTopBox('+${po.id}+')'">置顶</a>
+                                   th:if="${po.sort<1000000000}"
+                                   th:onclick="'upTopTagBox('+${po.id}+')'">置顶</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
-                                   th:if="${#strings.equals(po.status,'save')}"
-                                   th:onclick="'deleteBox('+${po.id}+')'">取消置顶</a>
+                                   th:if="${po.sort>1000000000}"
+                                   th:onclick="'unTopTagBox('+${po.id}+')'">取消置顶</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    th:if="${#strings.equals(po.status,'save')}"
                                    th:onclick="'deleteBox('+${po.id}+')'">删除</a>
@@ -261,6 +261,46 @@
         $.ajax({
             type: "GET",
             url: "/auth/constantTag/offlineTag/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
+    function upTopTagBox(id) {
+        layer_confirm("确认置顶该称号？", 3, upTopTagDo, id)
+    }
+    function upTopTagDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/constantTag/upTopTag/" + id,
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href);
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
+    function unTopTagBox(id) {
+        layer_confirm("确认取消置顶该称号？", 3, unTopTagDo, id)
+    }
+    function unTopTagDo(id) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/constantTag/unTopTag/" + id,
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href);

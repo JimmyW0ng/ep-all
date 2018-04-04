@@ -287,6 +287,9 @@ public class OrganAccountController extends BackendController {
         if (!optional.isPresent()) {
             return null;
         }
+        if (ognId == null) {
+            return optional.get();
+        }
         if (optional.get().getOgnId().equals(ognId)) {
             return optional.get();
         } else {

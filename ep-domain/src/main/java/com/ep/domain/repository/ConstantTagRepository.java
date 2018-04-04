@@ -237,4 +237,34 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                     .execute();
         }
     }
+
+    /**
+     * 根据id置顶标签
+     *
+     * @param id
+     * @return
+     */
+    public int upTopById(Long id) {
+        Long sort = dslContext.fetch("select unix_timestamp()").getValues(0, Long.class).get(0);
+        return dslContext.update(EP_CONSTANT_TAG)
+                .set(EP_CONSTANT_TAG.SORT, sort)
+                .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id取消置顶标签
+     *
+     * @param id
+     * @return
+     */
+    public int unTopById(Long id) {
+        return dslContext.update(EP_CONSTANT_TAG)
+                .set(EP_CONSTANT_TAG.SORT, 1L)
+                .where(EP_CONSTANT_TAG.ID.eq(id))
+                .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .execute();
+
+    }
 }

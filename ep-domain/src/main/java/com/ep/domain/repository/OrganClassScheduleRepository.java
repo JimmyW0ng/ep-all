@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -36,6 +37,14 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     @Autowired
     public OrganClassScheduleRepository(DSLContext dslContext) {
         super(dslContext, EP_ORGAN_CLASS_SCHEDULE, EP_ORGAN_CLASS_SCHEDULE.ID, EpOrganClassSchedulePo.class);
+    }
+
+    public Optional<EpOrganClassSchedulePo> findById(Long id) {
+        EpOrganClassSchedulePo data = dslContext.selectFrom(EP_ORGAN_CLASS_SCHEDULE)
+                .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(id))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganClassSchedulePo.class);
+        return Optional.ofNullable(data);
     }
 
     /**
@@ -93,6 +102,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }
         List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
@@ -392,6 +402,21 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                 .set(EP_ORGAN_CLASS_SCHEDULE.STATUS, EpOrganClassScheduleStatus.close)
                 .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
                 .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait, EpOrganClassScheduleStatus.normal))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id变更考勤
+     *
+     * @param id
+     * @param status
+     * @return
+     */
+    public int updateClassScheduleStatusById(Long id, EpOrganClassScheduleStatus status) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                .set(EP_ORGAN_CLASS_SCHEDULE.STATUS, status)
+                .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(id))
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
     }

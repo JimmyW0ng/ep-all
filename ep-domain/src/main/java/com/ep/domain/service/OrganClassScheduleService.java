@@ -59,6 +59,10 @@ public class OrganClassScheduleService {
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
 
+    public Optional<EpOrganClassSchedulePo> findById(Long id) {
+        return organClassScheduleRepository.findById(id);
+    }
+
     /**
      * 商户后台获取分页
      *
@@ -350,6 +354,24 @@ public class OrganClassScheduleService {
      */
     public List<OrganClassBespeakScheduleBo> findBespeakScheduleBoByOrderId(Long orderId) {
         return organClassScheduleRepository.findBespeakScheduleBoByOrderId(orderId);
+    }
+
+    /**
+     * 变更考勤
+     *
+     * @param id
+     * @param status
+     * @return
+     */
+    public ResultDo changeClassScheduleStatus(Long id, EpOrganClassScheduleStatus status) {
+        log.info("[行程]行程考勤变更开始，id={},status={}。", id, status);
+        if (organClassScheduleRepository.updateClassScheduleStatusById(id, status) == BizConstant.DB_NUM_ONE) {
+            log.info("[行程]行程考勤变更成功，id={},status={}。", id, status);
+            return ResultDo.build();
+        } else {
+            log.error("[行程]行程考勤变更失败，id={},status={}。", id, status);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 
     /**
