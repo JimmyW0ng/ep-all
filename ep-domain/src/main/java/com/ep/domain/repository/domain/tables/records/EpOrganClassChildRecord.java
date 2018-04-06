@@ -31,10 +31,26 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     private static final long serialVersionUID = 1929915861;
 
     /**
+     * Setter for <code>ep.ep_organ_class_child.id</code>. 主键
+     */
+    public EpOrganClassChildRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrganClassChildRecord
      */
     public EpOrganClassChildRecord() {
         super(EpOrganClassChild.EP_ORGAN_CLASS_CHILD);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_child.class_id</code>. 班级id
+     */
+    public EpOrganClassChildRecord setClassId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -58,43 +74,6 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_child.id</code>. 主键
-     */
-    public EpOrganClassChildRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_child.class_id</code>. 班级id
-     */
-    public Long getClassId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_organ_class_child.class_id</code>. 班级id
-     */
-    public EpOrganClassChildRecord setClassId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_class_child.child_id</code>. 孩子id
-     */
-    public Long getChildId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_class_child.child_id</code>. 孩子id
      */
     public EpOrganClassChildRecord setChildId(Long value) {
@@ -103,10 +82,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.order_id</code>. 订单id
+     * Getter for <code>ep.ep_organ_class_child.id</code>. 主键
      */
-    public Long getOrderId() {
-        return (Long) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -118,10 +97,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.honor_num</code>. 获得的荣誉数
+     * Getter for <code>ep.ep_organ_class_child.class_id</code>. 班级id
      */
-    public Integer getHonorNum() {
-        return (Integer) get(4);
+    public Long getClassId() {
+        return (Long) get(1);
     }
 
     /**
@@ -133,10 +112,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.schedule_comment_num</code>. 获得的老师评价数
+     * Getter for <code>ep.ep_organ_class_child.child_id</code>. 孩子id
      */
-    public Integer getScheduleCommentNum() {
-        return (Integer) get(5);
+    public Long getChildId() {
+        return (Long) get(2);
     }
 
     /**
@@ -148,10 +127,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.course_comment_flag</code>. 是否评论课程
+     * Getter for <code>ep.ep_organ_class_child.order_id</code>. 订单id
      */
-    public Boolean getCourseCommentFlag() {
-        return (Boolean) get(6);
+    public Long getOrderId() {
+        return (Long) get(3);
     }
 
     /**
@@ -163,10 +142,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class_child.honor_num</code>. 获得的荣誉数
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(7);
+    public Integer getHonorNum() {
+        return (Integer) get(4);
     }
 
     /**
@@ -178,10 +157,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_class_child.schedule_comment_num</code>. 获得的老师评价数
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
+    public Integer getScheduleCommentNum() {
+        return (Integer) get(5);
     }
 
     /**
@@ -193,10 +172,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_class_child.course_comment_flag</code>. 是否评论课程
      */
-    public String getRemark() {
-        return (String) get(9);
+    public Boolean getCourseCommentFlag() {
+        return (Boolean) get(6);
     }
 
     /**
@@ -208,10 +187,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_child.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_organ_class_child.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(10);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -222,9 +201,19 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_organ_class_child.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
+    }
+
+    /**
+     * Getter for <code>ep.ep_organ_class_child.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(9);
+    }
 
     /**
      * Getter for <code>ep.ep_organ_class_child.version</code>.
@@ -234,16 +223,8 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     }
 
     // -------------------------------------------------------------------------
-    // Record12 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_organ_class_child.version</code>.
-     */
-    public EpOrganClassChildRecord setVersion(Long value) {
-        set(11, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -252,6 +233,10 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record12 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -560,10 +545,6 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -590,6 +571,25 @@ public class EpOrganClassChildRecord extends UpdatableRecordImpl<EpOrganClassChi
         value10(value10);
         value11(value11);
         value12(value12);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_organ_class_child.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>ep.ep_organ_class_child.version</code>.
+     */
+    public EpOrganClassChildRecord setVersion(Long value) {
+        set(11, value);
         return this;
     }
 }

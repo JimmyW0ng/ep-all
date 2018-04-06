@@ -22,6 +22,7 @@ public class EpOrganConfigPo extends AbstractBasePojo {
 
     private Long id;
     private Long ognId;
+    private Boolean privateFlag;
     private Boolean supportTag;
     private Timestamp createAt;
     private Timestamp updateAt;

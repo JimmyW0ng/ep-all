@@ -33,10 +33,26 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     private static final long serialVersionUID = -638924407;
 
     /**
+     * Setter for <code>ep.ep_order.id</code>. 主键
+     */
+    public EpOrderRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpOrderRecord
      */
     public EpOrderRecord() {
         super(EpOrder.EP_ORDER);
+    }
+
+    /**
+     * Setter for <code>ep.ep_order.member_id</code>. 会员id
+     */
+    public EpOrderRecord setMemberId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -64,43 +80,6 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_order.id</code>. 主键
-     */
-    public EpOrderRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_order.member_id</code>. 会员id
-     */
-    public Long getMemberId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_order.member_id</code>. 会员id
-     */
-    public EpOrderRecord setMemberId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_order.child_id</code>. 孩子id
-     */
-    public Long getChildId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_order.child_id</code>. 孩子id
      */
     public EpOrderRecord setChildId(Long value) {
@@ -109,10 +88,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_order.id</code>. 主键
      */
-    public Long getOgnId() {
-        return (Long) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -124,10 +103,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.course_id</code>. 课程id
+     * Getter for <code>ep.ep_order.member_id</code>. 会员id
      */
-    public Long getCourseId() {
-        return (Long) get(4);
+    public Long getMemberId() {
+        return (Long) get(1);
     }
 
     /**
@@ -139,10 +118,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.class_id</code>. 班次id
+     * Getter for <code>ep.ep_order.child_id</code>. 孩子id
      */
-    public Long getClassId() {
-        return (Long) get(5);
+    public Long getChildId() {
+        return (Long) get(2);
     }
 
     /**
@@ -154,10 +133,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.prize</code>. 价格
+     * Getter for <code>ep.ep_order.ogn_id</code>. 机构id
      */
-    public BigDecimal getPrize() {
-        return (BigDecimal) get(6);
+    public Long getOgnId() {
+        return (Long) get(3);
     }
 
     /**
@@ -169,10 +148,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
+     * Getter for <code>ep.ep_order.course_id</code>. 课程id
      */
-    public EpOrderStatus getStatus() {
-        return (EpOrderStatus) get(7);
+    public Long getCourseId() {
+        return (Long) get(4);
     }
 
     /**
@@ -184,10 +163,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
+     * Getter for <code>ep.ep_order.class_id</code>. 班次id
      */
-    public Timestamp getAuthTime() {
-        return (Timestamp) get(8);
+    public Long getClassId() {
+        return (Long) get(5);
     }
 
     /**
@@ -199,10 +178,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.cancel_time</code>. 订单取消时间
+     * Getter for <code>ep.ep_order.prize</code>. 价格
      */
-    public Timestamp getCancelTime() {
-        return (Timestamp) get(9);
+    public BigDecimal getPrize() {
+        return (BigDecimal) get(6);
     }
 
     /**
@@ -214,10 +193,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.refund_amount</code>. 退款金额
+     * Getter for <code>ep.ep_order.status</code>. 订单状态:保存；成功；已开班；结束；拒绝；取消；
      */
-    public BigDecimal getRefundAmount() {
-        return (BigDecimal) get(10);
+    public EpOrderStatus getStatus() {
+        return (EpOrderStatus) get(7);
     }
 
     /**
@@ -229,10 +208,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(11);
+    public Timestamp getAuthTime() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -244,10 +223,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_order.cancel_time</code>. 订单取消时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(12);
+    public Timestamp getCancelTime() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -259,10 +238,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.remark</code>. 备注
+     * Getter for <code>ep.ep_order.refund_amount</code>. 退款金额
      */
-    public String getRemark() {
-        return (String) get(13);
+    public BigDecimal getRefundAmount() {
+        return (BigDecimal) get(10);
     }
 
     /**
@@ -274,10 +253,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_order.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_order.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -288,9 +267,19 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_order.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(12);
+    }
+
+    /**
+     * Getter for <code>ep.ep_order.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(13);
+    }
 
     /**
      * Getter for <code>ep.ep_order.version</code>.
@@ -300,16 +289,8 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     }
 
     // -------------------------------------------------------------------------
-    // Record16 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_order.version</code>.
-     */
-    public EpOrderRecord setVersion(Long value) {
-        set(15, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -318,6 +299,10 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record16 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -726,10 +711,6 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -760,6 +741,25 @@ public class EpOrderRecord extends UpdatableRecordImpl<EpOrderRecord> implements
         value14(value14);
         value15(value15);
         value16(value16);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_order.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
+    }
+
+    /**
+     * Setter for <code>ep.ep_order.version</code>.
+     */
+    public EpOrderRecord setVersion(Long value) {
+        set(15, value);
         return this;
     }
 }

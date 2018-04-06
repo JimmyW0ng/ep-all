@@ -33,10 +33,26 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     private static final long serialVersionUID = 105438082;
 
     /**
+     * Setter for <code>ep.ep_system_user.id</code>. 主键
+     */
+    public EpSystemUserRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpSystemUserRecord
      */
     public EpSystemUserRecord() {
         super(EpSystemUser.EP_SYSTEM_USER);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.mobile</code>. 手机号
+     */
+    public EpSystemUserRecord setMobile(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -62,43 +78,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.id</code>. 主键
-     */
-    public EpSystemUserRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.mobile</code>. 手机号
-     */
-    public Long getMobile() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_system_user.mobile</code>. 手机号
-     */
-    public EpSystemUserRecord setMobile(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_system_user.user_name</code>. 用户名
-     */
-    public String getUserName() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_system_user.user_name</code>. 用户名
      */
     public EpSystemUserRecord setUserName(String value) {
@@ -107,10 +86,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.salt</code>. 盐
+     * Getter for <code>ep.ep_system_user.id</code>. 主键
      */
-    public String getSalt() {
-        return (String) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -122,10 +101,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.password</code>. 密码
+     * Getter for <code>ep.ep_system_user.mobile</code>. 手机号
      */
-    public String getPassword() {
-        return (String) get(4);
+    public Long getMobile() {
+        return (Long) get(1);
     }
 
     /**
@@ -137,10 +116,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
+     * Getter for <code>ep.ep_system_user.user_name</code>. 用户名
      */
-    public String getEmail() {
-        return (String) get(5);
+    public String getUserName() {
+        return (String) get(2);
     }
 
     /**
@@ -152,10 +131,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
+     * Getter for <code>ep.ep_system_user.salt</code>. 盐
      */
-    public EpSystemUserType getType() {
-        return (EpSystemUserType) get(6);
+    public String getSalt() {
+        return (String) get(3);
     }
 
     /**
@@ -167,10 +146,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
+     * Getter for <code>ep.ep_system_user.password</code>. 密码
      */
-    public Long getOgnId() {
-        return (Long) get(7);
+    public String getPassword() {
+        return (String) get(4);
     }
 
     /**
@@ -182,10 +161,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
+     * Getter for <code>ep.ep_system_user.email</code>. 邮箱
      */
-    public EpSystemUserStatus getStatus() {
-        return (EpSystemUserStatus) get(8);
+    public String getEmail() {
+        return (String) get(5);
     }
 
     /**
@@ -197,10 +176,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_user.type</code>. 商户；平台
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public EpSystemUserType getType() {
+        return (EpSystemUserType) get(6);
     }
 
     /**
@@ -212,10 +191,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_system_user.ogn_id</code>. 商户id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Long getOgnId() {
+        return (Long) get(7);
     }
 
     /**
@@ -227,10 +206,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     * Getter for <code>ep.ep_system_user.status</code>. 状态：正常；已冻结；已注销；
      */
-    public String getRemark() {
-        return (String) get(11);
+    public EpSystemUserStatus getStatus() {
+        return (EpSystemUserStatus) get(8);
     }
 
     /**
@@ -242,10 +221,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     /**
-     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_system_user.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -256,9 +235,19 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_system_user.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
+    }
+
+    /**
+     * Getter for <code>ep.ep_system_user.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(11);
+    }
 
     /**
      * Getter for <code>ep.ep_system_user.version</code>.
@@ -268,16 +257,8 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     }
 
     // -------------------------------------------------------------------------
-    // Record14 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_system_user.version</code>.
-     */
-    public EpSystemUserRecord setVersion(Long value) {
-        set(13, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -286,6 +267,10 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record14 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -644,10 +629,6 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -676,6 +657,25 @@ public class EpSystemUserRecord extends UpdatableRecordImpl<EpSystemUserRecord> 
         value12(value12);
         value13(value13);
         value14(value14);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_system_user.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
+    }
+
+    /**
+     * Setter for <code>ep.ep_system_user.version</code>.
+     */
+    public EpSystemUserRecord setVersion(Long value) {
+        set(13, value);
         return this;
     }
 }

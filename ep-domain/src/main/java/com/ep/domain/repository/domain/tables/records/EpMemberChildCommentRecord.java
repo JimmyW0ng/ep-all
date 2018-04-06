@@ -32,10 +32,26 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     private static final long serialVersionUID = -1161695736;
 
     /**
+     * Setter for <code>ep.ep_member_child_comment.id</code>. 主键
+     */
+    public EpMemberChildCommentRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
      * Create a detached EpMemberChildCommentRecord
      */
     public EpMemberChildCommentRecord() {
         super(EpMemberChildComment.EP_MEMBER_CHILD_COMMENT);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_child_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
+     */
+    public EpMemberChildCommentRecord setPId(Long value) {
+        set(1, value);
+        return this;
     }
 
     /**
@@ -63,43 +79,6 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_child_comment.id</code>. 主键
-     */
-    public EpMemberChildCommentRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
-     */
-    public Long getPId() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_member_child_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
-     */
-    public EpMemberChildCommentRecord setPId(Long value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_comment.child_id</code>. 孩子id
-     */
-    public Long getChildId() {
-        return (Long) get(2);
-    }
-
-    /**
      * Setter for <code>ep.ep_member_child_comment.child_id</code>. 孩子id
      */
     public EpMemberChildCommentRecord setChildId(Long value) {
@@ -108,10 +87,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_member_child_comment.id</code>. 主键
      */
-    public Long getOgnId() {
-        return (Long) get(3);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -123,10 +102,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.course_id</code>. 课程id
+     * Getter for <code>ep.ep_member_child_comment.p_id</code>. 父级id（发起评论没有父级id，回复评论存放被回复的评论记录id）
      */
-    public Long getCourseId() {
-        return (Long) get(4);
+    public Long getPId() {
+        return (Long) get(1);
     }
 
     /**
@@ -138,10 +117,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.class_id</code>. 班次id
+     * Getter for <code>ep.ep_member_child_comment.child_id</code>. 孩子id
      */
-    public Long getClassId() {
-        return (Long) get(5);
+    public Long getChildId() {
+        return (Long) get(2);
     }
 
     /**
@@ -153,10 +132,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.class_schedule_id</code>. 班次行程id
+     * Getter for <code>ep.ep_member_child_comment.ogn_id</code>. 机构id
      */
-    public Long getClassScheduleId() {
-        return (Long) get(6);
+    public Long getOgnId() {
+        return (Long) get(3);
     }
 
     /**
@@ -168,10 +147,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.type</code>. 评论类型: 评论；回复
+     * Getter for <code>ep.ep_member_child_comment.course_id</code>. 课程id
      */
-    public EpMemberChildCommentType getType() {
-        return (EpMemberChildCommentType) get(7);
+    public Long getCourseId() {
+        return (Long) get(4);
     }
 
     /**
@@ -183,10 +162,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.content</code>. 评论内容
+     * Getter for <code>ep.ep_member_child_comment.class_id</code>. 班次id
      */
-    public String getContent() {
-        return (String) get(8);
+    public Long getClassId() {
+        return (Long) get(5);
     }
 
     /**
@@ -198,10 +177,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.ogn_account_id</code>. 发起评论者id
+     * Getter for <code>ep.ep_member_child_comment.class_schedule_id</code>. 班次行程id
      */
-    public Long getOgnAccountId() {
-        return (Long) get(9);
+    public Long getClassScheduleId() {
+        return (Long) get(6);
     }
 
     /**
@@ -213,10 +192,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.reply_member_id</code>. 回复评论者id
+     * Getter for <code>ep.ep_member_child_comment.type</code>. 评论类型: 评论；回复
      */
-    public Long getReplyMemberId() {
-        return (Long) get(10);
+    public EpMemberChildCommentType getType() {
+        return (EpMemberChildCommentType) get(7);
     }
 
     /**
@@ -228,10 +207,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_child_comment.content</code>. 评论内容
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(11);
+    public String getContent() {
+        return (String) get(8);
     }
 
     /**
@@ -243,10 +222,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_child_comment.ogn_account_id</code>. 发起评论者id
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(12);
+    public Long getOgnAccountId() {
+        return (Long) get(9);
     }
 
     /**
@@ -258,10 +237,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.remark</code>. 备注
+     * Getter for <code>ep.ep_member_child_comment.reply_member_id</code>. 回复评论者id
      */
-    public String getRemark() {
-        return (String) get(13);
+    public Long getReplyMemberId() {
+        return (Long) get(10);
     }
 
     /**
@@ -273,10 +252,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_comment.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_member_child_comment.create_at</code>. 创建时间
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(14);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(11);
     }
 
     /**
@@ -287,9 +266,19 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>ep.ep_member_child_comment.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(12);
+    }
+
+    /**
+     * Getter for <code>ep.ep_member_child_comment.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(13);
+    }
 
     /**
      * Getter for <code>ep.ep_member_child_comment.version</code>.
@@ -299,16 +288,8 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     }
 
     // -------------------------------------------------------------------------
-    // Record16 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_member_child_comment.version</code>.
-     */
-    public EpMemberChildCommentRecord setVersion(Long value) {
-        set(15, value);
-        return this;
-    }
 
     /**
      * {@inheritDoc}
@@ -317,6 +298,10 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record16 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -725,10 +710,6 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -759,6 +740,25 @@ public class EpMemberChildCommentRecord extends UpdatableRecordImpl<EpMemberChil
         value14(value14);
         value15(value15);
         value16(value16);
+        return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>ep.ep_member_child_comment.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(14);
+    }
+
+    /**
+     * Setter for <code>ep.ep_member_child_comment.version</code>.
+     */
+    public EpMemberChildCommentRecord setVersion(Long value) {
+        set(15, value);
         return this;
     }
 }
