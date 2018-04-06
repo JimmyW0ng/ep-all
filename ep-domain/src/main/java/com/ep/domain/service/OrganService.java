@@ -167,6 +167,7 @@ public class OrganService {
         EpOrganConfigPo organConfigPo = new EpOrganConfigPo();
         organConfigPo.setOgnId(po.getId());
         organConfigPo.setSupportTag(bo.getSupportTag());
+        organConfigPo.setPrivateFlag(bo.getPrivateFlag());
         organConfigRepository.insert(organConfigPo);
         log.info("[机构]新增机构成功，id={}。", po.getId());
         return ResultDo.build();
@@ -230,7 +231,7 @@ public class OrganService {
             fileRepository.updateSourceIdByPreCode(bo.getLogoUrlPreCode(), po.getId());
         }
         if (organRepository.updateSystemOrgan(po) == BizConstant.DB_NUM_ONE &&
-                organConfigRepository.updateSupportTagByOgnId(bo.getSupportTag(), bo.getId()) == BizConstant.DB_NUM_ONE) {
+                organConfigRepository.updateConfigByOgnId(bo.getSupportTag(), bo.getPrivateFlag(), bo.getId()) == BizConstant.DB_NUM_ONE) {
             log.info("[机构]更新机构成功，id={}。", po.getId());
             return ResultDo.build();
         } else {

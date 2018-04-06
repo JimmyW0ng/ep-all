@@ -44,9 +44,10 @@ public class OrganConfigRepository extends AbstractCRUDRepository<EpOrganConfigR
      * @param ognId
      * @return
      */
-    public int updateSupportTagByOgnId(Boolean supportTag, Long ognId) {
+    public int updateConfigByOgnId(Boolean supportTag, Boolean privateFlag, Long ognId) {
         return dslContext.update(EP_ORGAN_CONFIG)
                 .set(EP_ORGAN_CONFIG.SUPPORT_TAG, supportTag)
+                .set(EP_ORGAN_CONFIG.PRIVATE_FLAG, privateFlag)
                 .where(EP_ORGAN_CONFIG.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_CONFIG.DEL_FLAG.eq(false))
                 .execute();

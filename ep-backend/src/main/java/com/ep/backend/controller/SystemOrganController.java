@@ -145,7 +145,6 @@ public class SystemOrganController extends BackendController {
     @PreAuthorize("hasAnyAuthority('platform:organ:index')")
     @ResponseBody
     public ResultDo create(SystemOrganBo bo) {
-        System.out.println(bo);
         return organService.createSystemOrgan(bo);
     }
 
@@ -191,6 +190,7 @@ public class SystemOrganController extends BackendController {
         BeanTools.copyPropertiesIgnoreNull(po, bo);
         if (organConfigOptional.isPresent()) {
             bo.setSupportTag(organConfigOptional.get().getSupportTag());
+            bo.setPrivateFlag(organConfigOptional.get().getPrivateFlag());
         }
         model.addAttribute("organBo", bo);
         //主图
@@ -235,6 +235,7 @@ public class SystemOrganController extends BackendController {
         BeanTools.copyPropertiesIgnoreNull(po, bo);
         if (organConfigOptional.isPresent()) {
             bo.setSupportTag(organConfigOptional.get().getSupportTag());
+            bo.setPrivateFlag(organConfigOptional.get().getPrivateFlag());
         }
         model.addAttribute("organBo", bo);
         //主图
