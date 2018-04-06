@@ -114,14 +114,6 @@ public class OrganAccountController extends ApiController {
         return organClassCatalogService.getNomalClassAllCatalog(classId, organAccountPo);
     }
 
-    @ApiOperation(value = "查看预约类班次全部行程")
-    @PostMapping("/bespeak/class/schedule/all")
-    @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<ClassBespeakAllScheduleBo>> getBespeakClassAllCatalog(@RequestParam("classId") Long classId) {
-        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        return organClassCatalogService.getBespeakClassAllCatalog(classId, organAccountPo);
-    }
-
     @ApiOperation(value = "查看班次学员")
     @PostMapping("/class/child/all")
     @PreAuthorize("hasAnyAuthority('api:base')")

@@ -2,7 +2,6 @@ package com.ep.domain.service;
 
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.bo.ClassBespeakAllScheduleBo;
 import com.ep.domain.pojo.bo.ClassNormalAllScheduleBo;
 import com.ep.domain.pojo.bo.RectifyOrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
@@ -53,35 +52,6 @@ public class OrganClassCatalogService {
      */
     public List<RectifyOrganClassCatalogBo> findRectifyBoByClassId(Long classId) {
         return organClassCatalogRepository.findRectifyBoByClassId(classId);
-    }
-
-    /**
-     * 查看班次全部课时
-     *
-     * @param classId
-     * @param organAccountPo
-     * @return
-     */
-
-    public ResultDo<List<ClassBespeakAllScheduleBo>> getBespeakClassAllCatalog(Long classId, EpOrganAccountPo organAccountPo) {
-        ResultDo<List<ClassBespeakAllScheduleBo>> resultDo = ResultDo.build();
-        // 校验课程
-        EpOrganClassPo classPo = organClassRepository.getById(classId);
-        if (classPo == null || classPo.getDelFlag() || !EpOrganClassType.normal.equals(classPo.getType())) {
-            log.error("班次不存在, classId={}", classId);
-            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXIST);
-        }
-        if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
-            log.error("课程未上线, classId={}, status={}", classId, classPo.getStatus().getName());
-            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
-        }
-        // 校验班次负责人
-        if (!organAccountPo.getId().equals(classPo.getOgnAccountId())) {
-            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
-            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
-        }
-        List<ClassBespeakAllScheduleBo> classCatalogs = organClassScheduleRepository.findBespeakClassScheduleByClassId(classId);
-        return resultDo.setResult(classCatalogs);
     }
 
     /**

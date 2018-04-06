@@ -249,32 +249,6 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     }
 
     /**
-     * 机构端-获取正常类型（固定课时）的班次全部课时
-     *
-     * @param classId
-     * @return
-     */
-    public List<ClassBespeakAllScheduleBo> findBespeakClassScheduleByClassId(Long classId) {
-        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.fields());
-        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
-        fieldList.add(EP_ORGAN_CLASS.TYPE);
-        fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
-        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        return dslContext.select(fieldList)
-                         .from(EP_ORGAN_CLASS_SCHEDULE)
-                         .innerJoin(EP_ORGAN_CLASS)
-                         .on(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
-                         .and(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak))
-                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                         .leftJoin(EP_ORGAN_COURSE)
-                         .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                         .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
-                         .orderBy(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID, EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX)
-                         .fetchInto(ClassBespeakAllScheduleBo.class);
-    }
-
-    /**
      * 根据id更新行程
      *
      * @param po
