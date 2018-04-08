@@ -56,18 +56,28 @@
                                     </select>
 
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="overflow:hidden">
                                     <label for="courseCatalogId">产品科目 <span class="required-sign">*</span></label>
-                                    <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
-                                            required="true"
-                                            class="form-control">
-                                        <option value="">请选择</option>
-                                        <option th:each="state : ${constantCatalogMap.keySet()}"
-                                                th:selected="${#strings.equals(organCoursePo.courseCatalogId,state)}"
-                                                th:value="${state}"
-                                                th:text="${constantCatalogMap.get(state)}">
-                                        </option>
-                                    </select>
+                                    <div>
+                                        <div class="col-sm-6">
+                                            <select id="firstConstantCatalogId"
+                                                    required="true" style="margin-left: -15px"
+                                                    onchange="changeFirstCatalog()"
+                                                    class="form-control">
+                                                <option value="">一级目录</option>
+                                                <option th:each="po : ${firstConstantCatalogSelectModel}"
+                                                        th:value="${po.id}"
+                                                        th:text="${po.label}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select id="courseCatalogId" name="organCoursePo.courseCatalogId"
+                                                    class="form-control" style="margin-left: 15px">
+                                                <option value="">二级目录</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                 </div>
                                 <div class="form-group">
@@ -357,7 +367,9 @@
         </div>
     </div>
 </script>
-
+<script type="text/template" id='selectModelTmpl'>
+    <option value=${id}>${text}</option>
+</script>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/umeditor/umeditor.config.js}"></script>
 <script th:src="@{/umeditor/umeditor.js}"></script>
@@ -371,9 +383,53 @@
 <script th:inline="javascript">
     var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic",});
 
-    //wangEditor富文本
-    //    var E = window.wangEditor
-    //    var editor = new E('#editor')
+    //科目一级目录
+    function changeFirstCatalog() {
+        var firstConstantCatalogId = $("#firstConstantCatalogId").val()
+        if (!firstConstantCatalogId) {
+            $("#courseCatalogId").html($("#selectModelTmpl").tmpl([{id: "", text: "二级目录"}]))
+            return
+        }
+        var text = $("#firstConstantCatalogId").find("option[value=" + firstConstantCatalogId + "]").text()
+        $("#courseCatalogId").html($("#selectModelTmpl").tmpl([{id: firstConstantCatalogId, text: text}]))
+        $.ajax({
+            type: "GET",
+            url: "/auth/organCourse/changeFirstCatalog/" + firstConstantCatalogId,
+            success: function (data) {
+                if (data.success) {
+                    if (data.result) {
+                        var selectModel = []
+                        var res = data.result
+                        for (var item in res) {
+                            selectModel.push({id: res[item].id, text: res[item].label})
+                        }
+                        if (selectModel.length > 0) {
+                            $("#courseCatalogId").append($("#selectModelTmpl").tmpl(selectModel))
+                        }
+                    }
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            }
+        })
+    }
+
+    //初始化一级目录，二级目录
+    function catalogInit(firtCatalog, secondCatalog, secondCatalogs) {
+        $("#firstConstantCatalogId").val(firtCatalog)
+//        $("#courseCatalogId").html($("#selectModelTmpl").tmpl([{id:"",text:"二级目录"}]))
+        if (secondCatalogs) {
+            var selectModel = []
+            for (var item in secondCatalogs) {
+                selectModel.push({id: secondCatalogs[item].id, text: secondCatalogs[item].label})
+            }
+            if (selectModel.length > 0) {
+                $("#courseCatalogId").html($("#selectModelTmpl").tmpl(selectModel))
+            }
+        }
+        $("#courseCatalogId").val(secondCatalog)
+    }
 
     //教师map
     var organAccountMap = [[${organAccountMap}]]
@@ -609,11 +665,6 @@
         if (!$("#enterTimeEnd").val()) {
             $("#enterTimeEnd").attr("name", "")
         }
-//        $("#accordion").find("input.endTime").each(function () {
-//            if (!$(this).val()) {
-//                $(this).attr("name", "")
-//            }
-//        })
     }
 
     function beforeSubmitFormatInputInnerName() {
@@ -676,7 +727,7 @@
         var flag = true
         var $box = $("div[name='organClassCatalogPosBox']")
         for (var i = 0; i < $box.length; i++) {
-            debugger
+//            debugger
             var $div = $box.eq(i).parents("div.organClassBos").eq(0)
             var classType = $div.find(".classType").eq(0).val()
             if ($box.eq(i).find("div.organClassCatalogPos").length == 0 && classType == "normal") {
@@ -719,10 +770,7 @@
 
         beforeSubmitFormatInputInnerName()
         beforeSubmitFormatDateInputName()
-//        if (editor.txt.text() == "") {
-//            toastr.error("请填写产品内容！")
-//            return
-//        }
+
         if (UM.getEditor('umeditor').getContentTxt() == "") {
             toastr.error("请填写产品内容！")
             return
@@ -736,16 +784,13 @@
             toastr.error("请添加班次目录!")
             return
         }
-//        if ($("#tagBox").find("input[type='checkbox']:checked").length == 0) {
-//            toastr.error("请勾选称号!")
-//            return
-//        }
+
 
         if (!beforeSubmitCheckCourseMainPic()) {
             return
         }
         beforeSubmitCourseContent($("#umeditor").html());
-//        beforeSubmitCourseContent(editor.txt.html());
+
         var url = "/auth/organCourse/merchantCreate"
         if ($("#courseId").val()) {
             url = "/auth/organCourse/merchantUpdate"
@@ -777,6 +822,8 @@
         if ([[${organCoursePo.id}]]) {
 
             $("#umeditor").html($("#courseContent").val())
+            //一级目录，二级目录
+            catalogInit([[${firstConstantCatalog}]], [[${organCoursePo.courseCatalogId}]], [[${secondCatalogs}]])
             //班次start
             var organClassBos = [[${organClassBos}]]
             for (var i = 0; i < organClassBos.length; i++) {
@@ -870,7 +917,7 @@
                     })
                 }
             }
-            debugger
+//            debugger
             $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
             $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
 
@@ -910,26 +957,6 @@
                 trigger: 'click'
             });
         });
-
-
-        // 或者 var editor = new E( document.getElementById('#editor') )
-        // 配置服务器端地址
-//        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-//        editor.customConfig.uploadFileName = 'file'
-//        editor.customConfig.uploadImgMaxLength = 1
-//        editor.customConfig.uploadImgHooks = {
-//            success: function (xhr, editor, result) {
-//                // 图片上传并返回结果，图片插入成功之后触发
-//                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-//                var $img = $("#editor").find("img[name=" + result.name + "]")
-//                if ($img.length == 1) {
-//                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
-//                }
-//
-//            },
-//        }
-//        editor.create()
-//
 
 
 //        $.validator.addMethod("isMobile", function (value, element) {

@@ -26,6 +26,12 @@ public class ConstantCatalogController extends BackendController {
     @Autowired
     private ConstantCatalogService constantCatalogService;
 
+    /**
+     * 列表
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("index")
     @PreAuthorize("hasAnyAuthority('platform:catalog:index')")
     public String index(Model model){

@@ -47,18 +47,33 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="overflow:hidden">
                                     <label for="courseCatalogId">产品科目 <span class="required-sign">*</span></label>
-                                    <select id="courseCatalogId" name="organCoursePo.courseCatalogId" type="text"
-                                            th:field="*{courseCatalogId}"
-                                            class="form-control">
-                                        <option value="">请选择</option>
-                                        <option th:each="state : ${constantCatalogMap.keySet()}"
-                                                th:value="${state}"
-                                                th:text="${constantCatalogMap.get(state)}">
-                                        </option>
-                                    </select>
+                                    <div>
+                                        <div class="col-sm-6">
+                                            <select id="firstConstantCatalogId"
+                                                    required="true" style="margin-left: -15px"
+                                                    class="form-control">
+                                                <option th:each="po : ${firstConstantCatalogSelectModel}"
+                                                        th:value="${po.id}" th:selected="${firstConstantCatalog}"
+                                                        th:text="${po.label}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select id="courseCatalogId" name="organCoursePo.courseCatalogId"
+                                                    class="form-control" style="margin-left: 15px"
+                                                    th:field="*{courseCatalogId}">
+                                                <option th:each="po : ${secondCatalogs}"
+                                                        th:value="${po.id}"
+                                                        th:text="${po.label}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
+
                                 <div class="form-group">
                                     <label for="courseIntroduce">产品简介 <span class="required-sign">*</span></label>
                                     <textarea id="courseIntroduce" name="organCoursePo.courseIntroduce" type="text"

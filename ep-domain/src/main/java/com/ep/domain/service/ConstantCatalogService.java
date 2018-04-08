@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description:课程类目服务
@@ -97,8 +98,42 @@ public class ConstantCatalogService {
         }
     }
 
+    /**
+     * 获得二级目录
+     *
+     * @return
+     */
     public List<EpConstantCatalogPo> findSecondCatalog(){
         return constantCatalogRepository.findSecondCatalog();
+    }
+
+    /**
+     * 获得一级目录下拉框
+     *
+     * @return
+     */
+    public List<EpConstantCatalogPo> findFirstCatalogSelectModel() {
+        return constantCatalogRepository.findFirstCatalogSelectModel();
+    }
+
+    /**
+     * 根据父级id获取二级目录下拉框
+     *
+     * @param pid
+     * @return
+     */
+    public List<EpConstantCatalogPo> findSecondCatalogSelectModelByPid(Long pid) {
+        return constantCatalogRepository.findSecondCatalogSelectModelByPid(pid);
+    }
+
+    /**
+     * 根据id获取po
+     *
+     * @param id
+     * @return
+     */
+    public Optional<EpConstantCatalogPo> findById(Long id) {
+        return constantCatalogRepository.findById(id);
     }
 
 }

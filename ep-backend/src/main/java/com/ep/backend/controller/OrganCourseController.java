@@ -159,19 +159,15 @@ public class OrganCourseController extends BackendController {
     public String merchantCreateInit(Model model) {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
-        Map<Long, String> constantCatalogMap = Maps.newHashMap();
-        constantCatalogList.forEach(p -> {
-            constantCatalogMap.put(p.getId(), p.getLabel());
-        });
+        List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
+        //产品科目下拉框
+        model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
         List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(ognId,
                 new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
         });
-        //课程目录下拉框
-        model.addAttribute("constantCatalogMap", constantCatalogMap);
         //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
         //课程对象
@@ -250,13 +246,16 @@ public class OrganCourseController extends BackendController {
             model.addAttribute("organVipName", organOptional.get().getVipName());
         }
 
-        //课程类目
-        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
-        Map<Long, String> constantCatalogMap = Maps.newHashMap();
-        constantCatalogList.forEach(p -> {
-            constantCatalogMap.put(p.getId(), p.getLabel());
-        });
-        model.addAttribute("constantCatalogMap", constantCatalogMap);
+        List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
+        //产品科目一级下拉框
+        model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
+        Optional<EpConstantCatalogPo> constantCatalogOptional = constantCatalogService.findById(courseOptional.get().getCourseCatalogId());
+        if (constantCatalogOptional.isPresent()) {
+            model.addAttribute("firstConstantCatalog", constantCatalogOptional.get().getParentId());
+            //产品科目二级下拉框
+            List<EpConstantCatalogPo> secondCatalogs = constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId());
+            model.addAttribute("secondCatalogs", secondCatalogs);
+        }
         List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
                 new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
@@ -304,19 +303,14 @@ public class OrganCourseController extends BackendController {
         }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
-        Map<Long, String> constantCatalogMap = Maps.newHashMap();
-        constantCatalogList.forEach(p -> {
-            constantCatalogMap.put(p.getId(), p.getLabel());
-        });
+
         List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
                 new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
         });
-        //课程目录下拉框
-        model.addAttribute("constantCatalogMap", constantCatalogMap);
+
         //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
 
@@ -337,9 +331,18 @@ public class OrganCourseController extends BackendController {
             //上课地址
             model.addAttribute("ognAddress", organOptional.get().getOgnAddress());
         }
-
         //课程对象
         model.addAttribute("organCoursePo", organCoursePo);
+        List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
+        //产品科目一级下拉框
+        model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
+        Optional<EpConstantCatalogPo> constantCatalogOptional = constantCatalogService.findById(organCoursePo.getCourseCatalogId());
+        if (constantCatalogOptional.isPresent()) {
+            model.addAttribute("firstConstantCatalog", constantCatalogOptional.get().getParentId());
+            //产品科目二级下拉框
+            List<EpConstantCatalogPo> secondCatalogs = constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId());
+            model.addAttribute("secondCatalogs", secondCatalogs);
+        }
 
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<OrganClassBo> organClassBos = Lists.newArrayList();
@@ -415,24 +418,28 @@ public class OrganCourseController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(courseId, ognId)) {
             return "noresource";
         }
-        List<EpConstantCatalogPo> constantCatalogList = constantCatalogService.findSecondCatalog();
-        Map<Long, String> constantCatalogMap = Maps.newHashMap();
-        constantCatalogList.forEach(p -> {
-            constantCatalogMap.put(p.getId(), p.getLabel());
-        });
+
         List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
                 new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
         });
-        //课程目录下拉框
-        model.addAttribute("constantCatalogMap", constantCatalogMap);
+
         //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
 
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
-
+        List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
+        //产品科目一级下拉框
+        model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
+        Optional<EpConstantCatalogPo> constantCatalogOptional = constantCatalogService.findById(courseOptional.get().getCourseCatalogId());
+        if (constantCatalogOptional.isPresent()) {
+            model.addAttribute("firstConstantCatalog", constantCatalogOptional.get().getParentId());
+            //产品科目二级下拉框
+            List<EpConstantCatalogPo> secondCatalogs = constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId());
+            model.addAttribute("secondCatalogs", secondCatalogs);
+        }
         Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
         if (organOptional.isPresent()) {
             //该机构是否有会员制度
@@ -603,26 +610,17 @@ public class OrganCourseController extends BackendController {
         return fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, null);
     }
 
-//    /**
-//     * 上传课程内容图片wangEditor
-//     *
-//     * @return
-//     */
-//    @PostMapping("uploadCourseDescPic")
-//    @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
-//    @ResponseBody
-//    public String uploadCourseDescPic(@RequestParam("file") MultipartFile file
-//    ) throws Exception {
-//        ResultDo resultDo = fileService.addFileByBizType(file.getName(), file.getBytes(), BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, null);
-//        FileDto fileDto = (FileDto) resultDo.getResult();
-//        String fileUrl = fileDto.getFileUrl();
-//        String name = fileUrl.substring(fileUrl.lastIndexOf("/") + 1, fileUrl.lastIndexOf("."));
-//        String result = "{\"errno\":\"" + 0 + "\", \"data\":[ \"" + fileDto.getFileUrl() + "\"],\"precode\":\"" + fileDto.getPreCode() +
-//                "\", \"name\":\"" + name + "\"}";
-//
-//        return result.replaceAll("\\\\", "\\\\");
-//    }
-
+    /**
+     * 改变科目一级目录
+     *
+     * @param firstConstantCatalogId
+     * @return
+     */
+    @GetMapping("changeFirstCatalog/{firstConstantCatalogId}")
+    @ResponseBody
+    public ResultDo changeFirstCatalog(@PathVariable(value = "firstConstantCatalogId") Long firstConstantCatalogId) {
+        return ResultDo.build().setResult(constantCatalogService.findSecondCatalogSelectModelByPid(firstConstantCatalogId));
+    }
 
 
     /**

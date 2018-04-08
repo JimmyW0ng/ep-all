@@ -81,7 +81,7 @@ public class BizConstant {
     /**
      * 课程
      */
-
+    public static long FIRST_CONSTANT_CATALOG_PID = 0L;
     /**
      * 班次
      */
