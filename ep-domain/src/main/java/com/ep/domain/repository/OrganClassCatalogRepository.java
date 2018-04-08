@@ -150,4 +150,17 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据班次id获取班次目录
+     *
+     * @param classId
+     * @return
+     */
+    public List<EpOrganClassCatalogPo> findClassCatalogByClassId(Long classId) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS_CATALOG)
+                .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganClassCatalogPo.class);
+    }
 }

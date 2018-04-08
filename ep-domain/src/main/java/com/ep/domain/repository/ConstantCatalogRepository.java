@@ -95,6 +95,7 @@ public class ConstantCatalogRepository extends AbstractCRUDRepository<EpConstant
         return dslContext.select(EP_CONSTANT_CATALOG.ID, EP_CONSTANT_CATALOG.LABEL).from(EP_CONSTANT_CATALOG)
                 .where(EP_CONSTANT_CATALOG.PARENT_ID.equal(BizConstant.FIRST_CONSTANT_CATALOG_PID))
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .orderBy(EP_CONSTANT_CATALOG.ID.asc())
                 .fetchInto(EpConstantCatalogPo.class);
     }
 
@@ -108,6 +109,7 @@ public class ConstantCatalogRepository extends AbstractCRUDRepository<EpConstant
         return dslContext.select(EP_CONSTANT_CATALOG.ID, EP_CONSTANT_CATALOG.LABEL).from(EP_CONSTANT_CATALOG)
                 .where(EP_CONSTANT_CATALOG.PARENT_ID.equal(pid))
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .orderBy(EP_CONSTANT_CATALOG.ID.asc())
                 .fetchInto(EpConstantCatalogPo.class);
     }
 

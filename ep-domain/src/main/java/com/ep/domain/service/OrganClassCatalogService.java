@@ -81,4 +81,14 @@ public class OrganClassCatalogService {
         List<ClassNormalAllScheduleBo> classCatalogs = organClassScheduleRepository.findNomalClassScheduleByClassId(classId);
         return resultDo.setResult(classCatalogs);
     }
+
+    /**
+     * 根据班次id获取班次目录
+     *
+     * @param classId
+     * @return
+     */
+    public List<EpOrganClassCatalogPo> findClassCatalogByClassId(Long classId) {
+        return organClassCatalogRepository.findClassCatalogByClassId(classId);
+    }
 }

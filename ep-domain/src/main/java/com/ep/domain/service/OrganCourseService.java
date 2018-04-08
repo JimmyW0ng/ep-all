@@ -593,6 +593,7 @@ public class OrganCourseService {
         BigDecimal priceMin;
         if (CollectionsTools.isEmpty(organClassBos)) {
             priceMin = BigDecimal.ZERO;
+            return priceMin;
         }
         List<BigDecimal> priceList = Lists.newArrayList();
         organClassBos.forEach(bo -> {
@@ -602,6 +603,7 @@ public class OrganCourseService {
             priceList.add(bo.getClassPrize());
         });
         int index = BizConstant.DB_NUM_ZERO;
+        //将最小值排至索引为0处
         for (int j = index + 1; j < priceList.size(); j++) {
             if (priceList.get(j).compareTo(priceList.get(index)) == -1) {
                 BigDecimal min = priceList.get(j);

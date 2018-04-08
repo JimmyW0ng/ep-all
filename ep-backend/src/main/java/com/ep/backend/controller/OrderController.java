@@ -231,6 +231,8 @@ public class OrderController extends BackendController {
         searchMap.put("childNickName", childNickName);
 
         conditions.add(EP_ORDER.DEL_FLAG.eq(false));
+        Long ognId = super.getCurrentUserOgnId();
+        conditions.add(EP_ORDER.OGN_ID.eq(ognId));
         Page<OrderChildStatisticsDto> page = orderService.statisticsChild(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
