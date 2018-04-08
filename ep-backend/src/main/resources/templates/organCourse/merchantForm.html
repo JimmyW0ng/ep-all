@@ -133,8 +133,9 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <label class="course-label">选择称号（<span class="required-sign">不超过6个</span>）
-                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用称号</span>
+
                             <span style="float:right;margin-top: 5px" class="label ogn-tag">私有称号</span>
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用称号</span>
                         </label>
                     </div>
                     <div class="ibox-content">
@@ -456,7 +457,7 @@
     }
 
 
-    /*勾选标签不超过6个*/
+    /*勾选称号不超过6个*/
     function taglt6(ele) {
         var len = $("#tagBox").find("input[type='checkbox']:checked").length
         if (len > 6) {
@@ -736,7 +737,7 @@
             return
         }
 //        if ($("#tagBox").find("input[type='checkbox']:checked").length == 0) {
-//            toastr.error("请勾选标签!")
+//            toastr.error("请勾选称号!")
 //            return
 //        }
 
@@ -849,7 +850,7 @@
         }
         //修改页面初始化end
         if ([[${supportTag}]]) {
-            //公用标签start
+            //公用称号start
             var tagList = [[${ognTagList}]]
             var constantTag = []
             var ognTag = []
@@ -869,10 +870,12 @@
                     })
                 }
             }
-            $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+            debugger
             $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
-            //公用标签end
-            //产品标签start
+            $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+
+            //公用称号end
+            //产品称号start
             if ([[${organCourseTagBos}]]) {
                 var organCourseTagBos = [[${organCourseTagBos}]]
                 for (item in organCourseTagBos) {
@@ -884,7 +887,7 @@
                 }
             }
 
-            //产品标签end
+            //产品称号end
         }
 
 
