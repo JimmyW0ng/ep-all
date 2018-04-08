@@ -4,6 +4,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpOrganCatalogPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganCatalogRecord;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -66,10 +67,10 @@ public class OrganCatalogRepository extends AbstractCRUDRepository<EpOrganCatalo
      * @return
      */
     public boolean existOgnAndCatalog(Long ognId, Long catalogId) {
-        return dslContext.selectCount().from(EP_ORGAN_CATALOG)
-                .where(EP_ORGAN_CATALOG.OGN_ID.eq(ognId))
-                .and(EP_ORGAN_CATALOG.COURSE_CATALOG_ID.eq(catalogId))
-                .and(EP_ORGAN_CATALOG.DEL_FLAG.eq(false))
-                .fetchOneInto(Long.class) > BizConstant.DB_NUM_ZERO;
+        return dslContext.select(DSL.count(EP_ORGAN_CATALOG.ID)).from(EP_ORGAN_CATALOG)
+                         .where(EP_ORGAN_CATALOG.OGN_ID.eq(ognId))
+                         .and(EP_ORGAN_CATALOG.COURSE_CATALOG_ID.eq(catalogId))
+                         .and(EP_ORGAN_CATALOG.DEL_FLAG.eq(false))
+                         .fetchOneInto(Long.class) > BizConstant.DB_NUM_ZERO;
     }
 }

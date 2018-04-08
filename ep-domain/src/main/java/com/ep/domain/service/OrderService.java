@@ -442,11 +442,12 @@ public class OrderService {
     /**
      * 根据班次id获取该班次下订单详情
      *
+     * @param ognId
      * @param classId
      * @return
      */
-    public List<OrderBo> findOrdersByClassId(Long classId) {
-        return orderRepository.findOrdersByClassId(classId);
+    public List<OrderBo> findOrdersByClassId(Long ognId, Long classId) {
+        return orderRepository.findOrdersByClassId(ognId, classId);
     }
 
     /**

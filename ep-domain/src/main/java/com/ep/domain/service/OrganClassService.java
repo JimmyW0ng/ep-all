@@ -12,7 +12,6 @@ import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @Description: 机构课程班次Service
@@ -116,15 +114,6 @@ public class OrganClassService {
         if (num == BizConstant.DB_NUM_ZERO) {
             return ResultDo.build();
         }
-        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(currentUser.getOgnId());
-        //课程类目去重
-        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
-        Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(classPo.getCourseId());
-        if (courseOptional.isPresent() && !courseCatalogIdsSet.contains(courseOptional.get().getCourseCatalogId())) {
-            Long courseCatalogId = courseOptional.get().getCourseCatalogId();
-            organCatalogRepository.insert(new EpOrganCatalogPo(null, currentUser.getOgnId(), courseCatalogId, null, null, null, null, null, null));
-        }
-
         // 更新订单状态为已开班
         orderRepository.openByClassId(id);
         // 生成班级孩子记录
@@ -181,29 +170,33 @@ public class OrganClassService {
             log.error("课程与当前操作机构不匹配, classId={}, classOgnId={}, userOgnId={}", id, classPo.getOgnId(), currentUser.getOgnId());
             return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
         }
-        // 未开班的不允许存在未处理和成功的订单
-        if (classPo.getStatus().equals(EpOrganClassStatus.online)) {
-            List<EpOrderPo> orders = orderRepository.findByClassIdAndOrderStatus(id, EpOrderStatus.save, EpOrderStatus.success);
-            if (CollectionsTools.isNotEmpty(orders)) {
-                return ResultDo.build(MessageCode.ERROR_CLASS_EXIST_SAVED_SUCCESS_ORDER);
-            }
+        // 不允许存在未处理和成功的订单
+        List<EpOrderPo> orders = orderRepository.findByClassIdAndOrderStatus(id, EpOrderStatus.save, EpOrderStatus.success);
+        if (CollectionsTools.isNotEmpty(orders)) {
+            return ResultDo.build(MessageCode.ERROR_CLASS_EXIST_SAVED_SUCCESS_ORDER);
         }
         // 结束班次
         int num = organClassRepository.endById(id);
         if (num == BizConstant.DB_NUM_ZERO) {
             return ResultDo.build();
         }
-        if (classPo.getStatus().equals(EpOrganClassStatus.opening)) {
-            // 结束订单
-            int endNum = orderRepository.endByClassId(id);
-            log.info("结束订单数{}笔, classId={}", endNum, id);
-        }
+        // 结束订单
+        int endNum = orderRepository.endByClassId(id);
+        log.info("结束订单数{}笔, classId={}", endNum, id);
+        // 结束行程
+        organClassScheduleRepository.endByClassId(id);
         // 如果没有上线、开班状态的班次了则下线课程
         Long courseId = classPo.getCourseId();
         List<EpOrganClassPo> openingClasses = organClassRepository.getByCourseIdAndStatus(courseId, EpOrganClassStatus.online, EpOrganClassStatus.opening);
-        if (CollectionsTools.isEmpty(openingClasses)) {
-            log.info("课程班次已全部结束，课程状态更新为下线, courseId={}", courseId);
-            organCourseRepository.offlineById(courseId);
+        if (CollectionsTools.isNotEmpty(openingClasses)) {
+            return ResultDo.build();
+        }
+        log.info("课程班次已全部结束，课程状态更新为下线, courseId={}", courseId);
+        organCourseRepository.offlineById(courseId);
+        // 刷新机构类目
+        EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
+        if (!organCourseRepository.existCatalog(coursePo.getOgnId(), coursePo.getCourseCatalogId())) {
+            organCatalogRepository.deletePhysicByOgnIdAndCatalogId(coursePo.getOgnId(), coursePo.getCourseCatalogId());
         }
         return ResultDo.build();
     }
@@ -211,11 +204,12 @@ public class OrganClassService {
     /**
      * 获取班级成员昵称
      *
+     * @param ognId
      * @param id
      * @return
      */
-    public List<String> findClassChildNickName(Long id) {
-        return organClassRepository.findClassChildNickNameByClassId(id);
+    public List<String> findClassChildNickName(Long ognId, Long id) {
+        return organClassRepository.findClassChildNickNameByClassId(ognId, id);
 
     }
 
@@ -247,30 +241,4 @@ public class OrganClassService {
         return organClassRepository.findProceedClassByCourseId(courseId);
     }
 
-    /**
-     * 提前结束班次
-     *
-     * @param id
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public ResultDo advancedEndById(Long id) {
-        log.info("[班次]提前结束班次开始，班次id={}。", id);
-        Optional<EpOrganClassPo> classOptional = organClassRepository.findById(id);
-        if (!classOptional.isPresent()) {
-            log.error("[班次]提前结束班次失败，该班次不存在，班次id={}。", id);
-            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
-        }
-        //结束班次
-        if (organClassRepository.advancedEndById(id) == BizConstant.DB_NUM_ONE) {
-            //关闭该班次下的订单
-            orderRepository.advancedEndByClassId(id);
-        }
-        //预约班次行程结束
-        if (classOptional.get().getType().equals(EpOrganClassType.bespeak)) {
-            organClassScheduleRepository.advancedEndByClassId(id);
-        }
-        log.info("[班次]提前结束班次成功，班次id={}。", id);
-        return ResultDo.build();
-    }
 }

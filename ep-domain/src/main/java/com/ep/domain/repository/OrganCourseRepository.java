@@ -7,6 +7,7 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganCourseRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -340,10 +341,25 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * @return
      */
     public long countByCatalogIds(Long[] catalogIds) {
-        return dslContext.selectCount().from(EP_ORGAN_COURSE)
-                .where(EP_ORGAN_COURSE.COURSE_CATALOG_ID.in(catalogIds))
-                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .fetchOneInto(Long.class);
+        return dslContext.select(DSL.count(EP_ORGAN_COURSE.ID)).from(EP_ORGAN_COURSE)
+                         .where(EP_ORGAN_COURSE.COURSE_CATALOG_ID.in(catalogIds))
+                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                         .fetchOneInto(Long.class);
+    }
+
+    /**
+     * 是否存在指定课程类目
+     *
+     * @param ognId
+     * @param courseCatalogId
+     * @return
+     */
+    public boolean existCatalog(Long ognId, Long courseCatalogId) {
+        return dslContext.select(DSL.count(EP_ORGAN_COURSE.ID)).from(EP_ORGAN_COURSE)
+                         .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                         .and(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(courseCatalogId))
+                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                         .fetchOneInto(Long.class) > BizConstant.LONG_ZERO;
     }
 }
 

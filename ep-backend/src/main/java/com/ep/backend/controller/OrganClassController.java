@@ -115,8 +115,8 @@ public class OrganClassController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     @ResponseBody
     public ResultDo findOrders(@PathVariable("id") Long id) {
-
-        return ResultDo.build().setResult(orderService.findOrdersByClassId(id));
+        EpSystemUserPo userPo = super.getCurrentUser().get();
+        return ResultDo.build().setResult(orderService.findOrdersByClassId(userPo.getOgnId(), id));
     }
 
 
@@ -130,20 +130,8 @@ public class OrganClassController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
     @ResponseBody
     public ResultDo findClassChild(@PathVariable("classId") Long classId) {
-
-        return ResultDo.build().setResult(organClassService.findClassChildNickName(classId));
+        EpSystemUserPo userPo = super.getCurrentUser().get();
+        return ResultDo.build().setResult(organClassService.findClassChildNickName(userPo.getOgnId(), classId));
     }
 
-    /**
-     * 提前结束该班次
-     *
-     * @param classId
-     * @return
-     */
-    @GetMapping("advancedEnd/{classId}")
-    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
-    @ResponseBody
-    public ResultDo advancedEnd(@PathVariable("classId") Long classId) {
-        return organClassService.advancedEndById(classId);
-    }
 }

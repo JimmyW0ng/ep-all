@@ -421,10 +421,11 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     /**
      * 获取该班次下订单详情
      *
+     * @param ognId
      * @param classId
      * @return
      */
-    public List<OrderBo> findOrdersByClassId(Long classId) {
+    public List<OrderBo> findOrdersByClassId(Long ognId, Long classId) {
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_ORDER.ID);
         fieldList.add(EP_ORDER.CHILD_ID);
@@ -432,11 +433,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         return dslContext.select(fieldList).from(EP_ORDER)
-                .leftJoin(EP_MEMBER_CHILD)
-                .on(EP_ORDER.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
-                .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .fetchInto(OrderBo.class);
+                         .leftJoin(EP_MEMBER_CHILD)
+                         .on(EP_ORDER.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                         .where(EP_ORDER.OGN_ID.eq(ognId))
+                         .and(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .fetchInto(OrderBo.class);
     }
 
     /**

@@ -56,6 +56,8 @@ public class OrganCourseService {
     private OrganCourseTeamRepository organCourseTeamRepository;
     @Autowired
     private OrganClassScheduleRepository organClassScheduleRepository;
+    @Autowired
+    private OrganCatalogRepository organCatalogRepository;
 
 
     /**
@@ -556,6 +558,13 @@ public class OrganCourseService {
         if (num == BizConstant.DB_NUM_ONE) {
             // 上线班次
             organClassRepository.onlineByCourseId(id);
+            // 机构类目刷新
+            if (!organCatalogRepository.existOgnAndCatalog(coursePo.getOgnId(), coursePo.getCourseCatalogId())) {
+                EpOrganCatalogPo organCatalogPo = new EpOrganCatalogPo();
+                organCatalogPo.setOgnId(coursePo.getOgnId());
+                organCatalogPo.setCourseCatalogId(coursePo.getCourseCatalogId());
+                organCatalogRepository.insert(organCatalogPo);
+            }
         }
         return ResultDo.build();
     }

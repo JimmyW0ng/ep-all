@@ -23,7 +23,6 @@ public class EpOrganCatalogPo extends AbstractBasePojo {
     private Long id;
     private Long ognId;
     private Long courseCatalogId;
-    private Integer childEvaluatedNum;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;
