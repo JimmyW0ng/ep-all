@@ -197,8 +197,8 @@ public class OrganCourseService {
             organClassPo.setOgnId(ognId);
             organClassPo.setCourseId(insertOrganCourseId);
             organClassPo.setStatus(EpOrganClassStatus.save);
-            organClassPo.setEnteredNum(0);
-            organClassPo.setOrderedNum(0);
+            organClassPo.setEnteredNum(BizConstant.ORGAN_CLASS_INIT_ENTERED_NUM);
+            organClassPo.setOrderedNum(BizConstant.ORGAN_CLASS_INIT_ORDERED_NUM);
             //机构课程班次表插入数据
             log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
             organClassRepository.insert(organClassPo);
@@ -213,13 +213,6 @@ public class OrganCourseService {
                 organClassCatalogRepository.insert(organClassCatalogPos);
             }
         });
-
-        //机构类目表 插入数据
-        //是否存在机构id和课程类目id组合的重复,否那么插入
-//        if (!organCatalogRepository.existOgnAndCatalog(ognId, organCoursePo.getCourseCatalogId())) {
-//            log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。ognId={},courseCatalogId={}。", organCoursePo.getCourseCatalogId());
-//            organCatalogRepository.insert(new EpOrganCatalogPo(null, ognId, organCoursePo.getCourseCatalogId(), null, null, null, null, null, null));
-//        }
 
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(ognAccountIds)) {
@@ -288,7 +281,7 @@ public class OrganCourseService {
         //班次
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         if (CollectionsTools.isEmpty(organClassBos)) {
-            log.error("[课程]新增课程失败,请求参数异常,organClassBos为空。");
+            log.error("[课程]修改课程失败,请求参数异常,organClassBos为空。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         //标签
@@ -328,8 +321,8 @@ public class OrganCourseService {
             organClassPo.setOgnId(ognId);
             organClassPo.setCourseId(organCourseId);
             organClassPo.setStatus(EpOrganClassStatus.save);
-            organClassPo.setEnteredNum(0);
-            organClassPo.setOrderedNum(0);
+            organClassPo.setEnteredNum(BizConstant.ORGAN_CLASS_INIT_ENTERED_NUM);
+            organClassPo.setOrderedNum(BizConstant.ORGAN_CLASS_INIT_ORDERED_NUM);
             //机构课程班次表插入数据
             log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
             organClassRepository.insert(organClassPo);
@@ -345,19 +338,6 @@ public class OrganCourseService {
                 organClassCatalogRepository.insert(organClassCatalogPos);
             }
         });
-
-        //机构类目表 插入数据start
-//        List<Long> courseCatalogIds = organCourseRepository.findCourseCatalogIdByOgnId(ognId);
-//        //课程类目去重
-//        Set<Long> courseCatalogIdsSet = Sets.newHashSet(courseCatalogIds);
-//        courseCatalogIdsSet.add(organCoursePo.getCourseCatalogId());
-//        List<EpOrganCatalogPo> organCatalogPos = Lists.newArrayList();
-//        courseCatalogIdsSet.forEach(courseCatalogId -> {
-//            organCatalogPos.add(new EpOrganCatalogPo(null, ognId, courseCatalogId, null, null, null, null, null, null));
-//        });
-//        log.info("[课程]班次课程内容目录表ep_organ_catalog插入数据。{}。", organCatalogPos);
-//        organCatalogRepository.insert(organCatalogPos);
-        //机构类目表 插入数据end
 
         //机构课程团队信息表插入数据start
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
@@ -514,12 +494,7 @@ public class OrganCourseService {
         organClassCatalogRepository.deleteLogicByClassIds(classIds);
         //课程标签 逻辑删除
         organCourseTagRepository.deleteLogicByCourseId(courseId);
-        //机构类目 逻辑删除
-//        Long courseCatalogId = optional.get().getCourseCatalogId();
-//        long count = organCourseRepository.countByCourseCatalogIdAndOgnId(optional.get().getCourseCatalogId(), ognId);
-//        if (count == BizConstant.DB_NUM_ZERO) {
-//            organCatalogRepository.deletePhysicByOgnIdAndCatalogId(ognId, courseCatalogId);
-//        }
+
         //主图 逻辑删除
         fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseId);
         //内容图片 逻辑删除

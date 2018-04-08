@@ -52,6 +52,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
                 .where(ognId == null ? EP_CONSTANT_TAG.OGN_ID.isNull() : EP_CONSTANT_TAG.OGN_ID.eq(ognId))
                 .and(EP_CONSTANT_TAG.STATUS.in(status))
                 .and(EP_CONSTANT_TAG.DEL_FLAG.eq(false))
+                .orderBy(EP_CONSTANT_TAG.SORT.desc())
                 .fetchInto(EpConstantTagPo.class);
     }
 

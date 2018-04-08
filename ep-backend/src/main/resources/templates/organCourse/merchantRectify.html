@@ -134,8 +134,9 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <label class="course-label">选择称号（<span class="required-sign">不超过6个</span>）
-                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用称号</span>
+
                             <span style="float:right;margin-top: 5px" class="label ogn-tag">私有称号</span>
+                            <span style="float:right;margin-top: 5px" class="label constant-tag">公用称号</span>
                         </label>
                     </div>
                     <div class="ibox-content">
@@ -389,7 +390,7 @@
     //教师map
     var organAccountMap = [[${organAccountMap}]]
 
-    /*勾选标签不超过6个*/
+    /*勾选称号不超过6个*/
     function taglt6(ele) {
         if ($("#tagBox").find("input[type='checkbox']:checked").length > 6) {
             if ($(ele).is(":checked")) {
@@ -653,7 +654,7 @@
 
             //班次end
             if ([[${supportTag}]]) {
-                //公用标签start
+                //公用称号start
                 var tagList = [[${ognTagList}]]
                 var constantTag = []
                 var ognTag = []
@@ -673,10 +674,11 @@
                         })
                     }
                 }
-                $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
                 $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
-                //公用标签end
-                //产品标签start
+                $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
+
+                //公用称号end
+                //产品称号start
                 var organCourseTagBos = [[${organCourseTagBos}]]
                 for (item in organCourseTagBos) {
                     $("#constantTagBox").find("input[name='id']").each(function () {
@@ -685,7 +687,7 @@
                         }
                     })
                 }
-                //产品标签end
+                //产品称号end
             }
 
         }
