@@ -121,13 +121,13 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      */
     public Page<OrganAccountAllClassBo> findAllClassByOrganAccountForPage(Pageable pageable, Long ognAccountId) {
         Long count = dslContext.selectCount()
-                .from(EP_ORGAN_CLASS)
-                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
-                .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
-                        EpOrganClassStatus.opening,
-                        EpOrganClassStatus.end))
-                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                .fetchOneInto(Long.class);
+                               .from(EP_ORGAN_CLASS)
+                               .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
+                               .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
+                                       EpOrganClassStatus.opening,
+                                       EpOrganClassStatus.end))
+                               .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                               .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
             return new PageImpl(Lists.newArrayList(), pageable, count);
         }
@@ -139,13 +139,13 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                                                       .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
                                                       .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
                                                       .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
-                        EpOrganClassStatus.opening,
-                        EpOrganClassStatus.end))
+                                                              EpOrganClassStatus.opening,
+                                                              EpOrganClassStatus.end))
                                                       .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                                                       .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
-                        EpOrganClassStatus.opening,
-                        EpOrganClassStatus.end),
-                        EP_ORGAN_COURSE.ONLINE_TIME.desc())
+                                                              EpOrganClassStatus.opening,
+                                                              EpOrganClassStatus.end),
+                                                              EP_ORGAN_COURSE.ONLINE_TIME.desc())
                                                       .fetchInto(OrganAccountAllClassBo.class);
         return new PageImpl(data, pageable, count);
     }

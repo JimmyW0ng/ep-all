@@ -18,11 +18,11 @@ public class OrganAccountAllClassBo extends EpOrganClassPo {
 
     public String getStatusText() {
         if (EpOrganClassStatus.save.equals(super.getStatus())) {
-            return "报名中";
+            return "待上线";
         } else if (EpOrganClassStatus.online.equals(super.getStatus())) {
-            return "确认开班";
+            return "已上线";
         } else if (EpOrganClassStatus.opening.equals(super.getStatus())) {
-            return "进行中";
+            return "已开班";
         } else if (EpOrganClassStatus.end.equals(super.getStatus())) {
             return "已结束";
         }
