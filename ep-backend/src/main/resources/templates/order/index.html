@@ -153,7 +153,7 @@
                                    th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>
                                 <a name="break" class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    style="display: none"
-                                   th:onclick="'breakInit('+${bo.id}+')'">提前结束</a>
+                                   th:onclick="'breakInit('+${bo.id}+')'">退单</a>
                             </td>
 
                         </tr>
@@ -219,6 +219,8 @@
                        aria-describedby="editable_info">
                     <thead>
                     <tr>
+                        <th></th>
+                        <th>索引</th>
                         <th>真实姓名</th>
                         <th>孩子昵称</th>
                         <th>班次</th>
@@ -246,7 +248,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="breakDo()">提前结束</button>
+                <button type="button" class="btn btn-primary" onclick="breakDo()">退单</button>
             </div>
 
         </div>
@@ -254,6 +256,11 @@
 </div>
 <script type="text/template" id='scheduleTmpl'>
     <tr class="classSchedulePo">
+        <td>{{if checkFlag}}
+            <input type="checkbox" value=${classCatalogId}>
+            {{/if}}
+        </td>
+        <td>${catalogIndex}</td>
         <td>${childTrueName}</td>
         <td>${childNickName}</td>
         <td>${className}</td>
@@ -438,10 +445,10 @@
 
     }
 
-    /*提前结束*/
+    /*退单*/
     function breakInit(id) {
         $("#breakModal").find("input").val("")
-        $("#breakModal").modal("show")
+
         $("#breakId").val(id)
         $("#breakIdTxt").text(id)
         $.ajax({
@@ -449,11 +456,28 @@
             url: "/auth/order/breakInit/" + id,
             success: function (data) {
                 if (data.success) {
-                    var res = data.result
+                    var res = data.result.classScheduleBos
+                    var currentTime = data.result.currentTime
                     for (var item in res) {
                         res[item].status = epOrganClassScheduleStatus[res[item].status]
+                        //开始时间是否与系统当前时间相差30分钟，提供勾选框
+                        if (isCurrentTimeAdvTargetTime30(currentTime, res[item].startTime)) {
+                            res[item]["checkFlag"] = true
+                        } else {
+                            res[item]["checkFlag"] = false
+                        }
                     }
-                    $("#ordersBody").html($("#scheduleTmpl").tmpl(data.result))
+
+                    $("#ordersBody").html($("#scheduleTmpl").tmpl(res))
+                    //单个勾选，自动勾选排在其之后的
+                    $("#ordersBody").on("click", "input[type='checkbox']", function () {
+                        $(this).prop("checked", true)
+                        var $tr = $(this).parents("tr").eq(0)
+                        $tr.nextAll().find("input[type='checkbox']").prop("checked", true)
+                        $tr.prevAll().find("input[type='checkbox']").prop("checked", false)
+                    })
+
+                    $("#breakModal").modal("show")
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -464,14 +488,24 @@
         })
     }
     function breakDo() {
+        //勾选的班次目录
+        var catalogIds = []
+        $("#ordersBody").find("input[type='checkbox']:checked").each(function () {
+            catalogIds.push($(this).attr("value"))
+        })
         if (!$("#breakFrm").valid()) {
             console.log("valid fail")
             return;
         }
+        if (catalogIds == undefined) {
+            console.log("catalogIds==undefined")
+            return
+        }
+        console.log(catalogIds)
         $.ajax({
             type: "POST",
-            url: "/auth/order/orderBespeakBreak",
-            data: {id: $("#breakId").val(), refundAmount: $("#refundAmount").val()},
+            url: "/auth/order/orderBreak",
+            data: {id: $("#breakId").val(), refundAmount: $("#refundAmount").val(), classCatalogIds: catalogIds},
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href)

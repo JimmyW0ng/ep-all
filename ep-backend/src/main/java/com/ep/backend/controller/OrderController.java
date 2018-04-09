@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.component.SpringComponent;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -328,26 +329,27 @@ public class OrderController extends BackendController {
 
 
     /**
-     * 预约提前结束
+     * 订单退单
      *
      * @param id
      */
-    @PostMapping("orderBespeakBreak")
+    @PostMapping("orderBreak")
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo orderBespeakBreak(
             @RequestParam(value = "id") Long id,
-            @RequestParam(value = "refundAmount") BigDecimal refundAmount
+            @RequestParam(value = "refundAmount") BigDecimal refundAmount,
+            @RequestParam(value = "classCatalogIds[]") List<Long> classCatalogIds
     ) {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
 
-        return orderService.orderBespeakBreak(id, refundAmount);
+        return orderService.orderBreak(id, refundAmount, classCatalogIds);
     }
 
     /**
-     * 提前结束预约初始化
+     * 退单初始化
      *
      * @param id
      */
@@ -358,9 +360,13 @@ public class OrderController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-
+        Map<String, Object> resultMap = Maps.newHashMap();
+        //系统当前时间
+        resultMap.put("currentTime", DateTools.getCurrentDateTime());
+        //该订单下的行程
         List<OrganClassScheduleBo> bos = organClassScheduleService.findBoByOrderId(id);
-        return ResultDo.build().setResult(bos);
+        resultMap.put("classScheduleBos", bos);
+        return ResultDo.build().setResult(resultMap);
     }
 
     /**
@@ -372,7 +378,7 @@ public class OrderController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo viewEnteredClass(@PathVariable("childId") Long childId) {
-        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId, null));
+        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(super.getCurrentUserOgnId(), childId, null));
     }
 
     /**
@@ -384,7 +390,7 @@ public class OrderController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
     public ResultDo viewEnteredBespeakClass(@PathVariable("childId") Long childId) {
-        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(childId, EpOrganClassType.bespeak));
+        return ResultDo.build().setResult(orderService.findEnteredClassByChildId(super.getCurrentUserOgnId(), childId, EpOrganClassType.bespeak));
     }
 
     /**

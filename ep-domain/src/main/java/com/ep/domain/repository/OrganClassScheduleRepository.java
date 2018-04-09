@@ -395,4 +395,34 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据classId统计预约班次下未结束的预约
+     *
+     * @param classId
+     * @return
+     */
+    public int countUnendBesprakClassScheduleByClassId(Long classId) {
+        return dslContext.selectCount().from(EP_ORGAN_CLASS_SCHEDULE)
+                .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.START_TIME.greaterThan(DSL.currentTimestamp()))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+    }
+
+    /**
+     * 根据订单id和目录id结束行程
+     *
+     * @param orderId
+     * @param classCatalogIds
+     * @return
+     */
+    public int closeByOrderIdAndClassCatalogIds(Long orderId, List<Long> classCatalogIds) {
+        return dslContext.update(EP_ORGAN_CLASS_SCHEDULE)
+                .set(EP_ORGAN_CLASS_SCHEDULE.STATUS, EpOrganClassScheduleStatus.close)
+                .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.in(classCatalogIds))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .execute();
+    }
 }

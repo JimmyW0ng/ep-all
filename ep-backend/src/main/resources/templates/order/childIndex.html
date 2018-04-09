@@ -120,6 +120,7 @@
                         <th>班次</th>
                         <th>课程</th>
                         <th>类型</th>
+                        <th>状态</th>
                     </tr>
                     </thead>
                     <tbody id="classBody">
@@ -138,12 +139,14 @@
         <td>${className}</td>
         <td>${courseName}</td>
         <td>${type}</td>
+        <td>${status}</td>
     </tr>
 </script>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script type="text/javascript">
     var epOrganClassType = {normal: "正常", bespeak: "预约"}
+    var epOrganClassStatus = {save: "已保存", online: "已上线", opening: "已上线", end: "已下线"}
 
     function viewEnteredClass(childId, childNickName) {
         $("#enteredClassModal").modal("show")
@@ -156,8 +159,9 @@
                     var res = data.result
                     for (var item in res) {
                         res[item].type = epOrganClassType[res[item].type]
+                        res[item].status = epOrganClassStatus[res[item].status]
                     }
-                    $("#classBody").html($("#classTmpl").tmpl(data.result))
+                    $("#classBody").html($("#classTmpl").tmpl(res))
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -179,8 +183,9 @@
                     var res = data.result
                     for (var item in res) {
                         res[item].type = epOrganClassType[res[item].type]
+                        res[item].status = epOrganClassStatus[res[item].status]
                     }
-                    $("#classBody").html($("#classTmpl").tmpl(data.result))
+                    $("#classBody").html($("#classTmpl").tmpl(res))
                 } else {
                     toastr.error(data.errorDescription);
                 }

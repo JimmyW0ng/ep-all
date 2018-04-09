@@ -163,4 +163,18 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganClassCatalogPo.class);
     }
+
+    /**
+     * 根据classId统计该班次下未结束的班次目录
+     *
+     * @param classId
+     * @return
+     */
+    public int countUnendNormalClassCatalogByClassId(Long classId) {
+        return dslContext.selectCount().from(EP_ORGAN_CLASS_CATALOG)
+                .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterThan(DSL.currentTimestamp()))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+    }
 }

@@ -1,14 +1,18 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
 
@@ -31,6 +36,7 @@ import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
  * @Author: CC.F
  * @Date: 9:30 2018/3/2
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/organClass")
 public class OrganClassController extends BackendController {
@@ -92,7 +98,7 @@ public class OrganClassController extends BackendController {
     }
 
     /**
-     * 结束班次
+     * 结束正常班次/提前结束预约班次
      *
      * @param id
      * @return
@@ -132,6 +138,64 @@ public class OrganClassController extends BackendController {
     public ResultDo findClassChild(@PathVariable("classId") Long classId) {
         EpSystemUserPo userPo = super.getCurrentUser().get();
         return ResultDo.build().setResult(organClassService.findClassChildNickName(userPo.getOgnId(), classId));
+    }
+
+    /**
+     * 根据classId统计正常班次下未结束的班次目录
+     *
+     * @param classId
+     * @return
+     */
+    @GetMapping("countUnendNormalClassCatalogByClassId/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
+    @ResponseBody
+    public ResultDo countUnendNormalClassCatalogByClassId(@PathVariable("classId") Long classId) {
+        if (null == this.innerOgnOrPlatformReq(classId, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        return ResultDo.build().setResult(organClassService.countUnendNormalClassCatalogByClassId(classId));
+    }
+
+    /**
+     * 根据classId统计预约班次下未结束的预约
+     *
+     * @param classId
+     * @return
+     */
+    @GetMapping("countUnendBesprakClassScheduleByClassId/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
+    @ResponseBody
+    public ResultDo countUnendBesprakClassScheduleByClassId(@PathVariable("classId") Long classId) {
+        if (null == this.innerOgnOrPlatformReq(classId, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        return ResultDo.build().setResult(organClassService.countUnendBesprakClassScheduleByClassId(classId));
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpOrganClassPo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpOrganClassPo> optional = organClassService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (ognId == null) {
+            return optional.get();
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 
 }

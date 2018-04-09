@@ -109,7 +109,7 @@
                                    href="javascript:void(0)" th:onclick="'getClassChild('+${bo.id}+')'">班级成员</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'online')&&#strings.equals(bo.type,'bespeak')}"
-                                   th:onclick="'advancedEndBox('+${bo.id}+')'">提前结束</a>
+                                   th:onclick="'advancedEndBox('+${bo.id}+',\''+${bo.className}+'\')'">结束</a>
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'opening')&&#strings.equals(bo.type,'normal')}"
                                    th:onclick="'endBox('+${bo.id}+',\''+${bo.className}+'\')'">结束</a>
@@ -298,20 +298,21 @@
 
     }
     /*开课end*/
-    /*结束班次start*/
+    /*结束正常班次start*/
     function endBox(id, className) {
-        $("#endModal").modal("show")
-        $("#endClassId").val(id)
-        $("#endClassNameTxt").text(className)
         $.ajax({
             type: "GET",
-            url: "/auth/organClassCatalog/findClassCatalog/" + id,
+            url: "/auth/organClass/countUnendNormalClassCatalogByClassId/" + id,
             success: function (data) {
                 if (data.success) {
-                    if (data.result != undefined) {
-                        $("#catalogsBody").html($("#classCatalogTmpl").tmpl(data.result))
+                    var count = data.result
+                    if (count == 0) {
+                        var msg = '[' + className + ']，您确定要结束该班次?'
+                    } else {
+                        var msg = '[' + className + ']当前还有个' + data.result + '未结束的班次目录，您确定要提前结束该班次?'
                     }
 
+                    layer_confirm(msg, 3, endDo, id)
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -320,17 +321,27 @@
                 toastr_error_system(XMLHttpRequest.status);
             },
         })
-
     }
-    function endDo() {
+
+    /*结束正常班次end*/
+
+    /*提前结束预约班次start*/
+    function advancedEndBox(id, className) {
         $.ajax({
-            type:"GET",
-            url: "/auth/organClass/end/" + $("#endClassId").val(),
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null, document.location.href);
+            type: "GET",
+            url: "/auth/organClass/countUnendNormalClassCatalogByClassId/" + id,
+            success: function (data) {
+                if (data.success) {
+                    var count = data.result
+                    if (count == 0) {
+                        var msg = '[' + className + ']，您确定要结束该班次?'
+                    } else {
+                        var msg = '[' + className + ']当前还有个' + data.result + '未结束的预约，您确定要提前结束该班次?'
+                    }
+
+                    layer_confirm(msg, 3, endDo, id)
                 } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
+                    toastr.error(data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
@@ -338,23 +349,10 @@
             },
         })
     }
-    /*结束班次end*/
-
-    /*提前结束班次start*/
-    function advancedEndBox(id) {
-        layer.confirm('确定提前结束该班次', {icon: 3, btn: ['确定', '取消']},
-            function (index) {
-                advancedEndDo(id);
-                layer.close(index);
-            },
-            function (index) {
-                layer.close(index);
-            });
-    }
-    function advancedEndDo(id) {
+    function endDo(id) {
         $.ajax({
             type: "GET",
-            url: "/auth/organClass/advancedEnd/" + id,
+            url: "/auth/organClass/end/" + id,
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href);
@@ -367,7 +365,7 @@
             },
         })
     }
-    /*提前结束班次end*/
+    /*提前结束预约班次end*/
 
     /*查看班次订单*/
     function findOrders(id, type) {

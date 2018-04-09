@@ -486,21 +486,20 @@ public class OrderService {
 
 
     /**
-     * 预约提前结束
+     * 退单
      *
      * @param id
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo orderBespeakBreak(Long id, BigDecimal refundAmount) {
-        log.info("[订单]订单预约提前结束开始，订单id={}。", id);
-        if (orderRepository.endById(id, refundAmount) == BizConstant.DB_NUM_ONE) {
-            organClassScheduleRepository.closeByOrderEnd(id);
-
-            log.info("[订单]订单预约提前结束成功，订单id={}。", id);
+    public ResultDo orderBreak(Long id, BigDecimal refundAmount, List<Long> classCatalogIds) {
+        log.info("[订单]订单退单开始，订单id={}。", id);
+        if (orderRepository.endById(id, refundAmount) == BizConstant.DB_NUM_ONE
+                && organClassScheduleRepository.closeByOrderIdAndClassCatalogIds(id, classCatalogIds) == classCatalogIds.size()) {
+            log.info("[订单]订单退单成功，订单id={}。", id);
             return ResultDo.build();
         } else {
-            log.error("[订单]订单预约提前结束失败，订单id={}。", id);
+            log.error("[订单]订单退单失败，订单id={}。", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
 
@@ -522,7 +521,7 @@ public class OrderService {
      *
      * @param childId
      */
-    public List<OrganClassBo> findEnteredClassByChildId(Long childId, EpOrganClassType classType) {
-        return orderRepository.findEnteredClassByChildId(childId, classType);
+    public List<OrganClassBo> findEnteredClassByChildId(Long ognId, Long childId, EpOrganClassType classType) {
+        return orderRepository.findEnteredClassByChildId(ognId, childId, classType);
     }
 }

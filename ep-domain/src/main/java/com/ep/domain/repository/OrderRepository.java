@@ -547,7 +547,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param childId
      * @return
      */
-    public List<OrganClassBo> findEnteredClassByChildId(Long childId, EpOrganClassType classType) {
+    public List<OrganClassBo> findEnteredClassByChildId(Long ognId, Long childId, EpOrganClassType classType) {
 
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
@@ -557,6 +557,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                     .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
                     .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
                     .where(EP_ORDER.CHILD_ID.eq(childId))
+                    .and(EP_ORDER.OGN_ID.eq(ognId))
                     .and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
                     .and(EP_ORGAN_CLASS.ID.isNotNull())
                     .and(EP_ORGAN_COURSE.ID.isNotNull())
@@ -570,6 +571,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                     .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
                     .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
                     .where(EP_ORDER.CHILD_ID.eq(childId))
+                    .and(EP_ORDER.OGN_ID.eq(ognId))
                     .and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
                     .and(EP_ORGAN_CLASS.ID.isNotNull())
                     .and(EP_ORGAN_CLASS.TYPE.eq(classType))

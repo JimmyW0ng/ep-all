@@ -97,6 +97,26 @@ function toastr_error_system(msg) {
     toastr.error("系统异常,状态码:" + msg + "。");
 }
 
+function formatMsg(operate, businessObj, remark) {
+    if (remark == '' || remark == null) {
+        var msg = "您确定要" + operate + "该" + businessObj + "?"
+    } else {
+        var msg = "您确定要" + operate + "该" + businessObj + "?" + operate + "后，" + remark + "!"
+    }
+    return msg
+}
+
+function isCurrentTimeAdvTargetTime30(current, target) {
+    var currentTime = new Date(current)
+    var targetTime = new Date(target)
+    var checkDate = currentTime.setMinutes(currentTime.getMinutes() + 30)
+    if (checkDate < targetTime) {
+        return true
+    } else {
+        return false
+    }
+}
+
 function layer_confirm(msg, icon, funDo, id) {
     layer.confirm(msg, {icon: icon, btn: ['确定', '取消']},
         function (index) {

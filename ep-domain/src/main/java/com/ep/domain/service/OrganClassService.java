@@ -241,4 +241,24 @@ public class OrganClassService {
         return organClassRepository.findProceedClassByCourseId(courseId);
     }
 
+    /**
+     * 根据classId统计正常班次下未结束的班次目录
+     *
+     * @param classId
+     * @return
+     */
+    public int countUnendNormalClassCatalogByClassId(Long classId) {
+        return organClassCatalogRepository.countUnendNormalClassCatalogByClassId(classId);
+    }
+
+    /**
+     * 根据classId统计预约班次下未结束的预约
+     *
+     * @param classId
+     * @return
+     */
+    public int countUnendBesprakClassScheduleByClassId(Long classId) {
+        return organClassScheduleRepository.countUnendBesprakClassScheduleByClassId(classId);
+    }
+
 }
