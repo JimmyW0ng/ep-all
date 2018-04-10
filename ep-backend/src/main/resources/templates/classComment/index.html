@@ -16,8 +16,7 @@
     <div class="col-lg-12">
         <div class="panel">
             <div class="panel-heading">
-                <a class="btn btn-success" type="button" th:href="@{/auth/childComment/createInit}"><i
-                        class="glyphicon glyphicon-plus"></i> 新增</a>
+
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form">
@@ -69,7 +68,7 @@
                             <th>评论者</th>
                             <th>关联订单id</th>
                             <th>是否精选</th>
-                            <th>备注</th>
+                            <th style="width:300px">内容</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -83,7 +82,7 @@
                             <td th:text="${bo.childNickName}"></td>
                             <td th:text="${bo.childId}"></td>
                             <td th:text="${bo.chosenFlag==true?'是':'否'}"></td>
-                            <td th:text="${bo.remark}"></td>
+                            <td th:text="${bo.content}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
                                 <a class="btn btn-xs btn-primary" href="javascript:void(0)" th:if="!${bo.chosenFlag}"

@@ -103,7 +103,7 @@
                                    href="javascript:void(0)" th:onclick="'findOrders('+${bo.id}+',\''+${bo.type}+'\')'">订单详情</a>
                                 <a class="btn btn-xs btn-primary"
                                    th:if="${#stringTools.equals(bo.status,'online')&&#stringTools.equals(bo.type,'normal')}"
-                                   href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开课</a>
+                                   href="javascript:void(0)" th:onclick="'openingBox('+${bo.id}+')'">开班</a>
                                 <a class="btn btn-xs btn-primary"
                                    th:if="${#stringTools.equals(bo.status,'opening')||#stringTools.equals(bo.status,'end')}"
                                    href="javascript:void(0)" th:onclick="'getClassChild('+${bo.id}+')'">班级成员</a>
@@ -271,30 +271,10 @@
     }
     /*开课start*/
     function openingBox(id) {
-        layer.confirm('确定该班次开课', {icon: 3, btn: ['确定', '取消']},
-            function (index) {
-                openingDo(id);
-                layer.close(index);
-            },
-            function (index) {
-                layer.close(index);
-            });
+        layer_confirm(formatMsg("开班", "班次", ""), 3, openingDo, id)
     }
     function openingDo(id) {
-        $.ajax({
-            type:"GET",
-            url:"/auth/organClass/opening/"+id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/organClass/opening/", id)
 
     }
     /*开课end*/

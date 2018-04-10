@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <select type="text" class="form-control" style="width:250px" name="courseId" id="searchcourseId"
                                 onchange="changeCourse(this)">
-                            <option value="">课程</option>
+                            <option value="">产品</option>
                             <option th:each="key : ${courseMap.keySet()}"
                                     th:value="${key}"
                                     th:selected="${#strings.equals(key,searchMap.get('courseId'))}"
@@ -141,10 +141,10 @@
                                 <!--th:if="${null==bo.replyId&&null!=bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"-->
                                 <!--href="javascript:void(0)"-->
                                 <!--th:onclick="'updateCommentInit(this,'+${bo.launchId}+','+${bo.childId}+','+${bo.courseId}+','+${bo.classId}+','+${bo.classCatalogId}+')'">修改</a>-->
-                                <a class="btn btn-xs btn-danger"
-                                   th:if="${null==bo.replyId&&null!=bo.launchId}"
-                                   href="javascript:void(0)"
-                                   th:onclick="'deleteBox('+${bo.launchId}+')'">删除</a>
+                                <!--<a class="btn btn-xs btn-danger"-->
+                                <!--th:if="${null==bo.replyId&&null!=bo.launchId}"-->
+                                <!--href="javascript:void(0)"-->
+                                <!--th:onclick="'deleteBox('+${bo.launchId}+')'">删除</a>-->
 
 
                             </td>
@@ -214,7 +214,7 @@
 <script>
     function search() {
         if (!$("#searchcourseId").val()) {
-            toastr.warning("请选择课程!")
+            toastr.warning("请选择产品!")
             return
         }
         if (!$("#classId").val()) {

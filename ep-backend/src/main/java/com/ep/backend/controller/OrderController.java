@@ -344,8 +344,7 @@ public class OrderController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-        return ResultDo.build();
-//                orderService.orderBreak(id, refundAmount, firstClassCatalogId);
+        return orderService.orderBreak(id, refundAmount, firstClassCatalogId);
     }
 
     /**
@@ -366,6 +365,13 @@ public class OrderController extends BackendController {
         //该订单下的行程
         List<OrganClassScheduleBo> bos = organClassScheduleService.findBoByOrderId(id);
         resultMap.put("classScheduleBos", bos);
+        //订单费
+        Optional<EpOrderPo> orderOptional = orderService.findById(id);
+        if (orderOptional.isPresent()) {
+            resultMap.put("orderPrize", orderOptional.get().getPrize());
+        }
+        //预约订单
+
         return ResultDo.build().setResult(resultMap);
     }
 

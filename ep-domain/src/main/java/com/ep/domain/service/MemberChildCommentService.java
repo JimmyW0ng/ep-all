@@ -122,5 +122,7 @@ public class MemberChildCommentService {
             log.error("[评价]评价删除失败，id={}。", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
+        //todo
+        // 删除称号
     }
 }

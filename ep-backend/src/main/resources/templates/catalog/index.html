@@ -18,7 +18,7 @@
             <div class="col-sm-5">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>课程类目</h5>
+                        <h5>产品类目</h5>
                         <div class="ibox-tools">
 
                         </div>
@@ -66,7 +66,7 @@
                                 <label class="col-sm-3 control-label">父级菜单：</label>
                                 <div class="col-sm-8">
                                     <input id="parentName" type="text" class="form-control" name="parentName"
-                                           required="true" aria-required="true" readonly="true" placeholder="点击菜单选择">
+                                           readonly="true" placeholder="点击菜单选择,不选默认为一级菜单">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -171,6 +171,7 @@
     function frmField() {
         $("#frm").validate({}).resetForm()
         $("#menuBox").find("input").val("");
+        $("#parentId").val(0)
     }
 
     function readShow(id) {
@@ -205,7 +206,7 @@
         $("#menuBox").show()
         $("#act_type").val(titleClazz)
         var clazz = $("#act_type").val()
-        console.log($("#act_type").parent())
+
         $("#act_type").parent().children().hide()
         $("#act_type").parent().find("." + clazz).show()
         if($("#saveBtn").hasClass(titleClazz)){

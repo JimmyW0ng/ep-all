@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @Description: 课程类目控制器
+ * @Description: 产品类目控制器
  * @Author: CC.F
  * @Date: 18:06 2018/2/5
  */
@@ -49,10 +49,10 @@ public class ConstantCatalogController extends BackendController {
     @PreAuthorize("hasAnyAuthority('platform:catalog:index')")
     @ResponseBody
     public ResultDo create(EpConstantCatalogPo po) {
-        if (po.getId() == null) {//新增课程类目
+        if (po.getId() == null) {//新增产品类目
             return constantCatalogService.createConstantCatalog(po);
         } else {
-            //更新课程类目
+            //更新产品类目
             return constantCatalogService.updateConstantCatalog(po);
         }
     }

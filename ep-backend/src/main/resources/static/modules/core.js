@@ -177,6 +177,56 @@ function bindNumberInput($box) {
     });
 }
 
+//jq validate input验证时name相同会只验证第一个,故根据id来验证
+function jqValidCheckById() {
+    if ($.validator) {
+        $.validator.prototype.elements = function () {
+            var validator = this,
+                rulesCache = {};
+            return $([]).add(this.currentForm.elements)
+                .filter(":input")
+                .not(":submit, :reset, :image, [disabled]")
+                .not(this.settings.ignore)
+                .filter(function () {
+                    var elementIdentification = this.id || this.name;
+                    !elementIdentification && validator.settings.debug && window.console && console.error("%o has no id nor name assigned", this);
+                    if (elementIdentification in rulesCache || !validator.objectLength($(this).rules()))
+                        return false;
+                    rulesCache[elementIdentification] = true;
+                    return true;
+                });
+        };
+
+    }
+}
+//jq validate input验证时根据id来验证的tmplIndex
+function tmplIndex() {
+    return new Date().getMinutes().toString() + new Date().getSeconds().toString() + new Date().getMilliseconds()
+}
+//封装后的$.ajax,get形式
+function $ajaxGet(url, data) {
+    $.ajax({
+        type: "GET",
+        url: url + data,
+        beforeSend: function () {
+            layer.load(2, {shade: [0.1, '#fff']});
+        },
+        success: function (data) {
+            if (data.success) {
+                toastr_success(null, document.location.href);
+            } else {
+                toastr.error("操作失败，原因：" + data.errorDescription);
+            }
+        },
+        error: function (XMLHttpRequest) {
+            toastr_error_system(XMLHttpRequest.status);
+        },
+        complete: function () {
+            layer.closeAll();
+        }
+    })
+}
+
 $(function () {
     $("body").on("blur", "input.number-input", function () {
         if ($(this).val() == '') {

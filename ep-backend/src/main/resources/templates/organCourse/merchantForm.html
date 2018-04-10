@@ -217,13 +217,15 @@
             <div name="" class="col-sm-5 form-group">
                 <label>目录标题<span class="required-sign">*</span></label>
                 <input name="id" type="hidden" jprop="id" value=${id}>
-                <input name="catalogTitle" jprop="catalogTitle" class="form-control " value="${catalogTitle}"
+                <input id="catalogTitle${tmplIndex}" name="catalogTitle" jprop="catalogTitle" class="form-control "
+                       value="${catalogTitle}"
                        required="true"/>
                 <input name="catalogIndex" jprop="catalogIndex" type="hidden" value=${len}>
             </div>
             <div class="col-sm-5 form-group">
                 <label>开始时间<span class="required-sign">*</span></label>
-                <input name="startTime" jprop="startTime" class="form-control laydateer " value="${startTime}"
+                <input id="startTime${tmplIndex}" name="startTime" jprop="startTime" class="form-control laydateer "
+                       value="${startTime}"
                        required="true"/>
             </div>
             <div class="col-sm-2">
@@ -239,13 +241,14 @@
 
         <div class="col-sm-5 form-group">
             <label>持续时长（分钟）<span class="required-sign">*</span></label>
-            <input name="duration" jprop="duration" class="form-control " value="${duration}" required="true">
+            <input id="duration${tmplIndex}" name="duration" jprop="duration" class="form-control " value="${duration}"
+                   required="true">
 
         </div>
 
         <div class="col-sm-10 form-group">
             <label>目录描述<span class="required-sign">*</span></label>
-            <textarea name="catalogDesc" jprop="catalogDesc" class="form-control "
+            <textarea id="catalogDesc${tmplIndex}" name="catalogDesc" jprop="catalogDesc" class="form-control "
                       required="true">${catalogDesc}</textarea>
         </div>
     </div>
@@ -283,7 +286,8 @@
                         <input name="id" type="hidden" value="${id}">
                         <div class="form-group">
                             <label>班次名称 <span class="required-sign">*</span></label>
-                            <input name="className" jprop="className" type="text" class=" form-control "
+                            <input id="className${tmplIndex}" name="className" jprop="className" type="text"
+                                   class=" form-control "
                                    value="${className}"
                                    required="true"
                                    onblur="setClassBoxTitle(this)">
@@ -304,7 +308,8 @@
                         </div>
                         <div class="form-group">
                             <label>价格(元) <span class="required-sign">*</span></label>
-                            <input name="classPrize" jprop="classPrize" type="text" class=" form-control number-input"
+                            <input id="classPrize${tmplIndex}" name="classPrize" jprop="classPrize" type="text"
+                                   class=" form-control number-input"
                                    value="${classPrize}">
                         </div>
                         <div class="form-group discountAmount">
@@ -323,35 +328,41 @@
                         </div>
                         <div class="form-group">
                             <label>要求报名人数 </label>
-                            <input name="enterRequireNum" jprop="enterRequireNum" type="text" class="form-control"
+                            <input id="enterRequireNum${tmplIndex}" name="enterRequireNum" jprop="enterRequireNum"
+                                   type="text" class="form-control"
                                    value="${enterRequireNum}"
                                    readonly="true">
                         </div>
                         <div class="form-group">
                             <label>联系电话 <span class="required-sign">*</span></label>
-                            <input name="phone" jprop="phone" type="text" class="form-control" required="true"
+                            <input id="phone${tmplIndex}" name="phone" jprop="phone" type="text" class="form-control"
+                                   required="true"
                                    value="${phone}">
                         </div>
                         <div class="form-group">
                             <label>上课地址 <span class="required-sign">*</span></label>
-                            <input name="address" jprop="address" type="text" class="form-control" required="true"
+                            <input id="address${tmplIndex}" name="address" jprop="address" type="text"
+                                   class="form-control" required="true"
                                    value="${address}">
                         </div>
                         <div class="form-group">
                             <label>经度 <span class="required-sign">*</span></label>
-                            <input name="addressLng" jprop="addressLng" type="text" class="form-control digit"
+                            <input id="addressLng${tmplIndex}" name="addressLng" jprop="addressLng" type="text"
+                                   class="form-control digit"
                                    required="true"
                                    value="${addressLng}">
                         </div>
                         <div class="form-group">
                             <label>纬度 <span class="required-sign">*</span></label>
-                            <input name="addressLat" jprop="addressLat" type="text" class="form-control digit"
+                            <input id="addressLat${tmplIndex}" name="addressLat" jprop="addressLat" type="text"
+                                   class="form-control digit"
                                    required="true"
                                    value="${addressLat}">
                         </div>
                         <div class="form-group">
                             <label><span name="courseNumLabel">总计目录</span> <span class="required-sign">*</span></label>
-                            <input name="courseNum" jprop="courseNum" type="Number" class=" form-control "
+                            <input id="courseNum${tmplIndex}" name="courseNum" jprop="courseNum" type="Number"
+                                   class=" form-control "
                                    value="${courseNum}"
                                    readonly=true>
                         </div>
@@ -468,7 +479,7 @@
     /*向前插入课时*/
     function insertbeforeClassCatalogBox(ele) {
         $(ele).parents(".organClassCatalogPos").eq(0).before($("#classCatalogTmpl").tmpl([{
-            catalogTitle: "目录标题",
+            tmplIndex: tmplIndex(), catalogTitle: "目录标题",
         }]))
         var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
         $(ele).parents(".organClassBos").eq(0).find("input[name='courseNum']").eq(0).val(len)
@@ -485,7 +496,7 @@
     function addClassCatalogBox(ele) {
         var len = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0).find(".organClassCatalogPos").length
         var $box = $(ele).parents("div[name='organClassCatalogPosBox']").eq(0)
-        var catalog = [{catalogTitle: "目录标题" + (len + 1), len: len + 1}]
+        var catalog = [{tmplIndex: tmplIndex(), catalogTitle: "目录标题" + (len + 1), len: len + 1}]
 
         $box.append($("#classCatalogTmpl").tmpl(catalog))
         $(ele).parents(".organClassBos").eq(0).find("input[name='courseNum']").eq(0).val(len + 1)
@@ -527,8 +538,8 @@
     /* 增加班次*/
     function createClassBox() {
         var len = $("#accordion").find("div[name='organClassBosBox']").length
-
         var classes = [{
+            tmplIndex: tmplIndex(),
             href: "#collapse" + (len + 1),
             collapse: "collapse" + (len + 1),
             className: "班次",
@@ -819,6 +830,7 @@
     }
 
     $(document).ready(function () {
+        jqValidCheckById()
         //修改页面初始化start
         if ([[${organCoursePo.id}]]) {
 
@@ -857,6 +869,7 @@
                 if (null != organClassCatalogPos && organClassCatalogPos.length) {
                     for (var j = 0; j < organClassCatalogPos.length; j++) {
                         catalog.push({
+                            tmplIndex: tmplIndex(),
                             id: organClassCatalogPos[j].id,
                             len: j + 1,
                             startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),

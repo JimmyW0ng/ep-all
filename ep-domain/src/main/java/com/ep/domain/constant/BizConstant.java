@@ -79,7 +79,7 @@ public class BizConstant {
     public static int CAPTCHA_SHORT_MSG_IP_NUM_LIMIT = 100;
     public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
     /**
-     * 课程
+     * 产品
      */
     public static long FIRST_CONSTANT_CATALOG_PID = 0L;
     /**

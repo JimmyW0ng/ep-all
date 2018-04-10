@@ -129,24 +129,10 @@
 <script th:inline="javascript">
 
     function onlineBox(id) {
-        layer_confirm("确定该产品上线？", 3, onlineDo, id)
+        layer_confirm(formatMsg("上线", "产品", ""), 3, onlineDo, id)
     }
     function onlineDo(id) {
-        $.ajax({
-            type:"GET",
-            url:"/auth/organCourse/online/"+id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
-
+        $ajaxGet("/auth/organCourse/online/", id)
     }
     function deleteBox(id) {
         layer_confirm("确定删除该产品？", 3, delDo, id)

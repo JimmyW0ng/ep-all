@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control " name="courseName"
                                th:value="${searchMap.get('courseName')}"
-                               placeholder="课程">
+                               placeholder="产品">
                     </div>
 
                     <div class="form-group">
@@ -104,7 +104,7 @@
                             <th>会员账号</th>
                             <th>姓名</th>
                             <th>昵称</th>
-                            <th>课程</th>
+                            <th>产品</th>
                             <th>班次</th>
                             <th>班次类型</th>
                             <th>班次状态</th>
@@ -141,7 +141,7 @@
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info" style="display: none"
                                    th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
-                                <!--<a class="btn btn-xs btn-primary" th:href="@{/auth/organAccount/updateInit/}+${bo.id}">修改</a>-->
+
                                 <a name="refuse" class="btn btn-xs btn-danger" style="display: none"
                                    href="javascript:void(0)"
                                    th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
@@ -210,8 +210,9 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h3 style="text-align: left">订单行程如下,请您选择从哪个目录开始结束，并勾选！</h3>
+                <h3 style="text-align: left">订单行程如下,请您选择从哪个目录开始结束，并勾选！（退单的目录需提早30分钟）</h3>
                 <h4 style="text-align: left">订单ID:<span id="breakIdTxt"></span></h4>
+                <h4 style="text-align: left">订单费:￥<span id="orderPrizeTxt"></span>元</h4>
 
             </div>
             <div class="modal-body">
@@ -237,7 +238,7 @@
                 </table>
                 <form class="form-horizontal m-t" id="breakFrm">
                     <div class="form-group">
-                        <label style="float: left" class="control-label">退费费用（元）<span
+                        <label style="float: left" class="control-label">退单退费（元）<span
                                 class="required-sign">*</span></label>
                         <div class="col-sm-4">
                             <input name="refundAmount" class="form-control" id="refundAmount"
@@ -350,6 +351,9 @@
             type:"POST",
             url:"/auth/order/orderSuccess",
             data:{id:id,classId:classId},
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success:function (data) {
                 if(data.success){
                     var orderPo = data.result
@@ -366,29 +370,19 @@
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }
 
     /*提交预约*/
     function bespeakBox(sourceId) {
-        layer_confirm("确定提交预约该订单？", 3, bespeakDo, sourceId)
+        layer_confirm(formatMsg("提交预约", "订单", ""), 3, bespeakDo, sourceId)
     }
     function bespeakDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/order/orderBespeak/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href)
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
+        $ajaxGet("/auth/order/orderBespeak/", id)
 
     }
 
@@ -458,6 +452,8 @@
                 if (data.success) {
                     var res = data.result.classScheduleBos
                     var currentTime = data.result.currentTime
+                    var orderPrize = data.result.orderPrize
+                    $("#orderPrizeTxt").text(orderPrize)
                     for (var item in res) {
                         res[item].status = epOrganClassScheduleStatus[res[item].status]
                         //开始时间是否与系统当前时间相差30分钟，提供勾选框
@@ -506,6 +502,9 @@
                 refundAmount: $("#refundAmount").val(),
                 firstClassCatalogId: firstClassCatalogId
             },
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href)
@@ -516,6 +515,9 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
+            complete: function () {
+                layer.closeAll();
+            }
         })
     }
     $(function () {
