@@ -145,7 +145,8 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                                                       .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
                                                               EpOrganClassStatus.opening,
                                                               EpOrganClassStatus.end),
-                                                              EP_ORGAN_COURSE.ONLINE_TIME.desc())
+                                                              EP_ORGAN_COURSE.ONLINE_TIME.desc(),
+                                                              EP_ORGAN_CLASS.ID.asc())
                                                       .fetchInto(OrganAccountAllClassBo.class);
         return new PageImpl(data, pageable, count);
     }

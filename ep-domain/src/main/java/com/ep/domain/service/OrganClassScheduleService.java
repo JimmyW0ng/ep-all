@@ -252,13 +252,13 @@ public class OrganClassScheduleService {
     /**
      * 撤销随堂评价
      *
-     * @param organAccountPo
+     * @param organAccountId
      * @param classScheduleId
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo cancelClassCatalogComment(EpOrganAccountPo organAccountPo, Long classScheduleId) {
-        log.info("撤销随堂评价开始, accountId={}, classScheduleId={}", organAccountPo.getId(), classScheduleId);
+    public ResultDo cancelClassCatalogComment(Long organAccountId, Long classScheduleId) {
+        log.info("撤销随堂评价开始, accountId={}, classScheduleId={}", organAccountId, classScheduleId);
         // 行程信息
         EpOrganClassSchedulePo schedulePo = organClassScheduleRepository.getById(classScheduleId);
         if (schedulePo == null || schedulePo.getDelFlag()) {
@@ -268,6 +268,16 @@ public class OrganClassScheduleService {
         if (!schedulePo.getEvaluateFlag()) {
             log.error("随堂信息不存在, classScheduleId={}", classScheduleId);
             return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_NOT_EXIST);
+        }
+        // 校验班次负责人
+        EpOrganClassPo classPo = organClassRepository.getById(schedulePo.getClassId());
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", schedulePo.getClassId());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        if (!organAccountId.equals(classPo.getOgnAccountId())) {
+            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountId, classPo.getId());
+            return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
         int num = organClassScheduleRepository.cancelEvaluate(classScheduleId);
         if (num == BizConstant.DB_NUM_ZERO) {

@@ -95,7 +95,7 @@ public class OrganAccountController extends ApiController {
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo doClassCatalogComment(@RequestParam("classScheduleId") Long classScheduleId) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        return organClassScheduleService.cancelClassCatalogComment(organAccountPo, classScheduleId);
+        return organClassScheduleService.cancelClassCatalogComment(organAccountPo.getId(), classScheduleId);
     }
 
     @ApiOperation(value = "全部课程-分页")
