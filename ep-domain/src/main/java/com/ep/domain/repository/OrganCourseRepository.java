@@ -98,21 +98,21 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
         fieldList.add(EP_ORGAN.VIP_NAME);
         fieldList.add(EP_CONSTANT_CATALOG.LABEL);
         List<OrganCourseBo> pList = dslContext.select(fieldList).from(EP_ORGAN_COURSE)
-                                              .leftJoin(EP_ORGAN)
-                                              .on(EP_ORGAN_COURSE.OGN_ID.eq(EP_ORGAN.ID))
-                                              .and(EP_ORGAN.DEL_FLAG.eq(false))
-                                              .leftJoin(EP_CONSTANT_CATALOG)
-                                              .on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
-                                              .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
-                                              .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
-                                              .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                                              .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
+                .leftJoin(EP_ORGAN)
+                .on(EP_ORGAN_COURSE.OGN_ID.eq(EP_ORGAN.ID))
+                .and(EP_ORGAN.DEL_FLAG.eq(false))
+                .leftJoin(EP_CONSTANT_CATALOG)
+                .on(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(EP_CONSTANT_CATALOG.ID))
+                .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
+                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline))
-                                              .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.online,
+                .orderBy(EP_ORGAN_COURSE.COURSE_STATUS.sortAsc(EpOrganCourseCourseStatus.online,
                         EpOrganCourseCourseStatus.offline), EP_ORGAN_COURSE.ONLINE_TIME.desc())
-                                              .limit(pageable.getPageSize())
-                                              .offset(pageable.getOffset())
-                                              .fetchInto(OrganCourseBo.class);
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrganCourseBo.class);
         return new PageImpl<>(pList, pageable, count);
     }
 
@@ -241,11 +241,11 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      */
     public int offlineById(Long id) {
         return dslContext.update(EP_ORGAN_COURSE)
-                         .set(EP_ORGAN_COURSE.COURSE_STATUS, EpOrganCourseCourseStatus.offline)
-                         .where(EP_ORGAN_COURSE.ID.eq(id))
-                         .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.online))
-                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_ORGAN_COURSE.COURSE_STATUS, EpOrganCourseCourseStatus.offline)
+                .where(EP_ORGAN_COURSE.ID.eq(id))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.online))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .execute();
     }
 
     /**
@@ -313,11 +313,11 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      */
     public int totalParticipateCancel(Long courseId, int count) {
         return dslContext.update(EP_ORGAN_COURSE)
-                         .set(EP_ORGAN_COURSE.TOTAL_PARTICIPATE, EP_ORGAN_COURSE.TOTAL_PARTICIPATE.subtract(count))
-                         .where(EP_ORGAN_COURSE.ID.eq(courseId))
-                         .and(EP_ORGAN_COURSE.TOTAL_PARTICIPATE.greaterThan(BizConstant.DB_NUM_ZERO))
-                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_ORGAN_COURSE.TOTAL_PARTICIPATE, EP_ORGAN_COURSE.TOTAL_PARTICIPATE.subtract(count))
+                .where(EP_ORGAN_COURSE.ID.eq(courseId))
+                .and(EP_ORGAN_COURSE.TOTAL_PARTICIPATE.greaterThan(BizConstant.DB_NUM_ZERO))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .execute();
     }
 
     /**
@@ -328,10 +328,10 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      */
     public int addTotalParticipate(Long courseId, int count) {
         return dslContext.update(EP_ORGAN_COURSE)
-                         .set(EP_ORGAN_COURSE.TOTAL_PARTICIPATE, EP_ORGAN_COURSE.TOTAL_PARTICIPATE.add(count))
-                         .where(EP_ORGAN_COURSE.ID.eq(courseId))
-                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_ORGAN_COURSE.TOTAL_PARTICIPATE, EP_ORGAN_COURSE.TOTAL_PARTICIPATE.add(count))
+                .where(EP_ORGAN_COURSE.ID.eq(courseId))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .execute();
     }
 
     /**
@@ -342,13 +342,13 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      */
     public long countByCatalogIds(Long[] catalogIds) {
         return dslContext.select(DSL.count(EP_ORGAN_COURSE.ID)).from(EP_ORGAN_COURSE)
-                         .where(EP_ORGAN_COURSE.COURSE_CATALOG_ID.in(catalogIds))
-                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                         .fetchOneInto(Long.class);
+                .where(EP_ORGAN_COURSE.COURSE_CATALOG_ID.in(catalogIds))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
     }
 
     /**
-     * 是否存在指定课程类目
+     * 是否存在指定课程类目(状态必须为online)
      *
      * @param ognId
      * @param courseCatalogId
@@ -356,10 +356,11 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      */
     public boolean existCatalog(Long ognId, Long courseCatalogId) {
         return dslContext.select(DSL.count(EP_ORGAN_COURSE.ID)).from(EP_ORGAN_COURSE)
-                         .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
-                         .and(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(courseCatalogId))
-                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                         .fetchOneInto(Long.class) > BizConstant.LONG_ZERO;
+                .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_COURSE.COURSE_CATALOG_ID.eq(courseCatalogId))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.online))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class) > BizConstant.LONG_ZERO;
     }
 }
 
