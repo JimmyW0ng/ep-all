@@ -492,17 +492,18 @@ public class OrderService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo orderBreak(Long id, BigDecimal refundAmount, List<Long> classCatalogIds) {
+    public ResultDo orderBreak(Long id, BigDecimal refundAmount, Long firstClassCatalogId) {
         log.info("[订单]订单退单开始，订单id={}。", id);
-        if (orderRepository.endById(id, refundAmount) == BizConstant.DB_NUM_ONE
-                && organClassScheduleRepository.closeByOrderIdAndClassCatalogIds(id, classCatalogIds) == classCatalogIds.size()) {
+        //订单结束
+        if (orderRepository.endById(id, refundAmount) == BizConstant.DB_NUM_ONE) {
+            //关闭该订单下行程从选择目录开始后的所有行程
+            organClassScheduleRepository.closeByOrderIdAndFirstClassCatalogId(id, firstClassCatalogId);
             log.info("[订单]订单退单成功，订单id={}。", id);
             return ResultDo.build();
         } else {
             log.error("[订单]订单退单失败，订单id={}。", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
-
     }
 
     /**

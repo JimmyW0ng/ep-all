@@ -339,13 +339,13 @@ public class OrderController extends BackendController {
     public ResultDo orderBespeakBreak(
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "refundAmount") BigDecimal refundAmount,
-            @RequestParam(value = "classCatalogIds[]") List<Long> classCatalogIds
+            @RequestParam(value = "firstClassCatalogId") Long firstClassCatalogId
     ) {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-
-        return orderService.orderBreak(id, refundAmount, classCatalogIds);
+        return ResultDo.build();
+//                orderService.orderBreak(id, refundAmount, firstClassCatalogId);
     }
 
     /**

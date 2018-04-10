@@ -210,7 +210,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h3 style="text-align: left">订单行程</h3>
+                <h3 style="text-align: left">订单行程如下,请您选择从哪个目录开始结束，并勾选！</h3>
                 <h4 style="text-align: left">订单ID:<span id="breakIdTxt"></span></h4>
 
             </div>
@@ -220,7 +220,7 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th>索引</th>
+                        <th>目录</th>
                         <th>真实姓名</th>
                         <th>孩子昵称</th>
                         <th>班次</th>
@@ -488,24 +488,24 @@
         })
     }
     function breakDo() {
-        //勾选的班次目录
-        var catalogIds = []
-        $("#ordersBody").find("input[type='checkbox']:checked").each(function () {
-            catalogIds.push($(this).attr("value"))
-        })
+        //勾选的首个班次目录
+        var firstClassCatalogId = $("#ordersBody").find("input[type='checkbox']:checked").eq(0).attr("value")
         if (!$("#breakFrm").valid()) {
             console.log("valid fail")
             return;
         }
-        if (catalogIds == undefined) {
-            console.log("catalogIds==undefined")
+        if (firstClassCatalogId == undefined) {
+            console.log("firstClassCatalogId==undefined")
             return
         }
-        console.log(catalogIds)
         $.ajax({
             type: "POST",
             url: "/auth/order/orderBreak",
-            data: {id: $("#breakId").val(), refundAmount: $("#refundAmount").val(), classCatalogIds: catalogIds},
+            data: {
+                id: $("#breakId").val(),
+                refundAmount: $("#refundAmount").val(),
+                firstClassCatalogId: firstClassCatalogId
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href)
