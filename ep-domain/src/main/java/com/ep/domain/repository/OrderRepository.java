@@ -343,7 +343,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .set(EP_ORDER.STATUS, EpOrderStatus.save)
                 .where(EP_ORDER.STATUS.eq(status))
                 .and(EP_ORDER.ID.eq(id))
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.success).or(EP_ORDER.STATUS.eq(EpOrderStatus.refuse)))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
     }

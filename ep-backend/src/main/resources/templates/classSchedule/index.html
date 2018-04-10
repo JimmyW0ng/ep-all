@@ -109,7 +109,7 @@
                                     <option value="">更改</option>
                                     <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus).values()}"
                                             th:value="${state}"
-                                            th:if="!${#strings.equals(state,bo.status)}"
+                                            th:if="!${#strings.equals(state,bo.status)}&&!${#strings.equals(state,'wait')}"
                                             th:text="#{EpOrganClassScheduleStatus.+${state.literal}}">
                                     </option>
                                 </select>

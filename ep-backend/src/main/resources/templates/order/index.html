@@ -213,6 +213,7 @@
                 <h3 style="text-align: left">订单行程如下,请您选择从哪个目录开始结束，并勾选！（退单的目录需提早30分钟）</h3>
                 <h4 style="text-align: left">订单ID:<span id="breakIdTxt"></span></h4>
                 <h4 style="text-align: left">订单费:￥<span id="orderPrizeTxt"></span>元</h4>
+                <h4 style="text-align: left" id="bespeakRemark"></h4>
 
             </div>
             <div class="modal-body">
@@ -412,7 +413,7 @@
     function orderCancelBox(ele,id) {
         var $tr = $(ele).parents("tr").eq(0)
         var statusZh = $(ele).parents("tr").eq(0).find("td[name='statusZh']").text()
-        layer.alert('确定取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
+        layer.alert('您确定要取消该[' + statusZh + ']订单?', {icon: 3, btn: ['确定', '取消']},
             function (index) {
                 orderCancelDo(id);
                 layer.close(index);
@@ -422,21 +423,7 @@
             }
     }
     function orderCancelDo(id) {
-        $.ajax({
-            type:"GET",
-            url: "/auth/order/orderCancel?id=" + id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null, document.location.href)
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
-
+        $ajaxGet("/auth/order/orderCancel?id=", id)
     }
 
     /*退单初始化*/
@@ -451,6 +438,16 @@
             success: function (data) {
                 if (data.success) {
                     var res = data.result.classScheduleBos
+                    if (res.length == 0) {
+                        $("#breakModal").find("table").hide()
+                    } else {
+                        $("#breakModal").find("table").show()
+                    }
+                    var courseNum = data.result.courseNum
+                    //预约班次退单，展示总共预约次数，已预约次数
+                    if (courseNum != undefined) {
+                        $("#bespeakRemark").html("总共可预约" + courseNum + "次，已预约" + res.length + "次")
+                    }
                     var currentTime = data.result.currentTime
                     var orderPrize = data.result.orderPrize
                     $("#orderPrizeTxt").text(orderPrize)
@@ -487,12 +484,14 @@
     function breakDo() {
         //勾选的首个班次目录
         var firstClassCatalogId = $("#ordersBody").find("input[type='checkbox']:checked").eq(0).attr("value")
+        var len = $("#ordersBody").find("input[type='checkbox']").length
         if (!$("#breakFrm").valid()) {
             console.log("valid fail")
             return;
         }
-        if (firstClassCatalogId == undefined) {
+        if (firstClassCatalogId == undefined && len > 0) {
             console.log("firstClassCatalogId==undefined")
+            toastr.error("请勾选目录！")
             return
         }
         $.ajax({
