@@ -12,6 +12,7 @@ import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildChildSex;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,11 +46,11 @@ public class MemberChildService {
     @Autowired
     private OrganClassRepository organClassRepository;
     @Autowired
-    private OrganAccountRepository organAccountRepository;
-    @Autowired
     private OrganClassChildRepository organClassChildRepository;
     @Autowired
     private MemberChildCommentRepository memberChildCommentRepository;
+    @Autowired
+    private OrganClassScheduleRepository organClassScheduleRepository;
 
     /**
      * 新增孩子信息
@@ -372,5 +373,32 @@ public class MemberChildService {
         return resultDo.setResult(abstractBo);
     }
 
-
+    /**
+     * 查看孩子预约信息
+     *
+     * @param classId
+     * @param childId
+     * @param organAccountPo
+     * @return
+     */
+    public ResultDo<List<ClassChildBespeakBo>> getClassChildBespeakInfo(Long classId, Long childId, EpOrganAccountPo organAccountPo) {
+        ResultDo<List<ClassChildBespeakBo>> resultDo = ResultDo.build();
+        // 校验课程
+        EpOrganClassPo classPo = organClassRepository.getById(classId);
+        if (classPo == null || classPo.getDelFlag() || !EpOrganClassType.bespeak.equals(classPo.getType())) {
+            log.error("班次不存在, classId={}", classId);
+            return resultDo.setError(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
+            log.error("课程未上线, classId={}, status={}", classId, classPo.getStatus().getName());
+            return resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
+        }
+        // 校验班次负责人
+        if (!organAccountPo.getId().equals(classPo.getOgnAccountId())) {
+            log.error("当前机构账户不是班次负责人, accountId={}, classId={}", organAccountPo.getId(), classId);
+            return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
+        }
+        List<ClassChildBespeakBo> classCatalogs = organClassScheduleRepository.findBespeakClassScheduleByClassId(classId, childId);
+        return resultDo.setResult(classCatalogs);
+    }
 }

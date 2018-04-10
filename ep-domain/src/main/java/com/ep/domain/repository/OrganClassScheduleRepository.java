@@ -250,6 +250,39 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     }
 
     /**
+     * 机构端-获取预约类型的班次全部课时
+     *
+     * @param classId
+     * @param childId
+     * @return
+     */
+    public List<ClassChildBespeakBo> findBespeakClassScheduleByClassId(Long classId, Long childId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        return dslContext.select(fieldList)
+                         .from(EP_ORGAN_CLASS_SCHEDULE)
+                         .innerJoin(EP_ORGAN_CLASS)
+                         .on(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                         .and(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak))
+                         .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                         .leftJoin(EP_ORGAN_COURSE)
+                         .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                         .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                         .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID.eq(childId))
+                         .and(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.isNull())
+                         .orderBy(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX)
+                         .fetchInto(ClassChildBespeakBo.class);
+    }
+
+    /**
      * 根据id更新行程
      *
      * @param po

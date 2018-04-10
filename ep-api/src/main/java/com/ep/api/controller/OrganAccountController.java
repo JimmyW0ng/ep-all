@@ -122,6 +122,15 @@ public class OrganAccountController extends ApiController {
         return organClassChildService.findChildrenByClassId(classId, organAccountPo);
     }
 
+    @ApiOperation(value = "查看班次孩子预约信息")
+    @PostMapping("/class/child/bespeak")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<List<ClassChildBespeakBo>> getClassChildBespeakInfo(@RequestParam("classId") Long classId,
+                                                                        @RequestParam("childId") Long childId) {
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return memberChildService.getClassChildBespeakInfo(classId, childId, organAccountPo);
+    }
+
     @ApiOperation(value = "查看班次孩子摘要信息")
     @PostMapping("/class/child/abstract")
     @PreAuthorize("hasAnyAuthority('api:base')")
