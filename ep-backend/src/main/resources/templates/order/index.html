@@ -439,7 +439,7 @@
 
     }
 
-    /*退单*/
+    /*退单初始化*/
     function breakInit(id) {
         $("#breakModal").find("input").val("")
 
@@ -483,6 +483,7 @@
             },
         })
     }
+    /*退单*/
     function breakDo() {
         //勾选的首个班次目录
         var firstClassCatalogId = $("#ordersBody").find("input[type='checkbox']:checked").eq(0).attr("value")
