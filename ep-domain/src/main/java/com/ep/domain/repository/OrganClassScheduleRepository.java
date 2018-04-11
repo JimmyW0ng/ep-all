@@ -258,11 +258,13 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
      */
     public List<ClassChildBespeakBo> findBespeakClassScheduleByClassId(Long classId, Long childId) {
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.ID.as("classScheduleId"));
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
