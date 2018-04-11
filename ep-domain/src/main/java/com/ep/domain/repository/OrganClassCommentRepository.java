@@ -32,6 +32,14 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
         super(dslContext, EP_ORGAN_CLASS_COMMENT, EP_ORGAN_CLASS_COMMENT.ID, EpOrganClassCommentPo.class);
     }
 
+    public Optional<EpOrganClassCommentPo> findById(Long id) {
+        EpOrganClassCommentPo data = dslContext.selectFrom(EP_ORGAN_CLASS_COMMENT)
+                .where(EP_ORGAN_CLASS_COMMENT.ID.eq(id))
+                .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrganClassCommentPo.class);
+        return Optional.ofNullable(data);
+    }
+
     /**
      * 获取课程班次精选评论
      *

@@ -141,7 +141,6 @@
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info" style="display: none"
                                    th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>
-
                                 <a name="refuse" class="btn btn-xs btn-danger" style="display: none"
                                    href="javascript:void(0)"
                                    th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>
@@ -149,7 +148,7 @@
                                    th:value="${bo.status}"
                                    th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
                                 <a name="bespeak" class="btn btn-xs btn-info" style="display: none"
-                                   th:if="${#strings.equals(bo.classType,'bespeak')}"
+                                   th:if="${#strings.equals(bo.classType,'bespeak')&&#strings.equals(bo.status,'success')}"
                                    th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>
                                 <a name="break" class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    style="display: none"

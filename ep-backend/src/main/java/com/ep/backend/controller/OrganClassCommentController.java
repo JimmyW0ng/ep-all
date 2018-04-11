@@ -1,11 +1,15 @@
 package com.ep.backend.controller;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
+import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import com.ep.domain.service.OrganClassCommentService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -28,6 +33,7 @@ import static com.ep.domain.repository.domain.Tables.*;
  * @Author: CC.F
  * @Date: 0:47 2018/3/18
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/classComment")
 public class OrganClassCommentController extends BackendController {
@@ -84,6 +90,9 @@ public class OrganClassCommentController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classComment:index')")
     @ResponseBody
     public ResultDo chosen(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organClassCommentService.chosen(id);
     }
 
@@ -97,6 +106,35 @@ public class OrganClassCommentController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classComment:index')")
     @ResponseBody
     public ResultDo unchosen(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         return organClassCommentService.unchosen(id);
+    }
+
+    /**
+     * 校验业务对象是否属于该机构，是：返回po;否：返回null
+     *
+     * @param sourceId
+     * @param ognId
+     * @return
+     */
+    private EpOrganClassCommentPo innerOgnOrPlatformReq(Long sourceId, Long ognId) {
+        if (sourceId == null) {
+            return null;
+        }
+        Optional<EpOrganClassCommentPo> optional = organClassCommentService.findById(sourceId);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        if (ognId == null) {
+            return optional.get();
+        }
+        if (optional.get().getOgnId().equals(ognId)) {
+            return optional.get();
+        } else {
+            log.error(SpringComponent.messageSource("ERROR_ILLEGAL_RESOURCE"));
+            return null;
+        }
     }
 }

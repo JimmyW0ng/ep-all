@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-
 <head>
     <meta charset="utf-8">
     <title>EP后台 - 登录</title>
@@ -17,9 +16,7 @@
         window.top.location = window.location;
     }</script>
 </head>
-<body>
 <body class="gray-bg">
-
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
@@ -61,7 +58,6 @@
 <script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
 <script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
 <th:block layout:fragment="scripts">
-
     <script th:inline="javascript">
         function reImg() {
             var img = document.getElementById("captchaPng");

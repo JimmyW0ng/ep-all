@@ -368,9 +368,14 @@
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
     var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic"});
-    //wangEditor富文本
-    //    var E = window.wangEditor
-    //    var editor = new E('#editor')
+    //organCoursePo.EnterTimeEnd提交框name属性
+    function organCoursePoEnterTimeEnd() {
+        if ($("#enterTimeEnd").val()) {
+            $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+        } else {
+            $("#enterTimeEnd").attr("name", "")
+        }
+    }
 
     /* 上传宣传图*/
     function uploadMainpicImg($btn, ele) {
@@ -467,19 +472,6 @@
         })
     }
 
-    function beforeSubmitFormatDateInputName() {
-        if (!$("#enterTimeEnd").val()) {
-            $("#enterTimeEnd").attr("name", "")
-        }
-
-    }
-
-    function resetFrmDateInputName() {
-        if (!$("#enterTimeEnd").attr("name")) {
-            $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
-        }
-
-    }
 
     /*校验产品内容的图片*/
     function beforeSubmitCheckCourseDescPic() {
@@ -532,6 +524,7 @@
 
     function frmSubmit() {
         beforeSubmitAbledOrganClassCatalogPos()
+        organCoursePoEnterTimeEnd()
         if (!$("#courseId").val()) {
             return
         }
@@ -546,22 +539,14 @@
             toastr.error("班次目录开始时间必须早于当前时间30分钟以上")
             return
         }
-        resetFrmDateInputName()
         beforeSubmitFormatInputInnerName()
-        beforeSubmitFormatDateInputName()
 
         beforeSubmitCheckCourseDescPic()
-
-//        if (editor.txt.text() == "") {
-//            toastr.error("请填写产品内容！")
-//            return
-//        }
         if (UM.getEditor('umeditor').getContentTxt() == "") {
             toastr.error("请填写产品内容！")
             return
         }
         beforeSubmitCourseContent($("#umeditor").html());
-//        beforeSubmitCourseContent(editor.txt.html());
 
         var url = "/auth/organCourse/merchantRectify"
 
@@ -569,6 +554,9 @@
             type: "POST",
             data: $("#frm").serialize(),
             url: url,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.referrer)
@@ -580,7 +568,7 @@
                 toastr_error_system(XMLHttpRequest.status);
             },
             complete: function () {
-                $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+                layer.closeAll();
             }
         })
     }
@@ -726,25 +714,6 @@
                 trigger: 'click'
             });
         });
-
-
-        // 或者 var editor = new E( document.getElementById('#editor') )
-        // 配置服务器端地址
-//        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-//        editor.customConfig.uploadFileName = 'file'
-//        editor.customConfig.uploadImgMaxLength = 1
-//        editor.customConfig.uploadImgHooks = {
-//            success: function (xhr, editor, result) {
-//                // 图片上传并返回结果，图片插入成功之后触发
-//                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-//                var $img = $("#editor").find("img[name=" + result.name + "]")
-//                if ($img.length == 1) {
-//                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
-//                }
-//
-//            },
-//        }
-//        editor.create()
 
         $("#frm").validate({
             rules: {

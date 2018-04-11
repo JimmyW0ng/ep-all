@@ -165,4 +165,8 @@ public class OrganClassCommentService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
+    public Optional<EpOrganClassCommentPo> findById(Long id) {
+        return organClassCommentRepository.findById(id);
+    }
 }

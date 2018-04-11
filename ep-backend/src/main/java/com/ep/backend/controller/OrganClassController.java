@@ -32,7 +32,7 @@ import java.util.Optional;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS;
 
 /**
- * @Description: 开班控制器
+ * @Description: 班次控制器
  * @Author: CC.F
  * @Date: 9:30 2018/3/2
  */

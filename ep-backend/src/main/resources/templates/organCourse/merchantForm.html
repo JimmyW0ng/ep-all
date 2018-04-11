@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="enterTimeEnd">报名结束时间 </label>
-                                    <input id="enterTimeEnd" name="organCoursePo.enterTimeEnd" type="text"
+                                    <input id="enterTimeEnd" name="" type="text"
                                            class="form-control laydate"
                                            th:value="${#dates.format(organCoursePo.enterTimeEnd,'yyyy-MM-dd HH:mm:ss')}">
 
@@ -396,6 +396,15 @@
 <script th:inline="javascript">
     var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic",});
 
+    //organCoursePo.EnterTimeEnd提交框name属性
+    function organCoursePoEnterTimeEnd() {
+        if ($("#enterTimeEnd").val()) {
+            $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+        } else {
+            $("#enterTimeEnd").attr("name", "")
+        }
+    }
+
     //科目一级目录
     function changeFirstCatalog() {
         var firstConstantCatalogId = $("#firstConstantCatalogId").val()
@@ -450,7 +459,6 @@
     /* 上传宣传图 */
     function uploadMainpicImg($btn, ele) {
         $btn.attr("disabled", true)
-
         data = new FormData();
         data.append("file", $("#mainpic_img")[0].files[0]);
         $.ajax({
@@ -459,6 +467,9 @@
             data: data,
             contentType: false,
             processData: false,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     $("#mainpic_img_url").attr("src", data.result.fileUrl)
@@ -473,6 +484,7 @@
             complete: function () {
                 $(ele).attr("value", null);
                 $btn.attr("disabled", false)
+                layer.closeAll();
             }
         })
     }
@@ -674,12 +686,6 @@
         })
     }
 
-    function beforeSubmitFormatDateInputName() {
-        if (!$("#enterTimeEnd").val()) {
-            $("#enterTimeEnd").attr("name", "")
-        }
-    }
-
     function beforeSubmitFormatInputInnerName() {
         var $organClassBos = $("div.organClassBos")
         for (var i = 0; i < $organClassBos.length; i++) {
@@ -716,12 +722,6 @@
                 })
                 tagCount++;
             }
-        }
-    }
-
-    function resetFrmDateInputName() {
-        if (!$("#enterTimeEnd").attr("name")) {
-            $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
         }
     }
 
@@ -771,17 +771,15 @@
 
     function frmSubmit() {
         beforeValidAbledOrganClassCatalogPos()
-
+        organCoursePoEnterTimeEnd()
 
         if (!$("#frm").valid()) {
             console.log("valid fail")
             return;
         }
 
-        resetFrmDateInputName()
 
         beforeSubmitFormatInputInnerName()
-        beforeSubmitFormatDateInputName()
 
         if (UM.getEditor('umeditor').getContentTxt() == "") {
             toastr.error("请填写产品内容！")
@@ -813,6 +811,9 @@
             type: "POST",
             data: $("#frm").serialize(),
             url: url,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.referrer)
@@ -824,7 +825,8 @@
                 toastr_error_system(XMLHttpRequest.status);
             },
             complete: function () {
-                $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+//                $("#enterTimeEnd").attr("name", "organCoursePo.enterTimeEnd")
+                layer.closeAll();
             }
         })
     }

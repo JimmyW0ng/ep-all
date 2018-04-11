@@ -144,9 +144,8 @@
 </script>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
+<script th:src="@{/modules/enums.js}"></script>
 <script type="text/javascript">
-    var epOrganClassType = {normal: "正常", bespeak: "预约"}
-    var epOrganClassStatus = {save: "已保存", online: "已上线", opening: "已上线", end: "已下线"}
 
     function viewEnteredClass(childId, childNickName) {
         $("#enteredClassModal").modal("show")
