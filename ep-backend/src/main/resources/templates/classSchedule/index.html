@@ -109,7 +109,7 @@
                                     <option value="">更改</option>
                                     <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus).values()}"
                                             th:value="${state}"
-                                            th:if="!${#strings.equals(state,bo.status)}&&!${#strings.equals(state,'wait')}"
+                                            th:if="${!#strings.equals(state,bo.status)&&!#strings.equals(state,'wait')}"
                                             th:text="#{EpOrganClassScheduleStatus.+${state.literal}}">
                                     </option>
                                 </select>
@@ -128,7 +128,7 @@
                             <td name="button">
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.type,'launch')}"
                                    href="javascript:void(0)"
-                                   th:onclick="'viewContent(this)'">查看</a>
+                                   th:onclick="'viewContentAndTag(this)'">查看</a>
                                 <!--<a class="btn btn-xs btn-info"-->
                                 <!--th:if="${null==bo.replyId&&null==bo.launchId&&organAccountId==classOgnAccountId&&organAccountId!=null}"-->
                                 <!--href="javascript:void(0)"-->
@@ -173,7 +173,7 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal" id="viewContentModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="viewContentAndTagModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
 
@@ -200,11 +200,10 @@
     </div>
 </div>
 
-<script type="text/template" id='ognTagTmpl'>
+<script type="text/template" id='tagTmpl'>
     <div class="col-sm-4" style="margin-bottom: 20px">
         <input name="childId" type="hidden" value=${childId}>
         <input name="classCatalogId" type="hidden" value=${classCatalogId}>
-        <input type="checkbox" name="tagId" value="${tagId}">
         <span class="label">${tagName}</span>
     </div>
 </script>
@@ -337,20 +336,11 @@
             success: function (data) {
                 if (data.success) {
                     console.log(data.result)
-                    var tag = data.result.organCourseTagBos
+
                     var memberChildTagPos = data.result.memberChildTagPos
 
                     $("#uploadChildTagModal").modal("show")
-                    $("#uploadChildTagBox").html($("#ognTagTmpl").tmpl(tag));
-                    $("#uploadChildTagBox").find("input[type='checkbox']").each(function () {
-                        var id = $(this).val()
-                        for (var item in memberChildTagPos) {
-                            if (memberChildTagPos[item].tagId == id) {
-                                $(this).attr("checked", true)
-                                $(this).after('<input name="id" type="hidden" value="' + memberChildTagPos[item].id + '">')
-                            }
-                        }
-                    })
+                    $("#uploadChildTagBox").html($("#tagTmpl").tmpl(memberChildTagPos));
 
 
                 }
@@ -358,8 +348,8 @@
         })
     }
     /* 查看评价详情*/
-    function viewContent(ele) {
-        $("#viewContentModal").modal("show")
+    function viewContentAndTag(ele) {
+        $("#viewContentAndTagModal").modal("show")
         var content = $(ele).parent().siblings("td").find("p[name='content']").eq(0).text()
         var contentReply = $(ele).parent().siblings("td").find("p[name='contentReply']").eq(0).text()
         $("#p_content").text(content)
@@ -374,7 +364,7 @@
                     var tag = data.result.organCourseTagBos
                     var memberChildTagPos = data.result.memberChildTagPos
 
-                    $("#viewChildTagBox").html($("#ognTagTmpl").tmpl(tag));
+                    $("#viewChildTagBox").html($("#tagTmpl").tmpl(tag));
                     $("#viewChildTagBox").find("input[type='checkbox']").each(function () {
                         var id = $(this).val()
                         for (var item in memberChildTagPos) {

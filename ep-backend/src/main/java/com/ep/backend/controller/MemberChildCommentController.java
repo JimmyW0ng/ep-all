@@ -45,17 +45,12 @@ public class MemberChildCommentController extends BackendController {
     @ResponseBody
     public ResultDo updateChildTagInit(
             @RequestParam(value = "childId") Long childId,
-            @RequestParam(value = "courseId") Long courseId,
             @RequestParam(value = "classCatalogId") Long classScheduleId
     ) {
         ResultDo resultDo = ResultDo.build();
         Map<String, Object> map = Maps.newHashMap();
-        //课程标签
-        List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
-
         //拥有标签
         List<EpMemberChildTagPo> memberChildTagPos = memberChildTagService.findByChildIdAndClassCatalogId(childId, classScheduleId);
-        map.put("organCourseTagBos", organCourseTagBos);
         map.put("memberChildTagPos", memberChildTagPos);
         resultDo.setResult(map);
         return resultDo;
