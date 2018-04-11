@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * @Description: 机构课程服务类
+ * @Description: 机构产品服务类
  * @Author: J.W
  * @Date: 上午9:30 2018/1/14
  */
@@ -61,7 +61,7 @@ public class OrganCourseService {
 
 
     /**
-     * 根据id获取机构课程
+     * 根据id获取机构产品
      *
      * @param id
      * @return
@@ -71,7 +71,7 @@ public class OrganCourseService {
     }
 
     /**
-     * 前提－课程明细
+     * 前提－产品明细
      *
      * @param courseId
      * @return
@@ -125,7 +125,7 @@ public class OrganCourseService {
     }
 
     /**
-     * 查询机构课程列表-分页
+     * 查询机构产品列表-分页
      *
      * @param pageable
      * @param ognId
@@ -145,7 +145,7 @@ public class OrganCourseService {
     }
 
     /**
-     * 后台机构课程分页列表
+     * 后台机构产品分页列表
      *
      * @param pageable
      * @param condition
@@ -156,25 +156,25 @@ public class OrganCourseService {
     }
 
     /**
-     * 商户后台创建课程
+     * 商户后台创建产品
      * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_course_team，ep_organ_course_tag
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo createOrganCourseByMerchant(CreateOrganCourseDto dto, Long ognId) {
-        log.info("[课程]创建课程开始。课程dto={}。", dto);
+        log.info("[产品]创建产品开始。产品dto={}。", dto);
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
         if (null == organCoursePo) {
-            log.error("[课程]新增课程失败。organCoursePo=null。");
+            log.error("[产品]新增产品失败。organCoursePo=null。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         organCoursePo.setOgnId(ognId);
         if (!checkPoParams(organCoursePo)) {
-            log.error("[课程]新增课程失败。请求参数异常。");
+            log.error("[产品]新增产品失败。请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         if (CollectionsTools.isEmpty(organClassBos)) {
-            log.error("[课程]新增课程失败,请求参数异常,organClassBos为空。");
+            log.error("[产品]新增产品失败,请求参数异常,organClassBos为空。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
@@ -182,15 +182,15 @@ public class OrganCourseService {
         //获取最低价格start
         BigDecimal priceMin = getCoursePriceMin(organClassBos);
         //获取最低价格end
-        //机构课程表插入数据
+        //机构产品表插入数据
         organCoursePo.setPrizeMin(priceMin);
         organCoursePo.setCourseStatus(EpOrganCourseCourseStatus.save);
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
-        log.info("[课程]机构课程表ep_organ_course插入数据。{}。", organCoursePo);
+        log.info("[产品]机构产品表ep_organ_course插入数据。{}。", organCoursePo);
         organCourseRepository.insert(organCoursePo);
         Long insertOrganCourseId = organCoursePo.getId();
-        //课程负责人账户id集合
+        //产品负责人账户id集合
         Set<Long> ognAccountIds = Sets.newHashSet();
         organClassBos.forEach(organClassBo -> {
             ognAccountIds.add(organClassBo.getOgnAccountId());
@@ -201,8 +201,8 @@ public class OrganCourseService {
             organClassPo.setStatus(EpOrganClassStatus.save);
             organClassPo.setEnteredNum(BizConstant.ORGAN_CLASS_INIT_ENTERED_NUM);
             organClassPo.setOrderedNum(BizConstant.ORGAN_CLASS_INIT_ORDERED_NUM);
-            //机构课程班次表插入数据
-            log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
+            //机构产品班次表插入数据
+            log.info("[产品]机构产品班次表ep_organ_class插入数据。{}。", organClassPo);
             organClassRepository.insert(organClassPo);
             Long insertOrganClassId = organClassPo.getId();
             List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
@@ -210,22 +210,22 @@ public class OrganCourseService {
                 for (int i = 0; i < organClassCatalogPos.size(); i++) {
                     organClassCatalogPos.get(i).setClassId(insertOrganClassId);
                 }
-                //班次课程内容目录表 插入数据
-                log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
+                //班次产品内容目录表 插入数据
+                log.info("[产品]班次产品内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
                 organClassCatalogRepository.insert(organClassCatalogPos);
             }
         });
-
+        //机构产品团队信息list
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(ognAccountIds)) {
             ognAccountIds.forEach(ognAccountId -> {
                 organCourseTeamPos.add(new EpOrganCourseTeamPo(null, insertOrganCourseId, ognAccountId, null, null, null, null, null, null));
             });
         }
-        //机构课程团队信息表插入数据
-        log.info("[课程]机构课程团队信息表ep_organ_course_team插入数据。{}。", organCourseTeamPos);
+        //机构产品团队信息表插入数据
+        log.info("[产品]机构产品团队信息表ep_organ_course_team插入数据。{}。", organCourseTeamPos);
         organCourseTeamRepository.insert(organCourseTeamPos);
-
+        //产品标签list
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(constantTagPos)) {
             constantTagPos.forEach(constantTagPo -> {
@@ -234,86 +234,84 @@ public class OrganCourseService {
                 insertOrganCourseTagPo.setCourseId(insertOrganCourseId);
                 insertOrganCourseTagPos.add(insertOrganCourseTagPo);
             });
-            //课程标签表插入数据
-            log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
+            //产品标签表插入数据
+            log.info("[产品]产品标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
             organCourseTagRepository.insert(insertOrganCourseTagPos);
         }
-
-
-
-        //课程主图
+        //产品主图
         if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
-            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
+            log.info("[产品]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
             fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), insertOrganCourseId);
         }
-        //课程内容图片
+        //产品内容图片
         if (CollectionsTools.isNotEmpty(courseDescPicPreCodes)) {
             courseDescPicPreCodes.forEach(proCode -> {
                 fileRepository.updateSourceIdByPreCode(proCode, insertOrganCourseId);
             });
-            log.info("[课程]文件表ep_file更新数据。内容图片courseDescPicPreCodes={}。", courseDescPicPreCodes);
+            log.info("[产品]文件表ep_file更新数据。内容图片courseDescPicPreCodes={}。", courseDescPicPreCodes);
         }
-        log.info("[课程]创建课程成功。课程id={}。", insertOrganCourseId);
+        log.info("[产品]创建产品成功。产品id={}。", insertOrganCourseId);
         return ResultDo.build();
     }
 
     /**
-     * 商户后台更新课程
+     * 商户后台更新产品
      * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_course_team，ep_organ_course_tag
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo updateOrganCourseByMerchant(CreateOrganCourseDto dto, Long ognId) {
-        log.info("[课程]修改课程开始。课程dto={}。", dto);
-        //课程对象
+        log.info("[产品]修改产品开始。产品dto={}。", dto);
+        //产品对象
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
         if (null == organCoursePo) {
-            log.error("[课程]修改课程失败。organCoursePo=null。");
+            log.error("[产品]修改产品失败。organCoursePo=null。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         organCoursePo.setOgnId(ognId);
         if (null == organCoursePo.getId() || !checkPoParams(organCoursePo)) {
-            log.error("[课程]修改课程失败。接受参数异常。");
+            log.error("[产品]修改产品失败。接受参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         Optional<EpOrganCoursePo> optional = organCourseRepository.findById(organCoursePo.getId());
         if (!optional.isPresent()) {
-            log.error("[课程]修改课程失败。该课程不存在。");
+            log.error("[产品]修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         //班次
         List<OrganClassBo> organClassBos = dto.getOrganClassBos();
         if (CollectionsTools.isEmpty(organClassBos)) {
-            log.error("[课程]修改课程失败,请求参数异常,organClassBos为空。");
+            log.error("[产品]修改产品失败,请求参数异常,organClassBos为空。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         //标签
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
-
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
         //获取最低价格start
         BigDecimal priceMin = getCoursePriceMin(organClassBos);
-
         //获取最低价格end
         organCoursePo.setPrizeMin(priceMin);
-        //机构课程表更新数据
-        log.info("[课程]机构课程表ep_organ_course修改数据。{}。", organCoursePo);
-        organCourseRepository.updateByIdLock(organCoursePo);
-        //课程id
+        //机构产品表更新数据
+        log.info("[产品]机构产品表ep_organ_course修改数据。{}。", organCoursePo);
+        //加行级锁
+        EpOrganCourseCourseStatus courseStatus = organCourseRepository.getByIdWithLock(organCoursePo.getId()).getCourseStatus();
+        //更新产品po
+        if (courseStatus.equals(EpOrganCourseCourseStatus.save)) {
+            organCourseRepository.updateById(organCoursePo);
+        }
+        //产品id
         Long organCourseId = organCoursePo.getId();
-
+        //该产品下班次id
         List<Long> classIds = organClassRepository.findClassIdsByCourseId(organCourseId);
         //物理删除班次目录
         organClassCatalogRepository.deletePhysicByClassIds(classIds);
         //物理删除班次
         organClassRepository.deletePhysicByCourseId(organCourseId);
-        //物理删除课程标签
+        //物理删除产品标签
         organCourseTagRepository.deletePhysicByCourseId(organCourseId);
-        //物理删除 机构类目表 记录
-//        organCatalogRepository.deletePhysicByOgnId(ognId);
-        //物理删除 机构课程团队信息表 记录
+        //物理删除 机构产品团队信息表 记录
         organCourseTeamRepository.deletePhysicByCourseId(organCourseId);
-        //课程负责人账户id集合
+        //产品负责人账户id集合
         Set<Long> ognAccountIds = Sets.newHashSet();
         organClassBos.forEach(organClassBo -> {
             ognAccountIds.add(organClassBo.getOgnAccountId());
@@ -325,8 +323,8 @@ public class OrganCourseService {
             organClassPo.setStatus(EpOrganClassStatus.save);
             organClassPo.setEnteredNum(BizConstant.ORGAN_CLASS_INIT_ENTERED_NUM);
             organClassPo.setOrderedNum(BizConstant.ORGAN_CLASS_INIT_ORDERED_NUM);
-            //机构课程班次表插入数据
-            log.info("[课程]机构课程班次表ep_organ_class插入数据。{}。", organClassPo);
+            //机构产品班次表插入数据
+            log.info("[产品]机构产品班次表ep_organ_class插入数据。{}。", organClassPo);
             organClassRepository.insert(organClassPo);
             Long insertOrganClassId = organClassPo.getId();
             List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
@@ -335,24 +333,22 @@ public class OrganCourseService {
                     organClassCatalogPos.get(i).setClassId(insertOrganClassId);
                     organClassCatalogPos.get(i).setId(null);
                 }
-                //班次课程内容目录表插入数据
-                log.info("[课程]班次课程内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
+                //班次产品内容目录表插入数据
+                log.info("[产品]班次产品内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
                 organClassCatalogRepository.insert(organClassCatalogPos);
             }
         });
-
-        //机构课程团队信息表插入数据start
+        //机构产品团队信息表插入数据start
         List<EpOrganCourseTeamPo> organCourseTeamPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(ognAccountIds)) {
             ognAccountIds.forEach(ognAccountId -> {
                 organCourseTeamPos.add(new EpOrganCourseTeamPo(null, organCourseId, ognAccountId, null, null, null, null, null, null));
             });
         }
-        log.info("[课程]机构课程团队信息表ep_organ_course_team插入数据。{}。", organCourseTeamPos);
+        log.info("[产品]机构产品团队信息表ep_organ_course_team插入数据。{}。", organCourseTeamPos);
         organCourseTeamRepository.insert(organCourseTeamPos);
-        //机构课程团队信息表插入数据end
-
-        //课程标签表插入数据start
+        //机构产品团队信息表插入数据end
+        //产品标签表插入数据start
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(constantTagPos)) {
             constantTagPos.forEach(constantTagPo -> {
@@ -361,20 +357,17 @@ public class OrganCourseService {
                 insertOrganCourseTagPo.setCourseId(organCourseId);
                 insertOrganCourseTagPos.add(insertOrganCourseTagPo);
             });
-            log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
+            log.info("[产品]产品标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
             organCourseTagRepository.insert(insertOrganCourseTagPos);
-            //课程标签表插入数据end
+            //产品标签表插入数据end
         }
-
-
-
         //主图
         if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
             fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, organCourseId);
-            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
+            log.info("[产品]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
             fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), organCourseId);
         }
-        //课程内容图片
+        //产品内容图片
         if (CollectionsTools.isNotEmpty(courseDescPicPreCodes)) {
             courseDescPicPreCodes.forEach(proCode -> {
                 fileRepository.updateSourceIdByPreCode(proCode, organCourseId);
@@ -383,43 +376,44 @@ public class OrganCourseService {
             //待删除，差集oldProCodes里有，courseDescPicPreCodes里没有
             Set<String> diffDel = Sets.difference(new HashSet<String>(oldProCodes), new HashSet<String>(courseDescPicPreCodes));
             fileRepository.deleteLogicByPreCodes(new ArrayList<String>(diffDel));
-            log.info("[课程]文件表ep_file更新数据。原内容图片oldProCodes={},新内容图片courseDescPicPreCodes={}。", oldProCodes, courseDescPicPreCodes);
+            log.info("[产品]文件表ep_file更新数据。原内容图片oldProCodes={},新内容图片courseDescPicPreCodes={}。", oldProCodes, courseDescPicPreCodes);
         }
-
-        log.info("[课程]修改课程成功。课程id={}。", organCourseId);
+        log.info("[产品]修改产品成功。产品id={}。", organCourseId);
         return ResultDo.build();
     }
 
     /**
-     * 商户后台紧急修改课程
+     * 商户后台紧急修改产品
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo rectifyOrganCourseByMerchant(RectifyOrganCourseDto dto) {
-        log.info("[课程]紧急修改课程开始。课程dto={}。", dto);
+        log.info("[产品]紧急修改产品开始。产品dto={}。", dto);
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
         if (null == organCoursePo) {
-            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            log.error("[产品]紧急修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         if (null == organCoursePo.getId()) {
-            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            log.error("[产品]紧急修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         Optional<EpOrganCoursePo> optional = organCourseRepository.findById(organCoursePo.getId());
         if (!optional.isPresent()) {
-            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            log.error("[产品]紧急修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
-
-
         //标签
         List<EpConstantTagPo> constantTagPos = dto.getConstantTagPos();
         //内容图片preCode
         List<String> courseDescPicPreCodes = dto.getCourseDescPicPreCodes();
-
-        //机构课程表更新数据
-        log.info("[课程紧急修改]机构课程表ep_organ_course修改数据。{}。", organCoursePo);
-        organCourseRepository.rectifyByIdLock(organCoursePo);
+        //机构产品表更新数据
+        log.info("[产品紧急修改]机构产品表ep_organ_course修改数据。{}。", organCoursePo);
+        //加行级锁
+        EpOrganCourseCourseStatus courseStatus = organCourseRepository.getByIdWithLock(organCoursePo.getId()).getCourseStatus();
+        //更新产品po
+        if (courseStatus.equals(EpOrganCourseCourseStatus.online)) {
+            organCourseRepository.rectifyById(organCoursePo);
+        }
         //班次,仅根据classCatelogId更新班次目录
         List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = dto.getRectifyOrganClassCatalogBos();
         if (CollectionsTools.isNotEmpty(rectifyOrganClassCatalogBos)) {
@@ -431,13 +425,11 @@ public class OrganCourseService {
                 }
             });
         }
-
-        //课程id
+        //产品id
         Long organCourseId = organCoursePo.getId();
-
-        //物理删除课程标签
+        //物理删除产品标签
         organCourseTagRepository.deletePhysicByCourseId(organCourseId);
-        //课程标签表插入数据start
+        //产品标签表插入数据start
         List<EpOrganCourseTagPo> insertOrganCourseTagPos = Lists.newArrayList();
         if (CollectionsTools.isNotEmpty(constantTagPos)) {
             constantTagPos.forEach(constantTagPo -> {
@@ -447,17 +439,16 @@ public class OrganCourseService {
                 insertOrganCourseTagPos.add(insertOrganCourseTagPo);
             });
         }
-        log.info("[课程]课程标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
+        log.info("[产品]产品标签表ep_organ_course_tag插入数据。{}。", insertOrganCourseTagPos);
         organCourseTagRepository.insert(insertOrganCourseTagPos);
-        //课程标签表插入数据end
-
+        //产品标签表插入数据end
         //主图
         if (StringTools.isNotBlank(dto.getMainpicUrlPreCode())) {
             fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, organCourseId);
-            log.info("[课程]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
+            log.info("[产品]文件表ep_file更新数据。biz_type_code={},source_id={}。", dto.getMainpicUrlPreCode(), insertOrganCourseTagPos);
             fileRepository.updateSourceIdByPreCode(dto.getMainpicUrlPreCode(), organCourseId);
         }
-        //课程内容图片
+        //产品内容图片
         if (CollectionsTools.isNotEmpty(courseDescPicPreCodes)) {
             courseDescPicPreCodes.forEach(proCode -> {
                 fileRepository.updateSourceIdByPreCode(proCode, organCourseId);
@@ -466,15 +457,14 @@ public class OrganCourseService {
             //待删除，差集oldProCodes里有，courseDescPicPreCodes里没有
             Set<String> diffDel = Sets.difference(new HashSet<String>(oldProCodes), new HashSet<String>(courseDescPicPreCodes));
             fileRepository.deleteLogicByPreCodes(new ArrayList<String>(diffDel));
-            log.info("[课程]文件表ep_file更新数据。原内容图片oldProCodes={},新内容图片courseDescPicPreCodes={}。", oldProCodes, courseDescPicPreCodes);
+            log.info("[产品]文件表ep_file更新数据。原内容图片oldProCodes={},新内容图片courseDescPicPreCodes={}。", oldProCodes, courseDescPicPreCodes);
         }
-
-        log.info("[课程]紧急修改课程成功。课程id={}。", organCourseId);
+        log.info("[产品]紧急修改产品成功。产品id={}。", organCourseId);
         return ResultDo.build();
     }
 
     /**
-     * 根据课程id删除课程
+     * 根据产品id删除产品
      * 涉及ep_organ_course，ep_organ_class，ep_organ_class_catalog，ep_organ_catalog，ep_organ_course_team，ep_organ_course_tag
      * ep_file
      *
@@ -482,50 +472,49 @@ public class OrganCourseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo deleteCourseByCourseId(Long courseId, Long ognId) {
-        log.info("[课程]删除课程开始。课程id={},机构id={}。", courseId, ognId);
+        log.info("[产品]删除产品开始。产品id={},机构id={}。", courseId, ognId);
         Optional<EpOrganCoursePo> optional = organCourseRepository.findById(courseId);
         if (!optional.isPresent()) {
-            log.error("[课程]删除课程失败，该课程不存在。课程id={}。", courseId);
+            log.error("[产品]删除产品失败，该产品不存在。产品id={}。", courseId);
             ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
-        //课程表 逻辑删除
+        //产品表 逻辑删除
         organCourseRepository.deleteLogicById(courseId);
         //班次表 逻辑删除
         List<Long> classIds = organClassRepository.deleteLogicByCourseId(courseId);
         //班次目录表 逻辑删除
         organClassCatalogRepository.deleteLogicByClassIds(classIds);
-        //课程标签 逻辑删除
+        //产品标签 逻辑删除
         organCourseTagRepository.deleteLogicByCourseId(courseId);
-
         //主图 逻辑删除
         fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_MAIN_PIC, courseId);
         //内容图片 逻辑删除
         fileRepository.deleteLogicByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_COURSE_DESC_PIC, courseId);
         organCourseTeamRepository.deletePhysicByCourseId(courseId);
-        log.info("[课程]删除课程成功。课程id={}。", courseId);
+        log.info("[产品]删除产品成功。产品id={}。", courseId);
         return ResultDo.build();
     }
 
     /**
-     * 课程上线
+     * 产品上线
      *
      * @param currentUser
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
     public ResultDo onlineById(EpSystemUserPo currentUser, Long id) {
-        log.info("机构上线课程, sysUserId={}, courseId={}", currentUser.getId(), id);
+        log.info("机构上线产品, sysUserId={}, courseId={}", currentUser.getId(), id);
         EpOrganCoursePo coursePo = organCourseRepository.getById(id);
         if (coursePo == null || coursePo.getDelFlag()) {
-            log.error("课程不存在, courseId={}", id);
+            log.error("产品不存在, courseId={}", id);
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         if (!coursePo.getCourseStatus().equals(EpOrganCourseCourseStatus.save)) {
-            log.error("课程不是已保存状态, courseId={}, status={}", id, coursePo.getCourseStatus());
+            log.error("产品不是已保存状态, courseId={}, status={}", id, coursePo.getCourseStatus());
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_SAVE);
         }
         if (!coursePo.getOgnId().equals(currentUser.getOgnId())) {
-            log.error("课程与当前操作机构不匹配, courseId={}, courseOgnId={}, userOgnId={}", id, coursePo.getOgnId(), currentUser.getOgnId());
+            log.error("产品与当前操作机构不匹配, courseId={}, courseOgnId={}, userOgnId={}", id, coursePo.getOgnId(), currentUser.getOgnId());
             return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
         }
         // 上线
@@ -565,7 +554,7 @@ public class OrganCourseService {
     }
 
     /**
-     * 机构下线，该机构下的课程下线
+     * 机构下线，该机构下的产品下线
      *
      * @param ognId
      */
@@ -574,7 +563,7 @@ public class OrganCourseService {
     }
 
     /**
-     * 根据sourceId获取课程主图
+     * 根据sourceId获取产品主图
      *
      * @param sourceId
      * @return
@@ -589,30 +578,23 @@ public class OrganCourseService {
      * @param organClassBos
      * @return
      */
-    private BigDecimal getCoursePriceMin(List<OrganClassBo> organClassBos) {
-        BigDecimal priceMin;
-        if (CollectionsTools.isEmpty(organClassBos)) {
-            priceMin = BigDecimal.ZERO;
-            return priceMin;
-        }
-        List<BigDecimal> priceList = Lists.newArrayList();
-        organClassBos.forEach(bo -> {
-            if (bo.getDiscountAmount() != null) {
-                priceList.add(bo.getDiscountAmount());
+    private BigDecimal getCoursePriceMin(List<OrganClassBo> organClassBos) throws RuntimeException {
+        BigDecimal priceMin = organClassBos.get(BizConstant.DB_NUM_ZERO).getClassPrize();
+        for (OrganClassBo classBo : organClassBos) {
+            if (classBo.getClassPrize() == null) {
+                throw new RuntimeException("班次价格不为空");
             }
-            priceList.add(bo.getClassPrize());
-        });
-        int index = BizConstant.DB_NUM_ZERO;
-        //将最小值排至索引为0处
-        for (int j = index + 1; j < priceList.size(); j++) {
-            if (priceList.get(j).compareTo(priceList.get(index)) == -1) {
-                BigDecimal min = priceList.get(j);
-                BigDecimal max = priceList.get(index);
-                priceList.set(j, max);
-                priceList.set(index, min);
+            BigDecimal thisMin;
+            if (classBo.getDiscountAmount() != null
+                    && classBo.getDiscountAmount().compareTo(classBo.getClassPrize()) < BizConstant.DB_NUM_ZERO) {
+                thisMin = classBo.getDiscountAmount();
+            } else {
+                thisMin = classBo.getClassPrize();
+            }
+            if (thisMin.compareTo(priceMin) < BizConstant.DB_NUM_ZERO) {
+                priceMin = thisMin;
             }
         }
-        priceMin = priceList.get(0);
         return priceMin;
     }
 

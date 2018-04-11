@@ -189,6 +189,17 @@ public class OrganAccountService {
     }
 
     /**
+     * 根据机构id和状态获取教师下拉框
+     *
+     * @param ognId
+     * @param status
+     * @return
+     */
+    public List<EpOrganAccountPo> findSelectModelByOgnIdAndStatus(Long ognId, EpOrganAccountStatus[] status) {
+        return organAccountRepository.findSelectModelByOgnIdAndStatus(ognId, status);
+    }
+
+    /**
      * 根据账户id获取今日课程
      *
      * @param organAccountPo

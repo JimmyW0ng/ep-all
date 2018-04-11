@@ -454,8 +454,7 @@
     }
 
     //教师map
-    var organAccountMap = [[${organAccountMap}]]
-
+    var organAccountSelectModel = [[${organAccountSelectModel}]]
     /* 上传宣传图 */
     function uploadMainpicImg($btn, ele) {
         $btn.attr("disabled", true)
@@ -565,8 +564,8 @@
         }]
         $("#accordion").append($("#classTmpl").tmpl(classes));
         var htmls = '';
-        for (key in organAccountMap) {
-            htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
+        for (var item in organAccountSelectModel) {
+            htmls = htmls + "<option value='" + organAccountSelectModel[item].id + "'>" + organAccountSelectModel[item].accountName + "</option>"
         }
         $("#accordion").find("div[name='organClassBosBox']:last-child").find("select[name='ognAccountId']").eq(0).html(htmls);
         bindNumberInput($("#accordion"))
@@ -857,11 +856,11 @@
                 $("#accordion").append($("#classTmpl").tmpl(classes));
 
                 var htmls = '<option value="">请选择</option>';
-                for (key in organAccountMap) {
-                    if (key == organClassBos[i].ognAccountId) {
-                        htmls = htmls + "<option selected value='" + key + "'>" + organAccountMap[key] + "</option>"
+                for (var item in organAccountSelectModel) {
+                    if (organAccountSelectModel[item].id == organClassBos[i].ognAccountId) {
+                        htmls = htmls + "<option selected value='" + organAccountSelectModel[item].id + "'>" + organAccountSelectModel[item].accountName + "</option>"
                     } else {
-                        htmls = htmls + "<option value='" + key + "'>" + organAccountMap[key] + "</option>"
+                        htmls = htmls + "<option value='" + organAccountSelectModel[item].id + "'>" + organAccountSelectModel[item].accountName + "</option>"
                     }
                 }
                 $("#accordion").find("div[name='organClassBosBox']:last").find("select[name='ognAccountId']").eq(0).html(htmls);

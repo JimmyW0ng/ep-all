@@ -53,7 +53,6 @@ public class OrganClassController extends BackendController {
                         @RequestParam(value = "status", required = false) String status,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
-
     ) {
         Map map = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();

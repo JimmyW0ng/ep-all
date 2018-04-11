@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 public class EpOrganAccountPo extends AbstractBasePojo {
 
     private Long id;
-    @JsonIgnore
+    //    @JsonIgnore
     private String accountName;
     private String nickName;
     private String introduce;

@@ -36,7 +36,7 @@ import static com.ep.domain.repository.domain.Ep.EP;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_COURSE;
 
 /**
- * @Description: 机构课程控制器
+ * @Description: 机构产品控制器
  * @Author: CC.F
  * @Date: 15:46 2018/2/6
  */
@@ -66,7 +66,7 @@ public class OrganCourseController extends BackendController {
     private OrganConfigService organConfigService;
 
     /**
-     * 平台课程列表
+     * 平台产品列表
      *
      * @param model
      * @param pageable
@@ -110,7 +110,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 商家后台课程列表
+     * 商家后台产品列表
      *
      * @return
      */
@@ -150,7 +150,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 商家后台新增课程初始化
+     * 商家后台新增产品初始化
      *
      * @return
      */
@@ -162,15 +162,11 @@ public class OrganCourseController extends BackendController {
         List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
         //产品科目下拉框
         model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(ognId,
+        List<EpOrganAccountPo> organAccountSelectModel = organAccountService.findSelectModelByOgnIdAndStatus(ognId,
                 new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
-        Map<Long, String> organAccountMap = Maps.newHashMap();
-        organAccountList.forEach(p -> {
-            organAccountMap.put(p.getId(), p.getAccountName());
-        });
         //教师下拉框
-        model.addAttribute("organAccountMap", organAccountMap);
-        //课程对象
+        model.addAttribute("organAccountSelectModel", organAccountSelectModel);
+        //产品对象
         EpOrganCoursePo organCoursePo = new EpOrganCoursePo();
 
         model.addAttribute("organCoursePo", organCoursePo);
@@ -210,7 +206,7 @@ public class OrganCourseController extends BackendController {
 
 
     /**
-     * 商家后台新增课程
+     * 商家后台新增产品
      *
      * @return
      */
@@ -224,7 +220,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 商家后台查看课程
+     * 商家后台查看产品
      *
      * @return
      */
@@ -235,9 +231,8 @@ public class OrganCourseController extends BackendController {
             return "noresource";
         }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
-        //机构课程
+        //机构产品
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
-
         model.addAttribute("organCoursePo", courseOptional.get());
         Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
         if (organOptional.isPresent()) {
@@ -245,7 +240,6 @@ public class OrganCourseController extends BackendController {
             model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
             model.addAttribute("organVipName", organOptional.get().getVipName());
         }
-
         List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
         //产品科目一级下拉框
         model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
@@ -264,11 +258,9 @@ public class OrganCourseController extends BackendController {
         });
         //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
-
         //标签
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
         model.addAttribute("organCourseTagBos", organCourseTagBos);
-
         //班次
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<OrganClassBo> organClassBos = Lists.newArrayList();
@@ -281,7 +273,7 @@ public class OrganCourseController extends BackendController {
             organClassBos.add(organClassBo);
         });
         model.addAttribute("organClassBos", organClassBos);
-        //课程主图
+        //产品主图
         Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
@@ -291,7 +283,7 @@ public class OrganCourseController extends BackendController {
 
 
     /**
-     * 商家后台修改课程初始化
+     * 商家后台修改产品初始化
      *
      * @return
      */
@@ -303,19 +295,12 @@ public class OrganCourseController extends BackendController {
         }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
-
-        List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
-                new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
-        Map<Long, String> organAccountMap = Maps.newHashMap();
-        organAccountList.forEach(p -> {
-            organAccountMap.put(p.getId(), p.getAccountName());
-        });
-
         //教师下拉框
-        model.addAttribute("organAccountMap", organAccountMap);
-
+        List<EpOrganAccountPo> organAccountSelectModel = organAccountService.findSelectModelByOgnIdAndStatus(ognId,
+                new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
+        model.addAttribute("organAccountSelectModel", organAccountSelectModel);
+        //产品
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
-
         EpOrganCoursePo organCoursePo = courseOptional.get();
         Optional<EpOrganPo> organOptional = organService.getById(currentUser.getOgnId());
         if (organOptional.isPresent()) {
@@ -331,7 +316,7 @@ public class OrganCourseController extends BackendController {
             //上课地址
             model.addAttribute("ognAddress", organOptional.get().getOgnAddress());
         }
-        //课程对象
+        //产品对象
         model.addAttribute("organCoursePo", organCoursePo);
         List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
         //产品科目一级下拉框
@@ -344,7 +329,7 @@ public class OrganCourseController extends BackendController {
             List<EpConstantCatalogPo> secondCatalogs = constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId());
             model.addAttribute("secondCatalogs", secondCatalogs);
         }
-
+        //班次
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<OrganClassBo> organClassBos = Lists.newArrayList();
         organClassPos.forEach(p -> {
@@ -355,47 +340,23 @@ public class OrganCourseController extends BackendController {
                 organClassBo.setOrganClassCatalogPos(organClassCatalogPos);
             }
             organClassBos.add(organClassBo);
-
         });
-        //班次
         model.addAttribute("organClassBos", organClassBos);
-
-        //课程标签
+        //产品标签
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
-
         //公用标签
         List<EpConstantTagPo> constantTagList = constantTagService.findByOgnIdAndStatus(null,
                 new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         //私有标签
         List<EpConstantTagPo> ognTagList = constantTagService.findByOgnIdAndStatus(ognId,
                 new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
+        //私有标签+公用标签
         ognTagList.addAll(constantTagList);
-
         //去除状态为offline且没被用到的标签
-        Iterator<EpConstantTagPo> tagIterator = ognTagList.iterator();
-        while (tagIterator.hasNext()) {
-            EpConstantTagPo e = tagIterator.next();
-            boolean usedflag = false;
-            if (e.getStatus().equals(EpConstantTagStatus.online)) {
-                usedflag = true;
-            } else {
-                for (OrganCourseTagBo bo : organCourseTagBos) {
-                    if (e.getStatus().equals(EpConstantTagStatus.offline)
-                            && e.getId().equals(bo.getId())) {
-                        usedflag = true;
-                        break;
-                    }
-                }
-            }
-            if (!usedflag) {
-                tagIterator.remove();
-            }
-        }
-
+        this.courseShowTags(organCourseTagBos, ognTagList);
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         model.addAttribute("ognTagList", ognTagList);
-
-        //课程主图
+        //产品主图
         Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
@@ -406,7 +367,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 商家后台紧急修改课程初始化
+     * 商家后台紧急修改产品初始化
      *
      * @return
      */
@@ -419,17 +380,15 @@ public class OrganCourseController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(courseId, ognId)) {
             return "noresource";
         }
-
+        //教师下拉框
         List<EpOrganAccountPo> organAccountList = organAccountService.findByOgnIdAndStatus(currentUser.getOgnId(),
                 new EpOrganAccountStatus[]{EpOrganAccountStatus.normal, EpOrganAccountStatus.freeze});
         Map<Long, String> organAccountMap = Maps.newHashMap();
         organAccountList.forEach(p -> {
             organAccountMap.put(p.getId(), p.getAccountName());
         });
-
-        //教师下拉框
         model.addAttribute("organAccountMap", organAccountMap);
-
+        //产品
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
         List<EpConstantCatalogPo> firstConstantCatalogSelectModel = constantCatalogService.findFirstCatalogSelectModel();
         //产品科目一级下拉框
@@ -447,12 +406,9 @@ public class OrganCourseController extends BackendController {
             model.addAttribute("organVipFlag", organOptional.get().getVipFlag());
             model.addAttribute("organVipName", organOptional.get().getVipName());
         }
-
+        //产品对象
         EpOrganCoursePo organCoursePo = courseOptional.get();
-        //课程对象
         model.addAttribute("organCoursePo", organCoursePo);
-        Long catalogId = organCoursePo.getCourseCatalogId();
-
         //班次
         List<EpOrganClassPo> organClassPos = organClassService.findByCourseId(courseId);
         List<RectifyOrganClassBo> organClassBos = Lists.newArrayList();
@@ -475,58 +431,37 @@ public class OrganCourseController extends BackendController {
                 organClassBo.setRectifyOrganClassCatalogBos(rectifyOrganClassCatalogBos);
             }
             organClassBos.add(organClassBo);
-
         });
         //班次
         model.addAttribute("organClassBos", organClassBos);
-
-        //课程标签
+        //产品标签
         List<OrganCourseTagBo> organCourseTagBos = organCourseTagService.findBosByCourseId(courseId);
-
         //公用标签
         List<EpConstantTagPo> constantTagList = constantTagService.findByOgnIdAndStatus(null,
                 new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         //私有标签
         List<EpConstantTagPo> ognTagList = constantTagService.findByOgnIdAndStatus(ognId,
                 new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
+        //私有标签+公用标签
         ognTagList.addAll(constantTagList);
-
         //去除状态为offline且没被用到的标签
-        Iterator<EpConstantTagPo> tagIterator = ognTagList.iterator();
-        while (tagIterator.hasNext()) {
-            EpConstantTagPo e = tagIterator.next();
-            boolean usedflag = false;
-            if (e.getStatus().equals(EpConstantTagStatus.online)) {
-                usedflag = true;
-            } else {
-                for (OrganCourseTagBo bo : organCourseTagBos) {
-                    if (e.getStatus().equals(EpConstantTagStatus.offline)
-                            && e.getId().equals(bo.getId())) {
-                        usedflag = true;
-                        break;
-                    }
-                }
-            }
-            if (!usedflag) {
-                tagIterator.remove();
-            }
-        }
-
+        this.courseShowTags(organCourseTagBos, ognTagList);
         model.addAttribute("organCourseTagBos", organCourseTagBos);
         model.addAttribute("ognTagList", ognTagList);
-
-        //课程主图
+        //产品主图
         Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
         if (mainpicImgOptional.isPresent()) {
             model.addAttribute("mainpicImgUrl", mainpicImgOptional.get().getFileUrl());
         }
+        //机构配置
         Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
+        //是否支持称号
         model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
         return "organCourse/merchantRectify";
     }
 
     /**
-     * 商家后台修改课程
+     * 商家后台修改产品
      *
      * @return
      */
@@ -537,13 +472,11 @@ public class OrganCourseController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-        Long ognId = super.getCurrentUserOgnId();
-
-        return organCourseService.updateOrganCourseByMerchant(dto, ognId);
+        return organCourseService.updateOrganCourseByMerchant(dto, super.getCurrentUserOgnId());
     }
 
     /**
-     * 商家后台紧急修改课程
+     * 商家后台紧急修改产品
      *
      * @return
      */
@@ -554,7 +487,7 @@ public class OrganCourseController extends BackendController {
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = currentUser.getOgnId();
         if (null == dto) {
-            log.error("[课程]紧急修改课程失败。该课程不存在。");
+            log.error("[产品]紧急修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
         if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), super.getCurrentUserOgnId())) {
@@ -565,7 +498,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 删除课程
+     * 删除产品
      *
      * @param courseId
      * @return
@@ -583,7 +516,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 上线课程
+     * 上线产品
      *
      * @param id
      * @return
@@ -599,7 +532,7 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 上传课程主图
+     * 上传产品主图
      *
      * @param file
      * @return
@@ -625,7 +558,7 @@ public class OrganCourseController extends BackendController {
 
 
     /**
-     * 上传课程内容图片uEditor
+     * 上传产品内容图片uEditor
      *
      * @return
      */
@@ -639,12 +572,39 @@ public class OrganCourseController extends BackendController {
         FileDto fileDto = (FileDto) resultDo.getResult();
         String fileUrl = fileDto.getFileUrl();
         String filePreCode = fileDto.getPreCode();
-
         String result = "";
         result = "{\"name\":\"" + file.getName() + "\", \"originalName\": \"" + file.getOriginalFilename() + "\", \"size\": " + file.getSize()
                 + ", \"state\": \"SUCCESS\", \"type\": \"" + FileTools.getFileExt(file.getOriginalFilename()) + "\", \"url\": \"" + fileUrl + "\", \"preCode\":\"" + filePreCode + "\"}";
         result = result.replaceAll("\\\\", "\\\\");
         return result;
+    }
+
+    /**
+     * 去除状态为offline且没被用到的标签
+     *
+     * @param organCourseTagBos 产品标签
+     * @param tagList           私有标签+公用标签
+     */
+    private void courseShowTags(List<OrganCourseTagBo> organCourseTagBos, List<EpConstantTagPo> tagList) {
+        Iterator<EpConstantTagPo> tagIterator = tagList.iterator();
+        while (tagIterator.hasNext()) {
+            EpConstantTagPo e = tagIterator.next();
+            boolean usedflag = false;
+            if (e.getStatus().equals(EpConstantTagStatus.online)) {
+                usedflag = true;
+            } else {
+                for (OrganCourseTagBo bo : organCourseTagBos) {
+                    if (e.getStatus().equals(EpConstantTagStatus.offline)
+                            && e.getId().equals(bo.getId())) {
+                        usedflag = true;
+                        break;
+                    }
+                }
+            }
+            if (!usedflag) {
+                tagIterator.remove();
+            }
+        }
     }
 
     /**

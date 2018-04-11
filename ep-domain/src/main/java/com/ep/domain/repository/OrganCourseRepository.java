@@ -151,14 +151,25 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
     }
 
     /**
+     * 根据id加行锁
+     *
+     * @param id
+     * @return
+     */
+    public EpOrganCoursePo getByIdWithLock(Long id) {
+        return dslContext.selectFrom(EP_ORGAN_COURSE)
+                .where(EP_ORGAN_COURSE.ID.eq(id))
+                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
+                .forUpdate()
+                .fetchOneInto(EpOrganCoursePo.class);
+    }
+
+    /**
      * 根据id更新课程对象EpOrganCoursePo
      *
      * @param po
      */
-    public void updateByIdLock(EpOrganCoursePo po) {
-        dslContext.selectFrom(EP_ORGAN_COURSE)
-                .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
-                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false)).forUpdate();
+    public void updateById(EpOrganCoursePo po) {
         dslContext.update(EP_ORGAN_COURSE)
                 .set(EP_ORGAN_COURSE.COURSE_NAME, po.getCourseName())
                 .set(EP_ORGAN_COURSE.COURSE_TYPE, po.getCourseType())
@@ -177,13 +188,8 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      *
      * @param po
      */
-    public void rectifyByIdLock(EpOrganCoursePo po) {
-        dslContext.selectFrom(EP_ORGAN_COURSE)
-                .where(EP_ORGAN_COURSE.ID.eq(po.getId()))
-                .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false)).forUpdate();
+    public void rectifyById(EpOrganCoursePo po) {
         dslContext.update(EP_ORGAN_COURSE)
-//                .set(EP_ORGAN_COURSE.COURSE_NAME, po.getCourseName())
-//                .set(EP_ORGAN_COURSE.COURSE_TYPE, po.getCourseType())
                 .set(EP_ORGAN_COURSE.COURSE_INTRODUCE, po.getCourseIntroduce())
                 .set(EP_ORGAN_COURSE.COURSE_CONTENT, po.getCourseContent())
                 .set(EP_ORGAN_COURSE.ONLINE_TIME, po.getOnlineTime())

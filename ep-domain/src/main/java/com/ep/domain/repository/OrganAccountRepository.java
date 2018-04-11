@@ -174,8 +174,30 @@ public class OrganAccountRepository extends AbstractCRUDRepository<EpOrganAccoun
                 .execute();
     }
 
+    /**
+     * 根据机构id和状态获取教师
+     *
+     * @param ognId
+     * @param status
+     * @return
+     */
     public List<EpOrganAccountPo> findByOgnIdAndStatus(Long ognId, EpOrganAccountStatus[] status) {
         return dslContext.selectFrom(EP_ORGAN_ACCOUNT)
+                .where(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
+                .and(EP_ORGAN_ACCOUNT.STATUS.in(status))
+                .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
+                .fetchInto(EpOrganAccountPo.class);
+    }
+
+    /**
+     * 根据机构id和状态获取教师下拉框
+     *
+     * @param ognId
+     * @param status
+     * @return
+     */
+    public List<EpOrganAccountPo> findSelectModelByOgnIdAndStatus(Long ognId, EpOrganAccountStatus[] status) {
+        return dslContext.select(EP_ORGAN_ACCOUNT.ID, EP_ORGAN_ACCOUNT.ACCOUNT_NAME).from(EP_ORGAN_ACCOUNT)
                 .where(EP_ORGAN_ACCOUNT.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_ACCOUNT.STATUS.in(status))
                 .and(EP_ORGAN_ACCOUNT.DEL_FLAG.eq(false))
