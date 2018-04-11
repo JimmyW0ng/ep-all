@@ -274,7 +274,7 @@
         layer_confirm(formatMsg("开班", "班次", ""), 3, openingDo, id)
     }
     function openingDo(id) {
-        $ajaxGet("/auth/organClass/opening/", id)
+        $ajaxGet("/auth/organClass/opening/" + id)
 
     }
     /*开课end*/

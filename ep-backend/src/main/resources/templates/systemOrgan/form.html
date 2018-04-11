@@ -178,7 +178,7 @@
                         <input type="hidden" name="mainpic_url" id="mainpic_url">
                         <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                     </div>
-                    <div style="display:inline-block;width:120px;position:absolute;bottom:0;">推荐尺寸：宽375*高210</div>
+                    <div style="display:inline-block;width:160px;position:absolute;bottom:0;">推荐尺寸：宽375*高210</div>
                 </div>
 
                 <div class="form-group" style="margin-top: 20px">
@@ -197,7 +197,7 @@
                         <input type="hidden" name="logo_url" id="logo_url">
                         <input type="hidden" name="logoUrlPreCode" id="logo_url_preCode">
                     </div>
-                    <div style="display:inline-block;width:120px;position:absolute;bottom:0;">推荐尺寸：宽140*高140</div>
+                    <div style="display:inline-block;width:160px;position:absolute;bottom:0;">推荐尺寸：宽140*高140</div>
                 </div>
 
                 <div class="form-group" style="margin-top: 20px">
@@ -305,6 +305,9 @@
             type: 'POST',
             url: url,
             data:$("#organFrm").serialize(),
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if(data.success){
                     toastr_success(null, document.referrer)
@@ -314,6 +317,9 @@
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }
@@ -407,14 +413,28 @@
         vipBoxByVipflag()
 
 
+        $.validator.addMethod("expr_lng_lat", function (value, element) {
+            var expr = /^(-)?\d+(\.\d{0,6})?$/
+            return this.optional(element) || expr.test(value);
+        }, "小数位数为1-6位!");
         $("#organFrm").validate({
             rules: {
-                ognLng: {number: true, max: 180, min: -180},
-                ognLat: {number: true, max: 90, min: -90},
+                ognLng: {number: true, max: 180, min: -180, expr_lng_lat: true},
+                ognLat: {number: true, max: 90, min: -90, expr_lng_lat: true},
             },
             messages: {
-                ognLng: "经度为-180到180的数字!",
-                ognLat: "纬度为-90到90的数字!",
+                ognLng: {
+                    number: "经度为-180到180的数字!",
+                    max: "经度为-180到180的数字!",
+                    min: "经度为-180到180的数字!",
+                    expr_lng_lat: "小数位数为1-6位!"
+                },
+                ognLat: {
+                    number: "经度为-180到180的数字!",
+                    max: "经度为-180到180的数字!",
+                    min: "经度为-180到180的数字!",
+                    expr_lng_lat: "小数位数为1-6位!"
+                },
             },
 
         })

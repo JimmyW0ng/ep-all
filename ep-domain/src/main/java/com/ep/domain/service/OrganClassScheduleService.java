@@ -301,21 +301,30 @@ public class OrganClassScheduleService {
      * @return
      */
     public ResultDo createSchedule(EpOrganClassSchedulePo po) {
-        log.info("[预约行程]新增预约行程开始，po={}。", po);
-        if (!checkPoParams(po)) {
+        EpOrganClassSchedulePo insertClassSchedulePo = new EpOrganClassSchedulePo();
+        insertClassSchedulePo.setChildId(po.getChildId());
+        insertClassSchedulePo.setClassId(po.getClassId());
+        insertClassSchedulePo.setOrderId(po.getOrderId());
+        insertClassSchedulePo.setStartTime(po.getStartTime());
+        insertClassSchedulePo.setDuration(po.getDuration());
+        insertClassSchedulePo.setCatalogTitle(po.getCatalogTitle());
+        insertClassSchedulePo.setCatalogDesc(po.getCatalogDesc());
+        insertClassSchedulePo.setCatalogIndex(po.getCatalogIndex());
+        log.info("[预约行程]新增预约行程开始，insertClassSchedulePo={}。", insertClassSchedulePo);
+        if (!checkPoParams(insertClassSchedulePo)) {
             log.error("[预约行程]新增预约行程失败，请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
-        boolean flag = (DateTools.getTwoTimeDiffSecond(po.getStartTime(), DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
+        boolean flag = (DateTools.getTwoTimeDiffSecond(insertClassSchedulePo.getStartTime(), DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
                 BizConstant.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30;
         if (!flag) {
             log.error("[预约行程]新增预约行程失败，预约行程开始时间距离当前时间不得小于30分钟。");
             return ResultDo.build(MessageCode.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30);
         }
-        po.setStatus(EpOrganClassScheduleStatus.normal);
-        organClassScheduleRepository.insert(po);
-        log.info("[预约行程]新增预约行程成功，id={}。", po.getId());
-        return ResultDo.build().setResult(po);
+        insertClassSchedulePo.setStatus(EpOrganClassScheduleStatus.normal);
+        organClassScheduleRepository.insert(insertClassSchedulePo);
+        log.info("[预约行程]新增预约行程成功，id={}。", insertClassSchedulePo.getId());
+        return ResultDo.build().setResult(insertClassSchedulePo);
     }
 
     /**
@@ -325,23 +334,33 @@ public class OrganClassScheduleService {
      * @return
      */
     public ResultDo updateSchedule(EpOrganClassSchedulePo po) {
-        log.info("[预约行程]修改预约行程开始，po={}。", po);
+        EpOrganClassSchedulePo insertClassSchedulePo = new EpOrganClassSchedulePo();
+        insertClassSchedulePo.setId(po.getId());
+        insertClassSchedulePo.setChildId(po.getChildId());
+        insertClassSchedulePo.setClassId(po.getClassId());
+        insertClassSchedulePo.setOrderId(po.getOrderId());
+        insertClassSchedulePo.setStartTime(po.getStartTime());
+        insertClassSchedulePo.setDuration(po.getDuration());
+        insertClassSchedulePo.setCatalogTitle(po.getCatalogTitle());
+        insertClassSchedulePo.setCatalogDesc(po.getCatalogDesc());
+        insertClassSchedulePo.setCatalogIndex(po.getCatalogIndex());
+        log.info("[预约行程]修改预约行程开始，insertClassSchedulePo={}。", insertClassSchedulePo);
 
-        if (!checkPoParams(po) || po.getId() == null) {
+        if (!checkPoParams(insertClassSchedulePo) || insertClassSchedulePo.getId() == null) {
             log.error("[预约行程]修改预约行程失败，请求参数异常。");
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
-        boolean flag = (DateTools.getTwoTimeDiffSecond(po.getStartTime(), DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
+        boolean flag = (DateTools.getTwoTimeDiffSecond(insertClassSchedulePo.getStartTime(), DateTools.getCurrentDateTime()) / BizConstant.TIME_UNIT) >=
                 BizConstant.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30;
         if (!flag) {
             log.error("[预约行程]新增预约行程失败，预约行程开始时间距离当前时间不得小于30分钟。");
             return ResultDo.build(MessageCode.RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30);
         }
-        if (organClassScheduleRepository.updateClassSchedule(po) == BizConstant.DB_NUM_ONE) {
-            log.info("[预约行程]修改预约行程成功，id={}。", po.getId());
-            return ResultDo.build().setResult(po);
+        if (organClassScheduleRepository.updateClassSchedule(insertClassSchedulePo) == BizConstant.DB_NUM_ONE) {
+            log.info("[预约行程]修改预约行程成功，id={}。", insertClassSchedulePo.getId());
+            return ResultDo.build().setResult(insertClassSchedulePo);
         } else {
-            log.error("[预约行程]修改预约行程失败，id={}。", po.getId());
+            log.error("[预约行程]修改预约行程失败，id={}。", insertClassSchedulePo.getId());
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }

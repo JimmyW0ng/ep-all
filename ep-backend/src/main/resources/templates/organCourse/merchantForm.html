@@ -181,7 +181,7 @@
                                 <input type="hidden" name="mainpic_url" id="mainpic_url" class="required">
                                 <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
-                            <div style="display:inline-block;width:120px;position:absolute;bottom:0;">推荐尺寸：宽335*高188
+                            <div style="display:inline-block;width:160px;position:absolute;bottom:0;">推荐尺寸：宽335*高188
                             </div>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
                         </div>
                         <div class="form-group">
                             <label><span name="courseNumLabel">总计目录</span> <span class="required-sign">*</span></label>
-                            <input id="courseNum${tmplIndex}" name="courseNum" jprop="courseNum" type="Number"
+                            <input id="courseNum${tmplIndex}" name="courseNum" jprop="courseNum"
                                    class=" form-control "
                                    value="${courseNum}"
                                    readonly=true>
@@ -392,6 +392,7 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
+<script th:src="@{/modules/organCourse.js}"></script>
 <script th:inline="javascript">
     var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic",});
 
@@ -739,7 +740,6 @@
         var flag = true
         var $box = $("div[name='organClassCatalogPosBox']")
         for (var i = 0; i < $box.length; i++) {
-//            debugger
             var $div = $box.eq(i).parents("div.organClassBos").eq(0)
             var classType = $div.find(".classType").eq(0).val()
             if ($box.eq(i).find("div.organClassCatalogPos").length == 0 && classType == "normal") {
@@ -835,6 +835,7 @@
         if ([[${organCoursePo.id}]]) {
 
             $("#umeditor").html($("#courseContent").val())
+
             //一级目录，二级目录
             catalogInit([[${firstConstantCatalog}]], [[${organCoursePo.courseCatalogId}]], [[${secondCatalogs}]])
             //班次start
@@ -931,7 +932,6 @@
                     })
                 }
             }
-//            debugger
             $("#constantTagBox").append($("#constantTagTmpl").tmpl(constantTag));
             $("#constantTagBox").append($("#ognTagTmpl").tmpl(ognTag));
 
@@ -978,15 +978,16 @@
 //            var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
 //            return this.optional(element) || (length == 11 && mobile.test(value));
 //        }, "请填写正确的手机号码!");
-        $.validator.addMethod("decimalLen6", function (value, element) {
-            var decimalLen6 = /^(-)?\d+(\.\d{0,6})?$/
-            return this.optional(element) || decimalLen6.test(value);
+        $.validator.addMethod("expr_lng_lat", function (value, element) {
+            var expr = expr_lng_lat
+            return this.optional(element) || expr.test(value);
         }, "小数位数为1-6位!");
         $("#frm").validate({
             rules: {
+                courseNum: {digits: true, min: 1},
                 duration: {digits: true},
-                addressLng: {number: true, max: 180, min: -180, decimalLen6: true},
-                addressLat: {number: true, max: 90, min: -90, decimalLen6: true},
+                addressLng: {number: true, max: 180, min: -180, expr_lng_lat: true},
+                addressLat: {number: true, max: 90, min: -90, expr_lng_lat: true},
                 classPrize: {number: true, min: 0},
                 discountAmount: {number: true, min: 0},
             },
@@ -995,13 +996,13 @@
                     number: "经度为-180到180的数字!",
                     max: "经度为-180到180的数字!",
                     min: "经度为-180到180的数字!",
-                    decimalLen6: "小数位数为1-6位!"
+                    expr_lng_lat: "小数位数为1-6位!"
                 },
                 addressLat: {
                     number: "纬度为-90到90的数字!",
                     max: "纬度为-90到90的数字!",
                     min: "纬度为-90到90的数字!",
-                    decimalLen6: "小数位数为1-6位!"
+                    expr_lng_lat: "小数位数为1-6位!"
                 }
             },
         })

@@ -383,7 +383,7 @@
         layer_confirm(formatMsg("提交预约", "订单", ""), 3, bespeakDo, sourceId)
     }
     function bespeakDo(id) {
-        $ajaxGet("/auth/order/orderBespeak/", id)
+        $ajaxGet("/auth/order/orderBespeak/" + id)
 
     }
 
@@ -423,7 +423,7 @@
             }
     }
     function orderCancelDo(id) {
-        $ajaxGet("/auth/order/orderCancel?id=", id)
+        $ajaxGet("/auth/order/orderCancel?id=" + id)
     }
 
     /*退单初始化*/

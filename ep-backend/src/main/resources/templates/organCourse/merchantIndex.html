@@ -132,7 +132,7 @@
         layer_confirm(formatMsg("上线", "产品", ""), 3, onlineDo, id)
     }
     function onlineDo(id) {
-        $ajaxGet("/auth/organCourse/online/", id)
+        $ajaxGet("/auth/organCourse/online/" + id)
     }
     function deleteBox(id) {
         layer_confirm("确定删除该产品？", 3, delDo, id)

@@ -204,10 +204,10 @@ function tmplIndex() {
     return new Date().getMinutes().toString() + new Date().getSeconds().toString() + new Date().getMilliseconds()
 }
 //封装后的$.ajax,get形式
-function $ajaxGet(url, data) {
+function $ajaxGet(url) {
     $.ajax({
         type: "GET",
-        url: url + data,
+        url: url,
         beforeSend: function () {
             layer.load(2, {shade: [0.1, '#fff']});
         },
@@ -226,7 +226,30 @@ function $ajaxGet(url, data) {
         }
     })
 }
-
+//封装后的$.ajax,post形式
+function $ajaxPost(url, data, successfun) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: data,
+        beforeSend: function () {
+            layer.load(2, {shade: [0.1, '#fff']});
+        },
+        success: function (data) {
+            if (data.success) {
+                successfun(data.result)
+            } else {
+                toastr.error("操作失败，原因：" + data.errorDescription);
+            }
+        },
+        error: function (XMLHttpRequest) {
+            toastr_error_system(XMLHttpRequest.status);
+        },
+        complete: function () {
+            layer.closeAll();
+        }
+    })
+}
 $(function () {
     $("body").on("blur", "input.number-input", function () {
         if ($(this).val() == '') {

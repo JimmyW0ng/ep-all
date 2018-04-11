@@ -295,6 +295,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                 .set(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE, po.getCatalogTitle())
                 .set(EP_ORGAN_CLASS_SCHEDULE.START_TIME, po.getStartTime())
                 .set(EP_ORGAN_CLASS_SCHEDULE.DURATION, po.getDuration())
+                .set(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC, po.getCatalogDesc())
                 .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(po.getId()))
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
