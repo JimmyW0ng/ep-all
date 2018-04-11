@@ -979,7 +979,7 @@
 //            return this.optional(element) || (length == 11 && mobile.test(value));
 //        }, "请填写正确的手机号码!");
         $.validator.addMethod("decimalLen6", function (value, element) {
-            var decimalLen6 = /^\d+(\.\d{0,6})?$/
+            var decimalLen6 = /^(-)?\d+(\.\d{0,6})?$/
             return this.optional(element) || decimalLen6.test(value);
         }, "小数位数为1-6位!");
         $("#frm").validate({
