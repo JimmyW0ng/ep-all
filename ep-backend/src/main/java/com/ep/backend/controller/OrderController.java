@@ -9,10 +9,12 @@ import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassScheduleService;
+import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,8 @@ public class OrderController extends BackendController {
     private OrderService orderService;
     @Autowired
     private OrganClassScheduleService organClassScheduleService;
+    @Autowired
+    private OrganClassService organClassService;
 
     /**
      * 订单列表
@@ -339,7 +343,7 @@ public class OrderController extends BackendController {
     public ResultDo orderBespeakBreak(
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "refundAmount") BigDecimal refundAmount,
-            @RequestParam(value = "firstClassCatalogId") Long firstClassCatalogId
+            @RequestParam(value = "firstClassCatalogId", required = false) Long firstClassCatalogId
     ) {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
@@ -359,6 +363,10 @@ public class OrderController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
+        Optional<EpOrderPo> orderOptional = orderService.findById(id);
+        if (!orderOptional.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
         Map<String, Object> resultMap = Maps.newHashMap();
         //系统当前时间
         resultMap.put("currentTime", DateTools.getCurrentDateTime());
@@ -366,12 +374,17 @@ public class OrderController extends BackendController {
         List<OrganClassScheduleBo> bos = organClassScheduleService.findBoByOrderId(id);
         resultMap.put("classScheduleBos", bos);
         //订单费
-        Optional<EpOrderPo> orderOptional = orderService.findById(id);
-        if (orderOptional.isPresent()) {
-            resultMap.put("orderPrize", orderOptional.get().getPrize());
-        }
+        resultMap.put("orderPrize", orderOptional.get().getPrize());
         //预约订单
-
+        Long classId = orderOptional.get().getClassId();
+        Optional<EpOrganClassPo> classOptional = organClassService.findById(classId);
+        if (!classOptional.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        EpOrganClassPo organClassPo = classOptional.get();
+        if (organClassPo.getType().equals(EpOrganClassType.bespeak)) {
+            resultMap.put("courseNum", organClassPo.getCourseNum());
+        }
         return ResultDo.build().setResult(resultMap);
     }
 
