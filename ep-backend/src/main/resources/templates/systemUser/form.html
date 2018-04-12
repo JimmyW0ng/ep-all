@@ -148,6 +148,9 @@
             url: url,
             data:JSON.stringify(params),
             contentType: "application/json;charset=utf-8",
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if(data.success){
                     toastr_success(null,'/auth/user/index')
@@ -157,6 +160,9 @@
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }

@@ -155,5 +155,6 @@ public class SystemRoleService {
         po.setRoleName(StringTools.getNullIfBlank(bo.getRoleName()));
         po.setRoleCode(StringTools.getNullIfBlank(bo.getRoleCode()));
         po.setRemark(StringTools.getNullIfBlank(bo.getRemark()));
+        po.setCreateBy(bo.getCreateBy());
     }
 }

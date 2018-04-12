@@ -125,34 +125,12 @@
 
 <script th:inline="javascript">
     function deleteRoleBox(id) {
-        parent.layer.alert('确认删除角色', {
-                icon: 1,
-                skin: 'layer-ext-moon',
-
-            },
-            function (index) {
-               delRoleDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm(formatMsg("删除", "角色", ""), 3, delRoleDo, id)
     }
     function delRoleDo(id) {
-        $.ajax({
-            type:"GET",
-            url:"/auth/role/delete/"+id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null,'/auth/role/index');
-                }
-            }
-        })
-        
+        $ajaxGet("/auth/role/delete/" + id)
     }
-    //    $(document).ready(
-    //        function() {
-    //            $(".dataTables-example").dataTable();
-    //            // var oTable = $("#editable").dataTable();
-    //        }
-    //    )
+
 </script>
 </body>
 </html>

@@ -196,6 +196,9 @@
         $.ajax({
             type:"GET",
             url: url,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success:function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href);
@@ -212,105 +215,40 @@
     /* 删除提示
      */
     function deleteBox(id) {
-        layer_confirm("确认删除该称号？", 3, delDo, id)
+        layer_confirm(formatMsg("删除", "称号", ""), 3, delDo, id)
     }
     /* 删除称号
      */
     function delDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/deleteTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/deleteTag/" + id)
     }
 
     function onlineBox(id) {
-        layer_confirm("确认上线该称号？", 3, onlineDo, id)
+        layer_confirm(formatMsg("上线", "称号", ""), 3, onlineDo, id)
     }
     function onlineDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/onlineTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/onlineTag/" + id)
     }
 
     function offlineBox(id) {
-        layer_confirm("确认下线该称号？", 3, offlineDo, id)
+        layer_confirm(formatMsg("下线", "称号", ""), 3, offlineDo, id)
     }
     function offlineDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/offlineTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/offlineTag/" + id)
     }
 
     function upTopTagBox(id) {
-        layer_confirm("确认置顶该称号？", 3, upTopTagDo, id)
+        layer_confirm(formatMsg("置顶", "称号", ""), 3, upTopTagDo, id)
     }
     function upTopTagDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/upTopTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/upTopTag/" + id)
     }
 
     function unTopTagBox(id) {
-        layer_confirm("确认取消置顶该称号？", 3, unTopTagDo, id)
+        layer_confirm(formatMsg("取消置顶", "称号", ""), 3, unTopTagDo, id)
     }
     function unTopTagDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/unTopTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/unTopTag/" + id)
     }
 
     function createInit(title, sourceId) {

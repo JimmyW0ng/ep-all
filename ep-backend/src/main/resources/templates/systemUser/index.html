@@ -91,7 +91,7 @@
                             <td th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
-                                <a class="btn btn-xs btn-info" th:if="${#stringTools.equals(bo.status,'normal')}"
+                                <a class="btn btn-xs btn-info"
                                    th:href="@{/auth/user/view/}+${bo.id}">查看</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'normal')}"
                                    th:href="@{/auth/user/updateInit/}+${bo.id}">修改</a>
@@ -134,76 +134,23 @@
 
 <script>
     function unfreezeUserBox(id) {
-        parent.layer.alert('确认冻结用户', {
-                icon: 1,
-            },
-            function (index) {
-                unfreezeUserDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm(formatMsg("解冻", "用户", ""), 3, unfreezeUserDo, id)
     }
     function unfreezeUserDo(id) {
-        $.ajax({
-            type:"GET",
-            url: "/auth/user/unfreeze/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, '/auth/user/index');
-                } else {
-                    toastr_error(data.errorDescription, '/auth/user/index');
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/user/unfreeze/" + id)
     }
     function freezeUserBox(id) {
-        parent.layer.alert('确认冻结用户', {
-                icon: 1,
-            },
-            function (index) {
-                freezeUserDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm(formatMsg("冻结", "用户", ""), 3, freezeUserDo, id)
     }
     function freezeUserDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/user/freeze/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, '/auth/user/index');
-                } else {
-                    toastr_error(data.errorDescription, '/auth/user/index');
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
-
+        $ajaxGet("/auth/user/freeze/" + id)
     }
 
     function cancelUserBox(id) {
-        parent.layer.alert('确认注销用户', {
-                icon: 1,
-            },
-            function (index) {
-                cancelUserDo(id);
-                parent.layer.close(index);
-            })
+        layer_confirm(formatMsg("注销", "用户", ""), 3, cancelUserDo, id)
     }
     function cancelUserDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/user/cancel/" + id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null,'/auth/user/index');
-                }
-            }
-        })
+        $ajaxGet("/auth/user/cancel/" + id)
 
     }
 </script>

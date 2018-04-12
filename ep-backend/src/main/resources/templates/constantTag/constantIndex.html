@@ -104,18 +104,15 @@
                         </tbody>
                     </table>
                     <!--Userlist end-->
-
                     <div class="row mt15">
                         <div class="col-lg-6">
                             <label class="fl" sd:page-size-selector="dropdown">
                                 <select size="1" name="editable-sample_length" aria-controls="editable-sample"
                                         class="form-control xsmall" sd:page-size-selector="default">
-
                                 </select>
                             </label>
                             <span class="fl pl15 pt10" sd:pagination-summary=""></span>
                         </div>
-
                         <div class="col-lg-6">
                             <ul class="pagination pagination-sm pull-right" sd:pagination="full">
 
@@ -130,18 +127,15 @@
 <div class="modal inmodal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
-
             <input type="hidden" id="sourceId">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
                 <h3 style="text-align: left" id="modalTitle"></h3>
-
             </div>
             <form class="form-horizontal m-t" id="frm">
                 <div class="modal-body">
-
                     <div class="form-group">
                         <label class="col-sm-3 control-label"><span class="required-sign">*</span>名称</label>
                         <div class="col-sm-6">
@@ -161,8 +155,6 @@
                         </div>
                     </div>
 
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -179,7 +171,7 @@
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
-    /* 新增课程称号
+    /* 新增称号
      */
     function createDo() {
         if (!$("#frm").valid()) {
@@ -200,6 +192,9 @@
         $.ajax({
             type: "GET",
             url: url,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.location.href);
@@ -215,103 +210,38 @@
 
 
     function deleteBox(id) {
-        layer_confirm("确认删除该称号？", 3, delDo, id)
+        layer_confirm(formatMsg("删除", "称号", ""), 3, delDo, id)
     }
     function delDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/deleteTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/deleteTag/" + id)
     }
 
     function onlineBox(id) {
-        layer_confirm("确认上线该称号？", 3, onlineDo, id)
+        layer_confirm(formatMsg("上线", "称号", ""), 3, onlineDo, id)
     }
     function onlineDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/onlineTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/onlineTag/" + id)
     }
 
     function offlineBox(id) {
-        layer_confirm("确认下线该称号？", 3, offlineDo, id)
+        layer_confirm(formatMsg("下线", "称号", ""), 3, offlineDo, id)
     }
     function offlineDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/offlineTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/offlineTag/" + id)
     }
 
     function upTopTagBox(id) {
-        layer_confirm("确认置顶该称号？", 3, upTopTagDo, id)
+        layer_confirm(formatMsg("置顶", "称号", ""), 3, upTopTagDo, id)
     }
     function upTopTagDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/upTopTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/upTopTag/" + id)
     }
 
     function unTopTagBox(id) {
-        layer_confirm("确认取消置顶该称号？", 3, unTopTagDo, id)
+        layer_confirm(formatMsg("取消置顶", "称号", ""), 3, unTopTagDo, id)
     }
     function unTopTagDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/constantTag/unTopTag/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/constantTag/unTopTag/" + id)
     }
 
     function createInit(title, sourceId) {

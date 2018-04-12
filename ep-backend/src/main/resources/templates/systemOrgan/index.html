@@ -133,82 +133,49 @@
 <script type="text/javascript">
 
     function onlineOrganBox(id) {
-        layer_confirm("确定该机构上线？", 3, onlineOrganDo, id);
+        layer_confirm(formatMsg("上线", "机构", ""), 3, onlineOrganDo, id);
     }
     function onlineOrganDo(id) {
-        $.ajax({
-            type:"GET",
-            url:"/auth/systemOrgan/online/"+id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/systemOrgan/online/" + id)
     }
     function offlineOrganBox(id) {
-        layer_confirm("确定该机构下线？", 3, offlineOrganDo, id);
+        layer_confirm(formatMsg("下线", "机构", ""), 3, offlineOrganDo, id);
 
     }
     function offlineOrganDo(id) {
         $.ajax({
             type:"GET",
             url:"/auth/systemOrgan/offline/"+id,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success:function (data) {
                 if(data.success){
                     toastr_success(null, document.location.href);
                 } else {
-                    toastr.error(data.errorDescription);
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }
     function freezeOrganBox(id) {
-        layer_confirm("确定冻结该机构？", 3, freezeOrganDo, id);
+        layer_confirm(formatMsg("冻结", "机构", ""), 3, freezeOrganDo, id);
 
     }
     function freezeOrganDo(id) {
-        $.ajax({
-            type:"GET",
-            url: "/auth/systemOrgan/freeze/" + id,
-            success:function (data) {
-                if(data.success){
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/systemOrgan/freeze/" + id)
     }
     function unfreezeOrganBox(id) {
-        layer_confirm("确定解冻该机构？", 3, unfreezeOrganDo, id);
+        layer_confirm(formatMsg("解冻", "机构", ""), 3, unfreezeOrganDo, id);
     }
     function unfreezeOrganDo(id) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/systemOrgan/unfreeze/" + id,
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href);
-                } else {
-                    toastr.error(data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            }
-        })
+        $ajaxGet("/auth/systemOrgan/unfreeze/" + id)
     }
 
 </script>
