@@ -13,6 +13,7 @@ import com.ep.domain.pojo.dto.RectifyOrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -206,11 +207,11 @@ public class OrganCourseService {
             organClassRepository.insert(organClassPo);
             Long insertOrganClassId = organClassPo.getId();
             List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
-            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
+            if (organClassBo.getType().equals(EpOrganClassType.normal) && CollectionsTools.isNotEmpty(organClassCatalogPos)) {
                 for (int i = 0; i < organClassCatalogPos.size(); i++) {
                     organClassCatalogPos.get(i).setClassId(insertOrganClassId);
                 }
-                //班次产品内容目录表 插入数据
+                //班次产品班次目录表 插入数据
                 log.info("[产品]班次产品内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
                 organClassCatalogRepository.insert(organClassCatalogPos);
             }
@@ -298,6 +299,9 @@ public class OrganCourseService {
         //更新产品po
         if (courseStatus.equals(EpOrganCourseCourseStatus.save)) {
             organCourseRepository.updateById(organCoursePo);
+        } else {
+            log.error("[产品]紧急修改产品失败。该产品状态不为{}。", EpOrganCourseCourseStatus.save);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         //产品id
         Long organCourseId = organCoursePo.getId();
@@ -328,12 +332,13 @@ public class OrganCourseService {
             organClassRepository.insert(organClassPo);
             Long insertOrganClassId = organClassPo.getId();
             List<EpOrganClassCatalogPo> organClassCatalogPos = organClassBo.getOrganClassCatalogPos();
-            if (CollectionsTools.isNotEmpty(organClassCatalogPos)) {
+            //正常类型的班次有班次目录
+            if (organClassBo.getType().equals(EpOrganClassType.normal) && CollectionsTools.isNotEmpty(organClassCatalogPos)) {
                 for (int i = 0; i < organClassCatalogPos.size(); i++) {
                     organClassCatalogPos.get(i).setClassId(insertOrganClassId);
                     organClassCatalogPos.get(i).setId(null);
                 }
-                //班次产品内容目录表插入数据
+                //班次产品班次目录表插入数据
                 log.info("[产品]班次产品内容目录表ep_organ_class_catalog插入数据。{}。", organClassCatalogPos);
                 organClassCatalogRepository.insert(organClassCatalogPos);
             }
@@ -413,6 +418,9 @@ public class OrganCourseService {
         //更新产品po
         if (courseStatus.equals(EpOrganCourseCourseStatus.online)) {
             organCourseRepository.rectifyById(organCoursePo);
+        } else {
+            log.error("[产品]紧急修改产品失败。该产品状态不为{}。", EpOrganCourseCourseStatus.online);
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
         //班次,仅根据classCatelogId更新班次目录
         List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = dto.getRectifyOrganClassCatalogBos();

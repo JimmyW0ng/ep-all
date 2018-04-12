@@ -16,6 +16,7 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -352,10 +353,11 @@ public class OrganCourseController extends BackendController {
                 new EpConstantTagStatus[]{EpConstantTagStatus.online, EpConstantTagStatus.offline});
         //私有标签+公用标签
         ognTagList.addAll(constantTagList);
-        //去除状态为offline且没被用到的标签
-        this.courseShowTags(organCourseTagBos, ognTagList);
+
+
         model.addAttribute("organCourseTagBos", organCourseTagBos);
-        model.addAttribute("ognTagList", ognTagList);
+        //去除状态为offline且没被用到的标签
+        model.addAttribute("ognTagList", this.courseShowTags(organCourseTagBos, ognTagList));
         //产品主图
         Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
         if (mainpicImgOptional.isPresent()) {
@@ -445,9 +447,8 @@ public class OrganCourseController extends BackendController {
         //私有标签+公用标签
         ognTagList.addAll(constantTagList);
         //去除状态为offline且没被用到的标签
-        this.courseShowTags(organCourseTagBos, ognTagList);
         model.addAttribute("organCourseTagBos", organCourseTagBos);
-        model.addAttribute("ognTagList", ognTagList);
+        model.addAttribute("ognTagList", this.courseShowTags(organCourseTagBos, ognTagList));
         //产品主图
         Optional<EpFilePo> mainpicImgOptional = organCourseService.getCourseMainpic(courseId);
         if (mainpicImgOptional.isPresent()) {
@@ -580,31 +581,27 @@ public class OrganCourseController extends BackendController {
     }
 
     /**
-     * 去除状态为offline且没被用到的标签
+     * 去除状态为offline且没被用到的标签，保留online和（offline但被用到的）
      *
      * @param organCourseTagBos 产品标签
      * @param tagList           私有标签+公用标签
      */
-    private void courseShowTags(List<OrganCourseTagBo> organCourseTagBos, List<EpConstantTagPo> tagList) {
-        Iterator<EpConstantTagPo> tagIterator = tagList.iterator();
-        while (tagIterator.hasNext()) {
-            EpConstantTagPo e = tagIterator.next();
-            boolean usedflag = false;
-            if (e.getStatus().equals(EpConstantTagStatus.online)) {
-                usedflag = true;
-            } else {
-                for (OrganCourseTagBo bo : organCourseTagBos) {
-                    if (e.getStatus().equals(EpConstantTagStatus.offline)
-                            && e.getId().equals(bo.getId())) {
-                        usedflag = true;
-                        break;
-                    }
-                }
+    private Set<EpConstantTagPo> courseShowTags(List<OrganCourseTagBo> organCourseTagBos, List<EpConstantTagPo> tagList) {
+        Set<EpConstantTagPo> tagSet = Sets.newHashSet();
+        Set<Long> courseTagSetId = Sets.newHashSet();
+        organCourseTagBos.forEach(courseTagBo -> {
+            courseTagSetId.add(courseTagBo.getTagId());
+        });
+        tagList.forEach(tag -> {
+            if (tag.getStatus().equals(EpConstantTagStatus.online)) {
+                tagSet.add(tag);
             }
-            if (!usedflag) {
-                tagIterator.remove();
+            if (tag.getStatus().equals(EpConstantTagStatus.offline)) {
+                courseTagSetId.contains(tag.getId());
+                tagSet.add(tag);
             }
-        }
+        });
+        return tagSet;
     }
 
     /**
