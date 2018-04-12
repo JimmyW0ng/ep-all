@@ -1,58 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
->
-<!--<head th:replace="~{fragments/header :: common_header}">-->
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:replace="~{fragments/header :: common_header}">
 
 </head>
 <header>
     <th:block layout:fragment="links">
-        <!--<link th:href="@{/umeditor/themes/default/css/umeditor.css}" rel="stylesheet">-->
 
     </th:block>
 </header>
 <body>
-<!--<div id="editor">-->
-<!--<p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>-->
-<!--</div>-->
-<!--<div class="col-sm-12">-->
-<!--<form id="frm">-->
-<!--<input name="name" required="true">-->
-<!--<div class="col-sm-9">-->
-<!--<label >课程内容 <span class="required-sign">*</span></label>-->
-<!--<div  id="myEditor" style="height:240px;">-->
-<!--</div>-->
-<!--</div>-->
-<!--</form>-->
 
-<!--<button class="btn" >不可编辑</button>-->
-<!--</div>-->
-<!--<script th:replace="~{fragments/scripts}"></script>-->
-<!--<script th:src="@{/wangeditor/wangEditor.js}"></script>-->
-<!--<script th:src="@{/umeditor/third-party/jquery.min.js}"></script>-->
-<!--&lt;!&ndash;<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>&ndash;&gt;-->
-<!--<script th:src="@{/umeditor/umeditor.config.js}"></script>-->
-<!--<script th:src="@{/umeditor/umeditor.js}"></script>-->
-<!--<script th:src="@{/umeditor/lang/zh-cn/zh-cn.js}"></script>-->
 <script th:inline="javascript">
-    //    var E = window.wangEditor
-    //    var editor = new E('#editor')
-    //    // 或者 var editor = new E( document.getElementById('#editor') )
-    //    // 配置服务器端地址
-    //    editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-    //    editor.customConfig.uploadFileName = 'file'
-    //    editor.customConfig.uploadImgMaxLength = 1
-    //    editor.customConfig.uploadImgHooks = {
-    //        success: function (xhr, editor, result) {
-    //            // 图片上传并返回结果，图片插入成功之后触发
-    //            // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-    //            debugger
-    //            console.log(result)
-    //            console.log($("#editor").find("img").length)
-    //            console.log($("#editor").find("img[name="+result.precode+"]").length)
-    //        },
-    //    }
-    //    editor.create()
 
 </script>
 </body>
