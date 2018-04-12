@@ -881,10 +881,10 @@
         apisMapClickCallback(function (loc) {
             var $address = $(ele).parents(".organClassBos").eq(0).find("input[name='address']").eq(0)
             var $addressLng = $(ele).parents(".organClassBos").eq(0).find("input[name='addressLng']").eq(0)
-            var $address = $(ele).parents(".organClassBos").eq(0).find("input[name='address']").eq(0)
-            $("#ognAddress").val(loc.poiaddress + loc.poiname)
-            $("#ognLng").val(loc.latlng.lng)
-            $("#ognLat").val(loc.latlng.lat)
+            var $addressLat = $(ele).parents(".organClassBos").eq(0).find("input[name='addressLat']").eq(0)
+            $address.val(loc.poiaddress + loc.poiname)
+            $addressLng.val(loc.latlng.lng)
+            $addressLat.val(loc.latlng.lat)
             $("#addressModal").modal("hide")
         })
     }
