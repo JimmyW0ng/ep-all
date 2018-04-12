@@ -581,7 +581,7 @@
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
             var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
             if ($(this).val() == "false") {
-                $enterRequireNum.attr("readonly", true)
+                $enterRequireNum.attr("readonly", true).val("")
             } else {
                 $enterRequireNum.removeAttr("readonly").attr("required", true)
             }
@@ -603,11 +603,20 @@
     }
     /* 班次初始化时其下字段的绑定事件*/
     function classBoxDynamicInitAll() {
+        $(".organClassBos").each(function () {
+            var enterLimitFlag = $(this).find("select[name='enterLimitFlag']").eq(0).val()
+            var $enterRequireNum = $(this).find("input[name='enterRequireNum']").eq(0)
+            if (enterLimitFlag == "false" ? false : true) {
+                $enterRequireNum.prop("readonly", false)
+            } else {
+                $enterRequireNum.prop("readonly", true)
+            }
+        })
         //是否限制报名人数 框绑定事件
         $("#accordion").find("select[name='enterLimitFlag']").on("change", function () {
             var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
             if ($(this).val() == "false") {
-                $enterRequireNum.attr("readonly", true)
+                $enterRequireNum.attr("readonly", true).val("")
             } else {
                 $enterRequireNum.removeAttr("readonly").attr("required", true)
             }
