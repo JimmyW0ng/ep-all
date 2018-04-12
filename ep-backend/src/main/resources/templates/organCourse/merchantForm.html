@@ -581,7 +581,7 @@
         $("#accordion").find("select[name='enterLimitFlag']:last").on("change", function () {
             var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
             if ($(this).val() == "false") {
-                $enterRequireNum.attr("readonly", true).val("")
+                $enterRequireNum.attr("readonly", true).val("").removeAttr("required")
             } else {
                 $enterRequireNum.removeAttr("readonly").attr("required", true)
             }
@@ -616,7 +616,7 @@
         $("#accordion").find("select[name='enterLimitFlag']").on("change", function () {
             var $enterRequireNum = $(this).parents("div.organClassBos").eq(0).find("input[name='enterRequireNum']").eq(0)
             if ($(this).val() == "false") {
-                $enterRequireNum.attr("readonly", true).val("")
+                $enterRequireNum.attr("readonly", true).val("").removeAttr("required")
             } else {
                 $enterRequireNum.removeAttr("readonly").attr("required", true)
             }
@@ -994,6 +994,7 @@
         }, "小数位数为1-6位!");
         $("#frm").validate({
             rules: {
+                enterRequireNum: {digits: true, min: 1},
                 courseNum: {digits: true, min: 1},
                 duration: {digits: true},
                 addressLng: {number: true, max: 180, min: -180, expr_lng_lat: true},
