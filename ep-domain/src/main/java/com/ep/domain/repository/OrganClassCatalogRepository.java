@@ -51,6 +51,7 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
     public Optional<EpOrganClassCatalogPo> findById(Long id) {
         EpOrganClassCatalogPo data = dslContext.selectFrom(EP_ORGAN_CLASS_CATALOG)
                 .where(EP_ORGAN_CLASS_CATALOG.ID.eq(id))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .fetchOneInto(EpOrganClassCatalogPo.class);
         return Optional.ofNullable(data);
     }

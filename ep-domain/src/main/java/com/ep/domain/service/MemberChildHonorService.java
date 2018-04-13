@@ -7,8 +7,12 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildHonorBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildHonorPo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
+import com.ep.domain.pojo.po.EpOrganCoursePo;
 import com.ep.domain.repository.FileRepository;
 import com.ep.domain.repository.MemberChildHonorRepository;
+import com.ep.domain.repository.OrganClassRepository;
+import com.ep.domain.repository.OrganCourseRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,10 @@ public class MemberChildHonorService {
     private MemberChildHonorRepository memberChildHonorRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private OrganCourseRepository organCourseRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
 
     public Optional<EpMemberChildHonorPo> findById(Long id) {
         return memberChildHonorRepository.findById(id);
@@ -89,7 +97,28 @@ public class MemberChildHonorService {
      * @param po
      */
     public ResultDo createHonor(EpMemberChildHonorPo po) {
+        Long ognId = po.getOgnId();
+        Long courseId = po.getCourseId();
+        Long classId = po.getClassId();
         log.info("[荣誉]，新增孩子荣誉开始，荣誉对象po={}。", po);
+        Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(courseId);
+        if (!courseOptional.isPresent()) {
+            log.error("[荣誉]，新增孩子荣誉失败，产品id不存在,courseId={}。", courseId);
+            ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
+        }
+        //产品必须为本机构的
+        if (!courseOptional.get().getOgnId().equals(ognId)) {
+            ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        Optional<EpOrganClassPo> classOptional = organClassRepository.findById(classId);
+        if (!classOptional.isPresent()) {
+            log.error("[荣誉]，新增孩子荣誉失败，班次id不存在,classId={}。", classId);
+            ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        //班次必须为本机构的
+        if (!classOptional.get().getOgnId().equals(ognId)) {
+            ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
         memberChildHonorRepository.insert(po);
         log.info("[荣誉]，新增孩子荣誉成功，id={}。", po.getId());
         return ResultDo.build();

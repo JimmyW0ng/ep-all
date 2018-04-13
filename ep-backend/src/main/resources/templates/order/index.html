@@ -357,13 +357,13 @@
             success:function (data) {
                 if(data.success){
                     var orderPo = data.result
-                    console.log(orderPo)
                     var $tr = $(ele).parents("tr").eq(0)
                     $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
                     $tr.find("td[name='status']").eq(0).text(orderPo.status);
                     $tr.find("td[name='remark']").eq(0).text(orderPo.remark == undefined ? "" : orderPo.remark);
                     var classStatus = $tr.find("td[name='classStatus']").eq(0).text()
                     buttonByStatus($(ele).parent(), orderPo.status, classStatus)//更新改行按钮的显隐性
+                    toastr.success("报名成功");
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }

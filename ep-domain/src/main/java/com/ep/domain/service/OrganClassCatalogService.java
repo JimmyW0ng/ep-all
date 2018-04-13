@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 课程目录接口服务类
@@ -33,6 +34,10 @@ public class OrganClassCatalogService {
     private OrganClassRepository organClassRepository;
     @Autowired
     private OrganClassScheduleRepository organClassScheduleRepository;
+
+    public Optional<EpOrganClassCatalogPo> findById(Long id) {
+        return organClassCatalogRepository.findById(id);
+    }
 
     /**
      * 根据班次获取

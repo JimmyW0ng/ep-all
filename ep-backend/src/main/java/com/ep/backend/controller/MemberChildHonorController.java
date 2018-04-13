@@ -180,12 +180,9 @@ public class MemberChildHonorController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:childHonor:index')")
     @ResponseBody
     public ResultDo create(EpMemberChildHonorPo po) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
-        ResultDo resultDo = ResultDo.build();
+        Long ognId = super.getCurrentUserOgnId();
         po.setOgnId(ognId);
-        memberChildHonorService.createHonor(po);
-        return resultDo;
+        return memberChildHonorService.createHonor(po);
     }
 
     /**
