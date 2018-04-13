@@ -144,9 +144,17 @@
 
 
     function zTreeOnClick() {
+        //点选父级菜单
         if ($("#act_type").val() == 'c_act') {
             var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
             var nodes = treeObj.getSelectedNodes();
+            if (nodes.length == 1) {
+                var parentnode = nodes[0].getParentNode();
+                if (parentnode) {
+                    toastr.error("最多只能添加二级菜单！")
+                    return
+                }
+            }
             console.log(nodes[0])
             $("#parentId").val(nodes[0].id)
             $("#parentName").val(nodes[0].name)
@@ -158,13 +166,12 @@
             //获取鼠标点击的标签（单个）END
             $("#buttonBox").find("button").data("id", nodes[0].id).show()
         }
-
-
     }
 
     function frmField() {
         $("#frm").validate({}).resetForm()
         $("#menuBox").find("input").val("");
+        $("#menuBox").find("textarea").val("");
         $("#parentId").val(0)
     }
 
