@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.BeanTools;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ConstantCatalogBo;
 import com.ep.domain.pojo.po.EpConstantCatalogPo;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 产品类目控制器
@@ -69,9 +71,20 @@ public class ConstantCatalogController extends BackendController {
         ResultDo<ConstantCatalogBo> resultDo = ResultDo.build();
         ConstantCatalogBo bo = new ConstantCatalogBo();
 
-        EpConstantCatalogPo po = constantCatalogService.getById(id);
+        Optional<EpConstantCatalogPo> optional = constantCatalogService.findById(id);
+        if (!optional.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_CONSTANT_CATALOG_NOT_EXIST);
+        }
+        EpConstantCatalogPo po = optional.get();
         BeanTools.copyPropertiesIgnoreNull(po, bo);
-        bo.setParentName(constantCatalogService.getById(po.getParentId()).getLabel());
+        Optional<EpConstantCatalogPo> parentOptional = constantCatalogService.findById(po.getParentId());
+        if (!parentOptional.isPresent()) {
+            //该类目已为一级目录
+            bo.setParentName(null);
+        } else {
+            //该类目为二级目录
+            bo.setParentName(parentOptional.get().getLabel());
+        }
         resultDo.setResult(bo);
         return resultDo;
 

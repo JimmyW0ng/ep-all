@@ -60,6 +60,7 @@ public class MessageCode {
     /**
      * 产品
      */
+    public static final String ERROR_CONSTANT_CATALOG_NOT_EXIST = "ERROR_CONSTANT_CATALOG_NOT_EXIST";
     public static final String ERROR_COURSE_NOT_EXIST = "ERROR_COURSE_NOT_EXIST";
     public static final String ERROR_COURSE_ENTER_NOT_START = "ERROR_COURSE_ENTER_NOT_START";
     public static final String ERROR_COURSE_ENTER_END = "ERROR_COURSE_ENTER_END";

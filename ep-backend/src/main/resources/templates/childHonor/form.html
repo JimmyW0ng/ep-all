@@ -108,6 +108,9 @@
             type: 'POST',
             url: url,
             data: $("#frm").serialize(),
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null, document.referrer)
@@ -117,6 +120,9 @@
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }

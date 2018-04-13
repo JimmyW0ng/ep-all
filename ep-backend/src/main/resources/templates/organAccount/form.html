@@ -121,6 +121,8 @@
                     $("#avatar_img_url").attr("src", data.result.fileUrl)
                     $("#avatar_url").val(data.result.fileUrl)
                     $("#avatar_url_preCode").val(data.result.preCode)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
             },
             error: function (XMLHttpRequest) {

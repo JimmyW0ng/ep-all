@@ -114,7 +114,6 @@
 <script th:inline="javascript">
     var setting = {
         view: {
-
         },
 
         check: {
@@ -136,17 +135,12 @@
             onDblClick: zTreeOnDbClick,
         }
 
-
     };
     var zNodes = [
         [# th:each="catalogPojo :${catalogList}"]
     {id: [[${catalogPojo.id}]], pId:[[${catalogPojo.parentId}]], name:[[${catalogPojo.label}]], open:true},
     [/]
     ];
-
-
-
-
 
 
     function zTreeOnClick() {
@@ -229,12 +223,14 @@
                     $("#parentId").val(catalog.parentId)
                     $("#parentName").val(catalog.parentName)
                     $("#label").val(catalog.label)
-
-
                     $("#remark").val(catalog.remark)
-
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
-            }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
         })
     }
 
@@ -245,14 +241,14 @@
         var ids=[];
 
         if(nodes.length==0){
-            toastr.error("请勾选需要删除的菜单")
+            toastr.error("请勾选需要删除的类目")
             return;
         }else{
             for(var i=0;i<nodes.length;i++){
                 ids.push(nodes[i].id)
             }
         }
-        layer_confirm("确定删除勾选类目？", 3, delDo, ids)
+        layer_confirm(formatMsg("删除", "类目", ""), 3, delDo, ids)
 
     }
 
@@ -262,6 +258,9 @@
             type:"POST",
             url:"/auth/catalog/delete",
             data:{ids:ids},
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success:function (data) {
                 if(data.success){
                     toastr_success(null, document.location.href)
@@ -288,10 +287,21 @@
             type: "POST",
             url: url,
             data: $("#frm").serialize(),
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     toastr_success(null,'/auth/catalog/index')
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
 

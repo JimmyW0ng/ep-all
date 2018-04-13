@@ -25,6 +25,7 @@ public class ConstantCatalogRepository extends AbstractCRUDRepository<EpConstant
         super(dslContext, EP_CONSTANT_CATALOG, EP_CONSTANT_CATALOG.ID, EpConstantCatalogPo.class);
     }
 
+
     public List<EpConstantCatalogPo> getAll() {
         return dslContext.selectFrom(EP_CONSTANT_CATALOG)
                 .where(EP_CONSTANT_CATALOG.DEL_FLAG.equal(false))

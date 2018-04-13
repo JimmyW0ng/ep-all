@@ -68,14 +68,6 @@ public class ConstantCatalogService {
         }
     }
 
-    /**
-     * 根据id获取记录
-     * @param id
-     * @return
-     */
-    public EpConstantCatalogPo getById(Long id){
-        return constantCatalogRepository.getById(id);
-    }
 
     /**
      * 删除课程类目

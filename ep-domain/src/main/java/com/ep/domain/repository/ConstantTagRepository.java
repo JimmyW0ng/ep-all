@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.ConstantTagBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
@@ -246,7 +247,7 @@ public class ConstantTagRepository extends AbstractCRUDRepository<EpConstantTagR
      * @return
      */
     public int upTopById(Long id) {
-        Long sort = dslContext.fetch("select unix_timestamp()").getValues(0, Long.class).get(0);
+        Long sort = DateTools.getCurrentDateTime().getTime();
         return dslContext.update(EP_CONSTANT_TAG)
                 .set(EP_CONSTANT_TAG.SORT, sort)
                 .where(EP_CONSTANT_TAG.ID.eq(id))
