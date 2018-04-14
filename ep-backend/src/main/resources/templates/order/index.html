@@ -469,7 +469,6 @@
                         var ele = this
                         checkBoxClickCallback($(this),
                             function () {
-                                debugger
                                 $(ele).prop("checked", true)
                                 var $tr = $(ele).parents("tr").eq(0)
                                 $tr.nextAll().find("input[type='checkbox']").prop("checked", true)
