@@ -463,10 +463,21 @@
                     $("#ordersBody").html($("#scheduleTmpl").tmpl(res))
                     //单个勾选，自动勾选排在其之后的
                     $("#ordersBody").on("click", "input[type='checkbox']", function () {
-                        $(this).prop("checked", true)
-                        var $tr = $(this).parents("tr").eq(0)
-                        $tr.nextAll().find("input[type='checkbox']").prop("checked", true)
-                        $tr.prevAll().find("input[type='checkbox']").prop("checked", false)
+                        if (!this) {
+                            return
+                        }
+                        var ele = this
+                        checkBoxClickCallback($(this),
+                            function () {
+                                debugger
+                                $(ele).prop("checked", true)
+                                var $tr = $(ele).parents("tr").eq(0)
+                                $tr.nextAll().find("input[type='checkbox']").prop("checked", true)
+                                $tr.prevAll().find("input[type='checkbox']").prop("checked", false)
+                            },
+                            function () {
+                                $("#ordersBody").find("input[type='checkbox']").prop("checked", false)
+                            })
                     })
 
                     $("#breakModal").modal("show")

@@ -128,7 +128,13 @@ function layer_confirm(msg, icon, funDo, id) {
         });
 }
 
-
+function checkBoxClickCallback($checkbox, checked, unchecked) {
+    if ($checkbox.is(":checked")) {
+        checked()
+    } else {
+        unchecked()
+    }
+}
 
 Date.prototype.Format = function (fmt) {
     var o = {
