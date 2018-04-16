@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -55,6 +56,41 @@ public class OrderController extends BackendController {
     private OrganClassScheduleService organClassScheduleService;
     @Autowired
     private OrganClassService organClassService;
+
+    private Collection<Condition> formatJooqSearchConditions(String mobile, String childTrueName, String childNickName, String courseName,
+                                                             String className, String classType, String status, Timestamp crStartTime, Timestamp crEndTime) {
+        Collection<Condition> conditions = Lists.newArrayList();
+        if (StringTools.isNotBlank(mobile)) {
+            conditions.add(EP.EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
+        }
+        if (StringTools.isNotBlank(childTrueName)) {
+            conditions.add(EP.EP_MEMBER_CHILD.CHILD_TRUE_NAME.like("%" + childTrueName + "%"));
+        }
+        if (StringTools.isNotBlank(childNickName)) {
+            conditions.add(EP.EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + childNickName + "%"));
+        }
+        if (StringTools.isNotBlank(courseName)) {
+            conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
+        }
+        if (StringTools.isNotBlank(className)) {
+            conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
+        }
+        if (StringTools.isNotBlank(classType)) {
+            conditions.add(EP.EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.valueOf(classType)));
+        }
+        if (StringTools.isNotBlank(status)) {
+            conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
+        }
+        if (null != crStartTime) {
+            conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
+        }
+        if (null != crEndTime) {
+            conditions.add(EP.EP_ORDER.CREATE_AT.lessOrEqual(crEndTime));
+        }
+        conditions.add(EP.EP_ORDER.DEL_FLAG.eq(false));
+        conditions.add(EP.EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
+        return conditions;
+    }
 
     /**
      * 订单列表
@@ -410,6 +446,29 @@ public class OrderController extends BackendController {
     @ResponseBody
     public ResultDo viewEnteredBespeakClass(@PathVariable("childId") Long childId) {
         return ResultDo.build().setResult(orderService.findEnteredClassByChildId(super.getCurrentUserOgnId(), childId, EpOrganClassType.bespeak));
+    }
+
+    /**
+     * 导出excel
+     */
+    @GetMapping("indexExportExcel")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    public void indexExportExcel(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                 @RequestParam(value = "mobile", required = false) String mobile,
+                                 @RequestParam(value = "childTrueName", required = false) String childTrueName,
+                                 @RequestParam(value = "childNickName", required = false) String childNickName,
+                                 @RequestParam(value = "courseName", required = false) String courseName,
+                                 @RequestParam(value = "className", required = false) String className,
+                                 @RequestParam(value = "classType", required = false) String classType,
+                                 @RequestParam(value = "status", required = false) String status,
+                                 @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
+                                 @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime,
+                                 HttpServletResponse response) {
+        Collection<Condition> conditions = formatJooqSearchConditions(mobile, childTrueName, childNickName, courseName, className, classType, status, crStartTime, crEndTime);
+        conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + "英语预约课" + "%"));
+
+        orderService.indexExportExcel(response, pageable, conditions);
+
     }
 
     /**

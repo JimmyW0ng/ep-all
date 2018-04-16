@@ -203,19 +203,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchInto(MemberCourseOrderInitBo.class);
     }
 
-    /**
-     * 根据机构统计订单数
-     *
-     * @param ognId
-     * @return
-     */
-    public Long countByOgnId(Long ognId) {
-        return dslContext.selectCount()
-                .from(EP_ORDER)
-                .where(EP_ORDER.OGN_ID.eq(ognId))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .fetchOneInto(Long.class);
-    }
 
     /**
      * 根据孩子统计订单数
@@ -585,17 +572,47 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
-     * 根据班次id提前结束订单
+     * 根据搜索条件导出excel
      *
-     * @param classId
+     * @param pageable
+     * @param condition
      * @return
      */
-    public int advancedEndByClassId(Long classId) {
-        return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS, EpOrderStatus.end)
-                .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+    public List<OrderBo> indexExportExcel(Pageable pageable, Collection<? extends Condition> condition) {
+//        long totalCount = dslContext.selectCount()
+//                .from(EP_ORDER)
+//                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
+//                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
+//                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+//                .where(condition).fetchOne(0, Long.class);
+//        if (totalCount == BizConstant.DB_NUM_ZERO) {
+//            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+//        }
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_MEMBER.MOBILE);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+//        fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
+        fieldList.add(EP_ORGAN_CLASS.TYPE.as("classType"));
+        fieldList.add(EP_ORGAN_CLASS.STATUS.as("classStatus"));
+        fieldList.add(EP_ORDER.PRIZE);
+        fieldList.add(EP_ORDER.STATUS);
+        fieldList.add(EP_ORDER.REMARK);
+        fieldList.add(EP_ORDER.CREATE_AT);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .where(condition);
+        List<OrderBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .fetchInto(OrderBo.class);
+        return list;
     }
 }
 
