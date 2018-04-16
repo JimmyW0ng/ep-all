@@ -83,6 +83,7 @@
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="query-button" type="button">查询</button>
                         <button class="btn btn-warning" id="rest-button" type="button">重置</button>
+                        <button class="btn btn-info" type="button" onclick="exportExcel()">导出excel</button>
                     </div>
 
                 </form>
@@ -288,7 +289,10 @@
     var epOrganClassScheduleStatus = {
         wait: "等待", normal: "正常", late: "迟到", absent: "缺勤", leave: "请假", close: "关闭"
     }
-    
+    /*导出Excel*/
+    function exportExcel() {
+        location.href = "/auth/order/indexExportExcel"
+    }
     function checkOrderSuccess(ele) {
         var status=$(ele).parent().siblings("td[name='status']").eq(0).html()
         if(status=="save"&&$(ele).is(':checked')){

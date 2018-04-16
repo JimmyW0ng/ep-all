@@ -20,6 +20,7 @@ public class OrganCourseBo extends EpOrganCoursePo {
     private String ognPhone;
     private String courseCatalogName;
     private String vipName;
+    private Boolean canEnterFlag;
 
     public Long getEnterTimeStampStart() {
         if (super.getEnterTimeStart() != null) {

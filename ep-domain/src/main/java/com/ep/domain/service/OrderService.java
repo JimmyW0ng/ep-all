@@ -4,6 +4,7 @@ import com.ep.common.component.SpringComponent;
 import com.ep.common.exception.ServiceRuntimeException;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.ExcelUtil;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
@@ -17,17 +18,22 @@ import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.*;
+
+import static com.ep.domain.repository.domain.Tables.*;
 
 /**
  * @Description: 订单服务类
@@ -525,5 +531,40 @@ public class OrderService {
      */
     public List<OrganClassBo> findEnteredClassByChildId(Long ognId, Long childId, EpOrganClassType classType) {
         return orderRepository.findEnteredClassByChildId(ognId, childId, classType);
+    }
+
+    /**
+     * 根据搜索条件导出excel
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public void indexExportExcel(HttpServletResponse response, Pageable pageable, Collection<? extends Condition> condition) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_MEMBER.MOBILE);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS.TYPE.as("classType"));
+        fieldList.add(EP_ORGAN_CLASS.STATUS.as("classStatus"));
+        fieldList.add(EP_ORDER.PRIZE);
+        fieldList.add(EP_ORDER.STATUS);
+        fieldList.add(EP_ORDER.REMARK);
+        fieldList.add(EP_ORDER.CREATE_AT);
+        List<OrderBo> list = orderRepository.indexExportExcel(pageable, condition);
+        List<String> fieldNameStrs = Lists.newArrayList();
+        fieldList.forEach(field -> {
+            fieldNameStrs.add(field.getName());
+        });
+        String[] titles = {"会员账号", "姓名", "昵称", "产品", "班次", "班次类型", "班次状态", "价格", "订单状态", "备注", "创建时间"};
+        try {
+            ExcelUtil.exportExcel(response, "列表", fieldList.size(), list, fieldNameStrs, titles);
+
+        } catch (Exception e) {
+            log.error("indexExportExcel fail", e);
+        }
+
     }
 }

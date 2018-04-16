@@ -94,6 +94,14 @@ public class OrganCourseService {
         ognCourseBo.setVipName(organPo.getVipName());
         // 获取班次信息
         List<OrganClassEnterBo> classes = organClassRepository.getClassEnterInfoByCourseId(courseId);
+        Boolean canEnterFlag = false;
+        for (OrganClassEnterBo bo : classes) {
+            if (bo.getCanEnterFlag()) {
+                canEnterFlag = true;
+                break;
+            }
+        }
+        ognCourseBo.setCanEnterFlag(canEnterFlag);
         // 老师介绍
         List<OrganAccountBo> team = organAccountRepository.getByCourseId(courseId);
         if (CollectionsTools.isNotEmpty(team)) {
