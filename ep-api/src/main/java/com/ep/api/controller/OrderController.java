@@ -47,16 +47,4 @@ public class OrderController extends ApiController {
         return orderService.order(optional.get().getId(), childId, classId);
     }
 
-//    @ApiOperation(value = "批量创建订单")
-//    @PostMapping("/batch/new")
-//    @PreAuthorize("hasAnyAuthority('api:base')")
-//    public ResultDo order(@RequestParam("childIds") List<Long> childIds,
-//                          @RequestParam("classId") Long classId) {
-//        Optional<EpMemberPo> optional = super.getCurrentUser();
-//        for (Long childId : childIds) {
-//            orderService.order(optional.get().getId(), childId, classId);
-//        }
-//        return ResultDo.build();
-//    }
-
 }

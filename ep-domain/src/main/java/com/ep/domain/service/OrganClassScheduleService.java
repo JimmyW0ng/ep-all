@@ -91,7 +91,7 @@ public class OrganClassScheduleService {
         ResultDo<OrganClassCatalogDetailDto> resultDo = ResultDo.build();
         // 校验订单
         EpOrderPo orderPo = orderRepository.getById(orderId);
-        if (orderPo == null || orderPo.getDelFlag()) {
+        if (orderPo == null || orderPo.getDelFlag() || !orderPo.getMemberId().equals(memberId)) {
             return resultDo.setError(MessageCode.ERROR_ORDER_NOT_EXISTS);
         }
         EpOrganClassPo classPo = organClassRepository.getById(orderPo.getClassId());

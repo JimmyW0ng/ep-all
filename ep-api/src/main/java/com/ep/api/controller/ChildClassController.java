@@ -89,8 +89,8 @@ public class ChildClassController extends ApiController {
     @ApiOperation(value = "班次老师评价回复")
     @PostMapping("/catalog/detail/replay")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<OrganClassCatalogDetailDto> replayComment(@RequestParam("commentId") Long commentId,
-                                                              @RequestParam("content") String content) {
+    public ResultDo replayComment(@RequestParam("commentId") Long commentId,
+                                  @RequestParam("content") String content) {
         Long memberId = super.getCurrentUser().get().getId();
         return memberChildCommentService.replayComment(memberId, commentId, content);
     }

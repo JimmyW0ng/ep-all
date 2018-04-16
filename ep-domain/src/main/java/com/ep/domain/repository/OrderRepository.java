@@ -135,7 +135,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         // 封装条件
         Timestamp time = DateTools.zerolizedTime(DateTools.getCurrentDateTime());
         Condition condition = EP_ORDER.MEMBER_ID.eq(memberId)
-                                                .and(EP_ORDER.STATUS.eq(EpOrderStatus.opening))
+                                                .and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
                                                 .and(EP_ORDER.DEL_FLAG.eq(false))
                                                 .and(EP_ORGAN_CLASS_SCHEDULE.START_TIME.greaterOrEqual(time))
                                                 .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
