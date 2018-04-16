@@ -2,6 +2,7 @@ package com.ep.api.filter;
 
 import com.ep.api.security.ApiSecurityAuthComponent;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        authHeader = authHeader.substring(tokenHeaderPrefix.length() + 1);
+        authHeader = authHeader.substring(tokenHeaderPrefix.length() + BizConstant.DB_NUM_ONE);
         // 解析token
         ResultDo<ApiPrincipalBo> checkToken = securityAuthComponent.getTokenInfo(authHeader);
         if (checkToken.isError()) {
