@@ -29,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -463,11 +464,11 @@ public class OrderController extends BackendController {
                                  @RequestParam(value = "status", required = false) String status,
                                  @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                                  @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime,
+                                 HttpServletRequest request,
                                  HttpServletResponse response) {
         Collection<Condition> conditions = formatJooqSearchConditions(mobile, childTrueName, childNickName, courseName, className, classType, status, crStartTime, crEndTime);
         conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + "英语预约课" + "%"));
-
-        orderService.indexExportExcel(response, pageable, conditions);
+        orderService.indexExportExcel(request, response, pageable, conditions);
 
     }
 
