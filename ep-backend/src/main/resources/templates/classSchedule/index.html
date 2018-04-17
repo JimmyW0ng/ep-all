@@ -233,7 +233,7 @@
             }
 
         }
-        $("#query-form input,#query-form select").each(function (i) {
+        $("#query-form input,#query-form select").each(function () {
             if (this.value != null && this.value != "") {
                 if (this.tagName == 'INPUT') {
                     jsonObj[this.name] = this.value.replace(/^\s+|\s+$/g, "");

@@ -467,7 +467,6 @@ public class OrderController extends BackendController {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
         Collection<Condition> conditions = formatJooqSearchConditions(mobile, childTrueName, childNickName, courseName, className, classType, status, crStartTime, crEndTime);
-        conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + "英语预约课" + "%"));
         orderService.indexExportExcel(request, response, pageable, conditions);
 
     }

@@ -578,7 +578,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param condition
      * @return
      */
-    public List<OrderBo> indexExportExcel(Pageable pageable, Collection<? extends Condition> condition) {
+    public List<OrderExcelBo> indexExportExcel(Pageable pageable, Collection<? extends Condition> condition) {
 //        long totalCount = dslContext.selectCount()
 //                .from(EP_ORDER)
 //                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
@@ -610,8 +610,8 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
                 .where(condition);
-        List<OrderBo> list = record.orderBy(getSortFields(pageable.getSort()))
-                .fetchInto(OrderBo.class);
+        List<OrderExcelBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .fetchInto(OrderExcelBo.class);
         return list;
     }
 }

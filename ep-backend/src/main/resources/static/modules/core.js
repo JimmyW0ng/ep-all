@@ -1,9 +1,3 @@
-/**
- * 根据上一页面的url,返回上一页面
- */
-function getHistoryBack() {
-    location.href = document.referrer;
-}
 
 
 var _url = window.location.href,
@@ -297,7 +291,7 @@ $(function () {
 
     // 查询相关
     $("#query-button").click(function () {
-        $("#query-form input,#query-form select").each(function (i) {
+        $("#query-form input,#query-form select").each(function () {
             if (this.value != null && this.value != "") {
                 if (this.tagName == 'INPUT') {
                     jsonObj[this.name] = this.value.replace(/^\s+|\s+$/g, "");

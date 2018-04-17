@@ -291,7 +291,21 @@
     }
     /*导出Excel*/
     function exportExcel() {
-        location.href = "/auth/order/indexExportExcel"
+        $("#query-form input,#query-form select").each(function () {
+            if (this.value != null && this.value != "") {
+                if (this.tagName == 'INPUT') {
+                    jsonObj[this.name] = this.value.replace(/^\s+|\s+$/g, "");
+                } else {
+                    jsonObj[this.name] = this.value;
+                }
+            } else {
+                jsonObj = delJSON(jsonObj, this.name);
+            }
+        });
+        jsonObj['page'] = 0;
+        var href = parseUrl(jsonObj);
+
+        window.location = '/auth/order/indexExportExcel?' + href
     }
     function checkOrderSuccess(ele) {
         var status=$(ele).parent().siblings("td[name='status']").eq(0).html()

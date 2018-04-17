@@ -1,15 +1,13 @@
 package com.ep.common.tool;
 
-import com.ep.common.component.SpringComponent;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.jooq.EnumType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.sql.Timestamp;
+import java.lang.reflect.Method;
 import java.util.List;
 
 
@@ -64,27 +62,25 @@ public class ExcelUtil {
         for (int j = 0; j < list.size(); j++) {
             HSSFRow row3 = sheet.createRow(j + 2);
             for (int k = 0; k < fieldNameStrs.size(); k++) {
+                String fieldName = fieldNameStrs.get(k);
                 HSSFCell cell1 = row3.createCell(k);
                 Field field = null;
                 Class<?> clazz = list.get(j).getClass();
                 try {
-                    field = clazz.getDeclaredField(fieldNameStrs.get(k));
+                    field = clazz.getDeclaredField(fieldName);
                 } catch (Exception e) {
                 }
                 if (field == null) {
-                    field = clazz.getSuperclass().getDeclaredField(fieldNameStrs.get(k));
-                }
-                field.setAccessible(true);
-                Object obj = field.get(list.get(j));
-                if (obj instanceof EnumType) {
-                    //字段是枚举
-                    String className = obj.getClass().getName();
-                    className = className.substring(className.lastIndexOf(".") + 1, className.length());
-                    String cellValue = ((EnumType) obj).getLiteral();
-                    cell1.setCellValue(SpringComponent.messageSource(className + "." + cellValue));
-                } else if (obj instanceof Timestamp) {
-                    cell1.setCellValue(DateTools.timestampToString((Timestamp) obj, DateTools.TIME_PATTERN));
+                    Method m = list.get(j).getClass().getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
+                    String value = "";
+                    try {
+                        value = m.invoke(list.get(j)).toString();
+                    } catch (Exception e) {
+                    }
+                    cell1.setCellValue(value);
                 } else {
+                    field.setAccessible(true);
+                    Object obj = field.get(list.get(j));
                     cell1.setCellValue(obj == null ? "" : obj.toString());
                 }
             }
@@ -95,6 +91,7 @@ public class ExcelUtil {
         String agent = request.getHeader("USER-AGENT").toLowerCase();
         String encodeFileName = java.net.URLEncoder.encode(fileName, "UTF-8");
         if (agent.contains("firefox")) {
+            //firefox
             response.setCharacterEncoding("utf-8");
             response.setHeader("content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1") + ".xls");
         } else {

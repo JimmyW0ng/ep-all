@@ -554,25 +554,22 @@ public class OrderService {
         fieldList.add(EP_ORDER.STATUS);
         fieldList.add(EP_ORDER.REMARK);
         fieldList.add(EP_ORDER.CREATE_AT);
-        List<OrderBo> list = orderRepository.indexExportExcel(pageable, condition);
-//        list.forEach(p->{
-//            p.setClassType(EpOrganClassType.valueOf(p.getClassType()).getLiteral());
-//        });
+        List<OrderExcelBo> list = orderRepository.indexExportExcel(pageable, condition);
         List<String> fieldNameStrs = Lists.newArrayList();
         fieldNameStrs.add("mobile");
         fieldNameStrs.add("childTrueName");
         fieldNameStrs.add("childNickName");
         fieldNameStrs.add("courseName");
         fieldNameStrs.add("className");
-        fieldNameStrs.add("classType");
-        fieldNameStrs.add("classStatus");
+        fieldNameStrs.add("classTypeText");
+        fieldNameStrs.add("classStatusText");
         fieldNameStrs.add("prize");
-        fieldNameStrs.add("status");
+        fieldNameStrs.add("statusText");
         fieldNameStrs.add("remark");
-        fieldNameStrs.add("createAt");
+        fieldNameStrs.add("fmtCreateAt");
         String[] titles = {"会员账号", "姓名", "昵称", "产品", "班次", "班次类型", "班次状态", "价格", "订单状态", "备注", "创建时间"};
         try {
-            ExcelUtil.exportExcel(request, response, "列表", fieldList.size(), list, fieldNameStrs, titles);
+            ExcelUtil.exportExcel(request, response, "订单列表", fieldList.size(), list, fieldNameStrs, titles);
         } catch (Exception e) {
             log.error("indexExportExcel fail", e);
         }
