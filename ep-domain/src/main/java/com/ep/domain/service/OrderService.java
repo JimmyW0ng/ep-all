@@ -541,7 +541,8 @@ public class OrderService {
      * @param condition
      * @return
      */
-    public void indexExportExcel(HttpServletRequest request, HttpServletResponse response, Pageable pageable, Collection<? extends Condition> condition) {
+    public void indexExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, Pageable pageable, Collection<? extends Condition> condition) {
+        log.info("[订单]导出excel开始。");
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_MEMBER.MOBILE);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
@@ -554,7 +555,7 @@ public class OrderService {
         fieldList.add(EP_ORDER.STATUS);
         fieldList.add(EP_ORDER.REMARK);
         fieldList.add(EP_ORDER.CREATE_AT);
-        List<OrderExcelBo> list = orderRepository.indexExportExcel(pageable, condition);
+        List<OrderExcelBo> list = orderRepository.indexExportExcel(fieldList, pageable, condition);
         List<String> fieldNameStrs = Lists.newArrayList();
         fieldNameStrs.add("mobile");
         fieldNameStrs.add("childTrueName");
@@ -569,10 +570,10 @@ public class OrderService {
         fieldNameStrs.add("fmtCreateAt");
         String[] titles = {"会员账号", "姓名", "昵称", "产品", "班次", "班次类型", "班次状态", "价格", "订单状态", "备注", "创建时间"};
         try {
-            ExcelUtil.exportExcel(request, response, "订单列表", fieldList.size(), list, fieldNameStrs, titles);
+            ExcelUtil.exportExcel(request, response, fileName, fieldList.size(), list, fieldNameStrs, titles);
         } catch (Exception e) {
-            log.error("indexExportExcel fail", e);
+            log.error("[订单]导出excel失败", e);
         }
-
+        log.info("[订单]导出excel成功。");
     }
 }

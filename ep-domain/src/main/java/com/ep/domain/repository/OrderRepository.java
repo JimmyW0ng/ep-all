@@ -578,31 +578,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param condition
      * @return
      */
-    public List<OrderExcelBo> indexExportExcel(Pageable pageable, Collection<? extends Condition> condition) {
-//        long totalCount = dslContext.selectCount()
-//                .from(EP_ORDER)
-//                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
-//                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
-//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
-//                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
-//                .where(condition).fetchOne(0, Long.class);
-//        if (totalCount == BizConstant.DB_NUM_ZERO) {
-//            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
-//        }
-        List<Field<?>> fieldList = Lists.newArrayList();
-        fieldList.add(EP_MEMBER.MOBILE);
-        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
-        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
-        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
-//        fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
-        fieldList.add(EP_ORGAN_CLASS.TYPE.as("classType"));
-        fieldList.add(EP_ORGAN_CLASS.STATUS.as("classStatus"));
-        fieldList.add(EP_ORDER.PRIZE);
-        fieldList.add(EP_ORDER.STATUS);
-        fieldList.add(EP_ORDER.REMARK);
-        fieldList.add(EP_ORDER.CREATE_AT);
-
+    public List<OrderExcelBo> indexExportExcel(List<Field<?>> fieldList, Pageable pageable, Collection<? extends Condition> condition) {
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORDER)
                 .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))

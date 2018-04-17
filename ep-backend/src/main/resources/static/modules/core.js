@@ -1,5 +1,3 @@
-
-
 var _url = window.location.href,
     url = _url.split('?')[0];
 var jsonObj = parseJSON(_url);

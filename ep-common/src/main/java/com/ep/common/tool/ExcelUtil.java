@@ -36,7 +36,7 @@ public class ExcelUtil {
         //创建标题行
         HSSFCell cellTitle = rowTitle.createCell(0);
         //标题行内容
-        cellTitle.setCellValue("用户列表");
+        cellTitle.setCellValue(fileName);
         //标题行样式
         HSSFCellStyle styleTitle = wb.createCellStyle();
         //标题行样式字体

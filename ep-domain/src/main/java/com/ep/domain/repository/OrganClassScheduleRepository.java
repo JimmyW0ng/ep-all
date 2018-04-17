@@ -139,6 +139,27 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
     }
 
     /**
+     * 根据搜索条件导出excel
+     *
+     * @param fieldList
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public List<ClassScheduleExcelBo> indexExportExcel(List<Field<?>> fieldList, Pageable pageable, Collection<? extends Condition> condition) {
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_SCHEDULE)
+                .leftJoin(EP_MEMBER_CHILD_COMMENT)
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID)
+                        .and(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID)))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+                .where(condition);
+        List<ClassScheduleExcelBo> list = record.orderBy(EP_ORGAN_CLASS_SCHEDULE.ID.asc())
+                .fetchInto(ClassScheduleExcelBo.class);
+        return list;
+    }
+
+    /**
      * 根据课程负责人获取今日班次
      *
      * @param ognAccountId

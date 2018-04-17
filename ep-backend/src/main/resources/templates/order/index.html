@@ -291,6 +291,10 @@
     }
     /*导出Excel*/
     function exportExcel() {
+        if (!$("#tbody").find("tr").length) {
+            toastr.error("请先查询出数据，再导出到excel表格！")
+            return
+        }
         $("#query-form input,#query-form select").each(function () {
             if (this.value != null && this.value != "") {
                 if (this.tagName == 'INPUT') {
@@ -304,7 +308,6 @@
         });
         jsonObj['page'] = 0;
         var href = parseUrl(jsonObj);
-
         window.location = '/auth/order/indexExportExcel?' + href
     }
     function checkOrderSuccess(ele) {

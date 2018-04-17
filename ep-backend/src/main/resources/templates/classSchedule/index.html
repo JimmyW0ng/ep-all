@@ -69,6 +69,7 @@
                         <button class="btn btn-warning" onclick="location.href='/auth/classSchedule/index'"
                                 type="button">重置
                         </button>
+                        <button class="btn btn-info" type="button" onclick="exportExcel()">导出excel</button>
                     </div>
 
                 </form>
@@ -211,6 +212,30 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 
 <script>
+    /*点击按钮前检测搜索条件*/
+    function checkSearchCond() {
+        if (!$("#searchcourseId").val()) {
+            toastr.warning("请选择产品!")
+            return
+        }
+        if (!$("#classId").val()) {
+            toastr.warning("请选择班次!")
+            return
+        }
+        var classId = $("#classId").val()
+        var type = $("#classId").find("option[value='" + classId + "']").eq(0).attr("name")
+        if (type == "bespeak") {
+            $("#classCatalogId").hide()
+            $("#classCatalogId").val("")
+        } else if (type == "normal") {
+            $("#classCatalogId").show()
+            if (!$("#classCatalogId").val()) {
+                toastr.warning("请选择课时目录!")
+                return
+            }
+        }
+    }
+    /*查询*/
     function search() {
         if (!$("#searchcourseId").val()) {
             toastr.warning("请选择产品!")
@@ -231,7 +256,6 @@
                 toastr.warning("请选择课时目录!")
                 return
             }
-
         }
         $("#query-form input,#query-form select").each(function () {
             if (this.value != null && this.value != "") {
@@ -253,8 +277,50 @@
         if (href) {
             url += '?' + href;
         }
-
         window.location = url
+    }
+
+    /*导出Excel*/
+    function exportExcel() {
+        if (!$("#tbody").find("tr").length) {
+            toastr.error("请先查询出数据，再导出到excel表格！")
+            return
+        }
+        if (!$("#searchcourseId").val()) {
+            toastr.warning("请选择产品!")
+            return
+        }
+        if (!$("#classId").val()) {
+            toastr.warning("请选择班次!")
+            return
+        }
+        var classId = $("#classId").val()
+        var type = $("#classId").find("option[value='" + classId + "']").eq(0).attr("name")
+        if (type == "bespeak") {
+            $("#classCatalogId").hide()
+            $("#classCatalogId").val("")
+        } else if (type == "normal") {
+            $("#classCatalogId").show()
+            if (!$("#classCatalogId").val()) {
+                toastr.warning("请选择课时目录!")
+                return
+            }
+        }
+        $("#query-form input,#query-form select").each(function () {
+            if (this.value != null && this.value != "") {
+                if (this.tagName == 'INPUT') {
+                    jsonObj[this.name] = this.value.replace(/^\s+|\s+$/g, "");
+                } else {
+                    jsonObj[this.name] = this.value;
+                }
+            } else {
+                jsonObj = delJSON(jsonObj, this.name);
+            }
+        });
+        jsonObj['page'] = 0;
+        var href = parseUrl(jsonObj);
+
+        window.location = '/auth/classSchedule/indexExportExcel?' + href
     }
     function changeCourse(ele) {
         var courseId = $(ele).val()

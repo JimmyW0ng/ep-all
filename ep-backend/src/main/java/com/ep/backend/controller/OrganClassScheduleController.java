@@ -29,6 +29,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -55,6 +57,25 @@ public class OrganClassScheduleController extends BackendController {
     @Autowired
     private OrganClassCatalogService organClassCatalogService;
 
+    private Collection<Condition> formatJooqSearchConditions(Long classId, Long classCatalogId, String childNickName, String childTrueName) {
+        Collection<Condition> conditions = Lists.newArrayList();
+        if (StringTools.isNotBlank(childNickName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.eq(childNickName));
+        }
+        if (StringTools.isNotBlank(childTrueName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.eq(childTrueName));
+        }
+        conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch).or(EP_MEMBER_CHILD_COMMENT.TYPE.isNull()));
+        if (null != classCatalogId) {
+            conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.eq(classCatalogId));
+        }
+        if (null != classId) {
+            conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId));
+        }
+        return conditions;
+    }
+
+
     @GetMapping("index")
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     public String index(Model model,
@@ -64,32 +85,19 @@ public class OrganClassScheduleController extends BackendController {
                         @RequestParam(value = "classCatalogId", required = false) Long classCatalogId,
                         @RequestParam(value = "childNickName", required = false) String childNickName,
                         @RequestParam(value = "childTrueName", required = false) String childTrueName
-
     ) {
+        //页面搜索条件
         Map<Object, Object> searchMap = Maps.newHashMap();
-        Collection<Condition> conditions = Lists.newArrayList();
         //机构id
         Long ognId = super.getCurrentUser().get().getOgnId();
         Long mobile = super.getCurrentUser().get().getMobile();
         if (null == classId) {
             model.addAttribute("page", new PageImpl<OrganClassScheduleDto>(new ArrayList<OrganClassScheduleDto>()));
         } else {
-            if (StringTools.isNotBlank(childNickName)) {
-                conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.eq(childNickName));
-            }
             searchMap.put("childNickName", childNickName);
-            if (StringTools.isNotBlank(childTrueName)) {
-                conditions.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME.eq(childTrueName));
-            }
             searchMap.put("childTrueName", childTrueName);
-            conditions.add(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch).or(EP_MEMBER_CHILD_COMMENT.TYPE.isNull()));
-            if (null != classCatalogId) {
-                conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_CATALOG_ID.eq(classCatalogId));
-            }
-            if (null != classId) {
-                conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId));
-            }
-
+            //sql where条件
+            Collection<Condition> conditions = formatJooqSearchConditions(classId, classCatalogId, childNickName, childTrueName);
             Page<OrganClassScheduleDto> page = organClassScheduleService.findbyPageAndCondition(courseId, pageable, conditions);
             model.addAttribute("page", page);
         }
@@ -232,6 +240,36 @@ public class OrganClassScheduleController extends BackendController {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
         return organClassScheduleService.changeClassScheduleStatus(id, EpOrganClassScheduleStatus.valueOf(status));
+    }
+
+    /**
+     * 导出excel
+     */
+    @GetMapping("indexExportExcel")
+    @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
+    public void indexExportExcel(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                 @RequestParam(value = "courseId", required = false) Long courseId,
+                                 @RequestParam(value = "classId", required = false) Long classId,
+                                 @RequestParam(value = "classCatalogId", required = false) Long classCatalogId,
+                                 @RequestParam(value = "childNickName", required = false) String childNickName,
+                                 @RequestParam(value = "childTrueName", required = false) String childTrueName,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
+        Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
+        if (!(courseOptional.isPresent() && courseOptional.get().getOgnId().equals(super.getCurrentUserOgnId()))) {
+            log.error("[随堂管理]导出excel失败，原因：{}。", MessageCode.ERROR_ILLEGAL_RESOURCE);
+            return;
+        }
+        EpOrganClassPo classPo = this.innerOgnOrPlatformReq(classId, super.getCurrentUserOgnId());
+        if (null == classPo) {
+            log.error("[随堂管理]导出excel失败，原因：{}。", MessageCode.ERROR_ILLEGAL_RESOURCE);
+            return;
+        }
+        //sql where条件
+        Collection<Condition> conditions = formatJooqSearchConditions(classId, classCatalogId, childNickName, childTrueName);
+        String fileName = "随堂列表";
+        fileName = courseOptional.get().getCourseName() + "_" + classPo.getClassName() + "_" + fileName;
+        organClassScheduleService.indexExportExcel(request, response, fileName, pageable, conditions);
     }
 
     /**

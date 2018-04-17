@@ -2,6 +2,7 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.ExcelUtil;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
@@ -16,20 +17,27 @@ import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.enums.EpMemberMessageType;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
+import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS_SCHEDULE;
 
 /**
  * @Description: 班次行程服务
@@ -402,6 +410,40 @@ public class OrganClassScheduleService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
+    /**
+     * 根据搜索条件导出excel
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public void indexExportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, Pageable pageable, Collection<? extends Condition> condition) {
+        log.info("[随堂管理]导出excel开始。");
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_INDEX);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CREATE_AT);
+        List<ClassScheduleExcelBo> list = organClassScheduleRepository.indexExportExcel(fieldList, pageable, condition);
+        List<String> fieldNameStrs = Lists.newArrayList();
+        fieldNameStrs.add("childNickName");
+        fieldNameStrs.add("childTrueName");
+        fieldNameStrs.add("statusText");
+        fieldNameStrs.add("fmtStartTime");
+        fieldNameStrs.add("catalogIndex");
+        fieldNameStrs.add("fmtCreateAt");
+        String[] titles = {"昵称", "姓名", "考勤", "开始时间", "目录索引", "创建时间"};
+        try {
+            ExcelUtil.exportExcel(request, response, fileName, fieldList.size(), list, fieldNameStrs, titles);
+        } catch (Exception e) {
+            log.error("[随堂管理]导出excel失败", e);
+        }
+        log.info("[随堂管理]导出excel成功。");
+    }
+
 
     /**
      * 校验po对象入参
