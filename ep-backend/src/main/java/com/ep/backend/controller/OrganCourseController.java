@@ -12,6 +12,7 @@ import com.ep.domain.pojo.dto.RectifyOrganCourseDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpConstantTagStatus;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseType;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
@@ -82,6 +83,7 @@ public class OrganCourseController extends BackendController {
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseName", required = false) String courseName,
                         @RequestParam(value = "courseType", required = false) String courseType,
+                        @RequestParam(value = "courseStatus", required = false) String courseStatus,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
@@ -95,6 +97,10 @@ public class OrganCourseController extends BackendController {
             conditions.add(EP_ORGAN_COURSE.COURSE_TYPE.eq(EpOrganCourseCourseType.valueOf(courseType)));
         }
         searchMap.put("courseType", courseType);
+        if (StringTools.isNotBlank(courseStatus)) {
+            conditions.add(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.valueOf(courseStatus)));
+        }
+        searchMap.put("courseStatus", courseStatus);
         if (null != crStartTime) {
             conditions.add(EP_ORGAN_COURSE.CREATE_AT.greaterOrEqual(crStartTime));
         }
@@ -120,33 +126,38 @@ public class OrganCourseController extends BackendController {
     public String merchantIndex(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
             , @RequestParam(value = "courseName", required = false) String courseName
             , @RequestParam(value = "courseType", required = false) String courseType
+            , @RequestParam(value = "courseStatus", required = false) String courseStatus
             , @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime
             , @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
     ) {
-        Map map = Maps.newHashMap();
+        Map<String, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(courseName)) {
             conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.like("%" + courseName + "%"));
         }
-        map.put("courseName", courseName);
+        searchMap.put("courseName", courseName);
         if (StringTools.isNotBlank(courseType)) {
             conditions.add(EP.EP_ORGAN_COURSE.COURSE_TYPE.eq(EpOrganCourseCourseType.valueOf(courseType)));
         }
-        map.put("courseType", courseType);
+        searchMap.put("courseType", courseType);
+        if (StringTools.isNotBlank(courseStatus)) {
+            conditions.add(EP_ORGAN_COURSE.COURSE_STATUS.eq(EpOrganCourseCourseStatus.valueOf(courseStatus)));
+        }
+        searchMap.put("courseStatus", courseStatus);
         if (null != crStartTime) {
             conditions.add(EP.EP_ORGAN_COURSE.CREATE_AT.greaterOrEqual(crStartTime));
         }
-        map.put("crStartTime", crStartTime);
+        searchMap.put("crStartTime", crStartTime);
         if (null != crEndTime) {
             conditions.add(EP.EP_ORGAN_COURSE.CREATE_AT.lessOrEqual(crEndTime));
         }
-        map.put("crEndTime", crEndTime);
+        searchMap.put("crEndTime", crEndTime);
         conditions.add(EP.EP_ORGAN_COURSE.DEL_FLAG.eq(false));
         Long ognId = super.getCurrentUser().get().getOgnId();
         conditions.add(EP.EP_ORGAN_COURSE.OGN_ID.eq(ognId));
         Page<OrganCourseBo> page = organCourseService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
-        model.addAttribute("map", map);
+        model.addAttribute("searchMap", searchMap);
         return "organCourse/merchantIndex";
     }
 

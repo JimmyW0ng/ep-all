@@ -25,7 +25,8 @@
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline" id="query-form" role="form" >
                     <div class="form-group">
-                        <input type="text" class="form-control " name="courseName" th:value="${map.get('courseName')}"
+                        <input type="text" class="form-control " name="courseName"
+                               th:value="${searchMap.get('courseName')}"
                                placeholder="产品名称">
                     </div>
 
@@ -34,19 +35,30 @@
                             <option value>产品类型</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseType).values()}"
                                     th:value="${state}"
-                                    th:selected="${#stringTools.equals(state,map.get('courseType'))}"
+                                    th:selected="${#stringTools.equals(state,searchMap.get('courseType'))}"
                                     th:text="#{EpOrganCourseCourseType.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group ">
+                        <select class="form-control" name="courseStatus" id="courseStatus" style="width:182px;">
+                            <option value>状态</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,searchMap.get('courseStatus'))}"
+                                    th:text="#{EpOrganCourseCourseStatus.+${state.literal}}">
                             </option>
                         </select>
                     </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
-                                   th:placeholder="创建时间从" th:value="${map.get('crStartTime')}"
+                                   th:placeholder="创建时间从" th:value="${searchMap.get('crStartTime')}"
                             >
                             <span class="input-group-addon">到</span>
                             <input type="text" class="form-control  endTime" name="crEndTime" id="crEndTime"
-                                   th:placeholder="到" th:value="${map.get('crEndTime')}"
+                                   th:placeholder="到" th:value="${searchMap.get('crEndTime')}"
                             >
                         </div>
                     </div>
