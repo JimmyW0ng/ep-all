@@ -20,6 +20,15 @@ public class ExcelUtil {
 
     /**
      * 导出excel文件
+     * @param request
+     * @param response
+     * @param fileName 文件名
+     * @param colNum 列数
+     * @param list 数据集合
+     * @param fieldNameStrs 对应字段
+     * @param titles 字段对应的中文
+     * @param <T>
+     * @throws Exception
      */
     public static <T> void exportExcel(HttpServletRequest request, HttpServletResponse response, String fileName, int colNum, List<T> list, List<String> fieldNameStrs, String[] titles) throws Exception {
         //创建一个webbook，对应一个Excel文件

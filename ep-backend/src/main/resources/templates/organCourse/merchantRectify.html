@@ -64,7 +64,8 @@
                                                     required="true" style="margin-left: -15px" disabled="true"
                                                     class="form-control">
                                                 <option th:each="po : ${firstConstantCatalogSelectModel}"
-                                                        th:value="${po.id}" th:selected="${firstConstantCatalog}"
+                                                        th:value="${po.id}"
+                                                        th:selected="${#strings.equals(po.id,firstConstantCatalog)}"
                                                         th:text="${po.label}">
                                                 </option>
                                             </select>
