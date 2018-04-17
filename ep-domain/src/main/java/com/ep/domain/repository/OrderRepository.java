@@ -587,5 +587,38 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchInto(OrderExcelBo.class);
         return list;
     }
+
+    /**
+     * 批量拒绝
+     *
+     * @param ids
+     * @param batchRefuseRemark
+     * @param ognId
+     * @return
+     */
+    public int batchRefuseByIds(List<Long> ids, String batchRefuseRemark, Long ognId) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.STATUS, EpOrderStatus.refuse)
+                .set(EP_ORDER.REMARK, batchRefuseRemark)
+                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.ID.in(ids))
+                .and(EP_ORDER.OGN_ID.eq(ognId))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 未处理订单数
+     *
+     * @param ognId
+     * @return
+     */
+    public long countSaveOrder(Long ognId) {
+        return dslContext.selectCount().from(EP_ORDER)
+                .where(EP_ORDER.OGN_ID.eq(ognId))
+                .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
 }
 

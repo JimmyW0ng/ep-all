@@ -4,8 +4,10 @@ import com.ep.common.tool.CryptTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpFilePo;
+import com.ep.domain.pojo.po.EpOrganPo;
 import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
+import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.GeneralSecurityException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,10 @@ public class IndexController extends BackendController {
     private SystemRoleService systemRoleService;
     @Autowired
     private OrganService organService;
+    @Autowired
+    private OrderService orderervice;
+    @Autowired
+    private OrganCourseService organCourseService;
 
     /**
      * 登录成功后布局页
@@ -64,7 +71,17 @@ public class IndexController extends BackendController {
      * @return
      */
     @GetMapping("/homePage")
-    public String homePage() {
+    public String homePage(Model model) {
+        Long ognId = super.getCurrentUserOgnId();
+        long countOrder = orderervice.countSaveOrder(ognId);
+        model.addAttribute("saveOrderCount", new DecimalFormat("###,###").format(countOrder));
+        int onlineCount = organCourseService.findByOgnIdAndStatus(ognId, EpOrganCourseCourseStatus.online).size();
+        model.addAttribute("onlineCount", new DecimalFormat("###,###").format(onlineCount));
+        Optional<EpOrganPo> organOptional = organService.getById(ognId);
+        model.addAttribute("totalParticipate", organOptional.isPresent() ?
+                new DecimalFormat("###,###").format(organOptional.get().getTotalParticipate()) : 0);
+        model.addAttribute("togetherScore", organOptional.isPresent() ?
+                new DecimalFormat("###,###").format(organOptional.get().getTogetherScore()) : 0);
         return "index";
     }
 

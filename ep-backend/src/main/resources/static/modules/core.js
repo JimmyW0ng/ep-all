@@ -227,7 +227,7 @@ function $ajaxGet(url) {
 //封装后的$.ajax,post形式
 function $ajaxPost(url, data, successfun) {
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: url,
         data: data,
         beforeSend: function () {
@@ -236,6 +236,29 @@ function $ajaxPost(url, data, successfun) {
         success: function (data) {
             if (data.success) {
                 successfun(data.result)
+            } else {
+                toastr.error("操作失败，原因：" + data.errorDescription);
+            }
+        },
+        error: function (XMLHttpRequest) {
+            toastr_error_system(XMLHttpRequest.status);
+        },
+        complete: function () {
+            layer.closeAll();
+        }
+    })
+}
+function $ajaxPost(url, data) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        beforeSend: function () {
+            layer.load(2, {shade: [0.1, '#fff']});
+        },
+        success: function (data) {
+            if (data.success) {
+                window.location.href = document.location.href
             } else {
                 toastr.error("操作失败，原因：" + data.errorDescription);
             }

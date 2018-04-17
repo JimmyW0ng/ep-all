@@ -471,6 +471,21 @@ public class OrderController extends BackendController {
     }
 
     /**
+     * 批量拒绝订单
+     *
+     * @param ids
+     * @return
+     */
+    @PostMapping("/batchRefuse")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo delete(@RequestParam("ids[]") List<Long> ids,
+                           @RequestParam(value = "batchRefuseRemark") String batchRefuseRemark) {
+        Long ognId = super.getCurrentUserOgnId();
+        return orderService.batchRefuse(ids, batchRefuseRemark, ognId);
+    }
+
+    /**
      * 校验业务对象是否属于该机构，是：返回po;否：返回null
      *
      * @param sourceId

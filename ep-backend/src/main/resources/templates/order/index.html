@@ -343,13 +343,17 @@
     }
     /*批量拒绝*/
     function batchRefuseInit() {
+        if ($("#tbody").find("input[type='checkbox']:checked").length == 0) {
+            toastr.error("请选择订单！")
+            return
+        }
         var flag = true
         $("#tbody").find("input[type='checkbox']:checked").each(function () {
-            debugger
-            var status = $(this).find("td[name='status']").eq(0).text()
-            if ($(this).find("td[name='status']").eq(0).text() != "save") {
+            var $tr = $(this).parents("tr").eq(0)
+            var status = $tr.find("td[name='status']").eq(0).text()
+            if (status != "save") {
                 flag = false;
-                $(this).find("input[type='checkbox']").prop("checked", false)
+                $tr.find("input[type='checkbox']").prop("checked", false)
             }
         })
         if (!flag) {
@@ -357,6 +361,13 @@
             return
         }
         $("#batchRefuseModal").modal("show")
+    }
+    function batchRefuseDo() {
+        var ids = []
+        $("#tbody").find("input[type='checkbox']:checked").each(function () {
+            ids.push($(this).attr("value"))
+        })
+        $ajaxPost("/auth/order/batchRefuse", {ids: ids, batchRefuseRemark: $("#batchRefuseRemark").val()})
     }
     /*批量报名*/
     function batchOrderSuccess() {

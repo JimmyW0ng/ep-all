@@ -9,8 +9,71 @@
 
     </th:block>
 </header>
-<body>
-
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <!--<span class="label label-success pull-right">月</span>-->
+                    <h5 style="color: #1c84c6">订单</h5>
+                </div>
+                <div class="ibox-content">
+                    <span>当前有</span>
+                    <h1 class="no-margins" th:text="${saveOrderCount}">40 886,200</h1>
+                    <span>笔订单未处理!</span>
+                    <!--<div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i>-->
+                    <!--</div>-->
+                    <!--<small>总收入</small>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <!--<span class="label label-info pull-right">全年</span>-->
+                    <h5 style="color: #23c6c8">产品</h5>
+                </div>
+                <div class="ibox-content">
+                    <span>累计上线产品</span>
+                    <h1 class="no-margins" th:text="${saveOrderCount}">275,800</h1>
+                    <!--<div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i>-->
+                    <!--</div>-->
+                    <!--<small>新订单</small>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <!--<span class="label label-primary pull-right">今天</span>-->
+                    <h5 style="color:#1ab394">报名</h5>
+                </div>
+                <div class="ibox-content">
+                    <span>累计报名人数</span>
+                    <h1 class="no-margins" th:text="${totalParticipate}"></h1>
+                    <!--<div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i>-->
+                    <!--</div>-->
+                    <!--<small>新访客</small>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <!--<span class="label label-danger pull-right">最近一个月</span>-->
+                    <h5 style="color: #ed5565">综合得分</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins" th:text="${togetherScore}"></h1>
+                    <!--<div class="stat-percent font-bold text-danger">38% <i class="fa fa-level-down"></i>-->
+                    <!--</div>-->
+                    <!--<small>12月</small>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script th:inline="javascript">
 
 </script>
