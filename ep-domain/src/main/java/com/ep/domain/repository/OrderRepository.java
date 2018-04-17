@@ -511,7 +511,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         fieldList.add(DSL.countDistinct(EP_ORDER.CLASS_ID)
                 .filterWhere(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak).and(EP_ORDER.STATUS.in(EpOrderStatus.opening, EpOrderStatus.end))
                 ).as("enteredBespeakNum"));
-
         SelectHavingStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORDER)
                 .leftJoin(EP_MEMBER).on(EP_ORDER.MEMBER_ID.eq(EP_MEMBER.ID))
@@ -519,8 +518,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORDER.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
                 .where(condition)
                 .groupBy(EP_ORDER.CHILD_ID, EP_ORDER.MEMBER_ID);
-
-        List<OrderChildStatisticsDto> list = record.orderBy(EP_ORDER.CHILD_ID.asc())
+        List<OrderChildStatisticsDto> list = record.orderBy(EP_ORDER.CHILD_ID.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetchInto(OrderChildStatisticsDto.class);
@@ -535,7 +533,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @return
      */
     public List<OrganClassBo> findEnteredClassByChildId(Long ognId, Long childId, EpOrganClassType classType) {
-
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS.fields());
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         if (null == classType) {
