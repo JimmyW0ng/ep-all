@@ -150,7 +150,7 @@
                                    th:value="${bo.status}"
                                    th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>
                                 <a name="bespeak" class="btn btn-xs btn-info" style="display: none"
-                                   th:if="${#strings.equals(bo.classType,'bespeak')&&#strings.equals(bo.status,'success')}"
+                                   th:if="${#strings.equals(bo.classType,'bespeak')}"
                                    th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>
                                 <a name="break" class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    style="display: none"

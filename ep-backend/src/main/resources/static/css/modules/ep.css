@@ -57,3 +57,9 @@ img[src=""] {
 .constant-tag {
     background-color: #2AD5F3;
 }
+
+/*模态框高度90%，超出后y轴滚轴*/
+.modal-height90per {
+    height: 90%;
+    overflow-y: auto;
+}
