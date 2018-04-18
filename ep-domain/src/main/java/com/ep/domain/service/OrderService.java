@@ -576,4 +576,22 @@ public class OrderService {
         }
         log.info("[订单]导出excel成功。");
     }
+
+    /**
+     * 批量拒绝订单
+     *
+     * @param ids
+     * @param ognId
+     * @return
+     */
+    public ResultDo batchRefuse(List<Long> ids, String batchRefuseRemark, Long ognId) {
+        log.info("[订单]，订单批量拒绝开始，ids={}。", ids);
+        int count = orderRepository.batchRefuseByIds(ids, batchRefuseRemark, ognId);
+        log.info("[订单]，订单批量拒绝结束，拒绝订单数={}。", count);
+        return ResultDo.build();
+    }
+
+    public long countSaveOrder(Long ognId) {
+        return orderRepository.countSaveOrder(ognId);
+    }
 }
