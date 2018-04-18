@@ -66,6 +66,8 @@ public class OrganClassScheduleService {
     private OrganClassRepository organClassRepository;
     @Autowired
     private MemberChildTagRepository memberChildTagRepository;
+    @Autowired
+    private OrganClassCatalogRepository organClassCatalogRepository;
 
     public Optional<EpOrganClassSchedulePo> findById(Long id) {
         return organClassScheduleRepository.findById(id);
@@ -476,4 +478,39 @@ public class OrganClassScheduleService {
         return true;
     }
 
+    /**
+     * 开班行程初始化数据
+     *
+     * @param classId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void batchInitByClassId(Long classId, List<EpOrderPo> openingOrders) {
+        // 生成班级行程记录
+        List<EpOrganClassCatalogPo> catalogPos = organClassCatalogRepository.findByClassId(classId);
+        for (EpOrderPo orderPo : openingOrders) {
+            List<EpOrganClassSchedulePo> thisOrderPos = Lists.newArrayList();
+            for (EpOrganClassCatalogPo catalogPo : catalogPos) {
+                EpOrganClassSchedulePo schedulePo = new EpOrganClassSchedulePo();
+                schedulePo.setChildId(orderPo.getChildId());
+                schedulePo.setClassId(orderPo.getClassId());
+                schedulePo.setOrderId(orderPo.getId());
+                schedulePo.setClassCatalogId(catalogPo.getId());
+                schedulePo.setStartTime(catalogPo.getStartTime());
+                schedulePo.setDuration(catalogPo.getDuration());
+                schedulePo.setCatalogTitle(catalogPo.getCatalogTitle());
+                schedulePo.setCatalogDesc(catalogPo.getCatalogDesc());
+                schedulePo.setCatalogIndex(catalogPo.getCatalogIndex());
+                schedulePo.setStatus(EpOrganClassScheduleStatus.normal);
+                thisOrderPos.add(schedulePo);
+            }
+            if (thisOrderPos.size() > BizConstant.NUM_ONE_HUNDRED) {
+                List<List<EpOrganClassSchedulePo>> partList = Lists.partition(thisOrderPos, BizConstant.NUM_ONE_HUNDRED);
+                for (List<EpOrganClassSchedulePo> data : partList) {
+                    organClassScheduleRepository.insert(data);
+                }
+            } else {
+                organClassScheduleRepository.insert(thisOrderPos);
+            }
+        }
+    }
 }

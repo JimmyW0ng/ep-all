@@ -5,16 +5,17 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.event.ClassOpenEventBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,8 @@ public class OrganClassService {
     private OrderRepository orderRepository;
     @Autowired
     private OrganCatalogRepository organCatalogRepository;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     public List<EpOrganClassPo> findByCourseId(Long courseId){
         return organClassRepository.getByCourseId(courseId);
@@ -117,31 +120,24 @@ public class OrganClassService {
         // 更新订单状态为已开班
         orderRepository.openByClassId(id);
         // 生成班级孩子记录
+        List<EpOrganClassChildPo> classChildPos = Lists.newArrayList();
         for (EpOrderPo orderPo : openingOrders) {
             EpOrganClassChildPo classChildPo = new EpOrganClassChildPo();
             classChildPo.setClassId(id);
             classChildPo.setChildId(orderPo.getChildId());
             classChildPo.setOrderId(orderPo.getId());
-            organClassChildRepository.insert(classChildPo);
+            classChildPos.add(classChildPo);
         }
-        // 生成班级行程记录
-        List<EpOrganClassCatalogPo> catalogPos = organClassCatalogRepository.findByClassId(id);
-        for (EpOrderPo orderPo : openingOrders) {
-            for (EpOrganClassCatalogPo catalogPo : catalogPos) {
-                EpOrganClassSchedulePo schedulePo = new EpOrganClassSchedulePo();
-                schedulePo.setChildId(orderPo.getChildId());
-                schedulePo.setClassId(orderPo.getClassId());
-                schedulePo.setOrderId(orderPo.getId());
-                schedulePo.setClassCatalogId(catalogPo.getId());
-                schedulePo.setStartTime(catalogPo.getStartTime());
-                schedulePo.setDuration(catalogPo.getDuration());
-                schedulePo.setCatalogTitle(catalogPo.getCatalogTitle());
-                schedulePo.setCatalogDesc(catalogPo.getCatalogDesc());
-                schedulePo.setCatalogIndex(catalogPo.getCatalogIndex());
-                schedulePo.setStatus(EpOrganClassScheduleStatus.normal);
-                organClassScheduleRepository.insert(schedulePo);
+        if (classChildPos.size() > BizConstant.NUM_ONE_HUNDRED) {
+            List<List<EpOrganClassChildPo>> partClassChildList = Lists.partition(classChildPos, BizConstant.NUM_ONE_HUNDRED);
+            for (List<EpOrganClassChildPo> data : partClassChildList) {
+                organClassChildRepository.insert(data);
             }
+        } else {
+            organClassChildRepository.insert(classChildPos);
         }
+        ClassOpenEventBo eventBo = new ClassOpenEventBo(id, openingOrders);
+        publisher.publishEvent(eventBo);
         return ResultDo.build();
     }
 
