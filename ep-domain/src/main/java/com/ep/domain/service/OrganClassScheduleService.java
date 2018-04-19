@@ -437,7 +437,7 @@ public class OrganClassScheduleService {
         fieldNameStrs.add("fmtStartTime");
         fieldNameStrs.add("catalogIndex");
         fieldNameStrs.add("fmtCreateAt");
-        String[] titles = {"昵称", "姓名", "考勤", "开始时间", "目录索引", "创建时间"};
+        String[] titles = {"昵称", "姓名", "考勤", "开始时间", "目录", "创建时间"};
         try {
             ExcelUtil.exportExcel(request, response, fileName, fieldList.size(), list, fieldNameStrs, titles);
         } catch (Exception e) {

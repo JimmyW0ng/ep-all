@@ -265,10 +265,16 @@ public class OrganClassScheduleController extends BackendController {
             log.error("[随堂管理]导出excel失败，原因：{}。", MessageCode.ERROR_ILLEGAL_RESOURCE);
             return;
         }
+        Optional<EpOrganClassCatalogPo> classCatalogOptional = organClassCatalogService.findById(classCatalogId);
+        if (!(classCatalogOptional.isPresent() && classCatalogOptional.get().getClassId().equals(classPo.getId()))) {
+            log.error("[随堂管理]导出excel失败，原因：{}。", MessageCode.ERROR_ILLEGAL_RESOURCE);
+            return;
+        }
         //sql where条件
         Collection<Condition> conditions = formatJooqSearchConditions(classId, classCatalogId, childNickName, childTrueName);
         String fileName = "随堂列表";
-        fileName = courseOptional.get().getCourseName() + "_" + classPo.getClassName() + "_" + fileName;
+        fileName = courseOptional.get().getCourseName() + "_" + classPo.getClassName() + "_" +
+                classCatalogOptional.get().getCatalogTitle() + "_" + fileName;
         organClassScheduleService.indexExportExcel(request, response, fileName, pageable, conditions);
     }
 
