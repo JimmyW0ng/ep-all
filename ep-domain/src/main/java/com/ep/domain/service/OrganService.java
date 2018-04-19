@@ -394,4 +394,5 @@ public class OrganService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
 }

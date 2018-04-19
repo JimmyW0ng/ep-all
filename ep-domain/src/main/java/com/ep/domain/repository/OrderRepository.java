@@ -620,5 +620,33 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
     }
+
+    /**
+     * @param ognId
+     * @param conditions
+     * @return
+     */
+    public long countOrderByConditons(Long ognId, List<Condition> conditions) {
+        return dslContext.selectCount().from(EP_ORDER)
+                .where(conditions)
+                .fetchOneInto(Long.class);
+    }
+
+    public long countAdvanceMonthOrder(Long ognId, int advanceNum) {
+        String sql = "SELECT count(*) FROM ep_order " +
+                "WHERE ep_order.ogn_id=" + ognId +
+                " and ep_order.del_flag=false " +
+                " and PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( ep_order.create_at, '%Y%m' ) ) =" + advanceNum;
+        return dslContext.fetch(sql).getValues(0, Long.class).get(0);
+    }
+
+    public long countAdvanceMonthSuccessOrder(Long ognId, int advanceNum) {
+        String sql = "SELECT count(*) FROM ep_order " +
+                "WHERE ep_order.ogn_id=" + ognId +
+                " and ep_order.del_flag=false " +
+                "and ep_order.status='success' " +
+                "and PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( ep_order.create_at, '%Y%m' ) ) =" + advanceNum;
+        return dslContext.fetch(sql).getValues(0, Long.class).get(0);
+    }
 }
 
