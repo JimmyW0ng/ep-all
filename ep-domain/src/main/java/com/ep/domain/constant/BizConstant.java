@@ -72,6 +72,7 @@ public class BizConstant {
     public static int DB_NUM_ONE = 1;
     public static int TIME_UNIT = 60;
     public static int NUM_ONE_HUNDRED = 100;
+    public static int NUM_ONE_THOUSAND = 1000;
     /**
      * 短信验证码
      */

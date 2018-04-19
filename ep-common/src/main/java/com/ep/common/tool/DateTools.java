@@ -1682,4 +1682,41 @@ public class DateTools {
         return dateToString(temp, format);
     }
 
+    /**
+     * 返回距今时间
+     *
+     * @param time
+     * @return
+     */
+    public static String getFromNow(Timestamp time) {
+        Timestamp currentTime = DateTools.getCurrentDateTime();
+        String fromNow = "";
+        //距今秒数
+        long diffSecond = (currentTime.getTime() - time.getTime()) / 1000;
+        if (diffSecond < 60) {
+            fromNow = "刚刚";
+        } else if (diffSecond >= 60 && diffSecond < 60 * 60) {
+            long mins = diffSecond / 60;
+            //距今分数
+            fromNow = mins + "分钟前";
+        } else if (diffSecond >= 60 * 60 && diffSecond < 60 * 60 * 24) {
+            long hours = diffSecond / 3600;
+            //距今小时数
+            fromNow = hours + "小时前";
+        } else if (diffSecond >= 60 * 60 * 24 && diffSecond < 60 * 60 * 24 * 31) {
+            long days = diffSecond / (3600 * 24);
+            //距今天数
+            fromNow = days + "天前";
+        } else {
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+            c1.setTime(new Date(time.getTime()));
+            c2.setTime(DateTools.getCurrentDate());
+            int months = c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH);
+            //距今月数
+            fromNow = months + "个月前";
+        }
+        return fromNow;
+    }
+
 }

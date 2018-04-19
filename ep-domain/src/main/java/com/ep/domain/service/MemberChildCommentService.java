@@ -5,6 +5,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.HomeMemberChildReplyBo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
@@ -124,5 +125,16 @@ public class MemberChildCommentService {
         }
         //todo
         // 删除称号
+    }
+
+    /**
+     * 商户后台主页新回复集合
+     *
+     * @param ognId
+     * @param homeReplySize
+     * @return
+     */
+    public List<HomeMemberChildReplyBo> findHomeReply(Long ognId, int homeReplySize) {
+        return memberChildCommentRepository.findHomeReply(ognId, homeReplySize);
     }
 }

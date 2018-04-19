@@ -1,6 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.HomeMemberChildReplyBo;
 import com.ep.domain.pojo.bo.MemberChildCommentBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
 import com.ep.domain.pojo.po.EpMemberChildCommentPo;
@@ -278,5 +279,29 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .where(EP_MEMBER_CHILD_COMMENT.ID.eq(id))
                 .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    /**
+     * 商户后台主页新回复集合
+     *
+     * @param ognId
+     * @param homeReplySize
+     * @return
+     */
+    public List<HomeMemberChildReplyBo> findHomeReply(Long ognId, int homeReplySize) {
+        return dslContext.select(
+                EP_MEMBER_CHILD_COMMENT.ID,
+                EP_MEMBER_CHILD_COMMENT.CONTENT,
+                EP_MEMBER_CHILD_COMMENT.CREATE_AT,
+                EP_MEMBER_CHILD.CHILD_NICK_NAME
+        ).from(EP_MEMBER_CHILD_COMMENT)
+                .innerJoin(EP_MEMBER_CHILD)
+                .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId))
+                .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.reply))
+                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                .orderBy(EP_MEMBER_CHILD_COMMENT.CREATE_AT.desc())
+                .limit(homeReplySize)
+                .fetchInto(HomeMemberChildReplyBo.class);
     }
 }

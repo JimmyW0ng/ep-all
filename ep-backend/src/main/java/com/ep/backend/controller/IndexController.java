@@ -1,7 +1,9 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.CryptTools;
+import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.HomeMemberChildReplyBo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganPo;
@@ -10,6 +12,7 @@ import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +44,13 @@ public class IndexController extends BackendController {
     private OrderService orderervice;
     @Autowired
     private OrganCourseService organCourseService;
+    @Autowired
+    private MemberChildCommentService memberChildCommentService;
+    @Value("${home.reply.size}")
+    private int homeReplySize;
+    @Value("${home.month.size}")
+    private int homeMonthSize;
+
 
     /**
      * 登录成功后布局页
@@ -74,14 +84,34 @@ public class IndexController extends BackendController {
     public String homePage(Model model) {
         Long ognId = super.getCurrentUserOgnId();
         long countOrder = orderervice.countSaveOrder(ognId);
+        //未处理订单
         model.addAttribute("saveOrderCount", new DecimalFormat("###,###").format(countOrder));
         int onlineCount = organCourseService.findByOgnIdAndStatus(ognId, EpOrganCourseCourseStatus.online).size();
+        //上线中产品数
         model.addAttribute("onlineCount", new DecimalFormat("###,###").format(onlineCount));
         Optional<EpOrganPo> organOptional = organService.getById(ognId);
+        //报名人数
         model.addAttribute("totalParticipate", organOptional.isPresent() ?
                 new DecimalFormat("###,###").format(organOptional.get().getTotalParticipate()) : 0);
+        //综合得分
         model.addAttribute("togetherScore", organOptional.isPresent() ?
                 new DecimalFormat("###,###").format(organOptional.get().getTogetherScore()) : 0);
+        //新回复
+        List<HomeMemberChildReplyBo> homeReplys = memberChildCommentService.findHomeReply(ognId, homeReplySize);
+        homeReplys.forEach(p -> {
+            p.setFromNow(DateTools.getFromNow(p.getCreateAt()));
+        });
+        model.addAttribute("homeReplys", homeReplys);
+        //最近6个月内订单数
+        Long[] orderCounts = new Long[homeMonthSize];
+        orderCounts[0] = 1000L;
+        orderCounts[1] = 1000L;
+        orderCounts[2] = 1000L;
+        orderCounts[3] = 1000L;
+        orderCounts[4] = 1000L;
+        orderCounts[5] = 1000L;
+        model.addAttribute("orderCounts", orderCounts);
+
         return "index";
     }
 
@@ -135,5 +165,6 @@ public class IndexController extends BackendController {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
         return systemUserService.updatePassword(systemUserPo.getId(), oldPsd, password);
     }
+
 
 }

@@ -171,6 +171,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
         dslContext.update(EP_ORGAN_COURSE)
                 .set(EP_ORGAN_COURSE.COURSE_NAME, po.getCourseName())
                 .set(EP_ORGAN_COURSE.COURSE_TYPE, po.getCourseType())
+                .set(EP_ORGAN_COURSE.COURSE_CATALOG_ID, po.getCourseCatalogId())
                 .set(EP_ORGAN_COURSE.COURSE_INTRODUCE, po.getCourseIntroduce())
                 .set(EP_ORGAN_COURSE.COURSE_CONTENT, po.getCourseContent())
                 .set(EP_ORGAN_COURSE.PRIZE_MIN, po.getPrizeMin())
