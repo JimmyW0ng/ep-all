@@ -62,8 +62,6 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
                 .where(EP_ORGAN_COURSE.ID.eq(courseId))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
-                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(EpOrganCourseCourseStatus.online,
-                        EpOrganCourseCourseStatus.offline))
                 .fetchOneInto(OrganCourseBo.class);
     }
 

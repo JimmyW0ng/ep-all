@@ -138,11 +138,9 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                                                       .leftJoin(EP_ORGAN_COURSE)
                                                       .on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
                                                       .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
-                                                      .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
-                                                              EpOrganClassStatus.opening,
-                                                              EpOrganClassStatus.end))
                                                       .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
-                                                      .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.online,
+                                                      .orderBy(EP_ORGAN_CLASS.STATUS.sortAsc(EpOrganClassStatus.save,
+                                                              EpOrganClassStatus.online,
                                                               EpOrganClassStatus.opening,
                                                               EpOrganClassStatus.end),
                                                               EP_ORGAN_COURSE.ONLINE_TIME.desc(),
