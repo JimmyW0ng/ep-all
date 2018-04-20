@@ -182,7 +182,10 @@
 <!--<script th:src="@{/js/plugins/flot/jquery.flot.symbol.js}"></script>-->
 <script th:inline="javascript">
     //最近6个月内订单数
-    var orderCounts = [[${orderCounts}]]
+    var saveOrderCounts = [[${saveOrderCounts}]]
+    var successOrderCounts = [[${successOrderCounts}]]
+    var monthStrs = [[${monthStrs}]]
+
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
 
@@ -195,25 +198,25 @@
         },
         tooltip: {},
         legend: {
-            data: ['销量', '邮件营销']
+            data: ['报名数', '报名成功数']
         },
         xAxis: {
-            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+            data: monthStrs
         },
         yAxis: {},
         series: [
             {
-                name: '销量',
+                name: '报名数',
                 type: 'bar',
-                data: orderCounts,
+                data: saveOrderCounts,
                 //柱颜色
                 itemStyle: {
                     normal: {color: '#1ab394'}
                 },
             },
             {
-                name: '邮件营销',
-                data: [5,],
+                name: '报名成功数',
+                data: successOrderCounts,
                 type: 'line'
             }
         ]

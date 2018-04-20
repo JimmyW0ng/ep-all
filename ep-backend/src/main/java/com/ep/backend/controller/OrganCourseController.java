@@ -340,9 +340,7 @@ public class OrganCourseController extends BackendController {
             model.addAttribute("firstConstantCatalog", firstConstantCatalog);
             //产品科目二级下拉框
             List<EpConstantCatalogPo> secondCatalogs = Lists.newArrayList();
-            EpConstantCatalogPo secondCatalog = new EpConstantCatalogPo();
-            secondCatalog.setId(constantCatalogOptional.get().getId());
-            secondCatalog.setLabel(constantCatalogOptional.get().getLabel());
+            EpConstantCatalogPo secondCatalog = constantCatalogService.findById(firstConstantCatalog).get();
             secondCatalogs.add(secondCatalog);
             secondCatalogs.addAll(constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId()));
             model.addAttribute("secondCatalogs", secondCatalogs);

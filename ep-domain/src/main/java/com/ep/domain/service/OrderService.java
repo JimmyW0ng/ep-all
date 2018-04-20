@@ -591,7 +591,31 @@ public class OrderService {
         return ResultDo.build();
     }
 
+    /**
+     * 机构总订单数
+     *
+     * @param ognId
+     * @return
+     */
     public long countSaveOrder(Long ognId) {
         return orderRepository.countSaveOrder(ognId);
+    }
+
+
+    public Map<String, Object> homeOrderChart(Long ognId, int homeMonthSize) {
+        Map<String, Object> resultMap = Maps.newHashMap();
+        List<Long> saveOrderCounts = Lists.newArrayList();
+        for (int i = 0; i < homeMonthSize; i++) {
+            long count = orderRepository.countAdvanceMonthOrder(ognId, homeMonthSize - BizConstant.DB_NUM_ONE - i);
+            saveOrderCounts.add(count);
+        }
+        resultMap.put("saveOrderCounts", saveOrderCounts);
+        List<Long> successOrderCounts = Lists.newArrayList();
+        for (int i = 0; i < homeMonthSize; i++) {
+            long count = orderRepository.countAdvanceMonthSuccessOrder(ognId, homeMonthSize - BizConstant.DB_NUM_ONE - i);
+            successOrderCounts.add(count);
+        }
+        resultMap.put("successOrderCounts", successOrderCounts);
+        return resultMap;
     }
 }

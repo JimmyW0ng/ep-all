@@ -2,6 +2,7 @@ package com.ep.backend.controller;
 
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.DateTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.HomeMemberChildReplyBo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
@@ -11,6 +12,7 @@ import com.ep.domain.pojo.po.EpSystemRolePo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.service.*;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.GeneralSecurityException;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -102,16 +106,22 @@ public class IndexController extends BackendController {
             p.setFromNow(DateTools.getFromNow(p.getCreateAt()));
         });
         model.addAttribute("homeReplys", homeReplys);
-        //最近6个月内订单数
-        Long[] orderCounts = new Long[homeMonthSize];
-        orderCounts[0] = 1000L;
-        orderCounts[1] = 1000L;
-        orderCounts[2] = 1000L;
-        orderCounts[3] = 1000L;
-        orderCounts[4] = 1000L;
-        orderCounts[5] = 1000L;
-        model.addAttribute("orderCounts", orderCounts);
+        //最近6个月内报名数
+        Map<String, Object> resultMap = orderervice.homeOrderChart(ognId, homeMonthSize);
+        //最近6个月内报名数
+        model.addAttribute("saveOrderCounts", resultMap.get("saveOrderCounts"));
+        //最近6个月内报名成功数
+        model.addAttribute("successOrderCounts", resultMap.get("successOrderCounts"));
+        List<String> monthStrs = Lists.newArrayList();
 
+        for (int i = 0; i < homeMonthSize; i++) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(DateTools.getCurrentDate());
+            cal.add(Calendar.MONTH, -(homeMonthSize - BizConstant.DB_NUM_ONE - i));
+            monthStrs.add(cal.get(Calendar.YEAR) + "年" + (cal.get(Calendar.MONTH) + BizConstant.DB_NUM_ONE) + "月");
+        }
+        //最近6个月
+        model.addAttribute("monthStrs", monthStrs);
         return "index";
     }
 
