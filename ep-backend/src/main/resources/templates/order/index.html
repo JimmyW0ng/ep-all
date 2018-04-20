@@ -561,6 +561,10 @@
     }
     /*退单*/
     function breakDo() {
+        if (!$("#ordersBody").find("input[type='checkbox']").length) {
+            toastr.error("所有行程已结束，无法退单！")
+            return
+        }
         //勾选的首个班次目录
         var firstClassCatalogId = $("#ordersBody").find("input[type='checkbox']:checked").eq(0).attr("value")
         var len = $("#ordersBody").find("input[type='checkbox']").length
