@@ -66,9 +66,7 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-sm-12">
-
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>订单</h5>
@@ -91,10 +89,12 @@
                                 <li>
                                     <h2 class="no-margins " th:text="${ordersRecentlyCount}"></h2>
                                     <small>近30天内订单数</small>
-
                                 </li>
                                 <li>
-                                    <h2 class="no-margins " th:text="${orderPrizeSum}"></h2>
+                                    <div>
+                                        <h2 class="no-margins " style="display:inline-block"
+                                            th:text="${orderPrizeSum}"></h2><span>元</span>
+                                    </div>
                                     <small>近30天内订单销售额</small>
                                 </li>
                             </ul>
@@ -151,16 +151,12 @@
     var saveOrderCounts = [[${saveOrderCounts}]]
     var successOrderCounts = [[${successOrderCounts}]]
     var monthStrs = [[${monthStrs}]]
-
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
-
     // 指定图表的配置项和数据
     var option = {
-
         title: {
 //            text: 'ECharts 入门示例'
-
         },
         tooltip: {},
         legend: {
@@ -191,7 +187,6 @@
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
     $(function () {
-
     })
 </script>
 </body>
