@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrganClassCatalogCommentDto extends AbstractBasePojo {
 
-    private OrganClassCatalogCommentBo childList;
+    private OrganClassCatalogCommentBo child;
     private List<OrganCourseTagBo> courseTagList;
 
 }

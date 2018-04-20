@@ -190,10 +190,6 @@ public class OrganClassScheduleService {
             log.error("班次行程未开始, classScheduleId={}", classScheduleId);
             return ResultDo.build(MessageCode.ERROR_CLASS_SCHEDULE_NOT_START);
         }
-        if (schedulePo.getEvaluateFlag()) {
-            log.error("随堂评价已存在, classScheduleId={}", classScheduleId);
-            return ResultDo.build(MessageCode.ERROR_CLASS_CATALOG_COMMENT_IS_EXIST);
-        }
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(schedulePo.getClassId());
         if (classPo == null || classPo.getDelFlag()) {
