@@ -601,21 +601,33 @@ public class OrderService {
         return orderRepository.countSaveOrder(ognId);
     }
 
-
-    public Map<String, Object> homeOrderChart(Long ognId, int homeMonthSize) {
+    /**
+     * @param ognId
+     * @param homeMonthSize
+     * @return
+     */
+    public Map<String, Object> homeOrderChart(Long ognId, int homeMonthSize, int homeRecentlyDays) {
         Map<String, Object> resultMap = Maps.newHashMap();
         List<Long> saveOrderCounts = Lists.newArrayList();
         for (int i = 0; i < homeMonthSize; i++) {
             long count = orderRepository.countAdvanceMonthOrder(ognId, homeMonthSize - BizConstant.DB_NUM_ONE - i);
             saveOrderCounts.add(count);
         }
+        //最近6个月内报名数
         resultMap.put("saveOrderCounts", saveOrderCounts);
         List<Long> successOrderCounts = Lists.newArrayList();
         for (int i = 0; i < homeMonthSize; i++) {
             long count = orderRepository.countAdvanceMonthSuccessOrder(ognId, homeMonthSize - BizConstant.DB_NUM_ONE - i);
             successOrderCounts.add(count);
         }
+        //最近6个月内报名成功数
         resultMap.put("successOrderCounts", successOrderCounts);
+        //机构所有订单数
+        resultMap.put("allOrderCount", orderRepository.countAllOrders(ognId));
+        //机构最近几天内的订单数
+        resultMap.put("ordersRecentlyCount", orderRepository.countOrdersRecently(ognId, homeRecentlyDays));
+        //机构最近几天内的订单销售额
+        resultMap.put("orderPrizeSum", orderRepository.sumOrderPrize(ognId, homeRecentlyDays));
         return resultMap;
     }
 }

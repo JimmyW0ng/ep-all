@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -54,6 +55,8 @@ public class IndexController extends BackendController {
     private int homeReplySize;
     @Value("${home.month.size}")
     private int homeMonthSize;
+    @Value("${home.recently.days}")
+    private int homeRecentlyDays;
 
 
     /**
@@ -106,8 +109,8 @@ public class IndexController extends BackendController {
             p.setFromNow(DateTools.getFromNow(p.getCreateAt()));
         });
         model.addAttribute("homeReplys", homeReplys);
-        //最近6个月内报名数
-        Map<String, Object> resultMap = orderervice.homeOrderChart(ognId, homeMonthSize);
+
+        Map<String, Object> resultMap = orderervice.homeOrderChart(ognId, homeMonthSize, homeRecentlyDays);
         //最近6个月内报名数
         model.addAttribute("saveOrderCounts", resultMap.get("saveOrderCounts"));
         //最近6个月内报名成功数
@@ -122,6 +125,12 @@ public class IndexController extends BackendController {
         }
         //最近6个月
         model.addAttribute("monthStrs", monthStrs);
+        //机构所有订单数
+        model.addAttribute("allOrderCount", new DecimalFormat("###,###").format((long) resultMap.get("allOrderCount")));
+        //机构最近几天内的订单数
+        model.addAttribute("ordersRecentlyCount", new DecimalFormat("###,###").format((long) resultMap.get("ordersRecentlyCount")));
+        //机构最近几天内的订单销售额
+        model.addAttribute("orderPrizeSum", new DecimalFormat("###,###").format((BigDecimal) resultMap.get("orderPrizeSum")));
         return "index";
     }
 

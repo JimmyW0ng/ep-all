@@ -622,16 +622,11 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 统计最近几个月每月报名数
      * @param ognId
-     * @param conditions
+     * @param advanceNum
      * @return
      */
-    public long countOrderByConditons(Long ognId, List<Condition> conditions) {
-        return dslContext.selectCount().from(EP_ORDER)
-                .where(conditions)
-                .fetchOneInto(Long.class);
-    }
-
     public long countAdvanceMonthOrder(Long ognId, int advanceNum) {
         String sql = "SELECT count(*) FROM ep_order " +
                 "WHERE ep_order.ogn_id=" + ognId +
@@ -640,6 +635,13 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.fetch(sql).getValues(0, Long.class).get(0);
     }
 
+    /**
+     * 统计最近几个月每月报名成功数
+     *
+     * @param ognId
+     * @param advanceNum
+     * @return
+     */
     public long countAdvanceMonthSuccessOrder(Long ognId, int advanceNum) {
         String sql = "SELECT count(*) FROM ep_order " +
                 "WHERE ep_order.ogn_id=" + ognId +
@@ -647,6 +649,51 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 "and ep_order.status='success' " +
                 "and PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( ep_order.create_at, '%Y%m' ) ) =" + advanceNum;
         return dslContext.fetch(sql).getValues(0, Long.class).get(0);
+    }
+
+    /**
+     * 统计机构所有订单数
+     *
+     * @param ognId
+     * @return
+     */
+    public long countAllOrders(Long ognId) {
+        return dslContext.selectCount().from(EP_ORDER)
+                .where(EP_ORDER.OGN_ID.eq(ognId))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
+
+    /**
+     * 统计机构最近几天内的订单数
+     *
+     * @param ognId
+     * @param days
+     * @return
+     */
+    public long countOrdersRecently(Long ognId, int days) {
+        String sql = "select count(*) from ep_order where" +
+                " ep_order.ogn_id=" + ognId +
+                " and ep_order.del_flag=false " +
+                " and DATE_SUB(CURDATE(),INTERVAL " +
+                days + " DAY) <= DATE(ep_order.create_at)";
+        return dslContext.fetch(sql).getValues(0, Long.class).get(0);
+    }
+
+    /**
+     * 统计机构最近几天内的订单销售额
+     *
+     * @param ognId
+     * @return
+     */
+    public BigDecimal sumOrderPrize(Long ognId, int days) {
+        String sql = "select sum(ep_order.prize) from ep_order where" +
+                " ep_order.ogn_id=" + ognId +
+                " and ep_order.del_flag=false " +
+                " and ep_order.status='success' " +
+                " and DATE_SUB(CURDATE(),INTERVAL " +
+                days + " DAY) <= DATE(ep_order.create_at)";
+        return dslContext.fetch(sql).getValues(0, BigDecimal.class).get(0);
     }
 }
 
