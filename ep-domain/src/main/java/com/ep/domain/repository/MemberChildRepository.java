@@ -1,16 +1,24 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.MemberChildBo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.repository.domain.tables.records.EpMemberChildRecord;
 import com.google.common.collect.Lists;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.UpdateSetMoreStep;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -191,21 +199,42 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
     /**
      * 获取班次孩子信息
      *
+     * @param pageable
      * @param classId
      * @return
      */
-    public List<MemberChildBo> queryAllByClassId(Long classId) {
+    public Page<MemberChildBo> queryByClassIdForPate(Pageable pageable, Long classId, String nickName) {
+        Collection<Condition> conditions = Lists.newArrayList();
+        conditions.add(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId));
+        conditions.add(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false));
+        if (StringTools.isNotBlank(nickName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + nickName + "%"));
+        }
+        long count = dslContext.select(DSL.count(EP_ORGAN_CLASS_CHILD.ID))
+                               .from(EP_ORGAN_CLASS_CHILD)
+                               .innerJoin(EP_MEMBER_CHILD)
+                               .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                               .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                               .where(conditions)
+                               .fetchOneInto(Long.class);
+        if (count == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, count);
+        }
         List<Field<?>> fieldList = Lists.newArrayList(EP_MEMBER_CHILD.ID);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
         fieldList.add(EP_ORGAN_CLASS_CHILD.SCHEDULE_COMMENT_NUM);
-        return dslContext.select(fieldList)
-                         .from(EP_MEMBER_CHILD)
-                         .innerJoin(EP_ORGAN_CLASS_CHILD)
-                         .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
-                         .and(EP_ORGAN_CLASS_CHILD.CLASS_ID.eq(classId))
-                         .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
-                         .where(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
-                         .fetchInto(MemberChildBo.class);
+        List<MemberChildBo> data = dslContext.select(fieldList)
+                                             .from(EP_ORGAN_CLASS_CHILD)
+                                             .innerJoin(EP_MEMBER_CHILD)
+                                             .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_CHILD.CHILD_ID))
+                                             .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                                             .where(conditions)
+                                             .orderBy(EP_ORGAN_CLASS_CHILD.ORDER_ID.asc())
+                                             .limit(pageable.getPageSize())
+                                             .offset(pageable.getOffset())
+                                             .fetchInto(MemberChildBo.class);
+        return new PageImpl<>(data, pageable, count);
     }
 }
 

@@ -304,4 +304,20 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
                 .limit(homeReplySize)
                 .fetchInto(HomeMemberChildReplyBo.class);
     }
+
+    /**
+     * 根据行程查询随堂评论
+     *
+     * @param childId
+     * @param classScheduleId
+     */
+    public Optional<EpMemberChildCommentPo> findDetailByChildIdAndClassScheduleId(Long childId, Long classScheduleId) {
+        EpMemberChildCommentPo data = dslContext.selectFrom(EP_MEMBER_CHILD_COMMENT)
+                                                .where(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(classScheduleId))
+                                                .and(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(childId))
+                                                .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
+                                                .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
+                                                .fetchOneInto(EpMemberChildCommentPo.class);
+        return Optional.ofNullable(data);
+    }
 }

@@ -1,6 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
@@ -206,32 +207,74 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
      * @param startTime
      * @return
      */
-    public List<OrganClassCatalogCommentBo> findbyClassIdAndStartTime(Long classId, Timestamp startTime) {
+    public Page<OrganClassCatalogCommentBo> findChildrenByClassIdAndStartTime(Pageable pageable,
+                                                                              Long classId,
+                                                                              Timestamp startTime,
+                                                                              String nickName) {
+        Collection<Condition> conditions = Lists.newArrayList();
+        conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId));
+        conditions.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME.eq(startTime));
+        conditions.add(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
+                EpOrganClassScheduleStatus.normal,
+                EpOrganClassScheduleStatus.late));
+        conditions.add(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false));
+        if (StringTools.isNotBlank(nickName)) {
+            conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + nickName + "%"));
+        }
+        long count = dslContext.select(DSL.count(EP_ORGAN_CLASS_SCHEDULE.ID))
+                               .from(EP_ORGAN_CLASS_SCHEDULE)
+                               .leftJoin(EP_MEMBER_CHILD)
+                               .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+                               .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                               .where(conditions)
+                               .fetchOneInto(Long.class);
+        if (count == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, count);
+        }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.ID.as("classScheduleId"));
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
-        fieldList.add(EP_MEMBER_CHILD_COMMENT.CONTENT.as("comment"));
-        return dslContext.select(fieldList)
-                         .from(EP_ORGAN_CLASS_SCHEDULE)
-                         .leftJoin(EP_MEMBER_CHILD)
-                         .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
-                         .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
-                         .leftJoin(EP_MEMBER_CHILD_COMMENT)
-                         .on(EP_MEMBER_CHILD_COMMENT.CLASS_SCHEDULE_ID.eq(EP_ORGAN_CLASS_SCHEDULE.ID))
-                         .and(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
-                         .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.launch))
-                         .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))
-                         .where(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId))
-                         .and(EP_ORGAN_CLASS_SCHEDULE.START_TIME.eq(startTime))
-                         .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
+        List<OrganClassCatalogCommentBo> data = dslContext.select(fieldList)
+                                                          .from(EP_ORGAN_CLASS_SCHEDULE)
+                                                          .leftJoin(EP_MEMBER_CHILD)
+                                                          .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+                                                          .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                                                          .where(conditions)
+                                                          .orderBy(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID)
+                                                          .limit(pageable.getPageSize())
+                                                          .offset(pageable.getOffset())
+                                                          .fetchInto(OrganClassCatalogCommentBo.class);
+        return new PageImpl<>(data, pageable, count);
+    }
+
+    /**
+     * 根据行程id获取孩子评价信息
+     *
+     * @param id
+     * @return
+     */
+    public Optional<OrganClassCatalogCommentBo> findCatalogCommentById(Long id) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_CLASS_SCHEDULE.ID.as("classScheduleId"));
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        OrganClassCatalogCommentBo bo = dslContext.select(fieldList)
+                                                  .from(EP_ORGAN_CLASS_SCHEDULE)
+                                                  .leftJoin(EP_MEMBER_CHILD)
+                                                  .on(EP_MEMBER_CHILD.ID.eq(EP_ORGAN_CLASS_SCHEDULE.CHILD_ID))
+                                                  .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                                                  .where(EP_ORGAN_CLASS_SCHEDULE.ID.eq(id))
+                                                  .and(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
                                  EpOrganClassScheduleStatus.normal,
                                  EpOrganClassScheduleStatus.late))
-                         .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
-                         .orderBy(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID)
-                         .fetchInto(OrganClassCatalogCommentBo.class);
+                                                  .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                                                  .fetchOneInto(OrganClassCatalogCommentBo.class);
+        return Optional.ofNullable(bo);
     }
 
     /**

@@ -62,22 +62,32 @@ public class OrganAccountController extends ApiController {
         return organAccountService.findTodayClassByOrganAccount(organAccountPo);
     }
 
-    @ApiOperation(value = "课时评价初始化")
-    @PostMapping("/class/catalog/init")
+    @ApiOperation(value = "课时评价成员列表")
+    @PostMapping("/class/catalog/children")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(
+    public ResultDo<Page<OrganClassCatalogCommentBo>> getClassCatalogChildren(
+            @PageableDefault Pageable pageable,
             @RequestParam("classId") Long classId,
-            @RequestParam("startTimeStamp") Long startTimeStamp) {
+            @RequestParam("startTimeStamp") Long startTimeStamp,
+            @RequestParam(value = "nickName", required = false) String nickName) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        return organClassScheduleService.getClassCatalogCommentView(organAccountPo, classId, startTimeStamp);
+        return organClassScheduleService.getClassCatalogChildren(pageable, organAccountPo, classId, startTimeStamp, nickName);
+    }
+
+    @ApiOperation(value = "课时评价初始化")
+    @PostMapping("/class/catalog/view")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<OrganClassCatalogCommentDto> getClassCatalogCommentView(@RequestParam("classScheduleId") Long classScheduleId) {
+        EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
+        return organClassScheduleService.getClassCatalogCommentView(organAccountPo, classScheduleId);
     }
 
     @ApiOperation(value = "课时评价")
     @PostMapping("/class/catalog/comment")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo doClassCatalogComment(@RequestParam("classScheduleId") Long classScheduleId,
-                                          @RequestParam("tagIds") List<Long> tagIds,
-                                          @RequestParam("comment") String comment) {
+                                          @RequestParam(value = "tagIds", required = false) List<Long> tagIds,
+                                          @RequestParam(value = "comment", required = false) String comment) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
         ResultDo resultDo = organClassScheduleService.doClassCatalogComment(organAccountPo,
                 classScheduleId,
@@ -117,9 +127,11 @@ public class OrganAccountController extends ApiController {
     @ApiOperation(value = "查看班次学员")
     @PostMapping("/class/child/all")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo<List<MemberChildBo>> findChildrenByClassId(@RequestParam("classId") Long classId) {
+    public ResultDo<Page<MemberChildBo>> findChildrenByClassId(@PageableDefault Pageable pageable,
+                                                               @RequestParam(value = "nickName", required = false) String nickName,
+                                                               @RequestParam("classId") Long classId) {
         EpOrganAccountPo organAccountPo = super.getCurrentOrganAccount().get();
-        return organClassChildService.findChildrenByClassId(classId, organAccountPo);
+        return organClassChildService.findChildrenByClassId(pageable, classId, nickName, organAccountPo);
     }
 
     @ApiOperation(value = "查看班次孩子预约信息")

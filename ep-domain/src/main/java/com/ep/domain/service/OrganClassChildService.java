@@ -9,10 +9,15 @@ import com.ep.domain.pojo.bo.OrganClassChildBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpOrganAccountPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.repository.*;
+import com.ep.domain.repository.FileRepository;
+import com.ep.domain.repository.MemberChildRepository;
+import com.ep.domain.repository.OrganClassChildRepository;
+import com.ep.domain.repository.OrganClassRepository;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +39,6 @@ public class OrganClassChildService {
     @Autowired
     private MemberChildRepository memberChildRepository;
     @Autowired
-    private OrganAccountRepository organAccountRepository;
-    @Autowired
     private OrganClassChildRepository organClassChildRepository;
 
     /**
@@ -45,8 +48,8 @@ public class OrganClassChildService {
      * @param organAccountPo
      * @return
      */
-    public ResultDo<List<MemberChildBo>> findChildrenByClassId(Long classId, EpOrganAccountPo organAccountPo) {
-        ResultDo<List<MemberChildBo>> resultDo = ResultDo.build();
+    public ResultDo<Page<MemberChildBo>> findChildrenByClassId(Pageable pageable, Long classId, String nickName, EpOrganAccountPo organAccountPo) {
+        ResultDo<Page<MemberChildBo>> resultDo = ResultDo.build();
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(classId);
         if (classPo == null || classPo.getDelFlag()) {
@@ -63,7 +66,8 @@ public class OrganClassChildService {
             return resultDo.setError(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_MATCH_CLASS);
         }
         // 孩子信息
-        List<MemberChildBo> childList = memberChildRepository.queryAllByClassId(classId);
+        Page<MemberChildBo> data = memberChildRepository.queryByClassIdForPate(pageable, classId, nickName);
+        List<MemberChildBo> childList = data.getContent();
         if (CollectionsTools.isNotEmpty(childList)) {
             for (MemberChildBo childBo : childList) {
                 Optional<EpFilePo> optional = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, childBo.getId());
@@ -71,7 +75,7 @@ public class OrganClassChildService {
                 childBo.setAvatar(avatar);
             }
         }
-        return resultDo.setResult(childList);
+        return resultDo.setResult(data);
     }
 
     /**
