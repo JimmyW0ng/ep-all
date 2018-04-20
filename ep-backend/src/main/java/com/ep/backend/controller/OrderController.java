@@ -486,6 +486,20 @@ public class OrderController extends BackendController {
     }
 
     /**
+     * 报名成功服务号推送信息
+     *
+     * @return
+     */
+    @GetMapping("/orderSuccessServicePush")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public String orderSuccessServicePush() {
+
+        return "feicongcong";
+    }
+
+
+    /**
      * 校验业务对象是否属于该机构，是：返回po;否：返回null
      *
      * @param sourceId

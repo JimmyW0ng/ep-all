@@ -397,7 +397,9 @@
             //班次opening,订单success或者refuse,显示取消按钮，其他隐藏
             $box.find("a").hide()
             $box.find("a[name='cancel']").show()
-            $box.find("a[name='bespeak']").show()
+            if (status == "success") {
+                $box.find("a[name='bespeak']").show()
+            }
         } else if (status == "save") {
             //订单save,显示报名成功，拒绝按钮，其他隐藏
             $box.find("a").hide()
