@@ -185,11 +185,6 @@ public class OrganClassScheduleService {
             log.error("班次行程信息不存在, classScheduleId={}", classScheduleId);
             return ResultDo.build(MessageCode.ERROR_CLASS_SCHEDULE_NOT_EXIST);
         }
-        // 不允许在课时未开始的
-        if (DateTools.getCurrentDateTime().before(schedulePo.getStartTime())) {
-            log.error("班次行程未开始, classScheduleId={}", classScheduleId);
-            return ResultDo.build(MessageCode.ERROR_CLASS_SCHEDULE_NOT_START);
-        }
         // 校验课程
         EpOrganClassPo classPo = organClassRepository.getById(schedulePo.getClassId());
         if (classPo == null || classPo.getDelFlag()) {
