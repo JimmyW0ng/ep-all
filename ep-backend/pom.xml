@@ -57,6 +57,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.weixin4j</groupId>-->
+        <!--<artifactId>weixin4j</artifactId>-->
+        <!--<version>0.1.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

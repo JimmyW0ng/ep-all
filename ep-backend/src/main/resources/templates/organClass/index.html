@@ -288,7 +288,7 @@
                     if (count == 0) {
                         var msg = '[' + className + ']，您确定要结束该班次?'
                     } else {
-                        var msg = '[' + className + ']当前还有个' + data.result + '未结束的班次目录，您确定要提前结束该班次?'
+                        var msg = '[' + className + ']当前还有' + data.result + '个未结束的班次目录，您确定要提前结束该班次?'
                     }
 
                     layer_confirm(msg, 3, endDo, id)
@@ -301,7 +301,6 @@
             },
         })
     }
-
     /*结束正常班次end*/
 
     /*提前结束预约班次start*/
@@ -315,7 +314,7 @@
                     if (count == 0) {
                         var msg = '[' + className + ']，您确定要结束该班次?'
                     } else {
-                        var msg = '[' + className + ']当前还有个' + data.result + '未结束的预约，您确定要提前结束该班次?'
+                        var msg = '[' + className + ']当前还有' + data.result + '个未结束的预约，您确定要提前结束该班次?'
                     }
 
                     layer_confirm(msg, 3, endDo, id)

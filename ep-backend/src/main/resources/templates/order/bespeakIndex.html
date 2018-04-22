@@ -134,7 +134,7 @@
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'opening')}"
-                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\',\''+${bo.childTrueName}+'\')'">预约</a>
+                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\')'">预约</a>
                                 <!--<a name="" class="btn btn-xs btn-danger" href="javascript:void(0)"-->
                                 <!--th:onclick="'breakBox('+${bo.id}+')'">中止</a>-->
                             </td>
@@ -388,13 +388,13 @@
             }
         })
     }
-    function bespeakInit(orderId, childId, courseNum, classId, childNickName, childTrueName) {
+    function bespeakInit(orderId, childId, courseNum, classId, childNickName) {
         $("#bespeakBox").html("")
         $("#orderId").val(orderId)
         $("#childId").val(childId)
         $("#classId").val(classId)
         $("#bespeakModal").modal("show")
-        $("#modelOrder").text(childNickName == "" ? childTrueName : childNickName)
+        $("#modelOrder").text(childNickName)
         $("#modelCourseNum").text(courseNum)
         $.ajax({
             type: "GET",

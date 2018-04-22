@@ -57,6 +57,9 @@ public class IndexController extends BackendController {
     private int homeMonthSize;
     @Value("${home.recently.days}")
     private int homeRecentlyDays;
+    @Value("${weixin4j.token}")
+    private String weixin4jToken;
+
 
 
     /**
@@ -130,7 +133,8 @@ public class IndexController extends BackendController {
         //机构最近几天内的订单数
         model.addAttribute("ordersRecentlyCount", new DecimalFormat("###,###").format((long) resultMap.get("ordersRecentlyCount")));
         //机构最近几天内的订单销售额
-        model.addAttribute("orderPrizeSum", new DecimalFormat("###,###.##").format((BigDecimal) resultMap.get("orderPrizeSum")));
+        model.addAttribute("orderPrizeSum", new DecimalFormat("###,###.##").format(
+                (BigDecimal) resultMap.get("orderPrizeSum") == null ? BigDecimal.ZERO : resultMap.get("orderPrizeSum")));
         return "index";
     }
 
