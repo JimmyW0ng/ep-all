@@ -93,6 +93,9 @@ public class IndexController extends BackendController {
     @GetMapping("/homePage")
     public String homePage(Model model) {
         Long ognId = super.getCurrentUserOgnId();
+        if (ognId == null) {
+            return "index";
+        }
         long countOrder = orderervice.countSaveOrder(ognId);
         //未处理订单
         model.addAttribute("saveOrderCount", new DecimalFormat("###,###").format(countOrder));
@@ -135,7 +138,7 @@ public class IndexController extends BackendController {
         //机构最近几天内的订单销售额
         model.addAttribute("orderPrizeSum", new DecimalFormat("###,###.##").format(
                 (BigDecimal) resultMap.get("orderPrizeSum") == null ? BigDecimal.ZERO : resultMap.get("orderPrizeSum")));
-        return "index";
+        return "merchantIndex";
     }
 
 
