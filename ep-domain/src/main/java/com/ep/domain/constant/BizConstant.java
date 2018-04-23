@@ -81,6 +81,18 @@ public class BizConstant {
     public static int CAPTCHA_SHORT_MSG_IP_NUM_LIMIT = 100;
     public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
     /**
+     * 商户首页展示回复条数
+     */
+    public static int OGN_HOME_REPLY_SIZE = 10;
+    /**
+     * 首页订单统计图表月数
+     */
+    public static int OGN_HOME_MONTH_SIZE = 6;
+    /**
+     * 首页统计最近天数
+     */
+    public static int OGN_HOME_RECENTLY_DAYS = 30;
+    /**
      * 产品
      */
     public static long FIRST_CONSTANT_CATALOG_PID = 0L;

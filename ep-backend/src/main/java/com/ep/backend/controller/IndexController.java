@@ -51,12 +51,6 @@ public class IndexController extends BackendController {
     private OrganCourseService organCourseService;
     @Autowired
     private MemberChildCommentService memberChildCommentService;
-    @Value("${home.reply.size}")
-    private int homeReplySize;
-    @Value("${home.month.size}")
-    private int homeMonthSize;
-    @Value("${home.recently.days}")
-    private int homeRecentlyDays;
     @Value("${weixin4j.token}")
     private String weixin4jToken;
 
@@ -110,23 +104,23 @@ public class IndexController extends BackendController {
         model.addAttribute("togetherScore", organOptional.isPresent() ?
                 new DecimalFormat("###,###").format(organOptional.get().getTogetherScore()) : 0);
         //新回复
-        List<HomeMemberChildReplyBo> homeReplys = memberChildCommentService.findHomeReply(ognId, homeReplySize);
+        List<HomeMemberChildReplyBo> homeReplys = memberChildCommentService.findHomeReply(ognId, BizConstant.OGN_HOME_REPLY_SIZE);
         homeReplys.forEach(p -> {
             p.setFromNow(DateTools.getFromNow(p.getCreateAt()));
         });
         model.addAttribute("homeReplys", homeReplys);
 
-        Map<String, Object> resultMap = orderervice.homeOrderChart(ognId, homeMonthSize, homeRecentlyDays);
+        Map<String, Object> resultMap = orderervice.homeOrderChart(ognId, BizConstant.OGN_HOME_MONTH_SIZE, BizConstant.OGN_HOME_RECENTLY_DAYS);
         //最近6个月内报名数
         model.addAttribute("saveOrderCounts", resultMap.get("saveOrderCounts"));
         //最近6个月内报名成功数
         model.addAttribute("successOrderCounts", resultMap.get("successOrderCounts"));
         List<String> monthStrs = Lists.newArrayList();
 
-        for (int i = 0; i < homeMonthSize; i++) {
+        for (int i = 0; i < BizConstant.OGN_HOME_MONTH_SIZE; i++) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(DateTools.getCurrentDate());
-            cal.add(Calendar.MONTH, -(homeMonthSize - BizConstant.DB_NUM_ONE - i));
+            cal.add(Calendar.MONTH, -(BizConstant.OGN_HOME_MONTH_SIZE - BizConstant.DB_NUM_ONE - i));
             monthStrs.add(cal.get(Calendar.YEAR) + "年" + (cal.get(Calendar.MONTH) + BizConstant.DB_NUM_ONE) + "月");
         }
         //最近6个月
