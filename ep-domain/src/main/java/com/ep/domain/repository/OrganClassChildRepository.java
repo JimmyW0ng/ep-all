@@ -145,5 +145,9 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
                 .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
                 .fetchInto(OrganClassChildBo.class);
     }
+
+//    public int updateBespeakedScheduleNum(Long num){
+//        return dslContext.update(EP_ORGAN_CLASS_CHILD)
+//    }
 }
 

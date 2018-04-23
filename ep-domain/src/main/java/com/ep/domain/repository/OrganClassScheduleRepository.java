@@ -526,4 +526,17 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
                 .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 根据订单id获取行程数
+     *
+     * @param orderId
+     * @return
+     */
+    public long countByOrderId(Long orderId) {
+        return dslContext.selectCount().from(EP_ORGAN_CLASS_SCHEDULE)
+                .where(EP_ORGAN_CLASS_SCHEDULE.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false))
+                .fetchOneInto(Long.class);
+    }
 }

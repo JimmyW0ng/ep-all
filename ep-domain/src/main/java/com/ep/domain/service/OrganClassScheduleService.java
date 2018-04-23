@@ -393,6 +393,8 @@ public class OrganClassScheduleService {
         }
         insertClassSchedulePo.setStatus(EpOrganClassScheduleStatus.normal);
         organClassScheduleRepository.insert(insertClassSchedulePo);
+        long bespeakedScheduleNum = organClassScheduleRepository.countByOrderId(insertClassSchedulePo.getOrderId());
+//        organClassChildRepository.updateBespeakedScheduleNum(bespeakedScheduleNum);
         log.info("[预约行程]新增预约行程成功，id={}。", insertClassSchedulePo.getId());
         return ResultDo.build().setResult(insertClassSchedulePo);
     }
