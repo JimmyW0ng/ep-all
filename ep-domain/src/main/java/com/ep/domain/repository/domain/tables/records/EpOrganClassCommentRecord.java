@@ -39,10 +39,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Create a detached EpOrganClassCommentRecord
+     * Getter for <code>ep.ep_organ_class_comment.id</code>. 主键
      */
-    public EpOrganClassCommentRecord() {
-        super(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -54,25 +54,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Create a detached, initialised EpOrganClassCommentRecord
+     * Getter for <code>ep.ep_organ_class_comment.ogn_id</code>. 机构id
      */
-    public EpOrganClassCommentRecord(Long id, Long ognId, Long courseId, Long classId, Byte score, Long childId, String content, Long orderId, Boolean chosenFlag, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, courseId);
-        set(3, classId);
-        set(4, score);
-        set(5, childId);
-        set(6, content);
-        set(7, orderId);
-        set(8, chosenFlag);
-        set(9, createAt);
-        set(10, updateAt);
-        set(11, remark);
-        set(12, delFlag);
-        set(13, version);
+    public Long getOgnId() {
+        return (Long) get(1);
     }
 
     /**
@@ -84,10 +69,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.id</code>. 主键
+     * Getter for <code>ep.ep_organ_class_comment.course_id</code>. 课程id
      */
-    public Long getId() {
-        return (Long) get(0);
+    public Long getCourseId() {
+        return (Long) get(2);
     }
 
     /**
@@ -99,10 +84,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_organ_class_comment.class_id</code>. 班次id
      */
-    public Long getOgnId() {
-        return (Long) get(1);
+    public Long getClassId() {
+        return (Long) get(3);
     }
 
     /**
@@ -114,10 +99,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.course_id</code>. 课程id
+     * Getter for <code>ep.ep_organ_class_comment.score</code>. 评分（五分制）
      */
-    public Long getCourseId() {
-        return (Long) get(2);
+    public Byte getScore() {
+        return (Byte) get(4);
     }
 
     /**
@@ -129,10 +114,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.class_id</code>. 班次id
+     * Getter for <code>ep.ep_organ_class_comment.child_id</code>. 评论者id
      */
-    public Long getClassId() {
-        return (Long) get(3);
+    public Long getChildId() {
+        return (Long) get(5);
     }
 
     /**
@@ -144,10 +129,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.score</code>. 评分（五分制）
+     * Getter for <code>ep.ep_organ_class_comment.content</code>. 评论类型: 评论；回复
      */
-    public Byte getScore() {
-        return (Byte) get(4);
+    public String getContent() {
+        return (String) get(6);
     }
 
     /**
@@ -159,10 +144,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.child_id</code>. 评论者id
+     * Getter for <code>ep.ep_organ_class_comment.order_id</code>. 关联订单id
      */
-    public Long getChildId() {
-        return (Long) get(5);
+    public Long getOrderId() {
+        return (Long) get(7);
     }
 
     /**
@@ -174,10 +159,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.content</code>. 评论类型: 评论；回复
+     * Getter for <code>ep.ep_organ_class_comment.chosen_flag</code>. 精选标记
      */
-    public String getContent() {
-        return (String) get(6);
+    public Boolean getChosenFlag() {
+        return (Boolean) get(8);
     }
 
     /**
@@ -189,10 +174,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.order_id</code>. 关联订单id
+     * Getter for <code>ep.ep_organ_class_comment.create_at</code>. 创建时间
      */
-    public Long getOrderId() {
-        return (Long) get(7);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -204,10 +189,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.chosen_flag</code>. 精选标记
+     * Getter for <code>ep.ep_organ_class_comment.update_at</code>. 更新时间
      */
-    public Boolean getChosenFlag() {
-        return (Boolean) get(8);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -219,10 +204,10 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_class_comment.remark</code>. 备注
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public String getRemark() {
+        return (String) get(11);
     }
 
     /**
@@ -234,17 +219,18 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_class_comment.del_flag</code>. 删除标记
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_class_comment.version</code>.
      */
-    public String getRemark() {
-        return (String) get(11);
+    public EpOrganClassCommentRecord setVersion(Long value) {
+        set(13, value);
+        return this;
     }
 
     /**
@@ -663,17 +649,31 @@ public class EpOrganClassCommentRecord extends UpdatableRecordImpl<EpOrganClassC
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_organ_class_comment.del_flag</code>. 删除标记
+     * Create a detached EpOrganClassCommentRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public EpOrganClassCommentRecord() {
+        super(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT);
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_comment.version</code>.
+     * Create a detached, initialised EpOrganClassCommentRecord
      */
-    public EpOrganClassCommentRecord setVersion(Long value) {
-        set(13, value);
-        return this;
+    public EpOrganClassCommentRecord(Long id, Long ognId, Long courseId, Long classId, Byte score, Long childId, String content, Long orderId, Boolean chosenFlag, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganClassComment.EP_ORGAN_CLASS_COMMENT);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, courseId);
+        set(3, classId);
+        set(4, score);
+        set(5, childId);
+        set(6, content);
+        set(7, orderId);
+        set(8, chosenFlag);
+        set(9, createAt);
+        set(10, updateAt);
+        set(11, remark);
+        set(12, delFlag);
+        set(13, version);
     }
 }

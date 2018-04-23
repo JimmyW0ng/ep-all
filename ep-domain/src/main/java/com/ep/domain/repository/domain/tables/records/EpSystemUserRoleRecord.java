@@ -39,10 +39,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Create a detached EpSystemUserRoleRecord
+     * Getter for <code>ep.ep_system_user_role.id</code>.
      */
-    public EpSystemUserRoleRecord() {
-        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -54,18 +54,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Create a detached, initialised EpSystemUserRoleRecord
+     * Getter for <code>ep.ep_system_user_role.user_id</code>. 用户id
      */
-    public EpSystemUserRoleRecord(Long id, Long userId, Long roleId, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
-
-        set(0, id);
-        set(1, userId);
-        set(2, roleId);
-        set(3, createAt);
-        set(4, updateAt);
-        set(5, delFlag);
-        set(6, version);
+    public Long getUserId() {
+        return (Long) get(1);
     }
 
     /**
@@ -77,10 +69,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Getter for <code>ep.ep_system_user_role.id</code>.
+     * Getter for <code>ep.ep_system_user_role.role_id</code>. 角色id
      */
-    public Long getId() {
-        return (Long) get(0);
+    public Long getRoleId() {
+        return (Long) get(2);
     }
 
     /**
@@ -92,10 +84,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Getter for <code>ep.ep_system_user_role.user_id</code>. 用户id
+     * Getter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
      */
-    public Long getUserId() {
-        return (Long) get(1);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(3);
     }
 
     /**
@@ -107,10 +99,10 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Getter for <code>ep.ep_system_user_role.role_id</code>. 角色id
+     * Getter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
      */
-    public Long getRoleId() {
-        return (Long) get(2);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(4);
     }
 
     /**
@@ -122,17 +114,18 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     }
 
     /**
-     * Getter for <code>ep.ep_system_user_role.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(3);
+    public Boolean getDelFlag() {
+        return (Boolean) get(5);
     }
 
     /**
-     * Getter for <code>ep.ep_system_user_role.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_system_user_role.version</code>.
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(4);
+    public EpSystemUserRoleRecord setVersion(Long value) {
+        set(6, value);
+        return this;
     }
 
     /**
@@ -369,17 +362,24 @@ public class EpSystemUserRoleRecord extends UpdatableRecordImpl<EpSystemUserRole
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_system_user_role.del_flag</code>. 删除标志
+     * Create a detached EpSystemUserRoleRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(5);
+    public EpSystemUserRoleRecord() {
+        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
     }
 
     /**
-     * Setter for <code>ep.ep_system_user_role.version</code>.
+     * Create a detached, initialised EpSystemUserRoleRecord
      */
-    public EpSystemUserRoleRecord setVersion(Long value) {
-        set(6, value);
-        return this;
+    public EpSystemUserRoleRecord(Long id, Long userId, Long roleId, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpSystemUserRole.EP_SYSTEM_USER_ROLE);
+
+        set(0, id);
+        set(1, userId);
+        set(2, roleId);
+        set(3, createAt);
+        set(4, updateAt);
+        set(5, delFlag);
+        set(6, version);
     }
 }

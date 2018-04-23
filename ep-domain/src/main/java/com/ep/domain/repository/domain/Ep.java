@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = -869238115;
+    private static final long serialVersionUID = 841811834;
 
     /**
      * The reference instance of <code>ep</code>
@@ -201,6 +201,16 @@ public class Ep extends SchemaImpl {
     public final EpSystemUserRole EP_SYSTEM_USER_ROLE = com.ep.domain.repository.domain.tables.EpSystemUserRole.EP_SYSTEM_USER_ROLE;
 
     /**
+     * token表
+     */
+    public final EpToken EP_TOKEN = com.ep.domain.repository.domain.tables.EpToken.EP_TOKEN;
+
+    /**
+     * The table <code>ep.ep_weixin_user</code>.
+     */
+    public final EpWeixinUser EP_WEIXIN_USER = com.ep.domain.repository.domain.tables.EpWeixinUser.EP_WEIXIN_USER;
+
+    /**
      * No further instances allowed
      */
     private Ep() {
@@ -257,6 +267,8 @@ public class Ep extends SchemaImpl {
             EpSystemRole.EP_SYSTEM_ROLE,
             EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY,
             EpSystemUser.EP_SYSTEM_USER,
-                EpSystemUserRole.EP_SYSTEM_USER_ROLE);
+                EpSystemUserRole.EP_SYSTEM_USER_ROLE,
+                EpToken.EP_TOKEN,
+                EpWeixinUser.EP_WEIXIN_USER);
     }
 }

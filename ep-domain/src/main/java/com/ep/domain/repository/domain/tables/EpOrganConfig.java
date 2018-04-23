@@ -35,10 +35,14 @@ public class EpOrganConfig extends TableImpl<EpOrganConfigRecord> {
      * The reference instance of <code>ep.ep_organ_config</code>
      */
     public static final EpOrganConfig EP_ORGAN_CONFIG = new EpOrganConfig();
+
     /**
-     * The column <code>ep.ep_organ_config.private_flag</code>. 机构资源是否私有
+     * The class holding records for this type
      */
-    public final TableField<EpOrganConfigRecord, Boolean> PRIVATE_FLAG = createField("private_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "机构资源是否私有");
+    @Override
+    public Class<EpOrganConfigRecord> getRecordType() {
+        return EpOrganConfigRecord.class;
+    }
 
     /**
      * The column <code>ep.ep_organ_config.id</code>.
@@ -51,12 +55,9 @@ public class EpOrganConfig extends TableImpl<EpOrganConfigRecord> {
     public final TableField<EpOrganConfigRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
 
     /**
-     * The class holding records for this type
+     * The column <code>ep.ep_organ_config.private_flag</code>. 机构资源是否私有
      */
-    @Override
-    public Class<EpOrganConfigRecord> getRecordType() {
-        return EpOrganConfigRecord.class;
-    }
+    public final TableField<EpOrganConfigRecord, Boolean> PRIVATE_FLAG = createField("private_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "机构资源是否私有");
 
     /**
      * The column <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能

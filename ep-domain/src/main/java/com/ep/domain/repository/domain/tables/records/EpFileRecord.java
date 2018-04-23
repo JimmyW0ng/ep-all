@@ -39,10 +39,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Create a detached EpFileRecord
+     * Getter for <code>ep.ep_file.id</code>. 主键
      */
-    public EpFileRecord() {
-        super(EpFile.EP_FILE);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -54,23 +54,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Create a detached, initialised EpFileRecord
+     * Getter for <code>ep.ep_file.pre_code</code>. 预授码
      */
-    public EpFileRecord(Long id, String preCode, String fileName, String fileUrl, Short bizTypeCode, Long sourceId, Integer sort, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpFile.EP_FILE);
-
-        set(0, id);
-        set(1, preCode);
-        set(2, fileName);
-        set(3, fileUrl);
-        set(4, bizTypeCode);
-        set(5, sourceId);
-        set(6, sort);
-        set(7, createAt);
-        set(8, updateAt);
-        set(9, remark);
-        set(10, delFlag);
-        set(11, version);
+    public String getPreCode() {
+        return (String) get(1);
     }
 
     /**
@@ -82,10 +69,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.id</code>. 主键
+     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
      */
-    public Long getId() {
-        return (Long) get(0);
+    public String getFileName() {
+        return (String) get(2);
     }
 
     /**
@@ -97,10 +84,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.pre_code</code>. 预授码
+     * Getter for <code>ep.ep_file.file_url</code>. 文件url
      */
-    public String getPreCode() {
-        return (String) get(1);
+    public String getFileUrl() {
+        return (String) get(3);
     }
 
     /**
@@ -112,10 +99,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.file_name</code>. 文件名字
+     * Getter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
      */
-    public String getFileName() {
-        return (String) get(2);
+    public Short getBizTypeCode() {
+        return (Short) get(4);
     }
 
     /**
@@ -127,10 +114,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.file_url</code>. 文件url
+     * Getter for <code>ep.ep_file.source_id</code>. 业务ID
      */
-    public String getFileUrl() {
-        return (String) get(3);
+    public Long getSourceId() {
+        return (Long) get(5);
     }
 
     /**
@@ -142,10 +129,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.biz_type_code</code>. 业务类型编码（FILE_BIZ_TYPE）
+     * Getter for <code>ep.ep_file.sort</code>. 排序
      */
-    public Short getBizTypeCode() {
-        return (Short) get(4);
+    public Integer getSort() {
+        return (Integer) get(6);
     }
 
     /**
@@ -157,10 +144,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.source_id</code>. 业务ID
+     * Getter for <code>ep.ep_file.create_at</code>. 创建时间
      */
-    public Long getSourceId() {
-        return (Long) get(5);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -172,10 +159,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.sort</code>. 排序
+     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
      */
-    public Integer getSort() {
-        return (Integer) get(6);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -187,10 +174,10 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_file.remark</code>. 备注信息
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(7);
+    public String getRemark() {
+        return (String) get(9);
     }
 
     /**
@@ -202,17 +189,18 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     }
 
     /**
-     * Getter for <code>ep.ep_file.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_file.del_flag</code>. 删除标志
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(8);
+    public Boolean getDelFlag() {
+        return (Boolean) get(10);
     }
 
     /**
-     * Getter for <code>ep.ep_file.remark</code>. 备注信息
+     * Setter for <code>ep.ep_file.version</code>.
      */
-    public String getRemark() {
-        return (String) get(9);
+    public EpFileRecord setVersion(Long value) {
+        set(11, value);
+        return this;
     }
 
     /**
@@ -579,17 +567,29 @@ public class EpFileRecord extends UpdatableRecordImpl<EpFileRecord> implements R
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>ep.ep_file.del_flag</code>. 删除标志
+     * Create a detached EpFileRecord
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(10);
+    public EpFileRecord() {
+        super(EpFile.EP_FILE);
     }
 
     /**
-     * Setter for <code>ep.ep_file.version</code>.
+     * Create a detached, initialised EpFileRecord
      */
-    public EpFileRecord setVersion(Long value) {
-        set(11, value);
-        return this;
+    public EpFileRecord(Long id, String preCode, String fileName, String fileUrl, Short bizTypeCode, Long sourceId, Integer sort, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpFile.EP_FILE);
+
+        set(0, id);
+        set(1, preCode);
+        set(2, fileName);
+        set(3, fileUrl);
+        set(4, bizTypeCode);
+        set(5, sourceId);
+        set(6, sort);
+        set(7, createAt);
+        set(8, updateAt);
+        set(9, remark);
+        set(10, delFlag);
+        set(11, version);
     }
 }

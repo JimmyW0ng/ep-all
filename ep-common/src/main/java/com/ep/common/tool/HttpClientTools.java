@@ -1,5 +1,6 @@
 package com.ep.common.tool;
 
+import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -27,19 +28,22 @@ import java.util.Map;
  */
 public class HttpClientTools {
 
-    public static HttpEntity doGet(String url) {
+    public static Map doGet(String url) {
         try {
             HttpClient client = new DefaultHttpClient();
             //发送get请求
             HttpGet request = new HttpGet(url);
             HttpResponse response = client.execute(request);
 
-            /**请求发送成功，并得到响应**/
+            //请求发送成功，并得到响应
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                /**读取服务器返回过来的json字符串数据**/
-//                String strResult = EntityUtils.toString(response.getEntity());
+                //读取服务器返回过来的json字符串数据
+                String jsonStr = EntityUtils.toString(response.getEntity());
+                Gson gson = new Gson();
+                Map<String, String> map = new HashMap<String, String>();
+                map = gson.fromJson(jsonStr, map.getClass());
 
-                return response.getEntity();
+                return map;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,7 +54,7 @@ public class HttpClientTools {
 
 
     /**
-     * post请求json数据
+     * post请求 json数据
      *
      * @param url
      * @param params
