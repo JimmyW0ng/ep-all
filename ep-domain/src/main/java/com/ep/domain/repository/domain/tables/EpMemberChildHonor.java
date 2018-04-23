@@ -29,71 +29,51 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMemberChildHonor extends TableImpl<EpMemberChildHonorRecord> {
 
-    private static final long serialVersionUID = -1080237321;
-
     /**
      * The reference instance of <code>ep.ep_member_child_honor</code>
      */
     public static final EpMemberChildHonor EP_MEMBER_CHILD_HONOR = new EpMemberChildHonor();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpMemberChildHonorRecord> getRecordType() {
-        return EpMemberChildHonorRecord.class;
-    }
-
+    private static final long serialVersionUID = -1080237321;
     /**
      * The column <code>ep.ep_member_child_honor.id</code>. 主键
      */
     public final TableField<EpMemberChildHonorRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
-
     /**
      * The column <code>ep.ep_member_child_honor.child_id</code>. 孩子id
      */
     public final TableField<EpMemberChildHonorRecord, Long> CHILD_ID = createField("child_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "孩子id");
-
     /**
      * The column <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
      */
     public final TableField<EpMemberChildHonorRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT, this, "机构_id");
-
     /**
      * The column <code>ep.ep_member_child_honor.course_id</code>. 课程id
      */
     public final TableField<EpMemberChildHonorRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT, this, "课程id");
-
     /**
      * The column <code>ep.ep_member_child_honor.class_id</code>. 班级id
      */
     public final TableField<EpMemberChildHonorRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT, this, "班级id");
-
     /**
      * The column <code>ep.ep_member_child_honor.content</code>. 荣誉内容
      */
     public final TableField<EpMemberChildHonorRecord, String> CONTENT = createField("content", org.jooq.impl.SQLDataType.VARCHAR.length(3000).nullable(false), this, "荣誉内容");
-
     /**
      * The column <code>ep.ep_member_child_honor.create_at</code>. 创建时间
      */
     public final TableField<EpMemberChildHonorRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_member_child_honor.update_at</code>. 更新时间
      */
     public final TableField<EpMemberChildHonorRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_member_child_honor.remark</code>. 备注
      */
     public final TableField<EpMemberChildHonorRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
-
     /**
      * The column <code>ep.ep_member_child_honor.del_flag</code>. 删除标记
      */
     public final TableField<EpMemberChildHonorRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
-
     /**
      * The column <code>ep.ep_member_child_honor.version</code>.
      */
@@ -119,6 +99,14 @@ public class EpMemberChildHonor extends TableImpl<EpMemberChildHonorRecord> {
 
     private EpMemberChildHonor(String alias, Table<EpMemberChildHonorRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "孩子荣誉表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpMemberChildHonorRecord> getRecordType() {
+        return EpMemberChildHonorRecord.class;
     }
 
     /**

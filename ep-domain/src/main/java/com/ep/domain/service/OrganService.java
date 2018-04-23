@@ -64,7 +64,7 @@ public class OrganService {
         // 机构详情
         Optional<EpOrganPo> ognInfoPojo = this.getById(id);
         if (!ognInfoPojo.isPresent() || !EpOrganStatus.online.equals(ognInfoPojo.get().getStatus())) {
-            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         // 机构主图
         Optional<EpFilePo> mainPicOpt = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, id);
@@ -95,7 +95,38 @@ public class OrganService {
      * @return
      */
     public ResultDo<Page<OrganBo>> queryOrganForPage(Pageable pageable) {
-        Page<OrganBo> page = organRepository.queryOrganForPage(pageable);
+        Page<OrganBo> page = organRepository.queryOrganForPage(null, false, pageable);
+        List<OrganBo> data = page.getContent();
+        if (CollectionsTools.isNotEmpty(data)) {
+            for (OrganBo organ : data) {
+                Optional<EpFilePo> organMainPic = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_ORGAN_MAIN_PIC, organ.getId());
+                String mainPic = organMainPic.isPresent() ? organMainPic.get().getFileUrl() : null;
+                organ.setFileUrl(mainPic);
+            }
+        }
+        ResultDo<Page<OrganBo>> resultDo = ResultDo.build();
+        resultDo.setResult(page);
+        return resultDo;
+    }
+
+    /**
+     * 根据场景值获取机构分页列表
+     *
+     * @param ognId
+     * @param pageable
+     * @return
+     */
+    public ResultDo<Page<OrganBo>> queryOrganBySceneForPage(Long ognId, Pageable pageable) {
+        // 机构详情
+        Optional<EpOrganPo> ognInfoPojo = this.getById(ognId);
+        if (!ognInfoPojo.isPresent() || !EpOrganStatus.online.equals(ognInfoPojo.get().getStatus())) {
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+        }
+        Optional<EpOrganConfigPo> existConfig = organConfigRepository.getByOgnId(ognId);
+        if (!existConfig.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_ORGAN_CONFIG_NOT_EXISTS);
+        }
+        Page<OrganBo> page = organRepository.queryOrganForPage(ognId, existConfig.get().getPrivateFlag(), pageable);
         List<OrganBo> data = page.getContent();
         if (CollectionsTools.isNotEmpty(data)) {
             for (OrganBo organ : data) {

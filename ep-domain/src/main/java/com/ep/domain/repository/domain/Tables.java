@@ -191,9 +191,4 @@ public class Tables {
      * token表
      */
     public static final EpToken EP_TOKEN = com.ep.domain.repository.domain.tables.EpToken.EP_TOKEN;
-
-    /**
-     * The table <code>ep.ep_weixin_user</code>.
-     */
-    public static final EpWeixinUser EP_WEIXIN_USER = com.ep.domain.repository.domain.tables.EpWeixinUser.EP_WEIXIN_USER;
 }

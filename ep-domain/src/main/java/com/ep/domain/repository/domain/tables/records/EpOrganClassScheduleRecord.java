@@ -32,11 +32,35 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     private static final long serialVersionUID = -1615385041;
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.id</code>. 主键
+     * Create a detached EpOrganClassScheduleRecord
      */
-    public EpOrganClassScheduleRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrganClassScheduleRecord() {
+        super(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganClassScheduleRecord
+     */
+    public EpOrganClassScheduleRecord(Long id, Long childId, Long classId, Long orderId, Timestamp startTime, Integer duration, String catalogTitle, String catalogDesc, Integer catalogIndex, EpOrganClassScheduleStatus status, Boolean evaluateFlag, Long classCatalogId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE);
+
+        set(0, id);
+        set(1, childId);
+        set(2, classId);
+        set(3, orderId);
+        set(4, startTime);
+        set(5, duration);
+        set(6, catalogTitle);
+        set(7, catalogDesc);
+        set(8, catalogIndex);
+        set(9, status);
+        set(10, evaluateFlag);
+        set(11, classCatalogId);
+        set(12, createAt);
+        set(13, updateAt);
+        set(14, remark);
+        set(15, delFlag);
+        set(16, version);
     }
 
     /**
@@ -47,10 +71,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.child_id</code>. 孩子id
+     * Setter for <code>ep.ep_organ_class_schedule.id</code>. 主键
      */
-    public EpOrganClassScheduleRecord setChildId(Long value) {
-        set(1, value);
+    public EpOrganClassScheduleRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -62,10 +86,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.class_id</code>. 班次id
+     * Setter for <code>ep.ep_organ_class_schedule.child_id</code>. 孩子id
      */
-    public EpOrganClassScheduleRecord setClassId(Long value) {
-        set(2, value);
+    public EpOrganClassScheduleRecord setChildId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -77,10 +101,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.order_id</code>. 订单id
+     * Setter for <code>ep.ep_organ_class_schedule.class_id</code>. 班次id
      */
-    public EpOrganClassScheduleRecord setOrderId(Long value) {
-        set(3, value);
+    public EpOrganClassScheduleRecord setClassId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -92,10 +116,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.start_time</code>. 开始时间
+     * Setter for <code>ep.ep_organ_class_schedule.order_id</code>. 订单id
      */
-    public EpOrganClassScheduleRecord setStartTime(Timestamp value) {
-        set(4, value);
+    public EpOrganClassScheduleRecord setOrderId(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -107,10 +131,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.duration</code>. 持续时长
+     * Setter for <code>ep.ep_organ_class_schedule.start_time</code>. 开始时间
      */
-    public EpOrganClassScheduleRecord setDuration(Integer value) {
-        set(5, value);
+    public EpOrganClassScheduleRecord setStartTime(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -122,10 +146,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.catalog_title</code>. 目录标题
+     * Setter for <code>ep.ep_organ_class_schedule.duration</code>. 持续时长
      */
-    public EpOrganClassScheduleRecord setCatalogTitle(String value) {
-        set(6, value);
+    public EpOrganClassScheduleRecord setDuration(Integer value) {
+        set(5, value);
         return this;
     }
 
@@ -137,10 +161,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.catalog_desc</code>. 目录描述
+     * Setter for <code>ep.ep_organ_class_schedule.catalog_title</code>. 目录标题
      */
-    public EpOrganClassScheduleRecord setCatalogDesc(String value) {
-        set(7, value);
+    public EpOrganClassScheduleRecord setCatalogTitle(String value) {
+        set(6, value);
         return this;
     }
 
@@ -152,10 +176,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.catalog_index</code>. 目录索引
+     * Setter for <code>ep.ep_organ_class_schedule.catalog_desc</code>. 目录描述
      */
-    public EpOrganClassScheduleRecord setCatalogIndex(Integer value) {
-        set(8, value);
+    public EpOrganClassScheduleRecord setCatalogDesc(String value) {
+        set(7, value);
         return this;
     }
 
@@ -167,10 +191,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.status</code>. 状态：等待；正常；迟到；缺勤；请假；关闭
+     * Setter for <code>ep.ep_organ_class_schedule.catalog_index</code>. 目录索引
      */
-    public EpOrganClassScheduleRecord setStatus(EpOrganClassScheduleStatus value) {
-        set(9, value);
+    public EpOrganClassScheduleRecord setCatalogIndex(Integer value) {
+        set(8, value);
         return this;
     }
 
@@ -182,10 +206,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.evaluate_flag</code>. 随堂评价标记
+     * Setter for <code>ep.ep_organ_class_schedule.status</code>. 状态：等待；正常；迟到；缺勤；请假；关闭
      */
-    public EpOrganClassScheduleRecord setEvaluateFlag(Boolean value) {
-        set(10, value);
+    public EpOrganClassScheduleRecord setStatus(EpOrganClassScheduleStatus value) {
+        set(9, value);
         return this;
     }
 
@@ -197,10 +221,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.class_catalog_id</code>. 班次课程内容目录id
+     * Setter for <code>ep.ep_organ_class_schedule.evaluate_flag</code>. 随堂评价标记
      */
-    public EpOrganClassScheduleRecord setClassCatalogId(Long value) {
-        set(11, value);
+    public EpOrganClassScheduleRecord setEvaluateFlag(Boolean value) {
+        set(10, value);
         return this;
     }
 
@@ -212,10 +236,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_class_schedule.class_catalog_id</code>. 班次课程内容目录id
      */
-    public EpOrganClassScheduleRecord setCreateAt(Timestamp value) {
-        set(12, value);
+    public EpOrganClassScheduleRecord setClassCatalogId(Long value) {
+        set(11, value);
         return this;
     }
 
@@ -227,10 +251,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_class_schedule.create_at</code>. 创建时间
      */
-    public EpOrganClassScheduleRecord setUpdateAt(Timestamp value) {
-        set(13, value);
+    public EpOrganClassScheduleRecord setCreateAt(Timestamp value) {
+        set(12, value);
         return this;
     }
 
@@ -242,10 +266,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.remark</code>. 备注
+     * Setter for <code>ep.ep_organ_class_schedule.update_at</code>. 更新时间
      */
-    public EpOrganClassScheduleRecord setRemark(String value) {
-        set(14, value);
+    public EpOrganClassScheduleRecord setUpdateAt(Timestamp value) {
+        set(13, value);
         return this;
     }
 
@@ -257,10 +281,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_organ_class_schedule.remark</code>. 备注
      */
-    public EpOrganClassScheduleRecord setDelFlag(Boolean value) {
-        set(15, value);
+    public EpOrganClassScheduleRecord setRemark(String value) {
+        set(14, value);
         return this;
     }
 
@@ -272,12 +296,16 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_schedule.version</code>.
+     * Setter for <code>ep.ep_organ_class_schedule.del_flag</code>. 删除标记
      */
-    public EpOrganClassScheduleRecord setVersion(Long value) {
-        set(16, value);
+    public EpOrganClassScheduleRecord setDelFlag(Boolean value) {
+        set(15, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_class_schedule.version</code>.
@@ -287,8 +315,16 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record17 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_class_schedule.version</code>.
+     */
+    public EpOrganClassScheduleRecord setVersion(Long value) {
+        set(16, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -297,10 +333,6 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record17 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -734,6 +766,10 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -766,41 +802,5 @@ public class EpOrganClassScheduleRecord extends UpdatableRecordImpl<EpOrganClass
         value16(value16);
         value17(value17);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganClassScheduleRecord
-     */
-    public EpOrganClassScheduleRecord() {
-        super(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganClassScheduleRecord
-     */
-    public EpOrganClassScheduleRecord(Long id, Long childId, Long classId, Long orderId, Timestamp startTime, Integer duration, String catalogTitle, String catalogDesc, Integer catalogIndex, EpOrganClassScheduleStatus status, Boolean evaluateFlag, Long classCatalogId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganClassSchedule.EP_ORGAN_CLASS_SCHEDULE);
-
-        set(0, id);
-        set(1, childId);
-        set(2, classId);
-        set(3, orderId);
-        set(4, startTime);
-        set(5, duration);
-        set(6, catalogTitle);
-        set(7, catalogDesc);
-        set(8, catalogIndex);
-        set(9, status);
-        set(10, evaluateFlag);
-        set(11, classCatalogId);
-        set(12, createAt);
-        set(13, updateAt);
-        set(14, remark);
-        set(15, delFlag);
-        set(16, version);
     }
 }

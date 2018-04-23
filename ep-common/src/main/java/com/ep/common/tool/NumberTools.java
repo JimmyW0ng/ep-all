@@ -1,7 +1,6 @@
 package com.ep.common.tool;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
@@ -703,6 +702,24 @@ public class NumberTools {
     }
 
     /**
+     * 判断String 是否可以转换为Long
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isLongToString(String str) {
+        boolean bean = false;
+        try {
+            Long.parseLong(str);
+            bean = true;
+
+        } catch (NumberFormatException e) {
+            return bean;
+        }
+        return bean;
+    }
+
+    /**
      * 格式化数字
      */
     public static BigDecimal formatDouble(Double d) {
@@ -739,101 +756,6 @@ public class NumberTools {
 
     public static boolean nEqCompareLong(Long a, Long b) {
         return !eqCompareLong(a, b);
-    }
-
-
-    /**
-     * 按日计息
-     *
-     * @return
-     */
-    public static BigDecimal calculateInterest(BigDecimal amount, BigDecimal annualizedRate, int date) {
-        BigDecimal divide = annualizedRate.divide(YEAR_DAYS, 10, BigDecimal.ROUND_HALF_UP);
-        BigDecimal pay = amount.multiply(divide).multiply(new BigDecimal(date)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        return pay;
-    }
-
-    /**
-     * 等本等息 ，计算本金
-     *
-     * @param amount
-     * @param month
-     * @return
-     */
-    public static BigDecimal calculatePrincipalByAvg(BigDecimal amount, int month) {
-        BigDecimal pay = amount.divide(new BigDecimal(month), 10, BigDecimal.ROUND_HALF_UP)
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return pay;
-    }
-
-    /**
-     * 等本等息 ，计算利息
-     *
-     * @param amount
-     * @return
-     */
-    public static BigDecimal calculateInterestByAvg(BigDecimal amount, BigDecimal annualizedRate) {
-        BigDecimal pay = amount.multiply(annualizedRate.divide(MONTH_LEN, 10, BigDecimal.ROUND_HALF_UP))
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return pay;
-    }
-
-    /**
-     * 等本等息 ，计算几个月的总利息,
-     *
-     * @param amount
-     * @return
-     */
-    public static BigDecimal calculateInterestAndMonthByAvg(BigDecimal amount, BigDecimal annualizedRate, int month) {
-        BigDecimal pay = amount.multiply(annualizedRate.divide(MONTH_LEN, 10, BigDecimal.ROUND_HALF_UP))
-                .multiply(new BigDecimal(month))
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return pay;
-    }
-
-
-    /**
-     * 线下利息计算方法
-     *
-     * @param investAmount
-     * @param days
-     * @param offlineRate
-     * @return
-     */
-    public static BigDecimal getDayInterestSettlement(BigDecimal investAmount, int days, BigDecimal offlineRate) {
-        if (offlineRate != null) {
-            return investAmount.multiply(new BigDecimal(days)).multiply(
-                    offlineRate.divide(YEAR_DAYS, 10, BigDecimal.ROUND_HALF_UP));
-        }
-        return BigDecimal.ZERO;
-    }
-
-    /**
-     * 根据分红百分比获取分红总额
-     *
-     * @param bonusPercent
-     * @return
-     */
-    public static BigDecimal getTotalBonusByPercent(BigDecimal bonusPercent, BigDecimal totalIncome) {
-        BigDecimal totalUserBonus = totalIncome.multiply(
-                bonusPercent.divide(new BigDecimal(100), 10, BigDecimal.ROUND_HALF_UP)).setScale(2,
-                BigDecimal.ROUND_HALF_UP);
-        return totalUserBonus;
-    }
-
-    public static BigDecimal getUnitRental(BigDecimal totalRental, Integer leaseDays) {
-        BigDecimal unitRental = totalRental.divide(new BigDecimal(leaseDays), 10, BigDecimal.ROUND_HALF_UP).setScale(2,
-                BigDecimal.ROUND_HALF_UP);
-        return unitRental;
-    }
-
-    public static BigDecimal getBonusAnnualizedRate(BigDecimal bonusAmount, BigDecimal totalInterest,
-                                                    BigDecimal annualizedRate, BigDecimal ExtraAnnualizedRate) {
-        if (ExtraAnnualizedRate != null) {
-            annualizedRate = annualizedRate.add(ExtraAnnualizedRate);
-        }
-        return BigDecimal.valueOf(bonusAmount.doubleValue() / totalInterest.doubleValue() * annualizedRate.doubleValue())
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -1061,70 +983,6 @@ public class NumberTools {
     }
 
     /**
-     * @param amount
-     * @param
-     * @return
-     * @Description:金额乘以百分比
-     * @author: chaisen
-     * @time:2016年1月7日 上午10:18:40
-     */
-    public static BigDecimal getManagerAmount(BigDecimal amount, BigDecimal manageFeeRate) {
-        BigDecimal interest = BigDecimal.ZERO;
-        if (amount == null) {
-            amount = BigDecimal.ZERO;
-        }
-        if (manageFeeRate == null) {
-            manageFeeRate = BigDecimal.ZERO;
-        }
-        interest = amount.multiply(manageFeeRate.divide(HUNDRED, 10, BigDecimal.ROUND_HALF_UP))
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return interest;
-
-    }
-
-    //滞纳金  优化 days
-    public static BigDecimal getLateFeeAmount(BigDecimal amount, BigDecimal manageFeeRate, int days) {
-        BigDecimal interest = BigDecimal.ZERO;
-        if (amount == null) {
-            amount = BigDecimal.ZERO;
-        }
-        if (manageFeeRate == null) {
-            manageFeeRate = BigDecimal.ZERO;
-        }
-        interest = amount.multiply(manageFeeRate.divide(THOUSAND, 10, BigDecimal.ROUND_HALF_UP))
-                .multiply(new BigDecimal(days))
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return interest;
-
-    }
-
-    /**
-     * @param amount
-     * @param manageFeeRate
-     * @param days
-     * @return
-     * @Description:交易本息的滞纳金
-     * @author: fuyili
-     * @time:2016年6月5日 下午2:44:36
-     */
-    public static BigDecimal getTransactionInterestLateFeeAmount(BigDecimal amount, BigDecimal manageFeeRate, int days,
-                                                                 int periods) {
-        BigDecimal interest = BigDecimal.ZERO;
-        if (amount == null) {
-            amount = BigDecimal.ZERO;
-        }
-        if (manageFeeRate == null) {
-            manageFeeRate = BigDecimal.ZERO;
-        }
-        interest = amount.multiply(manageFeeRate.divide(THOUSAND, 10, BigDecimal.ROUND_HALF_UP))
-                .multiply(new BigDecimal(days))
-                .divide(new BigDecimal(periods))
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return interest;
-
-    }
-
-    /**
      * 格式化金额,取亿
      *
      * @param price
@@ -1211,172 +1069,6 @@ public class NumberTools {
         }
         return firstEle.subtract(secondEle);
 
-    }
-
-    /**
-     * 计算转让项目年化
-     *
-     * @param residualInterest
-     * @param discount
-     * @param transferAmount
-     * @param days
-     * @return
-     */
-    public static BigDecimal getTransferAnnualizedRate(BigDecimal residualInterest, BigDecimal discount,
-                                                       BigDecimal transferAmount, int days) {
-        BigDecimal transferAnnualizedRate = BigDecimal.ZERO;
-        // 转让项目收益率 = （项目剩余利息（总）+折价） / 转让价格   * （360/剩余收益天数）（计算得到的收益率 直接舍弃）
-        transferAnnualizedRate = ((residualInterest.add(discount)).divide(transferAmount, 10, BigDecimal.ROUND_HALF_UP))
-                .multiply((YEAR_DAYS.divide(new BigDecimal(days), 10, BigDecimal.ROUND_HALF_UP)))
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-        return transferAnnualizedRate;
-    }
-
-    /**
-     * @param beforeTransationAmount
-     * @param afterTransactionAmount
-     * @param
-     * @return
-     * @Description:获取转让交易的交易本息的本金 计算公式：
-     * 转让后单笔交易本金/转让项目的交易本金*转让前项目的交易本息的本金
-     * @author: fuyili
-     * @time:2016年9月22日 下午7:27:37
-     */
-    public static BigDecimal calculateTransferTransactionPrincipal(BigDecimal beforeTransationAmount,
-                                                                   BigDecimal afterTransactionAmount,
-                                                                   BigDecimal beforeTransactionInterestPayablePrincipal) {
-        if (beforeTransationAmount.compareTo(BigDecimal.ZERO) <= 0
-                || afterTransactionAmount.compareTo(BigDecimal.ZERO) <= 0
-                || beforeTransactionInterestPayablePrincipal.compareTo(BigDecimal.ZERO) <= 0) {
-            return BigDecimal.ZERO;
-        }
-        return afterTransactionAmount.divide(beforeTransationAmount, 10, BigDecimal.ROUND_HALF_UP)
-                .multiply(beforeTransactionInterestPayablePrincipal).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-    }
-
-
-    /**
-     * @param beforeTransationAmount
-     * @param afterTransactionAmount
-     * @param
-     * @return
-     * @Description:获取转让交易的交易本息的利息 计算公式：
-     * 转让后单笔交易本金/转让项目的交易本金*转让前项目的交易本息的利息
-     */
-    public static BigDecimal calculateTransferTransactionInterest(BigDecimal beforeTransationAmount,
-                                                                  BigDecimal afterTransactionAmount,
-                                                                  BigDecimal beforeTransactionInterestPayableInterest) {
-        if (beforeTransationAmount.compareTo(BigDecimal.ZERO) <= 0
-                || afterTransactionAmount.compareTo(BigDecimal.ZERO) <= 0
-                || beforeTransactionInterestPayableInterest.compareTo(BigDecimal.ZERO) <= 0) {
-            return BigDecimal.ZERO;
-        }
-        return afterTransactionAmount.divide(beforeTransationAmount, 10, BigDecimal.ROUND_HALF_UP)
-                .multiply(beforeTransactionInterestPayableInterest).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-    }
-
-    /**
-     * 获取转让项目进度
-     */
-    public static String getTransferNumberProgress(BigDecimal totalAmount, BigDecimal availableBalance) {
-        String progress = "0";
-        if (availableBalance != null) {
-            if (availableBalance.compareTo(BigDecimal.ZERO) <= 0) {
-                progress = "100";
-            } else if (availableBalance.compareTo(totalAmount) == 0) {
-                progress = "0";
-            } else {
-                progress = new DecimalFormat("###.##").format((totalAmount.subtract(availableBalance)).divide(totalAmount, 4,
-                        RoundingMode.HALF_UP).multiply(new BigDecimal("100")));
-            }
-        }
-        return progress;
-    }
-
-    /**
-     * 判断投资金额大于起投金额，且投资金额减起投金额为递增金额的整数倍
-     *
-     * @param amount    投资金额
-     * @param minAmount 起投金额
-     * @param increment 递增金额
-     * @return
-     */
-    public static boolean isGtMinamountMultipleIncre(BigDecimal amount, BigDecimal minAmount, BigDecimal increment) {
-        if (null == amount || null == minAmount || null == increment) {
-            return false;
-        }
-        if (amount.compareTo(minAmount) != -1) {
-            try {
-                //为解决精度问题，转化为字符串进行处理
-                BigDecimal investAmountStr = new BigDecimal(String.valueOf(amount));
-                BigDecimal minAmountStr = new BigDecimal(String.valueOf(minAmount));
-                BigDecimal incrementStr = new BigDecimal(String.valueOf(increment));
-
-                BigDecimal subAmount = investAmountStr.subtract(minAmountStr);
-                BigDecimal temp = subAmount.remainder(incrementStr);//(投资金额-起投金额)%递增金额
-
-                return temp.compareTo(BigDecimal.ZERO) == 0;
-            } catch (Exception e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * 计算年化投资额
-     *
-     * @param investAmount
-     * @param totalDays
-     * @return
-     */
-    public static BigDecimal calculateAnnualizedPrincipal(BigDecimal investAmount, Integer totalDays) {
-        BigDecimal result = BigDecimal.ZERO;
-        if (investAmount == null || totalDays == null) {
-            return result;
-        }
-        return investAmount.multiply(new BigDecimal(totalDays)).multiply(HUNDRED).divide(YEAR_DAYS, 10, BigDecimal
-                .ROUND_HALF_UP);
-    }
-
-    /**
-     * 转换成积分要求的精度
-     *
-     * @param bigDecimal
-     * @return
-     */
-    public static BigDecimal getPointScale(BigDecimal bigDecimal) {
-        if (bigDecimal == null) {
-            return BigDecimal.ZERO;
-        }
-        return bigDecimal.setScale(2, BigDecimal.ROUND_DOWN);
-    }
-
-    /**
-     * 金额判断长度和精度是否合法
-     *
-     * @param bigDecimal
-     * @param maxLength
-     * @param scale
-     * @return
-     */
-    public static boolean checkLength(BigDecimal bigDecimal, int maxLength, int scale) {
-        if (bigDecimal == null) {
-            return false;
-        }
-        String bigDecimalStr = bigDecimal.toPlainString();
-        if (bigDecimalStr.length() > maxLength) {
-            return false;
-        }
-        String[] strs = bigDecimalStr.split("\\.");
-        if (strs.length == 2 && strs[1].length() > scale) {
-            return false;
-        }
-        return true;
     }
 
 }

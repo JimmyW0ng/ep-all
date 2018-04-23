@@ -1,5 +1,8 @@
 package com.ep.api.controller;
 
+import com.ep.common.tool.NumberTools;
+import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.bo.OrganCourseBo;
@@ -47,6 +50,16 @@ public class OrganCourseController extends ApiController {
     @PostMapping("/detail")
     public ResultDo<OrganCourseDto> getCourseInfo(@RequestParam("courseId") Long courseId) {
         return organCourseService.getCourseDetail(courseId);
+    }
+
+    @ApiOperation(value = "根据场景值获取课程详情")
+    @PostMapping("/scene/detail")
+    public ResultDo<OrganCourseDto> getCourseInfoByScene(@RequestParam("scene") String scene) {
+        String[] sceneArr = scene.split(BizConstant.WECHAT_SCENE_SPLIT);
+        if (sceneArr.length < BizConstant.DB_NUM_TWO || !NumberTools.isLongToString(sceneArr[BizConstant.DB_NUM_ONE])) {
+            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        }
+        return organCourseService.getCourseDetail(Long.valueOf(sceneArr[BizConstant.DB_NUM_ONE]));
     }
 
     @ApiOperation(value = "分页查询课程全部评论")
