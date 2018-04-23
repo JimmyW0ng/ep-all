@@ -272,7 +272,9 @@ function $ajaxPost(url, data) {
     })
 }
 
-function apisMapClickCallback(success) {
+function apisMapClickCallback($box, success) {
+    var htmls = '<iframe id="mapPage" width="100%" height="100%" frameborder=0 src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"></iframe>'
+    $box.html(htmls)
     window.addEventListener('message', function (event) {
         // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
         var loc = event.data;

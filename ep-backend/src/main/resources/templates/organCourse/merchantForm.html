@@ -15,6 +15,7 @@
     </style>
 </header>
 <body class="gray-bg">
+<!--<iframe id="mapPage" width="100%" height="100%" frameborder=0 src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"></iframe>-->
 <div class="col-sm-11 ">
     <div style="padding-left: 40px" class="row ">
         <input id="ognPhone" th:value="${ognPhone}" type="hidden">
@@ -181,7 +182,7 @@
                                 <input type="hidden" name="mainpic_url" id="mainpic_url" class="required">
                                 <input type="hidden" name="mainpicUrlPreCode" id="mainpic_url_preCode">
                             </div>
-                            <div style="display:inline-block;width:160px;position:absolute;bottom:0;">推荐尺寸：宽335*高188
+                            <div style="display:inline-block;width:160px;position:absolute;bottom:0;">推荐尺寸：宽320*高320
                             </div>
                         </div>
                     </div>
@@ -214,14 +215,10 @@
 <div class="modal inmodal" id="addressModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content animated bounceInRight">
-
-            <input type="hidden" id="sourceId">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h3 style="text-align: left" id="modalTitle"></h3>
-
             </div>
             <div id="apismapBox" style="height:700px">
 
@@ -229,11 +226,7 @@
         </div>
     </div>
 </div>
-<script type="text/template" id='apismapTmpl'>
-    <iframe id="mapPage" width="100%" height="100%" frameborder=0
-            src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
-    </iframe>
-</script>
+
 <script type="text/template" id='classCatalogTmpl'>
     <div name="organClassCatalogPos" class="organClassCatalogPos col-sm-12" style="margin:5px 0px">
         <div style="overflow:hidden">
@@ -371,7 +364,7 @@
                                            value="${address}">
                                 </div>
                                 <div class="col-sm-1" style="height:34px">
-                                    <a href="javascript:void(0)" onclick="apisMap(this)">
+                                    <a href="javascript:void(0)" onclick="apisMapClick(this)">
                                     <span style="display: inline-block;margin-top: 10px"
                                           class="glyphicon glyphicon-map-marker"
                                           aria-hidden="true"></span>
@@ -428,6 +421,9 @@
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:src="@{/modules/organCourse.js}"></script>
 <script th:inline="javascript">
+    var $address;
+    var $lat
+    var $lng
     var um = UM.getEditor('umeditor', {imageUrl: "/auth/organCourse/uploadCourseDescPic",});
 
     //organCoursePo.EnterTimeEnd提交框name属性
@@ -874,21 +870,23 @@
     }
 
     //腾讯地图插件
-    function apisMap(ele) {
-        $("#apismapBox").html($("#apismapTmpl").tmpl())
+    function apisMapClick(ele) {
+
         $("#addressModal").modal("show")
-        apisMapClickCallback(function (loc) {
-            var $address = $(ele).parents(".organClassBos").eq(0).find("input[name='address']").eq(0)
-            var $addressLng = $(ele).parents(".organClassBos").eq(0).find("input[name='addressLng']").eq(0)
-            var $addressLat = $(ele).parents(".organClassBos").eq(0).find("input[name='addressLat']").eq(0)
-            $address.val(loc.poiaddress + loc.poiname)
-            $addressLng.val(loc.latlng.lng)
-            $addressLat.val(loc.latlng.lat)
-            $("#addressModal").modal("hide")
-        })
+        $address = $(ele).parents(".organClassBos").eq(0).find("input[name='address']").eq(0)
+        $lng = $(ele).parents(".organClassBos").eq(0).find("input[name='addressLng']").eq(0)
+        $lat = $(ele).parents(".organClassBos").eq(0).find("input[name='addressLat']").eq(0)
+
     }
 
     $(document).ready(function () {
+        apisMapClickCallback($("#apismapBox"), function (loc) {
+            $address.val(loc.poiaddress + loc.poiname)
+            $lng.val(loc.latlng.lng)
+            $lat.val(loc.latlng.lat)
+            $("#addressModal").modal("hide")
+        })
+
         jqValidCheckById()
         //修改页面初始化start
         if ([[${organCoursePo.id}]]) {
