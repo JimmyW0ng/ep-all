@@ -152,4 +152,13 @@ public class BizConstant {
 
     public static String WECHAT_URL_WECHAT_CODE_UNLIMIT = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s";
 
+    public static String WECHAT_URL_GET_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+
+    public static String WECHAT_URL_MSG_CUSTOM_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
+
+    /**
+     * 腾讯云短信 地区国内CODE
+     */
+    public static String QCLOUDSMS_NATION_CODE = "86";
+
 }

@@ -2,6 +2,7 @@ package com.ep.domain.service;
 
 import com.ep.common.tool.HttpClientTools;
 import com.ep.common.tool.WeixinTools;
+import com.ep.domain.constant.BizConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ public class WeixinService {
      * @throws Exception
      */
     public void msgCustomSend(String accessToken, List<String> openIds, String msg) throws Exception {
-        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + accessToken;
+        String url = String.format(BizConstant.WECHAT_URL_MSG_CUSTOM_SEND, accessToken);
         for (String openId : openIds) {
             JSONObject jsonParam = new JSONObject();
             jsonParam.put("touser", openId);
@@ -50,8 +51,7 @@ public class WeixinService {
      * @throws Exception
      */
     public String getAccessToken() throws Exception {
-        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential" +
-                "&appid=" + weixin4jOauthAppid + "&secret=" + weixin4jOauthSecret;
+        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, weixin4jOauthAppid, weixin4jOauthSecret);
         Map<String, String> resultMap = HttpClientTools.doGet(url);
         String accessToken = resultMap.get("access_token");
         return accessToken;
@@ -67,9 +67,7 @@ public class WeixinService {
         //判断请求是否事件类型 event
         if (requestMap.get("MsgType").equals(WeixinTools.MESSAGE_EVENT)) {
             if (requestMap.get("Event").equals(WeixinTools.EVENT_SUB)) {
-
                 return "谢谢您关注小竹马！";
-                //todo插入数据库
             } else {
                 return null;
             }
