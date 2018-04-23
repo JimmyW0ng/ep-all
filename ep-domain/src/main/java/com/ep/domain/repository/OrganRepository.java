@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.SortField;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -111,12 +110,6 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN.fields());
         fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.ID).as("catalogIds"));
         fieldList.add(DSL.groupConcat(EP_CONSTANT_CATALOG.LABEL).as("catalogLabels"));
-        SortField<?>[] sortFields;
-        if (ognId != null) {
-            sortFields = new SortField<?>[]{EP_ORGAN.ID.sortAsc(ognId), EP_ORGAN.MARKET_WEIGHT.desc()};
-        } else {
-            sortFields = new SortField<?>[]{EP_ORGAN.MARKET_WEIGHT.desc()};
-        }
         List<OrganBo> pList = dslContext.select(fieldList)
                                         .from(EP_ORGAN)
                                         .leftJoin(EP_ORGAN_CATALOG)
@@ -127,7 +120,7 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
                                         .and(EP_CONSTANT_CATALOG.DEL_FLAG.eq(false))
                                         .where(conditions)
                                         .groupBy(EP_ORGAN.ID)
-                                        .orderBy(sortFields)
+                                        .orderBy(EP_ORGAN.MARKET_WEIGHT.desc())
                                         .limit(pageable.getPageSize())
                                         .offset(pageable.getOffset())
                                         .fetchInto(OrganBo.class);
