@@ -121,10 +121,6 @@ public class BizConstant {
     /**
      * wechat
      */
-    public static int WECHAT_SCENE_SALT_LENGTH = 4;
-
-    public static String WECHAT_SCENE_PASSWORD = "sceneCode";
-
     public static String WECHAT_SCENE_SPLIT = "#";
 
     public static String DICT_GROUP_WECHAT = "WECHAT";
