@@ -123,9 +123,6 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         Long count = dslContext.selectCount()
                                .from(EP_ORGAN_CLASS)
                                .where(EP_ORGAN_CLASS.OGN_ACCOUNT_ID.eq(ognAccountId))
-                               .and(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online,
-                                       EpOrganClassStatus.opening,
-                                       EpOrganClassStatus.end))
                                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
                                .fetchOneInto(Long.class);
         if (count == BizConstant.DB_NUM_ZERO) {
