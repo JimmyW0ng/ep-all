@@ -7,8 +7,6 @@
 </head>
 <header>
     <th:block layout:fragment="links">
-
-
     </th:block>
 </header>
 <body>
@@ -245,6 +243,9 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+    var $address;
+    var $lat
+    var $lng
     function vipBoxByVipflag() {
         var vipFlag = $("#vipFlag").is(":checked")
         if (vipFlag) {
@@ -411,16 +412,20 @@
     }
     //腾讯地图插件
     function apisMap() {
-        $("#apismapBox").html($("#apismapTmpl").tmpl())
         $("#addressModal").modal("show")
-        apisMapClickCallback(function (loc) {
-            $("#ognAddress").val(loc.poiaddress + loc.poiname)
-            $("#ognLng").val(loc.latlng.lng)
-            $("#ognLat").val(loc.latlng.lat)
-            $("#addressModal").modal("hide")
-        })
+        $address = $("#ognAddress")
+        $lng = $("#ognLng")
+        $lat = $("#ognLat")
+
     }
     $(function () {
+        apisMapClickCallback($("#apismapBox"), function (loc) {
+            $address.val(loc.poiaddress + loc.poiname)
+            $lng.val(loc.latlng.lng)
+            $lat.val(loc.latlng.lat)
+            $("#addressModal").modal("hide")
+        })
+
         if ($("#mainpic_img_url").attr("src")) {
             $("#mainpic_img_url").attr("style", "margin: 10px;height:210px;width:375px")
         }

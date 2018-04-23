@@ -824,3 +824,18 @@
     border: none;
 
 }
+
+/*add by feicongcong图片缩放被bootstrap覆盖start*/
+.edui-container * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.edui-container *:before, .edui-container *:after {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/*add by feicongcong图片缩放被bootstrap覆盖end*/

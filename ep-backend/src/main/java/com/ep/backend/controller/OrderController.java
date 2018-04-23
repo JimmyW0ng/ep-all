@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -492,10 +494,16 @@ public class OrderController extends BackendController {
      */
     @GetMapping("/orderSuccessServicePush")
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-    @ResponseBody
-    public String orderSuccessServicePush() {
-
-        return "feicongcong";
+    public void orderSuccessServicePush(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println(request.getParameter("echostr"));//echostr
+        PrintWriter writer = response.getWriter();
+//        if (signature.equals(sign)) {// 验证成功返回ehcostr
+        writer.print(request.getParameter("echostr"));
+//        } else {
+//            writer.print("error");
+//        }
+        writer.flush();
+        writer.close();
     }
 
 

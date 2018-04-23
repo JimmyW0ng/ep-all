@@ -83,6 +83,7 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
             return new PageImpl<>(Lists.newArrayList(), pageable, count);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORGAN_COURSE.ID);
+        fieldList.add(EP_ORGAN_COURSE.OGN_ID);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_COURSE.COURSE_CATALOG_ID);
         fieldList.add(EP_ORGAN_COURSE.COURSE_TYPE);

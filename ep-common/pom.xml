@@ -117,6 +117,15 @@
             <artifactId>qcloudsms</artifactId>
             <version>1.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.weixin4j</groupId>
+            <artifactId>weixin4j</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
