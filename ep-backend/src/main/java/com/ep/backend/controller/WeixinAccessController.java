@@ -1,9 +1,9 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.WeixinTools;
-import com.ep.common.tool.weixin.TokenUtil;
+import com.ep.common.tool.weixin.TokenTools;
 import com.ep.domain.service.WeixinService;
-import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class WeixinAccessController {
         //成为开发者验证
         String echostr = request.getParameter("echostr");
         //确认此次GET请求来自微信服务器，原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败
-        if (TokenUtil.checkSignature(token, signature, timestamp, nonce)) {
+        if (TokenTools.checkSignature(token, signature, timestamp, nonce)) {
             response.getWriter().write(echostr);
         }
     }
@@ -57,7 +57,7 @@ public class WeixinAccessController {
         String nonce = request.getParameter("nonce");
         String token = weixinToken;
         //确认此次GET请求来自微信服务器，原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败
-        if (!TokenUtil.checkSignature(token, signature, timestamp, nonce)) {
+        if (!TokenTools.checkSignature(token, signature, timestamp, nonce)) {
             //消息不可靠，直接返回
             response.getWriter().write("");
             return;
@@ -66,21 +66,17 @@ public class WeixinAccessController {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/xml");
         Map<String, String> requestMap = WeixinTools.xmlToMap(request);
-        String content = weixinService.postReq(requestMap);
-        if (null != content) {
-            Map<String, String> responseMap = Maps.newHashMap();
-            responseMap.put("Content", content);
-            responseMap.put("CreateTime", requestMap.get("CreateTime"));
-            responseMap.put("ToUserName", requestMap.get("FromUserName"));
-            responseMap.put("FromUserName", weixinId);
-            responseMap.put("MsgType", "text");
-            String xml = WeixinTools.mapToXmlString(responseMap);
-            try {
+        Map<String, String> responseMap = weixinService.postReq(requestMap);
+        responseMap.put("CreateTime", String.valueOf(DateTools.getCurrentDate().getTime()));
+        responseMap.put("ToUserName", requestMap.get("FromUserName"));
+        responseMap.put("FromUserName", weixinId);
+        String xml = WeixinTools.mapToXmlString(responseMap);
+        try {
             response.getWriter().write(xml);
-            } catch (IOException e) {
-                response.getWriter().write("");
-            }
+        } catch (IOException e) {
+            response.getWriter().write("");
         }
+
     }
 
 

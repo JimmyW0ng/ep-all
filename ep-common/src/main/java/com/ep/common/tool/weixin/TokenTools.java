@@ -9,10 +9,10 @@ import java.util.Collections;
  * @Author: CC.F
  * @Date: 10:47 2018/4/23/023
  */
-public class TokenUtil {
+public class TokenTools {
 //    private static String systemToken = null;
 //
-//    public TokenUtil() {
+//    public TokenTools() {
 //    }
 //
 //    public static String get() {

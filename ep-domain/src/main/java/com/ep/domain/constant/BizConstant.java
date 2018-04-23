@@ -156,6 +156,12 @@ public class BizConstant {
 
     public static String WECHAT_URL_MSG_CUSTOM_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
 
+    public static String WECHAT_TEXT_MSG_BIND_MOBILE = "绑定";
+
+    public static String WECHAT_BIND_MOBILE_TIP = "WECHAT_BIND_MOBILE_TIP";
+
+
+
     /**
      * 腾讯云短信 地区国内CODE
      */
