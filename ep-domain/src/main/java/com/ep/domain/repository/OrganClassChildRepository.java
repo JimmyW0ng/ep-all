@@ -146,8 +146,19 @@ public class OrganClassChildRepository extends AbstractCRUDRepository<EpOrganCla
                 .fetchInto(OrganClassChildBo.class);
     }
 
-//    public int updateBespeakedScheduleNum(Long num){
-//        return dslContext.update(EP_ORGAN_CLASS_CHILD)
-//    }
+    /**
+     * 根据orderId更新班级孩子表已预约行程数
+     *
+     * @param num
+     * @param orderId
+     * @return
+     */
+    public int updateBespeakedScheduleNum(Integer num, Long orderId) {
+        return dslContext.update(EP_ORGAN_CLASS_CHILD)
+                .set(EP_ORGAN_CLASS_CHILD.BESPEAKED_SCHEDULE_NUM, num)
+                .where(EP_ORGAN_CLASS_CHILD.ORDER_ID.eq(orderId))
+                .and(EP_ORGAN_CLASS_CHILD.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

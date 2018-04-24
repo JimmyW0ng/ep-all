@@ -279,6 +279,7 @@
     /*开课end*/
     /*结束正常班次start*/
     function endBox(id, className) {
+        console.log("正常班次的结束的提示")
         $.ajax({
             type: "GET",
             url: "/auth/organClass/countUnendNormalClassCatalogByClassId/" + id,
@@ -305,9 +306,10 @@
 
     /*提前结束预约班次start*/
     function advancedEndBox(id, className) {
+        console.log("预约班次的结束的提示")
         $.ajax({
             type: "GET",
-            url: "/auth/organClass/countUnendNormalClassCatalogByClassId/" + id,
+            url: "/auth/organClass/countUnendBesprakClassScheduleByClassId/" + id,
             success: function (data) {
                 if (data.success) {
                     var count = data.result

@@ -124,7 +124,7 @@
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
                             <td>
-                                <span th:text="${bo.bespeakedScheduleNum}"></span>/
+                                <span name="bespeakedScheduleNum" th:text="${bo.bespeakedScheduleNum}"></span>/
                                 <span th:text="${bo.courseNum}"></span>
                             </td>
 
@@ -137,7 +137,7 @@
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'opening')}"
-                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\')'">
+                                   th:onclick="'bespeakInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\')'">
                                     <span th:text="${bo.bespeakedScheduleNum==bo.courseNum}?'查看':'预约'"></span>
                                 </a>
                                 <!--<a name="" class="btn btn-xs btn-danger" href="javascript:void(0)"-->
@@ -276,6 +276,8 @@
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:src="@{/js/laydate/laydate.js}"></script>
 <script th:inline="javascript">
+    //预约订单的记录的<tr>
+    var $bespeakTr;
     /*删除预约行程*/
     function removeBespeakBox(ele) {
         $(ele).parents(".createClassSchedulePo").remove()
@@ -368,17 +370,25 @@
             },
             success: function (data) {
                 if (data.success) {
-                    var po = data.result
-                    var classSchedulePo = {
-                        id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
-                        startTime: po.startTime, duration: po.duration, catalogDesc: po.catalogDesc
-                    }
                     if (id) {
+                        var po = data.result
+                        var classSchedulePo = {
+                            id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
+                            startTime: po.startTime, duration: po.duration, catalogDesc: po.catalogDesc
+                        }
                         $(ele).parents(".classSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
                         $(ele).parents(".classSchedulePo").eq(0).remove()
                     } else {
+                        var bespeakedScheduleNum = data.result.bespeakedScheduleNum
+                        var po = data.result.classSchedulePo
+                        var classSchedulePo = {
+                            id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
+                            startTime: po.startTime, duration: po.duration, catalogDesc: po.catalogDesc
+                        }
                         $(ele).parents(".createClassSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
                         $(ele).parents(".createClassSchedulePo").eq(0).remove()
+                        //刷新已预约次数
+                        $bespeakTr.find("span[name='bespeakedScheduleNum']").eq(0).text(bespeakedScheduleNum)
                     }
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
@@ -392,7 +402,11 @@
             }
         })
     }
-    function bespeakInit(orderId, childId, courseNum, classId, childNickName) {
+    function bespeakInit(ele, orderId, childId, courseNum, classId, childNickName) {
+        $bespeakTr = $(ele).parents("tr").eq(0)
+        console.log("预约订单的记录的<tr>")
+        console.log($bespeakTr)
+
         $("#bespeakBox").html("")
         $("#orderId").val(orderId)
         $("#childId").val(childId)
