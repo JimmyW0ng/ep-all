@@ -48,5 +48,19 @@ public class TokenRepository extends AbstractCRUDRepository<EpTokenRecord, Long,
                          .and(EP_TOKEN.ID.notEqual(id))
                          .execute();
     }
+
+    /**
+     * 更新code
+     *
+     * @param token
+     * @param id
+     */
+    public int updateCodeById(String token, Long id) {
+        return dslContext.update(EP_TOKEN)
+                         .set(EP_TOKEN.CODE, token)
+                         .where(EP_TOKEN.ID.eq(id))
+                         .and(EP_TOKEN.DEL_FLAG.eq(false))
+                         .execute();
+    }
 }
 

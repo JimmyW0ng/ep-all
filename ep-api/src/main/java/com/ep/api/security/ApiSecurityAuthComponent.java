@@ -292,6 +292,8 @@ public class ApiSecurityAuthComponent {
         tokenPo.setExpireTime(DateTools.addSecond(DateTools.getCurrentDateTime(), tokenExpiration));
         tokenRepository.insert(tokenPo);
         String token = StringTools.generateShortUrl(tokenPo.getId(), tokenSecret, BizConstant.TOKEN_MIN_LENGTH);
+        // 本地保存token
+        tokenRepository.updateCodeById(token, tokenPo.getId());
         // 删除其他token
         tokenRepository.deleteByMobileAndId(principal.getMobile(), tokenPo.getId());
         return token;
