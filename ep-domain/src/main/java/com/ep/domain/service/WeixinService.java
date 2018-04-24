@@ -114,7 +114,7 @@ public class WeixinService {
         //微信用户绑定手机号请求，向手机发送验证码
         if (contentParams[0].equals(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
             String moblie = contentParams[1];
-            EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE);
+            EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.WECHAT_BIND_MOBILE_CAPTCHA);
             //短信模板id
             int templateId = Integer.parseInt(dictPo.getValue());
             String[] templateParams = new String[1];

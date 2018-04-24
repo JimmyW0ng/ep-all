@@ -172,6 +172,6 @@ public class BizConstant {
      * 腾讯云短信 地区国内CODE
      */
     public static String QCLOUDSMS_NATION_CODE = "86";
-    public static String QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE = "QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE";
+    public static String WECHAT_BIND_MOBILE_CAPTCHA = "WECHAT_BIND_MOBILE_CAPTCHA";
 
 }
