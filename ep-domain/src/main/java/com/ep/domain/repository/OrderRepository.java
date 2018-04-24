@@ -263,6 +263,54 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 商户后台获取预约管理分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<OrderBo> findOrderBespeakByPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {
+        long totalCount = dslContext.selectCount()
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .leftJoin(EP_ORGAN_CLASS_CHILD).on(EP_ORGAN_CLASS_CHILD.ORDER_ID.eq(EP_ORDER.ID))
+                .where(condition).fetchOne(0, Long.class);
+        if (totalCount == BizConstant.DB_NUM_ZERO) {
+            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+        }
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER.fields());
+        fieldList.add(EP_MEMBER.MOBILE);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        fieldList.add(EP_ORGAN_CLASS.COURSE_NUM);
+        fieldList.add(EP_ORGAN_CLASS.TYPE.as("classType"));
+        fieldList.add(EP_ORGAN_CLASS.STATUS.as("classStatus"));
+        fieldList.add(EP_ORGAN_CLASS_CHILD.BESPEAKED_SCHEDULE_NUM);
+
+        SelectConditionStep<Record> record = dslContext.select(fieldList)
+                .from(EP_ORDER)
+                .leftJoin(EP_MEMBER).on(EP_MEMBER.ID.eq(EP_ORDER.MEMBER_ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_MEMBER_CHILD.ID.eq(EP_ORDER.CHILD_ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .leftJoin(EP_ORGAN_CLASS_CHILD).on(EP_ORGAN_CLASS_CHILD.ORDER_ID.eq(EP_ORDER.ID))
+                .where(condition);
+
+        List<OrderBo> list = record.orderBy(getSortFields(pageable.getSort()))
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .fetchInto(OrderBo.class);
+        PageImpl<OrderBo> pPage = new PageImpl<OrderBo>(list, pageable, totalCount);
+        return pPage;
+    }
+
+
+    /**
      * 订单报名成功
      *
      * @param id
