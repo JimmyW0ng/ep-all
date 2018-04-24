@@ -24,9 +24,9 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class WechatJob {
 
-    @Value("${wechat.appid}")
+    @Value("${wechat.xcx.member.appid}")
     private String appId;
-    @Value("${wechat.secret}")
+    @Value("${wechat.xcx.member.secret}")
     private String secret;
 
     @Autowired
