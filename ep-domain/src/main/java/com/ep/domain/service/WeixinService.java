@@ -39,10 +39,10 @@ public class WeixinService {
     private MessageCaptchaRepository messageCaptchaRepository;
     @Autowired
     private DictComponent dictComponent;
-    @Value("${weixin4j.oauth.appid}")
-    private String weixin4jOauthAppid;
-    @Value("${weixin4j.oauth.secret}")
-    private String weixin4jOauthSecret;
+    @Value("${wechat.appid}")
+    private String wechatAppid;
+    @Value("${wechat.secret}")
+    private String wechatSecret;
 
     /**
      * 发送客服消息
@@ -71,7 +71,7 @@ public class WeixinService {
      * @throws Exception
      */
     public String getAccessToken() throws Exception {
-        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, weixin4jOauthAppid, weixin4jOauthSecret);
+        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, wechatAppid, wechatSecret);
         Map<String, String> resultMap = HttpClientTools.doGet(url);
         String accessToken = resultMap.get("access_token");
         return accessToken;
@@ -130,7 +130,7 @@ public class WeixinService {
         if (Pattern.matches(BizConstant.WECHAT_PATTERN_CAPTCHA, content)) {
 
         }
-        responseMap.put("Content", "");
+        responseMap.put("Content", "么么哒");
         responseMap.put("MsgType", "text");
         return responseMap;
     }
