@@ -14,7 +14,6 @@ import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,9 +50,6 @@ public class IndexController extends BackendController {
     private OrganCourseService organCourseService;
     @Autowired
     private MemberChildCommentService memberChildCommentService;
-    @Value("${weixin4j.token}")
-    private String weixin4jToken;
-
 
 
     /**

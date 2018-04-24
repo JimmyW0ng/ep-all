@@ -20,10 +20,10 @@ import java.util.List;
 public class PlatformWeixinController {
     @Autowired
     private WeixinService weixinService;
-    @Value("${weixin4j.token}")
-    private String weixinToken;
-    @Value("${weixin.id}")
-    private String weixinId;
+    @Value("${wechat.token}")
+    private String wechatToken;
+    @Value("${wechat.id}")
+    private String wechatId;
 
     /**
      * 微信发送客服消息

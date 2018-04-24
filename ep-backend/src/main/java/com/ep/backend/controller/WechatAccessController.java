@@ -25,10 +25,10 @@ import java.util.Map;
 public class WechatAccessController {
     @Autowired
     private WeixinService weixinService;
-    @Value("${weixin4j.token}")
+    @Value("${wechat.token}")
     private String weixinToken;
-    @Value("${weixin.id}")
-    private String weixinId;
+    @Value("${wechat.id}")
+    private String wechatId;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -69,7 +69,7 @@ public class WechatAccessController {
         Map<String, String> responseMap = weixinService.postReq(requestMap);
         responseMap.put("CreateTime", String.valueOf(DateTools.getCurrentDate().getTime()));
         responseMap.put("ToUserName", requestMap.get("FromUserName"));
-        responseMap.put("FromUserName", weixinId);
+        responseMap.put("FromUserName", wechatId);
         String xml = WeixinTools.mapToXmlString(responseMap);
         try {
             response.getWriter().write(xml);
