@@ -184,7 +184,7 @@ public class OrganClassScheduleController extends BackendController {
     @PostMapping("createSchedule")
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
-    public ResultDo createSchedule(EpOrganClassSchedulePo po) {
+    public ResultDo<Map<String, Object>> createSchedule(EpOrganClassSchedulePo po) {
         return organClassScheduleService.createSchedule(po);
     }
 

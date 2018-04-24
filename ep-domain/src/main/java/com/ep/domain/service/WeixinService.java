@@ -3,12 +3,14 @@ package com.ep.domain.service;
 import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.HttpClientTools;
+import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.WeixinTools;
 import com.ep.domain.component.DictComponent;
 import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
+import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.repository.MessageCaptchaRepository;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
@@ -112,16 +114,14 @@ public class WeixinService {
         //微信用户绑定手机号请求，向手机发送验证码
         if (contentParams[0].equals(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
             String moblie = contentParams[1];
-            dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE);
-            String[] templateParams = {"xxxx", "2"};
-            qcloudsmsComponent.singleSend(112172, moblie, templateParams);
-//            String mobile = content.substring(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE.length() + BizConstant.DB_NUM_ONE, content.length());
-//            EpWechatAuthCodePo wechatAuthCodePo = new EpWechatAuthCodePo();
-//            wechatAuthCodePo.setOpenId(openId);
-//            wechatAuthCodePo.setMobile(Long.parseLong(mobile));
-//            wechatAuthCodePo.setAuthCode(ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO));
-//            wechatAuthCodePo.setType(EpWechatAuthCodeType.bind);
-//            wechatAuthCodeRepository.insert(wechatAuthCodePo);
+            EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE);
+            //短信模板id
+            int templateId = Integer.parseInt(dictPo.getValue());
+            String[] templateParams = new String[1];
+            templateParams[0] = ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO);
+            //发送短信
+            qcloudsmsComponent.singleSend(templateId, moblie, templateParams);
+            //
             responseMap.put("Content", "验证码已发送至" + moblie + ",两分钟内有效");
             responseMap.put("MsgType", "text");
             return responseMap;

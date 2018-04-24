@@ -18,6 +18,7 @@ import com.ep.domain.repository.domain.enums.EpMemberMessageType;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -31,10 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER_CHILD;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN_CLASS_SCHEDULE;
@@ -370,7 +368,10 @@ public class OrganClassScheduleService {
      * @param po
      * @return
      */
-    public ResultDo createSchedule(EpOrganClassSchedulePo po) {
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo<Map<String, Object>> createSchedule(EpOrganClassSchedulePo po) {
+        ResultDo<Map<String, Object>> resultDo = ResultDo.build();
+        Map<String, Object> resultMap = Maps.newHashMap();
         EpOrganClassSchedulePo insertClassSchedulePo = new EpOrganClassSchedulePo();
         insertClassSchedulePo.setChildId(po.getChildId());
         insertClassSchedulePo.setClassId(po.getClassId());
@@ -394,9 +395,13 @@ public class OrganClassScheduleService {
         insertClassSchedulePo.setStatus(EpOrganClassScheduleStatus.normal);
         organClassScheduleRepository.insert(insertClassSchedulePo);
         long bespeakedScheduleNum = organClassScheduleRepository.countByOrderId(insertClassSchedulePo.getOrderId());
-//        organClassChildRepository.updateBespeakedScheduleNum(bespeakedScheduleNum);
+        //根据orderId更新班级孩子表已预约行程数
+        organClassChildRepository.updateBespeakedScheduleNum((int) bespeakedScheduleNum, insertClassSchedulePo.getOrderId());
         log.info("[预约行程]新增预约行程成功，id={}。", insertClassSchedulePo.getId());
-        return ResultDo.build().setResult(insertClassSchedulePo);
+        resultMap.put("bespeakedScheduleNum", bespeakedScheduleNum);
+        resultMap.put("classSchedulePo", insertClassSchedulePo);
+        resultDo.setResult(resultMap);
+        return resultDo;
     }
 
     /**
