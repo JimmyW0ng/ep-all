@@ -1,6 +1,8 @@
 package com.ep.common.tool;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,9 +26,10 @@ import java.util.Map;
  * @Author: CC.F
  * @Date: 19:14 2018/4/22
  */
+@Slf4j
 public class HttpClientTools {
 
-    public static Map doGet(String url) {
+    public static Map<String, String> doGet(String url) {
         try {
             HttpClient client = new DefaultHttpClient();
             //发送get请求
@@ -44,10 +47,26 @@ public class HttpClientTools {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return Maps.newHashMap();
     }
 
-
+    public static String doGetStr(String url) {
+        try {
+            HttpClient client = new DefaultHttpClient();
+            //发送get请求
+            HttpGet request = new HttpGet(url);
+            HttpResponse response = client.execute(request);
+            //请求发送成功，并得到响应
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                //读取服务器返回过来的json字符串数据
+                String jsonStr = EntityUtils.toString(response.getEntity());
+                return jsonStr;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * post请求 json数据
      *
@@ -56,7 +75,7 @@ public class HttpClientTools {
      * @return
      * @throws Exception
      */
-    public static String doPost(String url, String params) throws Exception {
+    public static Map<String, String> doPost(String url, String params) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Accept", "application/json");
@@ -71,13 +90,58 @@ public class HttpClientTools {
             int state = status.getStatusCode();
             if (state == HttpStatus.SC_OK) {
                 HttpEntity responseEntity = response.getEntity();
-                String jsonString = EntityUtils.toString(responseEntity);
-                return jsonString;
+                String jsonStr = EntityUtils.toString(responseEntity);
+                Gson gson = new Gson();
+                Map<String, String> map = new HashMap<String, String>();
+                map = gson.fromJson(jsonStr, map.getClass());
+                return map;
             }
-//            else{
-//                logger.error("请求返回:"+state+"("+url+")");
-//            }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Maps.newHashMap();
+    }
+
+    /**
+     * post请求 json数据
+     *
+     * @param url
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public static String doPostStr(String url, String params) {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-Type", "application/json");
+        String charSet = "UTF-8";
+        StringEntity entity = new StringEntity(params, charSet);
+        httpPost.setEntity(entity);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpclient.execute(httpPost);
+            StatusLine status = response.getStatusLine();
+            int state = status.getStatusCode();
+            if (state == HttpStatus.SC_OK) {
+                HttpEntity responseEntity = response.getEntity();
+                String jsonStr = EntityUtils.toString(responseEntity);
+                return jsonStr;
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (response != null) {

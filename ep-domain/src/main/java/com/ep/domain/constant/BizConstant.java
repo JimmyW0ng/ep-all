@@ -162,6 +162,12 @@ public class BizConstant {
 
     public static String WECHAT_URL_MSG_CUSTOM_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
 
+    public static String WECHAT_URL_MENU_CREATE = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s";
+
+    public static String WECHAT_URL_MENU_GET = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=%s";
+
+    public static String WECHAT_URL_MENU_DELETE = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=%s";
+
     public static String WECHAT_TEXT_MSG_SPLIT = "#";
 
     public static String WECHAT_TEXT_MSG_BIND_MOBILE = "绑定";
@@ -181,7 +187,10 @@ public class BizConstant {
      */
     public static String WECHAT_PATTERN_CAPTCHA = "^\\d{4}$";
 
-
+    /**
+     * 手机号正则表达式
+     */
+    public static String PATTERN_MOBILE = "^1\\d{10}$";
 
     /**
      * 腾讯云短信 地区国内CODE
