@@ -199,7 +199,6 @@ public class OrderController extends BackendController {
                                @RequestParam(value = "status", required = false) String status,
                                @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                                @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
-
     ) {
         Map<String, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
@@ -240,7 +239,7 @@ public class OrderController extends BackendController {
         conditions.add(EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
         conditions.add(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.bespeak));
 
-        Page<OrderBo> page = orderService.findbyPageAndCondition(pageable, conditions);
+        Page<OrderBo> page = orderService.findOrderBespeakByPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
         return "order/bespeakIndex";

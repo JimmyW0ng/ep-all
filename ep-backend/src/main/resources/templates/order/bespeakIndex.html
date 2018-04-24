@@ -123,7 +123,10 @@
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td th:text="${bo.className}"></td>
-                            <td th:text="${bo.courseNum}"></td>
+                            <td>
+                                <span th:text="${bo.bespeakedScheduleNum}"></span>/
+                                <span th:text="${bo.courseNum}"></span>
+                            </td>
 
                             <td style="display: none" name="classStatus" th:text="${bo.classStatus}"></td>
                             <td th:text="${bo.prize}"></td>
@@ -134,7 +137,9 @@
                             <td name="button">
                                 <a name="success" class="btn btn-xs btn-info" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'opening')}"
-                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\')'">预约</a>
+                                   th:onclick="'bespeakInit('+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\')'">
+                                    <span th:text="${bo.bespeakedScheduleNum==bo.courseNum}?'查看':'预约'"></span>
+                                </a>
                                 <!--<a name="" class="btn btn-xs btn-danger" href="javascript:void(0)"-->
                                 <!--th:onclick="'breakBox('+${bo.id}+')'">中止</a>-->
                             </td>

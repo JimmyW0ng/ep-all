@@ -290,6 +290,17 @@ public class OrderService {
     }
 
     /**
+     * 商户后台获取预约管理分页
+     *
+     * @param pageable
+     * @param conditions
+     * @return
+     */
+    public Page<OrderBo> findOrderBespeakByPageAndCondition(Pageable pageable, Collection<? extends Condition> conditions) {
+        return orderRepository.findOrderBespeakByPageAndCondition(pageable, conditions);
+    }
+
+    /**
      * 单个订单报名成功
      *
      * @param id

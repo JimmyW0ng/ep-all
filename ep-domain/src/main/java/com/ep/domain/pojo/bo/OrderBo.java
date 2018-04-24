@@ -21,4 +21,6 @@ public class OrderBo extends EpOrderPo {
     private EpOrganClassType classType;
     private EpOrganClassStatus classStatus;
     private Integer courseNum;
+    private Integer bespeakedScheduleNum;
+
 }
