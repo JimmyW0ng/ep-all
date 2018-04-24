@@ -28,6 +28,7 @@ public class EpTokenPo extends AbstractBasePojo {
     private String lastAccessIp;
     private Long ognId;
     private Timestamp expireTime;
+    private String code;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

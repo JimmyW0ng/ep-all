@@ -34,7 +34,7 @@ public class EpToken extends TableImpl<EpTokenRecord> {
      * The reference instance of <code>ep.ep_token</code>
      */
     public static final EpToken EP_TOKEN = new EpToken();
-    private static final long serialVersionUID = -478401944;
+    private static final long serialVersionUID = 1029303503;
     /**
      * The column <code>ep.ep_token.id</code>. 主键
      */
@@ -63,6 +63,10 @@ public class EpToken extends TableImpl<EpTokenRecord> {
      * The column <code>ep.ep_token.expire_time</code>. 过期时间
      */
     public final TableField<EpTokenRecord, Timestamp> EXPIRE_TIME = createField("expire_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "过期时间");
+    /**
+     * The column <code>ep.ep_token.code</code>. token串
+     */
+    public final TableField<EpTokenRecord, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "token串");
     /**
      * The column <code>ep.ep_token.create_at</code>. 创建时间
      */
