@@ -24,9 +24,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpTokenType implements EnumType {
 
-    member("member"),
+    wechat_app_member_clinet("wechat_app_member_clinet"),
 
-    organ_account("organ_account");
+    wechat_app_organ_client("wechat_app_organ_client");
 
     private final String literal;
 

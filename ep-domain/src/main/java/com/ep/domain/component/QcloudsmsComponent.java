@@ -23,7 +23,7 @@ import java.util.ArrayList;
 @Component
 public class QcloudsmsComponent {
     @Value("${qcloudsms.appid}")
-    private int appid;
+    private String appid;
     @Value("${qcloudsms.appkey}")
     private String appkey;
     @Value("${qcloudsms.smsSign}")
@@ -39,7 +39,7 @@ public class QcloudsmsComponent {
      */
     public void singleSend(int templateId, String phoneNumber, String[] params) {
         try {
-            SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+            SmsSingleSender ssender = new SmsSingleSender(Integer.parseInt(appid), appkey);
             // 签名参数未提供或者为空时，会使用默认签名发送短信
             SmsSingleSenderResult result = ssender.sendWithParam(BizConstant.QCLOUDSMS_NATION_CODE, phoneNumber,
                     templateId, params, smsSign, "", "");
@@ -64,7 +64,7 @@ public class QcloudsmsComponent {
      */
     public void singleSend(String phoneNumber, String msg) {
         try {
-            SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+            SmsSingleSender ssender = new SmsSingleSender(Integer.parseInt(appid), appkey);
             SmsSingleSenderResult result = ssender.send(0, BizConstant.QCLOUDSMS_NATION_CODE, phoneNumber,
                     msg, "", "");
             System.out.print(result);
@@ -89,7 +89,7 @@ public class QcloudsmsComponent {
      */
     public void multiSend(int templateId, ArrayList<String> phoneNumbers, ArrayList<String> params) {
         try {
-            SmsMultiSender msender = new SmsMultiSender(appid, appkey);
+            SmsMultiSender msender = new SmsMultiSender(Integer.parseInt(appid), appkey);
             SmsMultiSenderResult result = msender.sendWithParam(BizConstant.QCLOUDSMS_NATION_CODE, phoneNumbers, templateId, params, smsSign, "", "");
             System.out.print(result);
         } catch (HTTPException e) {
@@ -112,7 +112,7 @@ public class QcloudsmsComponent {
      */
     public void multiSend(ArrayList<String> phoneNumbers, String msg) {
         try {
-            SmsMultiSender msender = new SmsMultiSender(appid, appkey);
+            SmsMultiSender msender = new SmsMultiSender(Integer.parseInt(appid), appkey);
             SmsMultiSenderResult result = msender.send(0, BizConstant.QCLOUDSMS_NATION_CODE, phoneNumbers,
                     msg, "", "");
             System.out.print(result);

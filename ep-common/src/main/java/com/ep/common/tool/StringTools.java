@@ -1172,12 +1172,21 @@ public final class StringTools {
      * @return
      */
     public static String generateShortUrl(Long input, String key, int minLength) {
-        try {
-            Hashids hashids = new Hashids(key, minLength);
-            return hashids.encode(input);
-        } catch (Exception e) {
-            return null;
-        }
+        Hashids hashids = new Hashids(key, minLength);
+        return hashids.encode(input);
+    }
+
+    /**
+     * Hashids解密随机字符串
+     *
+     * @param input
+     * @param key
+     * @param minLength
+     * @return
+     */
+    public static long[] decodeShortUrl(String input, String key, int minLength) {
+        Hashids hashids = new Hashids(key, minLength);
+        return hashids.decode(input);
     }
 
     /**

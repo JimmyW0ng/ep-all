@@ -1,10 +1,12 @@
 package com.ep.api.filter;
 
 import com.ep.api.security.ApiSecurityAuthComponent;
+import com.ep.common.tool.IpTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
+import com.ep.domain.pojo.po.EpTokenPo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,21 +58,24 @@ public class ApiSecurityTokenAuthFilter extends OncePerRequestFilter {
         }
         authHeader = authHeader.substring(tokenHeaderPrefix.length() + BizConstant.DB_NUM_ONE);
         // 解析token
-        ResultDo<ApiPrincipalBo> checkToken = securityAuthComponent.getTokenInfo(authHeader);
+        ResultDo<EpTokenPo> checkToken = securityAuthComponent.getTokenInfo(authHeader, IpTools.getIpAddr(request));
         if (checkToken.isError()) {
             log.error("验证token不通过, error={}, desc={}", checkToken.getError(), checkToken.getErrorDescription());
             chain.doFilter(request, response);
             return;
         }
-        ApiPrincipalBo principalBo = checkToken.getResult();
+        EpTokenPo tokenPo = checkToken.getResult();
         // 加载当前用户信息
-        ResultDo checkUser = securityAuthComponent.loadCurrentUserInfo(principalBo);
+        ResultDo checkUser = securityAuthComponent.loadCurrentUserInfo(tokenPo);
         if (checkUser.isError()) {
             log.error("加载当前用户信息不通过, error={}, desc={}", checkToken.getError(), checkToken.getErrorDescription());
             chain.doFilter(request, response);
             return;
         }
         // 加载当前用户权限
+        ApiPrincipalBo principalBo = new ApiPrincipalBo();
+        principalBo.setUserName(tokenPo.getMobile().toString());
+        principalBo.setRole(tokenPo.getRole());
         Collection<GrantedAuthority> authorities = securityAuthComponent.getPermissionByRoleCode(principalBo.getRole());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalBo, null, authorities);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

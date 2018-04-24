@@ -8,6 +8,10 @@ package com.ep.domain.constant;
 public class BizConstant {
 
     /**
+     * token最小长度
+     */
+    public static final int TOKEN_MIN_LENGTH = 24;
+    /**
      * 评分最小单位
      */
     public static final byte SCORE_UNIT = 5;

@@ -2,16 +2,11 @@ package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.HttpClientTools;
-import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.WeixinTools;
 import com.ep.domain.constant.BizConstant;
-import com.ep.domain.pojo.po.EpWechatAuthCodePo;
-import com.ep.domain.repository.WechatAuthCodeRepository;
-import com.ep.domain.repository.domain.enums.EpWechatAuthCodeType;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +21,8 @@ import java.util.Map;
 @Slf4j
 @Service
 public class WeixinService {
-    @Autowired
-    private WechatAuthCodeRepository wechatAuthCodeRepository;
+    //    @Autowired
+//    private WechatAuthCodeRepository wechatAuthCodeRepository;
     @Value("${weixin4j.oauth.appid}")
     private String weixin4jOauthAppid;
     @Value("${weixin4j.oauth.secret}")
@@ -99,12 +94,12 @@ public class WeixinService {
         Map<String, String> responseMap = Maps.newHashMap();
         if (content.startsWith(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
             String mobile = content.substring(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE.length() + BizConstant.DB_NUM_ONE, content.length());
-            EpWechatAuthCodePo wechatAuthCodePo = new EpWechatAuthCodePo();
-            wechatAuthCodePo.setOpenId(openId);
-            wechatAuthCodePo.setMobile(Long.parseLong(mobile));
-            wechatAuthCodePo.setAuthCode(ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO));
-            wechatAuthCodePo.setType(EpWechatAuthCodeType.bind);
-            wechatAuthCodeRepository.insert(wechatAuthCodePo);
+//            EpWechatAuthCodePo wechatAuthCodePo = new EpWechatAuthCodePo();
+//            wechatAuthCodePo.setOpenId(openId);
+//            wechatAuthCodePo.setMobile(Long.parseLong(mobile));
+//            wechatAuthCodePo.setAuthCode(ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO));
+//            wechatAuthCodePo.setType(EpWechatAuthCodeType.bind);
+//            wechatAuthCodeRepository.insert(wechatAuthCodePo);
             responseMap.put("Content", "验证码已发送至" + mobile + ",两分钟内有效");
             responseMap.put("MsgType", "text");
             return responseMap;

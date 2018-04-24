@@ -7,14 +7,12 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.ApiCredentialBo;
 import com.ep.domain.pojo.bo.ApiPrincipalBo;
 import com.ep.domain.pojo.dto.ApiLoginDto;
-import com.ep.domain.pojo.po.EpMemberPo;
-import com.ep.domain.pojo.po.EpOrganAccountPo;
-import com.ep.domain.pojo.po.EpSystemClientPo;
-import com.ep.domain.pojo.po.EpSystemRolePo;
+import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpOrganAccountStatus;
 import com.ep.domain.repository.domain.enums.EpSystemClientLoginSource;
+import com.ep.domain.repository.domain.enums.EpTokenType;
 import com.ep.domain.service.MessageCaptchaService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +32,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.GeneralSecurityException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +64,8 @@ public class ApiSecurityAuthComponent {
     private SystemRoleRepository systemRoleRepository;
     @Autowired
     private SystemMenuRepository systemMenuRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     /**
      * 会员登录获取token
@@ -126,70 +125,63 @@ public class ApiSecurityAuthComponent {
      * @param token
      * @return
      */
-    public ResultDo<ApiPrincipalBo> getTokenInfo(String token) {
-        ResultDo<ApiPrincipalBo> resultDo = ResultDo.build();
+    public ResultDo<EpTokenPo> getTokenInfo(String token, String ip) {
+        ResultDo<EpTokenPo> resultDo = ResultDo.build();
         if (StringTools.isBlank(token)) {
             log.error("token解析失败，token为空:{}，", token);
             return resultDo.setError(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
-        ApiPrincipalBo principalBo;
+        Long tokenId = null;
         try {
-            String tokenJsonStr = CryptTools.aesDecrypt(token, tokenSecret);
-            principalBo = JsonTools.decode(tokenJsonStr, ApiPrincipalBo.class);
-        } catch (GeneralSecurityException e) {
-            log.error("token解密失败，token={}", token, e);
-            return resultDo.setError(MessageCode.ERROR_DECODE);
+            tokenId = StringTools.decodeShortUrl(token, tokenSecret, BizConstant.TOKEN_MIN_LENGTH)[0];
         } catch (Exception e) {
             log.error("token解析失败，token={}", token, e);
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
-        if (principalBo.getMobile() == null
-                || StringTools.isBlank(principalBo.getClientId())
-                || StringTools.isBlank(principalBo.getRole())
-                || principalBo.getCreateTime() == null
-                || principalBo.getExpireTime() == null) {
+        EpTokenPo tokenPo = tokenRepository.getById(tokenId);
+        if (tokenPo == null) {
             return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);
         }
-        Date serverTime = DateTools.getCurrentDate();
-        Date tokenCreateTime = new Date(principalBo.getCreateTime());
-        Date tokenExpireTime = new Date(principalBo.getExpireTime());
-        if (serverTime.before(tokenCreateTime) || serverTime.after(tokenExpireTime)) {
+        if (tokenPo.getDelFlag() || DateTools.getCurrentDateTime().after(tokenPo.getExpireTime())) {
+            tokenRepository.delete(tokenId);
             return resultDo.setError(MessageCode.ERROR_SESSION_TOKEN);
         }
-        return resultDo.setResult(principalBo);
+        // 更新访问ip
+        tokenRepository.updateLastAccessIpById(tokenId, ip);
+        return resultDo.setResult(tokenPo);
     }
 
     /**
      * 加载用户信息
      *
-     * @param principalBo
+     * @param tokenPo
      */
-    public ResultDo loadCurrentUserInfo(ApiPrincipalBo principalBo) {
-        if (BizConstant.WECHAT_APP_MEMBER_CLIENT.equals(principalBo.getType())) {
-            EpMemberPo mbrInfoPo = memberRepository.getByMobile(principalBo.getMobile());
+    public ResultDo loadCurrentUserInfo(EpTokenPo tokenPo) {
+        if (EpTokenType.wechat_app_member_clinet.equals(tokenPo.getType())) {
+            EpMemberPo mbrInfoPo = memberRepository.getByMobile(tokenPo.getMobile());
             if (mbrInfoPo == null) {
-                log.error("当前Token会员不存在, mobile={}", principalBo.getMobile());
+                log.error("当前Token会员不存在, mobile={}", tokenPo.getMobile());
                 return ResultDo.build(MessageCode.ERROR_MEMBER_NOT_EXISTS);
             } else if (mbrInfoPo.getDelFlag() || EpMemberStatus.cancel.equals(mbrInfoPo.getStatus())) {
-                log.error("当前Token会员已注销, mobile={}", principalBo.getMobile());
+                log.error("当前Token会员已注销, mobile={}", tokenPo.getMobile());
                 return ResultDo.build(MessageCode.ERROR_MEMBER_IS_CANCEL);
             } else if (EpMemberStatus.freeze.equals(mbrInfoPo.getStatus())) {
-                log.error("当前Token会员已冻结, mobile={}", principalBo.getMobile());
+                log.error("当前Token会员已冻结, mobile={}", tokenPo.getMobile());
                 return ResultDo.build(MessageCode.ERROR_MEMBER_IS_FREEZE);
             }
             WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_USER, mbrInfoPo);
-        } else if (BizConstant.WECHAT_APP_ORGAN_CLIENT.equals(principalBo.getType())) {
-            Optional<EpOrganAccountPo> existOrganAccount = organAccountRepository.getByOgnIdAndReferMobile(principalBo.getOgnId(), principalBo.getMobile());
+        } else if (EpTokenType.wechat_app_organ_client.equals(tokenPo.getType())) {
+            Optional<EpOrganAccountPo> existOrganAccount = organAccountRepository.getByOgnIdAndReferMobile(tokenPo.getOgnId(), tokenPo.getMobile());
             if (!existOrganAccount.isPresent()) {
-                log.error("当前Token机构账户不存在, mobile={}, ognId={}", principalBo.getMobile(), principalBo.getOgnId());
+                log.error("当前Token机构账户不存在, mobile={}, ognId={}", tokenPo.getMobile(), tokenPo.getOgnId());
                 return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
             }
             EpOrganAccountPo organAccountPo = existOrganAccount.get();
             if (EpOrganAccountStatus.cancel.equals(organAccountPo.getStatus())) {
-                log.error("当前Token机构账户不注销, mobile={}, ognId={}", principalBo.getMobile(), principalBo.getOgnId());
+                log.error("当前Token机构账户已注销, mobile={}, ognId={}", tokenPo.getMobile(), tokenPo.getOgnId());
                 return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_IS_CANCEL);
             } else if (EpOrganAccountStatus.freeze.equals(organAccountPo.getStatus())) {
-                log.error("当前Token机构账户不冻结, mobile={}, ognId={}", principalBo.getMobile(), principalBo.getOgnId());
+                log.error("当前Token机构账户已冻结, mobile={}, ognId={}", tokenPo.getMobile(), tokenPo.getOgnId());
                 return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_IS_FREEZE);
             }
             WebTools.getCurrentRequest().setAttribute(BizConstant.CURENT_ORGAN_ACCOUNT, organAccountPo);
@@ -232,9 +224,6 @@ public class ApiSecurityAuthComponent {
         this.checkExistAndType(principalBo);
         // 定位角色
         principalBo.setRole(sysClientPo.getRole());
-        // 清空不必要的数据
-        principalBo.setCaptchaCode(null);
-        principalBo.setUserName(null);
     }
 
     /**
@@ -291,11 +280,21 @@ public class ApiSecurityAuthComponent {
      * @throws GeneralSecurityException
      */
     private String buildAccessToken(ApiPrincipalBo principal) throws GeneralSecurityException {
-        Date now = DateTools.getCurrentDate();
-        principal.setCreateTime(now.getTime());
-        principal.setExpireTime(DateTools.addSecond(now, tokenExpiration).getTime());
-        String tokenJsonStr = JsonTools.encode(principal);
-        return CryptTools.aesEncrypt(tokenJsonStr, tokenSecret);
+        EpTokenPo tokenPo = new EpTokenPo();
+        tokenPo.setMobile(principal.getMobile());
+        if (BizConstant.WECHAT_APP_MEMBER_CLIENT.equals(principal.getType())) {
+            tokenPo.setType(EpTokenType.wechat_app_member_clinet);
+        } else if (BizConstant.WECHAT_APP_ORGAN_CLIENT.equals(principal.getType())) {
+            tokenPo.setType(EpTokenType.wechat_app_organ_client);
+            tokenPo.setOgnId(principal.getOgnId());
+        }
+        tokenPo.setRole(principal.getRole());
+        tokenPo.setExpireTime(DateTools.addSecond(DateTools.getCurrentDateTime(), tokenExpiration));
+        tokenRepository.insert(tokenPo);
+        String token = StringTools.generateShortUrl(tokenPo.getId(), tokenSecret, BizConstant.TOKEN_MIN_LENGTH);
+        // 删除其他token
+        tokenRepository.deleteByMobileAndId(principal.getMobile(), tokenPo.getId());
+        return token;
     }
 
     /**
