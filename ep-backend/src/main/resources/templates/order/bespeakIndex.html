@@ -104,7 +104,7 @@
                             <th>昵称</th>
                             <th>产品</th>
                             <th>班次</th>
-                            <th>课时</th>
+                            <th>已预约/目录总数</th>
 
                             <th>价格</th>
                             <th>备注</th>
@@ -125,7 +125,7 @@
                             <td th:text="${bo.className}"></td>
                             <td>
                                 <span name="bespeakedScheduleNum" th:text="${bo.bespeakedScheduleNum}"></span>/
-                                <span th:text="${bo.courseNum}"></span>
+                                <span name="courseNum" th:text="${bo.courseNum}"></span>
                             </td>
 
                             <td style="display: none" name="classStatus" th:text="${bo.classStatus}"></td>
@@ -138,7 +138,8 @@
                                 <a name="success" class="btn btn-xs btn-info" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'opening')}"
                                    th:onclick="'bespeakInit(this,'+${bo.id}+','+${bo.childId}+','+${bo.courseNum}+','+${bo.classId}+',\''+${bo.childNickName}+'\')'">
-                                    <span th:text="${bo.bespeakedScheduleNum==bo.courseNum}?'查看':'预约'"></span>
+                                    <span name="bespeakBtn"
+                                          th:text="${bo.bespeakedScheduleNum==bo.courseNum}?'查看':'预约'"></span>
                                 </a>
                                 <!--<a name="" class="btn btn-xs btn-danger" href="javascript:void(0)"-->
                                 <!--th:onclick="'breakBox('+${bo.id}+')'">中止</a>-->
@@ -371,6 +372,7 @@
             success: function (data) {
                 if (data.success) {
                     if (id) {
+                        //变更行程
                         var po = data.result
                         var classSchedulePo = {
                             id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
@@ -379,6 +381,7 @@
                         $(ele).parents(".classSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
                         $(ele).parents(".classSchedulePo").eq(0).remove()
                     } else {
+                        //新增行程
                         var bespeakedScheduleNum = data.result.bespeakedScheduleNum
                         var po = data.result.classSchedulePo
                         var classSchedulePo = {
@@ -389,6 +392,11 @@
                         $(ele).parents(".createClassSchedulePo").eq(0).remove()
                         //刷新已预约次数
                         $bespeakTr.find("span[name='bespeakedScheduleNum']").eq(0).text(bespeakedScheduleNum)
+                        var courseNum = $bespeakTr.find("span[name='courseNum']").eq(0).text()
+                        if (courseNum == bespeakedScheduleNum) {
+                            $bespeakTr.find("span[name='bespeakBtn']").eq(0).text("查看")
+                        }
+
                     }
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);

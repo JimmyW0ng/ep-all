@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @Description:
@@ -91,7 +92,7 @@ public class WeixinService {
                 responseMap.put("MsgType", "text");
             } else if (requestMap.get("Event").equals(WeixinTools.EVENT_CLICK)
                     && requestMap.get("EventKey").equals("bind_mobile")) {
-                String content = SpringComponent.messageSource("WECHAT_BIND_MOBILE_TIP");
+                String content = SpringComponent.messageSource(BizConstant.WECHAT_BIND_MOBILE_TIP);
                 responseMap.put("Content", content);
                 responseMap.put("MsgType", "text");
 
@@ -107,28 +108,47 @@ public class WeixinService {
         return responseMap;
     }
 
-
+    /**
+     * 接收文本信息
+     *
+     * @param content
+     * @param openId
+     * @return
+     */
     public Map<String, String> receiveTextMsg(String content, String openId) {
         Map<String, String> responseMap = Maps.newHashMap();
-        String[] contentParams = content.split("#");
+        String[] contentParams = content.split(BizConstant.WECHAT_TEXT_MSG_SPLIT);
         //微信用户绑定手机号请求，向手机发送验证码
         if (contentParams[0].equals(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
-            String moblie = contentParams[1];
-            EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.WECHAT_BIND_MOBILE_CAPTCHA);
-            //短信模板id
-            int templateId = Integer.parseInt(dictPo.getValue());
-            String[] templateParams = new String[1];
-            templateParams[0] = ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO);
-            //发送短信
-            qcloudsmsComponent.singleSend(templateId, moblie, templateParams);
-            //
-            responseMap.put("Content", "验证码已发送至" + moblie + ",两分钟内有效");
+            String mobile = contentParams[1];
+            this.receiveTextMsgBindMobile(mobile);
+            String responseContent = String.format(SpringComponent.messageSource(BizConstant.WECHAT_CAPTCHA_BIND_MOBILE_TIP), mobile);
+            responseMap.put("Content", responseContent);
             responseMap.put("MsgType", "text");
             return responseMap;
+        }
+        if (Pattern.matches(BizConstant.WECHAT_PATTERN_CAPTCHA, content)) {
+
         }
         responseMap.put("Content", "");
         responseMap.put("MsgType", "text");
         return responseMap;
+    }
+
+    /**
+     * 接收绑定号码信息,向手机发送验证码
+     *
+     * @param moblie
+     */
+    private void receiveTextMsgBindMobile(String moblie) {
+        EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.WECHAT_BIND_MOBILE_CAPTCHA);
+        //短信模板id
+        int templateId = Integer.parseInt(dictPo.getValue());
+        String[] templateParams = new String[1];
+        //验证码
+        templateParams[0] = ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO);
+        //发送短信
+        qcloudsmsComponent.singleSend(templateId, moblie, templateParams);
     }
 
     public ResultDo wechatBindMobile(String code, Long mobile) {
