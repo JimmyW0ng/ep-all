@@ -162,9 +162,24 @@ public class BizConstant {
 
     public static String WECHAT_URL_MSG_CUSTOM_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
 
+    public static String WECHAT_TEXT_MSG_SPLIT = "#";
+
     public static String WECHAT_TEXT_MSG_BIND_MOBILE = "绑定";
 
+    /**
+     * 绑定手机号提示
+     */
     public static String WECHAT_BIND_MOBILE_TIP = "WECHAT_BIND_MOBILE_TIP";
+
+    /**
+     * 输入验证码绑定手机号提示
+     */
+    public static String WECHAT_CAPTCHA_BIND_MOBILE_TIP = "WECHAT_CAPTCHA_BIND_MOBILE_TIP";
+
+    /**
+     * 微信验证码正则表达式
+     */
+    public static String WECHAT_PATTERN_CAPTCHA = "^\\d{4}$";
 
 
 
