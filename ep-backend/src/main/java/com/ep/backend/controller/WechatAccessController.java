@@ -25,9 +25,9 @@ import java.util.Map;
 public class WechatAccessController {
     @Autowired
     private WeixinService weixinService;
-    @Value("${wechat.token}")
+    @Value("${wechat.fwh.token}")
     private String weixinToken;
-    @Value("${wechat.id}")
+    @Value("${wechat.fwh.id}")
     private String wechatId;
 
 

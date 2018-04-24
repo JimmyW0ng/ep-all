@@ -39,10 +39,10 @@ public class WeixinService {
     private MessageCaptchaRepository messageCaptchaRepository;
     @Autowired
     private DictComponent dictComponent;
-    @Value("${wechat.appid}")
-    private String wechatAppid;
-    @Value("${wechat.secret}")
-    private String wechatSecret;
+    @Value("${wechat.fwh.appid}")
+    private String wechatFwhAppid;
+    @Value("${wechat.fwh.secret}")
+    private String wechatFwhSecret;
 
     /**
      * 发送客服消息
@@ -71,7 +71,7 @@ public class WeixinService {
      * @throws Exception
      */
     public String getAccessToken() throws Exception {
-        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, wechatAppid, wechatSecret);
+        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, wechatFwhAppid, wechatFwhSecret);
         Map<String, String> resultMap = HttpClientTools.doGet(url);
         String accessToken = resultMap.get("access_token");
         return accessToken;
