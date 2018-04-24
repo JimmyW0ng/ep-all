@@ -68,6 +68,10 @@ public class MessageCaptchaService {
         insertPo.setIp(ip);
         insertPo.setExpireTime(DateTools.addMinuteTimestamp(DateTools.getCurrentDate(), BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE));
         messageCaptchaRepository.insert(insertPo);
+        // 发送短信
+        if (SpringComponent.isProduct()) {
+
+        }
         return this.getByType(insertPo);
     }
 

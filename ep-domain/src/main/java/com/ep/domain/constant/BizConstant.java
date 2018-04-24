@@ -84,7 +84,7 @@ public class BizConstant {
     public static int CAPTCHA_SHORT_MSG_LENGTH = 6;
     public static int CAPTCHA_SHORT_MSG_NUM_LIMIT = 10;
     public static int CAPTCHA_SHORT_MSG_IP_NUM_LIMIT = 100;
-    public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 20;
+    public static int CAPTCHA_SHORT_MSG_EXPIRE_MINUTE = 10;
     /**
      * 商户首页展示回复条数
      */
