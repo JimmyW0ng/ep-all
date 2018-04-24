@@ -1569,6 +1569,24 @@ public class DateTools {
     }
 
     /**
+     * 比较第一个时间是否晚于第二个时间
+     *
+     * @param time1
+     * @param time2
+     * @return boolean
+     */
+    public static boolean getTimeIsAfter(Timestamp time1, Timestamp time2) {
+        if (time1 == null || time2 == null) {
+            return false;
+        }
+        if (time1.getTime() > time2.getTime()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 根据某个时间判断，到当前时间的倒计时.例：-8天13:55:58或10天10:04:01
      *
      * @param time

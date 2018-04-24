@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("security/weixin/access")
-public class WeixinAccessController {
+public class WechatAccessController {
     @Autowired
     private WeixinService weixinService;
     @Value("${weixin4j.token}")

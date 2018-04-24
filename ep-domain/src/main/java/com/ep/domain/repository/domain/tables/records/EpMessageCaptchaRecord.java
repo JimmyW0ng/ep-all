@@ -30,7 +30,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptchaRecord> implements Record13<Long, EpMessageCaptchaCaptchaType, Long, String, String, EpMessageCaptchaCaptchaScene, Timestamp, String, Timestamp, Timestamp, String, Boolean, Long> {
 
-    private static final long serialVersionUID = -1462859684;
+    private static final long serialVersionUID = -22793060;
 
     /**
      * Setter for <code>ep.ep_message_captcha.id</code>. 主键
@@ -108,7 +108,7 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Setter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录
+     * Setter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录，微信绑定手机号
      */
     public EpMessageCaptchaRecord setCaptchaScene(EpMessageCaptchaCaptchaScene value) {
         set(5, value);
@@ -116,7 +116,7 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录
+     * Getter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录，微信绑定手机号
      */
     public EpMessageCaptchaCaptchaScene getCaptchaScene() {
         return (EpMessageCaptchaCaptchaScene) get(5);

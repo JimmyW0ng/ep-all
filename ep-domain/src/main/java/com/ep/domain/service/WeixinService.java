@@ -1,13 +1,17 @@
 package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.HttpClientTools;
-import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.WeixinTools;
+import com.ep.domain.component.DictComponent;
+import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
-import com.ep.domain.pojo.po.EpWechatAuthCodePo;
-import com.ep.domain.repository.WechatAuthCodeRepository;
-import com.ep.domain.repository.domain.enums.EpWechatAuthCodeType;
+import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.po.EpMessageCaptchaPo;
+import com.ep.domain.repository.MessageCaptchaRepository;
+import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
+import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -27,7 +31,11 @@ import java.util.Map;
 @Service
 public class WeixinService {
     @Autowired
-    private WechatAuthCodeRepository wechatAuthCodeRepository;
+    private QcloudsmsComponent qcloudsmsComponent;
+    @Autowired
+    private MessageCaptchaRepository messageCaptchaRepository;
+    @Autowired
+    private DictComponent dictComponent;
     @Value("${weixin4j.oauth.appid}")
     private String weixin4jOauthAppid;
     @Value("${weixin4j.oauth.secret}")
@@ -86,8 +94,11 @@ public class WeixinService {
                 responseMap.put("MsgType", "text");
 
             }
+        } else if (requestMap.get("MsgType").equals(WeixinTools.MESSAGE_TEXT)) {
+            //接收文本信息
+            responseMap = this.receiveTextMsg(requestMap.get("Content"), requestMap.get("FromUserName"));
         } else {
-            receiveTextMsg(requestMap.get("Content"), requestMap.get("FromUserName"));
+            //其他
             responseMap.put("Content", "么么哒！");
             responseMap.put("MsgType", "text");
         }
@@ -97,20 +108,35 @@ public class WeixinService {
 
     public Map<String, String> receiveTextMsg(String content, String openId) {
         Map<String, String> responseMap = Maps.newHashMap();
-        if (content.startsWith(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
-            String mobile = content.substring(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE.length() + BizConstant.DB_NUM_ONE, content.length());
-            EpWechatAuthCodePo wechatAuthCodePo = new EpWechatAuthCodePo();
-            wechatAuthCodePo.setOpenId(openId);
-            wechatAuthCodePo.setMobile(Long.parseLong(mobile));
-            wechatAuthCodePo.setAuthCode(ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO));
-            wechatAuthCodePo.setType(EpWechatAuthCodeType.bind);
-            wechatAuthCodeRepository.insert(wechatAuthCodePo);
-            responseMap.put("Content", "验证码已发送至" + mobile + ",两分钟内有效");
+        String[] contentParams = content.split("#");
+        //微信用户绑定手机号请求，向手机发送验证码
+        if (contentParams[0].equals(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
+            String moblie = contentParams[1];
+            dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE);
+            String[] templateParams = {"xxxx", "2"};
+            qcloudsmsComponent.singleSend(112172, moblie, templateParams);
+//            String mobile = content.substring(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE.length() + BizConstant.DB_NUM_ONE, content.length());
+//            EpWechatAuthCodePo wechatAuthCodePo = new EpWechatAuthCodePo();
+//            wechatAuthCodePo.setOpenId(openId);
+//            wechatAuthCodePo.setMobile(Long.parseLong(mobile));
+//            wechatAuthCodePo.setAuthCode(ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO));
+//            wechatAuthCodePo.setType(EpWechatAuthCodeType.bind);
+//            wechatAuthCodeRepository.insert(wechatAuthCodePo);
+            responseMap.put("Content", "验证码已发送至" + moblie + ",两分钟内有效");
             responseMap.put("MsgType", "text");
             return responseMap;
         }
         responseMap.put("Content", "");
         responseMap.put("MsgType", "text");
         return responseMap;
+    }
+
+    public ResultDo wechatBindMobile(String code, Long mobile) {
+        EpMessageCaptchaPo messageCaptchaPo = messageCaptchaRepository
+                .getBySourceIdAndCaptchaCode(mobile, EpMessageCaptchaCaptchaType.short_msg, EpMessageCaptchaCaptchaScene.wx_bind_mobile, code);
+        if (messageCaptchaPo != null && DateTools.getTimeIsAfter(messageCaptchaPo.getExpireTime(), DateTools.getCurrentDateTime())) {
+            System.out.println("member插入数据");
+        }
+        return ResultDo.build();
     }
 }

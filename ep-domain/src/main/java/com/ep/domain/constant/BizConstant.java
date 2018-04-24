@@ -138,6 +138,8 @@ public class BizConstant {
 
     public static String DICT_GROUP_WECHAT = "WECHAT";
 
+    public static String DICT_GROUP_QCLOUDSMS = "QCLOUDSMS";
+
     public static String DICT_KEY_WECHAT_ACCESS_TOKEN = "WECHAT_ACCESS_TOKEN";
 
     public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
@@ -166,5 +168,6 @@ public class BizConstant {
      * 腾讯云短信 地区国内CODE
      */
     public static String QCLOUDSMS_NATION_CODE = "86";
+    public static String QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE = "QCLOUDSMS_TEMPLATEID_MINIPROGRAM_BIND_MOBILE";
 
 }

@@ -31,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMessageCaptcha extends TableImpl<EpMessageCaptchaRecord> {
 
-    private static final long serialVersionUID = -487322813;
+    private static final long serialVersionUID = -1710282366;
 
     /**
      * The reference instance of <code>ep.ep_message_captcha</code>
@@ -64,7 +64,7 @@ public class EpMessageCaptcha extends TableImpl<EpMessageCaptchaRecord> {
     /**
      * The column <code>ep.ep_message_captcha.captcha_code</code>. 业务编码
      */
-    public final TableField<EpMessageCaptchaRecord, String> CAPTCHA_CODE = createField("captcha_code", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "业务编码");
+    public final TableField<EpMessageCaptchaRecord, String> CAPTCHA_CODE = createField("captcha_code", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "业务编码");
 
     /**
      * The column <code>ep.ep_message_captcha.captcha_content</code>. 验证码内容
@@ -72,9 +72,9 @@ public class EpMessageCaptcha extends TableImpl<EpMessageCaptchaRecord> {
     public final TableField<EpMessageCaptchaRecord, String> CAPTCHA_CONTENT = createField("captcha_content", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "验证码内容");
 
     /**
-     * The column <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录
+     * The column <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录，微信绑定手机号
      */
-    public final TableField<EpMessageCaptchaRecord, EpMessageCaptchaCaptchaScene> CAPTCHA_SCENE = createField("captcha_scene", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene.class), this, "验证场景：客户端登录，机构端登录");
+    public final TableField<EpMessageCaptchaRecord, EpMessageCaptchaCaptchaScene> CAPTCHA_SCENE = createField("captcha_scene", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene.class), this, "验证场景：客户端登录，机构端登录，微信绑定手机号");
 
     /**
      * The column <code>ep.ep_message_captcha.expire_time</code>. 过期时间
