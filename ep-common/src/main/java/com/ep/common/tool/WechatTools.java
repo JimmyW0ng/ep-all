@@ -15,7 +15,7 @@ import java.util.Map;
  * @Author: CC.F
  * @Date: 21:05 2018/4/22
  */
-public class WeixinTools {
+public class WechatTools {
     public static final String MESSAGE_TEXT = "text";
     public static final String MESSAGE_IMAGE = "image";
     public static final String MESSAGE_VOICE = "voice";

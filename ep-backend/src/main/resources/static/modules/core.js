@@ -202,6 +202,28 @@ function tmplIndex() {
     return new Date().getMinutes().toString() + new Date().getSeconds().toString() + new Date().getMilliseconds()
 }
 //封装后的$.ajax,get形式
+function $ajaxGetFun(url, successfun) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        beforeSend: function () {
+            layer.load(2, {shade: [0.1, '#fff']});
+        },
+        success: function (data) {
+            if (data.success) {
+                successfun(data.result)
+            } else {
+                toastr.error("操作失败，原因：" + data.errorDescription);
+            }
+        },
+        error: function (XMLHttpRequest) {
+            toastr_error_system(XMLHttpRequest.status);
+        },
+        complete: function () {
+            layer.closeAll();
+        }
+    })
+}
 function $ajaxGet(url) {
     $.ajax({
         type: "GET",
@@ -225,7 +247,7 @@ function $ajaxGet(url) {
     })
 }
 //封装后的$.ajax,post形式
-function $ajaxPost(url, data, successfun) {
+function $ajaxPostFun(url, data, successfun) {
     $.ajax({
         type: "POST",
         url: url,
