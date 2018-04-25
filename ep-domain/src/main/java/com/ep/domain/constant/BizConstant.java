@@ -170,6 +170,8 @@ public class BizConstant {
 
     public static String WECHAT_TEXT_MSG_SPLIT = "#";
 
+    public static int WECHAT_SUCCESS_CODE = 0;
+
     public static String WECHAT_TEXT_MSG_BIND_MOBILE = "绑定";
 
     /**

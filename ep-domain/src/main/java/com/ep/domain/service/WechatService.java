@@ -8,6 +8,7 @@ import com.ep.common.tool.WechatTools;
 import com.ep.domain.component.DictComponent;
 import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
@@ -22,9 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -48,25 +52,30 @@ public class WechatService {
     private String wechatFwhAppid;
     @Value("${wechat.fwh.secret}")
     private String wechatFwhSecret;
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 发送客服消息
      *
      * @param accessToken
-     * @param openIds
+     * @param openId
      * @param msg
      * @throws Exception
      */
-    public void msgCustomSend(String accessToken, List<String> openIds, String msg) throws Exception {
+    public ResultDo msgCustomSend(String accessToken, String openId, String msg) throws Exception {
         String url = String.format(BizConstant.WECHAT_URL_MSG_CUSTOM_SEND, accessToken);
-        for (String openId : openIds) {
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("touser", openId);
-            jsonParam.put("msgtype", "text");
-            JSONObject jsonText = new JSONObject();
-            jsonText.put("content", msg);
-            jsonParam.put("text", jsonText);
-            HttpClientTools.doPost(url, jsonParam.toString());
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("touser", openId);
+        jsonParam.put("msgtype", "text");
+        JSONObject jsonText = new JSONObject();
+        jsonText.put("content", msg);
+        jsonParam.put("text", jsonText);
+        Map<String, Object> responseMap = HttpClientTools.doPost(url, jsonParam.toString());
+        if (responseMap.get("errcode").toString().equals(BizConstant.WECHAT_SUCCESS_CODE)) {
+            return ResultDo.build();
+        } else {
+            return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString());
         }
     }
 
@@ -77,13 +86,19 @@ public class WechatService {
      */
     public ResultDo getAccessToken() {
         String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, wechatFwhAppid, wechatFwhSecret);
-        Map<String, String> resultMap = HttpClientTools.doGet(url);
-        if (null != resultMap.get("access_token")) {
-            String accessToken = resultMap.get("access_token");
-            return ResultDo.build().setResult(accessToken);
+        ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(url, HashMap.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            Map<String, Object> responseMap = responseEntity.getBody();
+            if (null != responseMap.get("access_token")) {
+                String accessToken = (String) responseMap.get("access_token");
+                return ResultDo.build().setResult(accessToken);
+            } else {
+                log.error("[微信]获取access_token失败，errcode={}，errmsg={}。", responseMap.get("errcode"), responseMap.get("errmsg"));
+                return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString())
+                        .setErrorDescription(responseMap.get("errmsg").toString());
+            }
         }
-        log.error("[微信]获取access_token失败，errcode={}，errmsg={}。", resultMap.get("errcode"), resultMap.get("errmsg"));
-        return ResultDo.build().setSuccess(false);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
     }
 
     /**
@@ -98,8 +113,11 @@ public class WechatService {
         }
         String accessToken = (String) resultDoAccessToken.getResult();
         String url = String.format(BizConstant.WECHAT_URL_MENU_GET, accessToken);
-        String resultStr = HttpClientTools.doGetStr(url);
-        return ResultDo.build().setResult(resultStr != null ? resultStr : "CALL_WECHAT_ERROR");
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            return ResultDo.build().setResult(responseEntity.getBody());
+        }
+        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
     }
 
     /**
@@ -114,8 +132,11 @@ public class WechatService {
         }
         String accessToken = (String) resultDoAccessToken.getResult();
         String url = String.format(BizConstant.WECHAT_URL_MENU_CREATE, accessToken);
-        String resultStr = HttpClientTools.doPostStr(url, menuJson);
-        return ResultDo.build().setResult(resultStr != null ? resultStr : "CALL_WECHAT_ERROR");
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, menuJson, String.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            return ResultDo.build().setResult(responseEntity.getBody());
+        }
+        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
     }
 
     /**
@@ -130,8 +151,11 @@ public class WechatService {
         }
         String accessToken = (String) resultDoAccessToken.getResult();
         String url = String.format(BizConstant.WECHAT_URL_MENU_DELETE, accessToken);
-        String resultStr = HttpClientTools.doGetStr(url);
-        return ResultDo.build().setResult(resultStr != null ? resultStr : "CALL_WECHAT_ERROR");
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            return ResultDo.build().setResult(responseEntity.getBody());
+        }
+        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
     }
 
     /**

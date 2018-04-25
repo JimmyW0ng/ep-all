@@ -2,13 +2,10 @@ package com.ep.backend.controller;
 
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatService;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @Description:
@@ -78,9 +75,10 @@ public class PlatformWechatController extends BackendController {
         ResultDo resultDoAccessToken = wechatService.getAccessToken();
         if (resultDoAccessToken.isSuccess()) {
             String accessToken = (String) resultDoAccessToken.getResult();
-            List<String> openIds = Lists.newArrayList();
-            openIds.add("oNn9k0vtlBRPyCN7dF1l_MuDkUvY");
-            wechatService.msgCustomSend(accessToken, openIds, "hello world");
+            String openId = "oNn9k0vtlBRPyCN7dF1l_MuDkUvY";
+            wechatService.msgCustomSend(accessToken, openId, "hello world");
         }
     }
+
+
 }

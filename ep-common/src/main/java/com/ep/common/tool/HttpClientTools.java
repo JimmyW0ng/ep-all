@@ -1,7 +1,8 @@
 package com.ep.common.tool;
 
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,7 +19,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -28,8 +29,17 @@ import java.util.Map;
  */
 @Slf4j
 public class HttpClientTools {
+//    @Autowired
+//    private static RestTemplate restTemplate;
+//
+//    public static RestTemplate doGet(String ){
+//        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+//        if (org.springframework.http.HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+//
+//        }
+//    }
 
-    public static Map<String, String> doGet(String url) {
+    public static Map<String, Object> doGet(String url) {
         try {
             HttpClient client = new DefaultHttpClient();
             //发送get请求
@@ -39,9 +49,18 @@ public class HttpClientTools {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 //读取服务器返回过来的json字符串数据
                 String jsonStr = EntityUtils.toString(response.getEntity());
-                Gson gson = new Gson();
-                Map<String, String> map = new HashMap<String, String>();
-                map = gson.fromJson(jsonStr, map.getClass());
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
+                            @Override
+                            public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+                                if (src == src.longValue()) {
+                                    return new JsonPrimitive(src.longValue());
+                                }
+                                return new JsonPrimitive(src);
+                            }
+                        }).create();
+                Map<String, Object> map = gson.fromJson(jsonStr, new TypeToken<Map<String, Object>>() {
+                }.getType());
                 return map;
             }
         } catch (IOException e) {
@@ -75,7 +94,7 @@ public class HttpClientTools {
      * @return
      * @throws Exception
      */
-    public static Map<String, String> doPost(String url, String params) {
+    public static Map<String, Object> doPost(String url, String params) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Accept", "application/json");
@@ -91,9 +110,18 @@ public class HttpClientTools {
             if (state == HttpStatus.SC_OK) {
                 HttpEntity responseEntity = response.getEntity();
                 String jsonStr = EntityUtils.toString(responseEntity);
-                Gson gson = new Gson();
-                Map<String, String> map = new HashMap<String, String>();
-                map = gson.fromJson(jsonStr, map.getClass());
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
+                            @Override
+                            public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
+                                if (src == src.longValue()) {
+                                    return new JsonPrimitive(src.longValue());
+                                }
+                                return new JsonPrimitive(src);
+                            }
+                        }).create();
+                Map<String, Object> map = gson.fromJson(jsonStr, new TypeToken<Map<String, Object>>() {
+                }.getType());
                 return map;
             }
         } catch (IOException e) {
