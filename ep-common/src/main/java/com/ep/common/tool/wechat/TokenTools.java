@@ -1,4 +1,4 @@
-package com.ep.common.tool.weixin;
+package com.ep.common.tool.wechat;
 
 
 import java.util.ArrayList;
