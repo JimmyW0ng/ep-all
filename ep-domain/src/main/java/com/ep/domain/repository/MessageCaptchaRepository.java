@@ -81,6 +81,26 @@ public class MessageCaptchaRepository extends AbstractCRUDRepository<EpMessageCa
     }
 
     /**
+     * 根据业务ID、类型、场景、验证码内容获取验证码信息
+     *
+     * @param sourceId
+     * @param captchaContent
+     * @return
+     */
+    public EpMessageCaptchaPo getBySourceIdAndCaptchaContent(Long sourceId,
+                                                             EpMessageCaptchaCaptchaType type,
+                                                             EpMessageCaptchaCaptchaScene scene,
+                                                             String captchaContent) {
+        return dslContext.selectFrom(EP_MESSAGE_CAPTCHA)
+                .where(EP_MESSAGE_CAPTCHA.SOURCE_ID.eq(sourceId))
+                .and(EP_MESSAGE_CAPTCHA.CAPTCHA_CONTENT.eq(captchaContent))
+                .and(EP_MESSAGE_CAPTCHA.CAPTCHA_TYPE.eq(type))
+                .and(EP_MESSAGE_CAPTCHA.CAPTCHA_SCENE.eq(scene))
+                .and(EP_MESSAGE_CAPTCHA.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMessageCaptchaPo.class);
+    }
+
+    /**
      * 按类型和场景删除业务id对应的验证码
      *
      * @param sourceId

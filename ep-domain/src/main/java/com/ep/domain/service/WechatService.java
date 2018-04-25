@@ -10,6 +10,7 @@ import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.event.QcloudsmsEventBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.pojo.po.EpSystemDictPo;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,8 @@ public class WechatService {
     private String wechatFwhSecret;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     /**
      * 发送客服消息
@@ -180,7 +184,7 @@ public class WechatService {
             }
         } else if (requestMap.get("MsgType").equals(WechatTools.MESSAGE_TEXT)) {
             //接收文本信息
-            responseMap = this.receiveTextMsg(requestMap.get("Content"), requestMap.get("FromUserName"));
+            responseMap = this.receiveTextMsg(requestMap.get("Content"));
         } else {
             //其他
             responseMap.put("Content", "么么哒！");
@@ -193,10 +197,9 @@ public class WechatService {
      * 接收文本信息
      *
      * @param content
-     * @param openId
      * @return
      */
-    public Map<String, String> receiveTextMsg(String content, String openId) {
+    public Map<String, String> receiveTextMsg(String content) {
         Map<String, String> responseMap = Maps.newHashMap();
         String[] contentParams = content.split(BizConstant.WECHAT_TEXT_MSG_SPLIT);
         //微信用户绑定手机号请求
@@ -222,14 +225,31 @@ public class WechatService {
      */
     private Map<String, String> receiveTextMsgCaptchaMobile(String captcha, String moblie) {
         Map<String, String> responseMap = Maps.newHashMap();
-        EpMessageCaptchaPo messageCaptchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaCode(Long.parseLong(moblie), EpMessageCaptchaCaptchaType.short_msg
+        EpMemberPo oldMemberPo = memberRepository.getByMobile(Long.parseLong(moblie));
+        //判断是否已绑定
+        if (oldMemberPo != null) {
+            if (oldMemberPo.getStatus().equals(EpMemberStatus.normal)) {
+                responseMap.put("Content", "该手机号已绑定！");
+            } else if (oldMemberPo.getStatus().equals(EpMemberStatus.freeze)) {
+                responseMap.put("Content", "该手机号已绑定！但手机号已被冻结！");
+            } else {
+                responseMap.put("Content", "找不到该手机号！");
+            }
+            responseMap.put("MsgType", "text");
+            return responseMap;
+        }
+        EpMessageCaptchaPo messageCaptchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaContent(Long.parseLong(moblie), EpMessageCaptchaCaptchaType.short_msg
                 , EpMessageCaptchaCaptchaScene.wx_bind_mobile, captcha);
-        if (messageCaptchaPo != null && DateTools.getTimeIsAfter(messageCaptchaPo.getExpireTime(), DateTools.getCurrentDateTime())) {
-            EpMemberPo epMemberPo = new EpMemberPo();
-            epMemberPo.setMobile(Long.parseLong(moblie));
-            epMemberPo.setStatus(EpMemberStatus.normal);
-            memberRepository.insert(epMemberPo);
-            responseMap.put("Content", "您已绑定成功！");
+        if (messageCaptchaPo != null) {
+            if (!DateTools.getTimeIsAfter(messageCaptchaPo.getExpireTime(), DateTools.getCurrentDateTime())) {
+                responseMap.put("Content", "验证码已失效！");
+            } else {
+                EpMemberPo epMemberPo = new EpMemberPo();
+                epMemberPo.setMobile(Long.parseLong(moblie));
+                epMemberPo.setStatus(EpMemberStatus.normal);
+                memberRepository.insert(epMemberPo);
+                responseMap.put("Content", "您已绑定成功！");
+            }
             responseMap.put("MsgType", "text");
             return responseMap;
         }
@@ -247,8 +267,14 @@ public class WechatService {
         Map<String, String> responseMap = Maps.newHashMap();
         EpMemberPo epMemberPo = memberRepository.getByMobile(Long.parseLong(mobile));
         //判断是否已绑定
-        if (epMemberPo != null && !epMemberPo.getDelFlag()) {
-            responseMap.put("Content", "该手机号已绑定！");
+        if (epMemberPo != null) {
+            if (epMemberPo.getStatus().equals(EpMemberStatus.normal)) {
+                responseMap.put("Content", "该手机号已绑定！");
+            } else if (epMemberPo.getStatus().equals(EpMemberStatus.freeze)) {
+                responseMap.put("Content", "该手机号已绑定！但手机号已被冻结！");
+            } else {
+                responseMap.put("Content", "找不到该手机号！");
+            }
             responseMap.put("MsgType", "text");
             return responseMap;
         }
@@ -260,7 +286,8 @@ public class WechatService {
         String captcha = ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO);
         templateParams[0] = captcha;
         //发送短信
-        qcloudsmsComponent.singleSend(templateId, mobile, templateParams);
+        QcloudsmsEventBo eventBo = new QcloudsmsEventBo(templateId, mobile, templateParams);
+        publisher.publishEvent(eventBo);
         EpMessageCaptchaPo epMessageCaptchaPo = new EpMessageCaptchaPo();
         epMessageCaptchaPo.setCaptchaType(EpMessageCaptchaCaptchaType.short_msg);
         epMessageCaptchaPo.setSourceId(Long.parseLong(mobile));
