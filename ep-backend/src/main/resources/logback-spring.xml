@@ -7,7 +7,7 @@
         <conversionRule conversionWord="wEx"
                         converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
-        <springProperty scope="context" name="BACKEND_NO" source="backend.no"/>
+        <springProperty scope="context" name="BACKEND_NO" source="ep.no"/>
         <springProperty scope="context" name="BACKEND_PROFILES" source="spring.profiles.active"/>
 
         <property name="CONSOLE_LOG_PATTERN"
@@ -66,7 +66,7 @@
         <conversionRule conversionWord="wEx"
                         converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
-        <springProperty scope="context" name="BACKEND_NO" source="backend.no"/>
+        <springProperty scope="context" name="BACKEND_NO" source="ep.no"/>
         <springProperty scope="context" name="BACKEND_PROFILES" source="spring.profiles.active"/>
 
         <property name="CONSOLE_LOG_PATTERN"
