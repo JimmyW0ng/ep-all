@@ -4,12 +4,15 @@ import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.RegexTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
+import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.repository.MessageCaptchaRepository;
 import com.ep.domain.repository.OrganAccountRepository;
+import com.ep.domain.repository.SystemDictRepository;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,10 @@ public class MessageCaptchaService {
     private MessageCaptchaRepository messageCaptchaRepository;
     @Autowired
     private OrganAccountRepository organAccountRepository;
+    @Autowired
+    private SystemDictRepository systemDictRepository;
+    @Autowired
+    private QcloudsmsComponent qcloudsmsComponent;
 
     /**
      * 获取短信验证码
@@ -70,7 +77,10 @@ public class MessageCaptchaService {
         messageCaptchaRepository.insert(insertPo);
         // 发送短信
         if (SpringComponent.isProduct()) {
-
+            EpSystemDictPo dictPo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_LOGIN_CAPTCHA);
+            //短信模板id
+            int templateId = Integer.parseInt(dictPo.getValue());
+            qcloudsmsComponent.singleSend(templateId, sourceId.toString(), new String[]{captchaContent, String.valueOf(BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE)});
         }
         return this.getByType(insertPo);
     }
