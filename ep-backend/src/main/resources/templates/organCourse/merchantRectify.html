@@ -282,7 +282,7 @@
         <div id=${collapse} class="panel-collapse collapse in">
             <div class="panel-body ">
                 <div name="organClassBos" class="form-group col-sm-4 organClassBos">
-                    <input name="id" type="hidden" value="${id}">
+                    <input name="id" jprop="id" type="hidden" class="rectify" value="${id}">
                     <label>班次名称 <span class="required-sign">*</span></label>
                     <input name="className" type="text" class=" form-control " value="${className}" required="true"
                            disabled="true"
@@ -296,7 +296,8 @@
                         </select>
                     </div>
                     <label>产品负责人 <span class="required-sign">*</span></label>
-                    <select name="ognAccountId" type="text" class=" form-control " required="true" disabled="true">
+                    <select name="ognAccountId" jprop="ognAccountId" type="text" class=" form-control rectify"
+                            required="true">
 
                     </select>
                     <label>价格(元) <span class="required-sign">*</span></label>
@@ -320,8 +321,8 @@
                            readonly="true">
                     <div>
                         <label>联系电话 <span class="required-sign">*</span></label>
-                        <input name="phone" jprop="phone" type="text" class="form-control" required="true"
-                               readonly="true"
+                        <input name="phone" jprop="phone" type="text" class="form-control rectify" required="true"
+
                                value="${phone}">
                     </div>
 
@@ -419,6 +420,28 @@
         }
     }
     function beforeSubmitFormatInputInnerName() {
+        var $organClassBos = $("div.organClassBos")
+        for (var i = 0; i < $organClassBos.length; i++) {
+            $organClassBos.eq(i).attr("name", "organClassPos[" + i + "]")
+            $organClassBos.eq(i).find("input.rectify,select.rectify").each(function () {
+                $(this).attr("name", $organClassBos.eq(i).attr("name") + "." + $(this).attr("jprop"))
+            })
+
+//            var $organClassCatalogPos = $organClassBos.eq(i).find("div.organClassCatalogPos")
+//            for (var j = 0; j < $organClassCatalogPos.length; j++) {
+//                var parentName = $organClassCatalogPos.eq(j).parents("div.organClassBos").eq(0).attr("name")
+//                $organClassCatalogPos.eq(j).attr("name", parentName + ".organClassCatalogPos[" + j + "]")
+//                $organClassCatalogPos.eq(j).find("input,textarea").each(function () {
+//                    if ($(this).attr("name") == "catalogIndex") {
+//                        $(this).val(j + 1)
+//                    }
+//                    $(this).attr("name", $organClassCatalogPos.eq(j).attr("name") + "." + $(this).attr("jprop"))
+//                })
+//            }
+        }
+
+
+
         var len = $("div.rectifyOrganClassCatalogBos").length
         var $box = $("div.rectifyOrganClassCatalogBos")
         for (var i = 0; i < len; i++) {

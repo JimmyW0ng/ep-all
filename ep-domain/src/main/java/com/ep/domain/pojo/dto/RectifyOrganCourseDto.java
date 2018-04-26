@@ -3,6 +3,7 @@ package com.ep.domain.pojo.dto;
 import com.ep.domain.pojo.AbstractBasePojo;
 import com.ep.domain.pojo.bo.RectifyOrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpConstantTagPo;
+import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpOrganCoursePo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,10 @@ import java.util.List;
 @NoArgsConstructor
 public class RectifyOrganCourseDto extends AbstractBasePojo {
     private EpOrganCoursePo organCoursePo;
-    //    private List<RectifyOrganClassBo> rectifyOrganClassBos;
     private List<EpConstantTagPo> constantTagPos;
     private String mainpicUrlPreCode;
     private List<String> courseDescPicPreCodes;
     private List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos;
+    private List<EpOrganClassPo> organClassPos;
 
 }

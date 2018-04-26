@@ -493,6 +493,20 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
                 .execute();
     }
 
-
+    /**
+     * 紧急修改班次，仅班次负责人OGN_ACCOUNT_ID，联系电话PHONE字段
+     *
+     * @param po
+     * @return
+     */
+    public int rectifyOrganClass(EpOrganClassPo po) {
+        return dslContext.update(EP_ORGAN_CLASS)
+                .set(EP_ORGAN_CLASS.OGN_ACCOUNT_ID, po.getOgnAccountId())
+                .set(EP_ORGAN_CLASS.PHONE, po.getPhone())
+                .where(EP_ORGAN_CLASS.ID.eq(po.getId()))
+                .and(EP_ORGAN_CLASS.OGN_ID.eq(po.getOgnId()))
+                .and(EP_ORGAN_CLASS.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

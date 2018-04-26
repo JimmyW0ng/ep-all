@@ -402,6 +402,7 @@ public class OrganCourseService {
     public ResultDo rectifyOrganCourseByMerchant(RectifyOrganCourseDto dto) {
         log.info("[产品]紧急修改产品开始。产品dto={}。", dto);
         EpOrganCoursePo organCoursePo = dto.getOrganCoursePo();
+        Long ognId = organCoursePo.getOgnId();
         if (null == organCoursePo) {
             log.error("[产品]紧急修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
@@ -430,7 +431,15 @@ public class OrganCourseService {
             log.error("[产品]紧急修改产品失败。该产品状态不为{}。", EpOrganCourseCourseStatus.online);
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
-        //班次,仅根据classCatelogId更新班次目录
+        //班次更新班次负责人ognAccountId,联系电话phone
+        List<EpOrganClassPo> organClassPos = dto.getOrganClassPos();
+        if (CollectionsTools.isNotEmpty(organClassPos)) {
+            organClassPos.forEach(organClassPo -> {
+                organClassPo.setOgnId(ognId);
+                organClassRepository.rectifyOrganClass(organClassPo);
+            });
+        }
+        // 根据classCatelogId更新班次目录
         List<RectifyOrganClassCatalogBo> rectifyOrganClassCatalogBos = dto.getRectifyOrganClassCatalogBos();
         if (CollectionsTools.isNotEmpty(rectifyOrganClassCatalogBos)) {
             rectifyOrganClassCatalogBos.forEach(bo -> {
