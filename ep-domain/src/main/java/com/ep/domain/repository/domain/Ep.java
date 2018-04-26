@@ -28,11 +28,13 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
+    private static final long serialVersionUID = 419059031;
+
     /**
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-    private static final long serialVersionUID = 1906874588;
+
     /**
      * 课程类目表
      */
@@ -174,6 +176,11 @@ public class Ep extends SchemaImpl {
     public final EpSystemDict EP_SYSTEM_DICT = com.ep.domain.repository.domain.tables.EpSystemDict.EP_SYSTEM_DICT;
 
     /**
+     * 日志表
+     */
+    public final EpSystemLog EP_SYSTEM_LOG = com.ep.domain.repository.domain.tables.EpSystemLog.EP_SYSTEM_LOG;
+
+    /**
      * 菜单表
      */
     public final EpSystemMenu EP_SYSTEM_MENU = com.ep.domain.repository.domain.tables.EpSystemMenu.EP_SYSTEM_MENU;
@@ -256,6 +263,7 @@ public class Ep extends SchemaImpl {
                 EpOrganVip.EP_ORGAN_VIP,
             EpSystemClient.EP_SYSTEM_CLIENT,
             EpSystemDict.EP_SYSTEM_DICT,
+                EpSystemLog.EP_SYSTEM_LOG,
             EpSystemMenu.EP_SYSTEM_MENU,
             EpSystemRole.EP_SYSTEM_ROLE,
             EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY,

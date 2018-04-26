@@ -59,6 +59,7 @@ public class Keys {
     public static final Identity<EpOrganVipRecord, Long> IDENTITY_EP_ORGAN_VIP = Identities0.IDENTITY_EP_ORGAN_VIP;
     public static final Identity<EpSystemClientRecord, Long> IDENTITY_EP_SYSTEM_CLIENT = Identities0.IDENTITY_EP_SYSTEM_CLIENT;
     public static final Identity<EpSystemDictRecord, Long> IDENTITY_EP_SYSTEM_DICT = Identities0.IDENTITY_EP_SYSTEM_DICT;
+    public static final Identity<EpSystemLogRecord, Long> IDENTITY_EP_SYSTEM_LOG = Identities0.IDENTITY_EP_SYSTEM_LOG;
     public static final Identity<EpSystemMenuRecord, Long> IDENTITY_EP_SYSTEM_MENU = Identities0.IDENTITY_EP_SYSTEM_MENU;
     public static final Identity<EpSystemRoleRecord, Long> IDENTITY_EP_SYSTEM_ROLE = Identities0.IDENTITY_EP_SYSTEM_ROLE;
     public static final Identity<EpSystemRoleAuthorityRecord, Long> IDENTITY_EP_SYSTEM_ROLE_AUTHORITY = Identities0.IDENTITY_EP_SYSTEM_ROLE_AUTHORITY;
@@ -109,6 +110,7 @@ public class Keys {
     public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID = UniqueKeys0.KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID;
     public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_DICT_PRIMARY;
     public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_SYS_DICT_GROUPNAME_KEY = UniqueKeys0.KEY_EP_SYSTEM_DICT_SYS_DICT_GROUPNAME_KEY;
+    public static final UniqueKey<EpSystemLogRecord> KEY_EP_SYSTEM_LOG_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_LOG_PRIMARY;
     public static final UniqueKey<EpSystemMenuRecord> KEY_EP_SYSTEM_MENU_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_MENU_PRIMARY;
     public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_ROLE_PRIMARY;
     public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE = UniqueKeys0.KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE;
@@ -156,6 +158,7 @@ public class Keys {
         public static Identity<EpOrganVipRecord, Long> IDENTITY_EP_ORGAN_VIP = createIdentity(EpOrganVip.EP_ORGAN_VIP, EpOrganVip.EP_ORGAN_VIP.ID);
         public static Identity<EpSystemClientRecord, Long> IDENTITY_EP_SYSTEM_CLIENT = createIdentity(EpSystemClient.EP_SYSTEM_CLIENT, EpSystemClient.EP_SYSTEM_CLIENT.ID);
         public static Identity<EpSystemDictRecord, Long> IDENTITY_EP_SYSTEM_DICT = createIdentity(EpSystemDict.EP_SYSTEM_DICT, EpSystemDict.EP_SYSTEM_DICT.ID);
+        public static Identity<EpSystemLogRecord, Long> IDENTITY_EP_SYSTEM_LOG = createIdentity(EpSystemLog.EP_SYSTEM_LOG, EpSystemLog.EP_SYSTEM_LOG.ID);
         public static Identity<EpSystemMenuRecord, Long> IDENTITY_EP_SYSTEM_MENU = createIdentity(EpSystemMenu.EP_SYSTEM_MENU, EpSystemMenu.EP_SYSTEM_MENU.ID);
         public static Identity<EpSystemRoleRecord, Long> IDENTITY_EP_SYSTEM_ROLE = createIdentity(EpSystemRole.EP_SYSTEM_ROLE, EpSystemRole.EP_SYSTEM_ROLE.ID);
         public static Identity<EpSystemRoleAuthorityRecord, Long> IDENTITY_EP_SYSTEM_ROLE_AUTHORITY = createIdentity(EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY, EpSystemRoleAuthority.EP_SYSTEM_ROLE_AUTHORITY.ID);
@@ -204,6 +207,7 @@ public class Keys {
         public static final UniqueKey<EpSystemClientRecord> KEY_EP_SYSTEM_CLIENT_UNIQUE_CLIENTID = createUniqueKey(EpSystemClient.EP_SYSTEM_CLIENT, "KEY_ep_system_client_unique_clientid", EpSystemClient.EP_SYSTEM_CLIENT.CLIENT_ID);
         public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_PRIMARY = createUniqueKey(EpSystemDict.EP_SYSTEM_DICT, "KEY_ep_system_dict_PRIMARY", EpSystemDict.EP_SYSTEM_DICT.ID);
         public static final UniqueKey<EpSystemDictRecord> KEY_EP_SYSTEM_DICT_SYS_DICT_GROUPNAME_KEY = createUniqueKey(EpSystemDict.EP_SYSTEM_DICT, "KEY_ep_system_dict_sys_dict_groupname_key", EpSystemDict.EP_SYSTEM_DICT.GROUP_NAME, EpSystemDict.EP_SYSTEM_DICT.KEY);
+        public static final UniqueKey<EpSystemLogRecord> KEY_EP_SYSTEM_LOG_PRIMARY = createUniqueKey(EpSystemLog.EP_SYSTEM_LOG, "KEY_ep_system_log_PRIMARY", EpSystemLog.EP_SYSTEM_LOG.ID);
         public static final UniqueKey<EpSystemMenuRecord> KEY_EP_SYSTEM_MENU_PRIMARY = createUniqueKey(EpSystemMenu.EP_SYSTEM_MENU, "KEY_ep_system_menu_PRIMARY", EpSystemMenu.EP_SYSTEM_MENU.ID);
         public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_PRIMARY = createUniqueKey(EpSystemRole.EP_SYSTEM_ROLE, "KEY_ep_system_role_PRIMARY", EpSystemRole.EP_SYSTEM_ROLE.ID);
         public static final UniqueKey<EpSystemRoleRecord> KEY_EP_SYSTEM_ROLE_UNIQUE_ROLE_CODE = createUniqueKey(EpSystemRole.EP_SYSTEM_ROLE, "KEY_ep_system_role_UNIQUE_ROLE_CODE", EpSystemRole.EP_SYSTEM_ROLE.ROLE_CODE);

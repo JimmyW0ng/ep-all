@@ -29,39 +29,56 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpConstantCatalog extends TableImpl<EpConstantCatalogRecord> {
 
+    private static final long serialVersionUID = -176298386;
+
     /**
      * The reference instance of <code>ep.ep_constant_catalog</code>
      */
     public static final EpConstantCatalog EP_CONSTANT_CATALOG = new EpConstantCatalog();
-    private static final long serialVersionUID = -176298386;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpConstantCatalogRecord> getRecordType() {
+        return EpConstantCatalogRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_constant_catalog.id</code>. 主键
      */
     public final TableField<EpConstantCatalogRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_constant_catalog.parent_id</code>. 父级id
      */
     public final TableField<EpConstantCatalogRecord, Long> PARENT_ID = createField("parent_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "父级id");
+
     /**
      * The column <code>ep.ep_constant_catalog.label</code>. 标签
      */
     public final TableField<EpConstantCatalogRecord, String> LABEL = createField("label", org.jooq.impl.SQLDataType.VARCHAR.length(64).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "标签");
+
     /**
      * The column <code>ep.ep_constant_catalog.create_at</code>. 创建时间
      */
     public final TableField<EpConstantCatalogRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_constant_catalog.update_at</code>. 更新时间
      */
     public final TableField<EpConstantCatalogRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_constant_catalog.remark</code>. 备注信息
      */
     public final TableField<EpConstantCatalogRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
+
     /**
      * The column <code>ep.ep_constant_catalog.del_flag</code>. 删除标志
      */
     public final TableField<EpConstantCatalogRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标志");
+
     /**
      * The column <code>ep.ep_constant_catalog.version</code>.
      */
@@ -87,14 +104,6 @@ public class EpConstantCatalog extends TableImpl<EpConstantCatalogRecord> {
 
     private EpConstantCatalog(String alias, Table<EpConstantCatalogRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "课程类目表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpConstantCatalogRecord> getRecordType() {
-        return EpConstantCatalogRecord.class;
     }
 
     /**

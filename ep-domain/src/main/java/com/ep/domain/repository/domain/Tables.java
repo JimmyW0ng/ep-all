@@ -163,6 +163,11 @@ public class Tables {
     public static final EpSystemDict EP_SYSTEM_DICT = com.ep.domain.repository.domain.tables.EpSystemDict.EP_SYSTEM_DICT;
 
     /**
+     * 日志表
+     */
+    public static final EpSystemLog EP_SYSTEM_LOG = com.ep.domain.repository.domain.tables.EpSystemLog.EP_SYSTEM_LOG;
+
+    /**
      * 菜单表
      */
     public static final EpSystemMenu EP_SYSTEM_MENU = com.ep.domain.repository.domain.tables.EpSystemMenu.EP_SYSTEM_MENU;

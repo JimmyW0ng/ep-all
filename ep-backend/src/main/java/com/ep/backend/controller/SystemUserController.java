@@ -1,5 +1,6 @@
 package com.ep.backend.controller;
 
+import com.ep.common.annotation.LogInfoAnnotation;
 import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
@@ -151,10 +152,10 @@ public class SystemUserController extends BackendController {
      *
      * @return
      */
-    @ApiOperation(value = "修改用户")
     @PostMapping("/update")
     @ResponseBody
     @PreAuthorize("hasAnyAuthority('platform:user:index')")
+    @LogInfoAnnotation(moduleName = "系统用户", desc = "新增用户")
     public ResultDo update(@RequestBody SystemUserBo bo
     ) throws Exception {
         return systemUserService.updateUser(bo);
