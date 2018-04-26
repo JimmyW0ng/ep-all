@@ -80,7 +80,8 @@ public class MessageCaptchaService {
             EpSystemDictPo dictPo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_LOGIN_CAPTCHA);
             //短信模板id
             int templateId = Integer.parseInt(dictPo.getValue());
-            qcloudsmsComponent.singleSend(templateId, sourceId.toString(), new String[]{captchaContent, String.valueOf(BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE)});
+            String[] params = new String[]{captchaContent, String.valueOf(BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE)};
+            qcloudsmsComponent.singleSend(templateId, sourceId.toString(), params);
         }
         return this.getByType(insertPo);
     }
