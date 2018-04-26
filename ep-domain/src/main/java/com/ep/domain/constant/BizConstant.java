@@ -201,6 +201,8 @@ public class BizConstant {
      */
     public static String DICT_GROUP_QCLOUDSMS = "QCLOUDSMS";
     public static String DICT_KEY_LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
-    public static String WECHAT_BIND_MOBILE_CAPTCHA = "WECHAT_BIND_MOBILE_CAPTCHA";
+
+    public static String DICT_KEY_WECHAT_BIND_MOBILE_CAPTCHA = "WECHAT_BIND_MOBILE_CAPTCHA";
+
 
 }

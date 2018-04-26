@@ -45,12 +45,15 @@ public class QcloudsmsComponent {
                     templateId, params, smsSign, "", "");
             System.out.print(result);
         } catch (HTTPException e) {
+            log.error("[腾讯云短信]，指定模板ID单发短信失败。", e);
             // HTTP响应码错误
             e.printStackTrace();
         } catch (JSONException e) {
+            log.error("[腾讯云短信]，指定模板ID单发短信失败。", e);
             // json解析错误
             e.printStackTrace();
         } catch (IOException e) {
+            log.error("[腾讯云短信]，指定模板ID单发短信失败。", e);
             // 网络IO错误
             e.printStackTrace();
         }
@@ -69,12 +72,15 @@ public class QcloudsmsComponent {
                     msg, "", "");
             System.out.print(result);
         } catch (HTTPException e) {
+            log.error("[腾讯云短信]，单发短信失败。", e);
             // HTTP响应码错误
             e.printStackTrace();
         } catch (JSONException e) {
+            log.error("[腾讯云短信]，单发短信失败。", e);
             // json解析错误
             e.printStackTrace();
         } catch (IOException e) {
+            log.error("[腾讯云短信]，单发短信失败。", e);
             // 网络IO错误
             e.printStackTrace();
         }
@@ -93,12 +99,15 @@ public class QcloudsmsComponent {
             SmsMultiSenderResult result = msender.sendWithParam(BizConstant.QCLOUDSMS_NATION_CODE, phoneNumbers, templateId, params, smsSign, "", "");
             System.out.print(result);
         } catch (HTTPException e) {
+            log.error("[腾讯云短信]，指定模板ID群发短信失败。", e);
             // HTTP响应码错误
             e.printStackTrace();
         } catch (JSONException e) {
+            log.error("[腾讯云短信]，指定模板ID群发短信失败。", e);
             // json解析错误
             e.printStackTrace();
         } catch (IOException e) {
+            log.error("[腾讯云短信]，指定模板ID群发短信失败。", e);
             // 网络IO错误
             e.printStackTrace();
         }
@@ -118,12 +127,15 @@ public class QcloudsmsComponent {
             System.out.print(result);
             System.out.print(result);
         } catch (HTTPException e) {
+            log.error("[腾讯云短信]，群发短信失败。", e);
             // HTTP响应码错误
             e.printStackTrace();
         } catch (JSONException e) {
+            log.error("[腾讯云短信]，群发短信失败。", e);
             // json解析错误
             e.printStackTrace();
         } catch (IOException e) {
+            log.error("[腾讯云短信]，群发短信失败。", e);
             // 网络IO错误
             e.printStackTrace();
         }

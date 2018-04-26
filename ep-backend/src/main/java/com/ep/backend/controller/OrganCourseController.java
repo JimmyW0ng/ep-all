@@ -239,6 +239,7 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantview/{courseId}")
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex','platform:organCourse:index')")
     public String merchantview(Model model, @PathVariable(value = "courseId") Long courseId) {
+        //校验是否本机构的资源
         if (null == this.innerOgnOrPlatformReq(courseId, super.getCurrentUserOgnId())) {
             return "noresource";
         }
@@ -302,6 +303,7 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantUpdateInit/{courseId}")
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantUpdateInit(Model model, @PathVariable(value = "courseId") Long courseId) {
+        //校验是否本机构的资源
         if (null == this.innerOgnOrPlatformReq(courseId, super.getCurrentUserOgnId())) {
             return "noresource";
         }
@@ -391,9 +393,9 @@ public class OrganCourseController extends BackendController {
     @GetMapping("/merchantRectifyInit/{courseId}")
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     public String merchantRectifyInit(Model model, @PathVariable(value = "courseId") Long courseId) {
-
         EpSystemUserPo currentUser = super.getCurrentUser().get();
         Long ognId = super.getCurrentUserOgnId();
+        //校验是否本机构的资源
         if (null == this.innerOgnOrPlatformReq(courseId, ognId)) {
             return "noresource";
         }
@@ -485,6 +487,7 @@ public class OrganCourseController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo merchantUpdate(CreateOrganCourseDto dto) {
+        //校验是否本机构的资源
         if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
@@ -500,13 +503,13 @@ public class OrganCourseController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:organCourse:merchantIndex')")
     @ResponseBody
     public ResultDo merchantRectify(RectifyOrganCourseDto dto) {
-        EpSystemUserPo currentUser = super.getCurrentUser().get();
-        Long ognId = currentUser.getOgnId();
+        Long ognId = super.getCurrentUserOgnId();
         if (null == dto) {
             log.error("[产品]紧急修改产品失败。该产品不存在。");
             return ResultDo.build(MessageCode.ERROR_COURSE_NOT_EXIST);
         }
-        if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), super.getCurrentUserOgnId())) {
+        //校验是否本机构的资源
+        if (null == this.innerOgnOrPlatformReq(dto.getOrganCoursePo().getId(), ognId)) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
         dto.getOrganCoursePo().setOgnId(ognId);

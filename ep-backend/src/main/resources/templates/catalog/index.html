@@ -278,6 +278,9 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
+            complete: function () {
+                layer.closeAll();
+            }
 
         })
     }

@@ -2,7 +2,6 @@ package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.DateTools;
-import com.ep.common.tool.HttpClientTools;
 import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.WechatTools;
 import com.ep.domain.component.DictComponent;
@@ -70,17 +69,21 @@ public class WechatService {
     public ResultDo msgCustomSend(String accessToken, String openId, String msg) throws Exception {
         String url = String.format(BizConstant.WECHAT_URL_MSG_CUSTOM_SEND, accessToken);
         JSONObject jsonParam = new JSONObject();
-        jsonParam.put("touser", openId);
-        jsonParam.put("msgtype", "text");
+        jsonParam.put(WechatTools.PARAM_TOUSER, openId);
+        jsonParam.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
         JSONObject jsonText = new JSONObject();
-        jsonText.put("content", msg);
+        jsonText.put(WechatTools.PARAM_CONTENT, msg);
         jsonParam.put("text", jsonText);
-        Map<String, Object> responseMap = HttpClientTools.doPost(url, jsonParam.toString());
-        if (responseMap.get("errcode").toString().equals(BizConstant.WECHAT_SUCCESS_CODE)) {
-            return ResultDo.build();
-        } else {
-            return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString());
+        ResponseEntity<HashMap> responseEntity = restTemplate.postForEntity(url, jsonParam.toString(), HashMap.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            Map<String, Object> responseMap = responseEntity.getBody();
+            if (responseMap.get("errcode").toString().equals(BizConstant.WECHAT_SUCCESS_CODE)) {
+                return ResultDo.build();
+            } else {
+                return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString());
+            }
         }
+        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
     }
 
     /**
@@ -93,13 +96,13 @@ public class WechatService {
         ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(url, HashMap.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             Map<String, Object> responseMap = responseEntity.getBody();
-            if (null != responseMap.get("access_token")) {
-                String accessToken = (String) responseMap.get("access_token");
+            if (null != responseMap.get(WechatTools.PARAM_ACCESSTOKEN)) {
+                String accessToken = (String) responseMap.get(WechatTools.PARAM_ACCESSTOKEN);
                 return ResultDo.build().setResult(accessToken);
             } else {
-                log.error("[微信]获取access_token失败，errcode={}，errmsg={}。", responseMap.get("errcode"), responseMap.get("errmsg"));
-                return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString())
-                        .setErrorDescription(responseMap.get("errmsg").toString());
+                log.error("[微信]获取access_token失败，errcode={}，errmsg={}。", responseMap.get(WechatTools.PARAM_ERRCODE), responseMap.get(WechatTools.PARAM_ERRMSG));
+                return ResultDo.build().setSuccess(false).setError(responseMap.get(WechatTools.PARAM_ERRCODE).toString())
+                        .setErrorDescription(responseMap.get(WechatTools.PARAM_ERRMSG).toString());
             }
         }
         return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
@@ -170,36 +173,60 @@ public class WechatService {
      */
     public Map<String, String> postReq(Map<String, String> requestMap) {
         Map<String, String> responseMap = Maps.newHashMap();
-        //判断请求是否事件类型 event
-        if (requestMap.get("MsgType").equals(WechatTools.MESSAGE_EVENT)) {
-            if (requestMap.get("Event").equals(WechatTools.EVENT_SUB)) {
-                responseMap.put("Content", "谢谢您关注小竹马！");
-                responseMap.put("MsgType", "text");
-            } else if (requestMap.get("Event").equals(WechatTools.EVENT_CLICK)
-                    && requestMap.get("EventKey").equals("bind_mobile")) {
-                String content = SpringComponent.messageSource(BizConstant.WECHAT_BIND_MOBILE_TIP);
-                responseMap.put("Content", content);
-                responseMap.put("MsgType", "text");
-
+        if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MESSAGE_EVENT)) {
+            //请求为事件类型 event
+            if (requestMap.get(WechatTools.MESSAGE_EVENT).equals(WechatTools.EVENT_SUB)) {
+                //事件类型为关注 subscribe
+                responseMap = this.receiveEventSubscribe();
+            } else if (requestMap.get(WechatTools.MESSAGE_EVENT).equals(WechatTools.EVENT_CLICK)) {
+                //事件类型为点击 click
+                responseMap = this.receiveEventClick(requestMap.get("EventKey"));
             }
-        } else if (requestMap.get("MsgType").equals(WechatTools.MESSAGE_TEXT)) {
-            //接收文本信息
-            responseMap = this.receiveTextMsg(requestMap.get("Content"));
+        } else if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MESSAGE_TEXT)) {
+            //请求为文本类型
+            responseMap = this.receiveText(requestMap.get(WechatTools.PARAM_CONTENT));
         } else {
-            //其他
-            responseMap.put("Content", "么么哒！");
-            responseMap.put("MsgType", "text");
+            //请求为其他类型
+            responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
         }
         return responseMap;
     }
 
     /**
-     * 接收文本信息
+     * 接收事件(类型为关注)
+     * @return
+     */
+    public Map<String, String> receiveEventSubscribe() {
+        Map<String, String> responseMap = Maps.newHashMap();
+        responseMap.put(WechatTools.PARAM_CONTENT, "谢谢您关注小竹马！");
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+        return responseMap;
+    }
+
+    /**
+     * 接收事件(类型为点击)
+     *
+     * @param eventKey
+     * @return
+     */
+    public Map<String, String> receiveEventClick(String eventKey) {
+        Map<String, String> responseMap = Maps.newHashMap();
+        if ("bind_mobile".equals(eventKey)) {
+            String content = SpringComponent.messageSource(BizConstant.WECHAT_BIND_MOBILE_TIP);
+            responseMap.put(WechatTools.PARAM_CONTENT, content);
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+        }
+        return responseMap;
+    }
+
+    /**
+     * 接收文本
      *
      * @param content
      * @return
      */
-    public Map<String, String> receiveTextMsg(String content) {
+    public Map<String, String> receiveText(String content) {
         Map<String, String> responseMap = Maps.newHashMap();
         String[] contentParams = content.split(BizConstant.WECHAT_TEXT_MSG_SPLIT);
         //微信用户绑定手机号请求
@@ -213,8 +240,8 @@ public class WechatService {
             return this.receiveTextMsgCaptchaMobile(contentParams[0], contentParams[1]);
 
         }
-        responseMap.put("Content", "么么哒");
-        responseMap.put("MsgType", "text");
+        responseMap.put(WechatTools.PARAM_CONTENT, "谢谢您关注小竹马！");
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
         return responseMap;
     }
 
@@ -278,7 +305,7 @@ public class WechatService {
             responseMap.put("MsgType", "text");
             return responseMap;
         }
-        EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.WECHAT_BIND_MOBILE_CAPTCHA);
+        EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_WECHAT_BIND_MOBILE_CAPTCHA);
         //短信模板id
         int templateId = Integer.parseInt(dictPo.getValue());
         String[] templateParams = new String[1];
