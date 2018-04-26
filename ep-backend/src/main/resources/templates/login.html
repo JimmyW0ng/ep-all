@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
-    <title>EP后台 - 登录</title>
+    <title>小竹马后台 - 登录</title>
     <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon"/>
     <link th:href="@{/css/bootstrap.min14ed.css?v=3.3.6}" rel="stylesheet">
     <link th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet">
@@ -20,11 +20,11 @@
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
-
-            <h1 class="logo-name">EP</h1>
+            <img th:src="@{/img/a1.jpg}">
+            <!--<h1 class="logo-name">小竹马</h1>-->
         </div>
         <th:block th:if="${errorMsg == null}">
-            <h3>欢迎来的EP后台管理系统</h3>
+            <h3>欢迎来的小竹马后台管理系统</h3>
         </th:block>
         <th:block th:if="${errorMsg != null}">
             <h3 style="color: red"

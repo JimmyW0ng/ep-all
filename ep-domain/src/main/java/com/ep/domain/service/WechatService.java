@@ -5,7 +5,6 @@ import com.ep.common.tool.DateTools;
 import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.WechatTools;
 import com.ep.domain.component.DictComponent;
-import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -42,8 +41,6 @@ import java.util.regex.Pattern;
 @Service
 public class WechatService {
     @Autowired
-    private QcloudsmsComponent qcloudsmsComponent;
-    @Autowired
     private MessageCaptchaRepository messageCaptchaRepository;
     @Autowired
     private MemberRepository memberRepository;
@@ -70,7 +67,7 @@ public class WechatService {
         String url = String.format(BizConstant.WECHAT_URL_MSG_CUSTOM_SEND, accessToken);
         JSONObject jsonParam = new JSONObject();
         jsonParam.put(WechatTools.PARAM_TOUSER, openId);
-        jsonParam.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+        jsonParam.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         JSONObject jsonText = new JSONObject();
         jsonText.put(WechatTools.PARAM_CONTENT, msg);
         jsonParam.put("text", jsonText);
@@ -173,22 +170,22 @@ public class WechatService {
      */
     public Map<String, String> postReq(Map<String, String> requestMap) {
         Map<String, String> responseMap = Maps.newHashMap();
-        if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MESSAGE_EVENT)) {
+        if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MSGTYPE_EVENT)) {
             //请求为事件类型 event
-            if (requestMap.get(WechatTools.MESSAGE_EVENT).equals(WechatTools.EVENT_SUB)) {
+            if (requestMap.get(WechatTools.PARAM_EVENT).equals(WechatTools.EVENT_SUB)) {
                 //事件类型为关注 subscribe
                 responseMap = this.receiveEventSubscribe();
-            } else if (requestMap.get(WechatTools.MESSAGE_EVENT).equals(WechatTools.EVENT_CLICK)) {
+            } else if (requestMap.get(WechatTools.PARAM_EVENT).equals(WechatTools.EVENT_CLICK)) {
                 //事件类型为点击 click
                 responseMap = this.receiveEventClick(requestMap.get("EventKey"));
             }
-        } else if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MESSAGE_TEXT)) {
+        } else if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MSGTYPE_TEXT)) {
             //请求为文本类型
             responseMap = this.receiveText(requestMap.get(WechatTools.PARAM_CONTENT));
         } else {
             //请求为其他类型
             responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
-            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         }
         return responseMap;
     }
@@ -200,7 +197,7 @@ public class WechatService {
     public Map<String, String> receiveEventSubscribe() {
         Map<String, String> responseMap = Maps.newHashMap();
         responseMap.put(WechatTools.PARAM_CONTENT, "谢谢您关注小竹马！");
-        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
 
@@ -215,9 +212,10 @@ public class WechatService {
         if ("bind_mobile".equals(eventKey)) {
             String content = SpringComponent.messageSource(BizConstant.WECHAT_BIND_MOBILE_TIP);
             responseMap.put(WechatTools.PARAM_CONTENT, content);
-            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+            return responseMap;
         }
-        return responseMap;
+        return this.defaultResponse();
     }
 
     /**
@@ -228,20 +226,29 @@ public class WechatService {
      */
     public Map<String, String> receiveText(String content) {
         Map<String, String> responseMap = Maps.newHashMap();
+        //非法输入多个###
+        if (Pattern.matches(BizConstant.PATTERN_ILLEGAL_SPLIT, content)) {
+            return this.defaultResponse();
+        }
         String[] contentParams = content.split(BizConstant.WECHAT_TEXT_MSG_SPLIT);
         //微信用户绑定手机号请求
         if (contentParams[0].equals(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
-            String mobile = contentParams[1];
-            return this.receiveTextMsgBindMobile(mobile);
+            if (contentParams.length == BizConstant.DB_NUM_TWO) {
+                String mobile = contentParams[1];
+                return this.receiveTextMsgBindMobile(mobile);
+            } else {
+                return this.defaultResponse();
+            }
         }
         //微信用户通过验证码和手机号绑定请求
         if (Pattern.matches(BizConstant.WECHAT_PATTERN_CAPTCHA, contentParams[0])
-                && Pattern.matches(BizConstant.PATTERN_MOBILE, contentParams[1])) {
+                && Pattern.matches(BizConstant.PATTERN_MOBILE, contentParams[1])
+                && contentParams.length == BizConstant.DB_NUM_TWO) {
             return this.receiveTextMsgCaptchaMobile(contentParams[0], contentParams[1]);
 
         }
-        responseMap.put(WechatTools.PARAM_CONTENT, "谢谢您关注小竹马！");
-        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MESSAGE_TEXT);
+        responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
 
@@ -256,53 +263,60 @@ public class WechatService {
         //判断是否已绑定
         if (oldMemberPo != null) {
             if (oldMemberPo.getStatus().equals(EpMemberStatus.normal)) {
-                responseMap.put("Content", "该手机号已绑定！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！");
             } else if (oldMemberPo.getStatus().equals(EpMemberStatus.freeze)) {
-                responseMap.put("Content", "该手机号已绑定！但手机号已被冻结！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！但手机号已被冻结！");
             } else {
-                responseMap.put("Content", "找不到该手机号！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "找不到该手机号！");
             }
-            responseMap.put("MsgType", "text");
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
         }
         EpMessageCaptchaPo messageCaptchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaContent(Long.parseLong(moblie), EpMessageCaptchaCaptchaType.short_msg
                 , EpMessageCaptchaCaptchaScene.wx_bind_mobile, captcha);
         if (messageCaptchaPo != null) {
             if (!DateTools.getTimeIsAfter(messageCaptchaPo.getExpireTime(), DateTools.getCurrentDateTime())) {
-                responseMap.put("Content", "验证码已失效！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "验证码已失效！");
             } else {
+                //会员表插入数据
                 EpMemberPo epMemberPo = new EpMemberPo();
                 epMemberPo.setMobile(Long.parseLong(moblie));
                 epMemberPo.setStatus(EpMemberStatus.normal);
                 memberRepository.insert(epMemberPo);
-                responseMap.put("Content", "您已绑定成功！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "您已绑定成功！");
             }
-            responseMap.put("MsgType", "text");
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
         }
-        responseMap.put("Content", "绑定失败！");
-        responseMap.put("MsgType", "text");
+        responseMap.put(WechatTools.PARAM_CONTENT, "绑定失败！");
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
 
     /**
-     * 接收绑定号码
+     * 接收绑定#号码
      *
      * @param mobile
      */
     private Map<String, String> receiveTextMsgBindMobile(String mobile) {
         Map<String, String> responseMap = Maps.newHashMap();
+        //判断是否为手机号
+        if (!Pattern.matches(BizConstant.PATTERN_MOBILE, mobile)) {
+            responseMap.put(WechatTools.PARAM_CONTENT, "找不到该手机号！");
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+            return responseMap;
+        }
         EpMemberPo epMemberPo = memberRepository.getByMobile(Long.parseLong(mobile));
         //判断是否已绑定
         if (epMemberPo != null) {
             if (epMemberPo.getStatus().equals(EpMemberStatus.normal)) {
-                responseMap.put("Content", "该手机号已绑定！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！");
             } else if (epMemberPo.getStatus().equals(EpMemberStatus.freeze)) {
-                responseMap.put("Content", "该手机号已绑定！但手机号已被冻结！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！但手机号已被冻结！");
             } else {
-                responseMap.put("Content", "找不到该手机号！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "找不到该手机号！");
             }
-            responseMap.put("MsgType", "text");
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
         }
         EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_WECHAT_BIND_MOBILE_CAPTCHA);
@@ -312,7 +326,7 @@ public class WechatService {
         //验证码
         String captcha = ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO);
         templateParams[0] = captcha;
-        //发送短信
+        //发送短信（事件）
         QcloudsmsEventBo eventBo = new QcloudsmsEventBo(templateId, mobile, templateParams);
         publisher.publishEvent(eventBo);
         EpMessageCaptchaPo epMessageCaptchaPo = new EpMessageCaptchaPo();
@@ -321,12 +335,20 @@ public class WechatService {
         epMessageCaptchaPo.setCaptchaContent(captcha);
         epMessageCaptchaPo.setCaptchaScene(EpMessageCaptchaCaptchaScene.wx_bind_mobile);
         epMessageCaptchaPo.setExpireTime(DateTools.addMinuteTimestamp(DateTools.getCurrentDate(), BizConstant.DB_NUM_TWO));
+        //验证码表插入数据
         messageCaptchaRepository.insert(epMessageCaptchaPo);
         //微信回复
         String responseContent = String.format(SpringComponent.messageSource(BizConstant.WECHAT_CAPTCHA_BIND_MOBILE_TIP), mobile);
-        responseMap.put("Content", responseContent);
-        responseMap.put("MsgType", "text");
+        responseMap.put(WechatTools.PARAM_CONTENT, responseContent);
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
 
+
+    private Map<String, String> defaultResponse() {
+        Map<String, String> responseMap = Maps.newHashMap();
+        responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
+        responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+        return responseMap;
+    }
 }

@@ -81,9 +81,9 @@ public class WechatAccessController {
         response.setContentType("text/xml");
         Map<String, String> requestMap = WechatTools.xmlToMap(request);
         Map<String, String> responseMap = wechatService.postReq(requestMap);
-        responseMap.put("CreateTime", String.valueOf(DateTools.getCurrentDate().getTime()));
-        responseMap.put("ToUserName", requestMap.get("FromUserName"));
-        responseMap.put("FromUserName", wechatFwhId);
+        responseMap.put(WechatTools.PARAM_CREATETIME, String.valueOf(DateTools.getCurrentDate().getTime()));
+        responseMap.put(WechatTools.PARAM_TOUSERNAME, requestMap.get(WechatTools.PARAM_FROMUSERNAME));
+        responseMap.put(WechatTools.PARAM_FROMUSERNAME, wechatFwhId);
         String xml = WechatTools.mapToXmlString(responseMap);
         try {
             response.getWriter().write(xml);

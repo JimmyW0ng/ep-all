@@ -16,6 +16,9 @@ import java.util.Map;
  * @Date: 21:05 2018/4/22
  */
 public class WechatTools {
+    /**
+     * 参数
+     */
     public static final String PARAM_TOUSERNAME = "ToUserName";
     public static final String PARAM_FROMUSERNAME = "FromUserName";
     public static final String PARAM_CREATETIME = "CreateTime";
@@ -25,20 +28,26 @@ public class WechatTools {
     public static final String PARAM_ERRCODE = "errcode";
     public static final String PARAM_ERRMSG = "errmsg";
     public static final String PARAM_TOUSER = "touser";
+    public static final String PARAM_EVENT = "Event";
 
+    /**
+     * 参数MsgType的类型
+     */
+    public static final String MSGTYPE_TEXT = "text";
+    public static final String MSGTYPE_IMAGE = "image";
+    public static final String MSGTYPE_VOICE = "voice";
+    public static final String MSGTYPE_VIDEO = "video";
+    public static final String MSGTYPE_LINK = "link";
+    public static final String MSGTYPE_LOCATION = "location";
+    public static final String MSGTYPE_EVENT = "event";
 
-    public static final String MESSAGE_TEXT = "text";
-    public static final String MESSAGE_IMAGE = "image";
-    public static final String MESSAGE_VOICE = "voice";
-    public static final String MESSAGE_VIDEO = "video";
-    public static final String MESSAGE_LINK = "link";
-    public static final String MESSAGE_LOCATION = "location";
-    public static final String MESSAGE_EVENT = "event";
-
+    /**
+     * 参数Event的类型
+     */
     public static final String EVENT_SUB = "subscribe";
     public static final String EVENT_UNSUB = "unsubscribe";
-    public static final String EVENT_CLICK = "click";
-    public static final String EVENT_VIEW = "view";
+    public static final String EVENT_CLICK = "CLICK";
+    public static final String EVENT_VIEW = "VIEW";
 
     /**
      * xml转为map
@@ -78,6 +87,13 @@ public class WechatTools {
         return sb.toString();
     }
 
+    /**
+     * 输入流转map
+     *
+     * @param ins
+     * @return
+     * @throws Exception
+     */
     public static Map<String, String> inputStreamToMap(InputStream ins) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         SAXReader reader = new SAXReader();

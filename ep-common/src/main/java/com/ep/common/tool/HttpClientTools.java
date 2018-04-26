@@ -29,15 +29,6 @@ import java.util.Map;
  */
 @Slf4j
 public class HttpClientTools {
-//    @Autowired
-//    private static RestTemplate restTemplate;
-//
-//    public static RestTemplate doGet(String ){
-//        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
-//        if (org.springframework.http.HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-//
-//        }
-//    }
 
     public static Map<String, Object> doGet(String url) {
         try {
@@ -110,6 +101,7 @@ public class HttpClientTools {
             if (state == HttpStatus.SC_OK) {
                 HttpEntity responseEntity = response.getEntity();
                 String jsonStr = EntityUtils.toString(responseEntity);
+                //防止gson将int转为double
                 Gson gson = new GsonBuilder()
                         .registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
                             @Override

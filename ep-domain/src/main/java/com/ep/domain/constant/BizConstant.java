@@ -191,6 +191,10 @@ public class BizConstant {
      * 手机号正则表达式
      */
     public static String PATTERN_MOBILE = "^1\\d{10}$";
+    /**
+     * 恶意输入多个#正则表达式
+     */
+    public static String PATTERN_ILLEGAL_SPLIT = "^#+$";
 
     /**
      * 腾讯云短信 地区国内CODE
