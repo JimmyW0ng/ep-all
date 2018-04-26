@@ -18,7 +18,11 @@ import java.sql.Timestamp;
 public class HomeMemberChildReplyBo extends AbstractBasePojo {
     private Long id;
     private String childNickName;
-    private String content;
-    private Timestamp createAt;
-    public String fromNow;
+    private String replyContent;
+    private Timestamp replyCreateAt;
+    public String replyFromNow;
+    private String launchName;
+    private String launchContent;
+    private Timestamp launchCreateAt;
+    public String launchFromNow;
 }

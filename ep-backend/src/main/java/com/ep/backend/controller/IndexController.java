@@ -102,7 +102,8 @@ public class IndexController extends BackendController {
         //新回复
         List<HomeMemberChildReplyBo> homeReplys = memberChildCommentService.findHomeReply(ognId, BizConstant.OGN_HOME_REPLY_SIZE);
         homeReplys.forEach(p -> {
-            p.setFromNow(DateTools.getFromNow(p.getCreateAt()));
+            p.setReplyFromNow(DateTools.getFromNow(p.getReplyCreateAt()));
+            p.setLaunchFromNow(DateTools.getFromNow(p.getLaunchCreateAt()));
         });
         model.addAttribute("homeReplys", homeReplys);
 

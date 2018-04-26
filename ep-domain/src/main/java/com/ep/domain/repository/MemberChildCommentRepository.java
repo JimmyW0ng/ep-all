@@ -289,14 +289,20 @@ public class MemberChildCommentRepository extends AbstractCRUDRepository<EpMembe
      * @return
      */
     public List<HomeMemberChildReplyBo> findHomeReply(Long ognId, int homeReplySize) {
+        EpMemberChildComment memberChildCommentCopy = EP_MEMBER_CHILD_COMMENT.as("member_child_comment_copy");
         return dslContext.select(
                 EP_MEMBER_CHILD_COMMENT.ID,
-                EP_MEMBER_CHILD_COMMENT.CONTENT,
-                EP_MEMBER_CHILD_COMMENT.CREATE_AT,
-                EP_MEMBER_CHILD.CHILD_NICK_NAME
+                EP_MEMBER_CHILD_COMMENT.CONTENT.as("replyContent"),
+                EP_MEMBER_CHILD_COMMENT.CREATE_AT.as("replyCreateAt"),
+                EP_MEMBER_CHILD.CHILD_NICK_NAME,
+                memberChildCommentCopy.CONTENT.as("launchContent"),
+                memberChildCommentCopy.CREATE_AT.as("launchCreateAt"),
+                EP_ORGAN_ACCOUNT.NICK_NAME.as("launchName")
         ).from(EP_MEMBER_CHILD_COMMENT)
                 .innerJoin(EP_MEMBER_CHILD)
                 .on(EP_MEMBER_CHILD_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .innerJoin(memberChildCommentCopy).on(EP_MEMBER_CHILD_COMMENT.P_ID.eq(memberChildCommentCopy.ID))
+                .innerJoin(EP_ORGAN_ACCOUNT).on(EP_ORGAN_ACCOUNT.ID.eq(memberChildCommentCopy.OGN_ACCOUNT_ID))
                 .where(EP_MEMBER_CHILD_COMMENT.OGN_ID.eq(ognId))
                 .and(EP_MEMBER_CHILD_COMMENT.TYPE.eq(EpMemberChildCommentType.reply))
                 .and(EP_MEMBER_CHILD_COMMENT.DEL_FLAG.eq(false))

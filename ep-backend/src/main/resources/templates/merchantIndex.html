@@ -124,16 +124,33 @@
                 <!--<small><i class="fa fa-tim"></i> 您有22条未读消息</small>-->
                 <!--</div>-->
                 <div class="ibox-content">
-                    <div class="feed-activity-list">
+                    <div class="">
                         <div class="feed-element" th:each="po:${homeReplys}">
                             <div>
-                                <small class="pull-right text-navy" th:text="${po.fromNow}"></small>
-                                <strong th:text="${po.childNickName}"></strong>
-                                <div th:text="${po.content}">
+                                <div>
+                                    <small class="pull-right text-navy" th:text="${po.launchFromNow}"></small>
+                                    <strong style="color: #F8AC59" th:text="${po.launchName}"></strong>:<span
+                                        th:text="${po.launchContent}"></span>
+                                    <div>
+                                        <small class="text-muted"
+                                               th:text="${#dates.format(po.launchCreateAt,'yyyy-MM-dd HH:mm:ss')}"></small>
+                                    </div>
                                 </div>
-                                <small class="text-muted"
-                                       th:text="${#dates.format(po.createAt,'yyyy-MM-dd HH:mm:ss')}"></small>
+
+                                <div style="background-color: #EEE;padding: 5px">
+                                    <small class="pull-right text-navy" th:text="${po.replyFromNow}"></small>
+                                    <strong style="color: #F8AC59" th:text="${po.childNickName}"></strong>:<span
+                                        th:text="${po.replyContent}"></span>
+                                    <div>
+                                        <small class="text-muted"
+                                               th:text="${#dates.format(po.replyCreateAt,'yyyy-MM-dd HH:mm:ss')}"></small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <hr>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
