@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8">
+    <title>小竹马后台 - 登录</title>
+
+    <link rel="stylesheet" th:href="@{/css/login-v20180108.css}">
+    <style type="text/css">
+        .qc-scrollbar {
+            display: none
+        }
+
+        .J-qc-back2top, .J-qc-scrollbar {
+            display: none
+        }
+    </style>
+</head>
+<body class="">
+
+
+<div class="login-body">
+    <div class="login-wrapper"
+         style="background-image: url(/img/xzm-login-bg.jpg)">
+        <div class="login-inner">
+            <div class="lg-aside">
+                <div class="lg-logo">
+                    <!--<img style="width:30px" th:src="@{/img/login.jpg}"/>-->
+                    <!--<a href="/" hotrep="login.index.header.logo">-->
+                    <!--<i class="lg-logo-icon"></i>-->
+                    <!--</a>-->
+                </div>
+                <div class="lg-aside-event">
+
+                    <div class="lg-aside-event-tit">
+                        <div class="lg-aside-event-icon">
+
+                            <img src=""
+                                 alt="">
+
+                        </div>
+                        <h2>
+                            百万用户的信赖首选
+                        </h2>
+                    </div>
+
+                    <div class="lg-aside-event-con">
+                        <div class="lg-aside-event-txt">
+                            <icon class="lg-aside-event-txt-icon"></icon>
+                            <span>专注教育领域</em></span>
+                        </div>
+                        <div class="lg-aside-event-txt">
+                            <icon class="lg-aside-event-txt-icon"></icon>
+                            <span>提升您的效益</em></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="lg-content">
+                <div class="qc-pt-login-content" id="loginBox">
+                    <form action="/security/login" method="POST">
+                        <div class="login-tab"><h1 class="login-tab-title J-txtLoginTitle">登录</h1>
+                            <!--邮箱手机登录　start-->
+                            <div class="login-box J-loginContentBox J-qcloginBox" style="">
+                                <div class="login-form">
+                                    <ul class="form-list">
+                                        <li>
+                                            <div class="form-input">
+                                                <div class="form-unit tip-unit">
+                                                    <input value="" name="username" type="text"
+                                                           class="qc-log-input-text lg J-username"
+                                                           placeholder="用户名">
+                                                    <ul class="tip-list J-mailSuggest" style="display:none;"></ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-input">
+                                                <div class="form-unit"><input name="password"
+                                                                              type="password"
+                                                                              class="qc-log-input-text lg J-password"
+                                                                              placeholder="密码"></div>
+                                            </div>
+                                        </li>
+                                        <li style="" class="J-vcodeArea">
+                                            <div class="form-input fm-security">
+                                                <div class="form-unit">
+                                                    <label class="input-tips" style="display: none;">验证码</label>
+                                                    <input type="text" class="qc-log-input-text J-vcodeInput"
+                                                           placeholder="验证码"
+                                                           name="captchaCode" style="width:165px">
+                                                    <a href="javascript:;" class="security-num J-changeVCode">
+                                                        <img class="security-img J-vcodeImg" src="captcha/newCode"
+                                                             alt="验证码" title="点击重新获取验证码" id="captchaPng"
+                                                             onclick="reImg()"> </a></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="lg-tips-word error" th:if="${errorMsg != null}">
+                                    <div class="lg-tips-word-inner J-loginTip"
+                                         th:text="${#httpSession.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').getMessage()}"></div>
+                                </div>
+                                <div class="op-btn"><input style="background-color: #18a689" type="submit" value="登 录"
+                                                           class="qc-log-btn J-loginBtn"></input>
+                                    <!--<button type="button" class="qc-log-btn lg" style="display:none">-->
+                                    <!--<div class="m-loading">-->
+                                    <!--<div class="loading">-->
+                                    <!--<div class="one"></div>-->
+                                    <!--<div class="two"></div>-->
+                                    <!--<div class="three"></div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</button>-->
+                                </div>
+                            </div>   <!--邮箱手机登录 end-->    <!--QQ登录示意 start-->
+                            <!--<div class="login-box qq-box J-loginContentBox J-ptloginBox"-->
+                            <!--style="height: 300px; padding-bottom: 0px; display: none;">-->
+                            <!--<iframe id="qc_ptlogin_iframe" scrolling="no" width="100%" height="100%" frameborder="0"-->
+                            <!--allowtransparency="yes"></iframe>-->
+                            <!--</div>-->
+                            <!--<div class="login-box wx-box J-loginContentBox J-wxloginBox"-->
+                            <!--style="display: none; height: 220px;">-->
+                            <!--<div class="lg-qr-txt"><p> 请使用微信扫描二维码登录 <br>“腾讯云” </p></div>-->
+                            <!--<div class="lg-qr-box">-->
+                            <!--<iframe frameborder="no" scrolling="no" style="width:100%; height:215px;"-->
+                            <!--src=""></iframe>-->
+                            <!--</div>-->
+                            <!--</div>      &lt;!&ndash;QQ登录示意 end&ndash;&gt;-->
+                            <!--<div class="outside-login J-switchLoginTypeArea">-->
+                            <!--<div class="outside-login-con">-->
+                            <!--<div class="outside-login-list"><a title="QQ账号"-->
+                            <!--class="outside-login-btn qq actived J-btnSwitchLoginType"-->
+                            <!--href="javascript:;" data-type="qq"-->
+                            <!--data-hot="login.qq" hotrep="login.qq"> <em><i-->
+                            <!--class="qq-login-icon"></i></em> </a> <a title="微信账号"-->
+                            <!--class="outside-login-btn wx actived J-btnSwitchLoginType"-->
+                            <!--data-type="wx"-->
+                            <!--href="https://www.qcloud.com/login/wechat?s_url=https%3A%2F%2Fwww.qcloud.com"-->
+                            <!--data-hot="login.wx" hotrep="login.wx">-->
+                            <!--<em><i class="wx-login-icon"></i></em> </a> <a title="微信公众号"-->
+                            <!--class="outside-login-btn wxoa actived J-btnSwitchLoginType"-->
+                            <!--data-type="wxmp"-->
+                            <!--href="https://www.qcloud.com/login/mp?s_url=https%3A%2F%2Fwww.qcloud.com"-->
+                            <!--data-hot="login.mp"-->
+                            <!--hotrep="login.mp"> <em><i-->
+                            <!--class="wxoa-login-icon"></i></em> </a></div>-->
+                            <!--</div>-->
+                            <!--<div class="outside-login-aside"><a href="https://www.qcloud.com/services/forgotAccount"-->
+                            <!--class="outside-login-aside-link J-link">忘记账号</a> <a-->
+                            <!--href="https://www.qcloud.com/password/recover?s_url=https%3A%2F%2Fwww.qcloud.com"-->
+                            <!--class="outside-login-aside-link J-link">忘记密码</a></div>-->
+                            <!--</div>-->
+                            <!--<div class="lg-back-mod J-backToMailMod" style="display: none"><a href="javascript:;"-->
+                            <!--class="J-btnSwitchLoginType"-->
+                            <!--data-type="email">返回腾讯云登录</a>-->
+                            <!--</div>-->
+                            <!--<div class="login-reg-mod J-registerArea">-->
+                            <!--<div class="login-reg-txt"> 还没有注册腾讯云账号？</div>-->
+                            <!--<div class="login-reg-btn"><a-->
+                            <!--href="https://www.qcloud.com/register?s_url=https%3A%2F%2Fwww.qcloud.com"-->
+                            <!--class="qc-event-btn J-link" hotrep="login.register">立即注册</a></div>-->
+                            <!--</div>-->
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="lg-footer">
+            <div class="lg-footer-inner">
+
+                <!--<div class="lg-footer-lang">-->
+                <!--<div class="c-footer-select">-->
+                <!--<a href="javascript:;" class="c-footer-select-trigger">-->
+                <!--<i class="icon"></i><span id="curLoginSite">中国站 - 简体中文</span>-->
+                <!--</a>-->
+                <!--<div class="c-footer-dropdown">-->
+                <!--<ul class="c-footer-dropdown-menu">-->
+                <!--<li id="loginCNSelectItem" class="actived"><a href="https://cloud.tencent.com/login?lang=zh" hotrep="hp.footer.region.cn">中国站 - 简体中文</a></li>-->
+                <!--<li id="loginCNENSelectItem" class=""><a href="https://cloud.tencent.com/login?lang=en" hotrep="hp.footer.region.cn_en">中国站 - English</a></li>-->
+                <!--<li id="loginINTLSelectItem" class=""><a href="https://intl.cloud.tencent.com/login" hotrep="hp.footer.region.intl">International</a></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <div class="copyright">
+                    <p class="tag-line">
+                        Copyright &copy; 2017
+                        <script>new Date().getFullYear() > 2017 && document.write("-" + new Date().getFullYear());</script>
+                        小竹马. All Rights Reserved. <span>杭州奇闻科技&nbsp;版权所有</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<!--<script>!function(e){function t(a){if(r[a])return r[a].exports;var n=r[a]={exports:{},id:a,loaded:!1};return e[a].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var r={};return t.m=e,t.c=r,t.p="//imgcache.qq.com/qcloud/main/scripts/",t(0)}([function(e,t,r){(function(e){function t(e){return e=String(e).replace(/([.*+?^=!:${}()|[\]\/\\])/g,"\\$1"),location.search.slice(1).match(RegExp("(?:^|&)"+e+"(?:=([^&#]*)?|[&#]|$)"))?String(RegExp.$1||"").replace(/\+/g," "):void 0}var r=e.localStorage,a="qcmain/js//".replace(/\/+$/,"/"),n=/^(.+)\.(\w{12,})\.js$/,i=720,c={get:function(e){var t=r.getItem(a+e);try{return JSON.parse(t||"false")}catch(e){return!1}},has:function(e){var t=String(e).match(n);return!!t&&this.get(t[1]).hash===t[2]},set:function(e,t,c){var o=String(e).match(n);if(o){var s=+new Date,l=a+o[1];c||(c={});var u={hash:o[2],stamp:s,expire:s+60*(c.expire||i)*60*1e3,data:t};r.setItem(l,JSON.stringify(u))}return this},remove:function(e){return r.removeItem(a+e),this},clear:function(e){var t=+new Date;for(var n in r){var i=n.split(a)[1];i&&(!e||this.get(i).expire<=t)&&this.remove(i)}return this}};if("localStorage"in e&&"JSON"in e&&void 0===t("!debug"))try{var o="whatever";localStorage.setItem(o,o),localStorage.removeItem(o),e.QCMAIN_STORE=c.clear(!0)}catch(e){}}).call(t,function(){return this}())}]);</script>-->
+<!--<script type="text/javascript">-->
+<!--window.QCLoginCssLoaded = true;-->
+<!--var isMobile = false;-->
+<!--document.domain = 'qcloud.com';-->
+<!--</script>-->
+<!--<script>if("object"==typeof QCMAIN_STORE&&QCMAIN_STORE&&QCMAIN_STORE.has("login/index.b3b1d35cd14e197bc621.js"))try{eval(QCMAIN_STORE.get("login/index").data)}catch(e){}else document.write('<script src="//imgcache.qq.com/qcloud/main/scripts/release/login/index.b3b1d35cd14e197bc621.js?max_age=31536000"><\/script>');</script>-->
+<!--<script>if("object"==typeof QCMAIN_STORE&&QCMAIN_STORE&&QCMAIN_STORE.has("common/deps.0fefe48cdd6b59b16dd8.js"))try{eval(QCMAIN_STORE.get("common/deps").data)}catch(e){}else document.write('<script src="//imgcache.qq.com/qcloud/main/scripts/release/common/deps.0fefe48cdd6b59b16dd8.js?max_age=31536000"><\/script>');</script>-->
+<script>
+    function reImg() {
+        var img = document.getElementById("captchaPng");
+        img.src = "captcha/newCode";
+    }
+</script>
+
+</html>
