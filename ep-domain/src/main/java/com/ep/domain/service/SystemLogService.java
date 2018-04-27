@@ -1,8 +1,5 @@
 package com.ep.domain.service;
 
-//import com.changfu.pojo.SysLogPojo;
-//import com.changfu.business.repositories.SysLogRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ep.domain.pojo.po.EpSystemLogPo;
 import com.ep.domain.repository.SystemLogRepository;
