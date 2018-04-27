@@ -20,10 +20,11 @@
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
-            <h1 class="logo-name">EP</h1>
+            <!--<h1 class="logo-name">EP</h1>-->
+            <img style="height: 300px;width: 300px;border-radius: 20%" th:src="@{/img/login.jpg}">
         </div>
         <th:block th:if="${errorMsg == null}">
-            <h3>欢迎来的小竹马后台管理系统</h3>
+            <h3 style="display:block;margin-top:20px">欢迎来到小竹马后台</h3>
         </th:block>
         <th:block th:if="${errorMsg != null}">
             <h3 style="color: red"
