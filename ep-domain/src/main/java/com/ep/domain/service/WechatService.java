@@ -84,12 +84,18 @@ public class WechatService {
     }
 
     /**
-     * 获取access_token
+     * 获取access_token,先从从数据库获取再调用微信服务号接口
+     *
      * @return
-     * @throws Exception
      */
     public ResultDo getAccessToken() {
-        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, wechatFwhAppid, wechatFwhSecret);
+        EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_FWH_ACCESS_TOKEN);
+        //本地access_token是否过期
+        if (dictPo != null && DateTools.addMinute(DateTools.getCurrentDate(), BizConstant.WECHAT_SESSION_TIME_OUT_M).before(dictPo.getUpdateAt())) {
+            return ResultDo.build().setResult(dictPo.getValue());
+        }
+        //本地access_token过期调用微信接口
+        String url = String.format(BizConstant.WECHAT_URL_ACCESS_TOKEN, wechatFwhAppid, wechatFwhSecret);
         ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(url, HashMap.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             Map<String, Object> responseMap = responseEntity.getBody();
@@ -97,7 +103,7 @@ public class WechatService {
                 String accessToken = (String) responseMap.get(WechatTools.PARAM_ACCESSTOKEN);
                 return ResultDo.build().setResult(accessToken);
             } else {
-                log.error("[微信]获取access_token失败，errcode={}，errmsg={}。", responseMap.get(WechatTools.PARAM_ERRCODE), responseMap.get(WechatTools.PARAM_ERRMSG));
+                log.error("[微信]调用微信接口，获取access_token失败，errcode={}，errmsg={}。", responseMap.get(WechatTools.PARAM_ERRCODE), responseMap.get(WechatTools.PARAM_ERRMSG));
                 return ResultDo.build().setSuccess(false).setError(responseMap.get(WechatTools.PARAM_ERRCODE).toString())
                         .setErrorDescription(responseMap.get(WechatTools.PARAM_ERRMSG).toString());
             }
@@ -192,6 +198,7 @@ public class WechatService {
 
     /**
      * 接收事件(类型为关注)
+     *
      * @return
      */
     public Map<String, String> receiveEventSubscribe() {
@@ -209,7 +216,7 @@ public class WechatService {
      */
     public Map<String, String> receiveEventClick(String eventKey) {
         Map<String, String> responseMap = Maps.newHashMap();
-        if ("bind_mobile".equals(eventKey)) {
+        if (BizConstant.WECHAT_EVENTKEY_BIND_MOBILE.equals(eventKey)) {
             String content = SpringComponent.messageSource(BizConstant.WECHAT_BIND_MOBILE_TIP);
             responseMap.put(WechatTools.PARAM_CONTENT, content);
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
@@ -322,10 +329,11 @@ public class WechatService {
         EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_WECHAT_BIND_MOBILE_CAPTCHA);
         //短信模板id
         int templateId = Integer.parseInt(dictPo.getValue());
-        String[] templateParams = new String[1];
+        String[] templateParams = new String[2];
         //验证码
         String captcha = ValidCodeTools.generateDigitValidCode(BizConstant.DB_NUM_ZERO);
         templateParams[0] = captcha;
+        templateParams[1] = String.valueOf(BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE);
         //发送短信（事件）
         QcloudsmsEventBo eventBo = new QcloudsmsEventBo(templateId, mobile, templateParams);
         publisher.publishEvent(eventBo);
@@ -334,7 +342,7 @@ public class WechatService {
         epMessageCaptchaPo.setSourceId(Long.parseLong(mobile));
         epMessageCaptchaPo.setCaptchaContent(captcha);
         epMessageCaptchaPo.setCaptchaScene(EpMessageCaptchaCaptchaScene.wx_bind_mobile);
-        epMessageCaptchaPo.setExpireTime(DateTools.addMinuteTimestamp(DateTools.getCurrentDate(), BizConstant.DB_NUM_TWO));
+        epMessageCaptchaPo.setExpireTime(DateTools.addMinuteTimestamp(DateTools.getCurrentDate(), BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE));
         //验证码表插入数据
         messageCaptchaRepository.insert(epMessageCaptchaPo);
         //微信回复

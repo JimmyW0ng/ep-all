@@ -27,7 +27,7 @@ import java.util.Map;
  * @Date: 12:20 2018/4/22
  */
 @Controller
-@RequestMapping("security/weixin/access")
+@RequestMapping("security/wechat/access")
 public class WechatAccessController {
     @Autowired
     private WechatService wechatService;
@@ -99,7 +99,7 @@ public class WechatAccessController {
 //        Map<String, String> requestMap = WechatTools.xmlToMap(request);
 //        Map<String, String> responseMap = wechatService.postReq(requestMap);
 
-        String url = String.format(BizConstant.WECHAT_URL_GET_ACCESS_TOKEN, wechatFwhAppid, wechatFwhSecret);
+        String url = String.format(BizConstant.WECHAT_URL_ACCESS_TOKEN, wechatFwhAppid, wechatFwhSecret);
         ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(url, HashMap.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
 
@@ -109,6 +109,9 @@ public class WechatAccessController {
             String expires_in = responseMap.get("expires_in").toString();
             System.out.println(access_token);
             System.out.println(expires_in);
+            wechatService.msgCustomSend(access_token, "oNn9k0vtlBRPyCN7dF1l_MuDkUvY", "hello world");
         }
+
+
     }
 }

@@ -346,29 +346,6 @@
 
         $("#umeditor").html($("#courseContent").val())
 
-//        var E = window.wangEditor
-//        var editor = new E('#editor')
-//        // 或者 var editor = new E( document.getElementById('#editor') )
-//        //自定义菜单为空
-//        editor.customConfig.menus = []
-//        // 配置服务器端地址
-//        editor.customConfig.uploadImgServer = '/auth/organCourse/uploadCourseDescPic'
-//        editor.customConfig.uploadFileName = 'file'
-//        editor.customConfig.uploadImgMaxLength = 1
-//        editor.customConfig.uploadImgHooks = {
-//            success: function (xhr, editor, result) {
-//                // 图片上传并返回结果，图片插入成功之后触发
-//                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-//                var $img = $("#editor").find("img[name=" + result.name + "]")
-//                if ($img.length == 1) {
-//                    $("#editor").find("img[name=" + result.name + "]").eq(0).attr("precode", result.precode)
-//                }
-//
-//            },
-//        }
-//        editor.create()
-//        editor.$textElem.attr('contenteditable', false)
-
 
         $("#frm").find("input,select,textarea").attr("disabled", true)
     });

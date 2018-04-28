@@ -15,9 +15,9 @@
 
         </div>
         <div class="ibox-content">
-            <form class="form-horizontal m-t" id="menuFrm">
+            <form class="form-horizontal m-t" id="frm">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">菜单json</label>
+                    <label class="col-sm-2 control-label"><span class="required-sign">*</span>菜单json</label>
                     <div class="col-sm-4">
                         <textarea id="menuJson" name="menuJson" type="text" class="form-control" required="true"
                         ></textarea>
@@ -55,6 +55,10 @@
         })
     }
     function menuCreate() {
+        if (!$("#frm").valid()) {
+            console.log("valid fail")
+            return;
+        }
         $ajaxPostFun("/auth/wechat/menuCreate", {menuJson: $("#menuJson").val()}, function (data) {
             $("#resultJson").val(data)
         })

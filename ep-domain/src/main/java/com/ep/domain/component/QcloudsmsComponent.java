@@ -42,7 +42,7 @@ public class QcloudsmsComponent {
             SmsSingleSender ssender = new SmsSingleSender(Integer.parseInt(appid), appkey);
             // 签名参数未提供或者为空时，会使用默认签名发送短信
             SmsSingleSenderResult result = ssender.sendWithParam(BizConstant.QCLOUDSMS_NATION_CODE, phoneNumber,
-                    templateId, params, smsSign, "", "");
+                    templateId, params, null, "", "");
             System.out.print(result);
         } catch (HTTPException e) {
             log.error("[腾讯云短信]，指定模板ID单发短信失败。", e);

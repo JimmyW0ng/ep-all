@@ -1352,6 +1352,23 @@ public class DateTools {
     }
 
     /**
+     * 增加小时
+     *
+     * @param time
+     * @param hour
+     * @return
+     */
+    public static Timestamp addHour(Timestamp time, int hour) {
+        if (null == time) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(time);
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + hour);
+        return new Timestamp(calendar.getTime().getTime());
+    }
+
+    /**
      * @param date
      * @param
      * @return

@@ -29,6 +29,11 @@ public class WechatJob {
     @Value("${wechat.xcx.member.secret}")
     private String secret;
 
+    @Value("${wechat.fwh.appid}")
+    private String fwhAppId;
+    @Value("${wechat.fwh.secret}")
+    private String fwhSecret;
+
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -55,6 +60,30 @@ public class WechatJob {
             }
         } else {
             log.error("刷新微信ACCESS_TOKEN失败！");
+        }
+    }
+
+    /**
+     * 定时获取微信服务号ACCESS_TOKEN
+     */
+    @Scheduled(fixedRate = 10 * 60 * 1000)
+    public void getWechatFwhAccessToken() {
+        log.info("定时获取微信服务号ACCESS_TOKEN...start");
+        EpSystemDictPo sysDictPojo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_FWH_ACCESS_TOKEN);
+        if (DateTools.addMinute(DateTools.getCurrentDate(), BizConstant.WECHAT_SESSION_TIME_OUT_M).before(sysDictPojo.getUpdateAt())) {
+            return;
+        }
+        String url = String.format(BizConstant.WECHAT_URL_ACCESS_TOKEN, appId, secret);
+        ResponseEntity<WechatAccessTokenBo> entity = restTemplate.getForEntity(url, WechatAccessTokenBo.class);
+        log.info("定时获取微信服务号ACCESS_TOKEN...返回：{}", entity);
+        if (HttpStatus.OK.equals(entity.getStatusCode())) {
+            WechatAccessTokenBo accessTokenPojo = entity.getBody();
+            if (StringTools.isNotBlank(accessTokenPojo.getAccess_token())) {
+                log.info("刷新微信服务号ACCESS_TOKEN...accessToken={}", accessTokenPojo.getAccess_token());
+                systemDictRepository.updateByGroupName(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_FWH_ACCESS_TOKEN, accessTokenPojo.getAccess_token());
+            }
+        } else {
+            log.error("刷新微信服务号ACCESS_TOKEN失败！");
         }
     }
 }

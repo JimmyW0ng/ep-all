@@ -308,6 +308,24 @@ function apisMapClickCallback($box, success) {
         }
     }, false);
 }
+
+function picCheck(file) {
+    var flag = true
+    var ext = file.name.substring(file.name.lastIndexOf(".") + 1, file.name.length)
+    var size = file.size
+    if (!/(gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)$/.test(ext)) {
+        toastr.error("图片类型必须是gif,jpeg,jpg,png中的一种!");
+        flag = false
+        return flag;
+    }
+    if (size >= 2097152) {
+        toastr.error("图片大小不得超过2m!");
+        flag = false
+        return flag;
+    }
+    return flag;
+}
+
 $(function () {
     $("body").on("blur", "input.number-input", function () {
         if ($(this).val() == '') {

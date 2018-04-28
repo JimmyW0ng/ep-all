@@ -381,6 +381,9 @@
 
     /* 上传宣传图*/
     function uploadMainpicImg($btn, ele) {
+        if (!picCheck($("#mainpic_img")[0].files[0])) {
+            return
+        }
         $btn.attr("disabled", true)
         data = new FormData();
         data.append("file", $("#mainpic_img")[0].files[0]);

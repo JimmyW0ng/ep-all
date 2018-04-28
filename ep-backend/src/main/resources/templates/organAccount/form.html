@@ -104,6 +104,9 @@
      * 上传教师头像
      */
     function uploadAvatarImg($btn, ele) {
+        if (!picCheck($("#avatar_img")[0].files[0])) {
+            return
+        }
         $(ele).attr("disabled", true);
         data = new FormData();
         data.append("file", $("#avatar_img")[0].files[0]);

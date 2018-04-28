@@ -144,6 +144,8 @@ public class BizConstant {
 
     public static String DICT_KEY_WECHAT_ACCESS_TOKEN = "WECHAT_ACCESS_TOKEN";
 
+    public static String DICT_KEY_WECHAT_FWH_ACCESS_TOKEN = "WECHAT_FWH_ACCESS_TOKEN";
+
     public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
 
     public static int WECHAT_SESSION_TIME_OUT_M = -60;
@@ -152,11 +154,11 @@ public class BizConstant {
 
     public static String WECHAT_URL_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
 
+
     public static String WECHAT_URL_WECHAT_CODE = "https://api.weixin.qq.com/wxa/getwxacode?access_token=%s";
 
     public static String WECHAT_URL_WECHAT_CODE_UNLIMIT = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s";
 
-    public static String WECHAT_URL_GET_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
 
     public static String WECHAT_URL_MSG_CUSTOM_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
 
@@ -186,6 +188,8 @@ public class BizConstant {
      * 微信验证码正则表达式
      */
     public static String WECHAT_PATTERN_CAPTCHA = "^\\d{4}$";
+
+    public static String WECHAT_EVENTKEY_BIND_MOBILE = "bind_mobile";
 
     /**
      * 手机号正则表达式
