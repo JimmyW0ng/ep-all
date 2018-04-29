@@ -10,6 +10,7 @@ import com.ep.domain.service.MessageCaptchaService;
 import com.ep.domain.service.OrganAccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Author: J.W
  * @Date: 下午4:41 2018/1/9
  */
+@Slf4j
 @RequestMapping("security/api")
 @RestController
 @Api(value = "api-security", description = "api开放接口")
@@ -43,6 +45,7 @@ public class SecurityController extends ApiController {
                                @RequestParam("scene") EpMessageCaptchaCaptchaScene scene,
                                HttpServletRequest request
     ) {
+        log.info("获取登录短信验证码: 编码格式:{}", request.getCharacterEncoding());
         ResultDo resultDo = securityAuthComponent.checkPrincipal(clientId, clientSecret);
         if (resultDo.isError()) {
             return resultDo;
