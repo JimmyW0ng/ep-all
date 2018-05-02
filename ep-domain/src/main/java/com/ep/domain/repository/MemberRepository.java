@@ -34,6 +34,7 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
     public EpMemberPo getByMobile(Long mobile) {
         return dslContext.selectFrom(EP_MEMBER)
                 .where(EP_MEMBER.MOBILE.eq(mobile))
+                .and(EP_MEMBER.DEL_FLAG.eq(false))
                 .fetchOneInto(EpMemberPo.class);
     }
 

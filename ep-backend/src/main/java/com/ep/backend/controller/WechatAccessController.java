@@ -1,8 +1,8 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.DateTools;
-import com.ep.common.tool.WechatTools;
 import com.ep.common.tool.wechat.TokenTools;
+import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatService;
@@ -133,7 +133,7 @@ public class WechatAccessController {
         map.put("sign", "C380BEC2BFD727A4B6845133519F3AD6");
         map.put("body", "腾讯充值中心-QQ会员充值");
         map.put("out_trade_no", "20150806125346");
-        map.put("total_fee", "C380BEC2BFD727A4B6845133519F3AD6");
+        map.put("total_fee", "88");
         map.put("spbill_create_ip", "115.236.28.74");
         map.put("notify_url", "http://ep2.viphk1.ngrok.org/security/wechat/access/testPaynotify");
         map.put("trade_type", "JSAPI");

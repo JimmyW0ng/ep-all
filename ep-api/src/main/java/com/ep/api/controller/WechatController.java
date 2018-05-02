@@ -1,8 +1,8 @@
 package com.ep.api.controller;
 
 import com.ep.common.tool.DateTools;
-import com.ep.common.tool.WechatTools;
 import com.ep.common.tool.wechat.TokenTools;
+import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatService;
 import io.swagger.annotations.Api;
@@ -60,6 +60,12 @@ public class WechatController extends ApiController {
     @ApiOperation(value = "登录凭证校验")
     @PostMapping("/xcx/member/auth")
     public ResultDo<String> getCaptcha(@RequestParam("code") String code) throws GeneralSecurityException {
+        return wechatService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
+    }
+
+    @ApiOperation(value = "统一下单")
+    @PostMapping("/xcx/member/auth/pay/unifiedorder")
+    public ResultDo<String> unifiedorder(@RequestParam("code") String code) throws GeneralSecurityException {
         return wechatService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
     }
 
