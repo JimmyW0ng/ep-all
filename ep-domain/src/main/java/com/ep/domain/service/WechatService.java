@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -40,20 +41,34 @@ import java.util.regex.Pattern;
 @Slf4j
 @Service
 public class WechatService {
+
+    @Value("${wechat.fwh.appid}")
+    private String wechatFwhAppid;
+    @Value("${wechat.fwh.secret}")
+    private String wechatFwhSecret;
     @Autowired
     private MessageCaptchaRepository messageCaptchaRepository;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
     private DictComponent dictComponent;
-    @Value("${wechat.fwh.appid}")
-    private String wechatFwhAppid;
-    @Value("${wechat.fwh.secret}")
-    private String wechatFwhSecret;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    /**
+     * 微信登录凭证校验
+     *
+     * @param code
+     * @return
+     * @throws GeneralSecurityException
+     */
+    public ResultDo<String> getSessionToken(String code, String appid, String secret) throws GeneralSecurityException {
+        ResultDo<String> resultDo = ResultDo.build();
+        String url = String.format(BizConstant.WECHAT_URL_SESSION, appid, secret, code);
+        return resultDo;
+    }
 
     /**
      * 发送客服消息

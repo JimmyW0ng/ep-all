@@ -142,7 +142,7 @@ public class BizConstant {
 
     public static String DICT_GROUP_WECHAT = "WECHAT";
 
-    public static String DICT_KEY_WECHAT_ACCESS_TOKEN = "WECHAT_ACCESS_TOKEN";
+    public static String DICT_KEY_WECHAT_XCX_MEMBER_ACCESS_TOKEN = "WECHAT_XCX_MEMBER_ACCESS_TOKEN";
 
     public static String DICT_KEY_WECHAT_FWH_ACCESS_TOKEN = "WECHAT_FWH_ACCESS_TOKEN";
 
@@ -153,7 +153,6 @@ public class BizConstant {
     public static String WECHAT_URL_SESSION = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
 
     public static String WECHAT_URL_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
-
 
     public static String WECHAT_URL_WECHAT_CODE = "https://api.weixin.qq.com/wxa/getwxacode?access_token=%s";
 
