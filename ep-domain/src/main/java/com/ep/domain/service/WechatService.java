@@ -1,9 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
-import com.ep.common.tool.DateTools;
-import com.ep.common.tool.ValidCodeTools;
-import com.ep.common.tool.WechatTools;
+import com.ep.common.tool.*;
 import com.ep.domain.component.DictComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
@@ -12,6 +10,7 @@ import com.ep.domain.pojo.event.QcloudsmsEventBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.pojo.po.EpSystemDictPo;
+import com.ep.domain.pojo.wechat.WechatSessionBo;
 import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.MessageCaptchaRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
@@ -67,7 +66,17 @@ public class WechatService {
     public ResultDo<String> getSessionToken(String code, String appid, String secret) throws GeneralSecurityException {
         ResultDo<String> resultDo = ResultDo.build();
         String url = String.format(BizConstant.WECHAT_URL_SESSION, appid, secret, code);
-        return resultDo;
+        ResponseEntity<WechatSessionBo> entity = restTemplate.getForEntity(url, WechatSessionBo.class);
+        log.info("微信获取session返回：{}", entity);
+        if (!HttpStatus.OK.equals(entity.getStatusCode())) {
+            return resultDo.setError(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+        }
+        WechatSessionBo sessionPojo = entity.getBody();
+        if (!entity.getBody().isSuccess()) {
+            return resultDo.setError(sessionPojo.getErrcode()).setErrorDescription(sessionPojo.getErrmsg());
+        }
+        String jsonStr = JsonTools.encode(sessionPojo);
+        return resultDo.setResult(CryptTools.aesEncrypt(jsonStr, BizConstant.WECHAT_TOKEN_SECRET));
     }
 
     /**

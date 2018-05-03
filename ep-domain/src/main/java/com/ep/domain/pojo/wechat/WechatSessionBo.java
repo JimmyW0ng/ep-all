@@ -1,8 +1,10 @@
 package com.ep.domain.pojo.wechat;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
 public class WechatSessionBo extends WechatBaseBo {
 
     private String openid;

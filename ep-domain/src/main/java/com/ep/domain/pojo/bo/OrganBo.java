@@ -22,8 +22,7 @@ public class OrganBo extends EpOrganPo {
      * @return
      */
     public String[] getCatalogLabelFormat() {
-        if (StringTools.isNotEmpty(catalogLabels)
-                && catalogLabels.indexOf(BizConstant.STRING_SPLIT) >= BizConstant.DB_NUM_ZERO) {
+        if (StringTools.isNotEmpty(catalogLabels)) {
             return catalogLabels.split(BizConstant.STRING_SPLIT);
         }
         return null;
