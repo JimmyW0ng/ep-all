@@ -31,81 +31,63 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpMessageCaptcha extends TableImpl<EpMessageCaptchaRecord> {
 
-    private static final long serialVersionUID = -1710282366;
-
     /**
      * The reference instance of <code>ep.ep_message_captcha</code>
      */
     public static final EpMessageCaptcha EP_MESSAGE_CAPTCHA = new EpMessageCaptcha();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpMessageCaptchaRecord> getRecordType() {
-        return EpMessageCaptchaRecord.class;
-    }
-
+    private static final long serialVersionUID = -1800880318;
     /**
      * The column <code>ep.ep_message_captcha.id</code>. 主键
      */
     public final TableField<EpMessageCaptchaRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
-
     /**
      * The column <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
      */
     public final TableField<EpMessageCaptchaRecord, EpMessageCaptchaCaptchaType> CAPTCHA_TYPE = createField("captcha_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType.class), this, "类型：短信");
-
     /**
      * The column <code>ep.ep_message_captcha.source_id</code>. 业务id
      */
     public final TableField<EpMessageCaptchaRecord, Long> SOURCE_ID = createField("source_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "业务id");
-
     /**
      * The column <code>ep.ep_message_captcha.captcha_code</code>. 业务编码
      */
     public final TableField<EpMessageCaptchaRecord, String> CAPTCHA_CODE = createField("captcha_code", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "业务编码");
-
     /**
      * The column <code>ep.ep_message_captcha.captcha_content</code>. 验证码内容
      */
     public final TableField<EpMessageCaptchaRecord, String> CAPTCHA_CONTENT = createField("captcha_content", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "验证码内容");
-
     /**
      * The column <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录，微信绑定手机号
      */
     public final TableField<EpMessageCaptchaRecord, EpMessageCaptchaCaptchaScene> CAPTCHA_SCENE = createField("captcha_scene", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene.class), this, "验证场景：客户端登录，机构端登录，微信绑定手机号");
-
+    /**
+     * The column <code>ep.ep_message_captcha.channel_scene</code>. 渠道场景
+     */
+    public final TableField<EpMessageCaptchaRecord, String> CHANNEL_SCENE = createField("channel_scene", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "渠道场景");
     /**
      * The column <code>ep.ep_message_captcha.expire_time</code>. 过期时间
      */
     public final TableField<EpMessageCaptchaRecord, Timestamp> EXPIRE_TIME = createField("expire_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "过期时间");
-
     /**
      * The column <code>ep.ep_message_captcha.ip</code>. 访问ip
      */
     public final TableField<EpMessageCaptchaRecord, String> IP = createField("ip", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "访问ip");
-
     /**
      * The column <code>ep.ep_message_captcha.create_at</code>. 创建时间
      */
     public final TableField<EpMessageCaptchaRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_message_captcha.update_at</code>. 更新时间
      */
     public final TableField<EpMessageCaptchaRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_message_captcha.remark</code>. 备注
      */
     public final TableField<EpMessageCaptchaRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
-
     /**
      * The column <code>ep.ep_message_captcha.del_flag</code>. 删除标记
      */
     public final TableField<EpMessageCaptchaRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
-
     /**
      * The column <code>ep.ep_message_captcha.version</code>.
      */
@@ -131,6 +113,14 @@ public class EpMessageCaptcha extends TableImpl<EpMessageCaptchaRecord> {
 
     private EpMessageCaptcha(String alias, Table<EpMessageCaptchaRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "验证码表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpMessageCaptchaRecord> getRecordType() {
+        return EpMessageCaptchaRecord.class;
     }
 
     /**

@@ -28,6 +28,7 @@ public class EpMessageCaptchaPo extends AbstractBasePojo {
     private String captchaCode;
     private String captchaContent;
     private EpMessageCaptchaCaptchaScene captchaScene;
+    private String channelScene;
     private Timestamp expireTime;
     private String ip;
     private Timestamp createAt;

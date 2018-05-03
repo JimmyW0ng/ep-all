@@ -196,4 +196,9 @@ public class Tables {
      * token表
      */
     public static final EpToken EP_TOKEN = com.ep.domain.repository.domain.tables.EpToken.EP_TOKEN;
+
+    /**
+     * The table <code>ep.ep_wechat_openid</code>.
+     */
+    public static final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
 }

@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrganBo;
 import com.ep.domain.pojo.po.EpOrganPo;
@@ -98,6 +99,10 @@ public class OrganRepository extends AbstractCRUDRepository<EpOrganRecord, Long,
         Collection<Condition> conditions = Lists.newArrayList();
         if (ognId != null && privateFlag) {
             conditions.add(EP_ORGAN.ID.eq(ognId));
+        } else {
+            if (SpringComponent.isProduct()) {
+                conditions.add(EP_ORGAN.ID.notEqual(BizConstant.LONG_TWO));
+            }
         }
         conditions.add(EP_ORGAN.STATUS.eq(EpOrganStatus.online));
         conditions.add(EP_ORGAN.DEL_FLAG.eq(false));

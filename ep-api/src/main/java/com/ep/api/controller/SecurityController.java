@@ -42,7 +42,8 @@ public class SecurityController extends ApiController {
     public ResultDo getCaptcha(@RequestParam("mobile") Long mobile,
                                @RequestParam("clientId") String clientId,
                                @RequestParam("clientSecret") String clientSecret,
-                               @RequestParam("scene") EpMessageCaptchaCaptchaScene scene,
+                               @RequestParam("captchaScene") EpMessageCaptchaCaptchaScene captchaScene,
+                               @RequestParam(value = "channelScene", required = false) String channelScene,
                                HttpServletRequest request
     ) {
         log.info("获取登录短信验证码: 编码格式:{}", request.getCharacterEncoding());
@@ -52,7 +53,8 @@ public class SecurityController extends ApiController {
         }
         return messageCaptchaService.getCaptcha(mobile,
                 EpMessageCaptchaCaptchaType.short_msg,
-                scene,
+                captchaScene,
+                channelScene,
                 IpTools.getIpAddr(request));
     }
 

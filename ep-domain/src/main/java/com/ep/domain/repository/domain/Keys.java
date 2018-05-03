@@ -119,6 +119,7 @@ public class Keys {
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_UNIQUE_MOBILE = UniqueKeys0.KEY_EP_SYSTEM_USER_UNIQUE_MOBILE;
     public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_ROLE_PRIMARY;
     public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = UniqueKeys0.KEY_EP_TOKEN_PRIMARY;
+    public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_OPENID_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -216,5 +217,6 @@ public class Keys {
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_UNIQUE_MOBILE = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_UNIQUE_MOBILE", EpSystemUser.EP_SYSTEM_USER.MOBILE);
         public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = createUniqueKey(EpSystemUserRole.EP_SYSTEM_USER_ROLE, "KEY_ep_system_user_role_PRIMARY", EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = createUniqueKey(EpToken.EP_TOKEN, "KEY_ep_token_PRIMARY", EpToken.EP_TOKEN.ID);
+        public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_PRIMARY", EpWechatOpenid.EP_WECHAT_OPENID.ID);
     }
 }

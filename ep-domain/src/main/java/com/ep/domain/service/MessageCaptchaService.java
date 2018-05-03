@@ -43,11 +43,12 @@ public class MessageCaptchaService {
      * 获取短信验证码
      *
      * @param sourceId
-     * @param scene
+     * @param captchaScene
+     * @param channelScene
      * @param ip
      * @return
      */
-    public ResultDo getCaptcha(Long sourceId, EpMessageCaptchaCaptchaType type, EpMessageCaptchaCaptchaScene scene, String ip) {
+    public ResultDo getCaptcha(Long sourceId, EpMessageCaptchaCaptchaType type, EpMessageCaptchaCaptchaScene captchaScene, String channelScene, String ip) {
         // 校验手机格式
         if (!RegexTools.checkMobile(sourceId.toString())) {
             return ResultDo.build(MessageCode.ERROR_MOBILE_FORMAT);
@@ -58,7 +59,7 @@ public class MessageCaptchaService {
             return checkMsgActionResult;
         }
         // 如果是机构端需要判断手机号是否存在
-        if (EpMessageCaptchaCaptchaScene.organ_account_login.equals(scene) && !organAccountRepository.checkExistByMobile(sourceId)) {
+        if (EpMessageCaptchaCaptchaScene.organ_account_login.equals(captchaScene) && !organAccountRepository.checkExistByMobile(sourceId)) {
             return ResultDo.build(MessageCode.ERROR_ORGAN_ACCOUNT_NOT_EXISTS);
         }
         // 生成随机码
@@ -71,7 +72,8 @@ public class MessageCaptchaService {
         insertPo.setSourceId(sourceId);
         insertPo.setCaptchaCode(bizCode);
         insertPo.setCaptchaContent(captchaContent);
-        insertPo.setCaptchaScene(scene);
+        insertPo.setCaptchaScene(captchaScene);
+        insertPo.setChannelScene(channelScene);
         insertPo.setIp(ip);
         insertPo.setExpireTime(DateTools.addMinuteTimestamp(DateTools.getCurrentDate(), BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE));
         messageCaptchaRepository.insert(insertPo);

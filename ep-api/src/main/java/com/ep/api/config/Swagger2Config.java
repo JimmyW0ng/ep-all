@@ -1,5 +1,6 @@
 package com.ep.api.config;
 
+import com.ep.common.component.SpringComponent;
 import com.google.common.base.Predicates;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,8 +22,9 @@ public class Swagger2Config {
 
     @Bean
     public Docket getDocket() {
+        Boolean enableFlag = !SpringComponent.isProduct();
         return new Docket(DocumentationType.SWAGGER_2)
-                .enable(true)
+                .enable(!enableFlag)
                 .apiInfo(new ApiInfoBuilder().title("后端RESTful接口").build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ep.api.controller"))

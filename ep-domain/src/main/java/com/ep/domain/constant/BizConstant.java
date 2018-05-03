@@ -73,6 +73,7 @@ public class BizConstant {
      */
     public static int DB_NUM_ZERO = 0;
     public static long LONG_ZERO = 0L;
+    public static long LONG_TWO = 2L;
     public static int DB_NUM_ONE = 1;
     public static int DB_NUM_TWO = 2;
     public static int TIME_UNIT = 60;
