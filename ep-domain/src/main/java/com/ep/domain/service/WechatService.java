@@ -2,6 +2,9 @@ package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.*;
+import com.ep.common.tool.DateTools;
+import com.ep.common.tool.ValidCodeTools;
+import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.component.DictComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
@@ -91,9 +94,9 @@ public class WechatService {
         String url = String.format(BizConstant.WECHAT_URL_MSG_CUSTOM_SEND, accessToken);
         JSONObject jsonParam = new JSONObject();
         jsonParam.put(WechatTools.PARAM_TOUSER, openId);
-        jsonParam.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+        jsonParam.put("msgtype", WechatTools.MSGTYPE_TEXT);
         JSONObject jsonText = new JSONObject();
-        jsonText.put(WechatTools.PARAM_CONTENT, msg);
+        jsonText.put("content", msg);
         jsonParam.put("text", jsonText);
         ResponseEntity<HashMap> responseEntity = restTemplate.postForEntity(url, jsonParam.toString(), HashMap.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
