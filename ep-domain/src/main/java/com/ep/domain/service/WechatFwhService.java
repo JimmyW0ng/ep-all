@@ -14,12 +14,15 @@ import com.ep.domain.pojo.event.QcloudsmsEventBo;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.pojo.po.EpSystemDictPo;
+import com.ep.domain.pojo.po.EpWechatOpenidPo;
 import com.ep.domain.pojo.wechat.WechatSessionBo;
 import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.MessageCaptchaRepository;
+import com.ep.domain.repository.WechatOpenidRepository;
 import com.ep.domain.repository.domain.enums.EpMemberStatus;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaScene;
 import com.ep.domain.repository.domain.enums.EpMessageCaptchaCaptchaType;
+import com.ep.domain.repository.domain.enums.EpWechatOpenidType;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -34,6 +37,7 @@ import org.springframework.web.client.RestTemplate;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -55,6 +59,8 @@ public class WechatFwhService {
     private MemberRepository memberRepository;
     @Autowired
     private DictComponent dictComponent;
+    @Autowired
+    private WechatOpenidRepository wechatOpenidRepository;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -84,7 +90,7 @@ public class WechatFwhService {
     }
 
     /**
-     * 发送客服消息
+     * 发送消息
      *
      * @param accessToken
      * @param openId
@@ -208,14 +214,14 @@ public class WechatFwhService {
             //请求为事件类型 event
             if (requestMap.get(WechatTools.PARAM_EVENT).equals(WechatTools.EVENT_SUB)) {
                 //事件类型为关注 subscribe
-                responseMap = this.receiveEventSubscribe();
+                responseMap = this.receiveEventSubscribe(requestMap.get(WechatTools.PARAM_FROMUSERNAME));
             } else if (requestMap.get(WechatTools.PARAM_EVENT).equals(WechatTools.EVENT_CLICK)) {
                 //事件类型为点击 click
                 responseMap = this.receiveEventClick(requestMap.get("EventKey"));
             }
         } else if (requestMap.get(WechatTools.PARAM_MSGTYPE).equals(WechatTools.MSGTYPE_TEXT)) {
             //请求为文本类型
-            responseMap = this.receiveText(requestMap.get(WechatTools.PARAM_CONTENT));
+            responseMap = this.receiveText(requestMap.get(WechatTools.PARAM_CONTENT), requestMap.get(WechatTools.PARAM_FROMUSERNAME));
         } else {
             //请求为其他类型
             responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
@@ -229,12 +235,20 @@ public class WechatFwhService {
      *
      * @return
      */
-    public Map<String, String> receiveEventSubscribe() {
+    public Map<String, String> receiveEventSubscribe(String openid) {
         Map<String, String> responseMap = Maps.newHashMap();
         responseMap.put(WechatTools.PARAM_CONTENT, "谢谢您关注小竹马！");
         responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+        Optional<EpWechatOpenidPo> optional = wechatOpenidRepository.getByOpenidAndType(openid, EpWechatOpenidType.fwh);
+        if (!optional.isPresent()) {
+            EpWechatOpenidPo wechatOpenidPo = new EpWechatOpenidPo();
+            wechatOpenidPo.setOpenid(openid);
+            wechatOpenidPo.setType(EpWechatOpenidType.fwh);
+            wechatOpenidRepository.insert(wechatOpenidPo);
+        }
         return responseMap;
     }
+
 
     /**
      * 接收事件(类型为点击)
@@ -259,7 +273,7 @@ public class WechatFwhService {
      * @param content
      * @return
      */
-    public Map<String, String> receiveText(String content) {
+    public Map<String, String> receiveText(String content, String openid) {
         Map<String, String> responseMap = Maps.newHashMap();
         //非法输入多个###
         if (Pattern.matches(BizConstant.PATTERN_ILLEGAL_SPLIT, content)) {
@@ -279,7 +293,7 @@ public class WechatFwhService {
         if (Pattern.matches(BizConstant.WECHAT_PATTERN_CAPTCHA, contentParams[0])
                 && Pattern.matches(BizConstant.PATTERN_MOBILE, contentParams[1])
                 && contentParams.length == BizConstant.DB_NUM_TWO) {
-            return this.receiveTextMsgCaptchaMobile(contentParams[0], contentParams[1]);
+            return this.receiveTextMsgCaptchaMobile(contentParams[0], contentParams[1], openid);
 
         }
         responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
@@ -292,7 +306,7 @@ public class WechatFwhService {
      *
      * @param moblie
      */
-    private Map<String, String> receiveTextMsgCaptchaMobile(String captcha, String moblie) {
+    private Map<String, String> receiveTextMsgCaptchaMobile(String captcha, String moblie, String openid) {
         Map<String, String> responseMap = Maps.newHashMap();
         EpMemberPo oldMemberPo = memberRepository.getByMobile(Long.parseLong(moblie));
         //判断是否已绑定
@@ -318,7 +332,15 @@ public class WechatFwhService {
                 epMemberPo.setMobile(Long.parseLong(moblie));
                 epMemberPo.setStatus(EpMemberStatus.normal);
                 memberRepository.insert(epMemberPo);
-                responseMap.put(WechatTools.PARAM_CONTENT, "您已绑定成功！");
+                responseMap.put(WechatTools.PARAM_CONTENT, "您已绑定成功" + moblie + "的手机号！");
+                //公众号关联表更新手机号
+                EpWechatOpenidPo wechatOpenidPo = new EpWechatOpenidPo();
+                wechatOpenidPo.setOpenid(openid);
+                wechatOpenidPo.setType(EpWechatOpenidType.fwh);
+                wechatOpenidPo.setMobile(Long.parseLong(moblie));
+//                wechatOpenidRepository.
+                //todo
+
             }
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
