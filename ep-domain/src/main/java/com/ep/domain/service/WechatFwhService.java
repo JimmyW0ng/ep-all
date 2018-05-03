@@ -1,8 +1,9 @@
 package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
-import com.ep.common.tool.*;
+import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.DateTools;
+import com.ep.common.tool.JsonTools;
 import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.component.DictComponent;
@@ -42,7 +43,7 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 @Service
-public class WechatService {
+public class WechatFwhService {
 
     @Value("${wechat.fwh.appid}")
     private String wechatFwhAppid;

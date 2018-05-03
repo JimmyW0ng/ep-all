@@ -4,8 +4,8 @@ import com.ep.common.tool.DateTools;
 import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.service.WechatFwhService;
 import com.ep.domain.service.WechatPayService;
-import com.ep.domain.service.WechatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -56,14 +56,14 @@ public class WechatController extends ApiController {
     @Value("${wechat.fwh.secret}")
     private String wechatFwhSecret;
     @Autowired
-    private WechatService wechatService;
+    private WechatFwhService wechatFwhService;
     @Autowired
     private WechatPayService wechatPayService;
 
     @ApiOperation(value = "登录凭证校验")
     @PostMapping("/xcx/member/auth")
     public ResultDo<String> getCaptcha(@RequestParam("code") String code) throws GeneralSecurityException {
-        return wechatService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
+        return wechatFwhService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
     }
 
     @ApiOperation(value = "小程序统一下单")
@@ -118,7 +118,7 @@ public class WechatController extends ApiController {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/xml");
         Map<String, String> requestMap = WechatTools.xmlToMap(request);
-        Map<String, String> responseMap = wechatService.postReq(requestMap);
+        Map<String, String> responseMap = wechatFwhService.postReq(requestMap);
         responseMap.put(WechatTools.PARAM_CREATETIME, String.valueOf(DateTools.getCurrentDate().getTime()));
         responseMap.put(WechatTools.PARAM_TOUSERNAME, requestMap.get(WechatTools.PARAM_FROMUSERNAME));
         responseMap.put(WechatTools.PARAM_FROMUSERNAME, wechatFwhId);

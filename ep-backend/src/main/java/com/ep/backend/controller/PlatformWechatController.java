@@ -1,7 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.service.WechatService;
+import com.ep.domain.service.WechatFwhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("auth/wechat")
 public class PlatformWechatController extends BackendController {
     @Autowired
-    private WechatService wechatService;
+    private WechatFwhService wechatFwhService;
     @Value("${wechat.fwh.token}")
     private String wechatFwhToken;
     @Value("${wechat.fwh.id}")
@@ -40,7 +40,7 @@ public class PlatformWechatController extends BackendController {
     @GetMapping("menuGet")
     @ResponseBody
     public ResultDo menuGet() {
-        return wechatService.menuGet();
+        return wechatFwhService.menuGet();
     }
 
     /**
@@ -51,7 +51,7 @@ public class PlatformWechatController extends BackendController {
     @PostMapping("menuCreate")
     @ResponseBody
     public ResultDo menuCreate(@RequestParam(value = "menuJson") String menuJson) {
-        return wechatService.menuCreate(menuJson);
+        return wechatFwhService.menuCreate(menuJson);
     }
 
     /**
@@ -62,7 +62,7 @@ public class PlatformWechatController extends BackendController {
     @GetMapping("menuDelete")
     @ResponseBody
     public ResultDo menuDelete() {
-        return wechatService.menuDelete();
+        return wechatFwhService.menuDelete();
     }
 
     /**
@@ -72,11 +72,11 @@ public class PlatformWechatController extends BackendController {
      */
     @GetMapping("msgCustomSend")
     public void msgCustomSend() throws Exception {
-        ResultDo resultDoAccessToken = wechatService.getAccessToken();
+        ResultDo resultDoAccessToken = wechatFwhService.getAccessToken();
         if (resultDoAccessToken.isSuccess()) {
             String accessToken = (String) resultDoAccessToken.getResult();
             String openId = "oNn9k0vtlBRPyCN7dF1l_MuDkUvY";
-            wechatService.msgCustomSend(accessToken, openId, "hello world");
+            wechatFwhService.msgCustomSend(accessToken, openId, "hello world");
         }
     }
 

@@ -5,7 +5,7 @@ import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.service.WechatService;
+import com.ep.domain.service.WechatFwhService;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +32,7 @@ import java.util.Map;
 @RequestMapping("security/wechat/access")
 public class WechatAccessController {
     @Autowired
-    private WechatService wechatService;
+    private WechatFwhService wechatFwhService;
     @Value("${wechat.fwh.token}")
     private String wechatFwhToken;
     @Value("${wechat.fwh.id}")
@@ -81,7 +81,7 @@ public class WechatAccessController {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/xml");
         Map<String, String> requestMap = WechatTools.xmlToMap(request);
-        Map<String, String> responseMap = wechatService.postReq(requestMap);
+        Map<String, String> responseMap = wechatFwhService.postReq(requestMap);
         responseMap.put("CreateTime", String.valueOf(DateTools.getCurrentDate().getTime()));
         responseMap.put("ToUserName", requestMap.get("FromUserName"));
         responseMap.put("FromUserName", wechatFwhId);
@@ -111,7 +111,7 @@ public class WechatAccessController {
             String expires_in = responseMap.get("expires_in").toString();
             System.out.println(access_token);
             System.out.println(expires_in);
-            wechatService.msgCustomSend(access_token, "oNn9k0vtlBRPyCN7dF1l_MuDkUvY", "hello world");
+            wechatFwhService.msgCustomSend(access_token, "oNn9k0vtlBRPyCN7dF1l_MuDkUvY", "hello world");
         }
 
 
@@ -119,7 +119,7 @@ public class WechatAccessController {
 
     @GetMapping("testPay")
     public void testPay() throws Exception {
-        ResultDo resultDoAccessToken = wechatService.getAccessToken();
+        ResultDo resultDoAccessToken = wechatFwhService.getAccessToken();
 //        if (!resultDoAccessToken.isSuccess()) {
 //            return ResultDo.build().setSuccess(false);
 //        }
