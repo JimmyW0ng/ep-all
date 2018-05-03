@@ -30,6 +30,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //        // swagger
 //        Swagger2Config.class
         ThymeleafConfig.class
+        //文件上传配置
+//        MultipartConfig.class
 })
 @ComponentScan(basePackages = {"com.ep"})
 @EnableScheduling

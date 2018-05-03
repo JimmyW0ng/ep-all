@@ -4,9 +4,11 @@ import com.ep.common.tool.DateTools;
 import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.service.WechatPayService;
 import com.ep.domain.service.WechatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,8 +35,6 @@ public class WechatController extends ApiController {
     private String xcxMemberAppId;
     @Value("${wechat.xcx.member.secret}")
     private String xcxMemberSecret;
-    @Autowired
-    private WechatService wechatService;
     /**
      * 微信服务号token
      */
@@ -55,7 +55,10 @@ public class WechatController extends ApiController {
      */
     @Value("${wechat.fwh.secret}")
     private String wechatFwhSecret;
-
+    @Autowired
+    private WechatService wechatService;
+    @Autowired
+    private WechatPayService wechatPayService;
 
     @ApiOperation(value = "登录凭证校验")
     @PostMapping("/xcx/member/auth")
@@ -63,10 +66,22 @@ public class WechatController extends ApiController {
         return wechatService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
     }
 
-    @ApiOperation(value = "统一下单")
-    @PostMapping("/xcx/member/auth/pay/unifiedorder")
-    public ResultDo<String> unifiedorder(@RequestParam("code") String code) throws GeneralSecurityException {
-        return wechatService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
+    @ApiOperation(value = "小程序统一下单")
+    @PostMapping("/xcx/pay/unifiedorder")
+    public ResultDo<String> xcxPayUnifiedorder(
+            @ApiParam(value = "商品描述(128)", required = true) @RequestParam("body") String body,
+            @ApiParam(value = "商品详情(6000)", required = false) @RequestParam("detail") String detail,
+            @ApiParam(value = "附加数据(127)", required = false) @RequestParam("attach") String attach,
+            @ApiParam(value = "商户订单号(32)", required = true) @RequestParam("out_trade_no") String out_trade_no,
+            @ApiParam(value = "标价金额(单位为分)", required = true) @RequestParam("total_fee") int total_fee,
+            @ApiParam(value = "终端IP(16),APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP", required = true)
+            @RequestParam("spbill_create_ip（16）") String spbill_create_ip,
+            @ApiParam(value = "交易起始时间（14）格式为yyyyMMddHHmmss", required = false) @RequestParam("time_start") String time_start,
+            @ApiParam(value = "交易结束时间（14）格式为yyyyMMddHHmmss", required = false) @RequestParam("time_expire") String time_expire,
+            @ApiParam(value = "用户标识（128）", required = true) @RequestParam("openid") String openid
+    ) throws GeneralSecurityException {
+        return ResultDo.build();
+//        return wechatPayService.xcxUnifiedorder(body,detail,attach,out_trade_no,total_fee,spbill_create_ip,time_start,time_expire,openid);
     }
 
     @GetMapping("fwh/access")
