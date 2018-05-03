@@ -31,39 +31,6 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     private static final long serialVersionUID = -1665643310;
 
     /**
-     * Create a detached EpMemberChildHonorRecord
-     */
-    public EpMemberChildHonorRecord() {
-        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
-    }
-
-    /**
-     * Create a detached, initialised EpMemberChildHonorRecord
-     */
-    public EpMemberChildHonorRecord(Long id, Long childId, Long ognId, Long courseId, Long classId, String content, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
-
-        set(0, id);
-        set(1, childId);
-        set(2, ognId);
-        set(3, courseId);
-        set(4, classId);
-        set(5, content);
-        set(6, createAt);
-        set(7, updateAt);
-        set(8, remark);
-        set(9, delFlag);
-        set(10, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_member_child_honor.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_member_child_honor.id</code>. 主键
      */
     public EpMemberChildHonorRecord setId(Long value) {
@@ -72,10 +39,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.child_id</code>. 孩子id
+     * Getter for <code>ep.ep_member_child_honor.id</code>. 主键
      */
-    public Long getChildId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -87,10 +54,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
+     * Getter for <code>ep.ep_member_child_honor.child_id</code>. 孩子id
      */
-    public Long getOgnId() {
-        return (Long) get(2);
+    public Long getChildId() {
+        return (Long) get(1);
     }
 
     /**
@@ -102,10 +69,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.course_id</code>. 课程id
+     * Getter for <code>ep.ep_member_child_honor.ogn_id</code>. 机构_id
      */
-    public Long getCourseId() {
-        return (Long) get(3);
+    public Long getOgnId() {
+        return (Long) get(2);
     }
 
     /**
@@ -117,10 +84,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.class_id</code>. 班级id
+     * Getter for <code>ep.ep_member_child_honor.course_id</code>. 课程id
      */
-    public Long getClassId() {
-        return (Long) get(4);
+    public Long getCourseId() {
+        return (Long) get(3);
     }
 
     /**
@@ -132,10 +99,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.content</code>. 荣誉内容
+     * Getter for <code>ep.ep_member_child_honor.class_id</code>. 班级id
      */
-    public String getContent() {
-        return (String) get(5);
+    public Long getClassId() {
+        return (Long) get(4);
     }
 
     /**
@@ -147,10 +114,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_member_child_honor.content</code>. 荣誉内容
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(6);
+    public String getContent() {
+        return (String) get(5);
     }
 
     /**
@@ -162,10 +129,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_member_child_honor.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(7);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(6);
     }
 
     /**
@@ -177,10 +144,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.remark</code>. 备注
+     * Getter for <code>ep.ep_member_child_honor.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(8);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -192,10 +159,10 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
-     * Getter for <code>ep.ep_member_child_honor.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_member_child_honor.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(9);
+    public String getRemark() {
+        return (String) get(8);
     }
 
     /**
@@ -206,20 +173,12 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_member_child_honor.version</code>.
+     * Getter for <code>ep.ep_member_child_honor.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(10);
+    public Boolean getDelFlag() {
+        return (Boolean) get(9);
     }
-
-    // -------------------------------------------------------------------------
-    // Record11 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_member_child_honor.version</code>.
@@ -230,12 +189,27 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
     }
 
     /**
+     * Getter for <code>ep.ep_member_child_honor.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(10);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record11 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -519,10 +493,6 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -549,5 +519,35 @@ public class EpMemberChildHonorRecord extends UpdatableRecordImpl<EpMemberChildH
         value10(value10);
         value11(value11);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpMemberChildHonorRecord
+     */
+    public EpMemberChildHonorRecord() {
+        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
+    }
+
+    /**
+     * Create a detached, initialised EpMemberChildHonorRecord
+     */
+    public EpMemberChildHonorRecord(Long id, Long childId, Long ognId, Long courseId, Long classId, String content, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMemberChildHonor.EP_MEMBER_CHILD_HONOR);
+
+        set(0, id);
+        set(1, childId);
+        set(2, ognId);
+        set(3, courseId);
+        set(4, classId);
+        set(5, content);
+        set(6, createAt);
+        set(7, updateAt);
+        set(8, remark);
+        set(9, delFlag);
+        set(10, version);
     }
 }

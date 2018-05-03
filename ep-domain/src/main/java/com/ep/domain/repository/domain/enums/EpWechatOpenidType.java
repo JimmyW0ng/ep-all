@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 微信公众号类型:小程序商户;小程序客户;服务号
+ * 微信公众号类型:服务号
  */
 @Generated(
         value = {
@@ -23,10 +23,6 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpWechatOpenidType implements EnumType {
-
-    xcx_organ("xcx_organ"),
-
-    xcx_member("xcx_member"),
 
     fwh("fwh");
 

@@ -29,23 +29,36 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatOpenid extends TableImpl<EpWechatOpenidRecord> {
 
+    private static final long serialVersionUID = 247851671;
+
     /**
      * The reference instance of <code>ep.ep_wechat_openid</code>
      */
     public static final EpWechatOpenid EP_WECHAT_OPENID = new EpWechatOpenid();
-    private static final long serialVersionUID = -2088048725;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpWechatOpenidRecord> getRecordType() {
+        return EpWechatOpenidRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_wechat_openid.id</code>.
      */
     public final TableField<EpWechatOpenidRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
     /**
      * The column <code>ep.ep_wechat_openid.openid</code>. 微信公众号号内，用户openid
      */
     public final TableField<EpWechatOpenidRecord, String> OPENID = createField("openid", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "微信公众号号内，用户openid");
+
     /**
-     * The column <code>ep.ep_wechat_openid.type</code>. 微信公众号类型:小程序商户;小程序客户;服务号
+     * The column <code>ep.ep_wechat_openid.type</code>. 微信公众号类型:服务号
      */
-    public final TableField<EpWechatOpenidRecord, EpWechatOpenidType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpWechatOpenidType.class), this, "微信公众号类型:小程序商户;小程序客户;服务号");
+    public final TableField<EpWechatOpenidRecord, EpWechatOpenidType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpWechatOpenidType.class), this, "微信公众号类型:服务号");
+
     /**
      * The column <code>ep.ep_wechat_openid.mobile</code>. 手机号
      */
@@ -71,14 +84,6 @@ public class EpWechatOpenid extends TableImpl<EpWechatOpenidRecord> {
 
     private EpWechatOpenid(String alias, Table<EpWechatOpenidRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpWechatOpenidRecord> getRecordType() {
-        return EpWechatOpenidRecord.class;
     }
 
     /**

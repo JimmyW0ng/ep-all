@@ -29,55 +29,76 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpSystemLog extends TableImpl<EpSystemLogRecord> {
 
+    private static final long serialVersionUID = -254853139;
+
     /**
      * The reference instance of <code>ep.ep_system_log</code>
      */
     public static final EpSystemLog EP_SYSTEM_LOG = new EpSystemLog();
-    private static final long serialVersionUID = -254853139;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpSystemLogRecord> getRecordType() {
+        return EpSystemLogRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_system_log.id</code>. 编号
      */
     public final TableField<EpSystemLogRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "编号");
+
     /**
      * The column <code>ep.ep_system_log.module_name</code>. 模块名称
      */
     public final TableField<EpSystemLogRecord, String> MODULE_NAME = createField("module_name", org.jooq.impl.SQLDataType.VARCHAR.length(256), this, "模块名称");
+
     /**
      * The column <code>ep.ep_system_log.module_desc</code>. 日志描述
      */
     public final TableField<EpSystemLogRecord, String> MODULE_DESC = createField("module_desc", org.jooq.impl.SQLDataType.VARCHAR.length(1000), this, "日志描述");
+
     /**
      * The column <code>ep.ep_system_log.remote_addr</code>. 操作IP地址
      */
     public final TableField<EpSystemLogRecord, String> REMOTE_ADDR = createField("remote_addr", org.jooq.impl.SQLDataType.VARCHAR.length(256), this, "操作IP地址");
+
     /**
      * The column <code>ep.ep_system_log.operate_id</code>. 操作者ID
      */
     public final TableField<EpSystemLogRecord, Long> OPERATE_ID = createField("operate_id", org.jooq.impl.SQLDataType.BIGINT, this, "操作者ID");
+
     /**
      * The column <code>ep.ep_system_log.operate_name</code>. 操作者姓名
      */
     public final TableField<EpSystemLogRecord, String> OPERATE_NAME = createField("operate_name", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "操作者姓名");
+
     /**
      * The column <code>ep.ep_system_log.operate_method</code>. 操作方法
      */
     public final TableField<EpSystemLogRecord, String> OPERATE_METHOD = createField("operate_method", org.jooq.impl.SQLDataType.CLOB, this, "操作方法");
+
     /**
      * The column <code>ep.ep_system_log.request_url</code>. 请求URL
      */
     public final TableField<EpSystemLogRecord, String> REQUEST_URL = createField("request_url", org.jooq.impl.SQLDataType.VARCHAR.length(3000), this, "请求URL");
+
     /**
      * The column <code>ep.ep_system_log.params</code>. 操作提交的数据
      */
     public final TableField<EpSystemLogRecord, String> PARAMS = createField("params", org.jooq.impl.SQLDataType.CLOB, this, "操作提交的数据");
+
     /**
      * The column <code>ep.ep_system_log.result</code>. 操作返回的结果
      */
     public final TableField<EpSystemLogRecord, String> RESULT = createField("result", org.jooq.impl.SQLDataType.CLOB, this, "操作返回的结果");
+
     /**
      * The column <code>ep.ep_system_log.exception</code>. 异常信息
      */
     public final TableField<EpSystemLogRecord, String> EXCEPTION = createField("exception", org.jooq.impl.SQLDataType.CLOB, this, "异常信息");
+
     /**
      * The column <code>ep.ep_system_log.operate_time</code>. 操作时间
      */
@@ -103,14 +124,6 @@ public class EpSystemLog extends TableImpl<EpSystemLogRecord> {
 
     private EpSystemLog(String alias, Table<EpSystemLogRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "日志表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpSystemLogRecord> getRecordType() {
-        return EpSystemLogRecord.class;
     }
 
     /**
