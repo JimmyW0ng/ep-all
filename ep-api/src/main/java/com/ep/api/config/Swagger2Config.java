@@ -24,7 +24,7 @@ public class Swagger2Config {
     public Docket getDocket() {
         Boolean enableFlag = !SpringComponent.isProduct();
         return new Docket(DocumentationType.SWAGGER_2)
-                .enable(!enableFlag)
+                .enable(enableFlag)
                 .apiInfo(new ApiInfoBuilder().title("后端RESTful接口").build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ep.api.controller"))
