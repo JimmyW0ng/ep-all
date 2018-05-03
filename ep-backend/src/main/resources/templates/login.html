@@ -5,16 +5,8 @@
     <meta charset="utf-8">
     <title>小竹马后台 - 登录</title>
 
-    <link rel="stylesheet" th:href="@{/css/login-v20180108.css}">
-    <style type="text/css">
-        .qc-scrollbar {
-            display: none
-        }
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 
-        .J-qc-back2top, .J-qc-scrollbar {
-            display: none
-        }
-    </style>
 </head>
 <body class="">
 
@@ -39,7 +31,7 @@
                                  alt="">
 
                         </div>
-                        <h2>
+                        <h2 style="display: none">
                             百万用户的信赖首选
                         </h2>
                     </div>
@@ -47,11 +39,11 @@
                     <div class="lg-aside-event-con">
                         <div class="lg-aside-event-txt">
                             <icon class=""></icon>
-                            <span>专注教育领域</em></span>
+                            <span></em></span>
                         </div>
                         <div class="lg-aside-event-txt">
                             <icon class=""></icon>
-                            <span>提升您的效益</em></span>
+                            <span></em></span>
                         </div>
 
                     </div>
@@ -125,8 +117,17 @@
                         Copyright &copy; 2017
                         <script>new Date().getFullYear() > 2017 && document.write("-" + new Date().getFullYear());</script>
                         小竹马. All Rights Reserved. <span>杭州奇闻科技&nbsp;版权所有</span>
+                        <a target="_blank"
+                           href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602009254"
+                           style="color: white">
+                            <img style="display: inline-block;margin-left: 20px;margin-right: 10px"
+                                 th:src="@{/img/gonganbeian.png}"/>浙公网安备 33010602009254号
+                        </a>
+
                     </p>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -134,14 +135,6 @@
 
 
 </body>
-<!--<script>!function(e){function t(a){if(r[a])return r[a].exports;var n=r[a]={exports:{},id:a,loaded:!1};return e[a].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var r={};return t.m=e,t.c=r,t.p="//imgcache.qq.com/qcloud/main/scripts/",t(0)}([function(e,t,r){(function(e){function t(e){return e=String(e).replace(/([.*+?^=!:${}()|[\]\/\\])/g,"\\$1"),location.search.slice(1).match(RegExp("(?:^|&)"+e+"(?:=([^&#]*)?|[&#]|$)"))?String(RegExp.$1||"").replace(/\+/g," "):void 0}var r=e.localStorage,a="qcmain/js//".replace(/\/+$/,"/"),n=/^(.+)\.(\w{12,})\.js$/,i=720,c={get:function(e){var t=r.getItem(a+e);try{return JSON.parse(t||"false")}catch(e){return!1}},has:function(e){var t=String(e).match(n);return!!t&&this.get(t[1]).hash===t[2]},set:function(e,t,c){var o=String(e).match(n);if(o){var s=+new Date,l=a+o[1];c||(c={});var u={hash:o[2],stamp:s,expire:s+60*(c.expire||i)*60*1e3,data:t};r.setItem(l,JSON.stringify(u))}return this},remove:function(e){return r.removeItem(a+e),this},clear:function(e){var t=+new Date;for(var n in r){var i=n.split(a)[1];i&&(!e||this.get(i).expire<=t)&&this.remove(i)}return this}};if("localStorage"in e&&"JSON"in e&&void 0===t("!debug"))try{var o="whatever";localStorage.setItem(o,o),localStorage.removeItem(o),e.QCMAIN_STORE=c.clear(!0)}catch(e){}}).call(t,function(){return this}())}]);</script>-->
-<!--<script type="text/javascript">-->
-<!--window.QCLoginCssLoaded = true;-->
-<!--var isMobile = false;-->
-<!--document.domain = 'qcloud.com';-->
-<!--</script>-->
-<!--<script>if("object"==typeof QCMAIN_STORE&&QCMAIN_STORE&&QCMAIN_STORE.has("login/index.b3b1d35cd14e197bc621.js"))try{eval(QCMAIN_STORE.get("login/index").data)}catch(e){}else document.write('<script src="//imgcache.qq.com/qcloud/main/scripts/release/login/index.b3b1d35cd14e197bc621.js?max_age=31536000"><\/script>');</script>-->
-<!--<script>if("object"==typeof QCMAIN_STORE&&QCMAIN_STORE&&QCMAIN_STORE.has("common/deps.0fefe48cdd6b59b16dd8.js"))try{eval(QCMAIN_STORE.get("common/deps").data)}catch(e){}else document.write('<script src="//imgcache.qq.com/qcloud/main/scripts/release/common/deps.0fefe48cdd6b59b16dd8.js?max_age=31536000"><\/script>');</script>-->
 <script>
     function reImg() {
         var img = document.getElementById("captchaPng");
