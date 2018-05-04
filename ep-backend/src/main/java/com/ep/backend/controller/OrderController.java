@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -485,26 +483,6 @@ public class OrderController extends BackendController {
         Long ognId = super.getCurrentUserOgnId();
         return orderService.batchRefuse(ids, batchRefuseRemark, ognId);
     }
-
-    /**
-     * 报名成功服务号推送信息
-     *
-     * @return
-     */
-    @GetMapping("/orderSuccessServicePush")
-    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-    public void orderSuccessServicePush(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println(request.getParameter("echostr"));//echostr
-        PrintWriter writer = response.getWriter();
-//        if (signature.equals(sign)) {// 验证成功返回ehcostr
-        writer.print(request.getParameter("echostr"));
-//        } else {
-//            writer.print("error");
-//        }
-        writer.flush();
-        writer.close();
-    }
-
 
     /**
      * 校验业务对象是否属于该机构，是：返回po;否：返回null

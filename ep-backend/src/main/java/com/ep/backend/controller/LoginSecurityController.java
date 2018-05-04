@@ -10,14 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @Description: backend开放控制类
@@ -82,21 +80,6 @@ public class LoginSecurityController extends BackendController {
                 }
             }
         }
-    }
-
-    /**
-     * 报名成功服务号推送信息
-     *
-     * @return
-     */
-    @GetMapping("/orderSuccessServicePush")
-    public void orderSuccessServicePush(@RequestParam(value = "echostr", required = true) String echostr,
-                                        HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        System.out.println(request.getParameter("echostr"));
-        PrintWriter writer = response.getWriter();
-        writer.print(echostr);
-        writer.flush();
-        writer.close();
     }
 
 }
