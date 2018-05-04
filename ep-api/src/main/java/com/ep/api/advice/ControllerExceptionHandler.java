@@ -3,6 +3,7 @@ package com.ep.api.advice;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,8 +25,11 @@ public class ControllerExceptionHandler {
                 || ex.getClass().equals(MethodArgumentTypeMismatchException.class)) {
             // 接口入参缺失或者格式不正确
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+        } else if (ex instanceof AuthenticationException) {
+            // 接口入参缺失或者格式不正确
+            return ResultDo.build(MessageCode.ERROR_SYSTEM).setErrorDescription(ex.getMessage());
         }
-        return ResultDo.build(MessageCode.ERROR_SYSTEM).setErrorDescription(ex.getMessage());
+        return ResultDo.build(MessageCode.ERROR_SYSTEM);
     }
 
 }

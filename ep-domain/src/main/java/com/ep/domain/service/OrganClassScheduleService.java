@@ -301,6 +301,9 @@ public class OrganClassScheduleService {
         }
         // 插入评论内容
         if (StringTools.isNotBlank(comment)) {
+            log.info("随堂评价评论内容：{}", comment);
+            comment = StringTools.filterEmoji(comment);
+            log.info("随堂评价去除非法字符后：{}", comment);
             EpMemberChildCommentPo commentPo = new EpMemberChildCommentPo();
             commentPo.setChildId(schedulePo.getChildId());
             commentPo.setOgnId(classPo.getOgnId());
