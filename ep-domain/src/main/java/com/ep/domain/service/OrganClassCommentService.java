@@ -5,6 +5,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.HomeClassCommentBo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.po.EpFilePo;
 import com.ep.domain.pojo.po.EpMemberChildPo;
@@ -170,5 +171,16 @@ public class OrganClassCommentService {
 
     public Optional<EpOrganClassCommentPo> findById(Long id) {
         return organClassCommentRepository.findById(id);
+    }
+
+    /**
+     * 首页精选评论
+     *
+     * @param ognId
+     * @param homeCommentSize
+     * @return
+     */
+    public List<HomeClassCommentBo> findHomeComment(Long ognId, int homeCommentSize) {
+        return organClassCommentRepository.findHomeComment(ognId, homeCommentSize);
     }
 }

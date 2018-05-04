@@ -91,6 +91,10 @@ public class BizConstant {
      */
     public static int OGN_HOME_REPLY_SIZE = 10;
     /**
+     * 商户首页展示精选评价条数
+     */
+    public static int OGN_HOME_COMMENT_SIZE = 10;
+    /**
      * 首页订单统计图表月数
      */
     public static int OGN_HOME_MONTH_SIZE = 6;

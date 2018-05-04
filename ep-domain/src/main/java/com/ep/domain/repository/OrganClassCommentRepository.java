@@ -1,6 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.bo.HomeClassCommentBo;
 import com.ep.domain.pojo.bo.OrganClassCommentBo;
 import com.ep.domain.pojo.po.EpOrganClassCommentPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCommentRecord;
@@ -226,6 +227,33 @@ public class OrganClassCommentRepository extends AbstractCRUDRepository<EpOrganC
                 .where(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_CLASS_COMMENT.DEL_FLAG.eq(false))
                 .fetchOneInto(Long.class);
+    }
+
+
+    /**
+     * 首页精选评论
+     *
+     * @param ognId
+     * @param homeCommentSize
+     * @return
+     */
+    public List<HomeClassCommentBo> findHomeComment(Long ognId, int homeCommentSize) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_ORGAN_CLASS_COMMENT.ID);
+        fieldList.add(EP_ORGAN_CLASS_COMMENT.CONTENT);
+        fieldList.add(EP_ORGAN_CLASS_COMMENT.CREATE_AT);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+        return dslContext.select(fieldList)
+                .from(EP_ORGAN_CLASS_COMMENT)
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS_COMMENT.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS_COMMENT.CLASS_ID.eq(EP_ORGAN_CLASS.ID))
+                .leftJoin(EP_MEMBER_CHILD).on(EP_ORGAN_CLASS_COMMENT.CHILD_ID.eq(EP_MEMBER_CHILD.ID))
+                .where(EP_ORGAN_CLASS_COMMENT.OGN_ID.eq(ognId))
+                .orderBy(EP_ORGAN_CLASS_COMMENT.CREATE_AT.desc())
+                .limit(homeCommentSize)
+                .fetchInto(HomeClassCommentBo.class);
     }
 }
 

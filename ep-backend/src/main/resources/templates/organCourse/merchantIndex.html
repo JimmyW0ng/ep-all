@@ -108,7 +108,8 @@
                                    th:href="@{/auth/organCourse/merchantRectifyInit/}+${bo.id}">紧急修改</a>
                                 <a class="btn btn-xs btn-danger" th:if="${#strings.equals(bo.courseStatus,'save')}"
                                    href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
-
+                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.courseStatus,'online')}"
+                                   href="javascript:void(0)" th:onclick="'xcxUrlBox('+${bo.id}+')'">生成小程序链接</a>
                             </td>
 
                         </tr>
@@ -166,6 +167,24 @@
         })
 
     }
+
+    //    function xcxUrlBox(courseId) {
+    //        $.ajax({
+    //            type:"GET",
+    //            url:"/auth/organCourse/delete/"+id,
+    //            success:function (data) {
+    //                if(data.success){
+    //                    toastr_success(null, document.location.href);
+    //                } else {
+    //                    toastr.error(data.errorDescription);
+    //                }
+    //            },
+    //            error: function (XMLHttpRequest) {
+    //                toastr_error_system(XMLHttpRequest.status);
+    //            },
+    //        })
+    //
+    //    }
 
 </script>
 </body>

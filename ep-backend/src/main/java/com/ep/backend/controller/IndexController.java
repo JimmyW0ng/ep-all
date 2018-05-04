@@ -4,6 +4,7 @@ import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.bo.HomeClassCommentBo;
 import com.ep.domain.pojo.bo.HomeMemberChildReplyBo;
 import com.ep.domain.pojo.bo.SystemMenuBo;
 import com.ep.domain.pojo.po.EpFilePo;
@@ -50,6 +51,8 @@ public class IndexController extends BackendController {
     private OrganCourseService organCourseService;
     @Autowired
     private MemberChildCommentService memberChildCommentService;
+    @Autowired
+    private OrganClassCommentService organClassCommentService;
 
 
     /**
@@ -106,7 +109,9 @@ public class IndexController extends BackendController {
             p.setLaunchFromNow(DateTools.getFromNow(p.getLaunchCreateAt()));
         });
         model.addAttribute("homeReplys", homeReplys);
-
+        //精选评价
+        List<HomeClassCommentBo> homeClassComments = organClassCommentService.findHomeComment(ognId, BizConstant.OGN_HOME_COMMENT_SIZE);
+        model.addAttribute("homeClassComments", homeClassComments);
         Map<String, Object> resultMap = orderervice.homeOrderChart(ognId, BizConstant.OGN_HOME_MONTH_SIZE, BizConstant.OGN_HOME_RECENTLY_DAYS);
         //最近6个月内报名数
         model.addAttribute("saveOrderCounts", resultMap.get("saveOrderCounts"));

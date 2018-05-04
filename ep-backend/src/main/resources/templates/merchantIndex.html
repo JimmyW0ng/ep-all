@@ -156,6 +156,44 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>最新评价</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <div class="">
+                        <div class="feed-element" th:each="po:${homeClassComments}">
+                            <div>
+                                <div>
+                                    <strong style="color: #F8AC59" th:text="${po.childNickName}"></strong>
+                                    <small class="text-muted"
+                                           th:text="${#dates.format(po.createAt,'yyyy-MM-dd') }"></small>
+                                    <small class="text-muted">课程:<span th:text="${po.courseName}"></span></small>
+                                    <small class="text-muted">班次:<span th:text="${po.className}"></span></small>
+
+                                    <div><span th:text="${po.content}"></span></div>
+                                </div>
+
+                                <div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
