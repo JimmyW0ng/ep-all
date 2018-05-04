@@ -214,9 +214,6 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         Collection<Condition> conditions = Lists.newArrayList();
         conditions.add(EP_ORGAN_CLASS_SCHEDULE.CLASS_ID.eq(classId));
         conditions.add(EP_ORGAN_CLASS_SCHEDULE.START_TIME.eq(startTime));
-        conditions.add(EP_ORGAN_CLASS_SCHEDULE.STATUS.in(EpOrganClassScheduleStatus.wait,
-                EpOrganClassScheduleStatus.normal,
-                EpOrganClassScheduleStatus.late));
         conditions.add(EP_ORGAN_CLASS_SCHEDULE.DEL_FLAG.eq(false));
         if (StringTools.isNotBlank(nickName)) {
             conditions.add(EP_MEMBER_CHILD.CHILD_NICK_NAME.like("%" + nickName + "%"));
@@ -236,6 +233,7 @@ public class OrganClassScheduleRepository extends AbstractCRUDRepository<EpOrgan
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_TITLE);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.CATALOG_DESC);
         fieldList.add(EP_ORGAN_CLASS_SCHEDULE.EVALUATE_FLAG);
+        fieldList.add(EP_ORGAN_CLASS_SCHEDULE.STATUS);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
         List<OrganClassCatalogCommentBo> data = dslContext.select(fieldList)
                                                           .from(EP_ORGAN_CLASS_SCHEDULE)

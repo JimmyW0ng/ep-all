@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.CollectionsTools;
+import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -101,6 +102,7 @@ public class OrganClassCommentService {
             return ResultDo.build(MessageCode.ERROR_COURSE_COMMENT_DUPLICATE);
         }
         // 保存评论
+        content = StringTools.filterEmoji(content);
         EpOrganClassCommentPo addPo = new EpOrganClassCommentPo();
         addPo.setOgnId(orderPo.getOgnId());
         addPo.setCourseId(orderPo.getCourseId());

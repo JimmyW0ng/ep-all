@@ -90,6 +90,7 @@ public class MemberChildCommentService {
         if (checkedChild.isError()) {
             return checkedChild;
         }
+        content = StringTools.filterEmoji(content);
         EpMemberChildCommentPo replay = new EpMemberChildCommentPo();
         replay.setPId(commentId);
         replay.setChildId(commentPo.getChildId());
