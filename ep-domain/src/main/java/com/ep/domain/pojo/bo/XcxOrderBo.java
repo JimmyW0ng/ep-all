@@ -1,12 +1,19 @@
 package com.ep.domain.pojo.bo;
 
 import com.ep.domain.pojo.AbstractBasePojo;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * @Description:
+ * @Description: 微信支付统一下单bo
  * @Author: CC.F
  * @Date: 7:08 2018/5/3
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class XcxOrderBo extends AbstractBasePojo {
     /**
      * 公众账号ID,必填（32）
@@ -38,6 +45,7 @@ public class XcxOrderBo extends AbstractBasePojo {
     /**
      * 商品描述	,必填（128）
      */
+    @ApiModelProperty(value = "商品描述(128)", required = true)
     private String body;
     /**
      * 商品详情，（6000）

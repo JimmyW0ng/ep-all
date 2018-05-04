@@ -99,9 +99,11 @@ function formatMsg(operate, businessObj, remark) {
 }
 
 function isCurrentTimeAdvTargetTime30(current, target) {
-    var currentTime = new Date(current)
-    var targetTime = new Date(target)
+
+    var currentTime = new Date(Date.parse(current.replace(/-/g, "/")));
+    var targetTime = new Date(Date.parse(target.replace(/-/g, "/")));
     var checkDate = currentTime.setMinutes(currentTime.getMinutes() + 30)
+
     if (checkDate < targetTime) {
         return true
     } else {
