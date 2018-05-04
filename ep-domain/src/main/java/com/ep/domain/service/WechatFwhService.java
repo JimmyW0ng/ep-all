@@ -32,6 +32,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.GeneralSecurityException;
@@ -90,7 +91,7 @@ public class WechatFwhService {
     }
 
     /**
-     * 发送消息
+     * 指定openid发送消息
      *
      * @param accessToken
      * @param openId
@@ -306,6 +307,7 @@ public class WechatFwhService {
      *
      * @param moblie
      */
+    @Transactional(rollbackFor = Exception.class)
     private Map<String, String> receiveTextMsgCaptchaMobile(String captcha, String moblie, String openid) {
         Map<String, String> responseMap = Maps.newHashMap();
         EpMemberPo oldMemberPo = memberRepository.getByMobile(Long.parseLong(moblie));
@@ -338,9 +340,21 @@ public class WechatFwhService {
                 wechatOpenidPo.setOpenid(openid);
                 wechatOpenidPo.setType(EpWechatOpenidType.fwh);
                 wechatOpenidPo.setMobile(Long.parseLong(moblie));
-//                wechatOpenidRepository.
-                //todo
-
+                Optional<EpWechatOpenidPo> optionalWechatOpenid = wechatOpenidRepository.getByOpenidAndType(openid, EpWechatOpenidType.fwh);
+                if (optionalWechatOpenid.isPresent()) {
+                    //该微信绑定过，则公众号关联表更新手机号
+                    if (wechatOpenidRepository.updateMobileByOpenidAndType(Long.parseLong(moblie), openid, EpWechatOpenidType.fwh) == BizConstant.DB_NUM_ONE) {
+                        log.info("[微信]微信服务号更新绑定手机号成功，openid={},mobile={}。", openid, moblie);
+                    }
+                } else {
+                    //该微信未绑定过，则公众号关联表插入数据
+                    EpWechatOpenidPo insertWechatOpenidPo = new EpWechatOpenidPo();
+                    insertWechatOpenidPo.setOpenid(openid);
+                    insertWechatOpenidPo.setType(EpWechatOpenidType.fwh);
+                    insertWechatOpenidPo.setMobile(Long.parseLong(moblie));
+                    wechatOpenidRepository.insert(insertWechatOpenidPo);
+                    log.info("[微信]微信服务号绑定手机号成功，openid={},mobile={}。", openid, moblie);
+                }
             }
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;

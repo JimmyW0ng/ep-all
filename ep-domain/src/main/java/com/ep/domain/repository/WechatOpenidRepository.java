@@ -24,6 +24,13 @@ public class WechatOpenidRepository extends AbstractCRUDRepository<EpWechatOpeni
         super(dslContext, EP_WECHAT_OPENID, EP_WECHAT_OPENID.ID, EpWechatOpenidPo.class);
     }
 
+    /**
+     * 根据openid和类型获取记录
+     *
+     * @param openid
+     * @param type
+     * @return
+     */
     public Optional<EpWechatOpenidPo> getByOpenidAndType(String openid, EpWechatOpenidType type) {
         EpWechatOpenidPo data = dslContext.selectFrom(EP_WECHAT_OPENID)
                 .where(EP_WECHAT_OPENID.OPENID.eq(openid))
@@ -32,12 +39,34 @@ public class WechatOpenidRepository extends AbstractCRUDRepository<EpWechatOpeni
         return Optional.ofNullable(data);
     }
 
+    /**
+     * 根据手机号和类型获取记录
+     * @param mobile
+     * @param type
+     * @return
+     */
     public Optional<EpWechatOpenidPo> getByMobileAndType(Long mobile, EpWechatOpenidType type) {
         EpWechatOpenidPo data = dslContext.selectFrom(EP_WECHAT_OPENID)
                 .where(EP_WECHAT_OPENID.MOBILE.eq(mobile))
                 .and(EP_WECHAT_OPENID.TYPE.eq(type))
                 .fetchOneInto(EpWechatOpenidPo.class);
         return Optional.ofNullable(data);
+    }
+
+    /**
+     * 根据openID和类型更新绑定的手机号
+     *
+     * @param mobile
+     * @param openid
+     * @param type
+     * @return
+     */
+    public int updateMobileByOpenidAndType(Long mobile, String openid, EpWechatOpenidType type) {
+        return dslContext.update(EP_WECHAT_OPENID)
+                .set(EP_WECHAT_OPENID.MOBILE, mobile)
+                .where(EP_WECHAT_OPENID.OPENID.eq(openid))
+                .and(EP_WECHAT_OPENID.TYPE.eq(type))
+                .execute();
     }
 
 }
