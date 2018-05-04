@@ -52,15 +52,13 @@
                                aria-required="true">
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">小程序商户首页地址</label>
+                    <label class="col-sm-2 control-label">小程序商户首页链接</label>
                     <div class="col-sm-3">
-                        <textarea id="xcxHomeUrl" name="xcxHomeUrl" type="text" class="form-control" required="true"
-                        ></textarea>
+                        <textarea id="xcxHomeUrl" name="xcxHomeUrl" type="text" class="form-control" readonly="true"
+                                  th:text="${wechatXcxOrganUrl}"></textarea>
                     </div>
                 </div>
-
             </form>
         </div>
         <div class="modal inmodal" id="psdModal" tabindex="-1" role="dialog" aria-hidden="true">

@@ -169,6 +169,7 @@ public class IndexController extends BackendController {
         EpSystemUserPo systemUserPo = super.getCurrentUser().get();
 
         model.addAttribute("systemUserPo", systemUserPo);
+        model.addAttribute("wechatXcxOrganUrl", String.format(BizConstant.WECHAT_XCX_ORGAN_URL, systemUserPo.getOgnId()));
         return "systemUser/settingForm";
     }
 

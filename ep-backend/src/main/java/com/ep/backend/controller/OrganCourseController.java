@@ -158,6 +158,7 @@ public class OrganCourseController extends BackendController {
         Page<OrganCourseBo> page = organCourseService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
+        model.addAttribute("wechatXcxCourseUrl", String.format(BizConstant.WECHAT_XCX_COURSE_URL, super.getCurrentUserOgnId()));
         return "organCourse/merchantIndex";
     }
 

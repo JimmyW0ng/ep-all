@@ -109,7 +109,8 @@
                                 <a class="btn btn-xs btn-danger" th:if="${#strings.equals(bo.courseStatus,'save')}"
                                    href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
                                 <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.courseStatus,'online')}"
-                                   href="javascript:void(0)" th:onclick="'xcxUrlBox('+${bo.id}+')'">生成小程序链接</a>
+                                   href="javascript:void(0)"
+                                   th:onclick="'xcxUrlBox('+${bo.id}+',\''+${wechatXcxCourseUrl}+'\')'">生成小程序链接</a>
                             </td>
 
                         </tr>
@@ -134,6 +135,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="xcxCourseUrlModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">关闭</span>
+                    </button>
+                    <h3 style="text-align: left">小程序产品链接</h3>
+
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" id="xcxCourseUrl"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -168,23 +190,10 @@
 
     }
 
-    //    function xcxUrlBox(courseId) {
-    //        $.ajax({
-    //            type:"GET",
-    //            url:"/auth/organCourse/delete/"+id,
-    //            success:function (data) {
-    //                if(data.success){
-    //                    toastr_success(null, document.location.href);
-    //                } else {
-    //                    toastr.error(data.errorDescription);
-    //                }
-    //            },
-    //            error: function (XMLHttpRequest) {
-    //                toastr_error_system(XMLHttpRequest.status);
-    //            },
-    //        })
-    //
-    //    }
+    function xcxUrlBox(courseId, url) {
+        $("#xcxCourseUrl").val(url + courseId)
+        $("#xcxCourseUrlModal").modal("show")
+    }
 
 </script>
 </body>
