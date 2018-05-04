@@ -295,7 +295,7 @@ public class ApiSecurityAuthComponent {
         // 本地保存token
         tokenRepository.updateCodeById(token, tokenPo.getId());
         // 删除其他token
-        tokenRepository.deleteByMobileAndId(principal.getMobile(), tokenPo.getId());
+        tokenRepository.deleteByMobileAndId(principal.getMobile(), tokenPo.getId(), tokenPo.getType());
         return token;
     }
 

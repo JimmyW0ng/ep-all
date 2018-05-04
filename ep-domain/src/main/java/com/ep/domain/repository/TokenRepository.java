@@ -1,6 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.domain.pojo.po.EpTokenPo;
+import com.ep.domain.repository.domain.enums.EpTokenType;
 import com.ep.domain.repository.domain.tables.records.EpTokenRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,13 @@ public class TokenRepository extends AbstractCRUDRepository<EpTokenRecord, Long,
      *
      * @param mobile
      * @param id
+     * @param type
      */
-    public int deleteByMobileAndId(Long mobile, Long id) {
+    public int deleteByMobileAndId(Long mobile, Long id, EpTokenType type) {
         return dslContext.delete(EP_TOKEN)
                          .where(EP_TOKEN.MOBILE.eq(mobile))
                          .and(EP_TOKEN.ID.notEqual(id))
+                         .and(EP_TOKEN.TYPE.eq(type))
                          .execute();
     }
 
