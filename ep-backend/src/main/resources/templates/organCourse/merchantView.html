@@ -267,9 +267,21 @@
                                                            th:value="${#dates.format(organClassCatalogPo.startTime,'yyyy-MM-dd HH:mm:ss')}"/>
                                                 </div>
                                                 <div class="col-sm-5">
-                                                    <label>持续时长（分钟）</label>
-                                                    <input name="duration" class="form-control "
+                                                    <label>持续时长<span class="required-sign">*</span></label>
+                                                    <div>
+                                                        <input name="duration" class="form-control "
+                                                               style="display: inline-block;width: calc(100% - 65px)"
                                                            th:value="${organClassCatalogPo.duration}"/>
+                                                        <select class="form-control "
+                                                                style="display: inline-block;width:60px"
+                                                                jprop="duraType" name="duraType" value="${duraType}">
+                                                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassCatalogDuraType).values()}"
+                                                                    th:value="${state}"
+                                                                    th:selected="${#strings.equals(organClassCatalogPo.duraType,state)}"
+                                                                    th:text="#{EpOrganClassCatalogDuraType.+${state.literal}}">
+                                                            </option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group col-sm-10">
                                                     <label>目录描述<span class="required-sign">*</span></label>

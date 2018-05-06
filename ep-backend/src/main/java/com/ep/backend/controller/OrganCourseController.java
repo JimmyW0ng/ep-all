@@ -259,7 +259,9 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
         Optional<EpConstantCatalogPo> constantCatalogOptional = constantCatalogService.findById(courseOptional.get().getCourseCatalogId());
         if (constantCatalogOptional.isPresent()) {
-            model.addAttribute("firstConstantCatalog", constantCatalogOptional.get().getParentId());
+            model.addAttribute("firstConstantCatalog",
+                    constantCatalogOptional.get().getParentId().longValue() == BizConstant.FIRST_CONSTANT_CATALOG_PID ?
+                            courseOptional.get().getCourseCatalogId() : constantCatalogOptional.get().getParentId());
             //产品科目二级下拉框
             List<EpConstantCatalogPo> secondCatalogs = constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId());
             model.addAttribute("secondCatalogs", secondCatalogs);
@@ -338,7 +340,7 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
         Optional<EpConstantCatalogPo> constantCatalogOptional = constantCatalogService.findById(organCoursePo.getCourseCatalogId());
         if (constantCatalogOptional.isPresent()) {
-            Long firstConstantCatalog = constantCatalogOptional.get().getParentId().equals(BizConstant.FIRST_CONSTANT_CATALOG_PID)
+            Long firstConstantCatalog = constantCatalogOptional.get().getParentId() == BizConstant.FIRST_CONSTANT_CATALOG_PID
                     ? constantCatalogOptional.get().getId() : constantCatalogOptional.get().getParentId();
             model.addAttribute("firstConstantCatalog", firstConstantCatalog);
             //产品科目二级下拉框
@@ -415,7 +417,9 @@ public class OrganCourseController extends BackendController {
         model.addAttribute("firstConstantCatalogSelectModel", firstConstantCatalogSelectModel);
         Optional<EpConstantCatalogPo> constantCatalogOptional = constantCatalogService.findById(courseOptional.get().getCourseCatalogId());
         if (constantCatalogOptional.isPresent()) {
-            model.addAttribute("firstConstantCatalog", constantCatalogOptional.get().getParentId());
+            model.addAttribute("firstConstantCatalog",
+                    constantCatalogOptional.get().getParentId().longValue() == BizConstant.FIRST_CONSTANT_CATALOG_PID ?
+                            courseOptional.get().getCourseCatalogId() : constantCatalogOptional.get().getParentId());
             //产品科目二级下拉框
             List<EpConstantCatalogPo> secondCatalogs = constantCatalogService.findSecondCatalogSelectModelByPid(constantCatalogOptional.get().getParentId());
             model.addAttribute("secondCatalogs", secondCatalogs);

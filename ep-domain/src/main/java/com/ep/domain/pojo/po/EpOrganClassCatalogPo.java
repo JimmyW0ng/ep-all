@@ -5,6 +5,7 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
+import com.ep.domain.repository.domain.enums.EpOrganClassCatalogDuraType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class EpOrganClassCatalogPo extends AbstractBasePojo {
     private Integer catalogIndex;
     private Timestamp startTime;
     private Integer duration;
+    private EpOrganClassCatalogDuraType duraType;
     private Timestamp endTime;
     private String remark;
     private Timestamp createAt;

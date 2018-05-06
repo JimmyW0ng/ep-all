@@ -255,10 +255,17 @@
 
 
         <div class="col-sm-5 form-group">
-            <label>持续时长（分钟）<span class="required-sign">*</span></label>
+            <label>持续时长<span class="required-sign">*</span></label>
+            <div>
             <input id="duration${tmplIndex}" name="duration" jprop="duration" class="form-control " value="${duration}"
+                   style="display: inline-block;width: calc(100% - 65px)"
                    required="true">
-
+                <select id="duraType${tmplIndex}" class="form-control " style="display: inline-block;width:60px"
+                        jprop="duraType" name="duraType" value="${duraType}">
+                    <option value="minute">分</option>
+                    <option value="hour">时</option>
+                </select>
+            </div>
         </div>
 
         <div class="col-sm-10 form-group">
@@ -739,7 +746,7 @@
             for (var j = 0; j < $organClassCatalogPos.length; j++) {
                 var parentName = $organClassCatalogPos.eq(j).parents("div.organClassBos").eq(0).attr("name")
                 $organClassCatalogPos.eq(j).attr("name", parentName + ".organClassCatalogPos[" + j + "]")
-                $organClassCatalogPos.eq(j).find("input,textarea").each(function () {
+                $organClassCatalogPos.eq(j).find("input,textarea,select").each(function () {
                     if ($(this).attr("name") == "catalogIndex") {
                         $(this).val(j + 1)
                     }
@@ -934,6 +941,7 @@
                             len: j + 1,
                             startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
                             duration: organClassCatalogPos[j].duration,
+                            duraType: organClassCatalogPos[j].duraType,
                             catalogTitle: organClassCatalogPos[j].catalogTitle,
                             catalogDesc: organClassCatalogPos[j].catalogDesc
                         })
@@ -951,6 +959,10 @@
                 $(this).val(val)
             })
             $("#accordion").find("select[name='type']").each(function () {
+                var val = $(this).attr("value")
+                $(this).val(val)
+            })
+            $("#accordion").find("select[name='duraType']").each(function () {
                 var val = $(this).attr("value")
                 $(this).val(val)
             })

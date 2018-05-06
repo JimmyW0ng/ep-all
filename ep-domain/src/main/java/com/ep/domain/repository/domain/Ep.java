@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 205154979;
+    private static final long serialVersionUID = 1046508863;
 
     /**
      * The reference instance of <code>ep</code>
@@ -211,7 +211,7 @@ public class Ep extends SchemaImpl {
     public final EpToken EP_TOKEN = com.ep.domain.repository.domain.tables.EpToken.EP_TOKEN;
 
     /**
-     * The table <code>ep.ep_wechat_openid</code>.
+     * 公众号关联表
      */
     public final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
 
