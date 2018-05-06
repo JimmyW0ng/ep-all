@@ -108,7 +108,7 @@
                                    th:href="@{/auth/organCourse/merchantRectifyInit/}+${bo.id}">紧急修改</a>
                                 <a class="btn btn-xs btn-danger" th:if="${#strings.equals(bo.courseStatus,'save')}"
                                    href="javascript:void(0)" th:onclick="'deleteBox('+${bo.id}+')'">删除</a>
-                                <a class="btn btn-xs btn-primary" th:if="${#strings.equals(bo.courseStatus,'online')}"
+                                <a class="btn btn-xs btn-primary"
                                    href="javascript:void(0)"
                                    th:onclick="'xcxUrlBox('+${bo.id}+',\''+${wechatXcxCourseUrl}+'\')'">生成小程序链接</a>
                             </td>
