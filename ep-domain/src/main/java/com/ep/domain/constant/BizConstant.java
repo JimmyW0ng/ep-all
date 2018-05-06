@@ -145,7 +145,7 @@ public class BizConstant {
      */
     public static String WECHAT_TOKEN_SECRET = "xiaozhuma";
 
-    public static String WECHAT_SCENE_SPLIT = "#";
+    public static String WECHAT_SCENE_SPLIT = "and";
 
     public static String DICT_GROUP_WECHAT = "WECHAT";
 
