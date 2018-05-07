@@ -30,7 +30,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganClassCatalog extends TableImpl<EpOrganClassCatalogRecord> {
 
-    private static final long serialVersionUID = 394221633;
+    private static final long serialVersionUID = 538029533;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_catalog</code>
@@ -81,9 +81,9 @@ public class EpOrganClassCatalog extends TableImpl<EpOrganClassCatalogRecord> {
     public final TableField<EpOrganClassCatalogRecord, Integer> DURATION = createField("duration", org.jooq.impl.SQLDataType.INTEGER, this, "持续时长");
 
     /**
-     * The column <code>ep.ep_organ_class_catalog.dura_type</code>. 时长周期:小时;分钟
+     * The column <code>ep.ep_organ_class_catalog.dura_type</code>. 时长周期:小时;分钟;天
      */
-    public final TableField<EpOrganClassCatalogRecord, EpOrganClassCatalogDuraType> DURA_TYPE = createField("dura_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassCatalogDuraType.class), this, "时长周期:小时;分钟");
+    public final TableField<EpOrganClassCatalogRecord, EpOrganClassCatalogDuraType> DURA_TYPE = createField("dura_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassCatalogDuraType.class), this, "时长周期:小时;分钟;天");
 
     /**
      * The column <code>ep.ep_organ_class_catalog.remark</code>. 备注信息

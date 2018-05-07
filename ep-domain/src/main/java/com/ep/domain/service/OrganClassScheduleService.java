@@ -381,6 +381,7 @@ public class OrganClassScheduleService {
         insertClassSchedulePo.setOrderId(po.getOrderId());
         insertClassSchedulePo.setStartTime(po.getStartTime());
         insertClassSchedulePo.setDuration(po.getDuration());
+        insertClassSchedulePo.setDuraType(po.getDuraType());
         insertClassSchedulePo.setCatalogTitle(po.getCatalogTitle());
         insertClassSchedulePo.setCatalogDesc(po.getCatalogDesc());
         insertClassSchedulePo.setCatalogIndex(po.getCatalogIndex());
@@ -421,6 +422,7 @@ public class OrganClassScheduleService {
         insertClassSchedulePo.setOrderId(po.getOrderId());
         insertClassSchedulePo.setStartTime(po.getStartTime());
         insertClassSchedulePo.setDuration(po.getDuration());
+        insertClassSchedulePo.setDuraType(po.getDuraType());
         insertClassSchedulePo.setCatalogTitle(po.getCatalogTitle());
         insertClassSchedulePo.setCatalogDesc(po.getCatalogDesc());
         insertClassSchedulePo.setCatalogIndex(po.getCatalogIndex());
@@ -537,6 +539,9 @@ public class OrganClassScheduleService {
             return false;
         }
         if (po.getDuration() == null) {
+            return false;
+        }
+        if (po.getDuraType() == null) {
             return false;
         }
         if (po.getCatalogTitle() == null) {

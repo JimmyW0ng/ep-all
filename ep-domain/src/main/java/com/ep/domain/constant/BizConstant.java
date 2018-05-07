@@ -176,7 +176,7 @@ public class BizConstant {
 
     public static String WECHAT_XCX_ORGAN_URL = "pages/orgnization/orgnizationDetail/OrganizationDetailPage?scene=%s";
 
-    public static String WECHAT_XCX_COURSE_URL = "pages/course/courseDetailPage/courseDetailPage?scene=%s#";
+    public static String WECHAT_XCX_COURSE_URL = "pages/course/courseDetailPage/courseDetailPage?scene=%sand";
 
     public static String WECHAT_TEXT_MSG_SPLIT = "#";
 

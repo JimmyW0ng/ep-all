@@ -29,7 +29,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassCatalogRecord extends UpdatableRecordImpl<EpOrganClassCatalogRecord> implements Record13<Long, Long, String, String, Integer, Timestamp, Integer, EpOrganClassCatalogDuraType, String, Timestamp, Timestamp, Boolean, Long> {
 
-    private static final long serialVersionUID = -640920569;
+    private static final long serialVersionUID = -666667221;
 
     /**
      * Setter for <code>ep.ep_organ_class_catalog.id</code>. 主键
@@ -137,7 +137,7 @@ public class EpOrganClassCatalogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Setter for <code>ep.ep_organ_class_catalog.dura_type</code>. 时长周期:小时;分钟
+     * Setter for <code>ep.ep_organ_class_catalog.dura_type</code>. 时长周期:小时;分钟;天
      */
     public EpOrganClassCatalogRecord setDuraType(EpOrganClassCatalogDuraType value) {
         set(7, value);
@@ -145,7 +145,7 @@ public class EpOrganClassCatalogRecord extends UpdatableRecordImpl<EpOrganClassC
     }
 
     /**
-     * Getter for <code>ep.ep_organ_class_catalog.dura_type</code>. 时长周期:小时;分钟
+     * Getter for <code>ep.ep_organ_class_catalog.dura_type</code>. 时长周期:小时;分钟;天
      */
     public EpOrganClassCatalogDuraType getDuraType() {
         return (EpOrganClassCatalogDuraType) get(7);

@@ -6,6 +6,7 @@ package com.ep.domain.repository.domain.tables;
 
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
+import com.ep.domain.repository.domain.enums.EpOrganClassScheduleDuraType;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassScheduleRecord;
 import org.jooq.*;
@@ -30,7 +31,7 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> {
 
-    private static final long serialVersionUID = -852076631;
+    private static final long serialVersionUID = -709658114;
 
     /**
      * The reference instance of <code>ep.ep_organ_class_schedule</code>
@@ -74,6 +75,11 @@ public class EpOrganClassSchedule extends TableImpl<EpOrganClassScheduleRecord> 
      * The column <code>ep.ep_organ_class_schedule.duration</code>. 持续时长
      */
     public final TableField<EpOrganClassScheduleRecord, Integer> DURATION = createField("duration", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "持续时长");
+
+    /**
+     * The column <code>ep.ep_organ_class_schedule.dura_type</code>. 时长类型 分;时;天
+     */
+    public final TableField<EpOrganClassScheduleRecord, EpOrganClassScheduleDuraType> DURA_TYPE = createField("dura_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrganClassScheduleDuraType.class), this, "时长类型 分;时;天");
 
     /**
      * The column <code>ep.ep_organ_class_schedule.catalog_title</code>. 目录标题

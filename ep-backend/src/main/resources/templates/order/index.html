@@ -291,7 +291,7 @@
         <td>${className}</td>
         <td>${catalogTitle}</td>
         <td>${startTime}</td>
-        <td>${duration}</td>
+        <td>${duration}${duraType}</td>
         <td>${catalogDesc}</td>
         <td>${status}</td>
     </tr>
@@ -311,6 +311,9 @@
     cancel:"取消"}
     var epOrganClassScheduleStatus = {
         wait: "等待", normal: "正常", late: "迟到", absent: "缺勤", leave: "请假", close: "关闭"
+    }
+    var epOrganClassScheduleDruaType = {
+        minute: "分", hour: "时", day: "天"
     }
     /*导出Excel*/
     function exportExcel() {
@@ -524,6 +527,7 @@
                     $("#orderPrizeTxt").text(orderPrize)
                     for (var item in res) {
                         res[item].status = epOrganClassScheduleStatus[res[item].status]
+                        res[item].duraType = epOrganClassScheduleDruaType[res[item].duraType]
                         //开始时间是否与系统当前时间相差30分钟，提供勾选框
                         if (isCurrentTimeAdvTargetTime30(currentTime, res[item].startTime)) {
                             res[item]["checkFlag"] = true

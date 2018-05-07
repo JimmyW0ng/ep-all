@@ -215,8 +215,18 @@
             </div>
             <div class="col-sm-3 form-group">
                 <label>持续时长<span class="required-sign">*</span></label>
-                <input name="duration" class="form-control" value="${duration}"
-                       required="true"/>
+                <div>
+                    <input name="duration" class="form-control" value="${duration}"
+                           style="display: inline-block;width: calc(100% - 65px)"
+                           required="true"/>
+                    <select class="form-control " style="display: inline-block;width:60px"
+                            name="duraType" value="${duraType}">
+                        <option value="minute">分</option>
+                        <option value="hour">时</option>
+                        <option value="day">天</option>
+                    </select>
+                </div>
+
             </div>
             <div class="col-sm-1">
                 <a style="float:right;display:inline-block;margin-left:10px" href="javascript:void(0);"><span
@@ -252,8 +262,16 @@
             </div>
             <div class="col-sm-3 form-group">
                 <label>持续时长<span class="required-sign">*</span></label>
-                <input name="duration" class="form-control" value="${duration}"
-                       required="true"/>
+                <div><input name="duration" class="form-control" value="${duration}"
+                            style="display: inline-block;width: calc(100% - 65px)"
+                            required="true"/>
+                    <select class="form-control " style="display: inline-block;width:60px"
+                            name="duraType" value="${duraType}">
+                        <option value="minute">分</option>
+                        <option value="hour">时</option>
+                        <option value="day">天</option>
+                    </select></div>
+
             </div>
             <div class="col-sm-1">
                 <input name="rectifyFlag" type="hidden" value="${rectifyFlag}">
@@ -341,6 +359,7 @@
         var catalogTitle = $frm.find("input[name='catalogTitle']").eq(0).val()
         var startTime = $frm.find("input[name='startTime']").eq(0).val()
         var duration = $frm.find("input[name='duration']").eq(0).val()
+        var duraType = $frm.find("select[name='duraType']").eq(0).val()
         var catalogIndex = $frm.find("input[name='catalogIndex']").eq(0).val()
 
         var catalogDesc = $frm.find("textarea[name='catalogDesc']").eq(0).val()
@@ -354,6 +373,7 @@
             catalogTitle: catalogTitle,
             startTime: startTime,
             duration: duration,
+            duraType: duraType,
             catalogDesc: catalogDesc
         }
         var url;
@@ -376,7 +396,10 @@
                         var po = data.result
                         var classSchedulePo = {
                             id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
-                            startTime: po.startTime, duration: po.duration, catalogDesc: po.catalogDesc
+                            startTime: po.startTime,
+                            duration: po.duration,
+                            catalogDesc: po.catalogDesc,
+                            duraType: po.duraType
                         }
                         $(ele).parents(".classSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
                         $(ele).parents(".classSchedulePo").eq(0).remove()
@@ -386,7 +409,10 @@
                         var po = data.result.classSchedulePo
                         var classSchedulePo = {
                             id: po.id, catalogIndex: po.catalogIndex, catalogTitle: po.catalogTitle,
-                            startTime: po.startTime, duration: po.duration, catalogDesc: po.catalogDesc
+                            startTime: po.startTime,
+                            duration: po.duration,
+                            catalogDesc: po.catalogDesc,
+                            duraType: po.duraType
                         }
                         $(ele).parents(".createClassSchedulePo").eq(0).after($("#scheduleTmpl").tmpl(classSchedulePo))
                         $(ele).parents(".createClassSchedulePo").eq(0).remove()
@@ -398,6 +424,10 @@
                         }
 
                     }
+                    $(".createClassSchedulePo,.classSchedulePo").find("select:last").each(function () {
+                        var val = $(this).attr("value")
+                        $(this).val(val)
+                    })
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }
@@ -438,8 +468,14 @@
                             $(this).find("button").hide()
                             $(this).find("input").attr("readonly", true)
                             $(this).find("textarea").attr("readonly", true)
+                            $(this).find("select").attr("readonly", true)
                         }
                     })
+                    $("#bespeakBox").find("select").each(function () {
+                        var val = $(this).attr("value")
+                        $(this).val(val)
+                    })
+
                 }
             }
         })
