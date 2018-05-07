@@ -567,7 +567,8 @@
     }
     /*退单*/
     function breakDo() {
-        if (!$("#ordersBody").find("input[type='checkbox']").length) {
+
+        if ($("#ordersBody").find("tr").length && !$("#ordersBody").find("input[type='checkbox']").length) {
             toastr.error("所有行程已结束，无法退单！")
             return
         }
