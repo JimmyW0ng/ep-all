@@ -246,12 +246,12 @@
             <label>持续时长</label>
             <div>
                 <input name="duration" jprop="duration" class="form-control " value="${duration}" required="true"
-                       style="display: inline-block;width: calc(100% - 65px)">
-                <select class="form-control " style="display: inline-block;width:60px" jprop="duraType" name="duraType"
+                       style="display: inline-block;width: calc(100% - 70px)">
+                <select class="form-control " style="display: inline-block;width:65px" jprop="duraType" name="duraType"
                         value="${duraType}">
                     <option value="minute">分</option>
                     <option value="hour">时</option>
-                    <option value="hour">天</option>
+                    <option value="day">天</option>
                 </select>
             </div>
 
@@ -458,7 +458,7 @@
         var len = $("div.rectifyOrganClassCatalogBos").length
         var $box = $("div.rectifyOrganClassCatalogBos")
         for (var i = 0; i < len; i++) {
-            $box.eq(i).find("input,textarea").each(function () {
+            $box.eq(i).find("input,textarea,select").each(function () {
                 $(this).attr("name", "rectifyOrganClassCatalogBos[" + i + "]." + $(this).attr("jprop"))
             })
         }

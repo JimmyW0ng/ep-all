@@ -270,10 +270,10 @@
                                                     <label>持续时长<span class="required-sign">*</span></label>
                                                     <div>
                                                         <input name="duration" class="form-control "
-                                                               style="display: inline-block;width: calc(100% - 65px)"
-                                                           th:value="${organClassCatalogPo.duration}"/>
+                                                               style="display: inline-block;width: calc(100% - 70px)"
+                                                               th:value="${organClassCatalogPo.duration}"/>
                                                         <select class="form-control "
-                                                                style="display: inline-block;width:60px"
+                                                                style="display: inline-block;width:65px"
                                                                 jprop="duraType" name="duraType" value="${duraType}">
                                                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassCatalogDuraType).values()}"
                                                                     th:value="${state}"
