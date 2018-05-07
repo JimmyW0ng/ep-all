@@ -245,9 +245,11 @@
         <div class="col-sm-5 form-group">
             <label>持续时长</label>
             <div>
-                <input name="duration" jprop="duration" class="form-control " value="${duration}" required="true"
+                <input id="duration${tmplIndex}" name="duration" jprop="duration" class="form-control "
+                       value="${duration}" required="true"
                        style="display: inline-block;width: calc(100% - 70px)">
-                <select class="form-control " style="display: inline-block;width:65px" jprop="duraType" name="duraType"
+                <select id="duraType${tmplIndex}" class="form-control " style="display: inline-block;width:65px"
+                        jprop="duraType" name="duraType"
                         value="${duraType}">
                     <option value="minute">分</option>
                     <option value="hour">时</option>
@@ -611,6 +613,7 @@
     }
 
     $(document).ready(function () {
+        jqValidCheckById()
         //修改页面初始化start
         if ([[${organCoursePo.id}]]) {
 
@@ -647,6 +650,7 @@
                 if (null != organClassCatalogPos && organClassCatalogPos.length) {
                     for (var j = 0; j < organClassCatalogPos.length; j++) {
                         catalog.push({
+                            tmplIndex: tmplIndex(),
                             id: organClassCatalogPos[j].id,
                             len: j + 1,
                             startTime: new Date(organClassCatalogPos[j].startTime).Format('yyyy-MM-dd HH:mm:ss'),
@@ -759,11 +763,11 @@
 
         $("#frm").validate({
             rules: {
-                duration: {digits: true},
+                duration: {digits: true, min: 1},
             },
             messages: {
+                duration: "请输入正整数！"
             },
-
         })
     });
 

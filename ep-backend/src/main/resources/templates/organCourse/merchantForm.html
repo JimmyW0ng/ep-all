@@ -257,9 +257,10 @@
         <div class="col-sm-5 form-group">
             <label>持续时长<span class="required-sign">*</span></label>
             <div>
-            <input id="duration${tmplIndex}" name="duration" jprop="duration" class="form-control " value="${duration}"
-                   style="display: inline-block;width: calc(100% - 70px)"
-                   required="true">
+                <input id="duration${tmplIndex}" name="duration" jprop="duration" class="form-control "
+                       value="${duration}"
+                       style="display: inline-block;width: calc(100% - 70px)"
+                       required="true">
                 <select id="duraType${tmplIndex}" class="form-control " style="display: inline-block;width:65px"
                         jprop="duraType" name="duraType" value="${duraType}">
                     <option value="minute">分</option>
@@ -748,8 +749,9 @@
                 var parentName = $organClassCatalogPos.eq(j).parents("div.organClassBos").eq(0).attr("name")
                 $organClassCatalogPos.eq(j).attr("name", parentName + ".organClassCatalogPos[" + j + "]")
                 $organClassCatalogPos.eq(j).find("input,textarea,select").each(function () {
-                    if ($(this).attr("name") == "catalogIndex") {
+                    if ($(this).attr("name").endWith("catalogIndex")) {
                         $(this).val(j + 1)
+                        console.log("重排catalogIndex为" + $(this).val())
                     }
                     $(this).attr("name", $organClassCatalogPos.eq(j).attr("name") + "." + $(this).attr("jprop"))
                 })
@@ -1058,7 +1060,7 @@
             rules: {
                 enterRequireNum: {digits: true, min: 1},
                 courseNum: {digits: true, min: 1},
-                duration: {digits: true},
+                duration: {digits: true, min: 1},
                 addressLng: {number: true, max: 180, min: -180, expr_lng_lat: true},
                 addressLat: {number: true, max: 90, min: -90, expr_lng_lat: true},
                 classPrize: {number: true, min: 0},
@@ -1077,7 +1079,8 @@
                     min: "纬度为-90到90的数字!",
                     expr_lng_lat: "小数位数为1-6位!"
                 },
-                courseNum: "请输入正整数！"
+                courseNum: "请输入正整数！",
+                duration: "请输入正整数！"
             },
         })
 

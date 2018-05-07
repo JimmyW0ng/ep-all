@@ -348,6 +348,14 @@
 
     function frmSubmit(ele) {
         var $frm = $(ele).parents("form").eq(0)
+        $frm.validate({
+            rules: {
+                duration: {digits: true, min: 1},
+            },
+            messages: {
+                duration: "请输入正整数！"
+            },
+        })
         if (!$frm.valid()) {
             console.log("valid fail")
             return;
