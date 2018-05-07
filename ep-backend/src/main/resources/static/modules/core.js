@@ -201,7 +201,15 @@ function jqValidCheckById() {
 }
 //jq validate input验证时根据id来验证的tmplIndex
 function tmplIndex() {
-    return new Date().getMinutes().toString() + new Date().getSeconds().toString() + new Date().getMilliseconds()
+    return new Date().getMinutes().toString() + new Date().getSeconds().toString() + new Date().getMilliseconds() + rndNum(4)
+}
+//获取指定位数随机数
+function rndNum(n) {
+    var rnd = "";
+    for (var i = 0; i < n; i++) {
+        rnd += Math.floor(Math.random() * 10);
+    }
+    return rnd;
 }
 //封装后的$.ajax,get形式
 function $ajaxGetFun(url, successfun) {
