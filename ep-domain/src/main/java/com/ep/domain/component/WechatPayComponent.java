@@ -1,6 +1,5 @@
 package com.ep.domain.component;
 
-import com.ep.common.tool.StringTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -28,73 +27,49 @@ public class WechatPayComponent {
      * 接口地址
      */
     private static final String URL_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    private static final String URL_PAY_SANDBOX_UNIFIEDORDER = "https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder";
     private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey";
 
-    @Value("${wechat.xcx.member.appid}")
-    private String xcxMemberAppid;
+    // @Value("${wechat.xcx.member.appid}")
+    private String xcxMemberAppid = "wx2cb67c8e35a0bf2a";
     @Value("${wechat.pay.mchid}")
     private String wechatPayMchid;
     // @Value("${wechat.pay.key}")
     private String wechatPayKey = "3b4cfcbafaa069675e0b076d6dd8a759";
+    @Value("${wechat.pay.notfy}")
+    private String notifyUrl;
 
     @Autowired
     private RestTemplate restTemplate;
 
     /**
-     * 向 Map 中添加 appid、mch_id、nonce_str、sign_type、sign <br>
-     * 该函数适用于商户适用于统一下单等接口，不适用于红包、代金券接口
+     * 小程序客户端统一下单
      *
-     * @param reqData
-     * @return
-     * @throws Exception
-     */
-    public Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
-        reqData.put("appid", xcxMemberAppid);
-        reqData.put("mch_id", "");
-        reqData.put("nonce_str", WechatTools.generateUUID());
-        reqData.put("sign", WechatTools.generateSignature(reqData, wechatPayKey));
-        return reqData;
-    }
-
-    /**
-     * 小程序客户端微信支付
-     *
-     * @param body
-     * @param detail
-     * @param attach
-     * @param out_trade_no
-     * @param total_fee
-     * @param spbill_create_ip
-     * @param time_start
-     * @param time_expire
      * @param openid
+     * @param body
+     * @param outTradeNo
+     * @param totalFee
      * @return
      * @throws Exception
      */
-    public ResultDo xcxUnifiedorder(String body, String detail, String attach, String out_trade_no, int total_fee,
-                                    String spbill_create_ip, String time_start, String time_expire, String openid) throws Exception {
+    public ResultDo xcxUnifiedorder(String openid, String body, String outTradeNo, String totalFee, String ip) throws Exception {
+        log.info("【微信支付】统一下单入参: body={}, outTradeNo={}, totalFee={}, ip={}", body, outTradeNo, totalFee, ip);
         Map<String, String> requestMap = Maps.newHashMap();
-        requestMap.put("body", body);
-        if (StringTools.isNotBlank(detail)) {
-            requestMap.put("detail", detail);
-        }
-        if (StringTools.isNotBlank(attach)) {
-            requestMap.put("attach", attach);
-        }
-        requestMap.put("out_trade_no", out_trade_no);
-        requestMap.put("total_fee", String.valueOf(total_fee));
-        requestMap.put("spbill_create_ip", spbill_create_ip);
-        if (StringTools.isNotBlank(time_start)) {
-            requestMap.put("time_start", time_start);
-        }
-        if (StringTools.isNotBlank(time_expire)) {
-            requestMap.put("time_expire", time_expire);
-        }
+        requestMap.put("appid", xcxMemberAppid);
+        requestMap.put("mch_id", wechatPayMchid);
+        requestMap.put("nonce_str", WechatTools.generateUUID());
         requestMap.put("openid", openid);
-        String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
-        System.out.println(responseEntity.getBody());
+        requestMap.put("body", body);
+        requestMap.put("out_trade_no", outTradeNo);
+        requestMap.put("total_fee", "101");
+        requestMap.put("spbill_create_ip", ip);
+        requestMap.put("notify_url", notifyUrl);
+        requestMap.put("trade_type", "JSAPI");
+        requestMap.put("sign", WechatTools.generateSignature(requestMap, wechatPayKey));
+        String mapToXml = WechatTools.mapToXmlString(requestMap);
+        log.debug("【微信支付】统一下单提交参数: xml={}", mapToXml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL_PAY_SANDBOX_UNIFIEDORDER, mapToXml, String.class);
+        log.info("【微信支付】统一下单返回: {}", responseEntity);
         return ResultDo.build();
     }
 

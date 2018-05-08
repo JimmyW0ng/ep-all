@@ -5,6 +5,8 @@ import com.ep.common.exception.ServiceRuntimeException;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.ExcelUtil;
+import com.ep.common.tool.wechat.WechatTools;
+import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
@@ -18,6 +20,7 @@ import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +66,8 @@ public class OrderService {
     private OrganClassScheduleRepository organClassScheduleRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private WechatPayComponent wechatPayComponent;
 
     /**
      * 加载会员下单需要的数据
@@ -640,5 +645,26 @@ public class OrderService {
         //机构最近几天内的订单销售额
         resultMap.put("orderPrizeSum", orderRepository.sumOrderPrize(ognId, homeRecentlyDays));
         return resultMap;
+    }
+
+    /**
+     * 微信支付生成预支付订单
+     *
+     * @param memberId
+     * @param openid
+     * @param orderId
+     * @param ip
+     * @return
+     */
+    public ResultDo prePayByWechatPay(Long memberId, String openid, Long orderId, String ip) throws Exception {
+        // 校验
+        Optional<EpOrderPo> existOrder = orderRepository.findById(orderId);
+        EpOrderPo orderPo = existOrder.get();
+        EpOrganPo organPo = organRepository.getById(orderPo.getOgnId());
+        // 商品描述
+        String body = Joiner.on(WechatTools.BODY_SPLIT).join(organPo.getOgnName(), BizConstant.WECHAT_PAY_BODY);
+        String outTradeNo = WechatTools.generateUUID();
+        Integer totalFee = orderPo.getPrize().multiply(new BigDecimal(BizConstant.NUM_ONE_HUNDRED)).intValue();
+        return wechatPayComponent.xcxUnifiedorder(openid, body, outTradeNo, String.valueOf(totalFee), "112.17.238.8");
     }
 }

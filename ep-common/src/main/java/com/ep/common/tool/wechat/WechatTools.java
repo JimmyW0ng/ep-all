@@ -39,9 +39,9 @@ public class WechatTools {
     public static final String SUCCESS = "SUCCESS";
     public static final String FAIL = "FAIL";
     public static final String RETURN_CODE = "return_code";
-    public static final String RETURN_MSG = "retmsg";
-    public static final String SANDBOX_SIGN_KEY = "sandbox_signkey";
-
+    public static final String RETURN_MSG = "return_msg";
+    public static final String RETURN_OK = "OK";
+    public static final String BODY_SPLIT = "-";
     /**
      * 参数
      */
@@ -318,15 +318,6 @@ public class WechatTools {
         } else {
             throw new Exception(String.format("Invalid sign_type: %s", signType));
         }
-    }
-
-    /**
-     * 获取随机字符串 Nonce Str
-     *
-     * @return String 随机字符串
-     */
-    public static String generateNonceStr() {
-        return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 32);
     }
 
     /**
