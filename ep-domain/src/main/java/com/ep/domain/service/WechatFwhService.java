@@ -115,7 +115,7 @@ public class WechatFwhService {
                 return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString());
             }
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -143,7 +143,7 @@ public class WechatFwhService {
                         .setErrorDescription(responseMap.get(WechatTools.PARAM_ERRMSG).toString());
             }
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -162,7 +162,7 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return ResultDo.build().setResult(responseEntity.getBody());
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -181,7 +181,7 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return ResultDo.build().setResult(responseEntity.getBody());
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -200,7 +200,7 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return ResultDo.build().setResult(responseEntity.getBody());
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**

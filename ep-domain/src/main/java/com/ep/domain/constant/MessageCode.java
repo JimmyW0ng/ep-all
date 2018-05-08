@@ -145,7 +145,5 @@ public class MessageCode {
     /**
      * 微信接口
      */
-    public static final String ERROR_WECHAT_API_CONNECTION = "ERROR_WECHAT_API_CONNECTION";
-
     public static final String ERROR_WECHAT_API_REQPARAM = "ERROR_WECHAT_API_REQPARAM";
 }
