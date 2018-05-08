@@ -1,5 +1,6 @@
 package com.ep.domain.component;
 
+import com.ep.common.tool.SerialNumberTools;
 import com.ep.common.tool.StringTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.MessageCode;
@@ -28,6 +29,8 @@ public class WechatPayComponent {
      * 接口地址
      */
     private static final String URL_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    private static final String URL_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery";
+    private static final String URL_PAY_REFUNDQUERY = "https://api.mch.weixin.qq.com/sandboxnew/pay/refundquery";
     private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey";
 
     @Value("${wechat.xcx.member.appid}")
@@ -50,8 +53,8 @@ public class WechatPayComponent {
      */
     public Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
         reqData.put("appid", xcxMemberAppid);
-        reqData.put("mch_id", "");
-        reqData.put("nonce_str", WechatTools.generateUUID());
+        reqData.put("mch_id", wechatPayMchid);
+        reqData.put("nonce_str", WechatTools.generateNonceStr());
         reqData.put("sign", WechatTools.generateSignature(reqData, wechatPayKey));
         return reqData;
     }
@@ -71,7 +74,7 @@ public class WechatPayComponent {
      * @return
      * @throws Exception
      */
-    public ResultDo xcxUnifiedorder(String body, String detail, String attach, String out_trade_no, int total_fee,
+    public ResultDo xcxUnifiedorder(String body, String detail, String attach, int total_fee,
                                     String spbill_create_ip, String time_start, String time_expire, String openid) throws Exception {
         Map<String, String> requestMap = Maps.newHashMap();
         requestMap.put("body", body);
@@ -81,7 +84,7 @@ public class WechatPayComponent {
         if (StringTools.isNotBlank(attach)) {
             requestMap.put("attach", attach);
         }
-        requestMap.put("out_trade_no", out_trade_no);
+        requestMap.put("out_trade_no", SerialNumberTools.generateOutTradeNo());
         requestMap.put("total_fee", String.valueOf(total_fee));
         requestMap.put("spbill_create_ip", spbill_create_ip);
         if (StringTools.isNotBlank(time_start)) {
@@ -91,13 +94,71 @@ public class WechatPayComponent {
             requestMap.put("time_expire", time_expire);
         }
         requestMap.put("openid", openid);
-        String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+        String url = URL_PAY_UNIFIEDORDER;
         String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+        log.info("[微信支付]统一下单，接口入参={}。", xml);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
-        System.out.println(responseEntity.getBody());
+        String resultStr = responseEntity.getBody();
+        log.info("[微信支付]统一下单，接口返回={}。", resultStr);
         return ResultDo.build();
     }
 
+    /**
+     * 查询订单
+     *
+     * @param transactionId 微信订单号
+     * @param outTradeNo    商户订单号
+     * @return
+     * @throws Exception
+     */
+    public ResultDo orderquery(String transactionId, String outTradeNo) throws Exception {
+        Map<String, String> requestMap = Maps.newHashMap();
+        if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
+        }
+        requestMap.put("transaction_id", transactionId);
+        requestMap.put("out_trade_no", outTradeNo);
+        String url = URL_PAY_ORDERQUERY;
+        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+        log.info("[微信支付]查询订单，接口入参={}。", xml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
+        String resultStr = responseEntity.getBody();
+        log.info("[微信支付]查询订单，接口返回={}。", resultStr);
+        return ResultDo.build().setResult(resultStr);
+    }
+
+
+    /**
+     * 查询退款
+     *
+     * @param transactionId 微信订单号
+     * @param outTradeNo    商户订单号
+     * @param outRefundNo   商户退款单号
+     * @param refundId      微信退款单号
+     * @return
+     * @throws Exception
+     */
+    public ResultDo refundquery(String transactionId, String outTradeNo, String outRefundNo, String refundId, Integer offset) throws Exception {
+        Map<String, String> requestMap = Maps.newHashMap();
+        if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)
+                && StringTools.isBlank(outRefundNo) && StringTools.isBlank(refundId)) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
+        }
+        requestMap.put("transaction_id", transactionId);
+        requestMap.put("out_trade_no", outTradeNo);
+        requestMap.put("out_refund_no", outRefundNo);
+        requestMap.put("refund_id", refundId);
+        if (null != offset) {
+            requestMap.put("offset", offset.toString());
+        }
+        String url = URL_PAY_REFUNDQUERY;
+        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+        log.info("[微信支付]查询退款，接口入参={}。", xml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
+        String resultStr = responseEntity.getBody();
+        log.info("[微信支付]查询退款，接口返回={}。", resultStr);
+        return ResultDo.build().setResult(resultStr);
+    }
 
     /**
      * 获取沙箱秘钥
