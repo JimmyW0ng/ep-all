@@ -34,6 +34,15 @@ import java.util.*;
 @Slf4j
 public class WechatTools {
     /**
+     * 常量
+     */
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAIL = "FAIL";
+    public static final String RETURN_CODE = "return_code";
+    public static final String RETURN_MSG = "retmsg";
+    public static final String SANDBOX_SIGN_KEY = "sandbox_signkey";
+
+    /**
      * 参数
      */
     public static final String PARAM_TOUSERNAME = "ToUserName";
@@ -65,11 +74,6 @@ public class WechatTools {
     public static final String EVENT_UNSUB = "unsubscribe";
     public static final String EVENT_CLICK = "CLICK";
     public static final String EVENT_VIEW = "VIEW";
-
-
-    public enum SignType {
-        MD5, HMACSHA256
-    }
 
     /**
      * xml转为map
@@ -128,7 +132,6 @@ public class WechatTools {
         ins.close();
         return map;
     }
-
 
     /**
      * XML格式字符串转换为Map
@@ -205,7 +208,6 @@ public class WechatTools {
         return output;
     }
 
-
     /**
      * 生成带有 sign 的 XML 格式字符串
      *
@@ -230,7 +232,6 @@ public class WechatTools {
         data.put(WXPayConstants.FIELD_SIGN, sign);
         return mapToXml(data);
     }
-
 
     /**
      * 判断签名是否正确
@@ -319,7 +320,6 @@ public class WechatTools {
         }
     }
 
-
     /**
      * 获取随机字符串 Nonce Str
      *
@@ -328,7 +328,6 @@ public class WechatTools {
     public static String generateNonceStr() {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 32);
     }
-
 
     /**
      * 生成 MD5
@@ -401,6 +400,10 @@ public class WechatTools {
      */
     public static String generateUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 32);
+    }
+
+    public enum SignType {
+        MD5, HMACSHA256
     }
 
 }

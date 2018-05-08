@@ -5,7 +5,6 @@ import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatFwhService;
-import com.ep.domain.service.WechatPayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,7 +27,7 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("security/wechat")
 @RestController
-@Api(value = "api-security", description = "api开放接口")
+@Api(value = "api-security-wechat", description = "api开放接口-微信")
 public class WechatController extends ApiController {
 
     @Value("${wechat.xcx.member.appid}")
@@ -57,8 +56,6 @@ public class WechatController extends ApiController {
     private String wechatFwhSecret;
     @Autowired
     private WechatFwhService wechatFwhService;
-    @Autowired
-    private WechatPayService wechatPayService;
 
     @ApiOperation(value = "登录凭证校验")
     @PostMapping("/xcx/member/auth")
