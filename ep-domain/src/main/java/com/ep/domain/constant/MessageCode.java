@@ -142,6 +142,8 @@ public class MessageCode {
      * 预约行程
      */
     public static final String RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30 = "RECTIFY_SCHEDULE_STARTTIME_TONOW_LT30";
-
-    public static final String ERROR_WECHAT_API_CONNECTION = "ERROR_WECHAT_API_CONNECTION";
+    /**
+     * 微信接口
+     */
+    public static final String ERROR_WECHAT_API_REQPARAM = "ERROR_WECHAT_API_REQPARAM";
 }

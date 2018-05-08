@@ -1,5 +1,7 @@
 package com.ep.domain.component;
 
+import com.ep.common.tool.SerialNumberTools;
+import com.ep.common.tool.StringTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -28,10 +30,12 @@ public class WechatPayComponent {
      */
     private static final String URL_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     private static final String URL_PAY_SANDBOX_UNIFIEDORDER = "https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder";
+    private static final String URL_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery";
+    private static final String URL_PAY_REFUNDQUERY = "https://api.mch.weixin.qq.com/sandboxnew/pay/refundquery";
     private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey";
 
-    // @Value("${wechat.xcx.member.appid}")
-    private String xcxMemberAppid = "wx2cb67c8e35a0bf2a";
+    @Value("${wechat.xcx.member.appid}")
+    private String xcxMemberAppid;
     @Value("${wechat.pay.mchid}")
     private String wechatPayMchid;
     // @Value("${wechat.pay.key}")
@@ -73,6 +77,69 @@ public class WechatPayComponent {
         return ResultDo.build();
     }
 
+    /**
+     * 查询订单
+     *
+     * @param transactionId 微信订单号
+     * @param outTradeNo    商户订单号
+     * @return
+     * @throws Exception
+     */
+    public ResultDo orderquery(String transactionId, String outTradeNo) throws Exception {
+        Map<String, String> requestMap = Maps.newHashMap();
+        if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
+        }
+        requestMap.put("transaction_id", transactionId);
+        requestMap.put("out_trade_no", outTradeNo);
+        String url = URL_PAY_ORDERQUERY;
+        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+        log.info("[微信支付]查询订单，接口入参={}。", xml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
+        if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+        }
+        String resultStr = responseEntity.getBody();
+        log.info("[微信支付]查询订单，接口返回={}。", resultStr);
+        return ResultDo.build().setResult(resultStr);
+    }
+
+
+    /**
+     * 查询退款
+     *
+     * @param transactionId 微信订单号
+     * @param outTradeNo    商户订单号
+     * @param outRefundNo   商户退款单号
+     * @param refundId      微信退款单号
+     * @param offset      位移量
+     * @return
+     * @throws Exception
+     */
+    public ResultDo refundquery(String transactionId, String outTradeNo, String outRefundNo, String refundId, Integer offset) throws Exception {
+        Map<String, String> requestMap = Maps.newHashMap();
+        if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)
+                && StringTools.isBlank(outRefundNo) && StringTools.isBlank(refundId)) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
+        }
+        requestMap.put("transaction_id", transactionId);
+        requestMap.put("out_trade_no", outTradeNo);
+        requestMap.put("out_refund_no", outRefundNo);
+        requestMap.put("refund_id", refundId);
+        if (null != offset) {
+            requestMap.put("offset", offset.toString());
+        }
+        String url = URL_PAY_REFUNDQUERY;
+        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+        log.info("[微信支付]查询退款，接口入参={}。", xml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
+        if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+        }
+        String resultStr = responseEntity.getBody();
+        log.info("[微信支付]查询退款，接口返回={}。", resultStr);
+        return ResultDo.build().setResult(resultStr);
+    }
 
     /**
      * 获取沙箱秘钥
@@ -102,5 +169,21 @@ public class WechatPayComponent {
         } catch (Exception e) {
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
+    }
+
+    /**
+     * 向 Map 中添加 appid、mch_id、nonce_str、sign_type、sign <br>
+     * 该函数适用于商户适用于统一下单等接口，不适用于红包、代金券接口
+     *
+     * @param reqData
+     * @return
+     * @throws Exception
+     */
+    public Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
+        reqData.put("appid", xcxMemberAppid);
+        reqData.put("mch_id", wechatPayMchid);
+        reqData.put("nonce_str", WechatTools.generateNonceStr());
+        reqData.put("sign", WechatTools.generateSignature(reqData, wechatPayKey));
+        return reqData;
     }
 }
