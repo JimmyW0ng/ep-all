@@ -24,7 +24,7 @@ public class SerialNumberTools {
      */
     private static String generateNumber(String prefix, int randomLen) {
         StringBuffer stringBuffer = new StringBuffer();
-        int random = RandomUtils.nextInt((int) Math.pow(10, randomLen), (int) Math.pow(10, randomLen + 1) - 1);
+        int random = RandomUtils.nextInt((int) Math.pow(10, randomLen - 1), (int) Math.pow(10, randomLen) - 1);
         //前缀+17位+后缀随机数字
         stringBuffer.append(prefix)
                 .append(generateDateToString())
@@ -36,4 +36,5 @@ public class SerialNumberTools {
         return DateTools.formatDatetoString(
                 DateTools.getCurrentDate(), DateTools.TIME_PATTERN_MILLISECOND);
     }
+
 }
