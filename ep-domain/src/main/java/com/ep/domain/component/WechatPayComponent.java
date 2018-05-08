@@ -1,6 +1,5 @@
 package com.ep.domain.component;
 
-import com.ep.common.tool.SerialNumberTools;
 import com.ep.common.tool.StringTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.MessageCode;
@@ -182,7 +181,7 @@ public class WechatPayComponent {
     public Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
         reqData.put("appid", xcxMemberAppid);
         reqData.put("mch_id", wechatPayMchid);
-        reqData.put("nonce_str", WechatTools.generateNonceStr());
+        reqData.put("nonce_str", WechatTools.generateUUID());
         reqData.put("sign", WechatTools.generateSignature(reqData, wechatPayKey));
         return reqData;
     }
