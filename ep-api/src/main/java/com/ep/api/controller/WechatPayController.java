@@ -57,11 +57,11 @@ public class WechatPayController extends ApiController {
             sessionBo = wechatXcxService.getSessionObject(sessionToken);
         } catch (GeneralSecurityException e) {
             log.error("【小程序报名支付】sessionToken失败, sessionToken={}", sessionToken, e);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_SESSION_TOKEN_CONTENT);
         }
         if (sessionBo == null || sessionBo.getOpenid() == null) {
             log.error("【小程序报名支付】sessionToken异常, sessionToken={}, sessionBo={}", sessionToken, sessionBo);
-            return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_SESSION_TOKEN_CONTENT);
         }
         // 微信支付生成预支付订单
         return orderService.prePayByWechatPay(memberId, sessionBo.getOpenid(), orderId, IpTools.getIpAddr(request));

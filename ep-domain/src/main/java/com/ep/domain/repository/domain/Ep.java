@@ -28,13 +28,11 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Ep extends SchemaImpl {
 
-    private static final long serialVersionUID = 1046508863;
-
     /**
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-
+    private static final long serialVersionUID = -703873560;
     /**
      * 课程类目表
      */
@@ -216,6 +214,11 @@ public class Ep extends SchemaImpl {
     public final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
 
     /**
+     * 微信支付统一订单
+     */
+    public final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = com.ep.domain.repository.domain.tables.EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER;
+
+    /**
      * No further instances allowed
      */
     private Ep() {
@@ -275,6 +278,7 @@ public class Ep extends SchemaImpl {
             EpSystemUser.EP_SYSTEM_USER,
                 EpSystemUserRole.EP_SYSTEM_USER_ROLE,
                 EpToken.EP_TOKEN,
-                EpWechatOpenid.EP_WECHAT_OPENID);
+                EpWechatOpenid.EP_WECHAT_OPENID,
+                EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER);
     }
 }

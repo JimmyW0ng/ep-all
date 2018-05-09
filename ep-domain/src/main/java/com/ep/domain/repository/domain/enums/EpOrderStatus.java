@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 订单状态:保存；成功；已开班；结束；拒绝；取消；
+ * 订单状态：保存；已支付；成功；已开班；结束；拒绝；取消；
  */
 @Generated(
     value = {
@@ -25,6 +25,8 @@ import javax.annotation.Generated;
 public enum EpOrderStatus implements EnumType {
 
     save("save"),
+
+    paid("paid"),
 
     success("success"),
 

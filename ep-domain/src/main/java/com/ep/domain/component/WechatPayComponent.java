@@ -74,7 +74,7 @@ public class WechatPayComponent {
         log.info("【微信支付】统一下单入参: orderId={}, ognName={}, prize={}, openid={}, ip={}", orderId, ognName, prize, openid, ip);
         // 保存本地微信支付统一下单表
         String body = Joiner.on(WechatTools.BODY_SPLIT).join(ognName, BizConstant.WECHAT_PAY_BODY);
-        String outTradeNo = SerialNumberTools.generateOutTradeNo();
+        String outTradeNo = SerialNumberTools.generateOutTradeNo(orderId);
         Integer totalFee = prize.multiply(new BigDecimal(BizConstant.NUM_ONE_HUNDRED)).intValue();
         String tradeType = WechatTools.XCX_PAY_TRADE_TYPE;
         EpWechatUnifiedOrderPo unifiedOrderPo = new EpWechatUnifiedOrderPo();
@@ -130,7 +130,7 @@ public class WechatPayComponent {
         // 验签
         if (!WechatTools.isSignatureValid(data, wechatPayKey)) {
             log.error("【微信支付】统一下单返回验签失败, outTradeNo={}", outTradeNo);
-            return ResultDo.build(MessageCode.ERROR_WECHAT_UNIFIED_ORDER_SIGN);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_RETURN_SIGN);
         }
         // 业务结果失败
         if (!resultCode.equals(WechatTools.SUCCESS)) {
@@ -147,7 +147,59 @@ public class WechatPayComponent {
         resultMap.put("signType", WechatTools.SignType.MD5.name());
         resultMap.put("paySign", WechatTools.generateSignature(resultMap, wechatPayKey));
         resultMap.remove("appid");
+        log.info("【微信支付】统一下单成功: outTradeNo={}", outTradeNo);
         return resultDo.setResult(resultMap);
+    }
+
+    /**
+     * 微信支付notify处理
+     *
+     * @param respMap
+     * @return
+     */
+    public ResultDo handlePayNotify(Map<String, String> respMap) throws Exception {
+        // 验签
+        try {
+            if (!WechatTools.isSignatureValid(respMap, wechatPayKey)) {
+                log.error("【微信支付】notify通知验签不通过, 返回数据: {}", respMap);
+                return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_RETURN_SIGN);
+            }
+        } catch (Exception e) {
+            log.error("【微信支付】notify通知验签异常, 返回数据: {}", respMap);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_RETURN_SIGN);
+        }
+        if (!respMap.containsKey("out_trade_no")) {
+            log.error("【微信支付】notify通知缺少商户订单号数据, 返回数据: {}", respMap);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_NO_OUT_TRADE_NO);
+        }
+        // 更新支付结果
+        String outTradeNo = respMap.get("out_trade_no");
+        EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.getByOutTradeNo(outTradeNo);
+        if (StringTools.isBlank(unifiedOrderPo.getNotifyResultCode())) {
+            // 更新支付结果
+            String notifyReturnCode = respMap.get("return_code");
+            String notifyReturnMsg = respMap.get("return_msg");
+            String notifyResultCode = respMap.get("result_code");
+            String notifyErrCode = respMap.get("err_code");
+            String notifyErrCodeDes = respMap.get("err_code_des");
+            String isSubscribe = respMap.get("is_subscribe");
+            String openid = respMap.get("openid");
+            String bankType = respMap.get("bank_type");
+            String transactionId = respMap.get("transaction_id");
+            String timeEnd = respMap.get("time_end");
+            wechatUnifiedOrderRepository.handleNotify(outTradeNo,
+                    notifyReturnCode,
+                    notifyReturnMsg,
+                    notifyResultCode,
+                    notifyErrCode,
+                    notifyErrCodeDes,
+                    isSubscribe,
+                    openid,
+                    bankType,
+                    transactionId,
+                    timeEnd);
+        }
+        return ResultDo.build();
     }
 
     /**
@@ -252,11 +304,12 @@ public class WechatPayComponent {
      * @return
      * @throws Exception
      */
-    public Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
+    private Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
         reqData.put("appid", xcxMemberAppid);
         reqData.put("mch_id", wechatPayMchid);
         reqData.put("nonce_str", WechatTools.generateUUID());
         reqData.put("sign", WechatTools.generateSignature(reqData, wechatPayKey));
         return reqData;
     }
+
 }

@@ -42,6 +42,7 @@ public class WechatTools {
     public static final String RETURN_MSG = "return_msg";
     public static final String RETURN_OK = "OK";
     public static final String BODY_SPLIT = "-";
+    public static final String XCX_PAY_TRADE_TYPE = "JSAPI";
     /**
      * 参数
      */

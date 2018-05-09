@@ -224,6 +224,6 @@ public class BizConstant {
      * 微信支付
      */
     public static String WECHAT_PAY_ORDER = "XCXPAY";
-    public static String WECHAT_PAY_BODY = "生活服务";
+    public static String WECHAT_PAY_BODY = "服务";
 
 }

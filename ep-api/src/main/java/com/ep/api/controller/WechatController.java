@@ -3,6 +3,7 @@ package com.ep.api.controller;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
+import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatFwhService;
 import com.ep.domain.service.WechatXcxService;
@@ -60,6 +61,8 @@ public class WechatController extends ApiController {
     private WechatFwhService wechatFwhService;
     @Autowired
     private WechatXcxService wechatXcxService;
+    @Autowired
+    private WechatPayComponent wechatPayComponent;
 
     @ApiOperation(value = "登录凭证校验")
     @PostMapping("/xcx/member/auth")
@@ -123,8 +126,15 @@ public class WechatController extends ApiController {
     @RequestMapping(value = "/pay/notify", method = {RequestMethod.GET, RequestMethod.POST})
     public String wechatPayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, String> respMap = WechatTools.xmlToMap(request);
-        log.info("微信支付通知：encoding={}, data={}", request.getCharacterEncoding(), respMap);
+        log.info("【微信支付】notify通知开始, encoding: {}, 返回数据: {}", request.getCharacterEncoding(), respMap);
+        ResultDo resultDo = wechatPayComponent.handlePayNotify(respMap);
+        log.info("【微信支付】notify通知完成！");
         Map<String, String> result = Maps.newHashMap();
+        if (resultDo.isError()) {
+            result.put(WechatTools.RETURN_CODE, WechatTools.FAIL);
+            result.put(WechatTools.RETURN_MSG, resultDo.getErrorDescription());
+            return WechatTools.mapToXml(result);
+        }
         result.put(WechatTools.RETURN_CODE, WechatTools.SUCCESS);
         result.put(WechatTools.RETURN_MSG, WechatTools.RETURN_OK);
         return WechatTools.mapToXml(result);

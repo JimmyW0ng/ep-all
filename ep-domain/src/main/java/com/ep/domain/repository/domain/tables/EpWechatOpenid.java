@@ -12,6 +12,7 @@ import org.jooq.*;
 import org.jooq.impl.TableImpl;
 
 import javax.annotation.Generated;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,40 +30,47 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatOpenid extends TableImpl<EpWechatOpenidRecord> {
 
-    private static final long serialVersionUID = 1205404232;
-
     /**
      * The reference instance of <code>ep.ep_wechat_openid</code>
      */
     public static final EpWechatOpenid EP_WECHAT_OPENID = new EpWechatOpenid();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpWechatOpenidRecord> getRecordType() {
-        return EpWechatOpenidRecord.class;
-    }
-
+    private static final long serialVersionUID = 708054336;
     /**
      * The column <code>ep.ep_wechat_openid.id</code>.
      */
     public final TableField<EpWechatOpenidRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
     /**
      * The column <code>ep.ep_wechat_openid.openid</code>. 微信公众号号内，用户openid
      */
     public final TableField<EpWechatOpenidRecord, String> OPENID = createField("openid", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "微信公众号号内，用户openid");
-
     /**
      * The column <code>ep.ep_wechat_openid.type</code>. 微信公众号类型:服务号
      */
     public final TableField<EpWechatOpenidRecord, EpWechatOpenidType> TYPE = createField("type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpWechatOpenidType.class), this, "微信公众号类型:服务号");
-
     /**
      * The column <code>ep.ep_wechat_openid.mobile</code>. 手机号
      */
     public final TableField<EpWechatOpenidRecord, Long> MOBILE = createField("mobile", org.jooq.impl.SQLDataType.BIGINT, this, "手机号");
+    /**
+     * The column <code>ep.ep_wechat_openid.create_at</code>. 创建时间
+     */
+    public final TableField<EpWechatOpenidRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+    /**
+     * The column <code>ep.ep_wechat_openid.update_at</code>. 更新时间
+     */
+    public final TableField<EpWechatOpenidRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+    /**
+     * The column <code>ep.ep_wechat_openid.remark</code>. 备注
+     */
+    public final TableField<EpWechatOpenidRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+    /**
+     * The column <code>ep.ep_wechat_openid.del_flag</code>. 删除标记
+     */
+    public final TableField<EpWechatOpenidRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+    /**
+     * The column <code>ep.ep_wechat_openid.version</code>. 版本
+     */
+    public final TableField<EpWechatOpenidRecord, Long> VERSION = createField("version", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.BIGINT)), this, "版本");
 
     /**
      * Create a <code>ep.ep_wechat_openid</code> table reference
@@ -84,6 +92,14 @@ public class EpWechatOpenid extends TableImpl<EpWechatOpenidRecord> {
 
     private EpWechatOpenid(String alias, Table<EpWechatOpenidRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "公众号关联表");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpWechatOpenidRecord> getRecordType() {
+        return EpWechatOpenidRecord.class;
     }
 
     /**
@@ -116,6 +132,14 @@ public class EpWechatOpenid extends TableImpl<EpWechatOpenidRecord> {
     @Override
     public List<UniqueKey<EpWechatOpenidRecord>> getKeys() {
         return Arrays.<UniqueKey<EpWechatOpenidRecord>>asList(Keys.KEY_EP_WECHAT_OPENID_PRIMARY, Keys.KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TableField<EpWechatOpenidRecord, Long> getRecordVersion() {
+        return VERSION;
     }
 
     /**

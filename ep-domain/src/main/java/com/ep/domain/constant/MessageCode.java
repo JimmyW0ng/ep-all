@@ -17,6 +17,7 @@ public class MessageCode {
     public static final String ERROR_OPERATE_FAIL = "ERROR_OPERATE_FAIL";
     public static final String ERROR_MOBILE_FORMAT = "ERROR_MOBILE_FORMAT";
     public static final String ERROR_ILLEGAL_RESOURCE = "ERROR_ILLEGAL_RESOURCE";
+    public static final String ERROR_HTTP_STATUS = "ERROR_HTTP_STATUS";
 
     /**
      * 鉴权
@@ -146,4 +147,14 @@ public class MessageCode {
      * 微信接口
      */
     public static final String ERROR_WECHAT_API_REQPARAM = "ERROR_WECHAT_API_REQPARAM";
+    /**
+     * 微信支付
+     */
+    public static final String ERROR_WECHAT_SESSION_TOKEN_CONTENT = "ERROR_WECHAT_SESSION_TOKEN_CONTENT";
+    public static final String ERROR_WECHAT_ORDER_NEED_NOT_PAY = "ERROR_WECHAT_ORDER_NEED_NOT_PAY";
+    public static final String ERROR_WECHAT_ORDER_IS_PAID = "ERROR_WECHAT_ORDER_IS_PAID";
+    public static final String ERROR_WECHAT_PAY_FAIL = "ERROR_WECHAT_PAY_FAIL";
+    public static final String ERROR_WECHAT_PAY_RETURN_SIGN = "ERROR_WECHAT_PAY_RETURN_SIGN";
+    public static final String ERROR_WECHAT_PAY_NO_OUT_TRADE_NO = "ERROR_WECHAT_PAY_NO_OUT_TRADE_NO";
+    public static final String ERROR_WECHAT_UNIFIED_ORDER_FAIL = "ERROR_WECHAT_UNIFIED_ORDER_FAIL";
 }

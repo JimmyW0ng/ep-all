@@ -67,6 +67,7 @@ public class Keys {
     public static final Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = Identities0.IDENTITY_EP_SYSTEM_USER_ROLE;
     public static final Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = Identities0.IDENTITY_EP_TOKEN;
     public static final Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = Identities0.IDENTITY_EP_WECHAT_OPENID;
+    public static final Identity<EpWechatUnifiedOrderRecord, Long> IDENTITY_EP_WECHAT_UNIFIED_ORDER = Identities0.IDENTITY_EP_WECHAT_UNIFIED_ORDER;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -122,6 +123,8 @@ public class Keys {
     public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = UniqueKeys0.KEY_EP_TOKEN_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_OPENID_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = UniqueKeys0.KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE;
+    public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_UNIFIED_ORDER_PRIMARY;
+    public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_UNIQUE_OUT_TRADE_NO = UniqueKeys0.KEY_EP_WECHAT_UNIFIED_ORDER_UNIQUE_OUT_TRADE_NO;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -169,6 +172,7 @@ public class Keys {
         public static Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = createIdentity(EpSystemUserRole.EP_SYSTEM_USER_ROLE, EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = createIdentity(EpToken.EP_TOKEN, EpToken.EP_TOKEN.ID);
         public static Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = createIdentity(EpWechatOpenid.EP_WECHAT_OPENID, EpWechatOpenid.EP_WECHAT_OPENID.ID);
+        public static Identity<EpWechatUnifiedOrderRecord, Long> IDENTITY_EP_WECHAT_UNIFIED_ORDER = createIdentity(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
@@ -222,5 +226,7 @@ public class Keys {
         public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = createUniqueKey(EpToken.EP_TOKEN, "KEY_ep_token_PRIMARY", EpToken.EP_TOKEN.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_PRIMARY", EpWechatOpenid.EP_WECHAT_OPENID.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_INDEX_OPENID_TYPE_MOBILE", EpWechatOpenid.EP_WECHAT_OPENID.OPENID, EpWechatOpenid.EP_WECHAT_OPENID.TYPE, EpWechatOpenid.EP_WECHAT_OPENID.MOBILE);
+        public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_PRIMARY = createUniqueKey(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, "KEY_ep_wechat_unified_order_PRIMARY", EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.ID);
+        public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_UNIQUE_OUT_TRADE_NO = createUniqueKey(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, "KEY_ep_wechat_unified_order_UNIQUE_OUT_TRADE_NO", EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO);
     }
 }
