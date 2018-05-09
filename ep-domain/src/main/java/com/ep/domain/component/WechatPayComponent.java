@@ -1,9 +1,16 @@
 package com.ep.domain.component;
 
+import com.ep.common.component.SpringComponent;
+import com.ep.common.tool.DateTools;
+import com.ep.common.tool.SerialNumberTools;
 import com.ep.common.tool.StringTools;
 import com.ep.common.tool.wechat.WechatTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
+import com.ep.domain.repository.WechatUnifiedOrderRepository;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -43,20 +51,44 @@ public class WechatPayComponent {
     private String notifyUrl;
 
     @Autowired
+    private WechatUnifiedOrderRepository wechatUnifiedOrderRepository;
+    @Autowired
     private RestTemplate restTemplate;
 
     /**
      * 小程序客户端统一下单
      *
+     * @param orderId
+     * @param ognName
+     * @param prize
      * @param openid
-     * @param body
-     * @param outTradeNo
-     * @param totalFee
+     * @param ip
      * @return
      * @throws Exception
      */
-    public ResultDo xcxUnifiedorder(String openid, String body, String outTradeNo, String totalFee, String ip) throws Exception {
-        log.info("【微信支付】统一下单入参: body={}, outTradeNo={}, totalFee={}, ip={}", body, outTradeNo, totalFee, ip);
+    public ResultDo xcxUnifiedorder(Long orderId,
+                                    String ognName,
+                                    BigDecimal prize,
+                                    String openid,
+                                    String ip) throws Exception {
+        log.info("【微信支付】统一下单入参: orderId={}, ognName={}, prize={}, openid={}, ip={}", orderId, ognName, prize, openid, ip);
+        // 保存本地微信支付统一下单表
+        String body = Joiner.on(WechatTools.BODY_SPLIT).join(ognName, BizConstant.WECHAT_PAY_BODY);
+        String outTradeNo = SerialNumberTools.generateOutTradeNo();
+        Integer totalFee = prize.multiply(new BigDecimal(BizConstant.NUM_ONE_HUNDRED)).intValue();
+        String tradeType = WechatTools.XCX_PAY_TRADE_TYPE;
+        EpWechatUnifiedOrderPo unifiedOrderPo = new EpWechatUnifiedOrderPo();
+        log.info("【微信支付】统一下单生成商户订单号: outTradeNo={}", outTradeNo);
+        unifiedOrderPo.setOrderId(orderId);
+        unifiedOrderPo.setAppid(xcxMemberAppid);
+        unifiedOrderPo.setMchId(wechatPayMchid);
+        unifiedOrderPo.setOutTradeNo(outTradeNo);
+        unifiedOrderPo.setBody(body);
+        unifiedOrderPo.setTotalFee(totalFee);
+        unifiedOrderPo.setSpbillCreateIp(ip);
+        unifiedOrderPo.setTradeType(tradeType);
+        wechatUnifiedOrderRepository.insert(unifiedOrderPo);
+        // 发起接口调用
         Map<String, String> requestMap = Maps.newHashMap();
         requestMap.put("appid", xcxMemberAppid);
         requestMap.put("mch_id", wechatPayMchid);
@@ -67,13 +99,55 @@ public class WechatPayComponent {
         requestMap.put("total_fee", "101");
         requestMap.put("spbill_create_ip", ip);
         requestMap.put("notify_url", notifyUrl);
-        requestMap.put("trade_type", "JSAPI");
+        requestMap.put("trade_type", tradeType);
         requestMap.put("sign", WechatTools.generateSignature(requestMap, wechatPayKey));
         String mapToXml = WechatTools.mapToXmlString(requestMap);
-        log.debug("【微信支付】统一下单提交参数: xml={}", mapToXml);
+        log.debug("【微信支付】统一下单提交参数: outTradeNo={}, xml={}", outTradeNo, mapToXml);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL_PAY_SANDBOX_UNIFIEDORDER, mapToXml, String.class);
-        log.info("【微信支付】统一下单返回: {}", responseEntity);
-        return ResultDo.build();
+        log.info("【微信支付】统一下单返回: outTradeNo={}, responseEntity={}", outTradeNo, responseEntity);
+        // 更新本地状态
+        if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            log.error("【微信支付】统一下单请求异常: outTradeNo={}, httpStatus={}", outTradeNo, responseEntity.getStatusCodeValue());
+            String code = String.valueOf(responseEntity.getStatusCodeValue());
+            String errorMsg = SpringComponent.messageSource(MessageCode.ERROR_HTTP_STATUS, new String[]{code});
+            return ResultDo.build(MessageCode.ERROR_HTTP_STATUS).setErrorDescription(errorMsg);
+        }
+        // 调用远程接口成功
+        Map<String, String> data = WechatTools.xmlToMap(responseEntity.getBody());
+        log.info("【微信支付】统一下单返回Map对象: outTradeNo={}, data={}", outTradeNo, data);
+        String returnCode = data.get("return_code");
+        String returnMsg = data.get("return_msg");
+        String resultCode = data.get("result_code");
+        String errCode = data.get("err_code");
+        String errCodeDes = data.get("err_code_des");
+        String prepayId = data.get("prepay_id");
+        wechatUnifiedOrderRepository.handleUnifiedOrder(unifiedOrderPo.getId(), returnCode, returnMsg, resultCode, errCode, errCodeDes, prepayId);
+        // 请求处理失败
+        if (!returnCode.equals(WechatTools.SUCCESS)) {
+            log.error("【微信支付】统一下单返回处理失败, outTradeNo={}, returnCode={}, returnMsg={}", outTradeNo, returnCode, returnMsg);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_FAIL).setErrorDescription(returnMsg);
+        }
+        // 验签
+        if (!WechatTools.isSignatureValid(data, wechatPayKey)) {
+            log.error("【微信支付】统一下单返回验签失败, outTradeNo={}", outTradeNo);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_UNIFIED_ORDER_SIGN);
+        }
+        // 业务结果失败
+        if (!resultCode.equals(WechatTools.SUCCESS)) {
+            log.error("【微信支付】统一下单返回结果失败, outTradeNo={}, resultCode={}, errCode={}, errCodeDes={}", outTradeNo, resultCode, errCode, errCodeDes);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_UNIFIED_ORDER_FAIL).setErrorDescription(errCodeDes);
+        }
+        // 封装返回结果
+        ResultDo<Map<String, String>> resultDo = ResultDo.build();
+        Map<String, String> resultMap = Maps.newHashMap();
+        resultMap.put("appid", xcxMemberAppid);
+        resultMap.put("timeStamp", String.valueOf(DateTools.getCurrentDate().getTime() / 1000));
+        resultMap.put("nonceStr", WechatTools.generateUUID());
+        resultMap.put("package", "prepay_id=" + prepayId);
+        resultMap.put("signType", WechatTools.SignType.MD5.name());
+        resultMap.put("paySign", WechatTools.generateSignature(resultMap, wechatPayKey));
+        resultMap.remove("appid");
+        return resultDo.setResult(resultMap);
     }
 
     /**
