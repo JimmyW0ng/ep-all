@@ -32,11 +32,9 @@ public class SerialNumberTools {
     }
 
     private static String generateDateToString() {
+        //14位
         return DateTools.formatDatetoString(
                 DateTools.getCurrentDate(), DateTools.TIME_PATTERN_SESSION);
     }
 
-    public static void main(String[] args) {
-        System.out.println(generateOutTradeNo(1L));
-    }
 }
