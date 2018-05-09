@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 时长周期:小时;分钟;天
+ * 时长类型:分;时;天
  */
 @Generated(
         value = {
@@ -24,9 +24,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpOrganClassCatalogDuraType implements EnumType {
 
-    hour("hour"),
-
     minute("minute"),
+
+    hour("hour"),
 
     day("day");
 

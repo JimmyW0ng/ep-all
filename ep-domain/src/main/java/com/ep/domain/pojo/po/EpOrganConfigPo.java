@@ -24,6 +24,7 @@ public class EpOrganConfigPo extends AbstractBasePojo {
     private Long ognId;
     private Boolean privateFlag;
     private Boolean supportTag;
+    private Boolean wechatPayFlag;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

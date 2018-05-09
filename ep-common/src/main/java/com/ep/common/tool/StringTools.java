@@ -1283,4 +1283,23 @@ public final class StringTools {
                 ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF));
     }
 
+    /**
+     * 字符串长度左补0
+     *
+     * @param str
+     * @param strLength
+     * @return
+     */
+    public static String addZeroForNum(String str, int strLength) {
+        int strLen = str.length();
+        StringBuffer sb = null;
+        while (strLen < strLength) {
+            sb = new StringBuffer();
+            // 左补0
+            sb.append("0").append(str);
+            str = sb.toString();
+            strLen = str.length();
+        }
+        return str;
+    }
 }

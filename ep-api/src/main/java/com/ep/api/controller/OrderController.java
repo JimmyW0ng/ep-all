@@ -1,6 +1,7 @@
 package com.ep.api.controller;
 
 import com.ep.domain.pojo.ResultDo;
+import com.ep.domain.pojo.dto.OrderDto;
 import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.OrderService;
@@ -41,8 +42,8 @@ public class OrderController extends ApiController {
     @ApiOperation(value = "创建订单")
     @PostMapping("/new")
     @PreAuthorize("hasAnyAuthority('api:base')")
-    public ResultDo order(@RequestParam("childId") Long childId,
-                          @RequestParam("classId") Long classId) {
+    public ResultDo<OrderDto> order(@RequestParam("childId") Long childId,
+                                    @RequestParam("classId") Long classId) {
         Optional<EpMemberPo> optional = super.getCurrentUser();
         return orderService.order(optional.get().getId(), childId, classId);
     }

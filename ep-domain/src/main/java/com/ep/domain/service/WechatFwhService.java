@@ -1,9 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.common.component.SpringComponent;
-import com.ep.common.tool.CryptTools;
 import com.ep.common.tool.DateTools;
-import com.ep.common.tool.JsonTools;
 import com.ep.common.tool.ValidCodeTools;
 import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.component.DictComponent;
@@ -15,7 +13,6 @@ import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.pojo.po.EpMessageCaptchaPo;
 import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.pojo.po.EpWechatOpenidPo;
-import com.ep.domain.pojo.wechat.WechatSessionBo;
 import com.ep.domain.repository.MemberRepository;
 import com.ep.domain.repository.MessageCaptchaRepository;
 import com.ep.domain.repository.WechatOpenidRepository;
@@ -35,14 +32,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
- * @Description:
+ * @Description: 微信服务号服务接口
  * @Author: CC.F
  * @Date: 0:20 2018/4/23
  */
@@ -66,29 +62,6 @@ public class WechatFwhService {
     private RestTemplate restTemplate;
     @Autowired
     private ApplicationEventPublisher publisher;
-
-    /**
-     * 微信登录凭证校验
-     *
-     * @param code
-     * @return
-     * @throws GeneralSecurityException
-     */
-    public ResultDo<String> getSessionToken(String code, String appid, String secret) throws GeneralSecurityException {
-        ResultDo<String> resultDo = ResultDo.build();
-        String url = String.format(BizConstant.WECHAT_URL_SESSION, appid, secret, code);
-        ResponseEntity<WechatSessionBo> entity = restTemplate.getForEntity(url, WechatSessionBo.class);
-        log.info("微信获取session返回：{}", entity);
-        if (!HttpStatus.OK.equals(entity.getStatusCode())) {
-            return resultDo.setError(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
-        }
-        WechatSessionBo sessionPojo = entity.getBody();
-        if (!entity.getBody().isSuccess()) {
-            return resultDo.setError(sessionPojo.getErrcode()).setErrorDescription(sessionPojo.getErrmsg());
-        }
-        String jsonStr = JsonTools.encode(sessionPojo);
-        return resultDo.setResult(CryptTools.aesEncrypt(jsonStr, BizConstant.WECHAT_TOKEN_SECRET));
-    }
 
     /**
      * 指定openid发送消息
@@ -115,7 +88,7 @@ public class WechatFwhService {
                 return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString());
             }
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -143,7 +116,7 @@ public class WechatFwhService {
                         .setErrorDescription(responseMap.get(WechatTools.PARAM_ERRMSG).toString());
             }
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -162,7 +135,7 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return ResultDo.build().setResult(responseEntity.getBody());
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -181,7 +154,7 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return ResultDo.build().setResult(responseEntity.getBody());
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**
@@ -200,7 +173,7 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             return ResultDo.build().setResult(responseEntity.getBody());
         }
-        return ResultDo.build(MessageCode.ERROR_WECHAT_API_CONNECTION);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
     /**

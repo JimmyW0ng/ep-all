@@ -219,8 +219,11 @@ public class BizConstant {
      */
     public static String DICT_GROUP_QCLOUDSMS = "QCLOUDSMS";
     public static String DICT_KEY_LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
-
     public static String DICT_KEY_WECHAT_BIND_MOBILE_CAPTCHA = "WECHAT_BIND_MOBILE_CAPTCHA";
-
+    /**
+     * 微信支付
+     */
+    public static String WECHAT_PAY_ORDER = "XCXPAY";
+    public static String WECHAT_PAY_BODY = "服务";
 
 }

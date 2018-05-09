@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+    <header>
+        <th:block layout:fragment="links">
+        </th:block>
+
+    </header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>查询订单</h5>
+            <h5>（<span class="required-sign">*为必填</span>）</h5>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="frm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span
+                            class="required-sign">*</span>微信订单号（微信订单号或商户订单号二选一）</label>
+                    <div class="col-sm-3">
+                        <input id="transactionId" name="transactionId" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商户订单号</label>
+                    <div class="col-sm-3">
+                        <input id="outTradeNo" name="outTradeNo" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-2">
+                        <button class="btn btn-info" type="button" onclick="frmSubmit()">查 询</button>
+                        <button class="btn btn-warning" type="button" onclick="frmReset()">重 置</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">返回</label>
+                    <div class="col-sm-4">
+                        <textarea style="height: 150px" id="result" name="result" type="text" class="form-control"
+                        ></textarea>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+<script th:inline="javascript">
+    function frmSubmit() {
+        $("#frm").find("input,textarea").each(function () {
+            var value = $(this).val()
+            $(this).val(value.replace(/^\s+|\s+$/g, ""))
+        })
+        if (!$("#frm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        $ajaxPostFun("/auth/wechatPay/orderquery", $("#frm").serialize(), function (data) {
+            $("#result").val(data)
+        })
+    }
+    function frmReset() {
+        $("#frm").find("input,textarea,select").val("")
+    }
+    $(function () {
+
+    })
+</script>
+</body>
+</html>

@@ -201,4 +201,9 @@ public class Tables {
      * 公众号关联表
      */
     public static final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
+
+    /**
+     * 微信支付统一订单
+     */
+    public static final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = com.ep.domain.repository.domain.tables.EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER;
 }

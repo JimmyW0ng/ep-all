@@ -3,12 +3,13 @@ package com.ep.api.controller;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
+import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatFwhService;
-import com.ep.domain.service.WechatPayService;
+import com.ep.domain.service.WechatXcxService;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("security/wechat")
 @RestController
-@Api(value = "api-security", description = "api开放接口")
+@Api(value = "api-security-wechat", description = "api开放接口-微信")
 public class WechatController extends ApiController {
 
     @Value("${wechat.xcx.member.appid}")
@@ -55,33 +56,18 @@ public class WechatController extends ApiController {
      */
     @Value("${wechat.fwh.secret}")
     private String wechatFwhSecret;
+
     @Autowired
     private WechatFwhService wechatFwhService;
     @Autowired
-    private WechatPayService wechatPayService;
+    private WechatXcxService wechatXcxService;
+    @Autowired
+    private WechatPayComponent wechatPayComponent;
 
     @ApiOperation(value = "登录凭证校验")
     @PostMapping("/xcx/member/auth")
     public ResultDo<String> getCaptcha(@RequestParam("code") String code) throws GeneralSecurityException {
-        return wechatFwhService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
-    }
-
-    @ApiOperation(value = "小程序统一下单")
-    @PostMapping("/xcx/pay/unifiedorder")
-    public ResultDo<String> xcxPayUnifiedorder(
-            @ApiParam(value = "商品描述(128)", required = true) @RequestParam("body") String body,
-            @ApiParam(value = "商品详情(6000)", required = false) @RequestParam("detail") String detail,
-            @ApiParam(value = "附加数据(127)", required = false) @RequestParam("attach") String attach,
-            @ApiParam(value = "商户订单号(32)", required = true) @RequestParam("out_trade_no") String out_trade_no,
-            @ApiParam(value = "标价金额(单位为分)", required = true) @RequestParam("total_fee") int total_fee,
-            @ApiParam(value = "终端IP(16),APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP", required = true)
-            @RequestParam("spbill_create_ip（16）") String spbill_create_ip,
-            @ApiParam(value = "交易起始时间（14）格式为yyyyMMddHHmmss", required = false) @RequestParam("time_start") String time_start,
-            @ApiParam(value = "交易结束时间（14）格式为yyyyMMddHHmmss", required = false) @RequestParam("time_expire") String time_expire,
-            @ApiParam(value = "用户标识（128）", required = true) @RequestParam("openid") String openid
-    ) throws GeneralSecurityException {
-        return ResultDo.build();
-//        return wechatPayService.xcxUnifiedorder(body,detail,attach,out_trade_no,total_fee,spbill_create_ip,time_start,time_expire,openid);
+        return wechatXcxService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
     }
 
     @GetMapping("fwh/access")
@@ -128,6 +114,30 @@ public class WechatController extends ApiController {
         } catch (IOException e) {
             response.getWriter().write("");
         }
+    }
+
+    /**
+     * 微信支付通知接口
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/pay/notify", method = {RequestMethod.GET, RequestMethod.POST})
+    public String wechatPayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, String> respMap = WechatTools.xmlToMap(request);
+        log.info("【微信支付】notify通知开始, encoding: {}, 返回数据: {}", request.getCharacterEncoding(), respMap);
+        ResultDo resultDo = wechatPayComponent.handlePayNotify(respMap);
+        log.info("【微信支付】notify通知完成！");
+        Map<String, String> result = Maps.newHashMap();
+        if (resultDo.isError()) {
+            result.put(WechatTools.RETURN_CODE, WechatTools.FAIL);
+            result.put(WechatTools.RETURN_MSG, resultDo.getErrorDescription());
+            return WechatTools.mapToXml(result);
+        }
+        result.put(WechatTools.RETURN_CODE, WechatTools.SUCCESS);
+        result.put(WechatTools.RETURN_MSG, WechatTools.RETURN_OK);
+        return WechatTools.mapToXml(result);
     }
 
 }

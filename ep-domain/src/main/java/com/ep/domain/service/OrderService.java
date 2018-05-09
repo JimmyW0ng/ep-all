@@ -5,12 +5,15 @@ import com.ep.common.exception.ServiceRuntimeException;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.ExcelUtil;
+import com.ep.common.tool.NumberTools;
+import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
+import com.ep.domain.pojo.dto.OrderDto;
 import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -54,6 +57,8 @@ public class OrderService {
     @Autowired
     private OrganRepository organRepository;
     @Autowired
+    private OrganConfigRepository organConfigRepository;
+    @Autowired
     private OrganVipRepository organVipRepository;
     @Autowired
     private OrganCourseRepository organCourseRepository;
@@ -63,6 +68,8 @@ public class OrderService {
     private OrganClassScheduleRepository organClassScheduleRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private WechatPayComponent wechatPayComponent;
 
     /**
      * 加载会员下单需要的数据
@@ -103,8 +110,8 @@ public class OrderService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo order(Long memberId, Long childId, Long classId) {
-        ResultDo<?> resultDo = ResultDo.build();
+    public ResultDo<OrderDto> order(Long memberId, Long childId, Long classId) {
+        ResultDo<OrderDto> resultDo = ResultDo.build();
         log.info("下单开始: memberId={}, childId={}, classId={}", memberId, childId, classId);
         if (childId == null) {
             log.error("下单失败，孩子id为空！");
@@ -210,7 +217,15 @@ public class OrderService {
         orderPo.setPrize(classPo.getDiscountAmount() != null ? classPo.getDiscountAmount() : classPo.getClassPrize());
         orderPo.setStatus(EpOrderStatus.save);
         orderRepository.insert(orderPo);
-        return resultDo;
+        // 判断是否需要微信支付
+        OrderDto result = new OrderDto();
+        Optional<EpOrganConfigPo> existOrganConfig = organConfigRepository.getByOgnId(classPo.getOgnId());
+        if (existOrganConfig.isPresent() && existOrganConfig.get().getWechatPayFlag() && NumberTools.compareBigDecimal(orderPo.getPrize(), BigDecimal.ZERO)) {
+            result.setWaitPayFlag(true);
+        } else {
+            result.setWaitPayFlag(false);
+        }
+        return resultDo.setResult(result);
     }
 
     /**
@@ -640,5 +655,48 @@ public class OrderService {
         //机构最近几天内的订单销售额
         resultMap.put("orderPrizeSum", orderRepository.sumOrderPrize(ognId, homeRecentlyDays));
         return resultMap;
+    }
+
+    /**
+     * 微信支付生成预支付订单
+     *
+     * @param memberId
+     * @param openid
+     * @param orderId
+     * @param ip
+     * @return
+     */
+    public ResultDo prePayByWechatPay(Long memberId, String openid, Long orderId, String ip) throws Exception {
+        log.info("【小程序报名支付】订单校验开始, orderId={}", orderId);
+        // 校验订单
+        Optional<EpOrderPo> existOrder = orderRepository.findById(orderId);
+        if (!existOrder.isPresent()) {
+            log.error("【小程序报名支付】订单不存在, orderId={}", orderId);
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        EpOrderPo orderPo = existOrder.get();
+        if (!orderPo.getMemberId().equals(memberId)) {
+            log.error("【小程序报名支付】订单不属于当前登录会员, orderId={}, orderMember={}, currentMember", orderId, orderPo.getMemberId(), memberId);
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        if (!NumberTools.compareBigDecimal(orderPo.getPrize(), BigDecimal.ZERO)) {
+            log.error("【小程序报名支付】订单金额不需支付, orderId={}, orderPrize", orderId, orderPo.getPrize());
+            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_NEED_NOT_PAY);
+        }
+        if (EpOrderStatus.paid.equals(orderPo.getStatus())) {
+            log.error("【小程序报名支付】订单已支付, orderId={}", orderId);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_IS_PAID);
+        }
+        if (!EpOrderStatus.save.equals(orderPo.getStatus())) {
+            log.error("【小程序报名支付】订单状态不是“保存”状态, orderId={}, status={}", orderId, orderPo.getStatus());
+            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_NEED_NOT_PAY);
+        }
+        EpOrganPo organPo = organRepository.getById(orderPo.getOgnId());
+        // 校验机构
+        if (organPo == null || organPo.getDelFlag()) {
+            log.error("【小程序报名支付】机构不存在, orderId={}, ognId={}", orderId, orderPo.getOgnId());
+            return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
+        }
+        return wechatPayComponent.xcxUnifiedorder(orderId, organPo.getOgnName(), orderPo.getPrize(), openid, ip);
     }
 }
