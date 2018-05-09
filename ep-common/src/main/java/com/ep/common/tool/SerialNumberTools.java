@@ -13,28 +13,30 @@ public class SerialNumberTools {
      *
      * @return
      */
-    public static String generateOutTradeNo() {
-        return generateNumber(PREFIX_OUT_TRADE_NO, 3);
+    public static String generateOutTradeNo(Long orderId) {
+        String orderIdStr = StringTools.addZeroForNum(orderId.toString(), 12);
+        return PREFIX_OUT_TRADE_NO + orderIdStr + generateNumber(4);
     }
 
     /**
-     * @param prefix    前缀
      * @param randomLen 后缀随机数字长度
      * @return
      */
-    private static String generateNumber(String prefix, int randomLen) {
+    private static String generateNumber(int randomLen) {
         StringBuffer stringBuffer = new StringBuffer();
         int random = RandomUtils.nextInt((int) Math.pow(10, randomLen - 1), (int) Math.pow(10, randomLen) - 1);
-        //前缀+17位+后缀随机数字
-        stringBuffer.append(prefix)
-                .append(generateDateToString())
+        //时间yyyyMMddHHmmss14位+后缀随机数字
+        stringBuffer.append(generateDateToString())
                 .append(random);
         return stringBuffer.toString();
     }
 
     private static String generateDateToString() {
         return DateTools.formatDatetoString(
-                DateTools.getCurrentDate(), DateTools.TIME_PATTERN_MILLISECOND);
+                DateTools.getCurrentDate(), DateTools.TIME_PATTERN_SESSION);
     }
 
+    public static void main(String[] args) {
+        System.out.println(generateOutTradeNo(1L));
+    }
 }
