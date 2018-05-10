@@ -26,7 +26,7 @@
 
                     <div class="form-group">
                         <input type="text" class="form-control " name="ognName" th:value="${searchMap.get('ognName')}"
-                               placeholder="机构名称">
+                               placeholder="商家名称">
                     </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
@@ -58,7 +58,7 @@
                         <thead>
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
-                            <th>机构名称</th>
+                            <th>商家名称</th>
                             <th>官方电话</th>
                             <th>官方邮箱</th>
                             <th>官方网址</th>
@@ -133,13 +133,13 @@
 <script type="text/javascript">
 
     function onlineOrganBox(id) {
-        layer_confirm(formatMsg("上线", "机构", ""), 3, onlineOrganDo, id);
+        layer_confirm(formatMsg("上线", "商家", ""), 3, onlineOrganDo, id);
     }
     function onlineOrganDo(id) {
         $ajaxGet("/auth/systemOrgan/online/" + id)
     }
     function offlineOrganBox(id) {
-        layer_confirm(formatMsg("下线", "机构", ""), 3, offlineOrganDo, id);
+        layer_confirm(formatMsg("下线", "商家", "商家将无法重新上线，必须重新注册"), 3, offlineOrganDo, id);
 
     }
     function offlineOrganDo(id) {
@@ -165,14 +165,14 @@
         })
     }
     function freezeOrganBox(id) {
-        layer_confirm(formatMsg("冻结", "机构", ""), 3, freezeOrganDo, id);
+        layer_confirm(formatMsg("冻结", "商家", ""), 3, freezeOrganDo, id);
 
     }
     function freezeOrganDo(id) {
         $ajaxGet("/auth/systemOrgan/freeze/" + id)
     }
     function unfreezeOrganBox(id) {
-        layer_confirm(formatMsg("解冻", "机构", ""), 3, unfreezeOrganDo, id);
+        layer_confirm(formatMsg("解冻", "商家", ""), 3, unfreezeOrganDo, id);
     }
     function unfreezeOrganDo(id) {
         $ajaxGet("/auth/systemOrgan/unfreeze/" + id)
