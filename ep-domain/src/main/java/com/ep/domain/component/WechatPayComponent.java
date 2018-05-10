@@ -142,7 +142,7 @@ public class WechatPayComponent {
         // 封装返回结果
         ResultDo<Map<String, String>> resultDo = ResultDo.build();
         Map<String, String> resultMap = Maps.newHashMap();
-        resultMap.put("appid", xcxMemberAppid);
+        resultMap.put("appId", xcxMemberAppid);
         resultMap.put("timeStamp", String.valueOf(DateTools.getCurrentDate().getTime() / 1000));
         resultMap.put("nonceStr", WechatTools.generateUUID());
         resultMap.put("package", "prepay_id=" + prepayId);
