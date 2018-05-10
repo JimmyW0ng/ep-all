@@ -32,7 +32,7 @@ public class Ep extends SchemaImpl {
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-    private static final long serialVersionUID = -703873560;
+    private static final long serialVersionUID = -1295835449;
     /**
      * 课程类目表
      */
@@ -97,6 +97,11 @@ public class Ep extends SchemaImpl {
      * 订单表
      */
     public final EpOrder EP_ORDER = com.ep.domain.repository.domain.tables.EpOrder.EP_ORDER;
+
+    /**
+     * 订单退款申请表
+     */
+    public final EpOrderRefund EP_ORDER_REFUND = com.ep.domain.repository.domain.tables.EpOrderRefund.EP_ORDER_REFUND;
 
     /**
      * 机构信息表
@@ -214,6 +219,11 @@ public class Ep extends SchemaImpl {
     public final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
 
     /**
+     * 微信支付退单表
+     */
+    public final EpWechatPayRefund EP_WECHAT_PAY_REFUND = com.ep.domain.repository.domain.tables.EpWechatPayRefund.EP_WECHAT_PAY_REFUND;
+
+    /**
      * 微信支付统一订单
      */
     public final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = com.ep.domain.repository.domain.tables.EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER;
@@ -256,6 +266,7 @@ public class Ep extends SchemaImpl {
             EpMemberMessage.EP_MEMBER_MESSAGE,
             EpMessageCaptcha.EP_MESSAGE_CAPTCHA,
             EpOrder.EP_ORDER,
+                EpOrderRefund.EP_ORDER_REFUND,
             EpOrgan.EP_ORGAN,
             EpOrganAccount.EP_ORGAN_ACCOUNT,
             EpOrganCatalog.EP_ORGAN_CATALOG,
@@ -279,6 +290,7 @@ public class Ep extends SchemaImpl {
                 EpSystemUserRole.EP_SYSTEM_USER_ROLE,
                 EpToken.EP_TOKEN,
                 EpWechatOpenid.EP_WECHAT_OPENID,
+                EpWechatPayRefund.EP_WECHAT_PAY_REFUND,
                 EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER);
     }
 }

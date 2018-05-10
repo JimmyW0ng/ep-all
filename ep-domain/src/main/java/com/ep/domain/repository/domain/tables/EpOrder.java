@@ -6,6 +6,8 @@ package com.ep.domain.repository.domain.tables;
 
 import com.ep.domain.repository.domain.Ep;
 import com.ep.domain.repository.domain.Keys;
+import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
+import com.ep.domain.repository.domain.enums.EpOrderPayType;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
 import org.jooq.*;
@@ -35,7 +37,7 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
      * The reference instance of <code>ep.ep_order</code>
      */
     public static final EpOrder EP_ORDER = new EpOrder();
-    private static final long serialVersionUID = -162726825;
+    private static final long serialVersionUID = -299565601;
     /**
      * The column <code>ep.ep_order.id</code>. 主键
      */
@@ -65,9 +67,17 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
      */
     public final TableField<EpOrderRecord, BigDecimal> PRIZE = createField("prize", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false), this, "价格");
     /**
-     * The column <code>ep.ep_order.status</code>. 订单状态：保存；已支付；成功；已开班；结束；拒绝；取消；
+     * The column <code>ep.ep_order.status</code>. 订单状态：保存；成功；已开班；结束；拒绝；取消；
      */
-    public final TableField<EpOrderRecord, EpOrderStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderStatus.class), this, "订单状态：保存；已支付；成功；已开班；结束；拒绝；取消；");
+    public final TableField<EpOrderRecord, EpOrderStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderStatus.class), this, "订单状态：保存；成功；已开班；结束；拒绝；取消；");
+    /**
+     * The column <code>ep.ep_order.pay_type</code>. 支付类型
+     */
+    public final TableField<EpOrderRecord, EpOrderPayType> PAY_TYPE = createField("pay_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderPayType.class), this, "支付类型");
+    /**
+     * The column <code>ep.ep_order.pay_status</code>. 支付状态：已支付；退款申请中；退款完成；
+     */
+    public final TableField<EpOrderRecord, EpOrderPayStatus> PAY_STATUS = createField("pay_status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderPayStatus.class), this, "支付状态：已支付；退款申请中；退款完成；");
     /**
      * The column <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */

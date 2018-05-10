@@ -88,6 +88,11 @@ public class Tables {
     public static final EpOrder EP_ORDER = com.ep.domain.repository.domain.tables.EpOrder.EP_ORDER;
 
     /**
+     * 订单退款申请表
+     */
+    public static final EpOrderRefund EP_ORDER_REFUND = com.ep.domain.repository.domain.tables.EpOrderRefund.EP_ORDER_REFUND;
+
+    /**
      * 机构信息表
      */
     public static final EpOrgan EP_ORGAN = com.ep.domain.repository.domain.tables.EpOrgan.EP_ORGAN;
@@ -201,6 +206,11 @@ public class Tables {
      * 公众号关联表
      */
     public static final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
+
+    /**
+     * 微信支付退单表
+     */
+    public static final EpWechatPayRefund EP_WECHAT_PAY_REFUND = com.ep.domain.repository.domain.tables.EpWechatPayRefund.EP_WECHAT_PAY_REFUND;
 
     /**
      * 微信支付统一订单

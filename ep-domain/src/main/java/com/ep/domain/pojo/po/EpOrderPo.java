@@ -5,6 +5,8 @@ package com.ep.domain.pojo.po;
 
 
 import com.ep.domain.pojo.AbstractBasePojo;
+import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
+import com.ep.domain.repository.domain.enums.EpOrderPayType;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,8 @@ public class EpOrderPo extends AbstractBasePojo {
     private Long classId;
     private BigDecimal prize;
     private EpOrderStatus status;
+    private EpOrderPayType payType;
+    private EpOrderPayStatus payStatus;
     private Timestamp authTime;
     private Timestamp cancelTime;
     private BigDecimal refundAmount;

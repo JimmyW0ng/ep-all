@@ -205,7 +205,30 @@ public class WechatPayComponent {
                 orderRepository.orderPaidById(unifiedOrderPo.getOrderId());
             }
         }
+        return ResultDo.build();
+    }
 
+    /**
+     * 小程序客户端退单
+     *
+     * @param outTradeNo
+     * @return
+     * @throws Exception
+     */
+    public ResultDo xcxPayRefund(String outTradeNo) throws Exception {
+        log.info("【微信支付】退单入参: outTradeNo={}", outTradeNo);
+        // 保存本地微信支付统一下单表
+        EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.getByOutTradeNo(outTradeNo);
+        // 商户订单号不存在
+        if (unifiedOrderPo == null || unifiedOrderPo.getDelFlag()) {
+            log.error("【微信支付退单】商户订单号不存在，utTradeNo={}", outTradeNo);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_OUT_TRADE_NO_NOT_EXIST);
+        }
+        // 商户订单号状态
+        if (!WechatTools.SUCCESS.equals(unifiedOrderPo.getNotifyReturnCode())) {
+            log.error("【微信支付退单】商户订单号不是支付成功状态，utTradeNo={}", outTradeNo);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_OUT_TRADE_NO_SUCCESS);
+        }
         return ResultDo.build();
     }
 

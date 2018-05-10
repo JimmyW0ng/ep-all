@@ -684,10 +684,10 @@ public class OrderService {
             log.error("【小程序报名支付】订单金额不需支付, orderId={}, orderPrize", orderId, orderPo.getPrize());
             return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_NEED_NOT_PAY);
         }
-        if (EpOrderStatus.paid.equals(orderPo.getStatus())) {
-            log.error("【小程序报名支付】订单已支付, orderId={}", orderId);
-            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_IS_PAID);
-        }
+//        if (EpOrderStatus.paid.equals(orderPo.getStatus())) {
+//            log.error("【小程序报名支付】订单已支付, orderId={}", orderId);
+//            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_IS_PAID);
+//        }
         if (!EpOrderStatus.save.equals(orderPo.getStatus())) {
             log.error("【小程序报名支付】订单状态不是“保存”状态, orderId={}, status={}", orderId, orderPo.getStatus());
             return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_NEED_NOT_PAY);
