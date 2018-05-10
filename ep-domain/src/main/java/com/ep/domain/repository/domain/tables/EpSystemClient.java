@@ -30,67 +30,91 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpSystemClient extends TableImpl<EpSystemClientRecord> {
 
+    private static final long serialVersionUID = -1386401374;
+
     /**
      * The reference instance of <code>ep.ep_system_client</code>
      */
     public static final EpSystemClient EP_SYSTEM_CLIENT = new EpSystemClient();
-    private static final long serialVersionUID = -1386401374;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpSystemClientRecord> getRecordType() {
+        return EpSystemClientRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_system_client.id</code>. 主键
      */
     public final TableField<EpSystemClientRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_system_client.client_id</code>. 客户端ID
      */
     public final TableField<EpSystemClientRecord, String> CLIENT_ID = createField("client_id", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "客户端ID");
+
     /**
      * The column <code>ep.ep_system_client.client_secret</code>. 客户端秘钥
      */
     public final TableField<EpSystemClientRecord, String> CLIENT_SECRET = createField("client_secret", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "客户端秘钥");
+
     /**
      * The column <code>ep.ep_system_client.salt</code>. 盐
      */
     public final TableField<EpSystemClientRecord, String> SALT = createField("salt", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "盐");
+
     /**
      * The column <code>ep.ep_system_client.role</code>. 角色
      */
     public final TableField<EpSystemClientRecord, String> ROLE = createField("role", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "角色");
+
     /**
      * The column <code>ep.ep_system_client.access_token_validity</code>.
      */
     public final TableField<EpSystemClientRecord, Integer> ACCESS_TOKEN_VALIDITY = createField("access_token_validity", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("-1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
     /**
      * The column <code>ep.ep_system_client.refresh_token_validity</code>.
      */
     public final TableField<EpSystemClientRecord, Integer> REFRESH_TOKEN_VALIDITY = createField("refresh_token_validity", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("-1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
     /**
      * The column <code>ep.ep_system_client.description</code>.
      */
     public final TableField<EpSystemClientRecord, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
+
     /**
      * The column <code>ep.ep_system_client.archived</code>. 是否激活
      */
     public final TableField<EpSystemClientRecord, Boolean> ARCHIVED = createField("archived", org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.inline("b'1'", org.jooq.impl.SQLDataType.BIT)), this, "是否激活");
+
     /**
      * The column <code>ep.ep_system_client.login_source</code>. 登录来源：微信小程序；机构后台；平台管理后台
      */
     public final TableField<EpSystemClientRecord, EpSystemClientLoginSource> LOGIN_SOURCE = createField("login_source", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpSystemClientLoginSource.class), this, "登录来源：微信小程序；机构后台；平台管理后台");
+
     /**
      * The column <code>ep.ep_system_client.create_at</code>. 创建时间
      */
     public final TableField<EpSystemClientRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_system_client.update_at</code>. 更新时间
      */
     public final TableField<EpSystemClientRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_system_client.remark</code>. 备注信息
      */
     public final TableField<EpSystemClientRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注信息");
+
     /**
      * The column <code>ep.ep_system_client.del_flag</code>. 删除标记
      */
     public final TableField<EpSystemClientRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_system_client.version</code>.
      */
@@ -116,14 +140,6 @@ public class EpSystemClient extends TableImpl<EpSystemClientRecord> {
 
     private EpSystemClient(String alias, Table<EpSystemClientRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "鉴权表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpSystemClientRecord> getRecordType() {
-        return EpSystemClientRecord.class;
     }
 
     /**

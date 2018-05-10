@@ -82,6 +82,8 @@
 
                             <th>微信支付订单号</th>
                             <th>支付完成时间</th>
+                            <th>产品名称</th>
+                            <th>班次名称</th>
 
                             <th>业务结果</th>
 
@@ -101,6 +103,8 @@
 
                             <td th:text="${bo.transactionId}"></td>
                             <td th:text="${bo.timeEnd}"></td>
+                            <td th:text="${bo.courseName}"></td>
+                            <td th:text="${bo.className}"></td>
                             <td th:text="${bo.returnCode}"></td>
 
                             <td th:text="${bo.notifyResultCode}"></td>

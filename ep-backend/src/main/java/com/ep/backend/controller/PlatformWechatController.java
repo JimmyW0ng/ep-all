@@ -3,6 +3,7 @@ package com.ep.backend.controller;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
+import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
 import com.ep.domain.service.WechatFwhService;
 import com.ep.domain.service.WechatUnifiedOrderService;
 import com.google.common.collect.Lists;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static com.ep.domain.repository.domain.Ep.EP;
@@ -95,6 +97,8 @@ public class PlatformWechatController extends BackendController {
                                     @RequestParam(value = "orderId", required = false) Long orderId,
                                     @RequestParam(value = "outTradeNo", required = false) String outTradeNo,
                                     @RequestParam(value = "transactionId", required = false) String transactionId,
+                                    @RequestParam(value = "courseName", required = false) String courseName,
+                                    @RequestParam(value = "className", required = false) String className,
                                     @RequestParam(value = "timeEndStart", required = false) Timestamp timeEndStart,
                                     @RequestParam(value = "timeEndEnd", required = false) Timestamp timeEndEnd,
                                     @RequestParam(value = "createAtStart", required = false) Timestamp createAtStart,
@@ -114,6 +118,14 @@ public class PlatformWechatController extends BackendController {
             conditions.add(EP.EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID.eq(transactionId));
         }
         searchMap.put("transactionId", transactionId);
+        if (StringTools.isNotBlank(courseName)) {
+            conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.eq(courseName));
+        }
+        searchMap.put("courseName", courseName);
+        if (StringTools.isNotBlank(className)) {
+            conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.eq(className));
+        }
+        searchMap.put("className", className);
 
         conditions.add(EP.EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false));
         Page<WechatUnifiedOrderBo> page = wechatUnifiedOrderService.findbyPageAndCondition(pageable, conditions, timeEndStart, timeEndEnd);
@@ -144,6 +156,8 @@ public class PlatformWechatController extends BackendController {
                                             @RequestParam(value = "orderId", required = false) Long orderId,
                                             @RequestParam(value = "outTradeNo", required = false) String outTradeNo,
                                             @RequestParam(value = "transactionId", required = false) String transactionId,
+                                            @RequestParam(value = "courseName", required = false) String courseName,
+                                            @RequestParam(value = "className", required = false) String className,
                                             @RequestParam(value = "timeEndStart", required = false) Timestamp timeEndStart,
                                             @RequestParam(value = "timeEndEnd", required = false) Timestamp timeEndEnd,
                                             @RequestParam(value = "createAtStart", required = false) Timestamp createAtStart,
@@ -166,6 +180,14 @@ public class PlatformWechatController extends BackendController {
         if (null != this.getCurrentUserOgnId()) {
             conditions.add(EP.EP_ORDER.OGN_ID.eq(this.getCurrentUserOgnId()));
         }
+        if (StringTools.isNotBlank(courseName)) {
+            conditions.add(EP.EP_ORGAN_COURSE.COURSE_NAME.eq(courseName));
+        }
+        searchMap.put("courseName", courseName);
+        if (StringTools.isNotBlank(className)) {
+            conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.eq(className));
+        }
+        searchMap.put("className", className);
 
         conditions.add(EP.EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false));
         Page<WechatUnifiedOrderBo> page = wechatUnifiedOrderService.findbyPageAndCondition(pageable, conditions, timeEndStart, timeEndEnd);
@@ -185,4 +207,15 @@ public class PlatformWechatController extends BackendController {
         return "wechat/unifiedorderMerchantIndex";
     }
 
+    /**
+     * 商户微信支付统一订单 分页
+     *
+     * @return
+     */
+    @GetMapping("findWechatUnifiedOrderByOrderId/{orderId}")
+    @ResponseBody
+    public ResultDo findWechatUnifiedOrderByOrderId(@PathVariable("orderId") Long orderId) {
+        List<EpWechatUnifiedOrderPo> list = wechatUnifiedOrderService.findByOrderId(orderId);
+        return ResultDo.build().setResult(list);
+    }
 }

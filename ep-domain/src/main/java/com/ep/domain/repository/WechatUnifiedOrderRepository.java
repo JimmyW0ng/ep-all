@@ -153,4 +153,17 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
         PageImpl<WechatUnifiedOrderBo> pPage = new PageImpl<WechatUnifiedOrderBo>(list, pageable, totalCount);
         return pPage;
     }
+
+    /**
+     * 根据订单id获取微信统一下单记录
+     *
+     * @param orderId
+     * @return
+     */
+    public List<EpWechatUnifiedOrderPo> findByOrderId(Long orderId) {
+        return dslContext.selectFrom(EP_WECHAT_UNIFIED_ORDER)
+                .where(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(orderId))
+                .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(EpWechatUnifiedOrderPo.class);
+    }
 }
