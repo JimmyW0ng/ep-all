@@ -51,7 +51,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.selectFrom(EP_ORDER)
                          .where(EP_ORDER.CHILD_ID.eq(childId))
                          .and(EP_ORDER.CLASS_ID.eq(classId))
-                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.refuse))
+                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid, EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.refuse))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .orderBy(EP_ORDER.ID.desc())
                          .fetchInto(EpOrderPo.class);
@@ -309,6 +309,19 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return pPage;
     }
 
+    /**
+     * 订单支付成功
+     *
+     * @param id
+     */
+    public int orderPaidById(Long id) {
+        return dslContext.update(EP_ORDER)
+                         .set(EP_ORDER.STATUS, EpOrderStatus.paid)
+                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                         .and(EP_ORDER.ID.eq(id))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
+    }
 
     /**
      * 订单报名成功
@@ -317,12 +330,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int orderSuccessById(Long id) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS, EpOrderStatus.success)
-                .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
-                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                .and(EP_ORDER.ID.eq(id))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER.STATUS, EpOrderStatus.success)
+                         .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
+                         .where(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .and(EP_ORDER.ID.eq(id))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
@@ -332,12 +345,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int orderSuccessByIds(List<Long> ids) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS, EpOrderStatus.success)
-                .set(EP_ORDER.REMARK, "")
-                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                .and(EP_ORDER.ID.in(ids))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER.STATUS, EpOrderStatus.success)
+                         .set(EP_ORDER.REMARK, "")
+                         .where(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .and(EP_ORDER.ID.in(ids))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
@@ -347,12 +360,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int orderRefuseById(Long id, String remark) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.STATUS, EpOrderStatus.refuse)
-                .set(EP_ORDER.REMARK, remark)
-                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                .and(EP_ORDER.ID.eq(id))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER.STATUS, EpOrderStatus.refuse)
+                         .set(EP_ORDER.REMARK, remark)
+                         .where(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .and(EP_ORDER.ID.eq(id))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
@@ -663,10 +676,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public long countSaveOrder(Long ognId) {
         return dslContext.selectCount().from(EP_ORDER)
-                .where(EP_ORDER.OGN_ID.eq(ognId))
-                .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .fetchOneInto(Long.class);
+                         .where(EP_ORDER.OGN_ID.eq(ognId))
+                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .fetchOneInto(Long.class);
     }
 
     /**

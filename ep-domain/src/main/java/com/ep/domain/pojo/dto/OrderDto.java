@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDto extends AbstractBasePojo {
 
+    private Long orderId;
     private Boolean waitPayFlag;
 
 }

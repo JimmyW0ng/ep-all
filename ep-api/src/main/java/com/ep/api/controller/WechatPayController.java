@@ -37,11 +37,11 @@ public class WechatPayController extends ApiController {
     @Autowired
     private WechatPayComponent wechatPayComponent;
 
-    @ApiOperation(value = "获取沙箱环境秘钥")
-    @PostMapping("/sandbox/key")
-    public ResultDo getCaptcha() {
-        return wechatPayComponent.getSandboxSignkey();
-    }
+//    @ApiOperation(value = "获取沙箱环境秘钥")
+//    @PostMapping("/sandbox/key")
+//    public ResultDo getCaptcha() {
+//        return wechatPayComponent.getSandboxSignkey();
+//    }
 
     @ApiOperation(value = "统一下单")
     @PostMapping("/unifiedorder")

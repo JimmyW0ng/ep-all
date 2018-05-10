@@ -219,6 +219,7 @@ public class OrderService {
         orderRepository.insert(orderPo);
         // 判断是否需要微信支付
         OrderDto result = new OrderDto();
+        result.setOrderId(orderPo.getId());
         Optional<EpOrganConfigPo> existOrganConfig = organConfigRepository.getByOgnId(classPo.getOgnId());
         if (existOrganConfig.isPresent() && existOrganConfig.get().getWechatPayFlag() && NumberTools.compareBigDecimal(orderPo.getPrize(), BigDecimal.ZERO)) {
             result.setWaitPayFlag(true);

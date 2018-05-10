@@ -9,6 +9,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
+import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.WechatUnifiedOrderRepository;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
@@ -36,22 +37,23 @@ public class WechatPayComponent {
      * 接口地址
      */
     private static final String URL_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-    private static final String URL_PAY_SANDBOX_UNIFIEDORDER = "https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder";
-    private static final String URL_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery";
-    private static final String URL_PAY_REFUNDQUERY = "https://api.mch.weixin.qq.com/sandboxnew/pay/refundquery";
-    private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey";
+    private static final String URL_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
+    private static final String URL_PAY_REFUNDQUERY = "https://api.mch.weixin.qq.com/pay/refundquery";
+    private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/pay/getsignkey";
 
     @Value("${wechat.xcx.member.appid}")
     private String xcxMemberAppid;
     @Value("${wechat.pay.mchid}")
     private String wechatPayMchid;
-    // @Value("${wechat.pay.key}")
-    private String wechatPayKey = "3b4cfcbafaa069675e0b076d6dd8a759";
+    @Value("${wechat.pay.key}")
+    private String wechatPayKey;
     @Value("${wechat.pay.notfy}")
     private String notifyUrl;
 
     @Autowired
     private WechatUnifiedOrderRepository wechatUnifiedOrderRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -103,7 +105,7 @@ public class WechatPayComponent {
         requestMap.put("sign", WechatTools.generateSignature(requestMap, wechatPayKey));
         String mapToXml = WechatTools.mapToXmlString(requestMap);
         log.debug("【微信支付】统一下单提交参数: outTradeNo={}, xml={}", outTradeNo, mapToXml);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL_PAY_SANDBOX_UNIFIEDORDER, mapToXml, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL_PAY_UNIFIEDORDER, mapToXml, String.class);
         log.info("【微信支付】统一下单返回: outTradeNo={}, responseEntity={}", outTradeNo, responseEntity);
         // 更新本地状态
         if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
@@ -187,7 +189,7 @@ public class WechatPayComponent {
             String bankType = respMap.get("bank_type");
             String transactionId = respMap.get("transaction_id");
             String timeEnd = respMap.get("time_end");
-            wechatUnifiedOrderRepository.handleNotify(outTradeNo,
+            int num = wechatUnifiedOrderRepository.handleNotify(outTradeNo,
                     notifyReturnCode,
                     notifyReturnMsg,
                     notifyResultCode,
@@ -198,7 +200,12 @@ public class WechatPayComponent {
                     bankType,
                     transactionId,
                     timeEnd);
+            if (num == BizConstant.DB_NUM_ONE && WechatTools.SUCCESS.equals(notifyResultCode)) {
+                // 订单更新支付状态
+                orderRepository.orderPaidById(unifiedOrderPo.getOrderId());
+            }
         }
+
         return ResultDo.build();
     }
 
