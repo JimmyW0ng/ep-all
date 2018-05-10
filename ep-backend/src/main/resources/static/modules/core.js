@@ -352,6 +352,13 @@ $(function () {
             $(this).val(0)
         }
     });
+    $(".search-from").on("blur", "input.digit-input", function () {
+        var value = $(this).val()
+        if (!/^\d+$/.test(value)) {
+            $(this).val("")
+            toastr.error("请输入数字！")
+        }
+    });
     $(".number-input").val(0)
     // 日历组件,最小单位为秒
     $('.datetimepicker').datetimepicker({
