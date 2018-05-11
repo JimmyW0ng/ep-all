@@ -215,8 +215,12 @@ public class WechatPayComponent {
         if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)) {
             return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
         }
-        requestMap.put("transaction_id", transactionId);
-        requestMap.put("out_trade_no", outTradeNo);
+        if (StringTools.isNotBlank(transactionId)) {
+            requestMap.put("transaction_id", transactionId);
+        }
+        if (StringTools.isNotBlank(outTradeNo)) {
+            requestMap.put("out_trade_no", outTradeNo);
+        }
         String url = URL_PAY_ORDERQUERY;
         String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
         log.info("[微信支付]查询订单，接口入参={}。", xml);

@@ -46,16 +46,7 @@
                                placeholder="班次名称">
                     </div>
 
-                    <!--<div class="form-group ">-->
-                    <!--<select class="form-control" name="type" id="type" style="width:182px;" >-->
-                    <!--<option value>类型</option>-->
-                    <!--<option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpSystemUserType).values()}"-->
-                    <!--th:value="${state}"-->
-                    <!--th:selected="${#stringTools.equals(state,searchMap.get('type'))}"-->
-                    <!--th:text="#{EpSystemUserType.+${state.literal}}">-->
-                    <!--</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
+
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="timeEndStart" id="timeEndStart"
@@ -137,6 +128,7 @@
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
+
                             </td>
                         </tr>
                         </tbody>
