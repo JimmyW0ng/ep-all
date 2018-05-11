@@ -35,11 +35,7 @@
                                th:value="${searchMap.get('transactionId')}"
                                placeholder="微信支付订单号">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control " name="courseName"
-                               th:value="${searchMap.get('courseName')}"
-                               placeholder="产品名称">
-                    </div>
+
                     <div class="form-group">
                         <input type="text" class="form-control " name="className"
                                th:value="${searchMap.get('className')}"
@@ -97,9 +93,10 @@
                             <th>标价金额（￥元）</th>
 
                             <th>微信支付订单号</th>
+
                             <th>支付完成时间</th>
-                            <th>产品名称</th>
                             <th>班次名称</th>
+                            <th>支付状态</th>
 
                             <th>业务结果</th>
 
@@ -120,8 +117,9 @@
 
                             <td th:text="${bo.transactionId}"></td>
                             <td th:text="${bo.timeEnd}"></td>
-                            <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
+                            <td th:text="${bo.tradeState}"></td>
+
                             <td th:text="${bo.returnCode}"></td>
 
                             <td th:text="${bo.notifyResultCode}"></td>
@@ -129,7 +127,7 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-primary"
-                                   th:if="!${#stringTools.equals(bo.notifyResultCode,'SUCCESS')}"
+                                   th:if="${#stringTools.equals(bo.tradeState,'INIT')}"
                                    th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>
                             </td>
                         </tr>
@@ -159,62 +157,44 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal" id="syncUnifiedorderModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content animated bounceInRight">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">关闭</span>
-                </button>
-                <h4 style="text-align: left">商户订单号:<span id="outTradeNoTxt"></span></h4>
 
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped table-hover table-bordered dataTable"
-                       aria-describedby="editable_info">
-                    <thead>
-                    <tr>
-                        <th>商户订单号</th>
-                        <th>商品描述</th>
-                        <th>标价金额（￥元）</th>
-                        <th>微信支付订单号</th>
-                        <th>支付完成时间</th>
-                        <th>业务结果</th>
-
-                    </tr>
-                    </thead>
-                    <tbody id="wechatordersBody">
-
-                    </tbody>
-                </table>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <script th:replace="~{fragments/scripts}"></script>
-
+<script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
     function syncUnifiedorder(outTradeNo) {
-        $("#outTradeNoTxt").text(outTradeNo)
-        $("#syncUnifiedorderModal").modal("show")
         $.ajax({
             type: "GET",
-            url: "/auth/wechat/findWechatUnifiedOrderByOrderId/" + orderId,
+            url: "/auth/wechat/syncUnifiedorder/" + outTradeNo,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
+                console.log(data)
+                layer.closeAll();
                 if (data.success) {
-                    $("#wechatordersBody").html($("#wechatorderTmpl").tmpl(data.result))
+                    layer.alert("同步成功！", {
+                            icon: 1,
+                        }, function (index) {
+                            window.location.href = document.location.href
+                            layer.close(index);
+                        }
+                    )
                 } else {
-                    toastr.error(data.errorDescription);
+                    layer.alert(data.errorDescription, {
+                            icon: 1,
+                        }, function (index) {
+                            window.location.href = document.location.href
+                            layer.close(index);
+                        }
+                    )
                 }
             },
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
+            complete: function () {
+
+            }
         })
     }
 </script>

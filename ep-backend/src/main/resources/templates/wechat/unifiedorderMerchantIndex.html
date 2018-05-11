@@ -31,11 +31,7 @@
                                th:value="${searchMap.get('transactionId')}"
                                placeholder="微信支付订单号">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control " name="courseName"
-                               th:value="${searchMap.get('courseName')}"
-                               placeholder="产品名称">
-                    </div>
+
                     <div class="form-group">
                         <input type="text" class="form-control " name="className"
                                th:value="${searchMap.get('className')}"
@@ -85,15 +81,15 @@
                         <thead>
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
+                            <th>订单id</th>
                             <th>商户订单号</th>
                             <th>商品描述</th>
                             <th>标价金额（￥元）</th>
 
                             <th>微信支付订单号</th>
                             <th>支付完成时间</th>
-                            <th>产品名称</th>
                             <th>班次名称</th>
-
+                            <th>支付状态</th>
                             <th>业务结果</th>
 
                             <th>通知返回业务结果</th>
@@ -105,6 +101,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="bo:${page.content}">
+                            <td th:text="${bo.id}"></td>
                             <td th:text="${bo.orderId}"></td>
                             <td th:text="${bo.outTradeNo}"></td>
                             <td th:text="${bo.body}"></td>
@@ -112,14 +109,17 @@
 
                             <td th:text="${bo.transactionId}"></td>
                             <td th:text="${bo.timeEnd}"></td>
-                            <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
+                            <td th:text="${bo.tradeState}"></td>
                             <td th:text="${bo.returnCode}"></td>
 
                             <td th:text="${bo.notifyResultCode}"></td>
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
+                                <a class="btn btn-xs btn-primary"
+                                   th:if="${#stringTools.equals(bo.tradeState,'INIT')}"
+                                   th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>
                             </td>
                         </tr>
                         </tbody>
@@ -150,8 +150,43 @@
 </div>
 <script th:replace="~{fragments/scripts}"></script>
 
-<script>
+<script th:inline="javascript">
+    function syncUnifiedorder(outTradeNo) {
+        $.ajax({
+            type: "GET",
+            url: "/auth/wechat/syncUnifiedorder/" + outTradeNo,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
+            success: function (data) {
+                console.log(data)
+                layer.closeAll();
+                if (data.success) {
+                    layer.alert("同步成功！", {
+                            icon: 1,
+                        }, function (index) {
+                            window.location.href = document.location.href
+                            layer.close(index);
+                        }
+                    )
+                } else {
+                    layer.alert(data.errorDescription, {
+                            icon: 1,
+                        }, function (index) {
+                            window.location.href = document.location.href
+                            layer.close(index);
+                        }
+                    )
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
 
+            }
+        })
+    }
 </script>
 </body>
 </html>
