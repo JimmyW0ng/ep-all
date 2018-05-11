@@ -112,6 +112,7 @@
                             <th>班次状态</th>
                             <th>价格</th>
                             <th>订单状态</th>
+                            <th>支付状态</th>
                             <th>备注</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -137,6 +138,7 @@
                             <td name="statusZh" th:if="${#strings.equals(bo.classType,'bespeak')}"
                                 th:text="#{EpOrderStatusBespeak.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
+                            <td th:text="${bo.payStatus}"></td>
 
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
