@@ -13,39 +13,34 @@ import java.sql.Timestamp;
 
 
 /**
- * 微信支付统一订单
+ * 微信支付退单表
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EpWechatUnifiedOrderPo extends AbstractBasePojo {
+public class EpWechatPayRefundPo extends AbstractBasePojo {
 
     private Long id;
-    private Long orderId;
     private String appid;
     private String mchId;
     private String outTradeNo;
-    private String body;
+    private String transactionId;
+    private String outRefundNo;
     private Integer totalFee;
-    private String spbillCreateIp;
-    private String tradeType;
-    private String tradeState;
+    private Integer refundFee;
+    private String refundDesc;
     private String returnCode;
     private String returnMsg;
     private String resultCode;
     private String errCode;
     private String errCodeDes;
-    private String prepayId;
+    private String refundId;
     private String notifyReturnCode;
     private String notifyReturnMsg;
-    private String notifyResultCode;
-    private String notifyErrCode;
-    private String notifyErrCodeDes;
-    private String isSubscribe;
-    private String openid;
-    private String bankType;
-    private String transactionId;
-    private String timeEnd;
+    private String refundStatus;
+    private String successTime;
+    private String refundRecvAccout;
+    private String refundAccount;
     private Timestamp createAt;
     private Timestamp updateAt;
     private String remark;

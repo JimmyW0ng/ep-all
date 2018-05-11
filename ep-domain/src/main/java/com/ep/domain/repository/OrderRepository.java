@@ -6,9 +6,7 @@ import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassType;
+import com.ep.domain.repository.domain.enums.*;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -51,7 +49,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.selectFrom(EP_ORDER)
                          .where(EP_ORDER.CHILD_ID.eq(childId))
                          .and(EP_ORDER.CLASS_ID.eq(classId))
-                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid, EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.refuse))
+                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.refuse))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .orderBy(EP_ORDER.ID.desc())
                          .fetchInto(EpOrderPo.class);
@@ -316,8 +314,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int orderPaidById(Long id) {
         return dslContext.update(EP_ORDER)
-                         .set(EP_ORDER.STATUS, EpOrderStatus.paid)
+                         .set(EP_ORDER.PAY_TYPE, EpOrderPayType.wechat_pay)
+                         .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
                          .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                         .and(EP_ORDER.PAY_STATUS.isNull())
                          .and(EP_ORDER.ID.eq(id))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
@@ -332,7 +332,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.update(EP_ORDER)
                          .set(EP_ORDER.STATUS, EpOrderStatus.success)
                          .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
-                         .where(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                          .and(EP_ORDER.ID.eq(id))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
@@ -347,7 +347,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.update(EP_ORDER)
                          .set(EP_ORDER.STATUS, EpOrderStatus.success)
                          .set(EP_ORDER.REMARK, "")
-                         .where(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                          .and(EP_ORDER.ID.in(ids))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
@@ -362,7 +362,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.update(EP_ORDER)
                          .set(EP_ORDER.STATUS, EpOrderStatus.refuse)
                          .set(EP_ORDER.REMARK, remark)
-                         .where(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                          .and(EP_ORDER.ID.eq(id))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
@@ -677,7 +677,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     public long countSaveOrder(Long ognId) {
         return dslContext.selectCount().from(EP_ORDER)
                          .where(EP_ORDER.OGN_ID.eq(ognId))
-                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.paid))
+                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .fetchOneInto(Long.class);
     }

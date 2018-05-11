@@ -17,10 +17,7 @@ import com.ep.domain.pojo.dto.OrderDto;
 import com.ep.domain.pojo.dto.OrderInitDto;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassType;
-import com.ep.domain.repository.domain.enums.EpOrganCourseCourseStatus;
+import com.ep.domain.repository.domain.enums.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -684,13 +681,13 @@ public class OrderService {
             log.error("【小程序报名支付】订单金额不需支付, orderId={}, orderPrize", orderId, orderPo.getPrize());
             return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_NEED_NOT_PAY);
         }
-//        if (EpOrderStatus.paid.equals(orderPo.getStatus())) {
-//            log.error("【小程序报名支付】订单已支付, orderId={}", orderId);
-//            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_IS_PAID);
-//        }
         if (!EpOrderStatus.save.equals(orderPo.getStatus())) {
             log.error("【小程序报名支付】订单状态不是“保存”状态, orderId={}, status={}", orderId, orderPo.getStatus());
             return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_NEED_NOT_PAY);
+        }
+        if (EpOrderPayStatus.paid.equals(orderPo.getPayStatus())) {
+            log.error("【小程序报名支付】订单已支付, orderId={}", orderId);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_ORDER_IS_PAID);
         }
         EpOrganPo organPo = organRepository.getById(orderPo.getOgnId());
         // 校验机构

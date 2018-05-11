@@ -89,6 +89,7 @@ public class WechatPayComponent {
         unifiedOrderPo.setTotalFee(totalFee);
         unifiedOrderPo.setSpbillCreateIp(ip);
         unifiedOrderPo.setTradeType(tradeType);
+        unifiedOrderPo.setTradeState(WechatTools.TRADE_STATE_INIT);
         wechatUnifiedOrderRepository.insert(unifiedOrderPo);
         // 发起接口调用
         Map<String, String> requestMap = Maps.newHashMap();
@@ -98,7 +99,7 @@ public class WechatPayComponent {
         requestMap.put("openid", openid);
         requestMap.put("body", body);
         requestMap.put("out_trade_no", outTradeNo);
-        requestMap.put("total_fee", "101");
+        requestMap.put("total_fee", String.valueOf(totalFee));
         requestMap.put("spbill_create_ip", ip);
         requestMap.put("notify_url", notifyUrl);
         requestMap.put("trade_type", tradeType);
@@ -142,7 +143,7 @@ public class WechatPayComponent {
         // 封装返回结果
         ResultDo<Map<String, String>> resultDo = ResultDo.build();
         Map<String, String> resultMap = Maps.newHashMap();
-        resultMap.put("appid", xcxMemberAppid);
+        resultMap.put("appId", xcxMemberAppid);
         resultMap.put("timeStamp", String.valueOf(DateTools.getCurrentDate().getTime() / 1000));
         resultMap.put("nonceStr", WechatTools.generateUUID());
         resultMap.put("package", "prepay_id=" + prepayId);
@@ -189,6 +190,12 @@ public class WechatPayComponent {
             String bankType = respMap.get("bank_type");
             String transactionId = respMap.get("transaction_id");
             String timeEnd = respMap.get("time_end");
+            String tradeState;
+            if (WechatTools.SUCCESS.equals(notifyResultCode) && StringTools.isNotBlank(transactionId)) {
+                tradeState = WechatTools.TRADE_STATE_SUCCESS;
+            } else {
+                tradeState = unifiedOrderPo.getTradeState();
+            }
             int num = wechatUnifiedOrderRepository.handleNotify(outTradeNo,
                     notifyReturnCode,
                     notifyReturnMsg,
@@ -199,13 +206,37 @@ public class WechatPayComponent {
                     openid,
                     bankType,
                     transactionId,
-                    timeEnd);
+                    timeEnd,
+                    tradeState);
             if (num == BizConstant.DB_NUM_ONE && WechatTools.SUCCESS.equals(notifyResultCode)) {
                 // 订单更新支付状态
                 orderRepository.orderPaidById(unifiedOrderPo.getOrderId());
             }
         }
+        return ResultDo.build();
+    }
 
+    /**
+     * 小程序客户端退单
+     *
+     * @param outTradeNo
+     * @return
+     * @throws Exception
+     */
+    public ResultDo xcxPayRefund(String outTradeNo) throws Exception {
+        log.info("【微信支付】退单入参: outTradeNo={}", outTradeNo);
+        // 保存本地微信支付统一下单表
+        EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.getByOutTradeNo(outTradeNo);
+        // 商户订单号不存在
+        if (unifiedOrderPo == null || unifiedOrderPo.getDelFlag()) {
+            log.error("【微信支付退单】商户订单号不存在，utTradeNo={}", outTradeNo);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_OUT_TRADE_NO_NOT_EXIST);
+        }
+        // 商户订单号状态
+        if (!WechatTools.SUCCESS.equals(unifiedOrderPo.getNotifyReturnCode())) {
+            log.error("【微信支付退单】商户订单号不是支付成功状态，utTradeNo={}", outTradeNo);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_OUT_TRADE_NO_SUCCESS);
+        }
         return ResultDo.build();
     }
 
