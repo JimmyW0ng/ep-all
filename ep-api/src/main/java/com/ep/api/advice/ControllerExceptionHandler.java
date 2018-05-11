@@ -28,6 +28,8 @@ public class ControllerExceptionHandler {
         if (ex.getClass().equals(MissingServletRequestParameterException.class)
                 || ex.getClass().equals(MethodArgumentTypeMismatchException.class)) {
             // 接口入参缺失或者格式不正确
+            HttpServletRequest request = WebTools.getCurrentRequest();
+            log.error("接口访问地址：url={}", request.getRequestURI());
             return ResultDo.build(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         } else if (ex.getClass().equals(HttpRequestMethodNotSupportedException.class)) {
             HttpServletRequest request = WebTools.getCurrentRequest();

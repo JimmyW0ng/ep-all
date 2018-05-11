@@ -131,9 +131,11 @@ public class ApiSecurityAuthComponent {
             log.error("token解析失败，token为空:{}，", token);
             return resultDo.setError(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
         }
+        String tokenStr = null;
         Long tokenId = null;
         try {
-            tokenId = StringTools.decodeShortUrl(token, tokenSecret, BizConstant.TOKEN_MIN_LENGTH)[0];
+            tokenStr = CryptTools.aesDecrypt(token, tokenSecret);
+            tokenId = Long.valueOf(tokenStr);
         } catch (Exception e) {
             log.error("token解析失败，token={}", token, e);
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
@@ -291,7 +293,7 @@ public class ApiSecurityAuthComponent {
         tokenPo.setRole(principal.getRole());
         tokenPo.setExpireTime(DateTools.addSecond(DateTools.getCurrentDateTime(), tokenExpiration));
         tokenRepository.insert(tokenPo);
-        String token = StringTools.generateShortUrl(tokenPo.getId(), tokenSecret, BizConstant.TOKEN_MIN_LENGTH);
+        String token = CryptTools.aesEncrypt(String.valueOf(tokenPo.getId()), tokenSecret);
         // 本地保存token
         tokenRepository.updateCodeById(token, tokenPo.getId());
         // 删除其他token
