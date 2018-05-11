@@ -29,6 +29,7 @@ public class EpWechatUnifiedOrderPo extends AbstractBasePojo {
     private Integer totalFee;
     private String spbillCreateIp;
     private String tradeType;
+    private String tradeState;
     private String returnCode;
     private String returnMsg;
     private String resultCode;

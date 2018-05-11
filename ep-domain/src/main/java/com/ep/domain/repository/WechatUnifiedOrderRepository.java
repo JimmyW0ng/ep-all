@@ -83,7 +83,8 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                             String openid,
                             String bankType,
                             String transactionId,
-                            String timeEnd) {
+                            String timeEnd,
+                            String tradeState) {
         return dslContext.update(EP_WECHAT_UNIFIED_ORDER)
                          .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_CODE, notifyReturnCode)
                          .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_MSG, notifyReturnMsg)
@@ -95,6 +96,7 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                          .set(EP_WECHAT_UNIFIED_ORDER.BANK_TYPE, bankType)
                          .set(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID, transactionId)
                          .set(EP_WECHAT_UNIFIED_ORDER.TIME_END, timeEnd)
+                         .set(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE, tradeState)
                          .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
                          .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.isNull())
                          .execute();

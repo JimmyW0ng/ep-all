@@ -33,7 +33,7 @@ public class EpWechatUnifiedOrder extends TableImpl<EpWechatUnifiedOrderRecord> 
      * The reference instance of <code>ep.ep_wechat_unified_order</code>
      */
     public static final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = new EpWechatUnifiedOrder();
-    private static final long serialVersionUID = -1373406137;
+    private static final long serialVersionUID = -1654607948;
     /**
      * The column <code>ep.ep_wechat_unified_order.id</code>. 主键
      */
@@ -70,6 +70,10 @@ public class EpWechatUnifiedOrder extends TableImpl<EpWechatUnifiedOrderRecord> 
      * The column <code>ep.ep_wechat_unified_order.trade_type</code>. 交易类型
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> TRADE_TYPE = createField("trade_type", org.jooq.impl.SQLDataType.VARCHAR.length(16).nullable(false), this, "交易类型");
+    /**
+     * The column <code>ep.ep_wechat_unified_order.trade_state</code>. 交易状态：SUCCESS; REFUND; NOTPAY; CLOSED; REVOKED; USERPAYING; PAYERROR
+     */
+    public final TableField<EpWechatUnifiedOrderRecord, String> TRADE_STATE = createField("trade_state", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "交易状态：SUCCESS; REFUND; NOTPAY; CLOSED; REVOKED; USERPAYING; PAYERROR");
     /**
      * The column <code>ep.ep_wechat_unified_order.return_code</code>. 接口返回结果
      */

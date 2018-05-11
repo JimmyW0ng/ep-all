@@ -25,7 +25,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnifiedOrderRecord> {
 
-    private static final long serialVersionUID = 970672423;
+    private static final long serialVersionUID = 700725722;
 
     /**
      * Create a detached EpWechatUnifiedOrderRecord
@@ -37,7 +37,7 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
     /**
      * Create a detached, initialised EpWechatUnifiedOrderRecord
      */
-    public EpWechatUnifiedOrderRecord(Long id, Long orderId, String appid, String mchId, String outTradeNo, String body, Integer totalFee, String spbillCreateIp, String tradeType, String returnCode, String returnMsg, String resultCode, String errCode, String errCodeDes, String prepayId, String notifyReturnCode, String notifyReturnMsg, String notifyResultCode, String notifyErrCode, String notifyErrCodeDes, String isSubscribe, String openid, String bankType, String transactionId, String timeEnd, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpWechatUnifiedOrderRecord(Long id, Long orderId, String appid, String mchId, String outTradeNo, String body, Integer totalFee, String spbillCreateIp, String tradeType, String tradeState, String returnCode, String returnMsg, String resultCode, String errCode, String errCodeDes, String prepayId, String notifyReturnCode, String notifyReturnMsg, String notifyResultCode, String notifyErrCode, String notifyErrCodeDes, String isSubscribe, String openid, String bankType, String transactionId, String timeEnd, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
         super(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER);
 
         set(0, id);
@@ -49,27 +49,28 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
         set(6, totalFee);
         set(7, spbillCreateIp);
         set(8, tradeType);
-        set(9, returnCode);
-        set(10, returnMsg);
-        set(11, resultCode);
-        set(12, errCode);
-        set(13, errCodeDes);
-        set(14, prepayId);
-        set(15, notifyReturnCode);
-        set(16, notifyReturnMsg);
-        set(17, notifyResultCode);
-        set(18, notifyErrCode);
-        set(19, notifyErrCodeDes);
-        set(20, isSubscribe);
-        set(21, openid);
-        set(22, bankType);
-        set(23, transactionId);
-        set(24, timeEnd);
-        set(25, createAt);
-        set(26, updateAt);
-        set(27, remark);
-        set(28, delFlag);
-        set(29, version);
+        set(9, tradeState);
+        set(10, returnCode);
+        set(11, returnMsg);
+        set(12, resultCode);
+        set(13, errCode);
+        set(14, errCodeDes);
+        set(15, prepayId);
+        set(16, notifyReturnCode);
+        set(17, notifyReturnMsg);
+        set(18, notifyResultCode);
+        set(19, notifyErrCode);
+        set(20, notifyErrCodeDes);
+        set(21, isSubscribe);
+        set(22, openid);
+        set(23, bankType);
+        set(24, transactionId);
+        set(25, timeEnd);
+        set(26, createAt);
+        set(27, updateAt);
+        set(28, remark);
+        set(29, delFlag);
+        set(30, version);
     }
 
     /**
@@ -208,17 +209,32 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
     }
 
     /**
+     * Getter for <code>ep.ep_wechat_unified_order.trade_state</code>. 交易状态：SUCCESS; REFUND; NOTPAY; CLOSED; REVOKED; USERPAYING; PAYERROR
+     */
+    public String getTradeState() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_unified_order.trade_state</code>. 交易状态：SUCCESS; REFUND; NOTPAY; CLOSED; REVOKED; USERPAYING; PAYERROR
+     */
+    public EpWechatUnifiedOrderRecord setTradeState(String value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_wechat_unified_order.return_code</code>. 接口返回结果
      */
     public String getReturnCode() {
-        return (String) get(9);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.return_code</code>. 接口返回结果
      */
     public EpWechatUnifiedOrderRecord setReturnCode(String value) {
-        set(9, value);
+        set(10, value);
         return this;
     }
 
@@ -226,14 +242,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.return_msg</code>. 接口返回信息
      */
     public String getReturnMsg() {
-        return (String) get(10);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.return_msg</code>. 接口返回信息
      */
     public EpWechatUnifiedOrderRecord setReturnMsg(String value) {
-        set(10, value);
+        set(11, value);
         return this;
     }
 
@@ -241,14 +257,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.result_code</code>. 业务结果
      */
     public String getResultCode() {
-        return (String) get(11);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.result_code</code>. 业务结果
      */
     public EpWechatUnifiedOrderRecord setResultCode(String value) {
-        set(11, value);
+        set(12, value);
         return this;
     }
 
@@ -256,14 +272,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.err_code</code>. 错误代码
      */
     public String getErrCode() {
-        return (String) get(12);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.err_code</code>. 错误代码
      */
     public EpWechatUnifiedOrderRecord setErrCode(String value) {
-        set(12, value);
+        set(13, value);
         return this;
     }
 
@@ -271,14 +287,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.err_code_des</code>. 错误代码描述
      */
     public String getErrCodeDes() {
-        return (String) get(13);
+        return (String) get(14);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.err_code_des</code>. 错误代码描述
      */
     public EpWechatUnifiedOrderRecord setErrCodeDes(String value) {
-        set(13, value);
+        set(14, value);
         return this;
     }
 
@@ -286,14 +302,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.prepay_id</code>. 预支付交易会话标识
      */
     public String getPrepayId() {
-        return (String) get(14);
+        return (String) get(15);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.prepay_id</code>. 预支付交易会话标识
      */
     public EpWechatUnifiedOrderRecord setPrepayId(String value) {
-        set(14, value);
+        set(15, value);
         return this;
     }
 
@@ -301,14 +317,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.notify_return_code</code>. 通知返回结果
      */
     public String getNotifyReturnCode() {
-        return (String) get(15);
+        return (String) get(16);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.notify_return_code</code>. 通知返回结果
      */
     public EpWechatUnifiedOrderRecord setNotifyReturnCode(String value) {
-        set(15, value);
+        set(16, value);
         return this;
     }
 
@@ -316,14 +332,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.notify_return_msg</code>. 通知返回信息
      */
     public String getNotifyReturnMsg() {
-        return (String) get(16);
+        return (String) get(17);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.notify_return_msg</code>. 通知返回信息
      */
     public EpWechatUnifiedOrderRecord setNotifyReturnMsg(String value) {
-        set(16, value);
+        set(17, value);
         return this;
     }
 
@@ -331,14 +347,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.notify_result_code</code>. 通知返回业务结果
      */
     public String getNotifyResultCode() {
-        return (String) get(17);
+        return (String) get(18);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.notify_result_code</code>. 通知返回业务结果
      */
     public EpWechatUnifiedOrderRecord setNotifyResultCode(String value) {
-        set(17, value);
+        set(18, value);
         return this;
     }
 
@@ -346,14 +362,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.notify_err_code</code>. 通知返回错误代码
      */
     public String getNotifyErrCode() {
-        return (String) get(18);
+        return (String) get(19);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.notify_err_code</code>. 通知返回错误代码
      */
     public EpWechatUnifiedOrderRecord setNotifyErrCode(String value) {
-        set(18, value);
+        set(19, value);
         return this;
     }
 
@@ -361,14 +377,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.notify_err_code_des</code>. 通知返回错误代码描述
      */
     public String getNotifyErrCodeDes() {
-        return (String) get(19);
+        return (String) get(20);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.notify_err_code_des</code>. 通知返回错误代码描述
      */
     public EpWechatUnifiedOrderRecord setNotifyErrCodeDes(String value) {
-        set(19, value);
+        set(20, value);
         return this;
     }
 
@@ -376,14 +392,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.is_subscribe</code>. 是否关注公众账号
      */
     public String getIsSubscribe() {
-        return (String) get(20);
+        return (String) get(21);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.is_subscribe</code>. 是否关注公众账号
      */
     public EpWechatUnifiedOrderRecord setIsSubscribe(String value) {
-        set(20, value);
+        set(21, value);
         return this;
     }
 
@@ -391,14 +407,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.openid</code>. 用户标识
      */
     public String getOpenid() {
-        return (String) get(21);
+        return (String) get(22);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.openid</code>. 用户标识
      */
     public EpWechatUnifiedOrderRecord setOpenid(String value) {
-        set(21, value);
+        set(22, value);
         return this;
     }
 
@@ -406,14 +422,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.bank_type</code>. 付款银行
      */
     public String getBankType() {
-        return (String) get(22);
+        return (String) get(23);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.bank_type</code>. 付款银行
      */
     public EpWechatUnifiedOrderRecord setBankType(String value) {
-        set(22, value);
+        set(23, value);
         return this;
     }
 
@@ -421,14 +437,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.transaction_id</code>. 微信支付订单号
      */
     public String getTransactionId() {
-        return (String) get(23);
+        return (String) get(24);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.transaction_id</code>. 微信支付订单号
      */
     public EpWechatUnifiedOrderRecord setTransactionId(String value) {
-        set(23, value);
+        set(24, value);
         return this;
     }
 
@@ -436,14 +452,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.time_end</code>. 支付完成时间
      */
     public String getTimeEnd() {
-        return (String) get(24);
+        return (String) get(25);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.time_end</code>. 支付完成时间
      */
     public EpWechatUnifiedOrderRecord setTimeEnd(String value) {
-        set(24, value);
+        set(25, value);
         return this;
     }
 
@@ -451,14 +467,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
-        return (Timestamp) get(25);
+        return (Timestamp) get(26);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.create_at</code>. 创建时间
      */
     public EpWechatUnifiedOrderRecord setCreateAt(Timestamp value) {
-        set(25, value);
+        set(26, value);
         return this;
     }
 
@@ -466,14 +482,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
-        return (Timestamp) get(26);
+        return (Timestamp) get(27);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.update_at</code>. 更新时间
      */
     public EpWechatUnifiedOrderRecord setUpdateAt(Timestamp value) {
-        set(26, value);
+        set(27, value);
         return this;
     }
 
@@ -481,14 +497,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.remark</code>. 备注
      */
     public String getRemark() {
-        return (String) get(27);
+        return (String) get(28);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.remark</code>. 备注
      */
     public EpWechatUnifiedOrderRecord setRemark(String value) {
-        set(27, value);
+        set(28, value);
         return this;
     }
 
@@ -496,14 +512,14 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
-        return (Boolean) get(28);
+        return (Boolean) get(29);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_unified_order.del_flag</code>. 删除标记
      */
     public EpWechatUnifiedOrderRecord setDelFlag(Boolean value) {
-        set(28, value);
+        set(29, value);
         return this;
     }
 
@@ -515,7 +531,7 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Getter for <code>ep.ep_wechat_unified_order.version</code>.
      */
     public Long getVersion() {
-        return (Long) get(29);
+        return (Long) get(30);
     }
 
     // -------------------------------------------------------------------------
@@ -526,7 +542,7 @@ public class EpWechatUnifiedOrderRecord extends UpdatableRecordImpl<EpWechatUnif
      * Setter for <code>ep.ep_wechat_unified_order.version</code>.
      */
     public EpWechatUnifiedOrderRecord setVersion(Long value) {
-        set(29, value);
+        set(30, value);
         return this;
     }
 

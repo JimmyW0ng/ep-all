@@ -43,6 +43,14 @@ public class WechatTools {
     public static final String RETURN_OK = "OK";
     public static final String BODY_SPLIT = "-";
     public static final String XCX_PAY_TRADE_TYPE = "JSAPI";
+    public static final String TRADE_STATE_INIT = "INIT";
+    public static final String TRADE_STATE_SUCCESS = "SUCCESS";
+    public static final String TRADE_STATE_REFUND = "REFUND";
+    public static final String TRADE_STATE_NOTPAY = "NOTPAY";
+    public static final String TRADE_STATE_CLOSED = "CLOSED";
+    public static final String TRADE_STATE_REVOKED = "REVOKED";
+    public static final String TRADE_STATE_USERPAYING = "USERPAYING";
+    public static final String TRADE_STATE_PAYERROR = "PAYERROR";
     /**
      * 参数
      */
