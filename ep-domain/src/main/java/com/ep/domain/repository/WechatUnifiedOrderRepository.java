@@ -44,15 +44,15 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                                   String errCodeDes,
                                   String prepayId) {
         return dslContext.update(EP_WECHAT_UNIFIED_ORDER)
-                         .set(EP_WECHAT_UNIFIED_ORDER.RETURN_CODE, returnCode)
-                         .set(EP_WECHAT_UNIFIED_ORDER.RETURN_MSG, returnMsg)
-                         .set(EP_WECHAT_UNIFIED_ORDER.RESULT_CODE, resultCode)
-                         .set(EP_WECHAT_UNIFIED_ORDER.ERR_CODE, errCode)
-                         .set(EP_WECHAT_UNIFIED_ORDER.ERR_CODE_DES, errCodeDes)
-                         .set(EP_WECHAT_UNIFIED_ORDER.PREPAY_ID, prepayId)
-                         .where(EP_WECHAT_UNIFIED_ORDER.ID.eq(id))
-                         .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_WECHAT_UNIFIED_ORDER.RETURN_CODE, returnCode)
+                .set(EP_WECHAT_UNIFIED_ORDER.RETURN_MSG, returnMsg)
+                .set(EP_WECHAT_UNIFIED_ORDER.RESULT_CODE, resultCode)
+                .set(EP_WECHAT_UNIFIED_ORDER.ERR_CODE, errCode)
+                .set(EP_WECHAT_UNIFIED_ORDER.ERR_CODE_DES, errCodeDes)
+                .set(EP_WECHAT_UNIFIED_ORDER.PREPAY_ID, prepayId)
+                .where(EP_WECHAT_UNIFIED_ORDER.ID.eq(id))
+                .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
+                .execute();
     }
 
     /**
@@ -63,9 +63,9 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
      */
     public EpWechatUnifiedOrderPo getByOutTradeNo(String outTradeNo) {
         return dslContext.selectFrom(EP_WECHAT_UNIFIED_ORDER)
-                         .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
-                         .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
-                         .fetchOneInto(EpWechatUnifiedOrderPo.class);
+                .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
+                .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(EpWechatUnifiedOrderPo.class);
     }
 
     /**
@@ -96,20 +96,20 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                             String timeEnd,
                             String tradeState) {
         return dslContext.update(EP_WECHAT_UNIFIED_ORDER)
-                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_CODE, notifyReturnCode)
-                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_MSG, notifyReturnMsg)
-                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE, notifyResultCode)
-                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE, notifyErrCode)
-                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE_DES, notifyErrCodeDes)
-                         .set(EP_WECHAT_UNIFIED_ORDER.IS_SUBSCRIBE, isSubscribe)
-                         .set(EP_WECHAT_UNIFIED_ORDER.OPENID, openid)
-                         .set(EP_WECHAT_UNIFIED_ORDER.BANK_TYPE, bankType)
-                         .set(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID, transactionId)
-                         .set(EP_WECHAT_UNIFIED_ORDER.TIME_END, timeEnd)
-                         .set(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE, tradeState)
-                         .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
-                         .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.isNull())
-                         .execute();
+                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_CODE, notifyReturnCode)
+                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_MSG, notifyReturnMsg)
+                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE, notifyResultCode)
+                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE, notifyErrCode)
+                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE_DES, notifyErrCodeDes)
+                .set(EP_WECHAT_UNIFIED_ORDER.IS_SUBSCRIBE, isSubscribe)
+                .set(EP_WECHAT_UNIFIED_ORDER.OPENID, openid)
+                .set(EP_WECHAT_UNIFIED_ORDER.BANK_TYPE, bankType)
+                .set(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID, transactionId)
+                .set(EP_WECHAT_UNIFIED_ORDER.TIME_END, timeEnd)
+                .set(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE, tradeState)
+                .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
+                .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.isNull())
+                .execute();
     }
 
     public Page<WechatUnifiedOrderBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition,
