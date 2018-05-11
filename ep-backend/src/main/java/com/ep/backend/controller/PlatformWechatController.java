@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
@@ -38,6 +39,9 @@ public class PlatformWechatController extends BackendController {
     private WechatFwhService wechatFwhService;
     @Autowired
     private WechatUnifiedOrderService wechatUnifiedOrderService;
+    @Autowired
+    private WechatPayComponent wechatPayComponent;
+    @Autowired
     @Value("${wechat.fwh.token}")
     private String wechatFwhToken;
     @Value("${wechat.fwh.id}")
@@ -217,5 +221,21 @@ public class PlatformWechatController extends BackendController {
     public ResultDo findWechatUnifiedOrderByOrderId(@PathVariable("orderId") Long orderId) {
         List<EpWechatUnifiedOrderPo> list = wechatUnifiedOrderService.findByOrderId(orderId);
         return ResultDo.build().setResult(list);
+    }
+
+    /**
+     * 同步统一下单的订单
+     *
+     * @return
+     */
+    @GetMapping("syncUnifiedorder/{outTradeNo}")
+    @ResponseBody
+    public ResultDo syncUnifiedorder(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
+        ResultDo resultDo = wechatPayComponent.orderquery(null, outTradeNo);
+        if (resultDo.isSuccess()) {
+            String xml = (String) resultDo.getResult();
+
+        }
+        return ResultDo.build();
     }
 }
