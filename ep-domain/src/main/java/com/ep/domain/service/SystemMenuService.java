@@ -10,12 +10,14 @@ import com.ep.domain.repository.SystemMenuRepository;
 import com.ep.domain.repository.SystemRoleAuthorityRepository;
 import com.ep.domain.repository.domain.enums.EpSystemRoleTarget;
 import com.ep.domain.repository.domain.enums.EpSystemUserType;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Description: 菜单服务类
@@ -70,6 +72,8 @@ public class SystemMenuService {
             //商户菜单
             list = systemMenuRepository.getAllLeftMenu(BizConstant.MERCHANT_MENU_PARENT_ID, roleIds);
         }
+        //多个角色，重复菜单去重
+        Set<Long> MenuSet = Sets.newHashSet();
 
         list.forEach(p -> {
             p.setChildList(systemMenuRepository.findByParentId(p.getId()));

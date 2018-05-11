@@ -88,7 +88,7 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
         fieldList.add(EP_SYSTEM_MENU.PARENT_ID);
         fieldList.add(EP_SYSTEM_MENU.MENU_NAME);
         fieldList.add(EP_SYSTEM_MENU.PERMISSION);
-        fieldList.add(EP_SYSTEM_ROLE_AUTHORITY.ID.as("roleAuthId"));
+//        fieldList.add(EP_SYSTEM_ROLE_AUTHORITY.ID.as("roleAuthId"));
         return dslContext.select(fieldList).from(EP_SYSTEM_MENU)
                 .leftJoin(EP_SYSTEM_ROLE_AUTHORITY)
                 .on(EP_SYSTEM_ROLE_AUTHORITY.MENU_ID.eq(EP_SYSTEM_MENU.ID)
@@ -97,6 +97,7 @@ public class SystemMenuRepository extends AbstractCRUDRepository<EpSystemMenuRec
                 .and(EP_SYSTEM_MENU.DEL_FLAG.equal(false))
                 .and(EP_SYSTEM_MENU.STATUS.equal(EpSystemMenuStatus.enable))
                 .and(EP_SYSTEM_ROLE_AUTHORITY.DEL_FLAG.equal(false))
+                .groupBy(EP_SYSTEM_MENU.ID)
                 .orderBy(EP_SYSTEM_MENU.SORT.asc())
                 .fetchInto(SystemMenuBo.class);
     }

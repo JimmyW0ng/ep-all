@@ -132,7 +132,7 @@
 </div>
 <script th:replace="~{fragments/scripts}"></script>
 
-<script>
+<script th:inline="javascript">
     function unfreezeUserBox(id) {
         layer_confirm(formatMsg("解冻", "用户", ""), 3, unfreezeUserDo, id)
     }
