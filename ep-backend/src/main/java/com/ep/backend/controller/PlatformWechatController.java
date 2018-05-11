@@ -1,6 +1,7 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
@@ -234,8 +235,24 @@ public class PlatformWechatController extends BackendController {
         ResultDo resultDo = wechatPayComponent.orderquery(null, outTradeNo);
         if (resultDo.isSuccess()) {
             String xml = (String) resultDo.getResult();
+            Map<String, String> resultMap = WechatTools.xmlToMap(xml);
 
+            if (resultMap.get("return_code").equals("SUCCESS") && resultMap.get("result_code").equals("SUCCESS") &&
+                    resultMap.get("trade_state").equals("SUCCESS")) {
+                //return_code=SUCCESS时会返回result_code字段，result_code=SUCCESS时会返回trade_state字段，trade_state=SUCCESS时
+                //表明交易状态为支付成功
+                return ResultDo.build().setResult(resultMap);
+            } else if (resultMap.get("return_code").equals("SUCCESS") && !resultMap.get("result_code").equals("SUCCESS")) {
+                return ResultDo.build().setResult(resultMap);
+            } else if (resultMap.get("return_code").equals("SUCCESS") && resultMap.get("result_code").equals("SUCCESS")
+                    && !resultMap.get("trade_state").equals("SUCCESS")) {
+                return ResultDo.build().setResult(resultMap);
+
+            } else {
+                return ResultDo.build().setSuccess(false).setError(resultMap.get("return_code")).setErrorDescription(resultMap.get("return_msg"));
+            }
+        } else {
+            return ResultDo.build().setSuccess(false).setError(resultDo.getError()).setErrorDescription(resultDo.getErrorDescription());
         }
-        return ResultDo.build();
     }
 }

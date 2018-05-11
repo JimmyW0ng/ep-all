@@ -204,10 +204,10 @@
         $("#syncUnifiedorderModal").modal("show")
         $.ajax({
             type: "GET",
-            url: "/auth/wechat/findWechatUnifiedOrderByOrderId/" + orderId,
+            url: "/auth/wechat/syncUnifiedorder/" + outTradeNo,
             success: function (data) {
                 if (data.success) {
-                    $("#wechatordersBody").html($("#wechatorderTmpl").tmpl(data.result))
+//                    $("#wechatordersBody").html($("#wechatorderTmpl").tmpl(data.result))
                 } else {
                     toastr.error(data.errorDescription);
                 }

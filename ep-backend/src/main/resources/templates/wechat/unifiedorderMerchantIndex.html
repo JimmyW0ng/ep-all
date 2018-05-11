@@ -85,6 +85,7 @@
                         <thead>
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
+                            <th>订单id</th>
                             <th>商户订单号</th>
                             <th>商品描述</th>
                             <th>标价金额（￥元）</th>
@@ -105,6 +106,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="bo:${page.content}">
+                            <td th:text="${bo.id}"></td>
                             <td th:text="${bo.orderId}"></td>
                             <td th:text="${bo.outTradeNo}"></td>
                             <td th:text="${bo.body}"></td>
