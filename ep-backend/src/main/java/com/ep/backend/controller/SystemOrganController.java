@@ -191,6 +191,7 @@ public class SystemOrganController extends BackendController {
         if (organConfigOptional.isPresent()) {
             bo.setSupportTag(organConfigOptional.get().getSupportTag());
             bo.setPrivateFlag(organConfigOptional.get().getPrivateFlag());
+            bo.setWechatPayFlag(organConfigOptional.get().getWechatPayFlag());
         }
         model.addAttribute("organBo", bo);
         //主图
@@ -236,6 +237,7 @@ public class SystemOrganController extends BackendController {
         if (organConfigOptional.isPresent()) {
             bo.setSupportTag(organConfigOptional.get().getSupportTag());
             bo.setPrivateFlag(organConfigOptional.get().getPrivateFlag());
+            bo.setWechatPayFlag(organConfigOptional.get().getWechatPayFlag());
         }
         model.addAttribute("organBo", bo);
         //主图

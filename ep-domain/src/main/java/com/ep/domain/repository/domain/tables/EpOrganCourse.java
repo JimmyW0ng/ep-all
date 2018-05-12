@@ -32,7 +32,7 @@ import java.util.List;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
 
-    private static final long serialVersionUID = 846006227;
+    private static final long serialVersionUID = 1206997043;
 
     /**
      * The reference instance of <code>ep.ep_organ_course</code>
@@ -91,6 +91,11 @@ public class EpOrganCourse extends TableImpl<EpOrganCourseRecord> {
      * The column <code>ep.ep_organ_course.vip_flag</code>. 是否会员才能报名
      */
     public final TableField<EpOrganCourseRecord, Boolean> VIP_FLAG = createField("vip_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否会员才能报名");
+
+    /**
+     * The column <code>ep.ep_organ_course.wechat_pay_flag</code>. 是否通过微信支付
+     */
+    public final TableField<EpOrganCourseRecord, Boolean> WECHAT_PAY_FLAG = createField("wechat_pay_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "是否通过微信支付");
 
     /**
      * The column <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；

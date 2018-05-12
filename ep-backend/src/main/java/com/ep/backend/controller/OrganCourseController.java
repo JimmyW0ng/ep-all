@@ -202,6 +202,7 @@ public class OrganCourseController extends BackendController {
         //是否支持标签
         Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
         model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
+        model.addAttribute("wechatPayFlag", organConfigOptional.get().getWechatPayFlag());
         if (organConfigOptional.get().getSupportTag()) {
             //公用标签
             List<EpConstantTagPo> constantTagList = constantTagService.findByOgnIdAndStatus(null,
@@ -245,6 +246,9 @@ public class OrganCourseController extends BackendController {
             return "noresource";
         }
         EpSystemUserPo currentUser = super.getCurrentUser().get();
+        //机构配置
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
+        model.addAttribute("wechatPayFlag", organConfigOptional.get().getWechatPayFlag());
         //机构产品
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(courseId);
         model.addAttribute("organCoursePo", courseOptional.get());
@@ -385,6 +389,7 @@ public class OrganCourseController extends BackendController {
         }
         Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
         model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
+        model.addAttribute("wechatPayFlag", organConfigOptional.get().getWechatPayFlag());
         return "organCourse/merchantForm";
     }
 
@@ -480,6 +485,7 @@ public class OrganCourseController extends BackendController {
         Optional<EpOrganConfigPo> organConfigOptional = organConfigService.getByOgnId(currentUser.getOgnId());
         //是否支持称号
         model.addAttribute("supportTag", organConfigOptional.get().getSupportTag());
+        model.addAttribute("wechatPayFlag", organConfigOptional.get().getWechatPayFlag());
         return "organCourse/merchantRectify";
     }
 

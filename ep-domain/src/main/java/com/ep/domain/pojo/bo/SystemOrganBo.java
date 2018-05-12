@@ -21,5 +21,6 @@ public class SystemOrganBo extends EpOrganPo {
     private String logoUrlPreCode;
     private Boolean supportTag;
     private Boolean privateFlag;
+    private Boolean wechatPayFlag;
 
 }

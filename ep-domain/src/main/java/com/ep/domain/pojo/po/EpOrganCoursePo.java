@@ -33,6 +33,7 @@ public class EpOrganCoursePo extends AbstractBasePojo {
     private String courseContent;
     private BigDecimal prizeMin;
     private Boolean vipFlag;
+    private Boolean wechatPayFlag;
     private EpOrganCourseCourseStatus courseStatus;
     private Timestamp onlineTime;
     private Timestamp enterTimeStart;

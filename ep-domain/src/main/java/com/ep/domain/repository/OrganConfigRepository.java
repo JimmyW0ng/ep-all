@@ -41,13 +41,16 @@ public class OrganConfigRepository extends AbstractCRUDRepository<EpOrganConfigR
      * 更改 是否支持标签功能 配置
      *
      * @param supportTag
+     * @param privateFlag
+     * @param wechatPayFlag
      * @param ognId
      * @return
      */
-    public int updateConfigByOgnId(Boolean supportTag, Boolean privateFlag, Long ognId) {
+    public int updateConfigByOgnId(Boolean supportTag, Boolean privateFlag, Boolean wechatPayFlag, Long ognId) {
         return dslContext.update(EP_ORGAN_CONFIG)
                 .set(EP_ORGAN_CONFIG.SUPPORT_TAG, supportTag)
                 .set(EP_ORGAN_CONFIG.PRIVATE_FLAG, privateFlag)
+                .set(EP_ORGAN_CONFIG.WECHAT_PAY_FLAG, wechatPayFlag)
                 .where(EP_ORGAN_CONFIG.OGN_ID.eq(ognId))
                 .and(EP_ORGAN_CONFIG.DEL_FLAG.eq(false))
                 .execute();

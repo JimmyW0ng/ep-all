@@ -176,6 +176,8 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
                 .set(EP_ORGAN_COURSE.COURSE_INTRODUCE, po.getCourseIntroduce())
                 .set(EP_ORGAN_COURSE.COURSE_CONTENT, po.getCourseContent())
                 .set(EP_ORGAN_COURSE.PRIZE_MIN, po.getPrizeMin())
+                .set(EP_ORGAN_COURSE.VIP_FLAG, po.getVipFlag())
+                .set(EP_ORGAN_COURSE.WECHAT_PAY_FLAG, po.getWechatPayFlag())
                 .set(EP_ORGAN_COURSE.ONLINE_TIME, po.getOnlineTime())
                 .set(EP_ORGAN_COURSE.ENTER_TIME_START, po.getEnterTimeStart())
                 .set(EP_ORGAN_COURSE.ENTER_TIME_END, po.getEnterTimeEnd())

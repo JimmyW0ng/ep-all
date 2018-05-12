@@ -120,6 +120,17 @@
                                         <option th:selected="${organCoursePo.vipFlag==false}" value=false>否</option>
                                     </select>
                                 </div>
+                                <div class="form-group" th:if="${wechatPayFlag}">
+                                    <label for="vipFlag">是否通过微信支付<span
+                                            class="required-sign">*</span></label>
+                                    <select id="wechatPayFlag" name="organCoursePo.wechatPayFlag" type="text"
+                                            required="true" class="form-control"
+                                            th:value="${organCoursePo.wechatPayFlag}">
+                                        <option th:selected="${organCoursePo.wechatPayFlag==true}" value=true>是</option>
+                                        <option th:selected="${organCoursePo.wechatPayFlag==false}" value=false>否
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-sm-9">
                                 <label>产品内容 <span class="required-sign">*</span></label>
