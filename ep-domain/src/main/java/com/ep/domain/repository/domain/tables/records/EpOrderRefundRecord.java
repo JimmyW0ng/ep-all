@@ -32,11 +32,30 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     private static final long serialVersionUID = 1136796144;
 
     /**
-     * Setter for <code>ep.ep_order_refund.id</code>. 主键
+     * Create a detached EpOrderRefundRecord
      */
-    public EpOrderRefundRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrderRefundRecord() {
+        super(EpOrderRefund.EP_ORDER_REFUND);
+    }
+
+    /**
+     * Create a detached, initialised EpOrderRefundRecord
+     */
+    public EpOrderRefundRecord(Long id, Long ognId, Long orderId, String refundReason, EpOrderRefundStatus status, Long applyId, Long operateId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrderRefund.EP_ORDER_REFUND);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, orderId);
+        set(3, refundReason);
+        set(4, status);
+        set(5, applyId);
+        set(6, operateId);
+        set(7, createAt);
+        set(8, updateAt);
+        set(9, remark);
+        set(10, delFlag);
+        set(11, version);
     }
 
     /**
@@ -47,10 +66,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.ogn_id</code>. 机构id
+     * Setter for <code>ep.ep_order_refund.id</code>. 主键
      */
-    public EpOrderRefundRecord setOgnId(Long value) {
-        set(1, value);
+    public EpOrderRefundRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -62,10 +81,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.order_id</code>. 订单id
+     * Setter for <code>ep.ep_order_refund.ogn_id</code>. 机构id
      */
-    public EpOrderRefundRecord setOrderId(Long value) {
-        set(2, value);
+    public EpOrderRefundRecord setOgnId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -77,10 +96,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.refund_reason</code>. 退单原因
+     * Setter for <code>ep.ep_order_refund.order_id</code>. 订单id
      */
-    public EpOrderRefundRecord setRefundReason(String value) {
-        set(3, value);
+    public EpOrderRefundRecord setOrderId(Long value) {
+        set(2, value);
         return this;
     }
 
@@ -92,10 +111,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.status</code>. 状态：已保存；成功；失败；拒绝；撤销；
+     * Setter for <code>ep.ep_order_refund.refund_reason</code>. 退单原因
      */
-    public EpOrderRefundRecord setStatus(EpOrderRefundStatus value) {
-        set(4, value);
+    public EpOrderRefundRecord setRefundReason(String value) {
+        set(3, value);
         return this;
     }
 
@@ -107,10 +126,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.apply_id</code>. 申请人员
+     * Setter for <code>ep.ep_order_refund.status</code>. 状态：已保存；成功；失败；拒绝；撤销；
      */
-    public EpOrderRefundRecord setApplyId(Long value) {
-        set(5, value);
+    public EpOrderRefundRecord setStatus(EpOrderRefundStatus value) {
+        set(4, value);
         return this;
     }
 
@@ -122,10 +141,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.operate_id</code>. 操作人员
+     * Setter for <code>ep.ep_order_refund.apply_id</code>. 申请人员
      */
-    public EpOrderRefundRecord setOperateId(Long value) {
-        set(6, value);
+    public EpOrderRefundRecord setApplyId(Long value) {
+        set(5, value);
         return this;
     }
 
@@ -137,10 +156,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_order_refund.operate_id</code>. 操作人员
      */
-    public EpOrderRefundRecord setCreateAt(Timestamp value) {
-        set(7, value);
+    public EpOrderRefundRecord setOperateId(Long value) {
+        set(6, value);
         return this;
     }
 
@@ -152,10 +171,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_order_refund.create_at</code>. 创建时间
      */
-    public EpOrderRefundRecord setUpdateAt(Timestamp value) {
-        set(8, value);
+    public EpOrderRefundRecord setCreateAt(Timestamp value) {
+        set(7, value);
         return this;
     }
 
@@ -167,10 +186,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.remark</code>. 备注
+     * Setter for <code>ep.ep_order_refund.update_at</code>. 更新时间
      */
-    public EpOrderRefundRecord setRemark(String value) {
-        set(9, value);
+    public EpOrderRefundRecord setUpdateAt(Timestamp value) {
+        set(8, value);
         return this;
     }
 
@@ -182,10 +201,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_order_refund.remark</code>. 备注
      */
-    public EpOrderRefundRecord setDelFlag(Boolean value) {
-        set(10, value);
+    public EpOrderRefundRecord setRemark(String value) {
+        set(9, value);
         return this;
     }
 
@@ -197,12 +216,16 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Setter for <code>ep.ep_order_refund.version</code>.
+     * Setter for <code>ep.ep_order_refund.del_flag</code>. 删除标记
      */
-    public EpOrderRefundRecord setVersion(Long value) {
-        set(11, value);
+    public EpOrderRefundRecord setDelFlag(Boolean value) {
+        set(10, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_order_refund.version</code>.
@@ -212,8 +235,16 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record12 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_order_refund.version</code>.
+     */
+    public EpOrderRefundRecord setVersion(Long value) {
+        set(11, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -222,10 +253,6 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record12 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -534,6 +561,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -561,36 +592,5 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
         value11(value11);
         value12(value12);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrderRefundRecord
-     */
-    public EpOrderRefundRecord() {
-        super(EpOrderRefund.EP_ORDER_REFUND);
-    }
-
-    /**
-     * Create a detached, initialised EpOrderRefundRecord
-     */
-    public EpOrderRefundRecord(Long id, Long ognId, Long orderId, String refundReason, EpOrderRefundStatus status, Long applyId, Long operateId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrderRefund.EP_ORDER_REFUND);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, orderId);
-        set(3, refundReason);
-        set(4, status);
-        set(5, applyId);
-        set(6, operateId);
-        set(7, createAt);
-        set(8, updateAt);
-        set(9, remark);
-        set(10, delFlag);
-        set(11, version);
     }
 }

@@ -312,12 +312,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      *
      * @param id
      */
-    public int orderPaidById(Long id) {
+    public int orderPaidById(Long id, Timestamp payConfirmTime) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.PAY_TYPE, EpOrderPayType.wechat_pay)
-                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
-                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
-                .and(EP_ORDER.PAY_STATUS.isNull())
+                         .set(EP_ORDER.PAY_TYPE, EpOrderPayType.wechat_pay)
+                         .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                         .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
+                         .where(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.wait_pay))
                          .and(EP_ORDER.ID.eq(id))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();

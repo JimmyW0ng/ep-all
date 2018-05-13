@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -126,7 +127,7 @@ public class WechatPayComponent {
         String prepayId = data.get("prepay_id");
         wechatUnifiedOrderRepository.handleUnifiedOrder(unifiedOrderPo.getId(), returnCode, returnMsg, resultCode, errCode, errCodeDes, prepayId);
         // 请求处理失败
-        if (!returnCode.equals(WechatTools.SUCCESS)) {
+        if (!WechatTools.SUCCESS.equals(returnCode)) {
             log.error("【微信支付】统一下单返回处理失败, outTradeNo={}, returnCode={}, returnMsg={}", outTradeNo, returnCode, returnMsg);
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_FAIL).setErrorDescription(returnMsg);
         }
@@ -136,7 +137,7 @@ public class WechatPayComponent {
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_RETURN_SIGN);
         }
         // 业务结果失败
-        if (!resultCode.equals(WechatTools.SUCCESS)) {
+        if (!WechatTools.SUCCESS.equals(resultCode)) {
             log.error("【微信支付】统一下单返回结果失败, outTradeNo={}, resultCode={}, errCode={}, errCodeDes={}", outTradeNo, resultCode, errCode, errCodeDes);
             return ResultDo.build(MessageCode.ERROR_WECHAT_UNIFIED_ORDER_FAIL).setErrorDescription(errCodeDes);
         }
@@ -208,9 +209,20 @@ public class WechatPayComponent {
                     transactionId,
                     timeEnd,
                     tradeState);
-            if (num == BizConstant.DB_NUM_ONE && WechatTools.SUCCESS.equals(notifyResultCode)) {
+            if (num == BizConstant.DB_NUM_ONE
+                    && WechatTools.TRADE_STATE_SUCCESS.equals(tradeState)) {
                 // 订单更新支付状态
-                orderRepository.orderPaidById(unifiedOrderPo.getOrderId());
+                Timestamp payConfirmTime;
+                if (StringTools.isNotBlank(timeEnd)) {
+                    try {
+                        payConfirmTime = DateTools.dateToTimestamp(DateTools.stringToDate(timeEnd, DateTools.TIME_PATTERN_MILLISECOND));
+                    } catch (Exception e) {
+                        payConfirmTime = null;
+                    }
+                } else {
+                    payConfirmTime = null;
+                }
+                orderRepository.orderPaidById(unifiedOrderPo.getOrderId(), payConfirmTime);
             }
         }
         return ResultDo.build();
@@ -248,7 +260,8 @@ public class WechatPayComponent {
      * @return
      * @throws Exception
      */
-    public ResultDo orderquery(String transactionId, String outTradeNo) throws Exception {
+    public ResultDo orderQuery(String transactionId, String outTradeNo, Boolean synFlag) throws Exception {
+        log.info("【微信支付】查询订单开始: transactionId={}, outTradeNo={}", transactionId, outTradeNo);
         Map<String, String> requestMap = Maps.newHashMap();
         if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)) {
             return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
@@ -259,16 +272,44 @@ public class WechatPayComponent {
         if (StringTools.isNotBlank(outTradeNo)) {
             requestMap.put("out_trade_no", outTradeNo);
         }
-        String url = URL_PAY_ORDERQUERY;
         String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
-        log.info("[微信支付]查询订单，接口入参={}。", xml);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
+        log.info("【微信支付】查询订单，接口入参={}。", xml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL_PAY_ORDERQUERY, xml, String.class);
+        log.info("【微信支付】查询订单返回: responseEntity={}", outTradeNo, responseEntity);
         if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            log.error("【微信支付】查询订单通信异常: responseEntity={}");
             return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
         }
         String resultStr = responseEntity.getBody();
-        log.info("[微信支付]查询订单，接口返回={}。", resultStr);
-        return ResultDo.build().setResult(resultStr);
+        if (!synFlag) {
+            return ResultDo.build().setResult(resultStr);
+        }
+        Map<String, String> data = WechatTools.xmlToMap(resultStr);
+        log.info("【微信支付】查询订单开始同步本地支付订单: data={}", data);
+        // 请求处理失败
+        String returnCode = data.get("return_code");
+        String returnMsg = data.get("return_msg");
+        if (!WechatTools.SUCCESS.equals(returnCode)) {
+            log.error("【微信支付】查询订单返回处理失败, outTradeNo={}, returnCode={}, returnMsg={}", outTradeNo, returnCode, returnMsg);
+            return ResultDo.build(returnCode).setErrorDescription(returnMsg);
+        }
+        // 验签
+        if (!WechatTools.isSignatureValid(data, wechatPayKey)) {
+            log.error("【微信支付】查询订单返回验签失败, outTradeNo={}", outTradeNo);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_RETURN_SIGN);
+        }
+        // 业务结果失败
+        String resultCode = data.get("result_code");
+        String errCode = data.get("err_code");
+        String errCodeDes = data.get("err_code_des");
+        if (!WechatTools.SUCCESS.equals(resultCode)) {
+            log.error("【微信支付】查询订单返回结果失败, outTradeNo={}, resultCode={}, errCode={}, errCodeDes={}", outTradeNo, resultCode, errCode, errCodeDes);
+            return ResultDo.build(errCode).setErrorDescription(errCodeDes);
+        }
+        String tradeState = data.get("trade_state");
+        String openid = data.get("openid");
+        String isSubscribe = data.get("is_subscribe");
+        return ResultDo.build();
     }
 
 

@@ -31,11 +31,30 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     private static final long serialVersionUID = -763478183;
 
     /**
-     * Setter for <code>ep.ep_system_log.id</code>. 编号
+     * Create a detached EpSystemLogRecord
      */
-    public EpSystemLogRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpSystemLogRecord() {
+        super(EpSystemLog.EP_SYSTEM_LOG);
+    }
+
+    /**
+     * Create a detached, initialised EpSystemLogRecord
+     */
+    public EpSystemLogRecord(Long id, String moduleName, String moduleDesc, String remoteAddr, Long operateId, String operateName, String operateMethod, String requestUrl, String params, String result, String exception, Timestamp operateTime) {
+        super(EpSystemLog.EP_SYSTEM_LOG);
+
+        set(0, id);
+        set(1, moduleName);
+        set(2, moduleDesc);
+        set(3, remoteAddr);
+        set(4, operateId);
+        set(5, operateName);
+        set(6, operateMethod);
+        set(7, requestUrl);
+        set(8, params);
+        set(9, result);
+        set(10, exception);
+        set(11, operateTime);
     }
 
     /**
@@ -46,10 +65,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.module_name</code>. 模块名称
+     * Setter for <code>ep.ep_system_log.id</code>. 编号
      */
-    public EpSystemLogRecord setModuleName(String value) {
-        set(1, value);
+    public EpSystemLogRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -61,10 +80,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.module_desc</code>. 日志描述
+     * Setter for <code>ep.ep_system_log.module_name</code>. 模块名称
      */
-    public EpSystemLogRecord setModuleDesc(String value) {
-        set(2, value);
+    public EpSystemLogRecord setModuleName(String value) {
+        set(1, value);
         return this;
     }
 
@@ -76,10 +95,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.remote_addr</code>. 操作IP地址
+     * Setter for <code>ep.ep_system_log.module_desc</code>. 日志描述
      */
-    public EpSystemLogRecord setRemoteAddr(String value) {
-        set(3, value);
+    public EpSystemLogRecord setModuleDesc(String value) {
+        set(2, value);
         return this;
     }
 
@@ -91,10 +110,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.operate_id</code>. 操作者ID
+     * Setter for <code>ep.ep_system_log.remote_addr</code>. 操作IP地址
      */
-    public EpSystemLogRecord setOperateId(Long value) {
-        set(4, value);
+    public EpSystemLogRecord setRemoteAddr(String value) {
+        set(3, value);
         return this;
     }
 
@@ -106,10 +125,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.operate_name</code>. 操作者姓名
+     * Setter for <code>ep.ep_system_log.operate_id</code>. 操作者ID
      */
-    public EpSystemLogRecord setOperateName(String value) {
-        set(5, value);
+    public EpSystemLogRecord setOperateId(Long value) {
+        set(4, value);
         return this;
     }
 
@@ -121,10 +140,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.operate_method</code>. 操作方法
+     * Setter for <code>ep.ep_system_log.operate_name</code>. 操作者姓名
      */
-    public EpSystemLogRecord setOperateMethod(String value) {
-        set(6, value);
+    public EpSystemLogRecord setOperateName(String value) {
+        set(5, value);
         return this;
     }
 
@@ -136,10 +155,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.request_url</code>. 请求URL
+     * Setter for <code>ep.ep_system_log.operate_method</code>. 操作方法
      */
-    public EpSystemLogRecord setRequestUrl(String value) {
-        set(7, value);
+    public EpSystemLogRecord setOperateMethod(String value) {
+        set(6, value);
         return this;
     }
 
@@ -151,10 +170,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.params</code>. 操作提交的数据
+     * Setter for <code>ep.ep_system_log.request_url</code>. 请求URL
      */
-    public EpSystemLogRecord setParams(String value) {
-        set(8, value);
+    public EpSystemLogRecord setRequestUrl(String value) {
+        set(7, value);
         return this;
     }
 
@@ -166,10 +185,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.result</code>. 操作返回的结果
+     * Setter for <code>ep.ep_system_log.params</code>. 操作提交的数据
      */
-    public EpSystemLogRecord setResult(String value) {
-        set(9, value);
+    public EpSystemLogRecord setParams(String value) {
+        set(8, value);
         return this;
     }
 
@@ -181,10 +200,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.exception</code>. 异常信息
+     * Setter for <code>ep.ep_system_log.result</code>. 操作返回的结果
      */
-    public EpSystemLogRecord setException(String value) {
-        set(10, value);
+    public EpSystemLogRecord setResult(String value) {
+        set(9, value);
         return this;
     }
 
@@ -196,12 +215,16 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     /**
-     * Setter for <code>ep.ep_system_log.operate_time</code>. 操作时间
+     * Setter for <code>ep.ep_system_log.exception</code>. 异常信息
      */
-    public EpSystemLogRecord setOperateTime(Timestamp value) {
-        set(11, value);
+    public EpSystemLogRecord setException(String value) {
+        set(10, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_system_log.operate_time</code>. 操作时间
@@ -211,8 +234,16 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record12 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_system_log.operate_time</code>. 操作时间
+     */
+    public EpSystemLogRecord setOperateTime(Timestamp value) {
+        set(11, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -221,10 +252,6 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record12 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -533,6 +560,10 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -560,36 +591,5 @@ public class EpSystemLogRecord extends UpdatableRecordImpl<EpSystemLogRecord> im
         value11(value11);
         value12(value12);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpSystemLogRecord
-     */
-    public EpSystemLogRecord() {
-        super(EpSystemLog.EP_SYSTEM_LOG);
-    }
-
-    /**
-     * Create a detached, initialised EpSystemLogRecord
-     */
-    public EpSystemLogRecord(Long id, String moduleName, String moduleDesc, String remoteAddr, Long operateId, String operateName, String operateMethod, String requestUrl, String params, String result, String exception, Timestamp operateTime) {
-        super(EpSystemLog.EP_SYSTEM_LOG);
-
-        set(0, id);
-        set(1, moduleName);
-        set(2, moduleDesc);
-        set(3, remoteAddr);
-        set(4, operateId);
-        set(5, operateName);
-        set(6, operateMethod);
-        set(7, requestUrl);
-        set(8, params);
-        set(9, result);
-        set(10, exception);
-        set(11, operateTime);
     }
 }

@@ -34,11 +34,38 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     private static final long serialVersionUID = 1403072823;
 
     /**
-     * Setter for <code>ep.ep_organ_course.id</code>. 主键
+     * Create a detached EpOrganCourseRecord
      */
-    public EpOrganCourseRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpOrganCourseRecord() {
+        super(EpOrganCourse.EP_ORGAN_COURSE);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganCourseRecord
+     */
+    public EpOrganCourseRecord(Long id, Long ognId, EpOrganCourseCourseType courseType, Long courseCatalogId, String courseName, String courseIntroduce, String courseContent, BigDecimal prizeMin, Boolean vipFlag, Boolean wechatPayFlag, EpOrganCourseCourseStatus courseStatus, Timestamp onlineTime, Timestamp enterTimeStart, Timestamp enterTimeEnd, Integer totalParticipate, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
+        super(EpOrganCourse.EP_ORGAN_COURSE);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, courseType);
+        set(3, courseCatalogId);
+        set(4, courseName);
+        set(5, courseIntroduce);
+        set(6, courseContent);
+        set(7, prizeMin);
+        set(8, vipFlag);
+        set(9, wechatPayFlag);
+        set(10, courseStatus);
+        set(11, onlineTime);
+        set(12, enterTimeStart);
+        set(13, enterTimeEnd);
+        set(14, totalParticipate);
+        set(15, remark);
+        set(16, createAt);
+        set(17, updateAt);
+        set(18, delFlag);
+        set(19, version);
     }
 
     /**
@@ -49,10 +76,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.ogn_id</code>. 机构ID
+     * Setter for <code>ep.ep_organ_course.id</code>. 主键
      */
-    public EpOrganCourseRecord setOgnId(Long value) {
-        set(1, value);
+    public EpOrganCourseRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -64,10 +91,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_type</code>. 课程类型：课程；活动；
+     * Setter for <code>ep.ep_organ_course.ogn_id</code>. 机构ID
      */
-    public EpOrganCourseRecord setCourseType(EpOrganCourseCourseType value) {
-        set(2, value);
+    public EpOrganCourseRecord setOgnId(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -79,10 +106,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_catalog_id</code>. 课程目录ID
+     * Setter for <code>ep.ep_organ_course.course_type</code>. 课程类型：课程；活动；
      */
-    public EpOrganCourseRecord setCourseCatalogId(Long value) {
-        set(3, value);
+    public EpOrganCourseRecord setCourseType(EpOrganCourseCourseType value) {
+        set(2, value);
         return this;
     }
 
@@ -94,10 +121,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_name</code>. 课名
+     * Setter for <code>ep.ep_organ_course.course_catalog_id</code>. 课程目录ID
      */
-    public EpOrganCourseRecord setCourseName(String value) {
-        set(4, value);
+    public EpOrganCourseRecord setCourseCatalogId(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -109,10 +136,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_introduce</code>. 课程简介
+     * Setter for <code>ep.ep_organ_course.course_name</code>. 课名
      */
-    public EpOrganCourseRecord setCourseIntroduce(String value) {
-        set(5, value);
+    public EpOrganCourseRecord setCourseName(String value) {
+        set(4, value);
         return this;
     }
 
@@ -124,10 +151,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_content</code>. 课程内容
+     * Setter for <code>ep.ep_organ_course.course_introduce</code>. 课程简介
      */
-    public EpOrganCourseRecord setCourseContent(String value) {
-        set(6, value);
+    public EpOrganCourseRecord setCourseIntroduce(String value) {
+        set(5, value);
         return this;
     }
 
@@ -139,10 +166,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.prize_min</code>. 最低价格
+     * Setter for <code>ep.ep_organ_course.course_content</code>. 课程内容
      */
-    public EpOrganCourseRecord setPrizeMin(BigDecimal value) {
-        set(7, value);
+    public EpOrganCourseRecord setCourseContent(String value) {
+        set(6, value);
         return this;
     }
 
@@ -154,10 +181,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.vip_flag</code>. 是否会员才能报名
+     * Setter for <code>ep.ep_organ_course.prize_min</code>. 最低价格
      */
-    public EpOrganCourseRecord setVipFlag(Boolean value) {
-        set(8, value);
+    public EpOrganCourseRecord setPrizeMin(BigDecimal value) {
+        set(7, value);
         return this;
     }
 
@@ -169,10 +196,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.wechat_pay_flag</code>. 是否通过微信支付
+     * Setter for <code>ep.ep_organ_course.vip_flag</code>. 是否会员才能报名
      */
-    public EpOrganCourseRecord setWechatPayFlag(Boolean value) {
-        set(9, value);
+    public EpOrganCourseRecord setVipFlag(Boolean value) {
+        set(8, value);
         return this;
     }
 
@@ -184,10 +211,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
+     * Setter for <code>ep.ep_organ_course.wechat_pay_flag</code>. 是否通过微信支付
      */
-    public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
-        set(10, value);
+    public EpOrganCourseRecord setWechatPayFlag(Boolean value) {
+        set(9, value);
         return this;
     }
 
@@ -199,10 +226,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.online_time</code>. 上线时间
+     * Setter for <code>ep.ep_organ_course.course_status</code>. 课状态：已保存；已上线；已下线；
      */
-    public EpOrganCourseRecord setOnlineTime(Timestamp value) {
-        set(11, value);
+    public EpOrganCourseRecord setCourseStatus(EpOrganCourseCourseStatus value) {
+        set(10, value);
         return this;
     }
 
@@ -214,10 +241,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.enter_time_start</code>. 报名开始时间
+     * Setter for <code>ep.ep_organ_course.online_time</code>. 上线时间
      */
-    public EpOrganCourseRecord setEnterTimeStart(Timestamp value) {
-        set(12, value);
+    public EpOrganCourseRecord setOnlineTime(Timestamp value) {
+        set(11, value);
         return this;
     }
 
@@ -229,10 +256,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.enter_time_end</code>. 报名结束时间
+     * Setter for <code>ep.ep_organ_course.enter_time_start</code>. 报名开始时间
      */
-    public EpOrganCourseRecord setEnterTimeEnd(Timestamp value) {
-        set(13, value);
+    public EpOrganCourseRecord setEnterTimeStart(Timestamp value) {
+        set(12, value);
         return this;
     }
 
@@ -244,10 +271,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.total_participate</code>. 总参与人数
+     * Setter for <code>ep.ep_organ_course.enter_time_end</code>. 报名结束时间
      */
-    public EpOrganCourseRecord setTotalParticipate(Integer value) {
-        set(14, value);
+    public EpOrganCourseRecord setEnterTimeEnd(Timestamp value) {
+        set(13, value);
         return this;
     }
 
@@ -259,10 +286,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.remark</code>. 备注信息
+     * Setter for <code>ep.ep_organ_course.total_participate</code>. 总参与人数
      */
-    public EpOrganCourseRecord setRemark(String value) {
-        set(15, value);
+    public EpOrganCourseRecord setTotalParticipate(Integer value) {
+        set(14, value);
         return this;
     }
 
@@ -274,10 +301,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_organ_course.remark</code>. 备注信息
      */
-    public EpOrganCourseRecord setCreateAt(Timestamp value) {
-        set(16, value);
+    public EpOrganCourseRecord setRemark(String value) {
+        set(15, value);
         return this;
     }
 
@@ -289,10 +316,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_organ_course.create_at</code>. 创建时间
      */
-    public EpOrganCourseRecord setUpdateAt(Timestamp value) {
-        set(17, value);
+    public EpOrganCourseRecord setCreateAt(Timestamp value) {
+        set(16, value);
         return this;
     }
 
@@ -304,10 +331,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.del_flag</code>. 删除标志
+     * Setter for <code>ep.ep_organ_course.update_at</code>. 更新时间
      */
-    public EpOrganCourseRecord setDelFlag(Boolean value) {
-        set(18, value);
+    public EpOrganCourseRecord setUpdateAt(Timestamp value) {
+        set(17, value);
         return this;
     }
 
@@ -319,12 +346,16 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     /**
-     * Setter for <code>ep.ep_organ_course.version</code>.
+     * Setter for <code>ep.ep_organ_course.del_flag</code>. 删除标志
      */
-    public EpOrganCourseRecord setVersion(Long value) {
-        set(19, value);
+    public EpOrganCourseRecord setDelFlag(Boolean value) {
+        set(18, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_organ_course.version</code>.
@@ -334,8 +365,16 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record20 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_organ_course.version</code>.
+     */
+    public EpOrganCourseRecord setVersion(Long value) {
+        set(19, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -344,10 +383,6 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record20 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -856,6 +891,10 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -891,44 +930,5 @@ public class EpOrganCourseRecord extends UpdatableRecordImpl<EpOrganCourseRecord
         value19(value19);
         value20(value20);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpOrganCourseRecord
-     */
-    public EpOrganCourseRecord() {
-        super(EpOrganCourse.EP_ORGAN_COURSE);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganCourseRecord
-     */
-    public EpOrganCourseRecord(Long id, Long ognId, EpOrganCourseCourseType courseType, Long courseCatalogId, String courseName, String courseIntroduce, String courseContent, BigDecimal prizeMin, Boolean vipFlag, Boolean wechatPayFlag, EpOrganCourseCourseStatus courseStatus, Timestamp onlineTime, Timestamp enterTimeStart, Timestamp enterTimeEnd, Integer totalParticipate, String remark, Timestamp createAt, Timestamp updateAt, Boolean delFlag, Long version) {
-        super(EpOrganCourse.EP_ORGAN_COURSE);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, courseType);
-        set(3, courseCatalogId);
-        set(4, courseName);
-        set(5, courseIntroduce);
-        set(6, courseContent);
-        set(7, prizeMin);
-        set(8, vipFlag);
-        set(9, wechatPayFlag);
-        set(10, courseStatus);
-        set(11, onlineTime);
-        set(12, enterTimeStart);
-        set(13, enterTimeEnd);
-        set(14, totalParticipate);
-        set(15, remark);
-        set(16, createAt);
-        set(17, updateAt);
-        set(18, delFlag);
-        set(19, version);
     }
 }

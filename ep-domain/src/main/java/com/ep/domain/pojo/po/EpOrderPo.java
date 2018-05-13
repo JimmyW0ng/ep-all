@@ -35,6 +35,7 @@ public class EpOrderPo extends AbstractBasePojo {
     private EpOrderStatus status;
     private EpOrderPayType payType;
     private EpOrderPayStatus payStatus;
+    private Timestamp payConfirmTime;
     private Timestamp authTime;
     private Timestamp cancelTime;
     private BigDecimal refundAmount;

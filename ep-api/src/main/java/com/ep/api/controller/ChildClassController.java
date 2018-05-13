@@ -4,7 +4,9 @@ import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberChildClassBo;
 import com.ep.domain.pojo.bo.MemberChildScheduleBo;
+import com.ep.domain.pojo.bo.OrderPayInfoBo;
 import com.ep.domain.pojo.dto.OrganClassCatalogDetailDto;
+import com.ep.domain.pojo.po.EpMemberPo;
 import com.ep.domain.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 孩子课程班次控制类
@@ -42,6 +45,15 @@ public class ChildClassController extends ApiController {
     private OrganClassCommentService organClassCommentService;
     @Autowired
     private OrganClassScheduleService organClassScheduleService;
+
+
+    @ApiOperation(value = "查看支付订单")
+    @PostMapping("/pay/info")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<OrderPayInfoBo> getPayInfo(@RequestParam("orderId") Long orderId) {
+        Optional<EpMemberPo> optional = super.getCurrentUser();
+        return orderService.getPayInfo(optional.get().getId(), orderId);
+    }
 
     @ApiOperation(value = "孩子全部课程分页列表")
     @PostMapping("/page")

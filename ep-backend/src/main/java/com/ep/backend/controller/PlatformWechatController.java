@@ -41,7 +41,7 @@ public class PlatformWechatController extends BackendController {
     private WechatUnifiedOrderService wechatUnifiedOrderService;
     @Autowired
     private WechatPayComponent wechatPayComponent;
-    @Autowired
+
     @Value("${wechat.fwh.token}")
     private String wechatFwhToken;
     @Value("${wechat.fwh.id}")
@@ -231,11 +231,6 @@ public class PlatformWechatController extends BackendController {
     @GetMapping("syncUnifiedorder/{outTradeNo}")
     @ResponseBody
     public ResultDo syncUnifiedorder(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
-        ResultDo resultDo = wechatPayComponent.orderquery(null, outTradeNo);
-        if (resultDo.isSuccess()) {
-            String xml = (String) resultDo.getResult();
-
-        }
-        return ResultDo.build();
+        return wechatPayComponent.orderQuery(null, outTradeNo, true);
     }
 }

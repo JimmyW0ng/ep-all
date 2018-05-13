@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 支付类型
+ * 支付类型：线下；微信支付；
  */
 @Generated(
         value = {
@@ -23,6 +23,8 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpOrderPayType implements EnumType {
+
+    offline("offline"),
 
     wechat_pay("wechat_pay");
 

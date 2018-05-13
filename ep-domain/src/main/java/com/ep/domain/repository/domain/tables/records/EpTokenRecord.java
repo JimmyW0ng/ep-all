@@ -32,11 +32,31 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     private static final long serialVersionUID = -807913376;
 
     /**
-     * Setter for <code>ep.ep_token.id</code>. 主键
+     * Create a detached EpTokenRecord
      */
-    public EpTokenRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpTokenRecord() {
+        super(EpToken.EP_TOKEN);
+    }
+
+    /**
+     * Create a detached, initialised EpTokenRecord
+     */
+    public EpTokenRecord(Long id, Long mobile, EpTokenType type, String role, String lastAccessIp, Long ognId, Timestamp expireTime, String code, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpToken.EP_TOKEN);
+
+        set(0, id);
+        set(1, mobile);
+        set(2, type);
+        set(3, role);
+        set(4, lastAccessIp);
+        set(5, ognId);
+        set(6, expireTime);
+        set(7, code);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 
     /**
@@ -47,10 +67,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.mobile</code>. 手机号
+     * Setter for <code>ep.ep_token.id</code>. 主键
      */
-    public EpTokenRecord setMobile(Long value) {
-        set(1, value);
+    public EpTokenRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -62,10 +82,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.type</code>. 类型：会员；机构账户
+     * Setter for <code>ep.ep_token.mobile</code>. 手机号
      */
-    public EpTokenRecord setType(EpTokenType value) {
-        set(2, value);
+    public EpTokenRecord setMobile(Long value) {
+        set(1, value);
         return this;
     }
 
@@ -77,10 +97,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.role</code>. 角色
+     * Setter for <code>ep.ep_token.type</code>. 类型：会员；机构账户
      */
-    public EpTokenRecord setRole(String value) {
-        set(3, value);
+    public EpTokenRecord setType(EpTokenType value) {
+        set(2, value);
         return this;
     }
 
@@ -92,10 +112,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.last_access_ip</code>. 最近一次的访问ip
+     * Setter for <code>ep.ep_token.role</code>. 角色
      */
-    public EpTokenRecord setLastAccessIp(String value) {
-        set(4, value);
+    public EpTokenRecord setRole(String value) {
+        set(3, value);
         return this;
     }
 
@@ -107,10 +127,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.ogn_id</code>. 机构id
+     * Setter for <code>ep.ep_token.last_access_ip</code>. 最近一次的访问ip
      */
-    public EpTokenRecord setOgnId(Long value) {
-        set(5, value);
+    public EpTokenRecord setLastAccessIp(String value) {
+        set(4, value);
         return this;
     }
 
@@ -122,10 +142,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.expire_time</code>. 过期时间
+     * Setter for <code>ep.ep_token.ogn_id</code>. 机构id
      */
-    public EpTokenRecord setExpireTime(Timestamp value) {
-        set(6, value);
+    public EpTokenRecord setOgnId(Long value) {
+        set(5, value);
         return this;
     }
 
@@ -137,10 +157,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.code</code>. token串
+     * Setter for <code>ep.ep_token.expire_time</code>. 过期时间
      */
-    public EpTokenRecord setCode(String value) {
-        set(7, value);
+    public EpTokenRecord setExpireTime(Timestamp value) {
+        set(6, value);
         return this;
     }
 
@@ -152,10 +172,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_token.code</code>. token串
      */
-    public EpTokenRecord setCreateAt(Timestamp value) {
-        set(8, value);
+    public EpTokenRecord setCode(String value) {
+        set(7, value);
         return this;
     }
 
@@ -167,10 +187,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_token.create_at</code>. 创建时间
      */
-    public EpTokenRecord setUpdateAt(Timestamp value) {
-        set(9, value);
+    public EpTokenRecord setCreateAt(Timestamp value) {
+        set(8, value);
         return this;
     }
 
@@ -182,10 +202,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.remark</code>. 备注
+     * Setter for <code>ep.ep_token.update_at</code>. 更新时间
      */
-    public EpTokenRecord setRemark(String value) {
-        set(10, value);
+    public EpTokenRecord setUpdateAt(Timestamp value) {
+        set(9, value);
         return this;
     }
 
@@ -197,10 +217,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_token.remark</code>. 备注
      */
-    public EpTokenRecord setDelFlag(Boolean value) {
-        set(11, value);
+    public EpTokenRecord setRemark(String value) {
+        set(10, value);
         return this;
     }
 
@@ -212,12 +232,16 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Setter for <code>ep.ep_token.version</code>.
+     * Setter for <code>ep.ep_token.del_flag</code>. 删除标记
      */
-    public EpTokenRecord setVersion(Long value) {
-        set(12, value);
+    public EpTokenRecord setDelFlag(Boolean value) {
+        set(11, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_token.version</code>.
@@ -227,8 +251,16 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record13 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_token.version</code>.
+     */
+    public EpTokenRecord setVersion(Long value) {
+        set(12, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -237,10 +269,6 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record13 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -574,6 +602,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -602,37 +634,5 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
         value12(value12);
         value13(value13);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpTokenRecord
-     */
-    public EpTokenRecord() {
-        super(EpToken.EP_TOKEN);
-    }
-
-    /**
-     * Create a detached, initialised EpTokenRecord
-     */
-    public EpTokenRecord(Long id, Long mobile, EpTokenType type, String role, String lastAccessIp, Long ognId, Timestamp expireTime, String code, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpToken.EP_TOKEN);
-
-        set(0, id);
-        set(1, mobile);
-        set(2, type);
-        set(3, role);
-        set(4, lastAccessIp);
-        set(5, ognId);
-        set(6, expireTime);
-        set(7, code);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
     }
 }

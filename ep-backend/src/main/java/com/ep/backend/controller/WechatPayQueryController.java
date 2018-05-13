@@ -39,7 +39,7 @@ public class WechatPayQueryController {
     @ResponseBody
     public ResultDo postOrderquery(@RequestParam(value = "transactionId", required = false) String transactionId,
                                    @RequestParam(value = "outTradeNo", required = false) String outTradeNo) throws Exception {
-        return wechatPayComponent.orderquery(transactionId, outTradeNo);
+        return wechatPayComponent.orderQuery(transactionId, outTradeNo, false);
     }
 
     @GetMapping("refundquery")

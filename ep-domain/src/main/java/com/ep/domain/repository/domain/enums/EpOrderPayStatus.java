@@ -24,6 +24,8 @@ import javax.annotation.Generated;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public enum EpOrderPayStatus implements EnumType {
 
+    wait_pay("wait_pay"),
+
     paid("paid"),
 
     refund_apply("refund_apply"),

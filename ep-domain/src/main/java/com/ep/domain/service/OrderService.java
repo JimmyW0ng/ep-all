@@ -213,12 +213,18 @@ public class OrderService {
         orderPo.setClassId(classId);
         orderPo.setPrize(classPo.getDiscountAmount() != null ? classPo.getDiscountAmount() : classPo.getClassPrize());
         orderPo.setStatus(EpOrderStatus.save);
+        if (NumberTools.compareBigDecimal(orderPo.getPrize(), BigDecimal.ZERO)) {
+            orderPo.setPayStatus(EpOrderPayStatus.wait_pay);
+        }
         orderRepository.insert(orderPo);
         // 判断是否需要微信支付
         OrderDto result = new OrderDto();
         result.setOrderId(orderPo.getId());
         Optional<EpOrganConfigPo> existOrganConfig = organConfigRepository.getByOgnId(classPo.getOgnId());
-        if (existOrganConfig.isPresent() && existOrganConfig.get().getWechatPayFlag() && NumberTools.compareBigDecimal(orderPo.getPrize(), BigDecimal.ZERO)) {
+        if (existOrganConfig.isPresent()
+                && existOrganConfig.get().getWechatPayFlag()
+                && coursePo.getWechatPayFlag()
+                && NumberTools.compareBigDecimal(orderPo.getPrize(), BigDecimal.ZERO)) {
             result.setWaitPayFlag(true);
         } else {
             result.setWaitPayFlag(false);
@@ -696,5 +702,37 @@ public class OrderService {
             return ResultDo.build(MessageCode.ERROR_ORGAN_NOT_EXISTS);
         }
         return wechatPayComponent.xcxUnifiedorder(orderId, organPo.getOgnName(), orderPo.getPrize(), openid, ip);
+    }
+
+    /**
+     * 根据订单id获取支付订单信息
+     *
+     * @param memberId
+     * @param orderId
+     * @return
+     */
+    public ResultDo<OrderPayInfoBo> getPayInfo(Long memberId, Long orderId) {
+        EpOrderPo orderPo = orderRepository.getById(orderId);
+        if (orderPo == null || orderPo.getDelFlag() || !orderPo.getMemberId().equals(memberId)) {
+            ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        OrderPayInfoBo payInfoBo = new OrderPayInfoBo();
+        EpOrganCoursePo coursePo = organCourseRepository.getById(orderPo.getCourseId());
+        EpOrganClassPo classPo = organClassRepository.getById(orderPo.getClassId());
+        EpMemberChildPo childPo = memberChildRepository.getById(orderPo.getChildId());
+        Optional<EpFilePo> existAvatar = fileRepository.getOneByBizTypeAndSourceId(BizConstant.FILE_BIZ_TYPE_CODE_CHILD_AVATAR, orderPo.getChildId());
+        String childAvatar = existAvatar.isPresent() ? existAvatar.get().getFileUrl() : null;
+        payInfoBo.setId(orderId);
+        payInfoBo.setOgnId(orderPo.getOgnId());
+        payInfoBo.setCourseId(orderPo.getCourseId());
+        payInfoBo.setPrize(orderPo.getPrize());
+        payInfoBo.setCourseName(coursePo.getCourseName());
+        payInfoBo.setClassName(classPo.getClassName());
+        payInfoBo.setChildNickName(childPo.getChildNickName());
+        payInfoBo.setChildAvatar(childAvatar);
+        payInfoBo.setPayType(orderPo.getPayType());
+        payInfoBo.setPayStatus(orderPo.getPayStatus());
+        ResultDo<OrderPayInfoBo> resultDo = ResultDo.build();
+        return resultDo.setResult(payInfoBo);
     }
 }
