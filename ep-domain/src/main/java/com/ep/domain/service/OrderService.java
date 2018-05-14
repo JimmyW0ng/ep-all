@@ -739,7 +739,8 @@ public class OrderService {
 
     /**
      * 确认线下支付已完成
-     *
+     * @param orderId
+     * @param payConfirmTime
      * @return
      */
     public ResultDo offlinePaidByOrderId(Long orderId, Timestamp payConfirmTime) {

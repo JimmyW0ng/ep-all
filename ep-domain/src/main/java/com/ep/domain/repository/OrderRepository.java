@@ -757,7 +757,13 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.fetch(sql).getValues(0, BigDecimal.class).get(0);
     }
 
-
+    /**
+     * 确认线下支付已完成
+     *
+     * @param orderId
+     * @param payConfirmTime
+     * @return
+     */
     public int offlinePaidByOrderId(Long orderId, Timestamp payConfirmTime) {
         return dslContext.update(EP_ORDER)
                 .set(EP_ORDER.PAY_TYPE, EpOrderPayType.offline)

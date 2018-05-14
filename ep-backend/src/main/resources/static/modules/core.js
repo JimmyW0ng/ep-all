@@ -479,10 +479,10 @@ $(function () {
     // //datetimepicker时间区间END
 });
 
-//时间格式化 useage:formatDate("1408609262000","yyyy-mm-dd");
-function formatDate(timestamp, format) {
-    if (typeof timestamp !== "undefined") {
-        var date = new Date(Number(timestamp)),
+//时间格式化
+function formatDate(data, format) {
+    if (typeof data !== "undefined") {
+        var date = new Date(data),
             oDate = "",
             year = date.getFullYear(),
             month = date.getMonth() + 1,

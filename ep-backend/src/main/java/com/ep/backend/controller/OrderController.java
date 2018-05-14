@@ -484,26 +484,10 @@ public class OrderController extends BackendController {
         return orderService.batchRefuse(ids, batchRefuseRemark, ognId);
     }
 
-    /**
-     * 线下支付初始化
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/offlinePaidInit/{id}")
-    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-    @ResponseBody
-    public ResultDo offlinePaidInit(@PathVariable("id") Long id) {
-        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
-            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
-        }
-        Map<String, Object> resultMap = Maps.newHashMap();
-        resultMap.put("currentTime", DateTools.getCurrentDate());
-        return ResultDo.build().setResult(resultMap);
-    }
+
 
     /**
-     * 线下支付初始化
+     * 确认线下支付完成
      *
      * @param id
      * @return
