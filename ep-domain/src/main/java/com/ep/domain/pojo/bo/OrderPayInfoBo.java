@@ -71,7 +71,7 @@ public class OrderPayInfoBo extends EpOrderPo {
     public String getPayTypeFormat() {
         if (super.getPayType() != null) {
             if (EpOrderPayType.offline.equals(super.getPayType())) {
-                return "商户支付途径支付";
+                return "线下支付";
             } else if (EpOrderPayType.wechat_pay.equals(super.getPayType())) {
                 return "平台在线支付";
             }
