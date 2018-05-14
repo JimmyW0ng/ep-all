@@ -59,6 +59,8 @@ public class OrganCourseService {
     private OrganClassScheduleRepository organClassScheduleRepository;
     @Autowired
     private OrganCatalogRepository organCatalogRepository;
+    @Autowired
+    private OrganConfigRepository organConfigRepository;
 
 
     /**
@@ -633,6 +635,32 @@ public class OrganCourseService {
         if (null == po.getOgnId()) {
             log.error("接受参数异常，ognId=null。");
             return false;
+        }
+        EpOrganPo organPo = organRepository.findById(po.getOgnId());
+        if (organPo == null) {
+            log.error("接受参数异常，organPo=null。");
+            return false;
+        }
+        if (organPo.getVipFlag()) {
+            if (null == po.getVipFlag()) {
+                log.error("接受参数异常，vipFlag=null。");
+                return false;
+            }
+        } else {
+            po.setVipFlag(false);
+        }
+        Optional<EpOrganConfigPo> organConfigOptional = organConfigRepository.getByOgnId(po.getOgnId());
+        if (!organConfigOptional.isPresent()) {
+            log.error("接受参数异常，organConfig=null。");
+            return false;
+        }
+        if (!organConfigOptional.get().getWechatPayFlag()) {
+            po.setWechatPayFlag(false);
+        } else {
+            if (null == po.getWechatPayFlag()) {
+                log.error("接受参数异常，wechatPayFlag=null。");
+                return false;
+            }
         }
         if (null == po.getCourseType()) {
             log.error("接受参数异常，courseType=null。");

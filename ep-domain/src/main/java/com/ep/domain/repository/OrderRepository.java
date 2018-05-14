@@ -756,5 +756,16 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 days + " DAY) <= DATE(ep_order.create_at)";
         return dslContext.fetch(sql).getValues(0, BigDecimal.class).get(0);
     }
+
+
+    public int offlinePaidByOrderId(Long orderId, Timestamp payConfirmTime) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.PAY_TYPE, EpOrderPayType.offline)
+                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
+                .where(EP_ORDER.ID.eq(orderId))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
 }
 

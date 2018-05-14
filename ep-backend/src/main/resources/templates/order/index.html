@@ -138,7 +138,13 @@
                             <td name="statusZh" th:if="${#strings.equals(bo.classType,'bespeak')}"
                                 th:text="#{EpOrderStatusBespeak.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
-                            <td th:text="${bo.payStatus}"></td>
+                            <td>
+                                <span th:if="${!#strings.equals(bo.payStatus,'wait_pay')&& bo.payStatus!=null}"
+                                      th:text="#{EpOrderPayStatus.+${bo.payStatus}}"></span>
+                                <button th:if="${#strings.equals(bo.payStatus,'wait_pay')}" class="btn btn-xs btn-info"
+                                        th:onclick="'offlinePaidBox('+${bo.id}+')'">线下支付
+                                </button>
+                            </td>
 
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -351,7 +357,38 @@
 
     </tr>
 </script>
+<div class="modal inmodal" id="offlinePaidModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h3 style="text-align: left">确认已线下支付</h3>
 
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal m-t">
+                    <div class="form-group">
+                        <label>订单id：<span id="offlinePaidId"> </span></label>
+                    </div>
+                    <div class="form-group">
+                        <label>支付状态：<span th:text="#{EpOrderPayStatus.+'paid'}"> </span></label>
+                    </div>
+                    <div class="form-group">
+                        <label>支付确认时间：</label>
+                        <input type="text" class="form-control datetimepicker" id="offline_paid_pay_confirm_time">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="offlinePaidDo()">确认</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 
@@ -666,12 +703,17 @@
             }
         })
     }
+
+    /*查看微信支付列表*/
     function wechatOrder(orderId) {
         $("#wechatOrderIdTxt").text(orderId)
         $("#wechatOrderModal").modal("show")
         $.ajax({
             type: "GET",
             url: "/auth/wechat/findWechatUnifiedOrderByOrderId/" + orderId,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     $("#wechatordersBody").html($("#wechatorderTmpl").tmpl(data.result))
@@ -682,6 +724,59 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
+            complete: function () {
+                layer.closeAll();
+            }
+        })
+    }
+
+    /*确认线下支付模态框*/
+    function offlinePaidBox(id) {
+        $("#offlinePaidId").text(id)
+        $("#offlinePaidModal").modal("show")
+//        $.ajax({
+//            type: "GET",
+//            url: "/auth/order/offlinePaidInit/" + id,
+//            beforeSend: function () {
+//                layer.load(2, {shade: [0.1, '#fff']});
+//            },
+//            success: function (data) {
+//                if (data.success) {
+//                    $("#offline_paid_pay_confirm_time").text(data.result.currentTime)
+//                } else {
+//                    toastr.error(data.errorDescription);
+//                }
+//            },
+//            error: function (XMLHttpRequest) {
+//                toastr_error_system(XMLHttpRequest.status);
+//            },
+//            complete: function () {
+//                layer.closeAll();
+//            }
+//        })
+
+    }
+    /*确认线下支付完成*/
+    function offlinePaidDo() {
+        $.ajax({
+            type: "GET",
+            url: "/auth/order/offlinePaidDo/" + id,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
+            success: function (data) {
+                if (data.success) {
+                    toastr_success(null, document.location.href)
+                } else {
+                    toastr.error(data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
+            }
         })
     }
 

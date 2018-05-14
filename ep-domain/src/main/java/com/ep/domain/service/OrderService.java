@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 
 import static com.ep.domain.repository.domain.Tables.*;
@@ -734,5 +735,21 @@ public class OrderService {
         payInfoBo.setPayStatus(orderPo.getPayStatus());
         ResultDo<OrderPayInfoBo> resultDo = ResultDo.build();
         return resultDo.setResult(payInfoBo);
+    }
+
+    /**
+     * 确认线下支付已完成
+     *
+     * @return
+     */
+    public ResultDo offlinePaidByOrderId(Long orderId, Timestamp payConfirmTime) {
+        log.info("[订单]确认线下支付已完成开始，orderId={},payConfirmTime={}。", orderId, payConfirmTime);
+        if (orderRepository.offlinePaidByOrderId(orderId, payConfirmTime) == BizConstant.DB_NUM_ONE) {
+            log.info("[订单]确认线下支付已完成成功，orderId={},payConfirmTime={}。", orderId, payConfirmTime);
+            return ResultDo.build();
+        } else {
+            log.error("[订单]确认线下支付已完成失败，orderId={},payConfirmTime={}。", orderId, payConfirmTime);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
     }
 }

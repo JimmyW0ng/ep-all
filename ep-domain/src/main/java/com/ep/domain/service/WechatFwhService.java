@@ -72,6 +72,7 @@ public class WechatFwhService {
      * @throws Exception
      */
     public ResultDo msgCustomSend(String accessToken, String openId, String msg) throws Exception {
+        log.info("[微信服务号]指定openid发送消息开始，openid={},msg={}。", openId, msg);
         String url = String.format(BizConstant.WECHAT_URL_MSG_CUSTOM_SEND, accessToken);
         JSONObject jsonParam = new JSONObject();
         jsonParam.put(WechatTools.PARAM_TOUSER, openId);
@@ -83,11 +84,14 @@ public class WechatFwhService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             Map<String, Object> responseMap = responseEntity.getBody();
             if (responseMap.get("errcode").toString().equals(BizConstant.WECHAT_SUCCESS_CODE)) {
+                log.info("[微信服务号]指定openid发送消息成功，openid={},msg={}。", openId, msg);
                 return ResultDo.build();
             } else {
+                log.error("[微信服务号]指定openid发送消息失败，openid={},errcode={}。", openId, responseMap.get("errcode").toString());
                 return ResultDo.build().setSuccess(false).setError(responseMap.get("errcode").toString());
             }
         }
+        log.error("[微信服务号]指定openid发送消息失败，openid={},原因={}。", openId, MessageCode.ERROR_WECHAT_HTTP_REQUEST);
         return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
@@ -111,11 +115,12 @@ public class WechatFwhService {
                 String accessToken = (String) responseMap.get(WechatTools.PARAM_ACCESSTOKEN);
                 return ResultDo.build().setResult(accessToken);
             } else {
-                log.error("[微信]调用微信接口，获取access_token失败，errcode={}，errmsg={}。", responseMap.get(WechatTools.PARAM_ERRCODE), responseMap.get(WechatTools.PARAM_ERRMSG));
+                log.error("[微信服务号]调用微信接口，获取access_token失败，errcode={}，errmsg={}。", responseMap.get(WechatTools.PARAM_ERRCODE), responseMap.get(WechatTools.PARAM_ERRMSG));
                 return ResultDo.build().setSuccess(false).setError(responseMap.get(WechatTools.PARAM_ERRCODE).toString())
                         .setErrorDescription(responseMap.get(WechatTools.PARAM_ERRMSG).toString());
             }
         }
+        log.error("[微信服务号]获取access_token失败，原因={}。", MessageCode.ERROR_WECHAT_HTTP_REQUEST);
         return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
@@ -144,6 +149,7 @@ public class WechatFwhService {
      * @return
      */
     public ResultDo menuCreate(String menuJson) {
+        log.info("[微信服务号]自定义菜单创建开始，菜单={}。", menuJson);
         ResultDo resultDoAccessToken = this.getAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
             return ResultDo.build().setSuccess(false);
@@ -152,8 +158,10 @@ public class WechatFwhService {
         String url = String.format(BizConstant.WECHAT_URL_MENU_CREATE, accessToken);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, menuJson, String.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            log.info("[微信服务号]自定义菜单创建，接口返回={}。", responseEntity.getBody());
             return ResultDo.build().setResult(responseEntity.getBody());
         }
+        log.error("[微信服务号]自定义菜单创建失败，原因={}。", MessageCode.ERROR_WECHAT_HTTP_REQUEST);
         return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
@@ -163,6 +171,7 @@ public class WechatFwhService {
      * @return
      */
     public ResultDo menuDelete() {
+        log.info("[微信服务号]自定义菜单删除开始。");
         ResultDo resultDoAccessToken = this.getAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
             return ResultDo.build().setSuccess(false);
@@ -171,8 +180,10 @@ public class WechatFwhService {
         String url = String.format(BizConstant.WECHAT_URL_MENU_DELETE, accessToken);
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            log.info("[微信服务号]自定义菜单删除，接口返回={}。", responseEntity.getBody());
             return ResultDo.build().setResult(responseEntity.getBody());
         }
+        log.error("[微信服务号]自定义菜单删除失败，原因={}。", MessageCode.ERROR_WECHAT_HTTP_REQUEST);
         return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
     }
 
@@ -210,6 +221,7 @@ public class WechatFwhService {
      * @return
      */
     public Map<String, String> receiveEventSubscribe(String openid) {
+        log.info("[微信服务号]接收事件(类型为关注),openid={}。", openid);
         Map<String, String> responseMap = Maps.newHashMap();
         responseMap.put(WechatTools.PARAM_CONTENT, "谢谢您关注小竹马！");
         responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
@@ -219,6 +231,7 @@ public class WechatFwhService {
             wechatOpenidPo.setOpenid(openid);
             wechatOpenidPo.setType(EpWechatOpenidType.fwh);
             wechatOpenidRepository.insert(wechatOpenidPo);
+            log.info("[微信服务号]接收事件(类型为关注),ep_wechat_openid表插入数据id={}", wechatOpenidPo.getId());
         }
         return responseMap;
     }
@@ -231,8 +244,10 @@ public class WechatFwhService {
      * @return
      */
     public Map<String, String> receiveEventClick(String eventKey) {
+        log.info("[微信服务号]接收事件(类型为点击),eventKey={}。", eventKey);
         Map<String, String> responseMap = Maps.newHashMap();
         if (BizConstant.WECHAT_EVENTKEY_BIND_MOBILE.equals(eventKey)) {
+            log.info("[微信服务号]接收事件(类型为点击)为点击绑定手机号,服务号回复绑定手机号提示语。");
             String content = SpringComponent.messageSource(BizConstant.WECHAT_BIND_MOBILE_TIP);
             responseMap.put(WechatTools.PARAM_CONTENT, content);
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
@@ -248,9 +263,11 @@ public class WechatFwhService {
      * @return
      */
     public Map<String, String> receiveText(String content, String openid) {
+        log.info("[微信服务号]接收文本,openid={},content={}。", openid, content);
         Map<String, String> responseMap = Maps.newHashMap();
         //非法输入多个###
         if (Pattern.matches(BizConstant.PATTERN_ILLEGAL_SPLIT, content)) {
+            log.error("[微信服务号]接收文本失败,openid={},content={}，原因=非法输入多个###。", openid, content);
             return this.defaultResponse();
         }
         String[] contentParams = content.split(BizConstant.WECHAT_TEXT_MSG_SPLIT);
@@ -258,7 +275,7 @@ public class WechatFwhService {
         if (contentParams[0].equals(BizConstant.WECHAT_TEXT_MSG_BIND_MOBILE)) {
             if (contentParams.length == BizConstant.DB_NUM_TWO) {
                 String mobile = contentParams[1];
-                return this.receiveTextMsgBindMobile(mobile);
+                return this.receiveTextMsgBindMobile(mobile, openid);
             } else {
                 return this.defaultResponse();
             }
@@ -278,12 +295,13 @@ public class WechatFwhService {
     /**
      * 接收验证码#绑定号码
      *
-     * @param moblie
+     * @param mobile
      */
     @Transactional(rollbackFor = Exception.class)
-    private Map<String, String> receiveTextMsgCaptchaMobile(String captcha, String moblie, String openid) {
+    private Map<String, String> receiveTextMsgCaptchaMobile(String captcha, String mobile, String openid) {
+        log.info("[微信服务号]接收文本验证码#绑定号码,captcha={},mobile={},openid={}。", captcha, mobile, openid);
         Map<String, String> responseMap = Maps.newHashMap();
-        EpMemberPo oldMemberPo = memberRepository.getByMobile(Long.parseLong(moblie));
+        EpMemberPo oldMemberPo = memberRepository.getByMobile(Long.parseLong(mobile));
         //判断是否已绑定
         if (oldMemberPo != null) {
             if (oldMemberPo.getStatus().equals(EpMemberStatus.normal)) {
@@ -292,11 +310,21 @@ public class WechatFwhService {
                 responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！但手机号已被冻结！");
             } else {
                 responseMap.put(WechatTools.PARAM_CONTENT, "找不到该手机号！");
+                if (oldMemberPo.getStatus().equals(EpMemberStatus.cancel)) {
+                    log.info("[微信服务号]，该手机号被平台注销，mobile={}。", mobile);
+                }
             }
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
         }
-        EpMessageCaptchaPo messageCaptchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaContent(Long.parseLong(moblie), EpMessageCaptchaCaptchaType.short_msg
+        //ep_wechat_openid表是否已有数据
+        Optional<EpWechatOpenidPo> wechatOpenidOptional = wechatOpenidRepository.getByMobileAndOpenidAndType(Long.parseLong(mobile), openid, EpWechatOpenidType.fwh);
+        if (wechatOpenidOptional.isPresent()) {
+            responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定小竹马服务号！");
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+            return responseMap;
+        }
+        EpMessageCaptchaPo messageCaptchaPo = messageCaptchaRepository.getBySourceIdAndCaptchaContent(Long.parseLong(mobile), EpMessageCaptchaCaptchaType.short_msg
                 , EpMessageCaptchaCaptchaScene.wx_bind_mobile, captcha);
         if (messageCaptchaPo != null) {
             if (!DateTools.getTimeIsAfter(messageCaptchaPo.getExpireTime(), DateTools.getCurrentDateTime())) {
@@ -304,50 +332,55 @@ public class WechatFwhService {
             } else {
                 //会员表插入数据
                 EpMemberPo epMemberPo = new EpMemberPo();
-                epMemberPo.setMobile(Long.parseLong(moblie));
+                epMemberPo.setMobile(Long.parseLong(mobile));
                 epMemberPo.setStatus(EpMemberStatus.normal);
                 memberRepository.insert(epMemberPo);
-                responseMap.put(WechatTools.PARAM_CONTENT, "您已绑定成功" + moblie + "的手机号！");
+                log.info("[微信服务号]ep_member插入数据，id={}。", epMemberPo.getId());
+                responseMap.put(WechatTools.PARAM_CONTENT, "您已绑定成功" + mobile + "的手机号！");
                 //公众号关联表更新手机号
                 EpWechatOpenidPo wechatOpenidPo = new EpWechatOpenidPo();
                 wechatOpenidPo.setOpenid(openid);
                 wechatOpenidPo.setType(EpWechatOpenidType.fwh);
-                wechatOpenidPo.setMobile(Long.parseLong(moblie));
+                wechatOpenidPo.setMobile(Long.parseLong(mobile));
                 Optional<EpWechatOpenidPo> optionalWechatOpenid = wechatOpenidRepository.getByOpenidAndType(openid, EpWechatOpenidType.fwh);
                 if (optionalWechatOpenid.isPresent()) {
                     //该微信绑定过，则公众号关联表更新手机号
-                    if (wechatOpenidRepository.updateMobileByOpenidAndType(Long.parseLong(moblie), openid, EpWechatOpenidType.fwh) == BizConstant.DB_NUM_ONE) {
-                        log.info("[微信]微信服务号更新绑定手机号成功，openid={},mobile={}。", openid, moblie);
+                    if (wechatOpenidRepository.updateMobileByOpenidAndType(Long.parseLong(mobile), openid, EpWechatOpenidType.fwh) == BizConstant.DB_NUM_ONE) {
+                        log.info("[微信服务号]微信服务号更新绑定手机号成功，openid={},mobile={}。", openid, mobile);
                     }
                 } else {
                     //该微信未绑定过，则公众号关联表插入数据
                     EpWechatOpenidPo insertWechatOpenidPo = new EpWechatOpenidPo();
                     insertWechatOpenidPo.setOpenid(openid);
                     insertWechatOpenidPo.setType(EpWechatOpenidType.fwh);
-                    insertWechatOpenidPo.setMobile(Long.parseLong(moblie));
+                    insertWechatOpenidPo.setMobile(Long.parseLong(mobile));
                     wechatOpenidRepository.insert(insertWechatOpenidPo);
-                    log.info("[微信]微信服务号绑定手机号成功，openid={},mobile={}。", openid, moblie);
+                    log.info("[微信服务号]ep_wechat_openid插入数据，id={}。", insertWechatOpenidPo.getId());
+                    log.info("[微信服务号]微信服务号绑定手机号成功，openid={},mobile={}。", openid, mobile);
                 }
             }
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
         }
+        log.error("[微信服务号]微信服务号绑定手机号失败，openid={},mobile={}。", openid, mobile);
         responseMap.put(WechatTools.PARAM_CONTENT, "绑定失败！");
         responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
 
     /**
-     * 接收绑定#号码
+     * 接收文本绑定#号码
      *
      * @param mobile
      */
-    private Map<String, String> receiveTextMsgBindMobile(String mobile) {
+    private Map<String, String> receiveTextMsgBindMobile(String mobile, String openid) {
+        log.info("[微信服务号]接收文本绑定#号码,mobile={}。", mobile);
         Map<String, String> responseMap = Maps.newHashMap();
         //判断是否为手机号
         if (!Pattern.matches(BizConstant.PATTERN_MOBILE, mobile)) {
             responseMap.put(WechatTools.PARAM_CONTENT, "找不到该手机号！");
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+            log.error("[微信服务号]接收文本绑定#号码,mobile={},原因:不是标准的手机号。", mobile);
             return responseMap;
         }
         EpMemberPo epMemberPo = memberRepository.getByMobile(Long.parseLong(mobile));
@@ -359,7 +392,17 @@ public class WechatFwhService {
                 responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！但手机号已被冻结！");
             } else {
                 responseMap.put(WechatTools.PARAM_CONTENT, "找不到该手机号！");
+                if (epMemberPo.getStatus().equals(EpMemberStatus.cancel)) {
+                    log.info("[微信服务号]，该手机号被平台注销，mobile={}。", mobile);
+                }
             }
+            responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
+            return responseMap;
+        }
+        //ep_wechat_openid表是否已有数据
+        Optional<EpWechatOpenidPo> wechatOpenidOptional = wechatOpenidRepository.getByMobileAndOpenidAndType(Long.parseLong(mobile), openid, EpWechatOpenidType.fwh);
+        if (wechatOpenidOptional.isPresent()) {
+            responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定小竹马服务号！");
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
             return responseMap;
         }
@@ -382,13 +425,13 @@ public class WechatFwhService {
         epMessageCaptchaPo.setExpireTime(DateTools.addMinuteTimestamp(DateTools.getCurrentDate(), BizConstant.CAPTCHA_SHORT_MSG_EXPIRE_MINUTE));
         //验证码表插入数据
         messageCaptchaRepository.insert(epMessageCaptchaPo);
+        log.info("[微信服务号]ep_message_captcha表插入数据，id={}。", epMessageCaptchaPo.getId());
         //微信回复
         String responseContent = String.format(SpringComponent.messageSource(BizConstant.WECHAT_CAPTCHA_BIND_MOBILE_TIP), mobile);
         responseMap.put(WechatTools.PARAM_CONTENT, responseContent);
         responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
-
 
     private Map<String, String> defaultResponse() {
         Map<String, String> responseMap = Maps.newHashMap();

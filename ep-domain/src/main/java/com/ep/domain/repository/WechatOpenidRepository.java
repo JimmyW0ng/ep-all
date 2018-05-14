@@ -40,6 +40,22 @@ public class WechatOpenidRepository extends AbstractCRUDRepository<EpWechatOpeni
     }
 
     /**
+     * 根据手机号和opanid和类型获取记录
+     *
+     * @param mobile
+     * @param type
+     * @return
+     */
+    public Optional<EpWechatOpenidPo> getByMobileAndOpenidAndType(Long mobile, String opendid, EpWechatOpenidType type) {
+        EpWechatOpenidPo data = dslContext.selectFrom(EP_WECHAT_OPENID)
+                .where(EP_WECHAT_OPENID.MOBILE.eq(mobile))
+                .and(EP_WECHAT_OPENID.OPENID.eq(opendid))
+                .and(EP_WECHAT_OPENID.TYPE.eq(type))
+                .fetchOneInto(EpWechatOpenidPo.class);
+        return Optional.ofNullable(data);
+    }
+
+    /**
      * 根据手机号和类型获取记录
      * @param mobile
      * @param type

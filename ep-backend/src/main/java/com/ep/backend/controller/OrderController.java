@@ -485,6 +485,41 @@ public class OrderController extends BackendController {
     }
 
     /**
+     * 线下支付初始化
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/offlinePaidInit/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo offlinePaidInit(@PathVariable("id") Long id) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        Map<String, Object> resultMap = Maps.newHashMap();
+        resultMap.put("currentTime", DateTools.getCurrentDate());
+        return ResultDo.build().setResult(resultMap);
+    }
+
+    /**
+     * 线下支付初始化
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/offlinePaidDo")
+    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
+    @ResponseBody
+    public ResultDo offlinePaidDo(@RequestParam(value = "id") Long id, @RequestParam(value = "payConfirmTime") Timestamp payConfirmTime) {
+        if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        return orderService.offlinePaidByOrderId(id, payConfirmTime);
+    }
+
+
+    /**
      * 校验业务对象是否属于该机构，是：返回po;否：返回null
      *
      * @param sourceId
