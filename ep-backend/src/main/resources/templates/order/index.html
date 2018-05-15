@@ -123,12 +123,12 @@
                             <td><input type="checkbox" th:value="${bo.id}"
                                        onclick="checkOrderSuccess(this)"></td>
                             <td th:text="${bo.id}"></td>
-                            <td th:text="${bo.mobile}"></td>
+                            <td name="mobile" th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
-                            <td th:text="${bo.childNickName}"></td>
+                            <td name="childNickName" th:text="${bo.childNickName}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
-                            <td th:text="${bo.className}"></td>
+                            <td name="className" th:text="${bo.className}"></td>
                             <td th:text="#{EpOrganClassType.+${bo.classType}}"></td>
                             <td th:text="#{EpOrganClassStatus.+${bo.classStatus}}"></td>
                             <td style="display: none" name="classStatus" th:text="${bo.classStatus}"></td>
@@ -139,10 +139,10 @@
                                 th:text="#{EpOrderStatusBespeak.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
                             <td>
-                                <span th:if="${!#strings.equals(bo.payStatus,'wait_pay')&& bo.payStatus!=null}"
+                                <span th:if="${bo.payStatus!=null}"
                                       th:text="#{EpOrderPayStatus.+${bo.payStatus}}"></span>
                                 <button th:if="${#strings.equals(bo.payStatus,'wait_pay')}" class="btn btn-xs btn-info"
-                                        th:onclick="'offlinePaidBox('+${bo.id}+')'">线下支付
+                                        th:onclick="'offlinePaidBox(this,'+${bo.id}+')'">线下支付
                                 </button>
                             </td>
 
@@ -165,7 +165,7 @@
                                    th:onclick="'breakInit('+${bo.id}+')'">退单</a>
                                 <button class="btn btn-xs btn-info"
                                         th:if="${bo.payStatus !=null}"
-                                        th:onclick="'wechatOrder('+${bo.id}+')'">支付订单
+                                        th:onclick="'wechatOrder('+${bo.id}+')'">支付记录
                                 </button>
                             </td>
 
@@ -308,7 +308,7 @@
                     <tr>
                         <th>商户订单号</th>
                         <th>商品描述</th>
-                        <th>标价金额（￥元）</th>
+                        <th>标价金额（元）</th>
                         <th>微信支付订单号</th>
                         <th>支付完成时间</th>
                         <th>业务结果</th>
@@ -353,7 +353,7 @@
         <td>${totalFee/100}</td>
         <td>${transactionId}</td>
         <td>${timeEnd}</td>
-        <td>${resultCode}</td>
+        <td>${notifyResultCode}</td>
 
     </tr>
 </script>
@@ -369,11 +369,24 @@
             <div class="modal-body">
                 <form class="form-horizontal m-t">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">订单id：</label><label class=" " id="offlinePaidId"></label>
+                        <label class="col-sm-3 control-label">订单id：</label><label class=" " style="padding-top: 7px;"
+                                                                                  id="offlinePaidId"></label>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">支付状态：</label>
-                        <label class=" " th:text="#{EpOrderPayStatus.+'paid'}"> </label>
+                        <label class=" " style="padding-top: 7px;" th:text="#{EpOrderPayStatus.+'paid'}"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">会员账号：</label>
+                        <label class=" " style="padding-top: 7px;" id="offlinePaidMobile"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">昵称：</label>
+                        <label class=" " style="padding-top: 7px;" id="offlinePaidChildNickName"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">班次：</label>
+                        <label class=" " style="padding-top: 7px;" id="offlinePaidClassName"> </label>
                     </div>
 
                     <div class="form-group">
@@ -719,7 +732,10 @@
             },
             success: function (data) {
                 if (data.success) {
-                    $("#wechatordersBody").html($("#wechatorderTmpl").tmpl(data.result))
+                    if (data.result) {
+                        $("#wechatordersBody").html($("#wechatorderTmpl").tmpl(data.result))
+                    }
+
                 } else {
                     toastr.error(data.errorDescription);
                 }
@@ -734,30 +750,13 @@
     }
 
     /*确认线下支付模态框*/
-    function offlinePaidBox(id) {
+    function offlinePaidBox(ele, id) {
         $("#offlinePaidId").text(id)
         $("#offlinePaidModal").modal("show")
         $("#offline_paid_pay_confirm_time").val(formatDate(new Date(), "yyyy-mm-dd HH:mm:ss"))
-//        $.ajax({
-//            type: "GET",
-//            url: "/auth/order/offlinePaidInit/" + id,
-//            beforeSend: function () {
-//                layer.load(2, {shade: [0.1, '#fff']});
-//            },
-//            success: function (data) {
-//                if (data.success) {
-//                    $("#offline_paid_pay_confirm_time").text(data.result.currentTime)
-//                } else {
-//                    toastr.error(data.errorDescription);
-//                }
-//            },
-//            error: function (XMLHttpRequest) {
-//                toastr_error_system(XMLHttpRequest.status);
-//            },
-//            complete: function () {
-//                layer.closeAll();
-//            }
-//        })
+        $("#offlinePaidMobile").text($(ele).parents("tr").eq(0).find("td[name='mobile']").eq(0).text())
+        $("#offlinePaidChildNickName").text($(ele).parents("tr").eq(0).find("td[name='childNickName']").eq(0).text())
+        $("#offlinePaidClassName").text($(ele).parents("tr").eq(0).find("td[name='className']").eq(0).text())
 
     }
     /*确认线下支付完成*/
