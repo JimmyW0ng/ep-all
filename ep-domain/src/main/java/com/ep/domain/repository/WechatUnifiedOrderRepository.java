@@ -2,6 +2,7 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
+import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
 import com.ep.domain.repository.domain.tables.records.EpWechatUnifiedOrderRecord;
 import com.google.common.collect.Lists;
@@ -167,5 +168,32 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                 .where(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(orderId))
                 .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
                 .fetchInto(EpWechatUnifiedOrderPo.class);
+    }
+
+    /**
+     * 根据orderId统一下单成功后退款bo
+     *
+     * @param orderId
+     * @return
+     */
+    public List<WechatUnifiedOrderPayRefundBo> findUnifiedOrderPayRefundBoByOrderId(Long orderId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_WECHAT_UNIFIED_ORDER.fields());
+        fieldList.add(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_ID);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_STATUS);
+        fieldList.add(EP_WECHAT_PAY_REFUND.SUCCESS_TIME);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_RECV_ACCOUT);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_ACCOUNT);
+
+        return dslContext.select(fieldList).from(EP_WECHAT_UNIFIED_ORDER)
+                .leftJoin(EP_WECHAT_PAY_REFUND)
+                .on(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO)
+                        .and(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO.isNull().or(EP_WECHAT_PAY_REFUND.REFUND_STATUS.eq("SUCCESS"))))
+                .where(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(orderId))
+                .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.eq("SUCCESS"))
+                .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
+                .and(EP_WECHAT_PAY_REFUND.DEL_FLAG.isNull().or(EP_WECHAT_PAY_REFUND.DEL_FLAG.eq(false)))
+                .fetchInto(WechatUnifiedOrderPayRefundBo.class);
     }
 }

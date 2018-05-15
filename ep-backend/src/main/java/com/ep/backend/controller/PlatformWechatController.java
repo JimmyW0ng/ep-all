@@ -1,5 +1,6 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.SerialNumberTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
@@ -232,5 +233,19 @@ public class PlatformWechatController extends BackendController {
     @ResponseBody
     public ResultDo syncUnifiedorder(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
         return wechatPayComponent.orderQuery(null, outTradeNo, true);
+    }
+
+    /**
+     * 退款申请
+     *
+     * @return
+     */
+    @GetMapping("payRefund/{outTradeNo}")
+    @ResponseBody
+    public ResultDo payRefund(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
+        EpWechatUnifiedOrderPo wechatUnifiedOrderPo = wechatUnifiedOrderService.getByOutTradeNo(outTradeNo);
+        String outRefundNo = SerialNumberTools.generateOutRefundNo(wechatUnifiedOrderPo.getOrderId());
+        return wechatPayComponent.payRefund(wechatUnifiedOrderPo.getTransactionId(), outTradeNo, outRefundNo,
+                wechatUnifiedOrderPo.getTotalFee(), wechatUnifiedOrderPo.getTotalFee());
     }
 }

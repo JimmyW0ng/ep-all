@@ -68,6 +68,10 @@ public class OrderService {
     private FileRepository fileRepository;
     @Autowired
     private WechatPayComponent wechatPayComponent;
+    @Autowired
+    private WechatUnifiedOrderService wechatUnifiedOrderService;
+    @Autowired
+    private WechatPayRefundService wechatPayRefundService;
 
     /**
      * 加载会员下单需要的数据

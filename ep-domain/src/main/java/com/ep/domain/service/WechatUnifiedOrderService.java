@@ -1,6 +1,7 @@
 package com.ep.domain.service;
 
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
+import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
 import com.ep.domain.repository.WechatUnifiedOrderRepository;
 import org.jooq.Condition;
@@ -36,5 +37,19 @@ public class WechatUnifiedOrderService {
      */
     public List<EpWechatUnifiedOrderPo> findByOrderId(Long orderId) {
         return wechatUnifiedOrderRepository.findByOrderId(orderId);
+    }
+
+    /**
+     * 根据orderId统一下单成功后退款bo
+     *
+     * @param orderId
+     * @return
+     */
+    public List<WechatUnifiedOrderPayRefundBo> findUnifiedOrderPayRefundBoByOrderId(Long orderId) {
+        return wechatUnifiedOrderRepository.findUnifiedOrderPayRefundBoByOrderId(orderId);
+    }
+
+    public EpWechatUnifiedOrderPo getByOutTradeNo(String outTradeNo) {
+        return wechatUnifiedOrderRepository.getByOutTradeNo(outTradeNo);
     }
 }
