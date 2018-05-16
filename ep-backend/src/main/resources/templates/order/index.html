@@ -67,6 +67,16 @@
                             </option>
                         </select>
                     </div>
+                    <div class="form-group ">
+                        <select class="form-control" name="payStatus" style="width:182px;">
+                            <option value>支付状态</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderPayStatus).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,searchMap.get('payStatus'))}"
+                                    th:text="#{EpOrderPayStatus.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"

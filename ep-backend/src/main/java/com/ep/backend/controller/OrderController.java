@@ -125,6 +125,7 @@ public class OrderController extends BackendController {
                         @RequestParam(value = "className", required = false) String className,
                         @RequestParam(value = "classType", required = false) String classType,
                         @RequestParam(value = "status", required = false) String status,
+                        @RequestParam(value = "payStatus", required = false) String payStatus,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
@@ -159,6 +160,10 @@ public class OrderController extends BackendController {
             conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
         }
         searchMap.put("status", status);
+        if (StringTools.isNotBlank(payStatus)) {
+            conditions.add(EP.EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.valueOf(payStatus)));
+        }
+        searchMap.put("payStatus", payStatus);
         if (null != crStartTime) {
             conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
         }
@@ -202,6 +207,7 @@ public class OrderController extends BackendController {
                                    @RequestParam(value = "className", required = false) String className,
                                    @RequestParam(value = "classType", required = false) String classType,
                                    @RequestParam(value = "status", required = false) String status,
+                                   @RequestParam(value = "payStatus", required = false) String payStatus,
                                    @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                                    @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
 
@@ -236,6 +242,10 @@ public class OrderController extends BackendController {
             conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
         }
         searchMap.put("status", status);
+        if (StringTools.isNotBlank(payStatus)) {
+            conditions.add(EP.EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.valueOf(payStatus)));
+        }
+        searchMap.put("payStatus", payStatus);
         if (null != crStartTime) {
             conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
         }

@@ -67,6 +67,16 @@
                             </option>
                         </select>
                     </div>
+                    <div class="form-group ">
+                        <select class="form-control" name="payStatus" style="width:182px;">
+                            <option value>支付状态</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderPayStatus).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,searchMap.get('payStatus'))}"
+                                    th:text="#{EpOrderPayStatus.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
                     <div class="form-group mr10">
                         <div class="input-group input-large">
                             <input type="text" class="form-control  startTime" name="crStartTime" id="crStartTime"
@@ -119,8 +129,7 @@
                         </thead>
                         <tbody id="tbody">
                         <tr th:each="bo:${page.content}">
-                            <!--<td><input type="checkbox" th:value="${bo.id}"-->
-                            <!--onclick="checkOrderSuccess(this)"></td>-->
+
                             <td th:text="${bo.id}"></td>
                             <td name="mobile" th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
@@ -145,24 +154,7 @@
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
-                                <!--<a name="success" class="btn btn-xs btn-info" style="display: none"-->
-                                <!--th:onclick="'orderSuccess(this,'+${bo.id}+','+${bo.classId}+')'">报名成功</a>-->
-                                <!--<a name="refuse" class="btn btn-xs btn-danger" style="display: none"-->
-                                <!--href="javascript:void(0)"-->
-                                <!--th:onclick="'refuseBox('+${bo.id}+')'">拒绝</a>-->
-                                <!--<a name="cancel" class="btn btn-xs btn-info" style="display: none"-->
-                                <!--th:value="${bo.status}"-->
-                                <!--th:onclick="'orderCancelBox(this,'+${bo.id}+')'">取消</a>-->
-                                <!--<a name="bespeak" class="btn btn-xs btn-info" style="display: none"-->
-                                <!--th:if="${#strings.equals(bo.classType,'bespeak')}"-->
-                                <!--th:onclick="'bespeakBox('+${bo.id}+')'">提交预约</a>-->
-                                <!--<a name="break" class="btn btn-xs btn-danger" href="javascript:void(0)"-->
-                                <!--style="display: none"-->
-                                <!--th:onclick="'breakInit('+${bo.id}+')'">退单</a>-->
-                                <!--<button class="btn btn-xs btn-info"-->
-                                <!--th:if="${bo.payStatus !=null}"-->
-                                <!--th:onclick="'wechatOrder('+${bo.id}+')'">支付记录-->
-                                <!--</button>-->
+
                                 <button class="btn btn-xs btn-info" th:if="${#strings.equals(bo.payStatus,'paid')}"
                                         th:onclick="'orderRefundApplyBox('+${bo.id}+')'">申请退款
                                 </button>
@@ -252,7 +244,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="refuseDo()">保存</button>
             </div>
 
         </div>
