@@ -32,41 +32,6 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     private static final long serialVersionUID = -807913376;
 
     /**
-     * Create a detached EpTokenRecord
-     */
-    public EpTokenRecord() {
-        super(EpToken.EP_TOKEN);
-    }
-
-    /**
-     * Create a detached, initialised EpTokenRecord
-     */
-    public EpTokenRecord(Long id, Long mobile, EpTokenType type, String role, String lastAccessIp, Long ognId, Timestamp expireTime, String code, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpToken.EP_TOKEN);
-
-        set(0, id);
-        set(1, mobile);
-        set(2, type);
-        set(3, role);
-        set(4, lastAccessIp);
-        set(5, ognId);
-        set(6, expireTime);
-        set(7, code);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_token.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_token.id</code>. 主键
      */
     public EpTokenRecord setId(Long value) {
@@ -75,10 +40,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.mobile</code>. 手机号
+     * Getter for <code>ep.ep_token.id</code>. 主键
      */
-    public Long getMobile() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -90,10 +55,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.type</code>. 类型：会员；机构账户
+     * Getter for <code>ep.ep_token.mobile</code>. 手机号
      */
-    public EpTokenType getType() {
-        return (EpTokenType) get(2);
+    public Long getMobile() {
+        return (Long) get(1);
     }
 
     /**
@@ -105,10 +70,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.role</code>. 角色
+     * Getter for <code>ep.ep_token.type</code>. 类型：会员；机构账户
      */
-    public String getRole() {
-        return (String) get(3);
+    public EpTokenType getType() {
+        return (EpTokenType) get(2);
     }
 
     /**
@@ -120,10 +85,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.last_access_ip</code>. 最近一次的访问ip
+     * Getter for <code>ep.ep_token.role</code>. 角色
      */
-    public String getLastAccessIp() {
-        return (String) get(4);
+    public String getRole() {
+        return (String) get(3);
     }
 
     /**
@@ -135,10 +100,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_token.last_access_ip</code>. 最近一次的访问ip
      */
-    public Long getOgnId() {
-        return (Long) get(5);
+    public String getLastAccessIp() {
+        return (String) get(4);
     }
 
     /**
@@ -150,10 +115,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.expire_time</code>. 过期时间
+     * Getter for <code>ep.ep_token.ogn_id</code>. 机构id
      */
-    public Timestamp getExpireTime() {
-        return (Timestamp) get(6);
+    public Long getOgnId() {
+        return (Long) get(5);
     }
 
     /**
@@ -165,10 +130,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.code</code>. token串
+     * Getter for <code>ep.ep_token.expire_time</code>. 过期时间
      */
-    public String getCode() {
-        return (String) get(7);
+    public Timestamp getExpireTime() {
+        return (Timestamp) get(6);
     }
 
     /**
@@ -180,10 +145,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_token.code</code>. token串
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(8);
+    public String getCode() {
+        return (String) get(7);
     }
 
     /**
@@ -195,10 +160,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_token.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(9);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -210,10 +175,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.remark</code>. 备注
+     * Getter for <code>ep.ep_token.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(10);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -225,10 +190,10 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
-     * Getter for <code>ep.ep_token.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_token.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(11);
+    public String getRemark() {
+        return (String) get(10);
     }
 
     /**
@@ -239,20 +204,12 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_token.version</code>.
+     * Getter for <code>ep.ep_token.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(12);
+    public Boolean getDelFlag() {
+        return (Boolean) get(11);
     }
-
-    // -------------------------------------------------------------------------
-    // Record13 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_token.version</code>.
@@ -263,12 +220,27 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
     }
 
     /**
+     * Getter for <code>ep.ep_token.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(12);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record13 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -602,10 +574,6 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -634,5 +602,37 @@ public class EpTokenRecord extends UpdatableRecordImpl<EpTokenRecord> implements
         value12(value12);
         value13(value13);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpTokenRecord
+     */
+    public EpTokenRecord() {
+        super(EpToken.EP_TOKEN);
+    }
+
+    /**
+     * Create a detached, initialised EpTokenRecord
+     */
+    public EpTokenRecord(Long id, Long mobile, EpTokenType type, String role, String lastAccessIp, Long ognId, Timestamp expireTime, String code, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpToken.EP_TOKEN);
+
+        set(0, id);
+        set(1, mobile);
+        set(2, type);
+        set(3, role);
+        set(4, lastAccessIp);
+        set(5, ognId);
+        set(6, expireTime);
+        set(7, code);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 }

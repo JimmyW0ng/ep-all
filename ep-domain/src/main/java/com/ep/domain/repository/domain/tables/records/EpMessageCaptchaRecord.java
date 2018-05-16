@@ -33,42 +33,6 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     private static final long serialVersionUID = -1215828157;
 
     /**
-     * Create a detached EpMessageCaptchaRecord
-     */
-    public EpMessageCaptchaRecord() {
-        super(EpMessageCaptcha.EP_MESSAGE_CAPTCHA);
-    }
-
-    /**
-     * Create a detached, initialised EpMessageCaptchaRecord
-     */
-    public EpMessageCaptchaRecord(Long id, EpMessageCaptchaCaptchaType captchaType, Long sourceId, String captchaCode, String captchaContent, EpMessageCaptchaCaptchaScene captchaScene, String channelScene, Timestamp expireTime, String ip, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpMessageCaptcha.EP_MESSAGE_CAPTCHA);
-
-        set(0, id);
-        set(1, captchaType);
-        set(2, sourceId);
-        set(3, captchaCode);
-        set(4, captchaContent);
-        set(5, captchaScene);
-        set(6, channelScene);
-        set(7, expireTime);
-        set(8, ip);
-        set(9, createAt);
-        set(10, updateAt);
-        set(11, remark);
-        set(12, delFlag);
-        set(13, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_message_captcha.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_message_captcha.id</code>. 主键
      */
     public EpMessageCaptchaRecord setId(Long value) {
@@ -77,10 +41,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
+     * Getter for <code>ep.ep_message_captcha.id</code>. 主键
      */
-    public EpMessageCaptchaCaptchaType getCaptchaType() {
-        return (EpMessageCaptchaCaptchaType) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -92,10 +56,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.source_id</code>. 业务id
+     * Getter for <code>ep.ep_message_captcha.captcha_type</code>. 类型：短信
      */
-    public Long getSourceId() {
-        return (Long) get(2);
+    public EpMessageCaptchaCaptchaType getCaptchaType() {
+        return (EpMessageCaptchaCaptchaType) get(1);
     }
 
     /**
@@ -107,10 +71,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_code</code>. 业务编码
+     * Getter for <code>ep.ep_message_captcha.source_id</code>. 业务id
      */
-    public String getCaptchaCode() {
-        return (String) get(3);
+    public Long getSourceId() {
+        return (Long) get(2);
     }
 
     /**
@@ -122,10 +86,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_content</code>. 验证码内容
+     * Getter for <code>ep.ep_message_captcha.captcha_code</code>. 业务编码
      */
-    public String getCaptchaContent() {
-        return (String) get(4);
+    public String getCaptchaCode() {
+        return (String) get(3);
     }
 
     /**
@@ -137,10 +101,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录，微信绑定手机号
+     * Getter for <code>ep.ep_message_captcha.captcha_content</code>. 验证码内容
      */
-    public EpMessageCaptchaCaptchaScene getCaptchaScene() {
-        return (EpMessageCaptchaCaptchaScene) get(5);
+    public String getCaptchaContent() {
+        return (String) get(4);
     }
 
     /**
@@ -152,10 +116,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.channel_scene</code>. 渠道场景
+     * Getter for <code>ep.ep_message_captcha.captcha_scene</code>. 验证场景：客户端登录，机构端登录，微信绑定手机号
      */
-    public String getChannelScene() {
-        return (String) get(6);
+    public EpMessageCaptchaCaptchaScene getCaptchaScene() {
+        return (EpMessageCaptchaCaptchaScene) get(5);
     }
 
     /**
@@ -167,10 +131,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.expire_time</code>. 过期时间
+     * Getter for <code>ep.ep_message_captcha.channel_scene</code>. 渠道场景
      */
-    public Timestamp getExpireTime() {
-        return (Timestamp) get(7);
+    public String getChannelScene() {
+        return (String) get(6);
     }
 
     /**
@@ -182,10 +146,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.ip</code>. 访问ip
+     * Getter for <code>ep.ep_message_captcha.expire_time</code>. 过期时间
      */
-    public String getIp() {
-        return (String) get(8);
+    public Timestamp getExpireTime() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -197,10 +161,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_message_captcha.ip</code>. 访问ip
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public String getIp() {
+        return (String) get(8);
     }
 
     /**
@@ -212,10 +176,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_message_captcha.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -227,10 +191,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.remark</code>. 备注
+     * Getter for <code>ep.ep_message_captcha.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(11);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -242,10 +206,10 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
-     * Getter for <code>ep.ep_message_captcha.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_message_captcha.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public String getRemark() {
+        return (String) get(11);
     }
 
     /**
@@ -256,20 +220,12 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_message_captcha.version</code>.
+     * Getter for <code>ep.ep_message_captcha.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(13);
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
-
-    // -------------------------------------------------------------------------
-    // Record14 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_message_captcha.version</code>.
@@ -280,12 +236,27 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
     }
 
     /**
+     * Getter for <code>ep.ep_message_captcha.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(13);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record14 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -644,10 +615,6 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -677,5 +644,38 @@ public class EpMessageCaptchaRecord extends UpdatableRecordImpl<EpMessageCaptcha
         value13(value13);
         value14(value14);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpMessageCaptchaRecord
+     */
+    public EpMessageCaptchaRecord() {
+        super(EpMessageCaptcha.EP_MESSAGE_CAPTCHA);
+    }
+
+    /**
+     * Create a detached, initialised EpMessageCaptchaRecord
+     */
+    public EpMessageCaptchaRecord(Long id, EpMessageCaptchaCaptchaType captchaType, Long sourceId, String captchaCode, String captchaContent, EpMessageCaptchaCaptchaScene captchaScene, String channelScene, Timestamp expireTime, String ip, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpMessageCaptcha.EP_MESSAGE_CAPTCHA);
+
+        set(0, id);
+        set(1, captchaType);
+        set(2, sourceId);
+        set(3, captchaCode);
+        set(4, captchaContent);
+        set(5, captchaScene);
+        set(6, channelScene);
+        set(7, expireTime);
+        set(8, ip);
+        set(9, createAt);
+        set(10, updateAt);
+        set(11, remark);
+        set(12, delFlag);
+        set(13, version);
     }
 }

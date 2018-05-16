@@ -30,55 +30,81 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpOrderRefund extends TableImpl<EpOrderRefundRecord> {
 
+    private static final long serialVersionUID = 785555879;
+
     /**
      * The reference instance of <code>ep.ep_order_refund</code>
      */
     public static final EpOrderRefund EP_ORDER_REFUND = new EpOrderRefund();
-    private static final long serialVersionUID = 2032161174;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpOrderRefundRecord> getRecordType() {
+        return EpOrderRefundRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_order_refund.id</code>. 主键
      */
     public final TableField<EpOrderRefundRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_order_refund.ogn_id</code>. 机构id
      */
     public final TableField<EpOrderRefundRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "机构id");
+
     /**
      * The column <code>ep.ep_order_refund.order_id</code>. 订单id
      */
     public final TableField<EpOrderRefundRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "订单id");
+
+    /**
+     * The column <code>ep.ep_order_refund.out_trade_no</code>. 商户订单号
+     */
+    public final TableField<EpOrderRefundRecord, String> OUT_TRADE_NO = createField("out_trade_no", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "商户订单号");
+
     /**
      * The column <code>ep.ep_order_refund.refund_reason</code>. 退单原因
      */
     public final TableField<EpOrderRefundRecord, String> REFUND_REASON = createField("refund_reason", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "退单原因");
+
     /**
      * The column <code>ep.ep_order_refund.status</code>. 状态：已保存；成功；失败；拒绝；撤销；
      */
     public final TableField<EpOrderRefundRecord, EpOrderRefundStatus> STATUS = createField("status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderRefundStatus.class), this, "状态：已保存；成功；失败；拒绝；撤销；");
+
     /**
      * The column <code>ep.ep_order_refund.apply_id</code>. 申请人员
      */
     public final TableField<EpOrderRefundRecord, Long> APPLY_ID = createField("apply_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "申请人员");
+
     /**
      * The column <code>ep.ep_order_refund.operate_id</code>. 操作人员
      */
     public final TableField<EpOrderRefundRecord, Long> OPERATE_ID = createField("operate_id", org.jooq.impl.SQLDataType.BIGINT, this, "操作人员");
+
     /**
      * The column <code>ep.ep_order_refund.create_at</code>. 创建时间
      */
     public final TableField<EpOrderRefundRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_order_refund.update_at</code>. 更新时间
      */
     public final TableField<EpOrderRefundRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_order_refund.remark</code>. 备注
      */
     public final TableField<EpOrderRefundRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_order_refund.del_flag</code>. 删除标记
      */
     public final TableField<EpOrderRefundRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_order_refund.version</code>.
      */
@@ -104,14 +130,6 @@ public class EpOrderRefund extends TableImpl<EpOrderRefundRecord> {
 
     private EpOrderRefund(String alias, Table<EpOrderRefundRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "订单退款申请表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpOrderRefundRecord> getRecordType() {
-        return EpOrderRefundRecord.class;
     }
 
     /**

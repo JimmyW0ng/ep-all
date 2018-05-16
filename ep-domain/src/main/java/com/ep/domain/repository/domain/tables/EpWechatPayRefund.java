@@ -29,111 +29,146 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
 
+    private static final long serialVersionUID = -2056888632;
+
     /**
      * The reference instance of <code>ep.ep_wechat_pay_refund</code>
      */
     public static final EpWechatPayRefund EP_WECHAT_PAY_REFUND = new EpWechatPayRefund();
-    private static final long serialVersionUID = -2101091978;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpWechatPayRefundRecord> getRecordType() {
+        return EpWechatPayRefundRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.id</code>. 主键
      */
     public final TableField<EpWechatPayRefundRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.appid</code>. appid
      */
     public final TableField<EpWechatPayRefundRecord, String> APPID = createField("appid", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "appid");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.mch_id</code>. 商户号
      */
     public final TableField<EpWechatPayRefundRecord, String> MCH_ID = createField("mch_id", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "商户号");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.out_trade_no</code>. 商户订单号
      */
     public final TableField<EpWechatPayRefundRecord, String> OUT_TRADE_NO = createField("out_trade_no", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "商户订单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.transaction_id</code>. 微信订单号
      */
     public final TableField<EpWechatPayRefundRecord, String> TRANSACTION_ID = createField("transaction_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "微信订单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.out_refund_no</code>. 商户退款单号
      */
     public final TableField<EpWechatPayRefundRecord, String> OUT_REFUND_NO = createField("out_refund_no", org.jooq.impl.SQLDataType.VARCHAR.length(64).nullable(false), this, "商户退款单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.total_fee</code>. 订单金额
      */
     public final TableField<EpWechatPayRefundRecord, Integer> TOTAL_FEE = createField("total_fee", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "订单金额");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.refund_fee</code>. 退款金额
      */
     public final TableField<EpWechatPayRefundRecord, Integer> REFUND_FEE = createField("refund_fee", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "退款金额");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.refund_desc</code>. 退款原因
      */
     public final TableField<EpWechatPayRefundRecord, String> REFUND_DESC = createField("refund_desc", org.jooq.impl.SQLDataType.VARCHAR.length(80), this, "退款原因");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.return_code</code>. 返回状态码
      */
     public final TableField<EpWechatPayRefundRecord, String> RETURN_CODE = createField("return_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "返回状态码");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.return_msg</code>. 返回信息
      */
     public final TableField<EpWechatPayRefundRecord, String> RETURN_MSG = createField("return_msg", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "返回信息");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.result_code</code>. 业务结果
      */
     public final TableField<EpWechatPayRefundRecord, String> RESULT_CODE = createField("result_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "业务结果");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.err_code</code>. 错误代码
      */
     public final TableField<EpWechatPayRefundRecord, String> ERR_CODE = createField("err_code", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "错误代码");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.err_code_des</code>. 错误代码描述
      */
     public final TableField<EpWechatPayRefundRecord, String> ERR_CODE_DES = createField("err_code_des", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "错误代码描述");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.refund_id</code>. 微信退款单号
      */
     public final TableField<EpWechatPayRefundRecord, String> REFUND_ID = createField("refund_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "微信退款单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.notify_return_code</code>. 通知返回状态码
      */
     public final TableField<EpWechatPayRefundRecord, String> NOTIFY_RETURN_CODE = createField("notify_return_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "通知返回状态码");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.notify_return_msg</code>. 返回信息
      */
     public final TableField<EpWechatPayRefundRecord, String> NOTIFY_RETURN_MSG = createField("notify_return_msg", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "返回信息");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.refund_status</code>.
      */
     public final TableField<EpWechatPayRefundRecord, String> REFUND_STATUS = createField("refund_status", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.success_time</code>. 退款成功时间
      */
     public final TableField<EpWechatPayRefundRecord, String> SUCCESS_TIME = createField("success_time", org.jooq.impl.SQLDataType.VARCHAR.length(20), this, "退款成功时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.refund_recv_accout</code>. 退款入账账户
      */
     public final TableField<EpWechatPayRefundRecord, String> REFUND_RECV_ACCOUT = createField("refund_recv_accout", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "退款入账账户");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.refund_account</code>. 退款资金来源
      */
     public final TableField<EpWechatPayRefundRecord, String> REFUND_ACCOUNT = createField("refund_account", org.jooq.impl.SQLDataType.VARCHAR.length(30), this, "退款资金来源");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.create_at</code>. 创建时间
      */
     public final TableField<EpWechatPayRefundRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.update_at</code>. 更新时间
      */
     public final TableField<EpWechatPayRefundRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.remark</code>. 备注
      */
     public final TableField<EpWechatPayRefundRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.del_flag</code>. 删除标记
      */
     public final TableField<EpWechatPayRefundRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_wechat_pay_refund.version</code>.
      */
@@ -159,14 +194,6 @@ public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
 
     private EpWechatPayRefund(String alias, Table<EpWechatPayRefundRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "微信支付退单表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpWechatPayRefundRecord> getRecordType() {
-        return EpWechatPayRefundRecord.class;
     }
 
     /**
@@ -198,7 +225,7 @@ public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
      */
     @Override
     public List<UniqueKey<EpWechatPayRefundRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpWechatPayRefundRecord>>asList(Keys.KEY_EP_WECHAT_PAY_REFUND_PRIMARY);
+        return Arrays.<UniqueKey<EpWechatPayRefundRecord>>asList(Keys.KEY_EP_WECHAT_PAY_REFUND_PRIMARY, Keys.KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO);
     }
 
     /**
