@@ -33,7 +33,7 @@ public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
      * The reference instance of <code>ep.ep_wechat_pay_refund</code>
      */
     public static final EpWechatPayRefund EP_WECHAT_PAY_REFUND = new EpWechatPayRefund();
-    private static final long serialVersionUID = -2056888632;
+    private static final long serialVersionUID = 421179648;
     /**
      * The column <code>ep.ep_wechat_pay_refund.id</code>. 主键
      */
@@ -106,6 +106,14 @@ public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
      * The column <code>ep.ep_wechat_pay_refund.refund_status</code>.
      */
     public final TableField<EpWechatPayRefundRecord, String> REFUND_STATUS = createField("refund_status", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "");
+    /**
+     * The column <code>ep.ep_wechat_pay_refund.settlement_total_fee</code>. 应结订单金额
+     */
+    public final TableField<EpWechatPayRefundRecord, Integer> SETTLEMENT_TOTAL_FEE = createField("settlement_total_fee", org.jooq.impl.SQLDataType.INTEGER, this, "应结订单金额");
+    /**
+     * The column <code>ep.ep_wechat_pay_refund.settlement_refund_fee</code>. 退款金额
+     */
+    public final TableField<EpWechatPayRefundRecord, Integer> SETTLEMENT_REFUND_FEE = createField("settlement_refund_fee", org.jooq.impl.SQLDataType.INTEGER, this, "退款金额");
     /**
      * The column <code>ep.ep_wechat_pay_refund.success_time</code>. 退款成功时间
      */

@@ -773,5 +773,18 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
     }
+
+    /**
+     * 支付退单成功
+     *
+     * @param orderId
+     */
+    public int orderRefundFinishedById(Long orderId) {
+        return dslContext.update(EP_ORDER)
+                         .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.refund_finish)
+                         .where(EP_ORDER.ID.eq(orderId))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
+    }
 }
 

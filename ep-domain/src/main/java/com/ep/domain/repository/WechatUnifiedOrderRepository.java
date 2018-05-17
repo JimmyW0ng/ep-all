@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
@@ -30,6 +31,19 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
     @Autowired
     public WechatUnifiedOrderRepository(DSLContext dslContext) {
         super(dslContext, EP_WECHAT_UNIFIED_ORDER, EP_WECHAT_UNIFIED_ORDER.ID, EpWechatUnifiedOrderPo.class);
+    }
+
+    /**
+     * 根据商户订单号获取数据
+     *
+     * @param outTradeNo
+     * @return
+     */
+    public EpWechatUnifiedOrderPo findByOutTradeNo(String outTradeNo) {
+        return dslContext.selectFrom(EP_WECHAT_UNIFIED_ORDER)
+                         .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
+                         .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
+                         .fetchOneInto(EpWechatUnifiedOrderPo.class);
     }
 
     /**
@@ -197,5 +211,17 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                 .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_REFUND.DEL_FLAG.isNull().or(EP_WECHAT_PAY_REFUND.DEL_FLAG.eq(false)))
                 .fetchInto(WechatUnifiedOrderPayRefundBo.class);
+    }
+
+    /**
+     * 更新退单状态
+     *
+     * @param outTradeNo
+     */
+    public int refundByOutTradeNo(String outTradeNo) {
+        return dslContext.update(EP_WECHAT_UNIFIED_ORDER)
+                         .set(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE, WechatTools.TRADE_STATE_REFUND)
+                         .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
+                         .execute();
     }
 }

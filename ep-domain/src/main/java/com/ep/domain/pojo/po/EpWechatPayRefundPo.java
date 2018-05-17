@@ -38,6 +38,8 @@ public class EpWechatPayRefundPo extends AbstractBasePojo {
     private String notifyReturnCode;
     private String notifyReturnMsg;
     private String refundStatus;
+    private Integer settlementTotalFee;
+    private Integer settlementRefundFee;
     private String successTime;
     private String refundRecvAccout;
     private String refundAccount;

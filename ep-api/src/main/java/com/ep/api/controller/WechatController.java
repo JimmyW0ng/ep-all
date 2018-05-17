@@ -140,4 +140,28 @@ public class WechatController extends ApiController {
         return WechatTools.mapToXml(result);
     }
 
+    /**
+     * 微信支付退单通知接口
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/pay/refund/notify", method = {RequestMethod.GET, RequestMethod.POST})
+    public String wechatPayRefundNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, String> respMap = WechatTools.xmlToMap(request);
+        log.info("【微信支付退单】notify通知开始, encoding: {}, 返回数据: {}", request.getCharacterEncoding(), respMap);
+        ResultDo resultDo = wechatPayComponent.handlePayRefundNotify(respMap);
+        log.info("【微信支付退单】notify通知完成！");
+        Map<String, String> result = Maps.newHashMap();
+        if (resultDo.isError()) {
+            result.put(WechatTools.RETURN_CODE, WechatTools.FAIL);
+            result.put(WechatTools.RETURN_MSG, resultDo.getErrorDescription());
+            return WechatTools.mapToXml(result);
+        }
+        result.put(WechatTools.RETURN_CODE, WechatTools.SUCCESS);
+        result.put(WechatTools.RETURN_MSG, WechatTools.RETURN_OK);
+        return WechatTools.mapToXml(result);
+    }
+
 }

@@ -67,4 +67,11 @@ public class WechatPayController extends ApiController {
         return orderService.prePayByWechatPay(memberId, sessionBo.getOpenid(), orderId, IpTools.getIpAddr(request));
     }
 
+//    @ApiOperation(value = "退单")
+//    @PostMapping("/refund")
+//    public ResultDo refund(@RequestParam("outTradeNo") String outTradeNo) throws Exception {
+//        log.info("【微信支付退单】开始, outTradeNo={}", outTradeNo);
+//        return wechatPayComponent.xcxPayRefund(outTradeNo);
+//    }
+
 }

@@ -2,14 +2,17 @@ package com.ep.common.tool.wechat;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Base64Utils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.crypto.Cipher;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.security.MessageDigest;
+import java.security.Security;
 import java.util.*;
 
 /**
@@ -51,6 +55,9 @@ public class WechatTools {
     public static final String TRADE_STATE_REVOKED = "REVOKED";
     public static final String TRADE_STATE_USERPAYING = "USERPAYING";
     public static final String TRADE_STATE_PAYERROR = "PAYERROR";
+    public static final String REFUND_STATUS_SUCCESS = "SUCCESS";
+    public static final String REFUND_STATUS_CHANGE = "CHANGE";
+    public static final String REFUND_STATUS_REFUNDCLOSE = "REFUNDCLOSE";
     /**
      * 参数
      */
@@ -83,6 +90,19 @@ public class WechatTools {
     public static final String EVENT_UNSUB = "unsubscribe";
     public static final String EVENT_CLICK = "CLICK";
     public static final String EVENT_VIEW = "VIEW";
+
+    /**
+     * 加解密算法/工作模式/填充方式
+     */
+    private static final String ALGORITHM_MODE_PADDING = "AES/ECB/PKCS7Padding";
+    /**
+     * 密钥算法
+     */
+    private static final String ALGORITHM = "AES";
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
 
     /**
      * xml转为map
@@ -400,6 +420,21 @@ public class WechatTools {
      */
     public static String generateUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 32);
+    }
+
+    /**
+     * AES解密
+     *
+     * @param base64Data
+     * @return
+     * @throws Exception
+     */
+    public static String decryptData(String base64Data, String key) throws Exception {
+        Security.addProvider(new BouncyCastleProvider());
+        SecretKeySpec keySpec = new SecretKeySpec(MD5(key).toLowerCase().getBytes(), ALGORITHM);
+        Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING, "BC");
+        cipher.init(Cipher.DECRYPT_MODE, keySpec);
+        return new String(cipher.doFinal(Base64Utils.decodeFromString(base64Data)));
     }
 
     public enum SignType {

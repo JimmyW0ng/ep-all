@@ -32,11 +32,27 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     private static final long serialVersionUID = 337866618;
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.id</code>.
+     * Create a detached EpWechatOpenidRecord
      */
-    public EpWechatOpenidRecord setId(Long value) {
-        set(0, value);
-        return this;
+    public EpWechatOpenidRecord() {
+        super(EpWechatOpenid.EP_WECHAT_OPENID);
+    }
+
+    /**
+     * Create a detached, initialised EpWechatOpenidRecord
+     */
+    public EpWechatOpenidRecord(Long id, String openid, EpWechatOpenidType type, Long mobile, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpWechatOpenid.EP_WECHAT_OPENID);
+
+        set(0, id);
+        set(1, openid);
+        set(2, type);
+        set(3, mobile);
+        set(4, createAt);
+        set(5, updateAt);
+        set(6, remark);
+        set(7, delFlag);
+        set(8, version);
     }
 
     /**
@@ -47,10 +63,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.openid</code>. 微信公众号号内，用户openid
+     * Setter for <code>ep.ep_wechat_openid.id</code>.
      */
-    public EpWechatOpenidRecord setOpenid(String value) {
-        set(1, value);
+    public EpWechatOpenidRecord setId(Long value) {
+        set(0, value);
         return this;
     }
 
@@ -62,10 +78,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.type</code>. 微信公众号类型:服务号
+     * Setter for <code>ep.ep_wechat_openid.openid</code>. 微信公众号号内，用户openid
      */
-    public EpWechatOpenidRecord setType(EpWechatOpenidType value) {
-        set(2, value);
+    public EpWechatOpenidRecord setOpenid(String value) {
+        set(1, value);
         return this;
     }
 
@@ -77,10 +93,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.mobile</code>. 手机号
+     * Setter for <code>ep.ep_wechat_openid.type</code>. 微信公众号类型:服务号
      */
-    public EpWechatOpenidRecord setMobile(Long value) {
-        set(3, value);
+    public EpWechatOpenidRecord setType(EpWechatOpenidType value) {
+        set(2, value);
         return this;
     }
 
@@ -92,10 +108,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.create_at</code>. 创建时间
+     * Setter for <code>ep.ep_wechat_openid.mobile</code>. 手机号
      */
-    public EpWechatOpenidRecord setCreateAt(Timestamp value) {
-        set(4, value);
+    public EpWechatOpenidRecord setMobile(Long value) {
+        set(3, value);
         return this;
     }
 
@@ -107,10 +123,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.update_at</code>. 更新时间
+     * Setter for <code>ep.ep_wechat_openid.create_at</code>. 创建时间
      */
-    public EpWechatOpenidRecord setUpdateAt(Timestamp value) {
-        set(5, value);
+    public EpWechatOpenidRecord setCreateAt(Timestamp value) {
+        set(4, value);
         return this;
     }
 
@@ -122,10 +138,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.remark</code>. 备注
+     * Setter for <code>ep.ep_wechat_openid.update_at</code>. 更新时间
      */
-    public EpWechatOpenidRecord setRemark(String value) {
-        set(6, value);
+    public EpWechatOpenidRecord setUpdateAt(Timestamp value) {
+        set(5, value);
         return this;
     }
 
@@ -137,10 +153,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.del_flag</code>. 删除标记
+     * Setter for <code>ep.ep_wechat_openid.remark</code>. 备注
      */
-    public EpWechatOpenidRecord setDelFlag(Boolean value) {
-        set(7, value);
+    public EpWechatOpenidRecord setRemark(String value) {
+        set(6, value);
         return this;
     }
 
@@ -152,12 +168,16 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     /**
-     * Setter for <code>ep.ep_wechat_openid.version</code>. 版本
+     * Setter for <code>ep.ep_wechat_openid.del_flag</code>. 删除标记
      */
-    public EpWechatOpenidRecord setVersion(Long value) {
-        set(8, value);
+    public EpWechatOpenidRecord setDelFlag(Boolean value) {
+        set(7, value);
         return this;
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>ep.ep_wechat_openid.version</code>. 版本
@@ -167,8 +187,16 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     }
 
     // -------------------------------------------------------------------------
-    // Primary key information
+    // Record9 type implementation
     // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>ep.ep_wechat_openid.version</code>. 版本
+     */
+    public EpWechatOpenidRecord setVersion(Long value) {
+        set(8, value);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -177,10 +205,6 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
     public Record1<Long> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -414,6 +438,10 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     /**
      * {@inheritDoc}
      */
@@ -438,33 +466,5 @@ public class EpWechatOpenidRecord extends UpdatableRecordImpl<EpWechatOpenidReco
         value8(value8);
         value9(value9);
         return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached EpWechatOpenidRecord
-     */
-    public EpWechatOpenidRecord() {
-        super(EpWechatOpenid.EP_WECHAT_OPENID);
-    }
-
-    /**
-     * Create a detached, initialised EpWechatOpenidRecord
-     */
-    public EpWechatOpenidRecord(Long id, String openid, EpWechatOpenidType type, Long mobile, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpWechatOpenid.EP_WECHAT_OPENID);
-
-        set(0, id);
-        set(1, openid);
-        set(2, type);
-        set(3, mobile);
-        set(4, createAt);
-        set(5, updateAt);
-        set(6, remark);
-        set(7, delFlag);
-        set(8, version);
     }
 }

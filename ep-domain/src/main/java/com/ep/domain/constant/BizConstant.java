@@ -223,7 +223,8 @@ public class BizConstant {
     /**
      * 微信支付
      */
-    public static String WECHAT_PAY_ORDER = "XCXPAY";
-    public static String WECHAT_PAY_BODY = "服务";
+    public static String WECHAT_PAY_BODY = "小竹马-订单编号";
+    public static String WECHAT_PAY_NOTIFY_REMARK = "notify通知接收成功";
+    public static String WECHAT_PAY_QUERY_REMARK = "订单查询接收成功";
 
 }

@@ -29,171 +29,131 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatUnifiedOrder extends TableImpl<EpWechatUnifiedOrderRecord> {
 
-    private static final long serialVersionUID = -1654607948;
-
     /**
      * The reference instance of <code>ep.ep_wechat_unified_order</code>
      */
     public static final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = new EpWechatUnifiedOrder();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpWechatUnifiedOrderRecord> getRecordType() {
-        return EpWechatUnifiedOrderRecord.class;
-    }
-
+    private static final long serialVersionUID = -1654607948;
     /**
      * The column <code>ep.ep_wechat_unified_order.id</code>. 主键
      */
     public final TableField<EpWechatUnifiedOrderRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.order_id</code>. 订单id
      */
     public final TableField<EpWechatUnifiedOrderRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "订单id");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.appid</code>. appid
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> APPID = createField("appid", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "appid");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.mch_id</code>. 商户号
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> MCH_ID = createField("mch_id", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "商户号");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.out_trade_no</code>. 商户订单号
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> OUT_TRADE_NO = createField("out_trade_no", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "商户订单号");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.body</code>. 商品描述
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> BODY = createField("body", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "商品描述");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.total_fee</code>. 标价金额，单位为分
      */
     public final TableField<EpWechatUnifiedOrderRecord, Integer> TOTAL_FEE = createField("total_fee", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "标价金额，单位为分");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.spbill_create_ip</code>. 终端IP
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> SPBILL_CREATE_IP = createField("spbill_create_ip", org.jooq.impl.SQLDataType.VARCHAR.length(16).nullable(false), this, "终端IP");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.trade_type</code>. 交易类型
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> TRADE_TYPE = createField("trade_type", org.jooq.impl.SQLDataType.VARCHAR.length(16).nullable(false), this, "交易类型");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.trade_state</code>. 交易状态：SUCCESS; REFUND; NOTPAY; CLOSED; REVOKED; USERPAYING; PAYERROR
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> TRADE_STATE = createField("trade_state", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "交易状态：SUCCESS; REFUND; NOTPAY; CLOSED; REVOKED; USERPAYING; PAYERROR");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.return_code</code>. 接口返回结果
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> RETURN_CODE = createField("return_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "接口返回结果");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.return_msg</code>. 接口返回信息
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> RETURN_MSG = createField("return_msg", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "接口返回信息");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.result_code</code>. 业务结果
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> RESULT_CODE = createField("result_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "业务结果");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.err_code</code>. 错误代码
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> ERR_CODE = createField("err_code", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "错误代码");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.err_code_des</code>. 错误代码描述
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> ERR_CODE_DES = createField("err_code_des", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "错误代码描述");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.prepay_id</code>. 预支付交易会话标识
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> PREPAY_ID = createField("prepay_id", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "预支付交易会话标识");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.notify_return_code</code>. 通知返回结果
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> NOTIFY_RETURN_CODE = createField("notify_return_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "通知返回结果");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.notify_return_msg</code>. 通知返回信息
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> NOTIFY_RETURN_MSG = createField("notify_return_msg", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "通知返回信息");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.notify_result_code</code>. 通知返回业务结果
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> NOTIFY_RESULT_CODE = createField("notify_result_code", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "通知返回业务结果");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.notify_err_code</code>. 通知返回错误代码
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> NOTIFY_ERR_CODE = createField("notify_err_code", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "通知返回错误代码");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.notify_err_code_des</code>. 通知返回错误代码描述
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> NOTIFY_ERR_CODE_DES = createField("notify_err_code_des", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "通知返回错误代码描述");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.is_subscribe</code>. 是否关注公众账号
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> IS_SUBSCRIBE = createField("is_subscribe", org.jooq.impl.SQLDataType.VARCHAR.length(1), this, "是否关注公众账号");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.openid</code>. 用户标识
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> OPENID = createField("openid", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "用户标识");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.bank_type</code>. 付款银行
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> BANK_TYPE = createField("bank_type", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "付款银行");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.transaction_id</code>. 微信支付订单号
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> TRANSACTION_ID = createField("transaction_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "微信支付订单号");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.time_end</code>. 支付完成时间
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> TIME_END = createField("time_end", org.jooq.impl.SQLDataType.VARCHAR.length(14), this, "支付完成时间");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.create_at</code>. 创建时间
      */
     public final TableField<EpWechatUnifiedOrderRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.update_at</code>. 更新时间
      */
     public final TableField<EpWechatUnifiedOrderRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.remark</code>. 备注
      */
     public final TableField<EpWechatUnifiedOrderRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.del_flag</code>. 删除标记
      */
     public final TableField<EpWechatUnifiedOrderRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
-
     /**
      * The column <code>ep.ep_wechat_unified_order.version</code>.
      */
@@ -219,6 +179,14 @@ public class EpWechatUnifiedOrder extends TableImpl<EpWechatUnifiedOrderRecord> 
 
     private EpWechatUnifiedOrder(String alias, Table<EpWechatUnifiedOrderRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "微信支付统一订单");
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpWechatUnifiedOrderRecord> getRecordType() {
+        return EpWechatUnifiedOrderRecord.class;
     }
 
     /**
