@@ -4,7 +4,7 @@ import org.apache.commons.lang3.RandomUtils;
 
 public class SerialNumberTools {
     /**
-     * 商户订单号前缀
+     * 下单商户订单号前缀
      */
     public static String PREFIX_OUT_TRADE_NO = "OT";
 
@@ -14,7 +14,7 @@ public class SerialNumberTools {
     public static String PREFIX_OUT_REFUND_NO = "OR";
 
     /**
-     * 生成商户订单号,32位
+     * 生成下单商户订单号,32位
      *
      * @return
      */
