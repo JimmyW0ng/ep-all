@@ -5,6 +5,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBo;
+import com.ep.domain.pojo.dto.ClassWithdrawQueryDto;
 import com.ep.domain.pojo.event.ClassOpenEventBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
@@ -255,6 +256,19 @@ public class OrganClassService {
      */
     public int countUnendBesprakClassScheduleByClassId(Long classId) {
         return organClassScheduleRepository.countUnendBesprakClassScheduleByClassId(classId);
+    }
+
+    /**
+     * 商户按班次提现分页
+     *
+     * @param pageable
+     * @param condition
+     * @return
+     */
+    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
+        Page<ClassWithdrawQueryDto> page = organClassRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
+//        page.getContent()
+        return organClassRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
     }
 
 }

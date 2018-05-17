@@ -599,7 +599,7 @@ public class OrderController extends BackendController {
 
 
     /**
-     * 退款申请初始化,获取统一下单成功后退款bo
+     * 退款申请初始化,获取统一下单成功后退款bo(统一下单成功记录信息，该单退款成功记录信息)
      *
      * @param orderId
      * @return

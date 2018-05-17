@@ -35,12 +35,16 @@
                     <!--th:value="${searchMap.get('transactionId')}"-->
                     <!--placeholder="微信支付订单号">-->
                     <!--</div>-->
-
-                    <!--<div class="form-group">-->
-                    <!--<input type="text" class="form-control " name="className"-->
-                    <!--th:value="${searchMap.get('className')}"-->
-                    <!--placeholder="班次名称">-->
-                    <!--</div>-->
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="courseName"
+                               th:value="${searchMap.get('courseName')}"
+                               placeholder="课程">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="className"
+                               th:value="${searchMap.get('className')}"
+                               placeholder="班次">
+                    </div>
 
 
                     <!--<div class="form-group mr10">-->
@@ -86,21 +90,15 @@
                            aria-describedby="editable_info">
                         <thead>
                         <tr>
-                            <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>课程</th>
                             <th>班次</th>
-                            <th>提现总金额</th>
-                            <th>报名订单数</th>
+                            <th>总支付订单数</th>
+                            <th>未提现订单数</th>
+                            <th>最近一次提现金额</th>
 
-                            <th>线下支付订单数</th>
-
-                            <th>微信支付订单数</th>
-                            <th>微信支付手续费</th>
-                            <th>提现手续费</th>
-
-                            <th>提现订单号</th>
-
-                            <th>提现状态</th>
+                            <th>最近一次提现订单数</th>
+                            <th>最近一次提现时间</th>
+                            <th>最近一次提现状态</th>
 
                             <th>操作</th>
                         </tr>
@@ -109,22 +107,22 @@
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
-                            <td th:text="${bo.totalAmount}"></td>
-                            <td th:text="${bo.orderNum}"></td>
-                            <td th:text="${bo.offlinePayNum}"></td>
+                            <!--<td th:text="${bo.totalAmount}"></td>-->
+                            <!--<td th:text="${bo.orderNum}"></td>-->
+                            <!--<td th:text="${bo.offlinePayNum}"></td>-->
 
-                            <td th:text="${bo.wechatPayNum}"></td>
-                            <td th:text="${bo.wechatPayFee}"></td>
-                            <td th:text="${bo.withdrawFee}"></td>
-                            <td th:text="${bo.withdrawNo}"></td>
+                            <!--<td th:text="${bo.wechatPayNum}"></td>-->
+                            <!--<td th:text="${bo.wechatPayFee}"></td>-->
+                            <!--<td th:text="${bo.withdrawFee}"></td>-->
+                            <!--<td th:text="${bo.withdrawNo}"></td>-->
 
-                            <td th:text="${bo.status}"></td>
+                            <!--<td th:text="${bo.status}"></td>-->
 
-                            <td>
-                                <!--<a class="btn btn-xs btn-primary"-->
-                                <!--th:if="${#stringTools.equals(bo.tradeState,'INIT')}"-->
-                                <!--th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>-->
-                            </td>
+                            <!--<td>-->
+                            <!--&lt;!&ndash;<a class="btn btn-xs btn-primary"&ndash;&gt;-->
+                            <!--&lt;!&ndash;th:if="${#stringTools.equals(bo.tradeState,'INIT')}"&ndash;&gt;-->
+                            <!--&lt;!&ndash;th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>&ndash;&gt;-->
+                            <!--</td>-->
                         </tr>
                         </tbody>
                     </table>

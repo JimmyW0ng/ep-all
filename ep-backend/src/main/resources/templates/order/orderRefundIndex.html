@@ -158,6 +158,10 @@
                                 <button class="btn btn-xs btn-info" th:if="${#strings.equals(bo.payStatus,'paid')}"
                                         th:onclick="'orderRefundApplyBox('+${bo.id}+')'">申请退款
                                 </button>
+                                <button class="btn btn-xs btn-info"
+                                        th:if="${#strings.equals(bo.payStatus,'refund_finish')||#strings.equals(bo.payStatus,'refund_apply')}"
+                                        th:onclick="'orderRefundApplyBox('+${bo.id}+')'">查看退款
+                                </button>
                             </td>
 
                         </tr>
@@ -271,7 +275,20 @@
         </td>
     </tr>
 </script>
-
+<script type="text/template" id='payrefundBodyTmpl'>
+    <tr class="">
+        <td>${outTradeNo}</td>
+        <td>${transactionId}</td>
+        <td>${outRefundNo}</td>
+        <td>${totalFee}</td>
+        <td>${refundFee}</td>
+        <td>${successTime}</td>
+        <td>${refundRecvAccout}
+        </td>
+        <td>${refundStatus}
+        </td>
+    </tr>
+</script>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 
@@ -289,6 +306,7 @@
                     console.log(data.result)
                     if (data.result) {
                         $("#unifiedordersBody").html($("#unifiedordersBodyTmpl").tmpl(data.result))
+                        $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(data.result))
                     }
 
 //                    toastr_success(null, document.location.href)

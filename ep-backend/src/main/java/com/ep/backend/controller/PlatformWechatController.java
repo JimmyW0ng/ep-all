@@ -1,12 +1,12 @@
 package com.ep.backend.controller;
 
-import com.ep.common.tool.SerialNumberTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
 import com.ep.domain.service.WechatFwhService;
+import com.ep.domain.service.WechatPayRefundService;
 import com.ep.domain.service.WechatUnifiedOrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -42,6 +42,8 @@ public class PlatformWechatController extends BackendController {
     private WechatUnifiedOrderService wechatUnifiedOrderService;
     @Autowired
     private WechatPayComponent wechatPayComponent;
+    @Autowired
+    private WechatPayRefundService wechatPayRefundService;
 
     @Value("${wechat.fwh.token}")
     private String wechatFwhToken;
@@ -243,9 +245,8 @@ public class PlatformWechatController extends BackendController {
     @GetMapping("payRefund/{outTradeNo}")
     @ResponseBody
     public ResultDo payRefund(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
-        EpWechatUnifiedOrderPo wechatUnifiedOrderPo = wechatUnifiedOrderService.getByOutTradeNo(outTradeNo);
-        String outRefundNo = SerialNumberTools.generateOutRefundNo(wechatUnifiedOrderPo.getOrderId());
-        return wechatPayComponent.payRefund(wechatUnifiedOrderPo.getTransactionId(), outTradeNo, outRefundNo,
-                wechatUnifiedOrderPo.getTotalFee(), wechatUnifiedOrderPo.getTotalFee());
+//        ResultDo resultDoPayRefund=wechatPayComponent.xcxPayRefund(outTradeNo);
+        wechatPayRefundService.merchantFindByOutTradeNo(outTradeNo);
+        return wechatPayComponent.xcxPayRefund(outTradeNo);
     }
 }

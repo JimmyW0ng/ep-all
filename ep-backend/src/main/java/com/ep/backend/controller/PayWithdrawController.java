@@ -1,7 +1,9 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
-import com.ep.domain.pojo.bo.WechatPayWithdrawBo;
+import com.ep.domain.pojo.dto.ClassWithdrawQueryDto;
+import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.service.OrganClassService;
 import com.ep.domain.service.WechatPayWithdrawService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -20,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collection;
 import java.util.Map;
 
-import static com.ep.domain.repository.domain.Tables.*;
+import static com.ep.domain.repository.domain.tables.EpOrganClass.EP_ORGAN_CLASS;
+import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
 
 /**
  * @Description:
@@ -33,8 +36,10 @@ public class PayWithdrawController extends BackendController {
 
     @Autowired
     private WechatPayWithdrawService wechatPayWithdrawService;
+    @Autowired
+    private OrganClassService organClassService;
 
-    @GetMapping("index")
+    @GetMapping("merchant/ClassWithdraw")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseName", required = false) String courseName,
@@ -50,16 +55,15 @@ public class PayWithdrawController extends BackendController {
             conditions.add(EP_ORGAN_CLASS.CLASS_NAME.eq(className));
         }
         searchMap.put("className", className);
-
-
-        conditions.add(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false));
-        conditions.add(EP_ORGAN_COURSE.ID.isNotNull());
-        conditions.add(EP_ORGAN_COURSE.OGN_ID.eq(this.getCurrentUserOgnId()));
-        conditions.add(EP_ORGAN_CLASS.ID.isNotNull());
-
-        Page<WechatPayWithdrawBo> page = wechatPayWithdrawService.findbyPageAndCondition(pageable, conditions);
+//
+//
+        conditions.add(EP_ORGAN_CLASS.OGN_ID.eq(this.getCurrentUserOgnId()));
+        conditions.add(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.opening, EpOrganClassStatus.end));
+        conditions.add(EP_ORGAN_CLASS.DEL_FLAG.eq(false));
+//
+        Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
-        return "wechat/payWithdrawIndex";
+        return "payWithdraw/ClassWithdraw";
     }
 }

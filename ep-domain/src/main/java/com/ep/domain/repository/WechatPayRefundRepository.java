@@ -2,9 +2,13 @@ package com.ep.domain.repository;
 
 import com.ep.domain.pojo.po.EpWechatPayRefundPo;
 import com.ep.domain.repository.domain.tables.records.EpWechatPayRefundRecord;
+import com.google.common.collect.Lists;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static com.ep.domain.repository.domain.Tables.EP_WECHAT_PAY_REFUND;
 
@@ -92,4 +96,52 @@ public class WechatPayRefundRepository extends AbstractCRUDRepository<EpWechatPa
                          .execute();
     }
 
+    /**
+     * 根据商户订单号outTradeNo获取记录
+     *
+     * @param outTradeNo
+     * @return
+     */
+    public List<EpWechatPayRefundPo> findByOutTradeNo(String outTradeNo) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_WECHAT_PAY_REFUND.ID);
+        fieldList.add(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO);
+        fieldList.add(EP_WECHAT_PAY_REFUND.TRANSACTION_ID);
+        fieldList.add(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
+        fieldList.add(EP_WECHAT_PAY_REFUND.TOTAL_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.SUCCESS_TIME);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_ACCOUNT);
+        fieldList.add(EP_WECHAT_PAY_REFUND.NOTIFY_RETURN_CODE);
+        return dslContext.select(fieldList)
+                .from(EP_WECHAT_PAY_REFUND)
+                .where(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO.eq(outTradeNo))
+                .and(EP_WECHAT_PAY_REFUND.DEL_FLAG.eq(false))
+                .fetchInto(EpWechatPayRefundPo.class);
+    }
+
+    /**
+     * 根据商户订单号outTradeNo获取业务结果为SUCCESS的记录
+     *
+     * @param outTradeNo
+     * @return
+     */
+    public List<EpWechatPayRefundPo> findSuccessPoByOutTradeNo(String outTradeNo) {
+        List<Field<?>> fieldList = Lists.newArrayList();
+        fieldList.add(EP_WECHAT_PAY_REFUND.ID);
+        fieldList.add(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO);
+        fieldList.add(EP_WECHAT_PAY_REFUND.TRANSACTION_ID);
+        fieldList.add(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
+        fieldList.add(EP_WECHAT_PAY_REFUND.TOTAL_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.SUCCESS_TIME);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_ACCOUNT);
+        fieldList.add(EP_WECHAT_PAY_REFUND.NOTIFY_RETURN_CODE);
+        return dslContext.select()
+                .from(EP_WECHAT_PAY_REFUND).
+                        where(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO.eq(outTradeNo))
+                .and(EP_WECHAT_PAY_REFUND.NOTIFY_RETURN_CODE.eq("SUCCESS"))
+                .and(EP_WECHAT_PAY_REFUND.DEL_FLAG.eq(false))
+                .fetchInto(EpWechatPayRefundPo.class);
+    }
 }

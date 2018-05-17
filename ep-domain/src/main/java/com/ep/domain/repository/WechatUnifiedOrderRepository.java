@@ -193,7 +193,15 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
      * @return
      */
     public List<WechatUnifiedOrderPayRefundBo> findUnifiedOrderPayRefundBoByOrderId(Long orderId) {
-        List<Field<?>> fieldList = Lists.newArrayList(EP_WECHAT_UNIFIED_ORDER.fields());
+        List<Field<?>> fieldList = Lists.newArrayList();
+
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO);
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.BODY);
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.TOTAL_FEE);
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID);
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.TIME_END);
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE);
+
         fieldList.add(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
         fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_FEE);
         fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_ID);
@@ -204,6 +212,7 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
 
         return dslContext.select(fieldList).from(EP_WECHAT_UNIFIED_ORDER)
                 .leftJoin(EP_WECHAT_PAY_REFUND)
+                //refund_status退款状态必须为SUCCESS否则查空
                 .on(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO)
                         .and(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO.isNull().or(EP_WECHAT_PAY_REFUND.REFUND_STATUS.eq("SUCCESS"))))
                 .where(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(orderId))
