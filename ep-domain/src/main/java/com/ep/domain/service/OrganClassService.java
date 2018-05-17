@@ -266,8 +266,7 @@ public class OrganClassService {
      * @return
      */
     public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
-        Page<ClassWithdrawQueryDto> page = organClassRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
-//        page.getContent()
+
         return organClassRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
     }
 

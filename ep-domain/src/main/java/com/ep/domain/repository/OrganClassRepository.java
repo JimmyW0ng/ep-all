@@ -529,9 +529,9 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         }
         List<Field<?>> fieldList = Lists.newArrayList();
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
-        fieldList.add(EP_ORGAN_COURSE.ID);
+        fieldList.add(EP_ORGAN_COURSE.ID.as("courseId"));
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
-        fieldList.add(EP_ORGAN_CLASS.ID);
+        fieldList.add(EP_ORGAN_CLASS.ID.as("classId"));
 
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)

@@ -213,12 +213,14 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
         return dslContext.select(fieldList).from(EP_WECHAT_UNIFIED_ORDER)
                 .leftJoin(EP_WECHAT_PAY_REFUND)
                 //refund_status退款状态必须为SUCCESS否则查空
-                .on(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO)
-                        .and(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO.isNull().or(EP_WECHAT_PAY_REFUND.REFUND_STATUS.eq("SUCCESS"))))
+                .on(
+                        EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO)
+                                .and(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO.isNull().or(EP_WECHAT_PAY_REFUND.REFUND_STATUS.eq("SUCCESS")))
+                                .and(EP_WECHAT_PAY_REFUND.DEL_FLAG.isNull().or(EP_WECHAT_PAY_REFUND.DEL_FLAG.eq(false)))
+                )
                 .where(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(orderId))
                 .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.eq("SUCCESS"))
                 .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
-                .and(EP_WECHAT_PAY_REFUND.DEL_FLAG.isNull().or(EP_WECHAT_PAY_REFUND.DEL_FLAG.eq(false)))
                 .fetchInto(WechatUnifiedOrderPayRefundBo.class);
     }
 

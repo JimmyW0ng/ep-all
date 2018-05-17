@@ -3,9 +3,11 @@ package com.ep.domain.repository;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.WechatPayWithdrawBo;
 import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
+import com.ep.domain.repository.domain.enums.EpWechatPayWithdrawStatus;
 import com.ep.domain.repository.domain.tables.records.EpWechatPayWithdrawRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -62,5 +64,35 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                 .fetchInto(WechatPayWithdrawBo.class);
         PageImpl<WechatPayWithdrawBo> pPage = new PageImpl<WechatPayWithdrawBo>(list, pageable, totalCount);
         return pPage;
+    }
+
+    /**
+     * 按班次统计提现成功订单数
+     *
+     * @param classId
+     * @return
+     */
+    public int countPayWithdrawByClassId(Long classId) {
+        return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_WITHDRAW.WECHAT_PAY_NUM), 0))
+                .from(EP_WECHAT_PAY_WITHDRAW)
+                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.finish))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+    }
+
+    /**
+     * 最近一次提现记录
+     *
+     * @param classId
+     * @return
+     */
+    public EpWechatPayWithdrawPo getLastWithdrawByClassId(Long classId) {
+        return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
+                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
+                .limit(BizConstant.DB_NUM_ONE)
+                .fetchOneInto(EpWechatPayWithdrawPo.class);
     }
 }

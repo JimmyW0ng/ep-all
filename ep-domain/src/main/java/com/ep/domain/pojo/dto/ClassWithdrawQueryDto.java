@@ -1,9 +1,13 @@
 package com.ep.domain.pojo.dto;
 
 import com.ep.domain.pojo.AbstractBasePojo;
+import com.ep.domain.repository.domain.enums.EpWechatPayWithdrawStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /**
  * @Description: 商户提现分页列表dto
@@ -21,15 +25,15 @@ public class ClassWithdrawQueryDto extends AbstractBasePojo {
     /**
      * 总已支付订单数
      */
-    private Long totalPaidOrderNum;
+    private Integer totalWechatPaidOrderNum;
     /**
      * 未提现订单数
      */
-    private Long waitWithdrawOrderNum;
+    private Integer waitWithdrawOrderNum;
     /**
      * 最近一次提现金额
      */
-    private Integer lastWithdrawAmount;
+    private BigDecimal lastWithdrawAmount;
     /**
      * 最近一次提现订单数
      */
@@ -37,11 +41,11 @@ public class ClassWithdrawQueryDto extends AbstractBasePojo {
     /**
      * 最近一次提现时间
      */
-    private Integer lastWithdrawTime;
+    private Timestamp lastWithdrawTime;
     /**
      * 最近一次提现状态
      */
-    private Integer lastWithdrawStatus;
+    private EpWechatPayWithdrawStatus lastWithdrawStatus;
     /**
      * ep_wechat_pay_withdraw表主键
      */

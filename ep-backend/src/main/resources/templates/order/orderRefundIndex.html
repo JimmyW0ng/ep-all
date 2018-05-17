@@ -269,7 +269,7 @@
         </td>
         <td>{{if successTime}}
             {{else}}
-            <button class="btn btn-xs btn-info" onclick="confirmPayRefund('${outTradeNo}')">确认退款
+            <button class="btn btn-xs btn-info" onclick="confirmPayRefund(this,'${outTradeNo}')">确认申请退款
             </button>
             {{/if}}
         </td>
@@ -298,15 +298,22 @@
 <script th:inline="javascript">
     function orderRefundApplyBox(orderId) {
         $("#payrefundModal").modal("show")
+        $("#unifiedordersBody").html("")
+        $("#payrefundBody").html("")
         $.ajax({
             type: "GET",
             url: "/auth/order/orderRefundApplyInit/" + orderId,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
             success: function (data) {
                 if (data.success) {
                     console.log(data.result)
                     if (data.result) {
                         $("#unifiedordersBody").html($("#unifiedordersBodyTmpl").tmpl(data.result))
-                        $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(data.result))
+                        if (data.result.successTime) {
+                            $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(data.result))
+                        }
                     }
 
 //                    toastr_success(null, document.location.href)
@@ -317,10 +324,34 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
+            complete: function () {
+                layer.closeAll();
+            }
         })
     }
-    function confirmPayRefund(outTradeNo) {
+    function confirmPayRefund(ele, outTradeNo) {
         console.log(outTradeNo)
+        $.ajax({
+            type: "GET",
+            url: "/auth/wechat/payRefund/" + outTradeNo,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
+            success: function (data) {
+                if (data.success) {
+                    $(ele).remove()
+                    toastr.success("申请退款成功！")
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
+            }
+        })
     }
 </script>
 </body>

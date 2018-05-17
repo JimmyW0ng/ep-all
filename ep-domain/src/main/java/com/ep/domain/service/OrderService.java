@@ -757,4 +757,14 @@ public class OrderService {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
     }
+
+    /**
+     * 统计班次内微信支付成功订单数
+     *
+     * @param classId
+     * @return
+     */
+    public int countWechatPaidOrderByClassId(Long classId) {
+        return orderRepository.countWechatPaidOrderByClassId(classId);
+    }
 }

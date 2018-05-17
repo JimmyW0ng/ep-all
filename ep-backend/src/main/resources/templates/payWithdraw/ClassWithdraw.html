@@ -92,7 +92,7 @@
                         <tr>
                             <th>课程</th>
                             <th>班次</th>
-                            <th>总支付订单数</th>
+                            <th>总已支付订单数</th>
                             <th>未提现订单数</th>
                             <th>最近一次提现金额</th>
 
@@ -107,22 +107,20 @@
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
-                            <!--<td th:text="${bo.totalAmount}"></td>-->
-                            <!--<td th:text="${bo.orderNum}"></td>-->
-                            <!--<td th:text="${bo.offlinePayNum}"></td>-->
+                            <td th:text="${bo.totalWechatPaidOrderNum}"></td>
+                            <td th:text="${bo.waitWithdrawOrderNum}"></td>
+                            <td th:text="${bo.lastWithdrawAmount}"></td>
 
-                            <!--<td th:text="${bo.wechatPayNum}"></td>-->
-                            <!--<td th:text="${bo.wechatPayFee}"></td>-->
-                            <!--<td th:text="${bo.withdrawFee}"></td>-->
-                            <!--<td th:text="${bo.withdrawNo}"></td>-->
+                            <td th:text="${bo.lastWithdrawOrderNum}"></td>
+                            <td th:text="${bo.lastWithdrawTime}"></td>
+                            <td th:text="${bo.lastWithdrawStatus}"></td>
 
-                            <!--<td th:text="${bo.status}"></td>-->
 
-                            <!--<td>-->
-                            <!--&lt;!&ndash;<a class="btn btn-xs btn-primary"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:if="${#stringTools.equals(bo.tradeState,'INIT')}"&ndash;&gt;-->
-                            <!--&lt;!&ndash;th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>&ndash;&gt;-->
-                            <!--</td>-->
+                            <td>
+                                <button class="btn btn-xs btn-primary"
+                                        th:onclick="'applyPayWithdraw('+${bo.classId}+')'">申请提现
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -189,6 +187,9 @@
 
             }
         })
+    }
+    function applyPayWithdraw(classId) {
+        $ajaxGet("/auth/payWithdraw/merchant/applyPayWithdraw/" + classId)
     }
 </script>
 </body>

@@ -786,5 +786,19 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
     }
+
+    /**
+     * 统计班次内微信支付成功订单数
+     *
+     * @param classId
+     * @return
+     */
+    public int countWechatPaidOrderByClassId(Long classId) {
+        return dslContext.selectCount().from(EP_ORDER)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .fetchOneInto(Integer.class);
+    }
 }
 
