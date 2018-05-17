@@ -33,7 +33,7 @@ public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
      * The reference instance of <code>ep.ep_wechat_pay_refund</code>
      */
     public static final EpWechatPayRefund EP_WECHAT_PAY_REFUND = new EpWechatPayRefund();
-    private static final long serialVersionUID = -2101091978;
+    private static final long serialVersionUID = -2056888632;
     /**
      * The column <code>ep.ep_wechat_pay_refund.id</code>. 主键
      */
@@ -198,7 +198,7 @@ public class EpWechatPayRefund extends TableImpl<EpWechatPayRefundRecord> {
      */
     @Override
     public List<UniqueKey<EpWechatPayRefundRecord>> getKeys() {
-        return Arrays.<UniqueKey<EpWechatPayRefundRecord>>asList(Keys.KEY_EP_WECHAT_PAY_REFUND_PRIMARY);
+        return Arrays.<UniqueKey<EpWechatPayRefundRecord>>asList(Keys.KEY_EP_WECHAT_PAY_REFUND_PRIMARY, Keys.KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO);
     }
 
     /**

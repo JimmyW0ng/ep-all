@@ -69,6 +69,7 @@ public class Keys {
     public static final Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = Identities0.IDENTITY_EP_TOKEN;
     public static final Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = Identities0.IDENTITY_EP_WECHAT_OPENID;
     public static final Identity<EpWechatPayRefundRecord, Long> IDENTITY_EP_WECHAT_PAY_REFUND = Identities0.IDENTITY_EP_WECHAT_PAY_REFUND;
+    public static final Identity<EpWechatPayWithdrawRecord, Long> IDENTITY_EP_WECHAT_PAY_WITHDRAW = Identities0.IDENTITY_EP_WECHAT_PAY_WITHDRAW;
     public static final Identity<EpWechatUnifiedOrderRecord, Long> IDENTITY_EP_WECHAT_UNIFIED_ORDER = Identities0.IDENTITY_EP_WECHAT_UNIFIED_ORDER;
 
     // -------------------------------------------------------------------------
@@ -127,6 +128,8 @@ public class Keys {
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_OPENID_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = UniqueKeys0.KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE;
     public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_REFUND_PRIMARY;
+    public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO = UniqueKeys0.KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO;
+    public static final UniqueKey<EpWechatPayWithdrawRecord> KEY_EP_WECHAT_PAY_WITHDRAW_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_WITHDRAW_PRIMARY;
     public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_UNIFIED_ORDER_PRIMARY;
     public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_UNIQUE_OUT_TRADE_NO = UniqueKeys0.KEY_EP_WECHAT_UNIFIED_ORDER_UNIQUE_OUT_TRADE_NO;
 
@@ -178,6 +181,7 @@ public class Keys {
         public static Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = createIdentity(EpToken.EP_TOKEN, EpToken.EP_TOKEN.ID);
         public static Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = createIdentity(EpWechatOpenid.EP_WECHAT_OPENID, EpWechatOpenid.EP_WECHAT_OPENID.ID);
         public static Identity<EpWechatPayRefundRecord, Long> IDENTITY_EP_WECHAT_PAY_REFUND = createIdentity(EpWechatPayRefund.EP_WECHAT_PAY_REFUND, EpWechatPayRefund.EP_WECHAT_PAY_REFUND.ID);
+        public static Identity<EpWechatPayWithdrawRecord, Long> IDENTITY_EP_WECHAT_PAY_WITHDRAW = createIdentity(EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW, EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW.ID);
         public static Identity<EpWechatUnifiedOrderRecord, Long> IDENTITY_EP_WECHAT_UNIFIED_ORDER = createIdentity(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.ID);
     }
 
@@ -234,6 +238,8 @@ public class Keys {
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_PRIMARY", EpWechatOpenid.EP_WECHAT_OPENID.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_INDEX_OPENID_TYPE_MOBILE", EpWechatOpenid.EP_WECHAT_OPENID.OPENID, EpWechatOpenid.EP_WECHAT_OPENID.TYPE, EpWechatOpenid.EP_WECHAT_OPENID.MOBILE);
         public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_PRIMARY = createUniqueKey(EpWechatPayRefund.EP_WECHAT_PAY_REFUND, "KEY_ep_wechat_pay_refund_PRIMARY", EpWechatPayRefund.EP_WECHAT_PAY_REFUND.ID);
+        public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO = createUniqueKey(EpWechatPayRefund.EP_WECHAT_PAY_REFUND, "KEY_ep_wechat_pay_refund_UNIQUE_OUT_REFUND_NO", EpWechatPayRefund.EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
+        public static final UniqueKey<EpWechatPayWithdrawRecord> KEY_EP_WECHAT_PAY_WITHDRAW_PRIMARY = createUniqueKey(EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW, "KEY_ep_wechat_pay_withdraw_PRIMARY", EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW.ID);
         public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_PRIMARY = createUniqueKey(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, "KEY_ep_wechat_unified_order_PRIMARY", EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.ID);
         public static final UniqueKey<EpWechatUnifiedOrderRecord> KEY_EP_WECHAT_UNIFIED_ORDER_UNIQUE_OUT_TRADE_NO = createUniqueKey(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, "KEY_ep_wechat_unified_order_UNIQUE_OUT_TRADE_NO", EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO);
     }

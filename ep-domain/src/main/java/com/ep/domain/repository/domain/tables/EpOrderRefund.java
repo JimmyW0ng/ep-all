@@ -34,7 +34,7 @@ public class EpOrderRefund extends TableImpl<EpOrderRefundRecord> {
      * The reference instance of <code>ep.ep_order_refund</code>
      */
     public static final EpOrderRefund EP_ORDER_REFUND = new EpOrderRefund();
-    private static final long serialVersionUID = 2032161174;
+    private static final long serialVersionUID = 785555879;
     /**
      * The column <code>ep.ep_order_refund.id</code>. 主键
      */
@@ -47,6 +47,10 @@ public class EpOrderRefund extends TableImpl<EpOrderRefundRecord> {
      * The column <code>ep.ep_order_refund.order_id</code>. 订单id
      */
     public final TableField<EpOrderRefundRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "订单id");
+    /**
+     * The column <code>ep.ep_order_refund.out_trade_no</code>. 商户订单号
+     */
+    public final TableField<EpOrderRefundRecord, String> OUT_TRADE_NO = createField("out_trade_no", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "商户订单号");
     /**
      * The column <code>ep.ep_order_refund.refund_reason</code>. 退单原因
      */

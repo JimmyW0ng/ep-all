@@ -19,7 +19,7 @@ import java.util.List;
 import static com.ep.domain.repository.domain.Tables.*;
 
 /**
- * @Description: 微信通知下单Repository
+ * @Description: 微信统一下单Repository
  * @Author: J.W
  * @Date: 17:28 2018/5/3/003
  */
@@ -94,22 +94,24 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                             String bankType,
                             String transactionId,
                             String timeEnd,
-                            String tradeState) {
+                            String tradeState,
+                            String remark) {
         return dslContext.update(EP_WECHAT_UNIFIED_ORDER)
-                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_CODE, notifyReturnCode)
-                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_MSG, notifyReturnMsg)
-                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE, notifyResultCode)
-                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE, notifyErrCode)
-                .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE_DES, notifyErrCodeDes)
-                .set(EP_WECHAT_UNIFIED_ORDER.IS_SUBSCRIBE, isSubscribe)
-                .set(EP_WECHAT_UNIFIED_ORDER.OPENID, openid)
-                .set(EP_WECHAT_UNIFIED_ORDER.BANK_TYPE, bankType)
-                .set(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID, transactionId)
-                .set(EP_WECHAT_UNIFIED_ORDER.TIME_END, timeEnd)
-                .set(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE, tradeState)
-                .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
-                .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.isNull())
-                .execute();
+                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_CODE, notifyReturnCode)
+                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RETURN_MSG, notifyReturnMsg)
+                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE, notifyResultCode)
+                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE, notifyErrCode)
+                         .set(EP_WECHAT_UNIFIED_ORDER.NOTIFY_ERR_CODE_DES, notifyErrCodeDes)
+                         .set(EP_WECHAT_UNIFIED_ORDER.IS_SUBSCRIBE, isSubscribe)
+                         .set(EP_WECHAT_UNIFIED_ORDER.OPENID, openid)
+                         .set(EP_WECHAT_UNIFIED_ORDER.BANK_TYPE, bankType)
+                         .set(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID, transactionId)
+                         .set(EP_WECHAT_UNIFIED_ORDER.TIME_END, timeEnd)
+                         .set(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE, tradeState)
+                         .set(EP_WECHAT_UNIFIED_ORDER.REMARK, remark)
+                         .where(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO.eq(outTradeNo))
+                         .and(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE.isNull())
+                         .execute();
     }
 
     public Page<WechatUnifiedOrderBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition,

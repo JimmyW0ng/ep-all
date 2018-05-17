@@ -24,6 +24,7 @@ public class EpOrderRefundPo extends AbstractBasePojo {
     private Long id;
     private Long ognId;
     private Long orderId;
+    private String outTradeNo;
     private String refundReason;
     private EpOrderRefundStatus status;
     private Long applyId;
