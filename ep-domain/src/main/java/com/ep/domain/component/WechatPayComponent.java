@@ -40,6 +40,7 @@ public class WechatPayComponent {
     private static final String URL_PAY_UNIFIEDORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     private static final String URL_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
     private static final String URL_PAY_REFUNDQUERY = "https://api.mch.weixin.qq.com/pay/refundquery";
+    private static final String URL_PAY_PAYREFUND = "https://api.mch.weixin.qq.com/secapi/pay/refund";
     private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/pay/getsignkey";
 
     @Value("${wechat.xcx.member.appid}")
@@ -346,6 +347,40 @@ public class WechatPayComponent {
         }
         String resultStr = responseEntity.getBody();
         log.info("[微信支付]查询退款，接口返回={}。", resultStr);
+        return ResultDo.build().setResult(resultStr);
+    }
+
+    /**
+     * 申请退款
+     *
+     * @param transactionId 微信订单号
+     * @param outTradeNo    商户订单号
+     * @param outRefundNo   商户退款单号
+     * @return
+     * @throws Exception
+     */
+    public ResultDo payRefund(String transactionId, String outTradeNo, String outRefundNo, Integer totalFee, Integer refundFee) throws Exception {
+
+        Map<String, String> requestMap = Maps.newHashMap();
+        if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
+        }
+        requestMap.put("transaction_id", transactionId);
+        requestMap.put("out_trade_no", outTradeNo);
+        requestMap.put("out_refund_no", outRefundNo);
+        requestMap.put("total_fee", totalFee.toString());
+        requestMap.put("refund_fee", refundFee.toString());
+        requestMap.put("notify_url", "");
+
+        String url = URL_PAY_PAYREFUND;
+        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+        log.info("[微信支付]申请退款，接口入参={}。", xml);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
+        if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+        }
+        String resultStr = responseEntity.getBody();
+        log.info("[微信支付]申请退款，接口返回={}。", resultStr);
         return ResultDo.build().setResult(resultStr);
     }
 
