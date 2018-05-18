@@ -629,7 +629,7 @@ public class WechatPayComponent {
             Optional<EpWechatPayBillPo> existBill = wechatPayBillRepository.getByBillDate(billDateInt);
             if (existBill.isPresent() && WechatTools.SUCCESS.equals(existBill.get().getReturnCode())) {
                 log.info("【下载对账单】已存在本地对账记录, billDateStr={}", billDateStr);
-                return resultDo;
+                return resultDo.setError(MessageCode.ERROR_WECHAT_PAY_DOWNLOAD_BILL_EXIST);
             }
             // 删除
             if (existBill.isPresent()) {
@@ -772,11 +772,11 @@ public class WechatPayComponent {
             }
             br.close();
             fr.close();
+            return resultDo;
         } catch (Exception e) {
             log.error("【下载对账单】解析失败, billDateStr={}", billDateStr, e);
             return resultDo.setError(MessageCode.ERROR_SYSTEM).setErrorDescription(e.getMessage());
         }
-        return resultDo;
     }
 
     /**
