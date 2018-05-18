@@ -468,6 +468,51 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 根据班次和订单状态统计订单数
+     *
+     * @param classId
+     * @param orderStatuses
+     * @return
+     */
+    public int countByClassIdAndOrderStatus(Long classId, EpOrderStatus... orderStatuses) {
+        return dslContext.selectCount().from(EP_ORDER)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.STATUS.in(orderStatuses))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchOneInto(Integer.class);
+    }
+
+    /**
+     * 根据班次和支付类型和支付状态统计订单数
+     *
+     * @param orderPayType
+     * @param orderPayStatus
+     * @return
+     */
+    public int countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus
+            , Timestamp startTime, Timestamp endTime) {
+        if (null == startTime) {
+            return dslContext.selectCount().from(EP_ORDER)
+                    .where(EP_ORDER.CLASS_ID.eq(classId))
+                    .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
+                    .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .fetchOneInto(Integer.class);
+        } else {
+            return dslContext.selectCount().from(EP_ORDER)
+                    .where(EP_ORDER.CLASS_ID.eq(classId))
+                    .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
+                    .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.greaterOrEqual(startTime))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .fetchOneInto(Integer.class);
+        }
+
+    }
+
+    /**
      * 获取该班次下订单详情
      *
      * @param ognId

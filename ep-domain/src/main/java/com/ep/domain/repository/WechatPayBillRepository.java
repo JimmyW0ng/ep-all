@@ -1,6 +1,7 @@
 package com.ep.domain.repository;
 
 import com.ep.common.tool.wechat.WechatTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.po.EpWechatPayBillPo;
 import com.ep.domain.repository.domain.tables.records.EpWechatPayBillRecord;
 import org.jooq.DSLContext;
@@ -25,6 +26,19 @@ public class WechatPayBillRepository extends AbstractCRUDRepository<EpWechatPayB
         super(dslContext, EP_WECHAT_PAY_BILL, EP_WECHAT_PAY_BILL.ID, EpWechatPayBillPo.class);
     }
 
+    /**
+     * 获取最近的微信支付对账表
+     *
+     * @return
+     */
+    public EpWechatPayBillPo getLastPayBill() {
+        return dslContext.selectFrom(EP_WECHAT_PAY_BILL)
+                .where(EP_WECHAT_PAY_BILL.RETURN_CODE.eq("SUCCESS"))
+                .and(EP_WECHAT_PAY_BILL.DEL_FLAG.eq(false))
+                .orderBy(EP_WECHAT_PAY_BILL.ID.desc())
+                .limit(BizConstant.DB_NUM_ONE)
+                .fetchOneInto(EpWechatPayBillPo.class);
+    }
 
     public Optional<EpWechatPayBillPo> getByBillDate(Integer billDate) {
         EpWechatPayBillPo billPo = dslContext.selectFrom(EP_WECHAT_PAY_BILL)

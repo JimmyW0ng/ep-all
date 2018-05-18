@@ -14,6 +14,11 @@ public class SerialNumberTools {
     public static String PREFIX_OUT_REFUND_NO = "OR";
 
     /**
+     * 商户提现订单号前缀
+     */
+    public static String PREFIX_WITHDRAW_NO = "WN";
+
+    /**
      * 生成下单商户订单号,32位
      *
      * @return
@@ -31,6 +36,16 @@ public class SerialNumberTools {
     public static String generateOutRefundNo(Long orderId) {
         String orderIdStr = StringTools.addZeroForNum(orderId.toString(), 12);
         return PREFIX_OUT_REFUND_NO + orderIdStr + generateNumber(4);
+    }
+
+    /**
+     * 生成商户提现订单号,32位
+     *
+     * @return
+     */
+    public static String generateWithdrawNo(Long classId) {
+        String orderIdStr = StringTools.addZeroForNum(classId.toString(), 12);
+        return PREFIX_OUT_TRADE_NO + orderIdStr + generateNumber(4);
     }
 
     /**

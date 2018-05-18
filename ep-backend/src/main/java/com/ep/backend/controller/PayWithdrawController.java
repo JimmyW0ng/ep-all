@@ -1,17 +1,21 @@
 package com.ep.backend.controller;
 
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.dto.ClassWithdrawQueryDto;
 import com.ep.domain.pojo.po.EpOrganClassPo;
+import com.ep.domain.pojo.po.EpWechatPayBillPo;
 import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
 import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassService;
+import com.ep.domain.service.WechatPayBillService;
 import com.ep.domain.service.WechatPayWithdrawService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,9 +24,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,6 +43,7 @@ import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COUR
  * @Author: CC.F
  * @Date: 22:22 2018/5/16
  */
+@Slf4j
 @Controller
 @RequestMapping("auth/payWithdraw")
 public class PayWithdrawController extends BackendController {
@@ -44,6 +54,8 @@ public class PayWithdrawController extends BackendController {
     private OrganClassService organClassService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private WechatPayBillService wechatPayBillService;
 
     @GetMapping("merchant/ClassWithdraw")
     public String index(Model model,
@@ -61,12 +73,11 @@ public class PayWithdrawController extends BackendController {
             conditions.add(EP_ORGAN_CLASS.CLASS_NAME.eq(className));
         }
         searchMap.put("className", className);
-//
-//
+
         conditions.add(EP_ORGAN_CLASS.OGN_ID.eq(this.getCurrentUserOgnId()));
-        conditions.add(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.opening, EpOrganClassStatus.end));
+        conditions.add(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online, EpOrganClassStatus.opening, EpOrganClassStatus.end));
         conditions.add(EP_ORGAN_CLASS.DEL_FLAG.eq(false));
-//
+
         Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
         page.getContent().forEach(p -> {
             Long classId = p.getClassId();
@@ -84,8 +95,19 @@ public class PayWithdrawController extends BackendController {
                 p.setLastWithdrawStatus(wechatPayWithdrawPo.getStatus());
                 p.setPayWithdrawId(wechatPayWithdrawPo.getId());
             }
-
         });
+        EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
+        if (null != wechatPayBillPo) {
+            Date withdrawDeadline;
+            try {
+                withdrawDeadline = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
+            } catch (Exception e) {
+                log.error("[提现]商户提现页面，最新结算日期转换异常。", e);
+                withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
+            }
+            String withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadline);
+            model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
+        }
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
         return "payWithdraw/ClassWithdraw";
@@ -97,15 +119,17 @@ public class PayWithdrawController extends BackendController {
      * @param classId
      * @return
      */
-    @GetMapping("merchant/applyPayWithdraw/{classId}")
+    @GetMapping("merchant/applyPayWithdraw")
     @ResponseBody
-    public ResultDo applyPayWithdraw(@PathVariable("classId") Long classId) {
+    public ResultDo applyPayWithdraw(@RequestParam(value = "classId") Long classId,
+                                     @RequestParam(value = "withdrawDeadline") String withdrawDeadline) {
         Optional<EpOrganClassPo> organClassOptional = organClassService.findById(classId);
         if (organClassOptional.isPresent() && organClassOptional.get().getOgnId().equals(this.getCurrentUserOgnId())) {
-            return wechatPayWithdrawService.applyPayWithdrawByClassId(classId, organClassOptional.get().getCourseId());
+            return wechatPayWithdrawService.applyPayWithdrawByClassId(classId, organClassOptional.get().getCourseId(), withdrawDeadline);
         } else {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
+//        return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
     }
 
 
