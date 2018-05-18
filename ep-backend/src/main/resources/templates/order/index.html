@@ -149,11 +149,15 @@
                                 th:text="#{EpOrderStatusBespeak.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
                             <td>
+
                                 <span th:if="${bo.payStatus!=null}"
                                       th:text="#{EpOrderPayStatus.+${bo.payStatus}}"></span>
-                                <button th:if="${#strings.equals(bo.payStatus,'wait_pay')}" class="btn btn-xs btn-info"
+                                <button th:if="${#strings.equals(bo.payStatus,'wait_pay')&&
+                                (#strings.equals(bo.status,'success')||#strings.equals(bo.status,'save'))}"
+                                        class="btn btn-xs btn-info"
                                         th:onclick="'offlinePaidBox(this,'+${bo.id}+')'">线下支付
                                 </button>
+
                             </td>
 
                             <td name="remark" th:text="${bo.remark}"></td>
