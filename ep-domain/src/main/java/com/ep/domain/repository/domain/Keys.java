@@ -68,6 +68,8 @@ public class Keys {
     public static final Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = Identities0.IDENTITY_EP_SYSTEM_USER_ROLE;
     public static final Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = Identities0.IDENTITY_EP_TOKEN;
     public static final Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = Identities0.IDENTITY_EP_WECHAT_OPENID;
+    public static final Identity<EpWechatPayBillRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL = Identities0.IDENTITY_EP_WECHAT_PAY_BILL;
+    public static final Identity<EpWechatPayBillDetailRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL_DETAIL = Identities0.IDENTITY_EP_WECHAT_PAY_BILL_DETAIL;
     public static final Identity<EpWechatPayRefundRecord, Long> IDENTITY_EP_WECHAT_PAY_REFUND = Identities0.IDENTITY_EP_WECHAT_PAY_REFUND;
     public static final Identity<EpWechatPayWithdrawRecord, Long> IDENTITY_EP_WECHAT_PAY_WITHDRAW = Identities0.IDENTITY_EP_WECHAT_PAY_WITHDRAW;
     public static final Identity<EpWechatUnifiedOrderRecord, Long> IDENTITY_EP_WECHAT_UNIFIED_ORDER = Identities0.IDENTITY_EP_WECHAT_UNIFIED_ORDER;
@@ -127,6 +129,9 @@ public class Keys {
     public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = UniqueKeys0.KEY_EP_TOKEN_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_OPENID_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = UniqueKeys0.KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE;
+    public static final UniqueKey<EpWechatPayBillRecord> KEY_EP_WECHAT_PAY_BILL_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_BILL_PRIMARY;
+    public static final UniqueKey<EpWechatPayBillRecord> KEY_EP_WECHAT_PAY_BILL_UNIQUE_BILL_DATE = UniqueKeys0.KEY_EP_WECHAT_PAY_BILL_UNIQUE_BILL_DATE;
+    public static final UniqueKey<EpWechatPayBillDetailRecord> KEY_EP_WECHAT_PAY_BILL_DETAIL_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_BILL_DETAIL_PRIMARY;
     public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_REFUND_PRIMARY;
     public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO = UniqueKeys0.KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO;
     public static final UniqueKey<EpWechatPayWithdrawRecord> KEY_EP_WECHAT_PAY_WITHDRAW_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_WITHDRAW_PRIMARY;
@@ -180,6 +185,8 @@ public class Keys {
         public static Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = createIdentity(EpSystemUserRole.EP_SYSTEM_USER_ROLE, EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = createIdentity(EpToken.EP_TOKEN, EpToken.EP_TOKEN.ID);
         public static Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = createIdentity(EpWechatOpenid.EP_WECHAT_OPENID, EpWechatOpenid.EP_WECHAT_OPENID.ID);
+        public static Identity<EpWechatPayBillRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL = createIdentity(EpWechatPayBill.EP_WECHAT_PAY_BILL, EpWechatPayBill.EP_WECHAT_PAY_BILL.ID);
+        public static Identity<EpWechatPayBillDetailRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL_DETAIL = createIdentity(EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL, EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL.ID);
         public static Identity<EpWechatPayRefundRecord, Long> IDENTITY_EP_WECHAT_PAY_REFUND = createIdentity(EpWechatPayRefund.EP_WECHAT_PAY_REFUND, EpWechatPayRefund.EP_WECHAT_PAY_REFUND.ID);
         public static Identity<EpWechatPayWithdrawRecord, Long> IDENTITY_EP_WECHAT_PAY_WITHDRAW = createIdentity(EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW, EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW.ID);
         public static Identity<EpWechatUnifiedOrderRecord, Long> IDENTITY_EP_WECHAT_UNIFIED_ORDER = createIdentity(EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER, EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER.ID);
@@ -237,6 +244,9 @@ public class Keys {
         public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = createUniqueKey(EpToken.EP_TOKEN, "KEY_ep_token_PRIMARY", EpToken.EP_TOKEN.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_PRIMARY", EpWechatOpenid.EP_WECHAT_OPENID.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_INDEX_OPENID_TYPE_MOBILE", EpWechatOpenid.EP_WECHAT_OPENID.OPENID, EpWechatOpenid.EP_WECHAT_OPENID.TYPE, EpWechatOpenid.EP_WECHAT_OPENID.MOBILE);
+        public static final UniqueKey<EpWechatPayBillRecord> KEY_EP_WECHAT_PAY_BILL_PRIMARY = createUniqueKey(EpWechatPayBill.EP_WECHAT_PAY_BILL, "KEY_ep_wechat_pay_bill_PRIMARY", EpWechatPayBill.EP_WECHAT_PAY_BILL.ID);
+        public static final UniqueKey<EpWechatPayBillRecord> KEY_EP_WECHAT_PAY_BILL_UNIQUE_BILL_DATE = createUniqueKey(EpWechatPayBill.EP_WECHAT_PAY_BILL, "KEY_ep_wechat_pay_bill_UNIQUE_BILL_DATE", EpWechatPayBill.EP_WECHAT_PAY_BILL.BILL_DATE);
+        public static final UniqueKey<EpWechatPayBillDetailRecord> KEY_EP_WECHAT_PAY_BILL_DETAIL_PRIMARY = createUniqueKey(EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL, "KEY_ep_wechat_pay_bill_detail_PRIMARY", EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL.ID);
         public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_PRIMARY = createUniqueKey(EpWechatPayRefund.EP_WECHAT_PAY_REFUND, "KEY_ep_wechat_pay_refund_PRIMARY", EpWechatPayRefund.EP_WECHAT_PAY_REFUND.ID);
         public static final UniqueKey<EpWechatPayRefundRecord> KEY_EP_WECHAT_PAY_REFUND_UNIQUE_OUT_REFUND_NO = createUniqueKey(EpWechatPayRefund.EP_WECHAT_PAY_REFUND, "KEY_ep_wechat_pay_refund_UNIQUE_OUT_REFUND_NO", EpWechatPayRefund.EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
         public static final UniqueKey<EpWechatPayWithdrawRecord> KEY_EP_WECHAT_PAY_WITHDRAW_PRIMARY = createUniqueKey(EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW, "KEY_ep_wechat_pay_withdraw_PRIMARY", EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW.ID);

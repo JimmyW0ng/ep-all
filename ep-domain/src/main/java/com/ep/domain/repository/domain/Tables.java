@@ -208,6 +208,16 @@ public class Tables {
     public static final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
 
     /**
+     * 微信支付对账表
+     */
+    public static final EpWechatPayBill EP_WECHAT_PAY_BILL = com.ep.domain.repository.domain.tables.EpWechatPayBill.EP_WECHAT_PAY_BILL;
+
+    /**
+     * 微信支付对账明细表
+     */
+    public static final EpWechatPayBillDetail EP_WECHAT_PAY_BILL_DETAIL = com.ep.domain.repository.domain.tables.EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL;
+
+    /**
      * 微信支付退单表
      */
     public static final EpWechatPayRefund EP_WECHAT_PAY_REFUND = com.ep.domain.repository.domain.tables.EpWechatPayRefund.EP_WECHAT_PAY_REFUND;

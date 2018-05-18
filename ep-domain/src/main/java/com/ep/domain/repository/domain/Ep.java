@@ -32,7 +32,7 @@ public class Ep extends SchemaImpl {
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-    private static final long serialVersionUID = 206690554;
+    private static final long serialVersionUID = 400692506;
     /**
      * 课程类目表
      */
@@ -219,6 +219,16 @@ public class Ep extends SchemaImpl {
     public final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;
 
     /**
+     * 微信支付对账表
+     */
+    public final EpWechatPayBill EP_WECHAT_PAY_BILL = com.ep.domain.repository.domain.tables.EpWechatPayBill.EP_WECHAT_PAY_BILL;
+
+    /**
+     * 微信支付对账明细表
+     */
+    public final EpWechatPayBillDetail EP_WECHAT_PAY_BILL_DETAIL = com.ep.domain.repository.domain.tables.EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL;
+
+    /**
      * 微信支付退单表
      */
     public final EpWechatPayRefund EP_WECHAT_PAY_REFUND = com.ep.domain.repository.domain.tables.EpWechatPayRefund.EP_WECHAT_PAY_REFUND;
@@ -295,6 +305,8 @@ public class Ep extends SchemaImpl {
                 EpSystemUserRole.EP_SYSTEM_USER_ROLE,
                 EpToken.EP_TOKEN,
                 EpWechatOpenid.EP_WECHAT_OPENID,
+                EpWechatPayBill.EP_WECHAT_PAY_BILL,
+                EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL,
                 EpWechatPayRefund.EP_WECHAT_PAY_REFUND,
                 EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW,
                 EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER);
