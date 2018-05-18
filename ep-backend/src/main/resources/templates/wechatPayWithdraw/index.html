@@ -17,9 +17,7 @@
 
         <div class="panel">
             <div class="panel-heading">
-                <h3 style="display: inline-block">最新结算日期：</h3>
-                <h3 style="display: inline-block" id="withdrawDeadline" th:text="${withdrawDeadline}"></h3>
-                <h3 style="display: inline-block">（该日期及其之前的费用可提现）</h3>
+
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline search-from" id="query-form" role="form">
@@ -41,7 +39,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control " name="courseName"
                                th:value="${searchMap.get('courseName')}"
-                               placeholder="课程">
+                               placeholder="产品">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control " name="className"
@@ -93,38 +91,38 @@
                            aria-describedby="editable_info">
                         <thead>
                         <tr>
-                            <th>课程</th>
+                            <th>ID</th>
+                            <th>产品</th>
                             <th>班次</th>
-                            <th>总已支付订单数</th>
-                            <th>未提现订单数</th>
-                            <th>最近一次提现金额</th>
-
-                            <th>最近一次提现订单数</th>
-                            <th>最近一次提现时间</th>
-                            <th>最近一次提现状态</th>
-
-                            <th>操作</th>
+                            <th>提现订单截止时间</th>
+                            <th>提现总金额（元）</th>
+                            <th>报名订单数</th>
+                            <th>线下支付订单数</th>
+                            <th>微信支付订单数</th>
+                            <th>微信支付手续费（元）</th>
+                            <th>提现手续费（元）</th>
+                            <th>提现订单号</th>
+                            <th>提现状态</th>
+                            <th>创建时间</th>
+                            <th>备注</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="bo:${page.content}">
+                            <td th:text="${bo.id}"></td>
                             <td th:text="${bo.courseName}"></td>
                             <td th:text="${bo.className}"></td>
-                            <td th:text="${bo.totalWechatPaidOrderNum}"></td>
-                            <td th:text="${bo.waitWithdrawOrderNum}"></td>
-                            <td th:text="${bo.lastWithdrawAmount}"></td>
-
-                            <td th:text="${bo.lastWithdrawOrderNum}"></td>
-                            <td th:text="${bo.lastWithdrawTime}"></td>
-                            <td th:text="${bo.lastWithdrawStatus}"></td>
-
-
-                            <td>
-                                <button class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.lastWithdrawStatus,'finish')
-                                ||bo.lastWithdrawStatus==null}"
-                                        th:onclick="'applyPayWithdraw('+${bo.classId}+')'">申请提现
-                                </button>
-                            </td>
+                            <td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${bo.totalAmount}"></td>
+                            <td th:text="${bo.orderNum}"></td>
+                            <td th:text="${bo.offlinePayNum}"></td>
+                            <td th:text="${bo.wechatPayNum}"></td>
+                            <td th:text="${bo.wechatPayFee}"></td>
+                            <td th:text="${bo.withdrawFee}"></td>
+                            <td th:text="${bo.withdrawNo}"></td>
+                            <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${bo.remark}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -154,47 +152,8 @@
 </div>
 
 <script th:replace="~{fragments/scripts}"></script>
-<script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
-    function syncUnifiedorder(outTradeNo) {
-        $.ajax({
-            type: "GET",
-            url: "/auth/wechat/syncUnifiedorder/" + outTradeNo,
-            beforeSend: function () {
-                layer.load(2, {shade: [0.1, '#fff']});
-            },
-            success: function (data) {
-                console.log(data)
-                layer.closeAll();
-                if (data.success) {
-                    layer.alert("同步成功！", {
-                            icon: 1,
-                        }, function (index) {
-                            window.location.href = document.location.href
-                            layer.close(index);
-                        }
-                    )
-                } else {
-                    layer.alert(data.errorDescription, {
-                            icon: 1,
-                        }, function (index) {
-                            window.location.href = document.location.href
-                            layer.close(index);
-                        }
-                    )
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-            complete: function () {
 
-            }
-        })
-    }
-    function applyPayWithdraw(classId) {
-        $ajaxGet("/auth/payWithdraw/merchant/applyPayWithdraw?classId=" + classId + "&withdrawDeadline=" + $("#withdrawDeadline").text())
-    }
 </script>
 </body>
 </html>

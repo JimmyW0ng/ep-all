@@ -39,7 +39,7 @@ public class WechatPayWithdrawService {
     private WechatPayBillDetailRepository wechatPayBillDetailRepository;
 
     /**
-     * 商户提现分页
+     * 微信支付提现申请分页
      *
      * @param pageable
      * @param condition
