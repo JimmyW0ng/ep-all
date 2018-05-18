@@ -34,11 +34,15 @@ public class EpWechatPayBillDetail extends TableImpl<EpWechatPayBillDetailRecord
      * The reference instance of <code>ep.ep_wechat_pay_bill_detail</code>
      */
     public static final EpWechatPayBillDetail EP_WECHAT_PAY_BILL_DETAIL = new EpWechatPayBillDetail();
-    private static final long serialVersionUID = 732917018;
+    private static final long serialVersionUID = -1930450196;
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.id</code>. 主键
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+    /**
+     * The column <code>ep.ep_wechat_pay_bill_detail.bill_id</code>. 对账id
+     */
+    public final TableField<EpWechatPayBillDetailRecord, Long> BILL_ID = createField("bill_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "对账id");
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.ogn_id</code>. 机构id
      */

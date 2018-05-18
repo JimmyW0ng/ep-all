@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 public class EpWechatPayBillDetailPo extends AbstractBasePojo {
 
     private Long id;
+    private Long billId;
     private Long ognId;
     private Long courseId;
     private Long classId;

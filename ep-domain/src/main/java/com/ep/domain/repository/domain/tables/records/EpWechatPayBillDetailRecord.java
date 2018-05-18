@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPayBillDetailRecord> {
 
-    private static final long serialVersionUID = -1621440713;
+    private static final long serialVersionUID = -2061825450;
 
     /**
      * Create a detached EpWechatPayBillDetailRecord
@@ -38,43 +38,44 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
     /**
      * Create a detached, initialised EpWechatPayBillDetailRecord
      */
-    public EpWechatPayBillDetailRecord(Long id, Long ognId, Long courseId, Long classId, Long orderId, String transactionTime, String appid, String mchId, String subMchId, String deviceNo, String transactionId, String outTradeNo, String openid, String tradeType, String tradeState, String bankType, String feeType, BigDecimal totalFee, BigDecimal couponFee, String refundId, String outRefundNo, BigDecimal refundFee, BigDecimal refundCouponFee, String refundType, String refundStatus, String body, String attach, BigDecimal poundage, String poundageRate, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+    public EpWechatPayBillDetailRecord(Long id, Long billId, Long ognId, Long courseId, Long classId, Long orderId, String transactionTime, String appid, String mchId, String subMchId, String deviceNo, String transactionId, String outTradeNo, String openid, String tradeType, String tradeState, String bankType, String feeType, BigDecimal totalFee, BigDecimal couponFee, String refundId, String outRefundNo, BigDecimal refundFee, BigDecimal refundCouponFee, String refundType, String refundStatus, String body, String attach, BigDecimal poundage, String poundageRate, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
         super(EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL);
 
         set(0, id);
-        set(1, ognId);
-        set(2, courseId);
-        set(3, classId);
-        set(4, orderId);
-        set(5, transactionTime);
-        set(6, appid);
-        set(7, mchId);
-        set(8, subMchId);
-        set(9, deviceNo);
-        set(10, transactionId);
-        set(11, outTradeNo);
-        set(12, openid);
-        set(13, tradeType);
-        set(14, tradeState);
-        set(15, bankType);
-        set(16, feeType);
-        set(17, totalFee);
-        set(18, couponFee);
-        set(19, refundId);
-        set(20, outRefundNo);
-        set(21, refundFee);
-        set(22, refundCouponFee);
-        set(23, refundType);
-        set(24, refundStatus);
-        set(25, body);
-        set(26, attach);
-        set(27, poundage);
-        set(28, poundageRate);
-        set(29, createAt);
-        set(30, updateAt);
-        set(31, remark);
-        set(32, delFlag);
-        set(33, version);
+        set(1, billId);
+        set(2, ognId);
+        set(3, courseId);
+        set(4, classId);
+        set(5, orderId);
+        set(6, transactionTime);
+        set(7, appid);
+        set(8, mchId);
+        set(9, subMchId);
+        set(10, deviceNo);
+        set(11, transactionId);
+        set(12, outTradeNo);
+        set(13, openid);
+        set(14, tradeType);
+        set(15, tradeState);
+        set(16, bankType);
+        set(17, feeType);
+        set(18, totalFee);
+        set(19, couponFee);
+        set(20, refundId);
+        set(21, outRefundNo);
+        set(22, refundFee);
+        set(23, refundCouponFee);
+        set(24, refundType);
+        set(25, refundStatus);
+        set(26, body);
+        set(27, attach);
+        set(28, poundage);
+        set(29, poundageRate);
+        set(30, createAt);
+        set(31, updateAt);
+        set(32, remark);
+        set(33, delFlag);
+        set(34, version);
     }
 
     /**
@@ -93,17 +94,32 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
     }
 
     /**
+     * Getter for <code>ep.ep_wechat_pay_bill_detail.bill_id</code>. 对账id
+     */
+    public Long getBillId() {
+        return (Long) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_bill_detail.bill_id</code>. 对账id
+     */
+    public EpWechatPayBillDetailRecord setBillId(Long value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
      * Getter for <code>ep.ep_wechat_pay_bill_detail.ogn_id</code>. 机构id
      */
     public Long getOgnId() {
-        return (Long) get(1);
+        return (Long) get(2);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.ogn_id</code>. 机构id
      */
     public EpWechatPayBillDetailRecord setOgnId(Long value) {
-        set(1, value);
+        set(2, value);
         return this;
     }
 
@@ -111,14 +127,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.course_id</code>. 课程id
      */
     public Long getCourseId() {
-        return (Long) get(2);
+        return (Long) get(3);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.course_id</code>. 课程id
      */
     public EpWechatPayBillDetailRecord setCourseId(Long value) {
-        set(2, value);
+        set(3, value);
         return this;
     }
 
@@ -126,14 +142,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.class_id</code>. 班次id
      */
     public Long getClassId() {
-        return (Long) get(3);
+        return (Long) get(4);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.class_id</code>. 班次id
      */
     public EpWechatPayBillDetailRecord setClassId(Long value) {
-        set(3, value);
+        set(4, value);
         return this;
     }
 
@@ -141,14 +157,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.order_id</code>. 订单id
      */
     public Long getOrderId() {
-        return (Long) get(4);
+        return (Long) get(5);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.order_id</code>. 订单id
      */
     public EpWechatPayBillDetailRecord setOrderId(Long value) {
-        set(4, value);
+        set(5, value);
         return this;
     }
 
@@ -156,14 +172,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.transaction_time</code>. 交易时间
      */
     public String getTransactionTime() {
-        return (String) get(5);
+        return (String) get(6);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.transaction_time</code>. 交易时间
      */
     public EpWechatPayBillDetailRecord setTransactionTime(String value) {
-        set(5, value);
+        set(6, value);
         return this;
     }
 
@@ -171,14 +187,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.appid</code>. appid
      */
     public String getAppid() {
-        return (String) get(6);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.appid</code>. appid
      */
     public EpWechatPayBillDetailRecord setAppid(String value) {
-        set(6, value);
+        set(7, value);
         return this;
     }
 
@@ -186,14 +202,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.mch_id</code>. 商户号
      */
     public String getMchId() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.mch_id</code>. 商户号
      */
     public EpWechatPayBillDetailRecord setMchId(String value) {
-        set(7, value);
+        set(8, value);
         return this;
     }
 
@@ -201,14 +217,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.sub_mch_id</code>. 子商户号
      */
     public String getSubMchId() {
-        return (String) get(8);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.sub_mch_id</code>. 子商户号
      */
     public EpWechatPayBillDetailRecord setSubMchId(String value) {
-        set(8, value);
+        set(9, value);
         return this;
     }
 
@@ -216,14 +232,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.device_no</code>. 设备号
      */
     public String getDeviceNo() {
-        return (String) get(9);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.device_no</code>. 设备号
      */
     public EpWechatPayBillDetailRecord setDeviceNo(String value) {
-        set(9, value);
+        set(10, value);
         return this;
     }
 
@@ -231,14 +247,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.transaction_id</code>. 微信支付订单号
      */
     public String getTransactionId() {
-        return (String) get(10);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.transaction_id</code>. 微信支付订单号
      */
     public EpWechatPayBillDetailRecord setTransactionId(String value) {
-        set(10, value);
+        set(11, value);
         return this;
     }
 
@@ -246,14 +262,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.out_trade_no</code>. 商户订单号
      */
     public String getOutTradeNo() {
-        return (String) get(11);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.out_trade_no</code>. 商户订单号
      */
     public EpWechatPayBillDetailRecord setOutTradeNo(String value) {
-        set(11, value);
+        set(12, value);
         return this;
     }
 
@@ -261,14 +277,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.openid</code>. 用户标识
      */
     public String getOpenid() {
-        return (String) get(12);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.openid</code>. 用户标识
      */
     public EpWechatPayBillDetailRecord setOpenid(String value) {
-        set(12, value);
+        set(13, value);
         return this;
     }
 
@@ -276,14 +292,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.trade_type</code>. 交易类型
      */
     public String getTradeType() {
-        return (String) get(13);
+        return (String) get(14);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.trade_type</code>. 交易类型
      */
     public EpWechatPayBillDetailRecord setTradeType(String value) {
-        set(13, value);
+        set(14, value);
         return this;
     }
 
@@ -291,14 +307,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.trade_state</code>. 交易状态
      */
     public String getTradeState() {
-        return (String) get(14);
+        return (String) get(15);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.trade_state</code>. 交易状态
      */
     public EpWechatPayBillDetailRecord setTradeState(String value) {
-        set(14, value);
+        set(15, value);
         return this;
     }
 
@@ -306,14 +322,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.bank_type</code>. 付款银行
      */
     public String getBankType() {
-        return (String) get(15);
+        return (String) get(16);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.bank_type</code>. 付款银行
      */
     public EpWechatPayBillDetailRecord setBankType(String value) {
-        set(15, value);
+        set(16, value);
         return this;
     }
 
@@ -321,14 +337,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.fee_type</code>. 货币种类
      */
     public String getFeeType() {
-        return (String) get(16);
+        return (String) get(17);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.fee_type</code>. 货币种类
      */
     public EpWechatPayBillDetailRecord setFeeType(String value) {
-        set(16, value);
+        set(17, value);
         return this;
     }
 
@@ -336,14 +352,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.total_fee</code>. 总金额
      */
     public BigDecimal getTotalFee() {
-        return (BigDecimal) get(17);
+        return (BigDecimal) get(18);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.total_fee</code>. 总金额
      */
     public EpWechatPayBillDetailRecord setTotalFee(BigDecimal value) {
-        set(17, value);
+        set(18, value);
         return this;
     }
 
@@ -351,14 +367,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.coupon_fee</code>. 企业红包金额
      */
     public BigDecimal getCouponFee() {
-        return (BigDecimal) get(18);
+        return (BigDecimal) get(19);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.coupon_fee</code>. 企业红包金额
      */
     public EpWechatPayBillDetailRecord setCouponFee(BigDecimal value) {
-        set(18, value);
+        set(19, value);
         return this;
     }
 
@@ -366,14 +382,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.refund_id</code>. 退款单号
      */
     public String getRefundId() {
-        return (String) get(19);
+        return (String) get(20);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.refund_id</code>. 退款单号
      */
     public EpWechatPayBillDetailRecord setRefundId(String value) {
-        set(19, value);
+        set(20, value);
         return this;
     }
 
@@ -381,14 +397,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.out_refund_no</code>. 商户退款单号
      */
     public String getOutRefundNo() {
-        return (String) get(20);
+        return (String) get(21);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.out_refund_no</code>. 商户退款单号
      */
     public EpWechatPayBillDetailRecord setOutRefundNo(String value) {
-        set(20, value);
+        set(21, value);
         return this;
     }
 
@@ -396,14 +412,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.refund_fee</code>. 退款金额
      */
     public BigDecimal getRefundFee() {
-        return (BigDecimal) get(21);
+        return (BigDecimal) get(22);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.refund_fee</code>. 退款金额
      */
     public EpWechatPayBillDetailRecord setRefundFee(BigDecimal value) {
-        set(21, value);
+        set(22, value);
         return this;
     }
 
@@ -411,14 +427,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.refund_coupon_fee</code>. 企业红包退款金额
      */
     public BigDecimal getRefundCouponFee() {
-        return (BigDecimal) get(22);
+        return (BigDecimal) get(23);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.refund_coupon_fee</code>. 企业红包退款金额
      */
     public EpWechatPayBillDetailRecord setRefundCouponFee(BigDecimal value) {
-        set(22, value);
+        set(23, value);
         return this;
     }
 
@@ -426,14 +442,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.refund_type</code>. 退款类型
      */
     public String getRefundType() {
-        return (String) get(23);
+        return (String) get(24);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.refund_type</code>. 退款类型
      */
     public EpWechatPayBillDetailRecord setRefundType(String value) {
-        set(23, value);
+        set(24, value);
         return this;
     }
 
@@ -441,14 +457,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.refund_status</code>. 退款状态
      */
     public String getRefundStatus() {
-        return (String) get(24);
+        return (String) get(25);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.refund_status</code>. 退款状态
      */
     public EpWechatPayBillDetailRecord setRefundStatus(String value) {
-        set(24, value);
+        set(25, value);
         return this;
     }
 
@@ -456,14 +472,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.body</code>. 商品描述
      */
     public String getBody() {
-        return (String) get(25);
+        return (String) get(26);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.body</code>. 商品描述
      */
     public EpWechatPayBillDetailRecord setBody(String value) {
-        set(25, value);
+        set(26, value);
         return this;
     }
 
@@ -471,14 +487,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.attach</code>. 商户数据包
      */
     public String getAttach() {
-        return (String) get(26);
+        return (String) get(27);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.attach</code>. 商户数据包
      */
     public EpWechatPayBillDetailRecord setAttach(String value) {
-        set(26, value);
+        set(27, value);
         return this;
     }
 
@@ -486,14 +502,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.poundage</code>. 手续费
      */
     public BigDecimal getPoundage() {
-        return (BigDecimal) get(27);
+        return (BigDecimal) get(28);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.poundage</code>. 手续费
      */
     public EpWechatPayBillDetailRecord setPoundage(BigDecimal value) {
-        set(27, value);
+        set(28, value);
         return this;
     }
 
@@ -501,14 +517,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.poundage_rate</code>. 费率
      */
     public String getPoundageRate() {
-        return (String) get(28);
+        return (String) get(29);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.poundage_rate</code>. 费率
      */
     public EpWechatPayBillDetailRecord setPoundageRate(String value) {
-        set(28, value);
+        set(29, value);
         return this;
     }
 
@@ -516,14 +532,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.create_at</code>. 创建时间
      */
     public Timestamp getCreateAt() {
-        return (Timestamp) get(29);
+        return (Timestamp) get(30);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.create_at</code>. 创建时间
      */
     public EpWechatPayBillDetailRecord setCreateAt(Timestamp value) {
-        set(29, value);
+        set(30, value);
         return this;
     }
 
@@ -531,14 +547,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.update_at</code>. 更新时间
      */
     public Timestamp getUpdateAt() {
-        return (Timestamp) get(30);
+        return (Timestamp) get(31);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.update_at</code>. 更新时间
      */
     public EpWechatPayBillDetailRecord setUpdateAt(Timestamp value) {
-        set(30, value);
+        set(31, value);
         return this;
     }
 
@@ -546,14 +562,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.remark</code>. 备注
      */
     public String getRemark() {
-        return (String) get(31);
+        return (String) get(32);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.remark</code>. 备注
      */
     public EpWechatPayBillDetailRecord setRemark(String value) {
-        set(31, value);
+        set(32, value);
         return this;
     }
 
@@ -561,14 +577,14 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.del_flag</code>. 删除标记
      */
     public Boolean getDelFlag() {
-        return (Boolean) get(32);
+        return (Boolean) get(33);
     }
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill_detail.del_flag</code>. 删除标记
      */
     public EpWechatPayBillDetailRecord setDelFlag(Boolean value) {
-        set(32, value);
+        set(33, value);
         return this;
     }
 
@@ -580,7 +596,7 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Getter for <code>ep.ep_wechat_pay_bill_detail.version</code>.
      */
     public Long getVersion() {
-        return (Long) get(33);
+        return (Long) get(34);
     }
 
     // -------------------------------------------------------------------------
@@ -591,7 +607,7 @@ public class EpWechatPayBillDetailRecord extends UpdatableRecordImpl<EpWechatPay
      * Setter for <code>ep.ep_wechat_pay_bill_detail.version</code>.
      */
     public EpWechatPayBillDetailRecord setVersion(Long value) {
-        set(33, value);
+        set(34, value);
         return this;
     }
 
