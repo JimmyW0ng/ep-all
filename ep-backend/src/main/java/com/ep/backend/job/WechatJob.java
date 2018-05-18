@@ -2,7 +2,9 @@ package com.ep.backend.job;
 
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.constant.BizConstant;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.pojo.wechat.WechatAccessTokenBo;
 import com.ep.domain.repository.SystemDictRepository;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Date;
 
 /**
  * @Description: 微信定时任务
@@ -37,6 +41,8 @@ public class WechatJob {
     private RestTemplate restTemplate;
     @Autowired
     private SystemDictRepository systemDictRepository;
+    @Autowired
+    private WechatPayComponent wechatPayComponent;
 
     /**
      * 定时获取微信小程序（客户端）ACCESS_TOKEN
@@ -84,5 +90,16 @@ public class WechatJob {
         } else {
             log.error("刷新微信服务号ACCESS_TOKEN失败！");
         }
+    }
+
+    /**
+     * 定时获取微信支付对账单
+     */
+    @Scheduled(cron = "0 0 10 * * ?")
+    public void downloadWechatPayBill() {
+        Date billDate = DateTools.addDay(DateTools.getCurrentDate(), BizConstant.DB_MINUS_ONE);
+        log.info("定时获取微信支付对账单...start, billDate={}", billDate);
+        ResultDo resultDo = wechatPayComponent.downloadbill(billDate);
+        log.info("定时获取微信支付对账单...返回：{}", resultDo);
     }
 }

@@ -8,11 +8,8 @@ import com.ep.common.tool.wechat.WechatTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
-import com.ep.domain.pojo.po.EpWechatPayRefundPo;
-import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
-import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.WechatPayRefundRepository;
-import com.ep.domain.repository.WechatUnifiedOrderRepository;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.*;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
@@ -32,14 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.security.KeyStore;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Description: 微信支付服务
@@ -57,7 +54,7 @@ public class WechatPayComponent {
     private static final String URL_PAY_REFUND = "https://api.mch.weixin.qq.com/secapi/pay/refund";
     private static final String URL_PAY_ORDERQUERY = "https://api.mch.weixin.qq.com/pay/orderquery";
     private static final String URL_PAY_REFUNDQUERY = "https://api.mch.weixin.qq.com/pay/refundquery";
-    private static final String URL_PAY_PAYREFUND = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+    private static final String URL_DOWNLOAD_BILL = "https://api.mch.weixin.qq.com/pay/downloadbill";
     private static final String URL_SANDBOX_GET_KEY = "https://api.mch.weixin.qq.com/pay/getsignkey";
     private static final String NOTIFY_UNIFIEDORDER_URL = "/security/wechat/pay/notify";
     private static final String NOTIFY_REFUND_URL = "/security/wechat/pay/refund/notify";
@@ -75,6 +72,10 @@ public class WechatPayComponent {
     private WechatUnifiedOrderRepository wechatUnifiedOrderRepository;
     @Autowired
     private WechatPayRefundRepository wechatPayRefundRepository;
+    @Autowired
+    private WechatPayBillRepository wechatPayBillRepository;
+    @Autowired
+    private WechatPayBillDetailRepository wechatPayBillDetailRepository;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -583,40 +584,6 @@ public class WechatPayComponent {
     }
 
     /**
-     * 申请退款
-     *
-     * @param transactionId 微信订单号
-     * @param outTradeNo    商户订单号
-     * @param outRefundNo   商户退款单号
-     * @return
-     * @throws Exception
-     */
-    public ResultDo payRefund(String transactionId, String outTradeNo, String outRefundNo, Integer totalFee, Integer refundFee) throws Exception {
-
-        Map<String, String> requestMap = Maps.newHashMap();
-        if (StringTools.isBlank(transactionId) && StringTools.isBlank(outTradeNo)) {
-            return ResultDo.build(MessageCode.ERROR_WECHAT_API_REQPARAM);
-        }
-        requestMap.put("transaction_id", transactionId);
-        requestMap.put("out_trade_no", outTradeNo);
-        requestMap.put("out_refund_no", outRefundNo);
-        requestMap.put("total_fee", totalFee.toString());
-        requestMap.put("refund_fee", refundFee.toString());
-        requestMap.put("notify_url", "");
-
-        String url = URL_PAY_PAYREFUND;
-        String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
-        log.info("[微信支付]申请退款，接口入参={}。", xml);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, xml, String.class);
-        if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-            return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
-        }
-        String resultStr = responseEntity.getBody();
-        log.info("[微信支付]申请退款，接口返回={}。", resultStr);
-        return ResultDo.build().setResult(resultStr);
-    }
-
-    /**
      * 获取沙箱秘钥
      *
      * @return
@@ -644,6 +611,172 @@ public class WechatPayComponent {
         } catch (Exception e) {
             return resultDo.setError(MessageCode.ERROR_SYSTEM);
         }
+    }
+
+    /**
+     * 下载对账单
+     *
+     * @param billDate
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo downloadbill(Date billDate) {
+        ResultDo resultDo = ResultDo.build();
+        String billDateStr = DateTools.toString(billDate, DateTools.DATE_FMT_0);
+        try {
+            // 判断当天结账数据是否存在
+            int billDateInt = Integer.valueOf(billDateStr);
+            Optional<EpWechatPayBillPo> existBill = wechatPayBillRepository.getByBillDate(billDateInt);
+            if (existBill.isPresent() && WechatTools.SUCCESS.equals(existBill.get().getReturnCode())) {
+                log.info("【下载对账单】已存在本地对账记录, billDateStr={}", billDateStr);
+                return resultDo;
+            }
+            // 删除
+            if (existBill.isPresent()) {
+                wechatPayBillRepository.delete(existBill.get().getId());
+            }
+            EpWechatPayBillPo billPo = new EpWechatPayBillPo();
+            billPo.setBillDate(billDateInt);
+            wechatPayBillRepository.insert(billPo);
+            Map<String, String> requestMap = Maps.newHashMap();
+            requestMap.put("appid", xcxMemberAppid);
+            requestMap.put("mch_id", wechatPayMchid);
+            requestMap.put("nonce_str", WechatTools.generateUUID());
+            requestMap.put("bill_date", billDateStr);
+            requestMap.put("bill_type", "ALL");
+            requestMap.put("sign", WechatTools.generateSignature(requestMap, wechatPayKey));
+            String xml = WechatTools.mapToXmlString(this.fillRequestData(requestMap));
+            log.info("【下载对账单】接口入参={}", xml);
+            ResponseEntity<byte[]> responseEntity = restTemplate.postForEntity(URL_DOWNLOAD_BILL, xml, byte[].class);
+            if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+                log.error("【下载对账单】微信请求失败, httpStatus={}", responseEntity.getStatusCode());
+                return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+            }
+            byte[] body = responseEntity.getBody();
+            log.info("【下载对账单】接口返回 Byte[].length={}", body.length);
+            // 写入文本文件
+            String filePath = "/home/ep/bill/bill_" + billDateStr + ".txt";
+            log.info("【下载对账单】写入文本文件 file={}", filePath);
+            OutputStream os = new FileOutputStream(filePath);
+            InputStream is = new ByteArrayInputStream(body);
+            byte[] buff = new byte[BizConstant.NUM_ONE_MB];
+            int len = BizConstant.DB_NUM_ZERO;
+            while ((len = is.read(buff)) != BizConstant.DB_MINUS_ONE) {
+                os.write(buff, BizConstant.DB_NUM_ZERO, len);
+            }
+            is.close();
+            os.close();
+            // 解析文本
+            log.info("【下载对账单】解析文本 file={}", filePath);
+            FileReader fr = new FileReader(filePath);
+            BufferedReader br = new BufferedReader(fr);
+            Boolean success = true;
+            StringBuffer errorMsg = new StringBuffer();
+            int lineNum = BizConstant.DB_NUM_ZERO;
+            int dataNum = BizConstant.DB_NUM_ZERO;
+            String[] lastStrSplit = null;
+            String lineTxt = null;
+            while ((lineTxt = br.readLine()) != null) {
+                lineNum++;
+                log.debug(lineTxt);
+                if (lineNum == BizConstant.DB_NUM_ONE && lineTxt.startsWith("<xml>")) {
+                    success = false;
+                }
+                if (!success) {
+                    errorMsg.append(lineTxt);
+                    continue;
+                }
+                if (success && lineTxt.startsWith("`")) {
+                    lastStrSplit = lineTxt.replaceAll("`", "").trim().split(",");
+                    if (lastStrSplit.length < 24) {
+                        continue;
+                    }
+                    dataNum++;
+                    EpWechatPayBillDetailPo detailPo = new EpWechatPayBillDetailPo();
+                    int dataIndex = 0;
+                    detailPo.setTransactionTime(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setAppid(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setMchId(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setSubMchId(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setDeviceNo(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setTransactionId(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setOutTradeNo(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setOpenid(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setTradeType(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setTradeState(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setBankType(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setFeeType(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setTotalFee(new BigDecimal(lastStrSplit[dataIndex]));
+                    dataIndex++;
+                    detailPo.setCouponFee(new BigDecimal(lastStrSplit[dataIndex]));
+                    dataIndex++;
+                    detailPo.setRefundId(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setOutRefundNo(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setRefundFee(new BigDecimal(lastStrSplit[dataIndex]));
+                    dataIndex++;
+                    detailPo.setRefundCouponFee(new BigDecimal(lastStrSplit[dataIndex]));
+                    dataIndex++;
+                    detailPo.setRefundType(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setRefundStatus(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setBody(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setAttach(lastStrSplit[dataIndex]);
+                    dataIndex++;
+                    detailPo.setPoundage(new BigDecimal(lastStrSplit[dataIndex]));
+                    dataIndex++;
+                    detailPo.setPoundageRate(lastStrSplit[dataIndex]);
+                    EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.getByOutTradeNo(detailPo.getOutTradeNo());
+                    if (unifiedOrderPo != null) {
+                        EpOrderPo orderPo = orderRepository.getById(unifiedOrderPo.getOrderId());
+                        detailPo.setOgnId(orderPo.getOgnId());
+                        detailPo.setCourseId(orderPo.getCourseId());
+                        detailPo.setClassId(orderPo.getClassId());
+                        detailPo.setOrderId(orderPo.getId());
+                    }
+                    wechatPayBillDetailRepository.insert(detailPo);
+                }
+            }
+            if (!success) {
+                Map<String, String> respMap = WechatTools.xmlToMap(errorMsg.toString());
+                log.info("【下载对账单】返回异常: respMap={}", respMap);
+                wechatPayBillRepository.handleFail(billPo.getId(), respMap.get("return_code"), respMap.get("return_msg"));
+            } else {
+                log.info("【下载对账单】数据解析成功: lineNum={}, dataNum={}, lastText={}", lineNum, dataNum, lastStrSplit);
+                int dataIndex = 0;
+                int totalNum = Integer.parseInt(lastStrSplit[dataIndex]);
+                dataIndex++;
+                BigDecimal totalAmount = new BigDecimal(lastStrSplit[dataIndex]);
+                dataIndex++;
+                BigDecimal totalRefundAmount = new BigDecimal(lastStrSplit[dataIndex]);
+                dataIndex++;
+                BigDecimal totalCouponRefundAmount = new BigDecimal(lastStrSplit[dataIndex]);
+                dataIndex++;
+                BigDecimal totalPoundage = new BigDecimal(lastStrSplit[dataIndex]);
+                wechatPayBillRepository.handleSuccess(billPo.getId(), totalNum, totalAmount, totalRefundAmount, totalCouponRefundAmount, totalPoundage);
+            }
+            br.close();
+            fr.close();
+        } catch (Exception e) {
+            log.error("【下载对账单】解析失败, billDateStr={}", billDateStr, e);
+            return resultDo.setError(MessageCode.ERROR_SYSTEM).setErrorDescription(e.getMessage());
+        }
+        return resultDo;
     }
 
     /**
