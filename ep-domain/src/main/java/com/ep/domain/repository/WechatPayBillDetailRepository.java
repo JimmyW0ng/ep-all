@@ -21,5 +21,14 @@ public class WechatPayBillDetailRepository extends AbstractCRUDRepository<EpWech
         super(dslContext, EP_WECHAT_PAY_BILL_DETAIL, EP_WECHAT_PAY_BILL_DETAIL.ID, EpWechatPayBillDetailPo.class);
     }
 
-
+    /**
+     * 根据billid删除记录
+     *
+     * @param billId
+     */
+    public int deleteByBillId(Long billId) {
+        return dslContext.delete(EP_WECHAT_PAY_BILL_DETAIL)
+                         .where(EP_WECHAT_PAY_BILL_DETAIL.BILL_ID.eq(billId))
+                         .execute();
+    }
 }

@@ -633,8 +633,9 @@ public class WechatPayComponent {
             }
             // 删除
             if (existBill.isPresent()) {
-                wechatPayBillRepository.delete(existBill.get().getId());
-                // wechatPayBillDetailRepository.delete
+                Long billId = existBill.get().getId();
+                wechatPayBillRepository.delete(billId);
+                wechatPayBillDetailRepository.deleteByBillId(billId);
             }
             EpWechatPayBillPo billPo = new EpWechatPayBillPo();
             billPo.setBillDate(billDateInt);
