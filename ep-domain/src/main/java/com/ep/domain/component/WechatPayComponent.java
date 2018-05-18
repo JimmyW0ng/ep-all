@@ -743,6 +743,7 @@ public class WechatPayComponent {
                     detailPo.setPoundage(new BigDecimal(lastStrSplit[dataIndex]));
                     dataIndex++;
                     detailPo.setPoundageRate(lastStrSplit[dataIndex]);
+                    detailPo.setBillId(billPo.getId());
                     EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.getByOutTradeNo(detailPo.getOutTradeNo());
                     if (unifiedOrderPo != null) {
                         EpOrderPo orderPo = orderRepository.getById(unifiedOrderPo.getOrderId());
