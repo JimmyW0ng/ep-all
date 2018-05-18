@@ -337,8 +337,8 @@ public class WechatPayComponent {
                 String resultCode = respMap.get("result_code");
                 String errCode = respMap.get("err_code");
                 String errCodeDes = respMap.get("err_code_des");
-                String prepayId = respMap.get("prepay_id");
-                wechatPayRefundRepository.handlePayRefund(wechatPayRefundPo.getId(), returnCode, returnMsg, resultCode, errCode, errCodeDes, prepayId);
+                String refundId = respMap.get("refund_id");
+                wechatPayRefundRepository.handlePayRefund(wechatPayRefundPo.getId(), returnCode, returnMsg, resultCode, errCode, errCodeDes, refundId);
                 // 请求处理失败
                 if (!WechatTools.SUCCESS.equals(returnCode)) {
                     log.error("【微信支付退单】返回处理失败, outTradeNo={}, returnCode={}, returnMsg={}", outTradeNo, returnCode, returnMsg);
