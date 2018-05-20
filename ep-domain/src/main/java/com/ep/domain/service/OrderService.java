@@ -335,9 +335,19 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo orderSuccessById(Long id) {
         log.info("[订单报名成功]开始，订单id={}", id);
+        Optional<EpOrderPo> existOrder = orderRepository.findById(id);
+        if (!existOrder.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        EpOrderPo orderPo = existOrder.get();
+        if (!EpOrderStatus.save.equals(orderPo.getStatus())) {
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+        if (orderPo.getPayStatus() != null && !EpOrderPayStatus.paid.equals(orderPo.getPayStatus())) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_PAY_STATUS_NOT_PAID);
+        }
         int count = orderRepository.orderSuccessById(id);
         if (count == BizConstant.DB_NUM_ONE) {
-            EpOrderPo orderPo = orderRepository.getById(id);
             // 增加班次成功报名人数
             organClassRepository.updateEnteredNumWithEnterNotLimit(orderPo.getClassId(), count);
             // 增加课程总参与人数
