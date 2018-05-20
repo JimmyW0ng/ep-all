@@ -13,7 +13,6 @@ import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpWechatPayBillPo;
-import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
 import com.ep.domain.repository.domain.enums.*;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
@@ -640,23 +639,24 @@ public class OrderController extends BackendController {
         conditions.add(EP_ORGAN_CLASS.DEL_FLAG.eq(false));
 
         Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
-        page.getContent().forEach(p -> {
-            Long classId = p.getClassId();
-            //总微信支付成功订单数
-            int totalWechatPaidOrderNum = orderService.countWechatPaidOrderByClassId(classId);
-            p.setTotalWechatPaidOrderNum(totalWechatPaidOrderNum);
-            //已提现订单数
-            int finishWithdrawNum = wechatPayWithdrawService.countPayWithdrawByClassId(classId);
-            p.setWaitWithdrawOrderNum(totalWechatPaidOrderNum - finishWithdrawNum);
-            EpWechatPayWithdrawPo wechatPayWithdrawPo = wechatPayWithdrawService.getLastWithdrawByClassId(classId);
-            if (null != wechatPayWithdrawPo) {
-                p.setLastWithdrawAmount(wechatPayWithdrawPo.getTotalAmount());
-                p.setLastWithdrawOrderNum(wechatPayWithdrawPo.getWechatPayNum());
-                p.setLastWithdrawTime(wechatPayWithdrawPo.getOrderDeadline());
-                p.setLastWithdrawStatus(wechatPayWithdrawPo.getStatus());
-                p.setPayWithdrawId(wechatPayWithdrawPo.getId());
-            }
-        });
+//        Page<ClassWithdrawQueryDto> page = orderService.findClassWithdrawQueryDtoByPage(pageable, conditions);
+//        page.getContent().forEach(p -> {
+//            Long classId = p.getClassId();
+//            //总微信支付成功订单数
+//            int totalWechatPaidOrderNum = orderService.countWechatPaidOrderByClassId(classId);
+//            p.setTotalWechatPaidOrderNum(totalWechatPaidOrderNum);
+//            //已提现订单数
+//            int finishWithdrawNum = wechatPayWithdrawService.countPayWithdrawByClassId(classId);
+//            p.setWaitWithdrawOrderNum(totalWechatPaidOrderNum - finishWithdrawNum);
+//            EpWechatPayWithdrawPo wechatPayWithdrawPo = wechatPayWithdrawService.getLastWithdrawByClassId(classId);
+//            if (null != wechatPayWithdrawPo) {
+//                p.setLastWithdrawAmount(wechatPayWithdrawPo.getTotalAmount());
+//                p.setLastWithdrawOrderNum(wechatPayWithdrawPo.getWechatPayNum());
+//                p.setLastWithdrawTime(wechatPayWithdrawPo.getOrderDeadline());
+//                p.setLastWithdrawStatus(wechatPayWithdrawPo.getStatus());
+//                p.setPayWithdrawId(wechatPayWithdrawPo.getId());
+//            }
+//        });
         EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
         if (null != wechatPayBillPo) {
             Date withdrawDeadline;
