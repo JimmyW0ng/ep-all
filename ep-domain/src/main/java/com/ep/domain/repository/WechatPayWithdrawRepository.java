@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.*;
 
@@ -32,8 +33,16 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
         super(dslContext, EP_WECHAT_PAY_WITHDRAW, EP_WECHAT_PAY_WITHDRAW.ID, EpWechatPayWithdrawPo.class);
     }
 
+    public Optional<EpWechatPayWithdrawPo> findById(Long id) {
+        EpWechatPayWithdrawPo data = dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
+                .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .fetchOneInto(EpWechatPayWithdrawPo.class);
+        return Optional.ofNullable(data);
+    }
+
     /**
-     * 微信支付提现申请分页
+     * 微信支付提现平台分页
      *
      * @param pageable
      * @param condition
@@ -94,5 +103,51 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                 .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
                 .limit(BizConstant.DB_NUM_ONE)
                 .fetchOneInto(EpWechatPayWithdrawPo.class);
+    }
+
+    /**
+     * 审核通过提现申请
+     *
+     * @param id
+     * @return
+     */
+    public int submitPayWithdrawById(Long id) {
+        return dslContext.update(EP_WECHAT_PAY_WITHDRAW)
+                .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.submit)
+                .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
+                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.wait))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 审核通过提现申请
+     *
+     * @param id
+     * @return
+     */
+    public int finishPayWithdrawById(Long id) {
+        return dslContext.update(EP_WECHAT_PAY_WITHDRAW)
+                .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.finish)
+                .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
+                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.submit))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 拒绝提现申请
+     *
+     * @param id
+     * @return
+     */
+    public int refusePayWithdrawById(Long id, String remark) {
+        return dslContext.update(EP_WECHAT_PAY_WITHDRAW)
+                .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.refuse)
+                .set(EP_WECHAT_PAY_WITHDRAW.REMARK, remark)
+                .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
+                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.wait))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .execute();
     }
 }

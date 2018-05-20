@@ -122,9 +122,10 @@
 
                             <td>
                                 <button class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.lastWithdrawStatus,'finish')
-                                ||bo.lastWithdrawStatus==null}"
+                                ||#stringTools.equals(bo.lastWithdrawStatus,'refuse')||bo.lastWithdrawStatus==null}"
                                         th:onclick="'applyPayWithdraw('+${bo.classId}+')'">申请提现
                                 </button>
+
                             </td>
                         </tr>
                         </tbody>
@@ -161,6 +162,8 @@
     function applyPayWithdraw(classId) {
         $ajaxGet("/auth/order/applyPayWithdraw?classId=" + classId + "&withdrawDeadline=" + $("#withdrawDeadline").text())
     }
+
+
 </script>
 </body>
 </html>

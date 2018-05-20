@@ -690,7 +690,6 @@ public class OrderController extends BackendController {
         } else {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-//        return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
     }
 
     /**

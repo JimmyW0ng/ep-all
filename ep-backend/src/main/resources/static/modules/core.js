@@ -70,6 +70,7 @@ function toastr_success(msg, url) {
     } else {
         toastr.success("操作成功");
     }
+    $("button,a").attr("disabled", true)
     setTimeout(function () {
         window.location.href = url
     }, 2000)

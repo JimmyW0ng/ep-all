@@ -111,11 +111,9 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.remark}"></td>
                             <td>
-                                <button class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'wait')}"
-                                        th:onclick="'submitPayWithdrawBox('+${bo.id}+')'">审核通过
-                                </button>
-                                <button class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'wait')}"
-                                        th:onclick="'refusePayWithdrawBox('+${bo.id}+')'">拒绝
+                                <button class="btn btn-xs btn-primary"
+                                        th:if="${#stringTools.equals(bo.status,'submit')}"
+                                        th:onclick="'finishPayWithdrawBox('+${bo.id}+')'">完成
                                 </button>
 
                             </td>
@@ -146,59 +144,15 @@
         </div>
     </div>
 </div>
-<div class="modal inmodal" id="refuseModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content animated bounceInRight">
 
-            <input type="hidden" id="sourceId">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">关闭</span>
-                </button>
-                <h3 style="text-align: left">提现拒绝</h3>
-
-            </div>
-            <div class="modal-body">
-                <label>原因：</label>
-                <textarea class="form-control" id="refuseRemark"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="refusePayWithdrawDo()">保存</button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <script th:replace="~{fragments/scripts}"></script>
 <script th:inline="javascript">
-    function submitPayWithdrawBox(id) {
-        layer_confirm(formatMsg("审核通过", "笔提现", ""), 3, submitPayWithdraw, id)
-    }
-    function submitPayWithdraw(id) {
-        $ajaxGet("/auth/wechatPaywithdraw/submitPayWithdraw/" + id)
+    function finishPayWithdrawBox(id) {
+        layer_confirm(formatMsg("完结", "笔提现", "请先确认已收到提现款再按确定"), 3, finishPayWithdraw, id)
     }
 
-
-    function refusePayWithdrawBox(id) {
-        $("#refuseModal").modal("show")
-        $("#sourceId").val(id)
-    }
-    function refusePayWithdrawDo() {
-        $.ajax({
-            type: "GET",
-            url: "/auth/wechatPaywithdraw/refusePayWithdraw?id=" + $("#sourceId").val() + "&remark=" + $("#refuseRemark").val(),
-            success: function (data) {
-                if (data.success) {
-                    toastr_success(null, document.location.href)
-                } else {
-                    toastr.error("操作失败，原因：" + data.errorDescription);
-                }
-            },
-            error: function (XMLHttpRequest) {
-                toastr_error_system(XMLHttpRequest.status);
-            },
-        })
+    function finishPayWithdraw(id) {
+        $ajaxGet("/auth/wechatPaywithdraw/finishPayWithdraw/" + id)
     }
 </script>
 </body>
