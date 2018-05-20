@@ -333,8 +333,9 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
         return dslContext.update(EP_ORDER)
                          .set(EP_ORDER.STATUS, EpOrderStatus.success)
                          .set(EP_ORDER.REMARK, DSL.castNull(EP_ORDER.REMARK))
-                .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                         .where(EP_ORDER.STATUS.eq(EpOrderStatus.save))
                          .and(EP_ORDER.ID.eq(id))
+                         .and(EP_ORDER.PAY_STATUS.isNull().or(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid)))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
     }
