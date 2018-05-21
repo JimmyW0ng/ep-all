@@ -35,7 +35,7 @@ public class EpWechatPayWithdraw extends TableImpl<EpWechatPayWithdrawRecord> {
      * The reference instance of <code>ep.ep_wechat_pay_withdraw</code>
      */
     public static final EpWechatPayWithdraw EP_WECHAT_PAY_WITHDRAW = new EpWechatPayWithdraw();
-    private static final long serialVersionUID = -69622051;
+    private static final long serialVersionUID = -155832573;
     /**
      * The column <code>ep.ep_wechat_pay_withdraw.id</code>. 主键
      */
@@ -73,13 +73,29 @@ public class EpWechatPayWithdraw extends TableImpl<EpWechatPayWithdrawRecord> {
      */
     public final TableField<EpWechatPayWithdrawRecord, BigDecimal> WECHAT_PAY_FEE = createField("wechat_pay_fee", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false), this, "微信支付手续费");
     /**
+     * The column <code>ep.ep_wechat_pay_withdraw.account_name</code>. 收款方户名
+     */
+    public final TableField<EpWechatPayWithdrawRecord, String> ACCOUNT_NAME = createField("account_name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "收款方户名");
+    /**
+     * The column <code>ep.ep_wechat_pay_withdraw.account_number</code>. 收款方账号
+     */
+    public final TableField<EpWechatPayWithdrawRecord, String> ACCOUNT_NUMBER = createField("account_number", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "收款方账号");
+    /**
      * The column <code>ep.ep_wechat_pay_withdraw.withdraw_fee</code>. 提现手续费
      */
     public final TableField<EpWechatPayWithdrawRecord, BigDecimal> WITHDRAW_FEE = createField("withdraw_fee", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "提现手续费");
     /**
-     * The column <code>ep.ep_wechat_pay_withdraw.withdraw_no</code>. 提现订单号
+     * The column <code>ep.ep_wechat_pay_withdraw.out_withdraw_no</code>. 商户单号
      */
-    public final TableField<EpWechatPayWithdrawRecord, String> WITHDRAW_NO = createField("withdraw_no", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "提现订单号");
+    public final TableField<EpWechatPayWithdrawRecord, String> OUT_WITHDRAW_NO = createField("out_withdraw_no", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "商户单号");
+    /**
+     * The column <code>ep.ep_wechat_pay_withdraw.pay_id</code>. 付款单号
+     */
+    public final TableField<EpWechatPayWithdrawRecord, String> PAY_ID = createField("pay_id", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "付款单号");
+    /**
+     * The column <code>ep.ep_wechat_pay_withdraw.paid_time</code>. 到账时间
+     */
+    public final TableField<EpWechatPayWithdrawRecord, Timestamp> PAID_TIME = createField("paid_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "到账时间");
     /**
      * The column <code>ep.ep_wechat_pay_withdraw.status</code>. 提现状态
      */

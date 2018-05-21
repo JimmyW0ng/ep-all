@@ -31,8 +31,12 @@ public class EpWechatPayWithdrawPo extends AbstractBasePojo {
     private Integer offlinePayNum;
     private Integer wechatPayNum;
     private BigDecimal wechatPayFee;
+    private String accountName;
+    private String accountNumber;
     private BigDecimal withdrawFee;
-    private String withdrawNo;
+    private String outWithdrawNo;
+    private String payId;
+    private Timestamp paidTime;
     private EpWechatPayWithdrawStatus status;
     private Timestamp createAt;
     private Timestamp updateAt;
