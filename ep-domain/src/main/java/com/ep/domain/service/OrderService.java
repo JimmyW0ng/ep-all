@@ -12,7 +12,6 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.*;
-import com.ep.domain.pojo.dto.ClassWithdrawQueryDto;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.dto.OrderDto;
 import com.ep.domain.pojo.dto.OrderInitDto;
@@ -779,7 +778,7 @@ public class OrderService {
         return orderRepository.countWechatPaidOrderByClassId(classId);
     }
 
-    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
-        return orderRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
-    }
+//    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
+//        return orderRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
+//    }
 }
