@@ -777,4 +777,8 @@ public class OrderService {
     public int countWechatPaidOrderByClassId(Long classId) {
         return orderRepository.countWechatPaidOrderByClassId(classId);
     }
+
+//    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
+//        return orderRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
+//    }
 }

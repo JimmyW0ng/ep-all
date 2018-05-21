@@ -847,5 +847,32 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .fetchOneInto(Integer.class);
     }
+
+//    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition){
+//        long totalCount = dslContext.selectCount()
+//                .from(EP_ORGAN_CLASS)
+//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+//                .where(condition).fetchOne(0, Long.class);
+//        if (totalCount == BizConstant.DB_NUM_ZERO) {
+//            return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
+//        }
+//        List<Field<?>> fieldList = Lists.newArrayList();
+//        fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
+//        fieldList.add(EP_ORGAN_COURSE.ID.as("courseId"));
+//        fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
+//        fieldList.add(EP_ORGAN_CLASS.ID.as("classId"));
+//
+//        SelectConditionStep<Record> record = dslContext.select(fieldList)
+//                .from(EP_ORGAN_CLASS)
+//                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+//                .where(condition);
+//
+//        List<ClassWithdrawQueryDto> list = record.orderBy(getSortFields(pageable.getSort()))
+//                .limit(pageable.getPageSize())
+//                .offset(pageable.getOffset())
+//                .fetchInto(ClassWithdrawQueryDto.class);
+//        PageImpl<ClassWithdrawQueryDto> pPage = new PageImpl<ClassWithdrawQueryDto>(list, pageable, totalCount);
+//        return pPage;
+//    }
 }
 
