@@ -1,7 +1,6 @@
 package com.ep.domain.service;
 
 import com.ep.common.tool.DateTools;
-import com.ep.common.tool.SerialNumberTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
@@ -39,6 +38,8 @@ public class WechatPayWithdrawService {
     private OrderRepository orderRepository;
     @Autowired
     private WechatPayBillDetailRepository wechatPayBillDetailRepository;
+    @Autowired
+    private WechatPayBillService wechatPayBillService;
 
     public Optional<EpWechatPayWithdrawPo> findById(Long id) {
         return wechatPayWithdrawRepository.findById(id);
@@ -80,8 +81,24 @@ public class WechatPayWithdrawService {
      * @param courseId
      * @return
      */
-    public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadline) {
-        log.info("[微信报名费提现]订单微信支付报名费提现申请开始，classId={},courseId={}。", classId, courseId);
+    public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadline, String accountName, String accountNumber) {
+        log.info("[微信订单费提现]订单微信支付订单费提现申请开始，classId={},courseId={}。", classId, courseId);
+//        EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
+//        if (null != wechatPayBillPo) {
+//            Date withdrawDeadlineDb;
+//            String withdrawDeadlineStr="";
+//            try {
+//                withdrawDeadlineDb = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
+//                withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadlineDb);
+//            } catch (Exception e) {
+////                withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
+//            }
+//
+//            if(!withdrawDeadline.equals(withdrawDeadlineStr)){
+//                withdrawDeadline=withdrawDeadlineStr;
+//                log.info("[微信订单费提现]");
+//            }
+//        }
         //该班次上一次提现记录
         EpWechatPayWithdrawPo lastWechatPayWithdrawPo = wechatPayWithdrawRepository.getLastWithdrawByClassId(classId);
         Timestamp startTime = null;
@@ -107,10 +124,9 @@ public class WechatPayWithdrawService {
         //微信支付手续费
         wechatPayWithdrawPo.setWechatPayFee(wechatPayBillDetailRepository.sumWechatPayFeeByClassId(classId, startTime, orderDeadline));
         //提现订单号
-        wechatPayWithdrawPo.setWithdrawNo(SerialNumberTools.generateWithdrawNo(classId));
         wechatPayWithdrawRepository.insert(wechatPayWithdrawPo);
-        log.info("[微信报名费提现]订单微信支付报名费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
-        log.info("[微信报名费提现]订单微信支付报名费提现申请成功，classId={},courseId={}。", classId, courseId);
+        log.info("[微信订单费提现]订单微信支付订单费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
+        log.info("[微信订单费提现]订单微信支付订单费提现申请成功，classId={},courseId={}。", classId, courseId);
         return ResultDo.build();
     }
 
@@ -121,12 +137,12 @@ public class WechatPayWithdrawService {
      * @return
      */
     public ResultDo submitPayWithdrawById(Long id) {
-        log.info("[微信报名费提现]审核通过提现申请开始，id={}。", id);
+        log.info("[微信订单费提现]审核通过提现申请开始，id={}。", id);
         if (wechatPayWithdrawRepository.submitPayWithdrawById(id) == BizConstant.DB_NUM_ONE) {
-            log.info("[微信报名费提现]审核通过提现申请成功，id={}。", id);
+            log.info("[微信订单费提现]审核通过提现申请成功，id={}。", id);
             return ResultDo.build();
         }
-        log.error("[微信报名费提现]审核通过提现申请失败，id={}。", id);
+        log.error("[微信订单费提现]审核通过提现申请失败，id={}。", id);
         return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
     }
 
@@ -137,12 +153,12 @@ public class WechatPayWithdrawService {
      * @return
      */
     public ResultDo finishPayWithdrawById(Long id) {
-        log.info("[微信报名费提现]提现完成开始，id={}。", id);
+        log.info("[微信订单费提现]提现完成开始，id={}。", id);
         if (wechatPayWithdrawRepository.finishPayWithdrawById(id) == BizConstant.DB_NUM_ONE) {
-            log.info("[微信报名费提现]提现完成成功，id={}。", id);
+            log.info("[微信订单费提现]提现完成成功，id={}。", id);
             return ResultDo.build();
         }
-        log.error("[微信报名费提现]提现完成失败，id={}。", id);
+        log.error("[微信订单费提现]提现完成失败，id={}。", id);
         return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
     }
 
@@ -154,12 +170,14 @@ public class WechatPayWithdrawService {
      * @return
      */
     public ResultDo refusePayWithdrawById(Long id, String remark) {
-        log.info("[微信报名费提现]提现申请拒绝开始，id={}。", id);
+        log.info("[微信订单费提现]提现申请拒绝开始，id={}。", id);
         if (wechatPayWithdrawRepository.refusePayWithdrawById(id, remark) == BizConstant.DB_NUM_ONE) {
-            log.info("[微信报名费提现]提现申请拒绝成功，id={}。", id);
+            log.info("[微信订单费提现]提现申请拒绝成功，id={}。", id);
             return ResultDo.build();
         }
-        log.error("[微信报名费提现]提现申请拒绝失败，id={}。", id);
+        log.error("[微信订单费提现]提现申请拒绝失败，id={}。", id);
         return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
     }
+
+
 }

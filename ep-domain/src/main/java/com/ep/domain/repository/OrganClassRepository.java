@@ -520,9 +520,10 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      * @return
      */
     public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
-        long totalCount = dslContext.selectCount()
+        long totalCount = dslContext.select(EP_ORGAN_CLASS.ID.countDistinct())
                 .from(EP_ORGAN_CLASS)
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
+                .leftJoin(EP_ORDER).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
                 .where(condition).fetchOne(0, Long.class);
         if (totalCount == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
@@ -532,11 +533,15 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
         fieldList.add(EP_ORGAN_COURSE.ID.as("courseId"));
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS.ID.as("classId"));
+        fieldList.add(DSL.count(EP_ORDER.ID).as("waitWithdrawOrderNum"));
 
-        SelectConditionStep<Record> record = dslContext.select(fieldList)
+
+        SelectHavingStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORGAN_CLASS)
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_CLASS.COURSE_ID.eq(EP_ORGAN_COURSE.ID))
-                .where(condition);
+                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
+                .leftJoin(EP_ORDER).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .where(condition)
+                .groupBy(EP_ORGAN_CLASS.ID);
 
         List<ClassWithdrawQueryDto> list = record.orderBy(getSortFields(pageable.getSort()))
                 .limit(pageable.getPageSize())

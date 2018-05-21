@@ -778,7 +778,38 @@ public class OrderService {
         return orderRepository.countWechatPaidOrderByClassId(classId);
     }
 
+    public long countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus) {
+        return orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, orderPayType, orderPayStatus);
+    }
+
+    public int countWaitWithdrawOrderByClassId(Long classId) {
+        return orderRepository.countWaitWithdrawOrderByClassId(classId);
+    }
+
+    public BigDecimal sumWaitWithdrawOrderByClassId(Long classId) {
+        return orderRepository.sumWaitWithdrawOrderByClassId(classId);
+    }
+
+    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId) {
+        return orderRepository.sumWaitWithdrawPoundageByClassId(classId);
+    }
+
+    public BigDecimal sumWechatPaidOrderTotalFee(Long classId) {
+        return orderRepository.sumWechatPaidOrderTotalFeeByClassId(classId);
+    }
+
+
+    public BigDecimal sumWechatPoundage(Long classId) {
+        return orderRepository.sumWechatPoundageByClassId(classId);
+    }
+
+    public BigDecimal sumOfflinePaidOrderTotalFee(Long classId) {
+        return orderRepository.sumOfflinePaidOrderTotalFee(classId);
+    }
+
 //    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
 //        return orderRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
 //    }
+
+
 }
