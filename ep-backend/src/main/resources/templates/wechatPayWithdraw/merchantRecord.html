@@ -91,7 +91,6 @@
                             <th>提现状态</th>
                             <th>创建时间</th>
                             <th>备注</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -106,17 +105,11 @@
                             <td th:text="${bo.wechatPayNum}"></td>
                             <td th:text="${bo.wechatPayFee}"></td>
                             <td th:text="${bo.withdrawFee}"></td>
-                            <td th:text="${bo.withdrawNo}"></td>
+                            <td th:text="${bo.outWithdrawNo}"></td>
                             <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.remark}"></td>
-                            <td>
-                                <button class="btn btn-xs btn-primary"
-                                        th:if="${#stringTools.equals(bo.status,'submit')}"
-                                        th:onclick="'finishPayWithdrawBox('+${bo.id}+')'">完成
-                                </button>
 
-                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -147,13 +140,7 @@
 
 <script th:replace="~{fragments/scripts}"></script>
 <script th:inline="javascript">
-    function finishPayWithdrawBox(id) {
-        layer_confirm(formatMsg("完结", "笔提现", "请先确认已收到提现款再按确定"), 3, finishPayWithdraw, id)
-    }
 
-    function finishPayWithdraw(id) {
-        $ajaxGet("/auth/wechatPaywithdraw/finishPayWithdraw/" + id)
-    }
 </script>
 </body>
 </html>

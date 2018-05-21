@@ -20,7 +20,7 @@
         </div>
         <div class="ibox-content">
             <form class="form-horizontal m-t">
-                <input type="hidden">
+                <input id="classId" type="hidden" th:value="${classId}">
                 <div>
                     <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">产品名称：</label>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">结算时间：</label>
-                        <label style="text-align: left" class="col-sm-8 control-label"
+                        <label id="withdrawDeadline" style="text-align: left" class="col-sm-8 control-label"
                                th:text="${withdrawDeadline}"></label>
                     </div>
                 </div>
@@ -122,19 +122,21 @@
                         </div>
 
                     </div>
-                    <div>
+                    <div style="overflow:hidden">
                         <div class="form-group col-sm-6">
                             <label class="col-sm-4 control-label"><span class="required-sign">*</span>收款方户名</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" required="true"
-                                       aria-required="true">
+                                <input id="accountName" name="accountName" type="text" class="form-control"
+                                       required="true"
+                                >
                             </div>
                         </div>
                         <div class="form-group col-sm-6">
                             <label class="col-sm-4 control-label"><span class="required-sign">*</span>收款方账号</label>
                             <div class="col-sm-6">
-                                <input name="roleCode" type="text" class="form-control" required="true"
-                                       aria-required="true">
+                                <input id="accountNumber" name="accountNumber" type="text" class="form-control"
+                                       required="true"
+                                >
                             </div>
                         </div>
                         <div class="form-group">
@@ -157,24 +159,39 @@
                                 <tr>
                                     <th>提现订单截止时间</th>
                                     <th>提现总金额</th>
-                                    <th>报名订单数</th>
                                     <th>微信支付订单数</th>
                                     <th>微信支付手续费</th>
                                     <th>收款方户名</th>
-                                    <th>收款方户名</th>
+                                    <th>收款方账号</th>
                                     <th>提现手续费</th>
                                     <th>商户单号</th>
                                     <th>付款单号</th>
                                     <th>到账时间</th>
                                     <th>提现状态</th>
+                                    <th>操作</th>
 
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-
+                                <tbody id="withdrawRecord">
+                                <tr th:each="bo:${wechatPayWithdrawPos}">
+                                    <td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${bo.totalAmount}"></td>
+                                    <td th:text="${bo.wechatPayNum}"></td>
+                                    <td th:text="${bo.wechatPayFee}"></td>
+                                    <td th:text="${bo.accountName}"></td>
+                                    <td th:text="${bo.accountNumber}"></td>
+                                    <td th:text="${bo.withdrawFee}"></td>
+                                    <td th:text="${bo.outWithdrawNo}"></td>
+                                    <td th:text="${bo.payId}"></td>
+                                    <td th:text="${bo.paidTime}"></td>
+                                    <td name="status" style="display: none" th:text="${bo.status}"></td>
+                                    <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary"
+                                                th:if="${#strings.equals(bo.status,'submit')}"
+                                                th:onclick="'finishPayWithdrawBox('+${bo.id}+')'">提现完成
+                                        </button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -196,7 +213,38 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 
 <script th:inline="javascript">
+    function applyPayWithdraw(classId) {
+        if (!$("form").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        var waitFlag = false
+        $("#withdrawRecord").find("td[name='status']").each(function () {
+            if ($(this).text() == 'wait') {
+                waitFlag = true
+                return
+            }
+        })
+        if (waitFlag) {
+            toastr.error("请先完成所有历史提现记录！");
+            return
+        }
+        $ajaxPost("/auth/wechatPaywithdraw/applyPayWithdraw",
+            {
+                classId: $("#classId").val(),
+                accountName: $("#accountName").val(),
+                accountNumber: $("#accountNumber").val(),
+                withdrawDeadline: $("#withdrawDeadline").text()
+            }
+        )
+    }
+    function finishPayWithdrawBox(id) {
+        layer_confirm(formatMsg("结束", "笔提现", "请先确认已收到提现款再按确定"), 3, finishPayWithdraw, id)
+    }
 
+    function finishPayWithdraw(id) {
+        $ajaxGet("/auth/wechatPaywithdraw/finishPayWithdraw/" + id)
+    }
 </script>
 </body>
 </html>

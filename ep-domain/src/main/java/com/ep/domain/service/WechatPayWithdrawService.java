@@ -8,6 +8,7 @@ import com.ep.domain.pojo.bo.WechatPayWithdrawBo;
 import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
 import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.WechatPayBillDetailRepository;
+import com.ep.domain.repository.WechatPayBillRepository;
 import com.ep.domain.repository.WechatPayWithdrawRepository;
 import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
 import com.ep.domain.repository.domain.enums.EpOrderPayType;
@@ -19,9 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,7 +42,7 @@ public class WechatPayWithdrawService {
     @Autowired
     private WechatPayBillDetailRepository wechatPayBillDetailRepository;
     @Autowired
-    private WechatPayBillService wechatPayBillService;
+    private WechatPayBillRepository wechatPayBillRepository;
 
     public Optional<EpWechatPayWithdrawPo> findById(Long id) {
         return wechatPayWithdrawRepository.findById(id);
@@ -120,10 +123,9 @@ public class WechatPayWithdrawService {
         //微信支付订单数
         wechatPayWithdrawPo.setWechatPayNum(orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.wechat_pay, EpOrderPayStatus.paid, startTime, orderDeadline));
         //提现总金额
-        wechatPayWithdrawPo.setTotalAmount(wechatPayBillDetailRepository.sumWithdrawFeeByClassId(classId, startTime, orderDeadline));
+        wechatPayWithdrawPo.setTotalAmount(orderRepository.sumWaitWithdrawOrderByClassId(classId, orderDeadline));
         //微信支付手续费
-        wechatPayWithdrawPo.setWechatPayFee(wechatPayBillDetailRepository.sumWechatPayFeeByClassId(classId, startTime, orderDeadline));
-        //提现订单号
+        wechatPayWithdrawPo.setWechatPayFee(orderRepository.sumWaitWithdrawPoundageByClassId(classId, orderDeadline));
         wechatPayWithdrawRepository.insert(wechatPayWithdrawPo);
         log.info("[微信订单费提现]订单微信支付订单费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
         log.info("[微信订单费提现]订单微信支付订单费提现申请成功，classId={},courseId={}。", classId, courseId);
@@ -152,10 +154,20 @@ public class WechatPayWithdrawService {
      * @param id
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo finishPayWithdrawById(Long id) {
         log.info("[微信订单费提现]提现完成开始，id={}。", id);
+        Optional<EpWechatPayWithdrawPo> wechatPayWithdrawOptional = wechatPayWithdrawRepository.findById(id);
+        Long classId = wechatPayWithdrawOptional.get().getClassId();
+        EpWechatPayWithdrawPo lastFinishWithdrawPo = wechatPayWithdrawRepository.getLastFinishWithdrawByClassId(classId);
+
         if (wechatPayWithdrawRepository.finishPayWithdrawById(id) == BizConstant.DB_NUM_ONE) {
             log.info("[微信订单费提现]提现完成成功，id={}。", id);
+            if (lastFinishWithdrawPo != null) {
+                orderRepository.finishPayWithdrawByClassId(classId, lastFinishWithdrawPo.getOrderDeadline(), wechatPayWithdrawOptional.get().getOrderDeadline());
+            } else {
+                orderRepository.finishPayWithdrawByClassId(classId, null, wechatPayWithdrawOptional.get().getOrderDeadline());
+            }
             return ResultDo.build();
         }
         log.error("[微信订单费提现]提现完成失败，id={}。", id);
@@ -179,5 +191,8 @@ public class WechatPayWithdrawService {
         return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
     }
 
+    public List<EpWechatPayWithdrawPo> findByClassId(Long classId) {
+        return wechatPayWithdrawRepository.findByClassId(classId);
+    }
 
 }

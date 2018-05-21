@@ -29,6 +29,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -121,32 +122,12 @@ public class WechatPayWithdrawController extends BackendController {
                 withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
             }
             withdrawDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
-            conditions.add(EP_ORDER.CREATE_AT.lessThan(DateTools.dateToTimestamp(withdrawDeadline)));
+            conditions.add(EP_ORDER.PAY_CONFIRM_TIME.lessThan(DateTools.dateToTimestamp(withdrawDeadline)));
             page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
 
         } else {
             page = new PageImpl<ClassWithdrawQueryDto>(new ArrayList<ClassWithdrawQueryDto>(), pageable, BizConstant.DB_NUM_ZERO);
         }
-
-//        Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
-
-//        page.getContent().forEach(p -> {
-//            Long classId = p.getClassId();
-//            //总微信支付成功订单数
-//            int totalWechatPaidOrderNum = orderService.countWechatPaidOrderByClassId(classId);
-//            p.setTotalWechatPaidOrderNum(totalWechatPaidOrderNum);
-//            //已提现订单数
-//            int finishWithdrawNum = wechatPayWithdrawService.countPayWithdrawByClassId(classId);
-//            p.setWaitWithdrawOrderNum(totalWechatPaidOrderNum - finishWithdrawNum);
-//            EpWechatPayWithdrawPo wechatPayWithdrawPo = wechatPayWithdrawService.getLastWithdrawByClassId(classId);
-//            if (null != wechatPayWithdrawPo) {
-//                p.setLastWithdrawAmount(wechatPayWithdrawPo.getTotalAmount());
-//                p.setLastWithdrawOrderNum(wechatPayWithdrawPo.getWechatPayNum());
-//                p.setLastWithdrawTime(wechatPayWithdrawPo.getOrderDeadline());
-//                p.setLastWithdrawStatus(wechatPayWithdrawPo.getStatus());
-//                p.setPayWithdrawId(wechatPayWithdrawPo.getId());
-//            }
-//        });
 
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
@@ -160,11 +141,13 @@ public class WechatPayWithdrawController extends BackendController {
             return "noresource";
         }
         model.addAttribute("className", classOptional.get().getClassName());
+        model.addAttribute("classId", classOptional.get().getId());
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(classOptional.get().getCourseId());
         model.addAttribute("courseName", courseOptional.get().getCourseName());
         EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
+        Date withdrawDeadline = null;
         if (null != wechatPayBillPo) {
-            Date withdrawDeadline;
+
             try {
                 withdrawDeadline = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
             } catch (Exception e) {
@@ -173,32 +156,37 @@ public class WechatPayWithdrawController extends BackendController {
             }
             String withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadline);
             model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
+            withdrawDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
         }
+
+        Timestamp endTime = withdrawDeadline == null ? DateTools.getCurrentDateTime() : DateTools.dateToTimestamp(withdrawDeadline);
         //已支付订单数
-        model.addAttribute("countWechatPaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.wechat_pay, EpOrderPayStatus.paid));
+        model.addAttribute("countWechatPaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.wechat_pay, EpOrderPayStatus.paid, endTime));
         //已支付订单金额
-        BigDecimal sumWechatPaidTotalFee = orderService.sumWechatPaidOrderTotalFee(classId);
+        BigDecimal sumWechatPaidTotalFee = orderService.sumWechatPaidOrderTotalFee(classId, endTime);
         model.addAttribute("sumWechatPaidTotalFee", sumWechatPaidTotalFee);
         //支付微信手续费
-        BigDecimal sumWechatPoundage = orderService.sumWechatPoundage(classId);
+        BigDecimal sumWechatPoundage = orderService.sumWechatPoundage(classId, endTime);
         model.addAttribute("sumWechatPoundage", sumWechatPoundage);
         //总实收金额
         model.addAttribute("platformReceiveFee", sumWechatPaidTotalFee.subtract(sumWechatPoundage));
         //未提现订单数
-        int countWechatWaitWithdrawOrder = orderService.countWaitWithdrawOrderByClassId(classId);
+        int countWechatWaitWithdrawOrder = orderService.countWaitWithdrawOrderByClassId(classId, endTime);
         model.addAttribute("countWechatWaitWithdrawOrder", countWechatWaitWithdrawOrder);
         //未提现订单金额
-        BigDecimal sumWaitWithdrawOrderTotalFee = orderService.sumWaitWithdrawOrderByClassId(classId);
+        BigDecimal sumWaitWithdrawOrderTotalFee = orderService.sumWaitWithdrawOrderByClassId(classId, endTime);
         model.addAttribute("sumWaitWithdrawOrderTotalFee", sumWaitWithdrawOrderTotalFee);
         //未提现订单微信手续费
-        BigDecimal sumWaitWithdrawOrderPoundage = orderService.sumWaitWithdrawPoundageByClassId(classId);
+        BigDecimal sumWaitWithdrawOrderPoundage = orderService.sumWaitWithdrawPoundageByClassId(classId, endTime);
         model.addAttribute("sumWaitWithdrawOrderPoundage", sumWaitWithdrawOrderPoundage);
         model.addAttribute("withdrawFee", sumWaitWithdrawOrderTotalFee.subtract(sumWaitWithdrawOrderPoundage));
         //线下支付已支付订单数
-        model.addAttribute("countOfflinePaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.offline, EpOrderPayStatus.paid));
+        model.addAttribute("countOfflinePaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.offline, EpOrderPayStatus.paid, endTime));
         //线下支付已支付订单金额
-        model.addAttribute("sumOfflinePaidOrderFee", orderService.sumOfflinePaidOrderTotalFee(classId));
-
+        model.addAttribute("sumOfflinePaidOrderFee", orderService.sumOfflinePaidOrderTotalFee(classId, endTime));
+        //历史提现记录
+        List<EpWechatPayWithdrawPo> wechatPayWithdrawPos = wechatPayWithdrawService.findByClassId(classId);
+        model.addAttribute("wechatPayWithdrawPos", wechatPayWithdrawPos);
         return "wechatPayWithdraw/classWithdraw";
     }
 
@@ -227,7 +215,7 @@ public class WechatPayWithdrawController extends BackendController {
 
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
-        return "wechatPayWithdraw/merchantIndex";
+        return "wechatPayWithdraw/merchantRecord";
     }
 
     /**
@@ -236,7 +224,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @param classId
      * @return
      */
-    @GetMapping("applyPayWithdraw")
+    @PostMapping("applyPayWithdraw")
     @ResponseBody
     public ResultDo applyPayWithdraw(@RequestParam(value = "classId") Long classId,
                                      @RequestParam(value = "withdrawDeadline") String withdrawDeadline,
@@ -272,7 +260,7 @@ public class WechatPayWithdrawController extends BackendController {
     public ResultDo finishPayWithdraw(@PathVariable("id") Long id) {
         Optional<EpWechatPayWithdrawPo> withdrawOptional = wechatPayWithdrawService.findById(id);
         if (!withdrawOptional.isPresent()) {
-            return wechatPayWithdrawService.finishPayWithdrawById(id);
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
         Optional<EpOrganClassPo> organClassOptional = organClassService.findById(withdrawOptional.get().getClassId());
         if (organClassOptional.isPresent() && organClassOptional.get().getOgnId().equals(this.getCurrentUserOgnId())) {

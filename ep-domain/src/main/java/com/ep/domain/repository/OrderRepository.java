@@ -520,9 +520,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param orderPayStatus
      * @return
      */
-    public long countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus) {
+    public long countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus, Timestamp endTime) {
         return dslContext.selectCount().from(EP_ORDER)
                 .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
                 .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
@@ -864,31 +865,34 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchOneInto(Integer.class);
     }
 
-    public int countWaitWithdrawOrderByClassId(Long classId) {
+    public int countWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
         return dslContext.selectCount().from(EP_ORDER)
                 .where(EP_ORDER.CLASS_ID.eq(classId))
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
                 .fetchOneInto(Integer.class);
     }
 
-    public BigDecimal sumWaitWithdrawOrderByClassId(Long classId) {
+    public BigDecimal sumWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.TOTAL_FEE), 0)).from(EP_ORDER)
                 .leftJoin(EP_WECHAT_PAY_BILL_DETAIL)
-                .on(EP_ORDER.CLASS_ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
-                .and(EP_ORDER.CLASS_ID.eq(classId))
+                .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                 .fetchOneInto(BigDecimal.class);
     }
 
-    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId) {
+    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.POUNDAGE), 0)).from(EP_ORDER)
                 .leftJoin(EP_WECHAT_PAY_BILL_DETAIL)
-                .on(EP_ORDER.CLASS_ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
-                .and(EP_ORDER.CLASS_ID.eq(classId))
+                .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
@@ -901,15 +905,16 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param classId
      * @return
      */
-    public BigDecimal sumWechatPaidOrderTotalFeeByClassId(Long classId) {
+    public BigDecimal sumWechatPaidOrderTotalFeeByClassId(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.TOTAL_FEE), 0)).from(EP_ORDER)
                 .leftJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                .and(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.ne("SUCCESS"))
+                .and(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.ne("SUCCESS").or(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.isNull()))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                 .fetchOneInto(BigDecimal.class);
     }
@@ -921,27 +926,53 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param classId
      * @return
      */
-    public BigDecimal sumWechatPoundageByClassId(Long classId) {
+    public BigDecimal sumWechatPoundageByClassId(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.POUNDAGE), 0))
                 .from(EP_ORDER)
                 .leftJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                .and(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.ne("SUCCESS"))
+                .and(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.ne("SUCCESS").or(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.isNull()))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                 .fetchOneInto(BigDecimal.class);
     }
 
-    public BigDecimal sumOfflinePaidOrderTotalFee(Long classId) {
+    public BigDecimal sumOfflinePaidOrderTotalFee(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_ORDER.PRIZE), 0))
                 .from(EP_ORDER)
                 .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.offline))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .fetchOneInto(BigDecimal.class);
+    }
+
+    public int finishPayWithdrawByClassId(Long classId, Timestamp startTime, Timestamp endTime) {
+        if (startTime != null) {
+            return dslContext.update(EP_ORDER)
+                    .set(EP_ORDER.WITHDRAW_FLAG, true)
+                    .where(EP_ORDER.CLASS_ID.eq(classId))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.greaterOrEqual(startTime))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
+                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                    .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .execute();
+        } else {
+            return dslContext.update(EP_ORDER)
+                    .set(EP_ORDER.WITHDRAW_FLAG, true)
+                    .where(EP_ORDER.CLASS_ID.eq(classId))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
+                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                    .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .execute();
+        }
+
     }
 }
 

@@ -46,7 +46,7 @@ public class WechatPayBillDetailRepository extends AbstractCRUDRepository<EpWech
      */
     public BigDecimal sumWithdrawFeeByClassId(Long classId, Timestamp startTime, Timestamp endTime) {
         if (null == startTime) {
-            return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.TOTAL_FEE.subtract(EP_WECHAT_PAY_BILL_DETAIL.POUNDAGE)), 0))
+            return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.TOTAL_FEE), 0))
                     .from(EP_WECHAT_PAY_BILL_DETAIL)
                     .where(EP_WECHAT_PAY_BILL_DETAIL.CLASS_ID.eq(classId))
                     .and(EP_WECHAT_PAY_BILL_DETAIL.CREATE_AT.lessThan(endTime))

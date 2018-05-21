@@ -106,6 +106,22 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
     }
 
     /**
+     * 最近一次提现完成记录
+     *
+     * @param classId
+     * @return
+     */
+    public EpWechatPayWithdrawPo getLastFinishWithdrawByClassId(Long classId) {
+        return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
+                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.finish))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
+                .limit(BizConstant.DB_NUM_ONE)
+                .fetchOneInto(EpWechatPayWithdrawPo.class);
+    }
+
+    /**
      * 审核通过提现申请
      *
      * @param id
@@ -149,5 +165,12 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                 .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.wait))
                 .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
                 .execute();
+    }
+
+    public List<EpWechatPayWithdrawPo> findByClassId(Long classId) {
+        return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
+                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .fetchInto(EpWechatPayWithdrawPo.class);
     }
 }

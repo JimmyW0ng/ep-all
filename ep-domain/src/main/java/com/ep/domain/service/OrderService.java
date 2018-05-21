@@ -778,33 +778,33 @@ public class OrderService {
         return orderRepository.countWechatPaidOrderByClassId(classId);
     }
 
-    public long countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus) {
-        return orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, orderPayType, orderPayStatus);
+    public long countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus, Timestamp endTime) {
+        return orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, orderPayType, orderPayStatus, endTime);
     }
 
-    public int countWaitWithdrawOrderByClassId(Long classId) {
-        return orderRepository.countWaitWithdrawOrderByClassId(classId);
+    public int countWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
+        return orderRepository.countWaitWithdrawOrderByClassId(classId, endTime);
     }
 
-    public BigDecimal sumWaitWithdrawOrderByClassId(Long classId) {
-        return orderRepository.sumWaitWithdrawOrderByClassId(classId);
+    public BigDecimal sumWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
+        return orderRepository.sumWaitWithdrawOrderByClassId(classId, endTime);
     }
 
-    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId) {
-        return orderRepository.sumWaitWithdrawPoundageByClassId(classId);
+    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId, Timestamp endTime) {
+        return orderRepository.sumWaitWithdrawPoundageByClassId(classId, endTime);
     }
 
-    public BigDecimal sumWechatPaidOrderTotalFee(Long classId) {
-        return orderRepository.sumWechatPaidOrderTotalFeeByClassId(classId);
+    public BigDecimal sumWechatPaidOrderTotalFee(Long classId, Timestamp endTime) {
+        return orderRepository.sumWechatPaidOrderTotalFeeByClassId(classId, endTime);
     }
 
 
-    public BigDecimal sumWechatPoundage(Long classId) {
-        return orderRepository.sumWechatPoundageByClassId(classId);
+    public BigDecimal sumWechatPoundage(Long classId, Timestamp endTime) {
+        return orderRepository.sumWechatPoundageByClassId(classId, endTime);
     }
 
-    public BigDecimal sumOfflinePaidOrderTotalFee(Long classId) {
-        return orderRepository.sumOfflinePaidOrderTotalFee(classId);
+    public BigDecimal sumOfflinePaidOrderTotalFee(Long classId, Timestamp endTime) {
+        return orderRepository.sumOfflinePaidOrderTotalFee(classId, endTime);
     }
 
 //    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {

@@ -333,7 +333,7 @@
         console.log(outTradeNo)
         $.ajax({
             type: "GET",
-            url: "/auth/wechat/payRefund/" + outTradeNo,
+            url: "/auth/wechat/orderRefund/" + outTradeNo,
             beforeSend: function () {
                 layer.load(2, {shade: [0.1, '#fff']});
             },

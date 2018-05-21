@@ -242,7 +242,7 @@ public class PlatformWechatController extends BackendController {
      *
      * @return
      */
-    @GetMapping("payRefund/{outTradeNo}")
+    @GetMapping("orderRefund/{outTradeNo}")
     @ResponseBody
     public ResultDo payRefund(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
         return wechatPayComponent.xcxPayRefund(outTradeNo);
