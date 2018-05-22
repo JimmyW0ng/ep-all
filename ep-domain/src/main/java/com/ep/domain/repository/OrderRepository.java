@@ -867,37 +867,39 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchOneInto(Integer.class);
     }
 
+    /**
+     * 根据班次和截止时间统计未提现订单数
+     *
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public int countWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
         return dslContext.selectCount().from(EP_ORDER)
                 .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
-                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
                 .fetchOneInto(Integer.class);
     }
 
+    /**
+     * 根据班次和截止时间统计未提现订单金额
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.TOTAL_FEE), 0)).from(EP_ORDER)
                 .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
-                .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                .fetchOneInto(BigDecimal.class);
-    }
-
-    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId, Timestamp endTime) {
-        return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.POUNDAGE), 0)).from(EP_ORDER)
-                .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
-                .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
-                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
@@ -907,9 +909,30 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
-     * 统计一个班次下微信支付成功总金额
-     *
+     * 根据班次和截止时间统计未提现订单微信手续费
      * @param classId
+     * @param endTime
+     * @return
+     */
+    public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId, Timestamp endTime) {
+        return dslContext.select(DSL.ifnull(DSL.sum(EP_WECHAT_PAY_BILL_DETAIL.POUNDAGE), 0)).from(EP_ORDER)
+                .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
+                .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                .and(EP_ORDER.WITHDRAW_FLAG.eq(false))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
+                .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
+                .fetchOneInto(BigDecimal.class);
+    }
+
+    /**
+     * 根据班次和截止时间统计已支付订单金额
+     * @param classId
+     * @param endTime
      * @return
      */
     public BigDecimal sumWechatPaidOrderTotalFeeByClassId(Long classId, Timestamp endTime) {
@@ -917,8 +940,9 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`time_end`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
@@ -927,9 +951,9 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
 
     /**
-     * 统计一个班次下微信支付成功总手续费
-     *
+     * 根据班次和截止时间统计已支付微信手续费
      * @param classId
+     * @param endTime
      * @return
      */
     public BigDecimal sumWechatPoundageByClassId(Long classId, Timestamp endTime) {
@@ -938,6 +962,8 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
@@ -945,6 +971,12 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchOneInto(BigDecimal.class);
     }
 
+    /**
+     * 根据班次和截止时间统计线下支付已支付订单金额
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumOfflinePaidOrderTotalFee(Long classId, Timestamp endTime) {
         return dslContext.select(DSL.ifnull(DSL.sum(EP_ORDER.PRIZE), 0))
                 .from(EP_ORDER)
@@ -971,6 +1003,13 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .execute();
     }
 
+    /**
+     * 根据时间区间将订单提现状态更新为已提现
+     * @param classId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     public int finishPayWithdrawByClassId(Long classId, Timestamp startTime, Timestamp endTime) {
         if (startTime != null) {
             return dslContext.update(EP_ORDER)

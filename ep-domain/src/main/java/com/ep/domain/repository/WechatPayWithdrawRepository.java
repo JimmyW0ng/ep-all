@@ -144,9 +144,11 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
      * @param id
      * @return
      */
-    public int finishPayWithdrawById(Long id) {
+    public int finishPayWithdrawById(Long id, String outWithdrawNo, String payId) {
         return dslContext.update(EP_WECHAT_PAY_WITHDRAW)
                 .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.finish)
+                .set(EP_WECHAT_PAY_WITHDRAW.OUT_WITHDRAW_NO, outWithdrawNo)
+                .set(EP_WECHAT_PAY_WITHDRAW.PAY_ID, payId)
                 .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
                 .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.submit))
                 .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))

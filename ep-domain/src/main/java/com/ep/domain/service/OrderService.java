@@ -778,38 +778,79 @@ public class OrderService {
         return orderRepository.countWechatPaidOrderByClassId(classId);
     }
 
+    /**
+     * 根据班次，支付类型，支付状态，时间区间统计订单数
+     *
+     * @param classId
+     * @param orderPayType
+     * @param orderPayStatus
+     * @param endTime
+     * @return
+     */
     public long countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus, Timestamp endTime) {
         return orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, orderPayType, orderPayStatus, endTime);
     }
 
+    /**
+     * 根据班次和截止时间统计未提现订单数
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public int countWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
         return orderRepository.countWaitWithdrawOrderByClassId(classId, endTime);
     }
 
+    /**
+     * 根据班次和截止时间统计未提现订单金额
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumWaitWithdrawOrderByClassId(Long classId, Timestamp endTime) {
         return orderRepository.sumWaitWithdrawOrderByClassId(classId, endTime);
     }
 
+    /**
+     * 根据班次和截止时间统计未提现订单微信手续费
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumWaitWithdrawPoundageByClassId(Long classId, Timestamp endTime) {
         return orderRepository.sumWaitWithdrawPoundageByClassId(classId, endTime);
     }
 
+    /**
+     * 根据班次和截止时间统计已支付订单金额
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumWechatPaidOrderTotalFee(Long classId, Timestamp endTime) {
         return orderRepository.sumWechatPaidOrderTotalFeeByClassId(classId, endTime);
     }
 
-
+    /**
+     * 根据班次和截止时间统计已支付微信手续费
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumWechatPoundage(Long classId, Timestamp endTime) {
         return orderRepository.sumWechatPoundageByClassId(classId, endTime);
     }
 
+    /**
+     * 根据班次和截止时间统计线下支付已支付订单金额
+     * @param classId
+     * @param endTime
+     * @return
+     */
     public BigDecimal sumOfflinePaidOrderTotalFee(Long classId, Timestamp endTime) {
         return orderRepository.sumOfflinePaidOrderTotalFee(classId, endTime);
     }
 
-//    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
-//        return orderRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
-//    }
 
 
 }

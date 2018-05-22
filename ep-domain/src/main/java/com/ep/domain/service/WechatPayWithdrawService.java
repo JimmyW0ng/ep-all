@@ -81,13 +81,14 @@ public class WechatPayWithdrawService {
      * @param courseId
      * @return
      */
-    public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadline, String accountName, String accountNumber) {
-        log.info("[微信订单费提现]订单微信支付订单费提现申请开始，classId={},courseId={}。", classId, courseId);
+    public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadlineTime, String accountName, String accountNumber) {
+        log.info("[微信订单费提现]订单微信支付订单费提现申请开始，classId={},courseId={}，withdrawDeadlineTime={}，accountName={}，accountNumber={}。"
+                , classId, courseId, withdrawDeadlineTime, accountName, accountNumber);
         //该班次上一次提现截止时间
         EpWechatPayWithdrawPo wechatPayWithdrawPo = new EpWechatPayWithdrawPo();
         wechatPayWithdrawPo.setClassId(classId);
         wechatPayWithdrawPo.setCourseId(courseId);
-        Timestamp orderDeadline = DateTools.addDate(DateTools.stringToTimestamp(withdrawDeadline, DateTools.DATE_FMT_3), BizConstant.DB_NUM_ONE);
+        Timestamp orderDeadline = DateTools.stringToTimestamp(withdrawDeadlineTime, DateTools.TIME_PATTERN);
         wechatPayWithdrawPo.setOrderDeadline(orderDeadline);
         wechatPayWithdrawPo.setStatus(EpWechatPayWithdrawStatus.wait);
         //微信支付订单数(即待提现订单数)
@@ -96,7 +97,9 @@ public class WechatPayWithdrawService {
         wechatPayWithdrawPo.setTotalAmount(orderRepository.sumWaitWithdrawOrderByClassId(classId, orderDeadline));
         //微信支付手续费
         wechatPayWithdrawPo.setWechatPayFee(orderRepository.sumWaitWithdrawPoundageByClassId(classId, orderDeadline));
+        //收款账户名
         wechatPayWithdrawPo.setAccountName(accountName);
+        //收款账户号
         wechatPayWithdrawPo.setAccountNumber(accountNumber);
         wechatPayWithdrawRepository.insert(wechatPayWithdrawPo);
         log.info("[微信订单费提现]订单微信支付订单费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
@@ -127,13 +130,13 @@ public class WechatPayWithdrawService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo finishPayWithdrawById(Long id) {
+    public ResultDo finishPayWithdrawById(Long id, String outWithdrawNo, String payId) {
         log.info("[微信订单费提现]提现完成开始，id={}。", id);
         Optional<EpWechatPayWithdrawPo> wechatPayWithdrawOptional = wechatPayWithdrawRepository.findById(id);
         Long classId = wechatPayWithdrawOptional.get().getClassId();
         EpWechatPayWithdrawPo lastFinishWithdrawPo = wechatPayWithdrawRepository.getLastFinishWithdrawByClassId(classId);
 
-        if (wechatPayWithdrawRepository.finishPayWithdrawById(id) == BizConstant.DB_NUM_ONE) {
+        if (wechatPayWithdrawRepository.finishPayWithdrawById(id, outWithdrawNo, payId) == BizConstant.DB_NUM_ONE) {
             List<Long> orderIds = wechatPayWithdrawRepository.findWaitWithdrawOrderIds(classId,
                     lastFinishWithdrawPo != null ? lastFinishWithdrawPo.getOrderDeadline() : null, wechatPayWithdrawOptional.get().getOrderDeadline());
             orderRepository.finishPayWithdrawByOrderIds(orderIds);

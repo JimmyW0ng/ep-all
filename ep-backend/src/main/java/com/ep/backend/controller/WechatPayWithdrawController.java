@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORDER;
@@ -117,6 +116,7 @@ public class WechatPayWithdrawController extends BackendController {
         //结算截止时间
         Date conditionDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
         model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
+        model.addAttribute("withdrawDeadlineTime", DateTools.dateToString(conditionDeadline, DateTools.TIME_PATTERN));
         Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions, DateTools.dateToTimestamp(conditionDeadline));
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
@@ -134,21 +134,17 @@ public class WechatPayWithdrawController extends BackendController {
         Optional<EpOrganCoursePo> courseOptional = organCourseService.findById(classOptional.get().getCourseId());
         model.addAttribute("courseName", courseOptional.get().getCourseName());
         EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
-        Date withdrawDeadline = null;
-        if (null != wechatPayBillPo) {
 
-            try {
-                withdrawDeadline = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
-            } catch (Exception e) {
-                log.error("[提现]商户提现页面，最新结算日期转换异常。", e);
-                withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
-            }
-            String withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadline);
-            model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
-            withdrawDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
-        }
 
-        Timestamp endTime = withdrawDeadline == null ? DateTools.getCurrentDateTime() : DateTools.dateToTimestamp(withdrawDeadline);
+        Date withdrawDeadline = DateTools.stringToDate(wechatPayBillPo.getBillDate().toString(), DateTools.DATE_FMT_0);
+        String withdrawDeadlineStr = DateTools.toString(withdrawDeadline, DateTools.DATE_FMT_4);
+        //结算截止时间
+        Date conditionDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
+        model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
+        model.addAttribute("withdrawDeadlineTime", DateTools.dateToString(conditionDeadline, DateTools.TIME_PATTERN));
+
+
+        Timestamp endTime = DateTools.dateToTimestamp(conditionDeadline);
         //已支付订单数
         model.addAttribute("countWechatPaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.wechat_pay, EpOrderPayStatus.paid, endTime));
         //已支付订单金额
@@ -216,14 +212,14 @@ public class WechatPayWithdrawController extends BackendController {
     @PostMapping("applyPayWithdraw")
     @ResponseBody
     public ResultDo applyPayWithdraw(@RequestParam(value = "classId") Long classId,
-                                     @RequestParam(value = "withdrawDeadline") String withdrawDeadline,
+                                     @RequestParam(value = "withdrawDeadlineTime") String withdrawDeadlineTime,
                                      @RequestParam(value = "accountName") String accountName,
                                      @RequestParam(value = "accountNumber") String accountNumber
     ) {
         Optional<EpOrganClassPo> organClassOptional = organClassService.findById(classId);
         if (organClassOptional.isPresent() && organClassOptional.get().getOgnId().equals(this.getCurrentUserOgnId())) {
             return wechatPayWithdrawService.applyPayWithdrawByClassId(classId, organClassOptional.get().getCourseId(),
-                    withdrawDeadline, accountName, accountNumber);
+                    withdrawDeadlineTime, accountName, accountNumber);
         } else {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
@@ -244,19 +240,13 @@ public class WechatPayWithdrawController extends BackendController {
      *
      * @return
      */
-    @GetMapping("finishPayWithdraw/{id}")
+    @PostMapping("finishPayWithdraw")
     @ResponseBody
-    public ResultDo finishPayWithdraw(@PathVariable("id") Long id) {
-        Optional<EpWechatPayWithdrawPo> withdrawOptional = wechatPayWithdrawService.findById(id);
-        if (!withdrawOptional.isPresent()) {
-            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
-        }
-        Optional<EpOrganClassPo> organClassOptional = organClassService.findById(withdrawOptional.get().getClassId());
-        if (organClassOptional.isPresent() && organClassOptional.get().getOgnId().equals(this.getCurrentUserOgnId())) {
-            return wechatPayWithdrawService.finishPayWithdrawById(id);
-        } else {
-            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
-        }
+    public ResultDo finishPayWithdraw(@RequestParam(value = "id") Long id,
+                                      @RequestParam(value = "outWithdrawNo") String outWithdrawNo,
+                                      @RequestParam(value = "payId") String payId
+    ) {
+        return wechatPayWithdrawService.finishPayWithdrawById(id, outWithdrawNo, payId);
     }
 
     /**

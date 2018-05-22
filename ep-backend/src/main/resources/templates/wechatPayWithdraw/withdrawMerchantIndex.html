@@ -19,7 +19,7 @@
             <div class="panel-heading">
                 <h3 style="display: inline-block">最新结算日期：</h3>
                 <h3 style="display: inline-block" id="withdrawDeadline" th:text="${withdrawDeadline}"></h3>
-                <h3 style="display: inline-block">（该日期及其之前的费用可提现）</h3>
+                <h3 style="display: inline-block">（截止<span th:text="${withdrawDeadlineTime}"></span>之前）</h3>
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline search-from" id="query-form" role="form">

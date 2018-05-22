@@ -24,12 +24,16 @@
                 <div>
                     <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">产品名称：</label>
-                        <label style="text-align: left" class="col-sm-8 control-label" th:text="${courseName}"></label>
+                        <label style="text-align: left" class="col-sm-8 control-label" th:text="${courseName}">
+                        </label>
                     </div>
                     <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">结算时间：</label>
-                        <label id="withdrawDeadline" style="text-align: left" class="col-sm-8 control-label"
-                               th:text="${withdrawDeadline}"></label>
+                        <label style="text-align: left" class="col-sm-8 control-label">
+                            <span th:text="${withdrawDeadline}"></span>（截止<span
+                                th:text="${withdrawDeadlineTime}"></span>之前）
+                            <input type="hidden" id="withdrawDeadlineTime" th:value="${withdrawDeadlineTime}">
+                        </label>
                     </div>
                 </div>
                 <div>
@@ -37,10 +41,7 @@
                         <label class="col-sm-2 control-label">班次名称：</label>
                         <label style="text-align: left" class="col-sm-4 control-label" th:text="${className}"></label>
                     </div>
-                    <!--<div class="form-group col-sm-6">-->
-                    <!--<label class="col-sm-4 control-label"></label>-->
-                    <!--<label class="col-sm-8 control-label"></label>-->
-                    <!--</div>-->
+
                 </div>
                 <div>
                     <div class="form-group">
@@ -170,7 +171,6 @@
                                 <th>付款单号</th>
                                 <th>到账时间</th>
                                 <th>提现状态</th>
-                                <th>操作</th>
 
                             </tr>
                             </thead>
@@ -188,12 +188,7 @@
                                 <td th:text="${bo.paidTime}"></td>
                                 <td name="status" style="display: none" th:text="${bo.status}"></td>
                                 <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary"
-                                            th:if="${#strings.equals(bo.status,'submit')}"
-                                            th:onclick="'finishPayWithdrawBox('+${bo.id}+')'">提现完成
-                                    </button>
-                                </td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -235,17 +230,11 @@
                 classId: $("#classId").val(),
                 accountName: $("#accountName").val(),
                 accountNumber: $("#accountNumber").val(),
-                withdrawDeadline: $("#withdrawDeadline").text()
+                withdrawDeadlineTime: $("#withdrawDeadlineTime").val()
             }
         )
     }
-    function finishPayWithdrawBox(id) {
-        layer_confirm(formatMsg("结束", "笔提现", "请先确认已收到提现款再按确定"), 3, finishPayWithdraw, id)
-    }
 
-    function finishPayWithdraw(id) {
-        $ajaxGet("/auth/wechatPaywithdraw/finishPayWithdraw/" + id)
-    }
 </script>
 </body>
 </html>

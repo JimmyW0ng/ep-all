@@ -53,12 +53,11 @@
                             <th>班次</th>
                             <th>提现订单截止时间</th>
                             <th>提现总金额（元）</th>
-                            <th>报名订单数</th>
-                            <th>线下支付订单数</th>
                             <th>微信支付订单数</th>
                             <th>微信支付手续费（元）</th>
                             <th>提现手续费（元）</th>
-                            <th>提现订单号</th>
+                            <th>商户单号</th>
+                            <th>付款单号</th>
                             <th>提现状态</th>
                             <th>创建时间</th>
                             <th>备注</th>
@@ -71,12 +70,11 @@
                             <td th:text="${bo.className}"></td>
                             <td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.totalAmount}"></td>
-                            <td th:text="${bo.orderNum}"></td>
-                            <td th:text="${bo.offlinePayNum}"></td>
                             <td th:text="${bo.wechatPayNum}"></td>
                             <td th:text="${bo.wechatPayFee}"></td>
                             <td th:text="${bo.withdrawFee}"></td>
                             <td th:text="${bo.outWithdrawNo}"></td>
+                            <td th:text="${bo.payId}"></td>
                             <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.remark}"></td>

@@ -34,33 +34,6 @@
                     </div>
 
 
-                    <!--<div class="form-group mr10">-->
-                    <!--<div class="input-group input-large">-->
-                    <!--<input type="text" class="form-control  startTime" name="timeEndStart" id="timeEndStart"-->
-                    <!--th:value="${searchMap.get('timeEndStart')}"-->
-                    <!--th:placeholder="支付完成时间从"-->
-                    <!--&gt;-->
-                    <!--<span class="input-group-addon">到</span>-->
-                    <!--<input type="text" class="form-control  endTime" name="timeEndEnd" id="timeEndEnd"-->
-                    <!--th:value="${searchMap.get('timeEndEnd')}"-->
-                    <!--th:placeholder="到"-->
-                    <!--&gt;-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group mr10">-->
-                    <!--<div class="input-group input-large">-->
-                    <!--<input type="text" class="form-control  startTime" name="createAtStart" id="createAtStart"-->
-                    <!--th:value="${searchMap.get('createAtStart')}"-->
-                    <!--th:placeholder="支付发起时间从"-->
-                    <!--&gt;-->
-                    <!--<span class="input-group-addon">到</span>-->
-                    <!--<input type="text" class="form-control  endTime" name="createAtEnd" id="createAtEnd"-->
-                    <!--th:value="${searchMap.get('createAtEnd')}"-->
-                    <!--th:placeholder="到"-->
-                    <!--&gt;-->
-                    <!--</div>-->
-                    <!--</div>-->
-
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="query-button" type="button">查询</button>
                         <button class="btn btn-warning" id="rest-button" type="button">重置</button>
@@ -82,8 +55,6 @@
                             <th>班次</th>
                             <th>提现订单截止时间</th>
                             <th>提现总金额（元）</th>
-                            <th>报名订单数</th>
-                            <th>线下支付订单数</th>
                             <th>微信支付订单数</th>
                             <th>微信支付手续费（元）</th>
                             <th>提现手续费（元）</th>
@@ -101,8 +72,6 @@
                             <td th:text="${bo.className}"></td>
                             <td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.totalAmount}"></td>
-                            <td th:text="${bo.orderNum}"></td>
-                            <td th:text="${bo.offlinePayNum}"></td>
                             <td th:text="${bo.wechatPayNum}"></td>
                             <td th:text="${bo.wechatPayFee}"></td>
                             <td th:text="${bo.withdrawFee}"></td>
@@ -116,6 +85,10 @@
                                 </button>
                                 <button class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'wait')}"
                                         th:onclick="'refusePayWithdrawBox('+${bo.id}+')'">拒绝
+                                </button>
+                                <button class="btn btn-xs btn-primary"
+                                        th:if="${#stringTools.equals(bo.status,'submit')}"
+                                        th:onclick="'finishPayWithdrawBox('+${bo.id}+')'">完成
                                 </button>
 
                             </td>
@@ -170,7 +143,52 @@
         </div>
     </div>
 </div>
+<div class="modal inmodal" id="finishModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <input type="hidden" id="finishId">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h3 style="text-align: left">完成提现</h3>
+
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal m-t" id="finishFrm">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">商户单号：</label>
+                        <div class="col-sm-6">
+                            <input id="outWithdrawNo" name="outWithdrawNo" type="text" class="form-control"
+                                   required="true"
+                                   aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">付款单号：</label>
+                        <div class="col-sm-6">
+                            <input id="payId" name="payId" type="payId" class="form-control"
+                                   required="true"
+                                   aria-required="true">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="finishPayWithdraw()">提 交</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
     function submitPayWithdrawBox(id) {
         layer_confirm(formatMsg("审核通过", "笔提现", ""), 3, submitPayWithdraw, id)
@@ -198,6 +216,24 @@
             error: function (XMLHttpRequest) {
                 toastr_error_system(XMLHttpRequest.status);
             },
+        })
+    }
+
+    function finishPayWithdrawBox(id) {
+        $("#finishModal").modal("show")
+        $("#finishId").val(id)
+//        layer_confirm(formatMsg("结束", "笔提现", "请先确认已将提现款转至商户账户再按确定"), 3, finishPayWithdraw, id)
+    }
+
+    function finishPayWithdraw() {
+        if (!$("#finishFrm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        $ajaxPost("/auth/wechatPaywithdraw/finishPayWithdraw", {
+            id: $("#finishId").val(),
+            outWithdrawNo: $("#outWithdrawNo").val(),
+            payId: $("#payId").val()
         })
     }
 </script>
