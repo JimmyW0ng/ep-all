@@ -8,12 +8,13 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
-import com.ep.domain.pojo.dto.ClassWithdrawQueryDto;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
-import com.ep.domain.pojo.po.EpWechatPayBillPo;
-import com.ep.domain.repository.domain.enums.*;
+import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
+import com.ep.domain.repository.domain.enums.EpOrderPayType;
+import com.ep.domain.repository.domain.enums.EpOrderStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -33,8 +34,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Ep.EP;
 import static com.ep.domain.repository.domain.Tables.*;
@@ -617,80 +620,9 @@ public class OrderController extends BackendController {
     }
 
 
-    @GetMapping("classWithdraw")
-    public String index(Model model,
-                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                        @RequestParam(value = "courseName", required = false) String courseName,
-                        @RequestParam(value = "className", required = false) String className) {
 
-        Map<String, Object> searchMap = Maps.newHashMap();
-        Collection<Condition> conditions = Lists.newArrayList();
-        if (StringTools.isNotBlank(courseName)) {
-            conditions.add(EP_ORGAN_COURSE.COURSE_NAME.eq(courseName));
-        }
-        searchMap.put("courseName", courseName);
-        if (StringTools.isNotBlank(className)) {
-            conditions.add(EP_ORGAN_CLASS.CLASS_NAME.eq(className));
-        }
-        searchMap.put("className", className);
 
-        conditions.add(EP_ORGAN_CLASS.OGN_ID.eq(this.getCurrentUserOgnId()));
-        conditions.add(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online, EpOrganClassStatus.opening, EpOrganClassStatus.end));
-        conditions.add(EP_ORGAN_CLASS.DEL_FLAG.eq(false));
 
-        Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
-//        Page<ClassWithdrawQueryDto> page = orderService.findClassWithdrawQueryDtoByPage(pageable, conditions);
-//        page.getContent().forEach(p -> {
-//            Long classId = p.getClassId();
-//            //总微信支付成功订单数
-//            int totalWechatPaidOrderNum = orderService.countWechatPaidOrderByClassId(classId);
-//            p.setTotalWechatPaidOrderNum(totalWechatPaidOrderNum);
-//            //已提现订单数
-//            int finishWithdrawNum = wechatPayWithdrawService.countPayWithdrawByClassId(classId);
-//            p.setWaitWithdrawOrderNum(totalWechatPaidOrderNum - finishWithdrawNum);
-//            EpWechatPayWithdrawPo wechatPayWithdrawPo = wechatPayWithdrawService.getLastWithdrawByClassId(classId);
-//            if (null != wechatPayWithdrawPo) {
-//                p.setLastWithdrawAmount(wechatPayWithdrawPo.getTotalAmount());
-//                p.setLastWithdrawOrderNum(wechatPayWithdrawPo.getWechatPayNum());
-//                p.setLastWithdrawTime(wechatPayWithdrawPo.getOrderDeadline());
-//                p.setLastWithdrawStatus(wechatPayWithdrawPo.getStatus());
-//                p.setPayWithdrawId(wechatPayWithdrawPo.getId());
-//            }
-//        });
-        EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
-        if (null != wechatPayBillPo) {
-            Date withdrawDeadline;
-            try {
-                withdrawDeadline = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
-            } catch (Exception e) {
-                log.error("[提现]商户提现页面，最新结算日期转换异常。", e);
-                withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
-            }
-            String withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadline);
-            model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
-        }
-        model.addAttribute("page", page);
-        model.addAttribute("searchMap", searchMap);
-        return "order/ClassWithdraw";
-    }
-
-    /**
-     * 商户申请提现
-     *
-     * @param classId
-     * @return
-     */
-    @GetMapping("applyPayWithdraw")
-    @ResponseBody
-    public ResultDo applyPayWithdraw(@RequestParam(value = "classId") Long classId,
-                                     @RequestParam(value = "withdrawDeadline") String withdrawDeadline) {
-        Optional<EpOrganClassPo> organClassOptional = organClassService.findById(classId);
-        if (organClassOptional.isPresent() && organClassOptional.get().getOgnId().equals(this.getCurrentUserOgnId())) {
-            return wechatPayWithdrawService.applyPayWithdrawByClassId(classId, organClassOptional.get().getCourseId(), withdrawDeadline);
-        } else {
-            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
-        }
-    }
 
     /**
      * 校验业务对象是否属于该机构，是：返回po;否：返回null

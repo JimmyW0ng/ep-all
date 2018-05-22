@@ -22,6 +22,24 @@ public class ClassWithdrawQueryDto extends AbstractBasePojo {
     private String courseName;
     private Long classId;
     private String className;
+    private Long orderId;
+    /**
+     * 微信已支付订单数
+     */
+    private Long wechatPaidOrderNum;
+    /**
+     * 微信已支付总订单金额
+     */
+    private BigDecimal sumWechatPaidTotalFee;
+    /**
+     * 微信已支付总手续费
+     */
+    private BigDecimal sumWechatPaidPoundage;
+
+    /**
+     * ep_wechat_pay_withdraw表id
+     */
+    private Long WechatPayWithdrawId;
     /**
      * 总已支付订单数
      */

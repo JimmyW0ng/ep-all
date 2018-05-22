@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+    <header>
+        <th:block layout:fragment="links">
+            <link th:href="@{/css/zTreeStyle/zTreeStyle.css}" rel="stylesheet">
+        </th:block>
+
+    </header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>提现详情</h5>
+            <h5>（<span class="required-sign">*为必填</span>）</h5>
+            <a style="display: inline-block;float: right" class="btn btn-xs btn-danger" href="javascript:void(0)"
+               onclick="history.back()">返回</a>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t">
+                <input id="classId" type="hidden" th:value="${classId}">
+                <div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 control-label">产品名称：</label>
+                        <label style="text-align: left" class="col-sm-8 control-label" th:text="${courseName}"></label>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 control-label">结算时间：</label>
+                        <label id="withdrawDeadline" style="text-align: left" class="col-sm-8 control-label"
+                               th:text="${withdrawDeadline}"></label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">班次名称：</label>
+                        <label style="text-align: left" class="col-sm-4 control-label" th:text="${className}"></label>
+                    </div>
+                    <!--<div class="form-group col-sm-6">-->
+                    <!--<label class="col-sm-4 control-label"></label>-->
+                    <!--<label class="col-sm-8 control-label"></label>-->
+                    <!--</div>-->
+                </div>
+                <div>
+                    <div class="form-group">
+                        <div class=" col-sm-2" style="text-align: right">
+                            <label class="control-label">线上支付：</label>
+                        </div>
+                        <div class="col-sm-10">
+                            <table style="margin-top:20px;margin-bottom: 0px;width: 60%"
+                                   class="table table-striped table-hover table-bordered dataTable"
+                                   aria-describedby="editable_info">
+                                <thead>
+                                <tr>
+                                    <th>总支付订单数</th>
+                                    <th>总支付订单金额</th>
+                                    <th>总支付微信手续费</th>
+                                    <th>总实收金额</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${countWechatPaidOrder}"></td>
+                                    <td th:text="${sumWechatPaidTotalFee}"></td>
+                                    <td th:text="${sumWechatPoundage}"></td>
+                                    <td th:text="${platformReceiveFee}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table style="width: 60%" class="table table-striped table-hover table-bordered dataTable"
+                                   aria-describedby="editable_info">
+                                <thead>
+                                <tr>
+                                    <th>未提现订单数</th>
+                                    <th>未提现订单金额</th>
+                                    <th>总提现微信手续费</th>
+                                    <th>可提现金额</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${countWechatWaitWithdrawOrder}"></td>
+                                    <td th:text="${sumWaitWithdrawOrderTotalFee}"></td>
+                                    <td th:text="${sumWaitWithdrawOrderPoundage}"></td>
+                                    <td th:text="${withdrawFee}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class=" col-sm-2" style="text-align: right">
+                            <label class="control-label">线下支付：</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div style="margin-top:20px;width: 60%"
+                                 class="dataTables_wrapper form-inline table-responsive" role="grid">
+                                <table class="table table-striped table-hover table-bordered dataTable"
+                                       aria-describedby="editable_info">
+                                    <thead>
+                                    <tr>
+                                        <th>已支付订单数</th>
+                                        <th>已支付订单金额</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${countOfflinePaidOrder}"></td>
+                                        <td th:text="${sumOfflinePaidOrderFee}"></td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div style="overflow:hidden">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-4 control-label"><span class="required-sign">*</span>收款方户名</label>
+                            <div class="col-sm-6">
+                                <input id="accountName" name="accountName" type="text" class="form-control"
+                                       required="true"
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-4 control-label"><span class="required-sign">*</span>收款方账号</label>
+                            <div class="col-sm-6">
+                                <input id="accountNumber" name="accountNumber" type="text" class="form-control"
+                                       required="true"
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3 col-sm-offset-2">
+                                <button class="btn btn-primary" type="button" onclick="applyPayWithdraw()">申请提现</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class=" col-sm-2" style="text-align: right">
+                        <label class="control-label">历史提现记录：</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <div style="margin-top:20px;" class="dataTables_wrapper form-inline table-responsive"
+                             role="grid">
+                            <table class="table table-striped table-hover table-bordered dataTable"
+                                   aria-describedby="editable_info">
+                                <thead>
+                                <tr>
+                                    <th>提现订单截止时间</th>
+                                    <th>提现总金额</th>
+                                    <th>微信支付订单数</th>
+                                    <th>微信支付手续费</th>
+                                    <th>收款方户名</th>
+                                    <th>收款方账号</th>
+                                    <th>提现手续费</th>
+                                    <th>商户单号</th>
+                                    <th>付款单号</th>
+                                    <th>到账时间</th>
+                                    <th>提现状态</th>
+                                    <th>操作</th>
+
+                                </tr>
+                                </thead>
+                                <tbody id="withdrawRecord">
+                                <tr th:each="bo:${wechatPayWithdrawPos}">
+                                    <td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${bo.totalAmount}"></td>
+                                    <td th:text="${bo.wechatPayNum}"></td>
+                                    <td th:text="${bo.wechatPayFee}"></td>
+                                    <td th:text="${bo.accountName}"></td>
+                                    <td th:text="${bo.accountNumber}"></td>
+                                    <td th:text="${bo.withdrawFee}"></td>
+                                    <td th:text="${bo.outWithdrawNo}"></td>
+                                    <td th:text="${bo.payId}"></td>
+                                    <td th:text="${bo.paidTime}"></td>
+                                    <td name="status" style="display: none" th:text="${bo.status}"></td>
+                                    <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary"
+                                                th:if="${#strings.equals(bo.status,'submit')}"
+                                                th:onclick="'finishPayWithdrawBox('+${bo.id}+')'">提现完成
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+
+<script th:inline="javascript">
+    function applyPayWithdraw(classId) {
+        if (!$("form").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        var waitFlag = false
+        $("#withdrawRecord").find("td[name='status']").each(function () {
+            if ($(this).text() == 'wait') {
+                waitFlag = true
+                return
+            }
+        })
+        if (waitFlag) {
+            toastr.error("请先完成所有历史提现记录！");
+            return
+        }
+        $ajaxPost("/auth/wechatPaywithdraw/applyPayWithdraw",
+            {
+                classId: $("#classId").val(),
+                accountName: $("#accountName").val(),
+                accountNumber: $("#accountNumber").val(),
+                withdrawDeadline: $("#withdrawDeadline").text()
+            }
+        )
+    }
+    function finishPayWithdrawBox(id) {
+        layer_confirm(formatMsg("结束", "笔提现", "请先确认已收到提现款再按确定"), 3, finishPayWithdraw, id)
+    }
+
+    function finishPayWithdraw(id) {
+        $ajaxGet("/auth/wechatPaywithdraw/finishPayWithdraw/" + id)
+    }
+</script>
+</body>
+</html>
