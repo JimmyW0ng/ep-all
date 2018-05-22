@@ -732,7 +732,7 @@ public class OrderService {
     public ResultDo<OrderPayInfoBo> getPayInfo(Long memberId, Long orderId) {
         EpOrderPo orderPo = orderRepository.getById(orderId);
         if (orderPo == null || orderPo.getDelFlag() || !orderPo.getMemberId().equals(memberId)) {
-            ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
         }
         OrderPayInfoBo payInfoBo = new OrderPayInfoBo();
         EpOrganCoursePo coursePo = organCourseRepository.getById(orderPo.getCourseId());
