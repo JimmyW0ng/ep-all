@@ -95,7 +95,7 @@ public class WechatJob {
     /**
      * 定时获取微信支付对账单
      */
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 0/30 10-12 * * ?")
     public void downloadWechatPayBill() {
         Date billDate = DateTools.addDay(DateTools.getCurrentDate(), BizConstant.DB_MINUS_ONE);
         log.info("定时获取微信支付对账单...start, billDate={}", billDate);
