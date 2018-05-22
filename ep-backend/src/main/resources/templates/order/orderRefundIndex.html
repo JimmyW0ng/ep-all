@@ -122,6 +122,7 @@
                             <th>价格</th>
                             <th>订单状态</th>
                             <th>支付状态</th>
+                            <th>申请退款状态</th>
                             <th>备注</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -151,6 +152,7 @@
                                       th:text="#{EpOrderPayStatus.+${bo.payStatus}}"></span>
                             </td>
 
+                            <td name="" th:text="${bo.remark}"></td>
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
@@ -214,7 +216,6 @@
                             <th>支付完成时间</th>
                             <th>业务结果</th>
                             <th>是否已退款</th>
-                            <th>退款原因</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -258,7 +259,8 @@
     <div class="modal-dialog" style="top: 40%;">
         <div class="modal-content animated bounceInRight">
 
-            <input type="hidden">
+            <input type="hidden" id="orderRefundOutTradeNo">
+            <input type="hidden" id="orderRefundOrderId">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
@@ -281,7 +283,9 @@
 </div>
 <script type="text/template" id='unifiedordersBodyTmpl'>
     <tr class="">
-        <td>${outTradeNo}
+        <td name="orderId" style="display: none">${orderId}
+        </td>
+        <td name="outTradeNo">${outTradeNo}
         </td>
         <td>${body}</td>
         <td>${totalFee/100}</td>
@@ -293,11 +297,10 @@
             {{else}}否
             {{/if}}
         </td>
+
         <td>{{if successTime}}
             {{else}}
-            <button class="btn btn-xs btn-info" onclick="confirmPayRefund(this,'${outTradeNo}')">确认申请退款
-            </button>
-            <button class="btn btn-xs btn-info" onclick="confirmPayRefundBox()">确认申请退款
+            <button class="btn btn-xs btn-info" onclick="confirmPayRefundBox(this)">申请退款
             </button>
             {{/if}}
         </td>
@@ -305,6 +308,7 @@
 </script>
 <script type="text/template" id='payrefundBodyTmpl'>
     <tr class="">
+        <td name="orderId">${orderId}</td>
         <td>${outTradeNo}</td>
         <td>${transactionId}</td>
         <td>${outRefundNo}</td>
@@ -324,8 +328,12 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
-    function confirmPayRefundBox() {
+    function confirmPayRefundBox(ele) {
         $("#myModal").modal("show")
+        var outTradeNo = $(ele).parents("tr").eq(0).find("td[name='outTradeNo']").eq(0).text()
+        var orderId = $(ele).parents("tr").eq(0).find("td[name='orderId']").eq(0).text()
+        $("#orderRefundOutTradeNo").val(outTradeNo)
+        $("#orderRefundOrderId").val(orderId)
     }
     function orderRefundApplyBox(orderId) {
         $("#payrefundModal").modal("show")
@@ -360,18 +368,20 @@
             }
         })
     }
-    function confirmPayRefund(ele, outTradeNo) {
+    function confirmPayRefund() {
+        var outTradeNo = $("#orderRefundOutTradeNo").val()
+        var orderId = $("#orderRefundOrderId").val()
         console.log(outTradeNo)
         $.ajax({
-            type: "GET",
-            url: "/auth/wechat/orderRefund/" + outTradeNo,
+            type: "POST",
+            url: "/auth/orderRefund/saveOrderRefund",
+            data: {orderId: orderId, outTradeNo: outTradeNo, refundReason: $("#refundReason").val()},
             beforeSend: function () {
                 layer.load(2, {shade: [0.1, '#fff']});
             },
             success: function (data) {
                 if (data.success) {
-                    $(ele).remove()
-                    toastr.success("申请退款成功！")
+                    toastr_success("申请成功！", document.location.href)
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
                 }

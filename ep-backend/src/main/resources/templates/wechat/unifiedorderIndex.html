@@ -129,6 +129,13 @@
                                 <a class="btn btn-xs btn-primary"
                                    th:if="${#stringTools.equals(bo.tradeState,'INIT')}"
                                    th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>
+                                <button class="btn btn-xs btn-primary"
+                                        th:if="${#stringTools.equals(bo.orderRefundApplyStstus,'save')&&
+                                        #stringTools.equals(bo.orderPayStstus,'paid')&&
+                                         #stringTools.equals(bo.orderPayType,'wechat_pay')&&
+                                         orderRefundId==null}" th:onclick="'wechatPayRefund(\''+${bo.outTradeNo}+'\')'">
+                                    退款
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -196,6 +203,12 @@
 
             }
         })
+    }
+    /**
+     * 微信退款
+     */
+    function wechatPayRefund(outTradeNo) {
+        $ajaxGet("/auth/wechat/wechatPayRefund/" + outTradeNo)
     }
 </script>
 </body>

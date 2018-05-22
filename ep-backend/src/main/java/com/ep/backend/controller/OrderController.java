@@ -260,6 +260,7 @@ public class OrderController extends BackendController {
         conditions.add(EP.EP_ORDER.DEL_FLAG.eq(false));
         conditions.add(EP.EP_ORDER.OGN_ID.eq(super.getCurrentUser().get().getOgnId()));
         conditions.add(EP.EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay));
+        conditions.add(EP.EP_ORDER.WITHDRAW_FLAG.eq(false));
         conditions.add(EP.EP_ORDER.PAY_STATUS.in(EpOrderPayStatus.paid, EpOrderPayStatus.refund_apply, EpOrderPayStatus.refund_finish));
 
         Page<OrderBo> page = orderService.findbyPageAndCondition(pageable, conditions);

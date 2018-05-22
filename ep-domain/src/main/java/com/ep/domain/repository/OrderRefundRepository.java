@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORDER_REFUND;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
@@ -29,6 +30,14 @@ public class OrderRefundRepository extends AbstractCRUDRepository<EpOrderRefundR
     @Autowired
     public OrderRefundRepository(DSLContext dslContext) {
         super(dslContext, EP_ORDER_REFUND, EP_ORDER_REFUND.ID, EpOrderRefundPo.class);
+    }
+
+    public Optional<EpOrderRefundPo> findById(Long id) {
+        EpOrderRefundPo data = dslContext.selectFrom(EP_ORDER_REFUND)
+                .where(EP_ORDER_REFUND.ID.eq(id))
+                .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
+                .fetchOneInto(EpOrderRefundPo.class);
+        return Optional.ofNullable(data);
     }
 
     public Page<OrderRefundBo> findbyPageAndCondition(Pageable pageable, Collection<? extends Condition> condition) {

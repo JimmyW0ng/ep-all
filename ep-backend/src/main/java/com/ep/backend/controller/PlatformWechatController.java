@@ -238,13 +238,15 @@ public class PlatformWechatController extends BackendController {
     }
 
     /**
-     * 退款申请
-     *
+     * 平台调微信申请退款接口
+     * @param outTradeNo
      * @return
+     * @throws Exception
      */
-    @GetMapping("orderRefund/{outTradeNo}")
+    @GetMapping("wechatPayRefund/{outTradeNo}")
     @ResponseBody
-    public ResultDo payRefund(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
+    public ResultDo wechatPayRefund(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
         return wechatPayComponent.xcxPayRefund(outTradeNo);
     }
+
 }

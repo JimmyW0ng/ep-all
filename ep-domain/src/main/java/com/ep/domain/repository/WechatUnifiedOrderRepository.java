@@ -136,6 +136,7 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                 .innerJoin(EP_ORDER).on(EP_ORDER.ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
                 .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .leftJoin(EP_ORDER_REFUND).on(EP_ORDER_REFUND.ORDER_ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
                 .where(condition);
         if (null != timeEndStart) {
             recordCount.and("unix_timestamp(`ep`.`ep_wechat_unified_order`.`time_end`)>=unix_timestamp(" + "'" + timeEndStart.toString() + "'" + ")");
@@ -152,12 +153,18 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME.as("courseName"));
         fieldList.add(EP_ORGAN_CLASS.ID.as("classId"));
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME.as("className"));
+        fieldList.add(EP_ORDER_REFUND.ID.as("orderRefundId"));
+        fieldList.add(EP_ORDER_REFUND.STATUS.as("orderRefundApplyStstus"));
+        fieldList.add(EP_ORDER.PAY_STATUS.as("orderPayStstus"));
+        fieldList.add(EP_ORDER.PAY_TYPE.as("orderPayType"));
 
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_WECHAT_UNIFIED_ORDER)
                 .innerJoin(EP_ORDER).on(EP_ORDER.ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
                 .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                .leftJoin(EP_ORDER_REFUND).on(EP_ORDER_REFUND.ORDER_ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
+
                 .where(condition);
         if (null != timeEndStart) {
             record.and("unix_timestamp(`ep`.`ep_wechat_unified_order`.`time_end`)>=unix_timestamp(" + "'" + timeEndStart.toString() + "'" + ")");
@@ -195,6 +202,7 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
     public List<WechatUnifiedOrderPayRefundBo> findUnifiedOrderPayRefundBoByOrderId(Long orderId) {
         List<Field<?>> fieldList = Lists.newArrayList();
 
+        fieldList.add(EP_WECHAT_UNIFIED_ORDER.ORDER_ID);
         fieldList.add(EP_WECHAT_UNIFIED_ORDER.OUT_TRADE_NO);
         fieldList.add(EP_WECHAT_UNIFIED_ORDER.BODY);
         fieldList.add(EP_WECHAT_UNIFIED_ORDER.TOTAL_FEE);
