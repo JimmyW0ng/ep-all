@@ -15,6 +15,11 @@ public class WechatPayBillService {
     @Autowired
     private WechatPayBillRepository wechatPayBillRepository;
 
+    /**
+     * 最近一次微信支付对账记录
+     *
+     * @return
+     */
     public EpWechatPayBillPo getLastPayBill() {
         return wechatPayBillRepository.getLastPayBill();
     }

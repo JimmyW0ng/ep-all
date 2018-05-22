@@ -917,11 +917,10 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
                 .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`time_end`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                .and(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.ne("SUCCESS").or(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.isNull()))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                 .fetchOneInto(BigDecimal.class);
     }
@@ -942,7 +941,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                .and(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.ne("SUCCESS").or(EP_WECHAT_PAY_BILL_DETAIL.REFUND_STATUS.isNull()))
                 .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                 .fetchOneInto(BigDecimal.class);
     }
@@ -960,7 +958,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
 
     /**
      * 根据订单id完成提现（更新提现标记）
-     *
      * @param orderIds
      * @return
      */

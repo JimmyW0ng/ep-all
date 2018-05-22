@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sd="http://www.thymeleaf.org/spring-data"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
->
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head th:replace="~{fragments/header :: common_header}">
 
 </head>
 <header>
     <th:block layout:fragment="links">
-
     </th:block>
 </header>
 <body>
 <div>
     <div class="col-lg-12">
-
         <div class="panel">
             <div class="panel-heading">
 
@@ -36,7 +33,6 @@
                         <button class="btn btn-primary" id="query-button" type="button">查询</button>
                         <button class="btn btn-warning" id="rest-button" type="button">重置</button>
                     </div>
-
                 </form>
             </div>
             <div class="panel-body">
@@ -49,57 +45,48 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>产品</th>
-                            <th>班次</th>
-                            <th>提现订单截止时间</th>
-                            <th>提现总金额（元）</th>
-                            <th>报名订单数</th>
-                            <th>线下支付订单数</th>
-                            <th>微信支付订单数</th>
-                            <th>微信支付手续费（元）</th>
-                            <th>提现手续费（元）</th>
-                            <th>提现订单号</th>
-                            <th>提现状态</th>
+                            <th>机构</th>
+                            <th>订单id</th>
+                            <th>商户订单号</th>
+                            <th>退单原因</th>
+                            <th>状态</th>
+                            <th>申请人员</th>
+                            <th>操作人员</th>
                             <th>创建时间</th>
                             <th>备注</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="bo:${page.content}">
-                            <td th:text="${bo.id}"></td>
-                            <td th:text="${bo.courseName}"></td>
-                            <td th:text="${bo.className}"></td>
-                            <td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>
-                            <td th:text="${bo.totalAmount}"></td>
-                            <td th:text="${bo.orderNum}"></td>
-                            <td th:text="${bo.offlinePayNum}"></td>
-                            <td th:text="${bo.wechatPayNum}"></td>
-                            <td th:text="${bo.wechatPayFee}"></td>
-                            <td th:text="${bo.withdrawFee}"></td>
-                            <td th:text="${bo.outWithdrawNo}"></td>
-                            <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
-                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
-                            <td th:text="${bo.remark}"></td>
+                        <!--<tr th:each="bo:${page.content}">-->
+                        <!--<td th:text="${bo.id}"></td>-->
+                        <!--<td th:text="${bo.courseName}"></td>-->
+                        <!--<td th:text="${bo.className}"></td>-->
+                        <!--<td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>-->
+                        <!--<td th:text="${bo.totalAmount}"></td>-->
+                        <!--<td th:text="${bo.orderNum}"></td>-->
+                        <!--<td th:text="${bo.offlinePayNum}"></td>-->
+                        <!--<td th:text="${bo.wechatPayNum}"></td>-->
+                        <!--<td th:text="${bo.wechatPayFee}"></td>-->
+                        <!--<td th:text="${bo.withdrawFee}"></td>-->
+                        <!--<td th:text="${bo.outWithdrawNo}"></td>-->
+                        <!--<td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>-->
+                        <!--<td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>-->
+                        <!--<td th:text="${bo.remark}"></td>-->
 
-                        </tr>
+                        <!--</tr>-->
                         </tbody>
                     </table>
-                    <!--Userlist end-->
-
                     <div class="row mt15">
                         <div class="col-lg-6">
                             <label class="fl" sd:page-size-selector="dropdown">
                                 <select size="1" name="editable-sample_length" aria-controls="editable-sample"
                                         class="form-control xsmall" sd:page-size-selector="default">
-
                                 </select>
                             </label>
                             <span class="fl pl15 pt10" sd:pagination-summary=""></span>
                         </div>
-
                         <div class="col-lg-6">
                             <ul class="pagination pagination-sm pull-right" sd:pagination="full">
-
                             </ul>
                         </div>
                     </div>
