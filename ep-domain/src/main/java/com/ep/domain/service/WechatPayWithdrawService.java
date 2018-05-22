@@ -10,9 +10,6 @@ import com.ep.domain.repository.OrderRepository;
 import com.ep.domain.repository.WechatPayBillDetailRepository;
 import com.ep.domain.repository.WechatPayBillRepository;
 import com.ep.domain.repository.WechatPayWithdrawRepository;
-import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
-import com.ep.domain.repository.domain.enums.EpOrderPayType;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpWechatPayWithdrawStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -86,28 +83,6 @@ public class WechatPayWithdrawService {
      */
     public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadline, String accountName, String accountNumber) {
         log.info("[微信订单费提现]订单微信支付订单费提现申请开始，classId={},courseId={}。", classId, courseId);
-//        EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
-//        if (null != wechatPayBillPo) {
-//            Date withdrawDeadlineDb;
-//            String withdrawDeadlineStr="";
-//            try {
-//                withdrawDeadlineDb = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
-//                withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadlineDb);
-//            } catch (Exception e) {
-////                withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
-//            }
-//
-//            if(!withdrawDeadline.equals(withdrawDeadlineStr)){
-//                withdrawDeadline=withdrawDeadlineStr;
-//                log.info("[微信订单费提现]");
-//            }
-//        }
-        //该班次上一次提现记录
-        EpWechatPayWithdrawPo lastWechatPayWithdrawPo = wechatPayWithdrawRepository.getLastWithdrawByClassId(classId);
-        Timestamp startTime = null;
-        if (null != lastWechatPayWithdrawPo) {
-            startTime = lastWechatPayWithdrawPo.getOrderDeadline();
-        }
         //该班次上一次提现截止时间
         EpWechatPayWithdrawPo wechatPayWithdrawPo = new EpWechatPayWithdrawPo();
         wechatPayWithdrawPo.setClassId(classId);
@@ -115,13 +90,8 @@ public class WechatPayWithdrawService {
         Timestamp orderDeadline = DateTools.addDate(DateTools.stringToTimestamp(withdrawDeadline, DateTools.DATE_FMT_3), BizConstant.DB_NUM_ONE);
         wechatPayWithdrawPo.setOrderDeadline(orderDeadline);
         wechatPayWithdrawPo.setStatus(EpWechatPayWithdrawStatus.wait);
-        EpOrderStatus[] orderStatuses = new EpOrderStatus[]{EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.end};
-        //报名订单数（状态为success，opening，end）
-        wechatPayWithdrawPo.setOrderNum(orderRepository.countByClassIdAndOrderStatus(courseId, orderStatuses));
-        //线下支付订单数
-        wechatPayWithdrawPo.setOfflinePayNum(orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.offline, EpOrderPayStatus.paid, startTime, orderDeadline));
-        //微信支付订单数
-        wechatPayWithdrawPo.setWechatPayNum(orderRepository.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.wechat_pay, EpOrderPayStatus.paid, startTime, orderDeadline));
+        //微信支付订单数(即待提现订单数)
+        wechatPayWithdrawPo.setWechatPayNum(orderRepository.countWaitWithdrawOrderByClassId(classId, orderDeadline));
         //提现总金额
         wechatPayWithdrawPo.setTotalAmount(orderRepository.sumWaitWithdrawOrderByClassId(classId, orderDeadline));
         //微信支付手续费
