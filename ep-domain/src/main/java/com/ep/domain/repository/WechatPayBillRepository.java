@@ -27,7 +27,7 @@ public class WechatPayBillRepository extends AbstractCRUDRepository<EpWechatPayB
     }
 
     /**
-     * 获取最近的微信支付对账表
+     * 获取最近的微信支付对账记录
      *
      * @return
      */

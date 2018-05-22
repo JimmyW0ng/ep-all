@@ -109,9 +109,12 @@ public class WechatPayWithdrawController extends BackendController {
         conditions.add(EP_ORGAN_COURSE.DEL_FLAG.eq(false));
         conditions.add(EP_ORDER.DEL_FLAG.eq(false));
         conditions.add(EP_ORDER.WITHDRAW_FLAG.eq(false));
+        conditions.add(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid));
+        //最近一次微信支付对账记录
         EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
         Date withdrawDeadline = DateTools.stringToDate(wechatPayBillPo.getBillDate().toString(), DateTools.DATE_FMT_0);
         String withdrawDeadlineStr = DateTools.toString(withdrawDeadline, DateTools.DATE_FMT_4);
+        //结算截止时间
         Date conditionDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
         model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
         Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions, DateTools.dateToTimestamp(conditionDeadline));
