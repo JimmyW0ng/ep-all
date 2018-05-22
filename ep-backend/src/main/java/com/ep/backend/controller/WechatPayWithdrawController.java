@@ -244,9 +244,11 @@ public class WechatPayWithdrawController extends BackendController {
     @ResponseBody
     public ResultDo finishPayWithdraw(@RequestParam(value = "id") Long id,
                                       @RequestParam(value = "outWithdrawNo") String outWithdrawNo,
-                                      @RequestParam(value = "payId") String payId
+                                      @RequestParam(value = "payId") String payId,
+                                      @RequestParam(value = "withdrawFee") BigDecimal withdrawFee,
+                                      @RequestParam(value = "paidTime") Timestamp paidTime
     ) {
-        return wechatPayWithdrawService.finishPayWithdrawById(id, outWithdrawNo, payId);
+        return wechatPayWithdrawService.finishPayWithdrawById(id, outWithdrawNo, payId, withdrawFee, paidTime);
     }
 
     /**

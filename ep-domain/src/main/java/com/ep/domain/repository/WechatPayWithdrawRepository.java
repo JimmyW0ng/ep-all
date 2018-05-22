@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -144,11 +145,13 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
      * @param id
      * @return
      */
-    public int finishPayWithdrawById(Long id, String outWithdrawNo, String payId) {
+    public int finishPayWithdrawById(Long id, String outWithdrawNo, String payId, BigDecimal withdrawFee, Timestamp paidTime) {
         return dslContext.update(EP_WECHAT_PAY_WITHDRAW)
                 .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.finish)
                 .set(EP_WECHAT_PAY_WITHDRAW.OUT_WITHDRAW_NO, outWithdrawNo)
                 .set(EP_WECHAT_PAY_WITHDRAW.PAY_ID, payId)
+                .set(EP_WECHAT_PAY_WITHDRAW.WITHDRAW_FEE, withdrawFee)
+                .set(EP_WECHAT_PAY_WITHDRAW.PAID_TIME, paidTime)
                 .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
                 .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.submit))
                 .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))

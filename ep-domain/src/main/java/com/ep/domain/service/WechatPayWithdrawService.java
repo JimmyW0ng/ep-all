@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -130,13 +131,13 @@ public class WechatPayWithdrawService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo finishPayWithdrawById(Long id, String outWithdrawNo, String payId) {
+    public ResultDo finishPayWithdrawById(Long id, String outWithdrawNo, String payId, BigDecimal withdrawFee, Timestamp paidTime) {
         log.info("[微信订单费提现]提现完成开始，id={}。", id);
         Optional<EpWechatPayWithdrawPo> wechatPayWithdrawOptional = wechatPayWithdrawRepository.findById(id);
         Long classId = wechatPayWithdrawOptional.get().getClassId();
         EpWechatPayWithdrawPo lastFinishWithdrawPo = wechatPayWithdrawRepository.getLastFinishWithdrawByClassId(classId);
 
-        if (wechatPayWithdrawRepository.finishPayWithdrawById(id, outWithdrawNo, payId) == BizConstant.DB_NUM_ONE) {
+        if (wechatPayWithdrawRepository.finishPayWithdrawById(id, outWithdrawNo, payId, withdrawFee, paidTime) == BizConstant.DB_NUM_ONE) {
             List<Long> orderIds = wechatPayWithdrawRepository.findWaitWithdrawOrderIds(classId,
                     lastFinishWithdrawPo != null ? lastFinishWithdrawPo.getOrderDeadline() : null, wechatPayWithdrawOptional.get().getOrderDeadline());
             orderRepository.finishPayWithdrawByOrderIds(orderIds);
