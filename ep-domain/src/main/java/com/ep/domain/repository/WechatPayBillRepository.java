@@ -33,11 +33,11 @@ public class WechatPayBillRepository extends AbstractCRUDRepository<EpWechatPayB
      */
     public EpWechatPayBillPo getLastPayBill() {
         return dslContext.selectFrom(EP_WECHAT_PAY_BILL)
-                .where(EP_WECHAT_PAY_BILL.RETURN_CODE.eq("SUCCESS"))
-                .and(EP_WECHAT_PAY_BILL.DEL_FLAG.eq(false))
-                .orderBy(EP_WECHAT_PAY_BILL.ID.desc())
-                .limit(BizConstant.DB_NUM_ONE)
-                .fetchOneInto(EpWechatPayBillPo.class);
+                         .where(EP_WECHAT_PAY_BILL.RETURN_CODE.eq("SUCCESS"))
+                         .and(EP_WECHAT_PAY_BILL.DEL_FLAG.eq(false))
+                         .orderBy(EP_WECHAT_PAY_BILL.BILL_DATE.desc())
+                         .limit(BizConstant.DB_NUM_ONE)
+                         .fetchOneInto(EpWechatPayBillPo.class);
     }
 
     public Optional<EpWechatPayBillPo> getByBillDate(Integer billDate) {

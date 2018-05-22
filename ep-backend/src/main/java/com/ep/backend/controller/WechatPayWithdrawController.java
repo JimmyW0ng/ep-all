@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -110,25 +109,12 @@ public class WechatPayWithdrawController extends BackendController {
         conditions.add(EP_ORGAN_COURSE.DEL_FLAG.eq(false));
         conditions.add(EP_ORDER.DEL_FLAG.eq(false));
         conditions.add(EP_ORDER.WITHDRAW_FLAG.eq(false));
-        Page<ClassWithdrawQueryDto> page;
         EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
-        if (null != wechatPayBillPo) {
-            Date withdrawDeadline;
-            try {
-                withdrawDeadline = new SimpleDateFormat("yyyyMMdd").parse(wechatPayBillPo.getBillDate().toString());
-            } catch (Exception e) {
-                log.error("[提现]商户提现页面，最新结算日期转换异常。", e);
-                withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
-            }
-            withdrawDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
-            String withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadline);
-            model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
-            page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions, DateTools.dateToTimestamp(withdrawDeadline));
-
-        } else {
-            page = new PageImpl<ClassWithdrawQueryDto>(new ArrayList<ClassWithdrawQueryDto>(), pageable, BizConstant.DB_NUM_ZERO);
-        }
-
+        Date withdrawDeadline = DateTools.stringToDate(wechatPayBillPo.getBillDate().toString(), DateTools.DATE_FMT_0);
+        String withdrawDeadlineStr = DateTools.toString(withdrawDeadline, DateTools.DATE_FMT_4);
+        Date conditionDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
+        model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
+        Page<ClassWithdrawQueryDto> page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions, DateTools.dateToTimestamp(conditionDeadline));
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
         return "wechatPayWithdraw/withdrawMerchantIndex";

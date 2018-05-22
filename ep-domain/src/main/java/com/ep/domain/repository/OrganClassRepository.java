@@ -522,13 +522,13 @@ public class OrganClassRepository extends AbstractCRUDRepository<EpOrganClassRec
      */
     public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition, Timestamp withdrawDeadline) {
         long totalCount = dslContext.select(EP_ORGAN_CLASS.ID.countDistinct())
-                .from(EP_ORGAN_CLASS)
-                .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
-                .leftJoin(EP_ORDER).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
-                .innerJoin(EP_WECHAT_PAY_BILL_DETAIL).on(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID.eq(EP_ORDER.ID))
-                .where(condition)
-                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + withdrawDeadline.toString() + "'" + ")")
-                .fetchOne(0, Long.class);
+                                    .from(EP_ORGAN_CLASS)
+                                    .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORGAN_CLASS.COURSE_ID))
+                                    .leftJoin(EP_ORDER).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
+                                    .innerJoin(EP_WECHAT_PAY_BILL_DETAIL).on(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID.eq(EP_ORDER.ID))
+                                    .where(condition)
+                                    .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + withdrawDeadline.toString() + "'" + ")")
+                                    .fetchOneInto(Long.class);
         if (totalCount == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }

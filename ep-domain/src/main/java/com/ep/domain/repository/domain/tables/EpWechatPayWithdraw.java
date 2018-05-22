@@ -35,7 +35,7 @@ public class EpWechatPayWithdraw extends TableImpl<EpWechatPayWithdrawRecord> {
      * The reference instance of <code>ep.ep_wechat_pay_withdraw</code>
      */
     public static final EpWechatPayWithdraw EP_WECHAT_PAY_WITHDRAW = new EpWechatPayWithdraw();
-    private static final long serialVersionUID = -155832573;
+    private static final long serialVersionUID = 1828361669;
     /**
      * The column <code>ep.ep_wechat_pay_withdraw.id</code>. 主键
      */
@@ -56,14 +56,6 @@ public class EpWechatPayWithdraw extends TableImpl<EpWechatPayWithdrawRecord> {
      * The column <code>ep.ep_wechat_pay_withdraw.total_amount</code>. 提现总金额
      */
     public final TableField<EpWechatPayWithdrawRecord, BigDecimal> TOTAL_AMOUNT = createField("total_amount", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2).nullable(false), this, "提现总金额");
-    /**
-     * The column <code>ep.ep_wechat_pay_withdraw.order_num</code>. 报名订单数
-     */
-    public final TableField<EpWechatPayWithdrawRecord, Integer> ORDER_NUM = createField("order_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "报名订单数");
-    /**
-     * The column <code>ep.ep_wechat_pay_withdraw.offline_pay_num</code>. 线下支付订单数
-     */
-    public final TableField<EpWechatPayWithdrawRecord, Integer> OFFLINE_PAY_NUM = createField("offline_pay_num", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "线下支付订单数");
     /**
      * The column <code>ep.ep_wechat_pay_withdraw.wechat_pay_num</code>. 微信支付订单数
      */

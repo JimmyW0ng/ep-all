@@ -27,8 +27,6 @@ public class EpWechatPayWithdrawPo extends AbstractBasePojo {
     private Long classId;
     private Timestamp orderDeadline;
     private BigDecimal totalAmount;
-    private Integer orderNum;
-    private Integer offlinePayNum;
     private Integer wechatPayNum;
     private BigDecimal wechatPayFee;
     private String accountName;

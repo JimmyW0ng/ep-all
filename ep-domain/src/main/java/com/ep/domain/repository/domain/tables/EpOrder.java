@@ -37,7 +37,7 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
      * The reference instance of <code>ep.ep_order</code>
      */
     public static final EpOrder EP_ORDER = new EpOrder();
-    private static final long serialVersionUID = 1394472757;
+    private static final long serialVersionUID = -986470992;
     /**
      * The column <code>ep.ep_order.id</code>. 主键
      */
@@ -85,7 +85,7 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
     /**
      * The column <code>ep.ep_order.withdraw_flag</code>. 微信支付提现标志
      */
-    public final TableField<EpOrderRecord, Boolean> WITHDRAW_FLAG = createField("withdraw_flag", org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "微信支付提现标志");
+    public final TableField<EpOrderRecord, Boolean> WITHDRAW_FLAG = createField("withdraw_flag", org.jooq.impl.SQLDataType.BIT, this, "微信支付提现标志");
     /**
      * The column <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */
