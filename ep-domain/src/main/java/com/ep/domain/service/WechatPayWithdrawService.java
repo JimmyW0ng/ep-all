@@ -126,6 +126,8 @@ public class WechatPayWithdrawService {
         wechatPayWithdrawPo.setTotalAmount(orderRepository.sumWaitWithdrawOrderByClassId(classId, orderDeadline));
         //微信支付手续费
         wechatPayWithdrawPo.setWechatPayFee(orderRepository.sumWaitWithdrawPoundageByClassId(classId, orderDeadline));
+        wechatPayWithdrawPo.setAccountName(accountName);
+        wechatPayWithdrawPo.setAccountNumber(accountNumber);
         wechatPayWithdrawRepository.insert(wechatPayWithdrawPo);
         log.info("[微信订单费提现]订单微信支付订单费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
         log.info("[微信订单费提现]订单微信支付订单费提现申请成功，classId={},courseId={}。", classId, courseId);
@@ -162,12 +164,10 @@ public class WechatPayWithdrawService {
         EpWechatPayWithdrawPo lastFinishWithdrawPo = wechatPayWithdrawRepository.getLastFinishWithdrawByClassId(classId);
 
         if (wechatPayWithdrawRepository.finishPayWithdrawById(id) == BizConstant.DB_NUM_ONE) {
-            log.info("[微信订单费提现]提现完成成功，id={}。", id);
-            if (lastFinishWithdrawPo != null) {
-                orderRepository.finishPayWithdrawByClassId(classId, lastFinishWithdrawPo.getOrderDeadline(), wechatPayWithdrawOptional.get().getOrderDeadline());
-            } else {
-                orderRepository.finishPayWithdrawByClassId(classId, null, wechatPayWithdrawOptional.get().getOrderDeadline());
-            }
+            List<Long> orderIds = wechatPayWithdrawRepository.findWaitWithdrawOrderIds(classId,
+                    lastFinishWithdrawPo != null ? lastFinishWithdrawPo.getOrderDeadline() : null, wechatPayWithdrawOptional.get().getOrderDeadline());
+            orderRepository.finishPayWithdrawByOrderIds(orderIds);
+            log.info("[微信订单费提现]提现完成成功，wechatPayWithdrawId={},orderIds={}。", id, orderIds.toString());
             return ResultDo.build();
         }
         log.error("[微信订单费提现]提现完成失败，id={}。", id);

@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -265,9 +266,9 @@ public class OrganClassService {
      * @param condition
      * @return
      */
-    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition) {
+    public Page<ClassWithdrawQueryDto> findClassWithdrawQueryDtoByPage(Pageable pageable, Collection<? extends Condition> condition, Timestamp withdrawDeadline) {
 
-        return organClassRepository.findClassWithdrawQueryDtoByPage(pageable, condition);
+        return organClassRepository.findClassWithdrawQueryDtoByPage(pageable, condition, withdrawDeadline);
     }
 
 }

@@ -106,7 +106,6 @@ public class WechatPayWithdrawController extends BackendController {
         searchMap.put("className", className);
 
         conditions.add(EP_ORGAN_CLASS.OGN_ID.eq(this.getCurrentUserOgnId()));
-//        conditions.add(EP_ORGAN_CLASS.STATUS.in(EpOrganClassStatus.online, EpOrganClassStatus.opening, EpOrganClassStatus.end));
         conditions.add(EP_ORGAN_CLASS.DEL_FLAG.eq(false));
         conditions.add(EP_ORGAN_COURSE.DEL_FLAG.eq(false));
         conditions.add(EP_ORDER.DEL_FLAG.eq(false));
@@ -122,8 +121,9 @@ public class WechatPayWithdrawController extends BackendController {
                 withdrawDeadline = DateTools.addDate(DateTools.getCurrentDate(), 3);
             }
             withdrawDeadline = DateTools.addDate(withdrawDeadline, BizConstant.DB_NUM_ONE);
-            conditions.add(EP_ORDER.PAY_CONFIRM_TIME.lessThan(DateTools.dateToTimestamp(withdrawDeadline)));
-            page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions);
+            String withdrawDeadlineStr = new SimpleDateFormat("yyyy-MM-dd").format(withdrawDeadline);
+            model.addAttribute("withdrawDeadline", withdrawDeadlineStr);
+            page = organClassService.findClassWithdrawQueryDtoByPage(pageable, conditions, DateTools.dateToTimestamp(withdrawDeadline));
 
         } else {
             page = new PageImpl<ClassWithdrawQueryDto>(new ArrayList<ClassWithdrawQueryDto>(), pageable, BizConstant.DB_NUM_ZERO);

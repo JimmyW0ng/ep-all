@@ -214,6 +214,7 @@
                             <th>支付完成时间</th>
                             <th>业务结果</th>
                             <th>是否已退款</th>
+                            <th>退款原因</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -253,6 +254,31 @@
         </div>
     </div>
 </div>
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="top: 40%;">
+        <div class="modal-content animated bounceInRight">
+
+            <input type="hidden">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h3 style="text-align: left">退款原因</h3>
+
+            </div>
+            <div class="modal-body">
+                <textarea id="refundReason"></textarea>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal" onclick="confirmPayRefund()">提交申请
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script type="text/template" id='unifiedordersBodyTmpl'>
     <tr class="">
         <td>${outTradeNo}
@@ -270,6 +296,8 @@
         <td>{{if successTime}}
             {{else}}
             <button class="btn btn-xs btn-info" onclick="confirmPayRefund(this,'${outTradeNo}')">确认申请退款
+            </button>
+            <button class="btn btn-xs btn-info" onclick="confirmPayRefundBox()">确认申请退款
             </button>
             {{/if}}
         </td>
@@ -296,6 +324,9 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+    function confirmPayRefundBox() {
+        $("#myModal").modal("show")
+    }
     function orderRefundApplyBox(orderId) {
         $("#payrefundModal").modal("show")
         $("#unifiedordersBody").html("")
