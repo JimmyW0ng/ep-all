@@ -318,7 +318,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                          .set(EP_ORDER.PAY_TYPE, EpOrderPayType.wechat_pay)
                          .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
                          .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
-                         .where(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.wait_pay))
+                         .where(EP_ORDER.PAY_STATUS.in(EpOrderPayStatus.wait_pay, EpOrderPayStatus.paid))
                          .and(EP_ORDER.ID.eq(id))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .execute();
