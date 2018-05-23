@@ -58,6 +58,8 @@ public class OrderPayInfoBo extends EpOrderPo {
                 return "退单申请中";
             } else if (EpOrderPayStatus.refund_finish.equals(super.getPayStatus())) {
                 return "已退单";
+            } else {
+                return "支付成功";
             }
         }
         return null;

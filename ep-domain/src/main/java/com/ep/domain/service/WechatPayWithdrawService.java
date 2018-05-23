@@ -150,7 +150,7 @@ public class WechatPayWithdrawService {
 
 
     /**
-     * 提现完成
+     * 提现拒绝
      *
      * @param id
      * @return

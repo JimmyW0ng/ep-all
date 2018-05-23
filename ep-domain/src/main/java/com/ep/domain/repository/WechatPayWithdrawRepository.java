@@ -176,9 +176,10 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
 
     public List<EpWechatPayWithdrawPo> findByClassId(Long classId) {
         return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
-                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
-                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
-                .fetchInto(EpWechatPayWithdrawPo.class);
+                         .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                         .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                         .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
+                         .fetchInto(EpWechatPayWithdrawPo.class);
     }
 
     /**

@@ -12,7 +12,7 @@ import javax.annotation.Generated;
 
 
 /**
- * 支付状态：已支付；退款申请中；退款完成；
+ * 支付状态：已支付；退款申请中；退款完成；提现申请中；提现完成；
  */
 @Generated(
         value = {
@@ -30,7 +30,11 @@ public enum EpOrderPayStatus implements EnumType {
 
     refund_apply("refund_apply"),
 
-    refund_finish("refund_finish");
+    refund_finish("refund_finish"),
+
+    withdraw_apply("withdraw_apply"),
+
+    withdraw_finish("withdraw_finish");
 
     private final String literal;
 

@@ -37,7 +37,7 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
      * The reference instance of <code>ep.ep_order</code>
      */
     public static final EpOrder EP_ORDER = new EpOrder();
-    private static final long serialVersionUID = -986470992;
+    private static final long serialVersionUID = 923292438;
     /**
      * The column <code>ep.ep_order.id</code>. 主键
      */
@@ -75,17 +75,13 @@ public class EpOrder extends TableImpl<EpOrderRecord> {
      */
     public final TableField<EpOrderRecord, EpOrderPayType> PAY_TYPE = createField("pay_type", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderPayType.class), this, "支付类型：线下；微信支付；");
     /**
-     * The column <code>ep.ep_order.pay_status</code>. 支付状态：已支付；退款申请中；退款完成；
+     * The column <code>ep.ep_order.pay_status</code>. 支付状态：已支付；退款申请中；退款完成；提现申请中；提现完成；
      */
-    public final TableField<EpOrderRecord, EpOrderPayStatus> PAY_STATUS = createField("pay_status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderPayStatus.class), this, "支付状态：已支付；退款申请中；退款完成；");
+    public final TableField<EpOrderRecord, EpOrderPayStatus> PAY_STATUS = createField("pay_status", org.jooq.util.mysql.MySQLDataType.VARCHAR.asEnumDataType(com.ep.domain.repository.domain.enums.EpOrderPayStatus.class), this, "支付状态：已支付；退款申请中；退款完成；提现申请中；提现完成；");
     /**
      * The column <code>ep.ep_order.pay_confirm_time</code>. 支付确认时间
      */
     public final TableField<EpOrderRecord, Timestamp> PAY_CONFIRM_TIME = createField("pay_confirm_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "支付确认时间");
-    /**
-     * The column <code>ep.ep_order.withdraw_flag</code>. 微信支付提现标志
-     */
-    public final TableField<EpOrderRecord, Boolean> WITHDRAW_FLAG = createField("withdraw_flag", org.jooq.impl.SQLDataType.BIT, this, "微信支付提现标志");
     /**
      * The column <code>ep.ep_order.auth_time</code>. 机构审核订单时间
      */

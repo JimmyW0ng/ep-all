@@ -12,7 +12,6 @@ import com.ep.domain.pojo.po.EpOrganCoursePo;
 import com.ep.domain.pojo.po.EpWechatPayBillPo;
 import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
 import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
-import com.ep.domain.repository.domain.enums.EpOrderPayType;
 import com.ep.domain.service.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -32,6 +31,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORDER;
+import static com.ep.domain.repository.domain.Tables.EP_WECHAT_PAY_BILL_DETAIL;
 import static com.ep.domain.repository.domain.tables.EpOrganClass.EP_ORGAN_CLASS;
 import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COURSE;
 import static com.ep.domain.repository.domain.tables.EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW;
@@ -107,8 +107,8 @@ public class WechatPayWithdrawController extends BackendController {
         conditions.add(EP_ORGAN_CLASS.DEL_FLAG.eq(false));
         conditions.add(EP_ORGAN_COURSE.DEL_FLAG.eq(false));
         conditions.add(EP_ORDER.DEL_FLAG.eq(false));
-        conditions.add(EP_ORDER.WITHDRAW_FLAG.eq(false));
         conditions.add(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid));
+        conditions.add(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false));
         //最近一次微信支付对账记录
         EpWechatPayBillPo wechatPayBillPo = wechatPayBillService.getLastPayBill();
         Date withdrawDeadline = DateTools.stringToDate(wechatPayBillPo.getBillDate().toString(), DateTools.DATE_FMT_0);
@@ -145,31 +145,31 @@ public class WechatPayWithdrawController extends BackendController {
 
 
         Timestamp endTime = DateTools.dateToTimestamp(conditionDeadline);
-        //已支付订单数
-        model.addAttribute("countWechatPaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.wechat_pay, EpOrderPayStatus.paid, endTime));
-        //已支付订单金额
+        // 统计班次微信支付订单总数
+        model.addAttribute("countWechatPaidOrder", orderService.countWechatPayOrders(classId, endTime));
+        // 统计班次微信支付订单总金额
         BigDecimal sumWechatPaidTotalFee = orderService.sumWechatPaidOrderTotalFee(classId, endTime);
         model.addAttribute("sumWechatPaidTotalFee", sumWechatPaidTotalFee);
-        //支付微信手续费
+        // 统计班次微信支付订单总手续费
         BigDecimal sumWechatPoundage = orderService.sumWechatPoundage(classId, endTime);
         model.addAttribute("sumWechatPoundage", sumWechatPoundage);
-        //总实收金额
+        // 统计班次微信支付总实收金额
         model.addAttribute("platformReceiveFee", sumWechatPaidTotalFee.subtract(sumWechatPoundage));
-        //未提现订单数
+        // 统计班次微信支付未提现订单总数
         int countWechatWaitWithdrawOrder = orderService.countWaitWithdrawOrderByClassId(classId, endTime);
         model.addAttribute("countWechatWaitWithdrawOrder", countWechatWaitWithdrawOrder);
-        //未提现订单金额
+        // 统计班次微信支付未提现订单总金额
         BigDecimal sumWaitWithdrawOrderTotalFee = orderService.sumWaitWithdrawOrderByClassId(classId, endTime);
         model.addAttribute("sumWaitWithdrawOrderTotalFee", sumWaitWithdrawOrderTotalFee);
-        //未提现订单微信手续费
+        // 统计班次微信支付未提现订单手续费
         BigDecimal sumWaitWithdrawOrderPoundage = orderService.sumWaitWithdrawPoundageByClassId(classId, endTime);
         model.addAttribute("sumWaitWithdrawOrderPoundage", sumWaitWithdrawOrderPoundage);
         model.addAttribute("withdrawFee", sumWaitWithdrawOrderTotalFee.subtract(sumWaitWithdrawOrderPoundage));
-        //线下支付已支付订单数
-        model.addAttribute("countOfflinePaidOrder", orderService.countByClassIdAndPayTypeAndPayStatus(classId, EpOrderPayType.offline, EpOrderPayStatus.paid, endTime));
-        //线下支付已支付订单金额
-        model.addAttribute("sumOfflinePaidOrderFee", orderService.sumOfflinePaidOrderTotalFee(classId, endTime));
-        //历史提现记录
+        // 线下支付已支付订单数
+        model.addAttribute("countOfflinePaidOrder", orderService.countOfflinePaidOrders(classId));
+        // 线下支付已支付订单金额
+        model.addAttribute("sumOfflinePaidOrderFee", orderService.sumOfflinePaidOrderTotalFee(classId));
+        // 历史提现记录
         List<EpWechatPayWithdrawPo> wechatPayWithdrawPos = wechatPayWithdrawService.findByClassId(classId);
         model.addAttribute("wechatPayWithdrawPos", wechatPayWithdrawPos);
         return "wechatPayWithdraw/classWithdraw";
