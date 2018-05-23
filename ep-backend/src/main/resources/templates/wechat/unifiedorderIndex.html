@@ -41,6 +41,16 @@
                                th:value="${searchMap.get('className')}"
                                placeholder="班次名称">
                     </div>
+                    <div class="form-group">
+                        <select type="text" class="form-control " name="payStatus">
+                            <option value>订单支付状态</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrderPayStatus).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,searchMap.get('payStatus'))}"
+                                    th:text="#{EpOrderPayStatus.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
 
 
                     <div class="form-group mr10">
@@ -96,11 +106,7 @@
 
                             <th>支付完成时间</th>
                             <th>班次名称</th>
-                            <th>支付状态</th>
-
-                            <th>业务结果</th>
-
-                            <th>通知返回业务结果</th>
+                            <th>订单支付状态</th>
 
                             <th>发起支付时间</th>
 
@@ -118,11 +124,8 @@
                             <td th:text="${bo.transactionId}"></td>
                             <td th:text="${bo.timeEnd}"></td>
                             <td th:text="${bo.className}"></td>
-                            <td th:text="${bo.tradeState}"></td>
+                            <td th:text="#{EpOrderPayStatus.+${bo.orderPayStstus}}"></td>
 
-                            <td th:text="${bo.returnCode}"></td>
-
-                            <td th:text="${bo.notifyResultCode}"></td>
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
@@ -131,11 +134,20 @@
                                    th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>
                                 <button class="btn btn-xs btn-primary"
                                         th:if="${#stringTools.equals(bo.orderRefundApplyStstus,'save')&&
-                                        #stringTools.equals(bo.orderPayStstus,'paid')&&
+                                        #stringTools.equals(bo.orderPayStstus,'refund_apply')&&
                                          #stringTools.equals(bo.orderPayType,'wechat_pay')&&
-                                         orderRefundId==null}" th:onclick="'wechatPayRefund(\''+${bo.outTradeNo}+'\')'">
-                                    退款
+                                         orderRefundId==null}"
+                                        th:onclick="'wechatPayRefundSuccess(\''+${bo.outTradeNo}+'\')'">
+                                    退款通过
                                 </button>
+                                <button class="btn btn-xs btn-primary"
+                                        th:if="${#stringTools.equals(bo.orderRefundApplyStstus,'save')&&
+                                        #stringTools.equals(bo.orderPayStstus,'refund_apply')&&
+                                         #stringTools.equals(bo.orderPayType,'wechat_pay')&&
+                                         orderRefundId==null}" th:onclick="'wechatPayRefundRefuse('+${bo.orderId}+')'">
+                                    退款拒绝
+                                </button>
+
                             </td>
                         </tr>
                         </tbody>
@@ -207,8 +219,14 @@
     /**
      * 微信退款
      */
-    function wechatPayRefund(outTradeNo) {
+    function wechatPayRefundSuccess(outTradeNo) {
         $ajaxGet("/auth/wechat/wechatPayRefund/" + outTradeNo)
+    }
+    /**
+     * 微信拒绝
+     */
+    function wechatPayRefundRefuse(orderId) {
+        $ajaxGet("/auth/orderRefund/refuseOrderRefund/" + orderId)
     }
 </script>
 </body>

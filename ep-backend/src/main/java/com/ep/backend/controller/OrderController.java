@@ -6,6 +6,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
+import com.ep.domain.pojo.bo.OrderRefundPayRefundBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
@@ -66,6 +67,8 @@ public class OrderController extends BackendController {
     private WechatPayWithdrawService wechatPayWithdrawService;
     @Autowired
     private WechatPayBillService wechatPayBillService;
+    @Autowired
+    private OrderRefundService orderRefundService;
 
     private Collection<Condition> formatJooqSearchConditions(String mobile, String childTrueName, String childNickName, String courseName,
                                                              String className, String classType, String status, Timestamp crStartTime, Timestamp crEndTime) {
@@ -609,13 +612,17 @@ public class OrderController extends BackendController {
     @GetMapping("/orderRefundApplyInit/{orderId}")
     @PreAuthorize("hasAnyAuthority('merchant:order:index')")
     @ResponseBody
-    public ResultDo<List<WechatUnifiedOrderPayRefundBo>> orderRefundApplyInit(@PathVariable(value = "orderId") Long orderId) {
+    public ResultDo<Map<String, Object>> orderRefundApplyInit(@PathVariable(value = "orderId") Long orderId) {
         if (null == this.innerOgnOrPlatformReq(orderId, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-        List<WechatUnifiedOrderPayRefundBo> list = wechatUnifiedOrderService.findUnifiedOrderPayRefundBoByOrderId(orderId);
-        ResultDo<List<WechatUnifiedOrderPayRefundBo>> resultDo = ResultDo.build();
-        return resultDo.setResult(list);
+        List<WechatUnifiedOrderPayRefundBo> unifiedOrderlist = wechatUnifiedOrderService.findUnifiedOrderPayRefundBoByOrderId(orderId);
+        List<OrderRefundPayRefundBo> orderRefundlist = orderRefundService.findOrderRefundPayRefundBoByOrderId(orderId);
+        ResultDo<Map<String, Object>> resultDo = ResultDo.build();
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("unifiedOrderlist", unifiedOrderlist);
+        map.put("orderRefundlist", orderRefundlist);
+        return resultDo.setResult(map);
     }
 
 

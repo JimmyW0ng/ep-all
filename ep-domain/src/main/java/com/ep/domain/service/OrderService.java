@@ -858,4 +858,14 @@ public class OrderService {
         return orderRepository.countWechatPayOrders(classId, endTime);
     }
 
+    /**
+     * 申请退款更新订单支付状态为refund_apply
+     *
+     * @param orderId
+     * @return
+     */
+    public int refundApplyOrder(Long orderId) {
+        return orderRepository.refundApplyOrder(orderId);
+    }
+
 }

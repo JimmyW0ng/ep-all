@@ -5,6 +5,7 @@ import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
+import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
 import com.ep.domain.service.WechatFwhService;
 import com.ep.domain.service.WechatPayRefundService;
 import com.ep.domain.service.WechatUnifiedOrderService;
@@ -106,6 +107,7 @@ public class PlatformWechatController extends BackendController {
                                     @RequestParam(value = "transactionId", required = false) String transactionId,
                                     @RequestParam(value = "courseName", required = false) String courseName,
                                     @RequestParam(value = "className", required = false) String className,
+                                    @RequestParam(value = "payStatus", required = false) String payStatus,
                                     @RequestParam(value = "timeEndStart", required = false) Timestamp timeEndStart,
                                     @RequestParam(value = "timeEndEnd", required = false) Timestamp timeEndEnd,
                                     @RequestParam(value = "createAtStart", required = false) Timestamp createAtStart,
@@ -133,10 +135,13 @@ public class PlatformWechatController extends BackendController {
             conditions.add(EP.EP_ORGAN_CLASS.CLASS_NAME.eq(className));
         }
         searchMap.put("className", className);
+        if (StringTools.isNotBlank(payStatus)) {
+            conditions.add(EP.EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.valueOf(payStatus)));
+        }
+        searchMap.put("payStatus", payStatus);
 
         conditions.add(EP.EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false));
-        Page<WechatUnifiedOrderBo> page = wechatUnifiedOrderService.findbyPageAndCondition(pageable, conditions, timeEndStart, timeEndEnd);
-        model.addAttribute("page", page);
+
         searchMap.put("timeEndStart", timeEndStart);
         searchMap.put("timeEndEnd", timeEndEnd);
         if (null != createAtStart) {
@@ -148,7 +153,8 @@ public class PlatformWechatController extends BackendController {
         }
         searchMap.put("createAtEnd", createAtEnd);
         model.addAttribute("searchMap", searchMap);
-
+        Page<WechatUnifiedOrderBo> page = wechatUnifiedOrderService.findbyPageAndCondition(pageable, conditions, timeEndStart, timeEndEnd);
+        model.addAttribute("page", page);
         return "wechat/unifiedorderIndex";
     }
 

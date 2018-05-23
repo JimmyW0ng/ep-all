@@ -5,6 +5,7 @@ import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderBo;
 import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
 import com.ep.domain.pojo.po.EpWechatUnifiedOrderPo;
+import com.ep.domain.repository.domain.enums.EpOrderRefundStatus;
 import com.ep.domain.repository.domain.tables.records.EpWechatUnifiedOrderRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -136,7 +137,9 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                 .innerJoin(EP_ORDER).on(EP_ORDER.ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
                 .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
-                .leftJoin(EP_ORDER_REFUND).on(EP_ORDER_REFUND.ORDER_ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
+                .leftJoin(EP_ORDER_REFUND)
+                .on(EP_ORDER_REFUND.ORDER_ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID)
+                        .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save)))
                 .where(condition);
         if (null != timeEndStart) {
             recordCount.and("unix_timestamp(`ep`.`ep_wechat_unified_order`.`time_end`)>=unix_timestamp(" + "'" + timeEndStart.toString() + "'" + ")");
@@ -163,7 +166,9 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
                 .innerJoin(EP_ORDER).on(EP_ORDER.ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
                 .leftJoin(EP_ORGAN_COURSE).on(EP_ORGAN_COURSE.ID.eq(EP_ORDER.COURSE_ID))
                 .leftJoin(EP_ORGAN_CLASS).on(EP_ORGAN_CLASS.ID.eq(EP_ORDER.CLASS_ID))
-                .leftJoin(EP_ORDER_REFUND).on(EP_ORDER_REFUND.ORDER_ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID))
+                .leftJoin(EP_ORDER_REFUND)
+                .on(EP_ORDER_REFUND.ORDER_ID.eq(EP_WECHAT_UNIFIED_ORDER.ORDER_ID)
+                        .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save)))
 
                 .where(condition);
         if (null != timeEndStart) {

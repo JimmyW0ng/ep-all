@@ -20,10 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -77,6 +74,19 @@ public class OrderRefundController extends BackendController {
         } else {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
+    }
+
+    /**
+     * 退款申请拒绝
+     *
+     * @return
+     */
+    @GetMapping("refuseOrderRefund/{orderId}")
+    @ResponseBody
+    public ResultDo refuseOrderRefund(
+            @PathVariable("orderId") Long orderId
+    ) throws Exception {
+        return orderRefundService.refuseOrderRefund(orderId);
     }
 
     /**

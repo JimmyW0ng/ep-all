@@ -484,6 +484,36 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 根据班次和支付类型和支付状态统计订单数
+     *
+     * @param orderPayType
+     * @param orderPayStatus
+     * @return
+     */
+    public int countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus
+            , Timestamp startTime, Timestamp endTime) {
+        if (null == startTime) {
+            return dslContext.selectCount().from(EP_ORDER)
+                    .where(EP_ORDER.CLASS_ID.eq(classId))
+                    .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
+                    .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .fetchOneInto(Integer.class);
+        } else {
+            return dslContext.selectCount().from(EP_ORDER)
+                    .where(EP_ORDER.CLASS_ID.eq(classId))
+                    .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
+                    .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.greaterOrEqual(startTime))
+                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .fetchOneInto(Integer.class);
+        }
+
+    }
+
+    /**
      * 线下支付已支付订单数
      *
      * @param classId
@@ -1003,6 +1033,38 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                          .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq(WechatTools.TRADE_STATE_SUCCESS))
                          .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                          .fetchInto(EpOrderPo.class);
+    }
+
+    /**
+     * 申请退款更新订单支付状态为refund_apply
+     *
+     * @param orderId
+     * @return
+     */
+    public int refundApplyOrder(Long orderId) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.refund_apply)
+                .where(EP_ORDER.ID.eq(orderId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 拒绝退款申请更新订单支付状态为paid
+     *
+     * @param orderId
+     * @return
+     */
+    public int refundRefuseOrder(Long orderId) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                .where(EP_ORDER.ID.eq(orderId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.refund_apply))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
     }
 }
 

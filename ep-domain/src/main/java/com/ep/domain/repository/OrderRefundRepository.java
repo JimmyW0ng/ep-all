@@ -2,7 +2,9 @@ package com.ep.domain.repository;
 
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.OrderRefundBo;
+import com.ep.domain.pojo.bo.OrderRefundPayRefundBo;
 import com.ep.domain.pojo.po.EpOrderRefundPo;
+import com.ep.domain.repository.domain.enums.EpOrderRefundStatus;
 import com.ep.domain.repository.domain.tables.records.EpOrderRefundRecord;
 import com.google.common.collect.Lists;
 import org.jooq.*;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORDER_REFUND;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
+import static com.ep.domain.repository.domain.tables.EpWechatPayRefund.EP_WECHAT_PAY_REFUND;
 
 /**
  * @Description: 订单退款申请表
@@ -62,5 +65,35 @@ public class OrderRefundRepository extends AbstractCRUDRepository<EpOrderRefundR
                 .fetchInto(OrderRefundBo.class);
         PageImpl<OrderRefundBo> pPage = new PageImpl<OrderRefundBo>(list, pageable, totalCount);
         return pPage;
+    }
+
+    public List<OrderRefundPayRefundBo> findOrderRefundPayRefundBoByOrderId(Long orderId) {
+        List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER_REFUND.fields());
+        fieldList.add(EP_WECHAT_PAY_REFUND.TRANSACTION_ID);
+        fieldList.add(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
+        fieldList.add(EP_WECHAT_PAY_REFUND.TOTAL_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_FEE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.RESULT_CODE);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_STATUS);
+        fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_RECV_ACCOUT);
+        fieldList.add(EP_WECHAT_PAY_REFUND.SUCCESS_TIME);
+        return dslContext.select(fieldList).from(EP_ORDER_REFUND)
+                .leftJoin(EP_WECHAT_PAY_REFUND)
+                .on(EP_ORDER_REFUND.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO)
+                        .and(EP_WECHAT_PAY_REFUND.REFUND_STATUS.eq("SUCCESS"))
+                        .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.success)))
+                .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
+                .fetchInto(OrderRefundPayRefundBo.class);
+    }
+
+    public int refuseOrderRefund(Long orderId) {
+        return dslContext.update(EP_ORDER_REFUND)
+                .set(EP_ORDER_REFUND.STATUS, EpOrderRefundStatus.refuse)
+                .where(EP_ORDER_REFUND.ORDER_ID.eq(orderId))
+                .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save))
+                .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
+                .execute();
+
+
     }
 }
