@@ -60,7 +60,7 @@ public class WechatPayWithdrawController extends BackendController {
     private WechatPayBillDetailService wechatPayBillDetailService;
 
 
-    @GetMapping("index")
+    @GetMapping("platformIndex")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseName", required = false) String courseName,
@@ -83,10 +83,10 @@ public class WechatPayWithdrawController extends BackendController {
 
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
-        return "wechatPayWithdraw/index";
+        return "wechatPayWithdraw/platformIndex";
     }
 
-    @GetMapping("withdrawMerchantIndex")
+    @GetMapping("merchantIndex")
     public String classWithdrawMerchantIndex(Model model,
                                              @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                              @RequestParam(value = "courseName", required = false) String courseName,
