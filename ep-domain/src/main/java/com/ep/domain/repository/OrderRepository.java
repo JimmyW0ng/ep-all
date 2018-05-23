@@ -7,6 +7,7 @@ import com.ep.domain.enums.ChildClassStatusEnum;
 import com.ep.domain.pojo.bo.*;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
+import com.ep.domain.pojo.po.EpWechatPayBillDetailPo;
 import com.ep.domain.repository.domain.enums.*;
 import com.ep.domain.repository.domain.tables.records.EpOrderRecord;
 import com.google.common.collect.Lists;
@@ -1037,6 +1038,27 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
+     * 查询微信支付的订单资金详情集合
+     *
+     * @param classId
+     * @param endTime
+     * @return
+     */
+    public List<EpWechatPayBillDetailPo> findWechatPaidOrderBillDetail(Long classId, Timestamp endTime) {
+
+        return dslContext.select(EP_WECHAT_PAY_BILL_DETAIL.fields()).from(EP_WECHAT_PAY_BILL_DETAIL)
+                .innerJoin(EP_ORDER).on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
+                .where(EP_WECHAT_PAY_BILL_DETAIL.CLASS_ID.eq(classId))
+                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq(WechatTools.TRADE_STATE_SUCCESS))
+                .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
+                .fetchInto(EpWechatPayBillDetailPo.class);
+    }
+
+    /**
      * 申请退款更新订单支付状态为refund_apply
      *
      * @param orderId
@@ -1063,6 +1085,56 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
                 .where(EP_ORDER.ID.eq(orderId))
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.refund_apply))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据班次id获取提现申请中的订单id
+     *
+     * @param classId
+     * @return
+     */
+    public List<Long> findIdsWithdrawApply(Long classId) {
+        return dslContext.select(EP_ORDER.ID).from(EP_ORDER)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .fetchInto(Long.class);
+    }
+
+    public List<Long[]> findDuplicatePaidOrder(Long classId, Timestamp endTime) {
+        Result<Record2<Long, Integer>> data = dslContext.select(EP_ORDER.ID, DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO))
+                .from(EP_ORDER)
+                .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
+                .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID)
+                        .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS")))
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO).ge(BizConstant.DB_NUM_ONE))
+                .fetch();
+        List<Long[]> list = Lists.newArrayList();
+        if (data == null || data.size() == BizConstant.DB_NUM_ZERO) {
+            return list;
+        }
+        data.forEach(d -> {
+            Long[] arr = new Long[2];
+            arr[0] = d.value1();
+            arr[1] = d.value2().longValue();
+            list.add(arr);
+        });
+        return list;
+    }
+
+    public int withdrawApplyOrderById(Long id) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.withdraw_apply)
+                .where(EP_ORDER.ID.eq(id))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
