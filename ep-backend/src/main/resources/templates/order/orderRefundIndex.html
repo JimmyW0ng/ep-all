@@ -122,7 +122,6 @@
                             <th>价格</th>
                             <th>订单状态</th>
                             <th>支付状态</th>
-                            <th>申请退款状态</th>
                             <th>备注</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -152,7 +151,6 @@
                                       th:text="#{EpOrderPayStatus.+${bo.payStatus}}"></span>
                             </td>
 
-                            <td name="" th:text="${bo.remark}"></td>
                             <td name="remark" th:text="${bo.remark}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
@@ -162,7 +160,7 @@
                                 </button>
                                 <button class="btn btn-xs btn-info"
                                         th:if="${#strings.equals(bo.payStatus,'refund_finish')||#strings.equals(bo.payStatus,'refund_apply')}"
-                                        th:onclick="'orderRefundApplyBox('+${bo.id}+')'">查看退款
+                                        th:onclick="'viewOrderRefundApplyBox('+${bo.id}+')'">查看退款
                                 </button>
                             </td>
 
@@ -214,7 +212,7 @@
                             <th>标价金额（元）</th>
                             <th>微信支付订单号</th>
                             <th>支付完成时间</th>
-                            <th>业务结果</th>
+                            <th>业务业务结果</th>
                             <th>是否已退款</th>
                             <th>操作</th>
                         </tr>
@@ -225,7 +223,7 @@
                     </table>
                 </div>
                 <div>
-                    <label>退款记录：</label>
+                    <label>申请退款记录：</label>
                     <table class="table table-striped table-hover table-bordered dataTable"
                            aria-describedby="editable_info">
                         <thead>
@@ -236,10 +234,11 @@
 
                             <th>订单金额（元）</th>
                             <th>退款金额（元）</th>
+                            <th>申请退款状态</th>
 
                             <th>退款成功时间</th>
                             <th>退款入账账户</th>
-                            <th>业务结果</th>
+                            <th>退款业务结果</th>
                         </tr>
                         </thead>
                         <tbody id="payrefundBody">
@@ -306,14 +305,36 @@
         </td>
     </tr>
 </script>
+<script type="text/template" id='viewUnifiedordersBodyTmpl'>
+    <tr class="">
+        <td name="orderId" style="display: none">${orderId}
+        </td>
+        <td name="outTradeNo">${outTradeNo}
+        </td>
+        <td>${body}</td>
+        <td>${totalFee/100}</td>
+        <td>${transactionId}</td>
+        <td>${timeEnd}</td>
+        <td>${notifyResultCode}</td>
+        <td>{{if successTime}}
+            是
+            {{else}}否
+            {{/if}}
+        </td>
+
+        <td>
+        </td>
+    </tr>
+</script>
 <script type="text/template" id='payrefundBodyTmpl'>
     <tr class="">
-        <td name="orderId">${orderId}</td>
+        <td name="orderId" style="display: none;">${orderId}</td>
         <td>${outTradeNo}</td>
         <td>${transactionId}</td>
         <td>${outRefundNo}</td>
         <td>${totalFee}</td>
         <td>${refundFee}</td>
+        <td>${status}</td>
         <td>${successTime}</td>
         <td>${refundRecvAccout}
         </td>
@@ -328,6 +349,7 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+    EpOrderRefundStatus = {save: "申请中", success: "成功", fail: "失败", refuse: "拒绝", cancel: "撤销"}
     function confirmPayRefundBox(ele) {
         $("#myModal").modal("show")
         var outTradeNo = $(ele).parents("tr").eq(0).find("td[name='outTradeNo']").eq(0).text()
@@ -349,12 +371,13 @@
                 if (data.success) {
                     console.log(data.result)
                     if (data.result) {
-                        $("#unifiedordersBody").html($("#unifiedordersBodyTmpl").tmpl(data.result))
-                        if (data.result.successTime) {
-                            $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(data.result))
+                        $("#unifiedordersBody").html($("#unifiedordersBodyTmpl").tmpl(data.result.unifiedOrderlist))
+                        var orderRefundlist = data.result.orderRefundlist
+                        for (var i = 0; i < orderRefundlist.length; i++) {
+                            orderRefundlist[i].status = EpOrderRefundStatus[orderRefundlist[i].status]
                         }
+                        $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(data.result.orderRefundlist))
                     }
-
 //                    toastr_success(null, document.location.href)
                 } else {
                     toastr.error("操作失败，原因：" + data.errorDescription);
@@ -368,6 +391,42 @@
             }
         })
     }
+
+    function viewOrderRefundApplyBox(orderId) {
+        $("#payrefundModal").modal("show")
+        $("#unifiedordersBody").html("")
+        $("#payrefundBody").html("")
+        $.ajax({
+            type: "GET",
+            url: "/auth/order/orderRefundApplyInit/" + orderId,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
+            success: function (data) {
+                if (data.success) {
+                    console.log(data.result)
+                    if (data.result) {
+                        $("#unifiedordersBody").html($("#viewUnifiedordersBodyTmpl").tmpl(data.result.unifiedOrderlist))
+                        var orderRefundlist = data.result.orderRefundlist
+                        for (var i = 0; i < orderRefundlist.length; i++) {
+                            orderRefundlist[i].status = EpOrderRefundStatus[orderRefundlist[i].status]
+                        }
+                        $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(orderRefundlist))
+                    }
+//                    toastr_success(null, document.location.href)
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
+            }
+        })
+    }
+
     function confirmPayRefund() {
         var outTradeNo = $("#orderRefundOutTradeNo").val()
         var orderId = $("#orderRefundOrderId").val()
