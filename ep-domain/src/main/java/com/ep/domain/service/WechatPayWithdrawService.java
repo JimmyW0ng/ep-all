@@ -117,8 +117,8 @@ public class WechatPayWithdrawService {
             if (orderRepository.withdrawApplyOrderById(p.getOrderId()) == BizConstant.DB_NUM_ONE) {
                 wchatPayNum++;
             }
-            totalAmount.add(p.getTotalFee());
-            wechatPayFee.add(p.getPoundage());
+            totalAmount = totalAmount.add(p.getTotalFee());
+            wechatPayFee = wechatPayFee.add(p.getPoundage());
         }
 
 
@@ -191,10 +191,14 @@ public class WechatPayWithdrawService {
      * @param id
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo refusePayWithdrawById(Long id, String remark) {
         log.info("[微信订单费提现]提现申请拒绝开始，id={}。", id);
         if (wechatPayWithdrawRepository.refusePayWithdrawById(id, remark) == BizConstant.DB_NUM_ONE) {
-            log.info("[微信订单费提现]提现申请拒绝成功，id={}。", id);
+            Optional<EpWechatPayWithdrawPo> payWithdrawOptional = wechatPayWithdrawRepository.findById(id);
+            Long classId = payWithdrawOptional.get().getClassId();
+            int count = orderRepository.refuseWithdrawByClassId(classId);
+            log.info("[微信订单费提现]提现申请拒绝成功，id={},拒绝{}笔订单。", id, count);
             return ResultDo.build();
         }
         log.error("[微信订单费提现]提现申请拒绝失败，id={}。", id);

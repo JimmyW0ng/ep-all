@@ -18,16 +18,10 @@
             </div>
             <div class="panel-heading" style=" padding: 15px 15px 5px">
                 <form class="form-inline search-from" id="query-form" role="form">
-
                     <div class="form-group">
-                        <input type="text" class="form-control " name="courseName"
-                               th:value="${searchMap.get('courseName')}"
-                               placeholder="产品">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control " name="className"
-                               th:value="${searchMap.get('className')}"
-                               placeholder="班次">
+                        <input type="text" class="form-control " name="orderId"
+                               th:value="${searchMap.get('orderId')}"
+                               placeholder="订单id">
                     </div>
                     <div class="form-group" style="vertical-align: top;">
                         <button class="btn btn-primary" id="query-button" type="button">查询</button>
@@ -45,7 +39,6 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>机构</th>
                             <th>订单id</th>
                             <th>商户订单号</th>
                             <th>退单原因</th>
@@ -57,23 +50,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!--<tr th:each="bo:${page.content}">-->
-                        <!--<td th:text="${bo.id}"></td>-->
-                        <!--<td th:text="${bo.courseName}"></td>-->
-                        <!--<td th:text="${bo.className}"></td>-->
-                        <!--<td th:text="${#dates.format(bo.orderDeadline,'yyyy-MM-dd HH:mm:ss')}"></td>-->
-                        <!--<td th:text="${bo.totalAmount}"></td>-->
-                        <!--<td th:text="${bo.orderNum}"></td>-->
-                        <!--<td th:text="${bo.offlinePayNum}"></td>-->
-                        <!--<td th:text="${bo.wechatPayNum}"></td>-->
-                        <!--<td th:text="${bo.wechatPayFee}"></td>-->
-                        <!--<td th:text="${bo.withdrawFee}"></td>-->
-                        <!--<td th:text="${bo.outWithdrawNo}"></td>-->
-                        <!--<td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>-->
-                        <!--<td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>-->
-                        <!--<td th:text="${bo.remark}"></td>-->
+                        <tr th:each="bo:${page.content}">
+                            <td th:text="${bo.id}"></td>
+                            <td th:text="${bo.orderId}"></td>
+                            <td th:text="${bo.outTradeNo}"></td>
+                            <td th:text="${bo.refundReason}"></td>
+                            <td th:text="#{EpOrderRefundStatus.+${bo.status}}"></td>
+                            <td th:text="${bo.applyId}"></td>
+                            <td th:text="${bo.operateId}"></td>
 
-                        <!--</tr>-->
+                            <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${bo.remark}"></td>
+
+                        </tr>
                         </tbody>
                     </table>
                     <div class="row mt15">

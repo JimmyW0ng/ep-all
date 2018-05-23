@@ -1115,7 +1115,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO).ge(BizConstant.DB_NUM_ONE))
+                .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO).gt(BizConstant.DB_NUM_ONE))
                 .fetch();
         List<Long[]> list = Lists.newArrayList();
         if (data == null || data.size() == BizConstant.DB_NUM_ZERO) {
@@ -1135,6 +1135,22 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.withdraw_apply)
                 .where(EP_ORDER.ID.eq(id))
                 .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                .and(EP_ORDER.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 拒绝提现更新订单状态为paid
+     *
+     * @param classId
+     * @return
+     */
+    public int refuseWithdrawByClassId(Long classId) {
+        return dslContext.update(EP_ORDER)
+                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                .where(EP_ORDER.CLASS_ID.eq(classId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
                 .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();

@@ -184,7 +184,6 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
         return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
                 .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
                 .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
-                .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
                 .fetchInto(EpWechatPayWithdrawPo.class);
     }
 
@@ -221,7 +220,7 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                     .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
                     .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                     .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
                     .and(EP_ORDER.DEL_FLAG.eq(false))
                     .fetchInto(Long.class);
         } else {
