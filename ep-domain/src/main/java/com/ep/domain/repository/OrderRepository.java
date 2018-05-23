@@ -484,36 +484,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
-     * 根据班次和支付类型和支付状态统计订单数
-     *
-     * @param orderPayType
-     * @param orderPayStatus
-     * @return
-     */
-    public int countByClassIdAndPayTypeAndPayStatus(Long classId, EpOrderPayType orderPayType, EpOrderPayStatus orderPayStatus
-            , Timestamp startTime, Timestamp endTime) {
-        if (null == startTime) {
-            return dslContext.selectCount().from(EP_ORDER)
-                    .where(EP_ORDER.CLASS_ID.eq(classId))
-                    .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
-                    .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
-                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
-                    .and(EP_ORDER.DEL_FLAG.eq(false))
-                    .fetchOneInto(Integer.class);
-        } else {
-            return dslContext.selectCount().from(EP_ORDER)
-                    .where(EP_ORDER.CLASS_ID.eq(classId))
-                    .and(EP_ORDER.PAY_TYPE.eq(orderPayType))
-                    .and(EP_ORDER.PAY_STATUS.eq(orderPayStatus))
-                    .and(EP_ORDER.PAY_CONFIRM_TIME.greaterOrEqual(startTime))
-                    .and(EP_ORDER.PAY_CONFIRM_TIME.lessThan(endTime))
-                    .and(EP_ORDER.DEL_FLAG.eq(false))
-                    .fetchOneInto(Integer.class);
-        }
-
-    }
-
-    /**
      * 线下支付已支付订单数
      *
      * @param classId
@@ -996,7 +966,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
-     * 根据班次和支付类型和支付状态统计订单数
+     * 统计班次微信支付订单总数
      *
      * @param classId
      * @param endTime
@@ -1013,6 +983,26 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                          .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq(WechatTools.TRADE_STATE_SUCCESS))
                          .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                          .fetchOneInto(Long.class);
+    }
+
+    /**
+     * 查询微信支付的订单集合
+     *
+     * @param classId
+     * @param endTime
+     * @return
+     */
+    public List<EpOrderPo> findWechatPaidOrders(Long classId, Timestamp endTime) {
+        return dslContext.select(EP_ORDER.fields()).from(EP_ORDER)
+                         .innerJoin(EP_WECHAT_PAY_BILL_DETAIL).on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                         .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                         .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq(WechatTools.TRADE_STATE_SUCCESS))
+                         .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
+                         .fetchInto(EpOrderPo.class);
     }
 }
 

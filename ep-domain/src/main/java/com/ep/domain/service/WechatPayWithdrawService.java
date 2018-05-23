@@ -78,6 +78,8 @@ public class WechatPayWithdrawService {
     }
 
     /**
+     * 提现申请
+     *
      * @param classId
      * @param courseId
      * @return
