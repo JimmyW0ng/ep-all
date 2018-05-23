@@ -832,6 +832,7 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
                 .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
                 .where(EP_ORDER.ID.eq(orderId))
+                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.wait_pay))
                 .and(EP_ORDER.DEL_FLAG.eq(false))
                 .execute();
     }

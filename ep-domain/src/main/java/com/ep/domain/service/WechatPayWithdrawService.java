@@ -87,6 +87,7 @@ public class WechatPayWithdrawService {
     public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadlineTime, String accountName, String accountNumber) {
         log.info("[微信订单费提现]订单微信支付订单费提现申请开始，classId={},courseId={}，withdrawDeadlineTime={}，accountName={}，accountNumber={}。"
                 , classId, courseId, withdrawDeadlineTime, accountName, accountNumber);
+        //先校验是否有状态为wait,submit提现申请
         //该班次上一次提现截止时间
         EpWechatPayWithdrawPo wechatPayWithdrawPo = new EpWechatPayWithdrawPo();
         wechatPayWithdrawPo.setClassId(classId);
