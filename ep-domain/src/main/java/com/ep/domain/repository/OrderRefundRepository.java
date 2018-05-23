@@ -88,12 +88,26 @@ public class OrderRefundRepository extends AbstractCRUDRepository<EpOrderRefundR
 
     public int refuseOrderRefund(Long orderId) {
         return dslContext.update(EP_ORDER_REFUND)
-                .set(EP_ORDER_REFUND.STATUS, EpOrderRefundStatus.refuse)
-                .where(EP_ORDER_REFUND.ORDER_ID.eq(orderId))
-                .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save))
-                .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER_REFUND.STATUS, EpOrderRefundStatus.refuse)
+                         .where(EP_ORDER_REFUND.ORDER_ID.eq(orderId))
+                         .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save))
+                         .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
+                         .execute();
 
 
+    }
+
+    /**
+     * 退款成功
+     *
+     * @param outTradeNo
+     */
+    public int successByOutTradeNo(String outTradeNo) {
+        return dslContext.update(EP_ORDER_REFUND)
+                         .set(EP_ORDER_REFUND.STATUS, EpOrderRefundStatus.success)
+                         .where(EP_ORDER_REFUND.OUT_TRADE_NO.eq(outTradeNo))
+                         .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save))
+                         .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
+                         .execute();
     }
 }

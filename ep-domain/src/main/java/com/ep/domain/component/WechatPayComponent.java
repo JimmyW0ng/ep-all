@@ -77,6 +77,8 @@ public class WechatPayComponent {
     @Autowired
     private WechatPayBillDetailRepository wechatPayBillDetailRepository;
     @Autowired
+    private OrderRefundRepository orderRefundRepository;
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private RestTemplate restTemplate;
@@ -387,7 +389,7 @@ public class WechatPayComponent {
         log.info("【微信支付退单】解密后数据: {}", reqInfoDecode);
         Map<String, String> reqInfoMap = WechatTools.xmlToMap(reqInfoDecode);
         String outRefundNo = reqInfoMap.get("out_refund_no");
-        String refundId = reqInfoMap.get("refundId");
+        String refundId = reqInfoMap.get("refund_id");
         String refundAccount = reqInfoMap.get("refund_account");
         String refundRecvAccout = reqInfoMap.get("refund_recv_accout");
         String refundStatus = reqInfoMap.get("refund_status");
@@ -409,6 +411,7 @@ public class WechatPayComponent {
             if (WechatTools.REFUND_STATUS_SUCCESS.equals(refundStatus)) {
                 // 更新微信订单交易状态
                 wechatUnifiedOrderRepository.refundByOutTradeNo(refundPo.getOutTradeNo());
+                orderRefundRepository.successByOutTradeNo(refundPo.getOutTradeNo());
                 // 订单更新支付状态
                 EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.findByOutTradeNo(refundPo.getOutTradeNo());
                 List<EpWechatUnifiedOrderPo> unifiedOrders = wechatUnifiedOrderRepository.findByOrderId(unifiedOrderPo.getOrderId());
