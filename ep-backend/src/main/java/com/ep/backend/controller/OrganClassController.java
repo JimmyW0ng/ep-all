@@ -117,6 +117,20 @@ public class OrganClassController extends BackendController {
     }
 
     /**
+     * 撤班
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("cancel/{id}")
+    @PreAuthorize("hasAnyAuthority('merchant:organClass:index')")
+    @ResponseBody
+    public ResultDo cancel(@PathVariable(value = "id") Long id) {
+        EpSystemUserPo userPo = super.getCurrentUser().get();
+        return organClassService.cancelById(userPo, id);
+    }
+
+    /**
      * 查看该班次订单
      *
      * @param id

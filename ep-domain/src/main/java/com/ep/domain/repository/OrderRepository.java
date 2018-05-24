@@ -1175,5 +1175,19 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                          .execute();
     }
 
+    /**
+     * 校验是否还有未处理、成功、开始、结束的订单
+     *
+     * @param classId
+     * @return
+     */
+    public Integer countNormalStatusByClassId(Long classId) {
+        return dslContext.select(EP_ORDER.ID.count())
+                         .from(EP_ORDER)
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.STATUS.in(EpOrderStatus.save, EpOrderStatus.success, EpOrderStatus.opening, EpOrderStatus.end))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .fetchOneInto(Integer.class);
+    }
 }
 

@@ -71,6 +71,7 @@ public class MessageCode {
     public static final String ERROR_COURSE_IS_OFF = "ERROR_COURSE_IS_OFF";
     public static final String ERROR_COURSE_OGN_NOT_MATCH = "ERROR_COURSE_OGN_NOT_MATCH";
     public static final String ERROR_COURSE_EXIST_SAVED_ORDER = "ERROR_COURSE_EXIST_SAVED_ORDER";
+    public static final String ERROR_COURSE_EXIST_NORMAL_ORDER = "ERROR_COURSE_EXIST_NORMAL_ORDER";
     public static final String ERROR_CLASS_NOT_EXIST = "ERROR_CLASS_NOT_EXIST";
     public static final String ERROR_CLASS_NOT_ONLINE = "ERROR_CLASS_NOT_ONLINE";
     public static final String ERROR_CLASS_NOT_START = "ERROR_CLASS_NOT_START";

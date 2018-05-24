@@ -200,6 +200,58 @@ public class OrganClassService {
     }
 
     /**
+     * 撤班
+     *
+     * @param currentUser
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultDo cancelById(EpSystemUserPo currentUser, Long id) {
+        log.info("撤班开始, sysUserId={}, classId={}", currentUser.getId(), id);
+        // 校验班次
+        EpOrganClassPo classPo = organClassRepository.getById(id);
+        log.info("班次状态, status={}, classId={}", classPo.getStatus(), id);
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("班次不存在, classId={}", id);
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_EXIST);
+        }
+        if (!classPo.getStatus().equals(EpOrganClassStatus.online)) {
+            log.error("班次不是已上线状态, classId={}, status={}", id, classPo.getStatus());
+            return ResultDo.build(MessageCode.ERROR_CLASS_NOT_ONLINE);
+        }
+        if (!classPo.getOgnId().equals(currentUser.getOgnId())) {
+            log.error("课程与当前操作机构不匹配, classId={}, classOgnId={}, userOgnId={}", id, classPo.getOgnId(), currentUser.getOgnId());
+            return ResultDo.build(MessageCode.ERROR_COURSE_OGN_NOT_MATCH);
+        }
+        // 校验是否还有未处理、成功、开始、结束的订单
+        Integer countNormalOrders = orderRepository.countNormalStatusByClassId(id);
+        if (countNormalOrders > BizConstant.DB_NUM_ZERO) {
+            log.error("存在未处理或已成功的报名，无法撤班, classId={}, countNormalOrders={}", id, countNormalOrders);
+            return ResultDo.build(MessageCode.ERROR_COURSE_EXIST_NORMAL_ORDER);
+        }
+        // 结束班次
+        int num = organClassRepository.endById(id);
+        if (num == BizConstant.DB_NUM_ZERO) {
+            return ResultDo.build();
+        }
+        // 如果没有上线、开班状态的班次了则下线课程
+        Long courseId = classPo.getCourseId();
+        List<EpOrganClassPo> openingClasses = organClassRepository.getByCourseIdAndStatus(courseId, EpOrganClassStatus.online, EpOrganClassStatus.opening);
+        if (CollectionsTools.isNotEmpty(openingClasses)) {
+            return ResultDo.build();
+        }
+        log.info("课程班次已全部结束，课程状态更新为下线, courseId={}", courseId);
+        organCourseRepository.offlineById(courseId);
+        // 刷新机构类目
+        EpOrganCoursePo coursePo = organCourseRepository.getById(courseId);
+        if (!organCourseRepository.existCatalog(coursePo.getOgnId(), coursePo.getCourseCatalogId())) {
+            organCatalogRepository.deletePhysicByOgnIdAndCatalogId(coursePo.getOgnId(), coursePo.getCourseCatalogId());
+        }
+        return ResultDo.build();
+    }
+
+    /**
      * 获取班级成员昵称
      *
      * @param ognId
