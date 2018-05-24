@@ -1045,7 +1045,6 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @return
      */
     public List<EpWechatPayBillDetailPo> findWechatPaidOrderBillDetail(Long classId, Timestamp endTime) {
-
         return dslContext.select(EP_WECHAT_PAY_BILL_DETAIL.fields()).from(EP_WECHAT_PAY_BILL_DETAIL)
                 .innerJoin(EP_ORDER).on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
                 .where(EP_WECHAT_PAY_BILL_DETAIL.CLASS_ID.eq(classId))
@@ -1105,29 +1104,24 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                 .fetchInto(Long.class);
     }
 
-    public List<Long[]> findDuplicatePaidOrder(Long classId, Timestamp endTime) {
-        Result<Record2<Long, Integer>> data = dslContext.select(EP_ORDER.ID, DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO))
-                .from(EP_ORDER)
-                .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
-                .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID)
-                        .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS")))
-                .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
-                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
-                .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO).gt(BizConstant.DB_NUM_ONE))
-                .fetch();
-        List<Long[]> list = Lists.newArrayList();
-        if (data == null || data.size() == BizConstant.DB_NUM_ZERO) {
-            return list;
-        }
-        data.forEach(d -> {
-            Long[] arr = new Long[2];
-            arr[0] = d.value1();
-            arr[1] = d.value2().longValue();
-            list.add(arr);
-        });
-        return list;
+    /**
+     * 重复支付的订单
+     *
+     * @param classId
+     * @param endTime
+     * @return
+     */
+    public List<Long> findDuplicatePaidOrder(Long classId, Timestamp endTime) {
+        return dslContext.select(EP_ORDER.ID)
+                         .from(EP_ORDER)
+                         .innerJoin(EP_WECHAT_PAY_BILL_DETAIL)
+                         .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID).and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq(WechatTools.TRADE_STATE_SUCCESS)))
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                         .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                         .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
+                         .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO).gt(BizConstant.DB_NUM_ONE))
+                         .fetchInto(Long.class);
     }
 
     public int withdrawApplyOrderById(Long id) {

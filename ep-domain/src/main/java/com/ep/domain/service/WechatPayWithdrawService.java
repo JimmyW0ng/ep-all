@@ -1,5 +1,6 @@
 package com.ep.domain.service;
 
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.constant.MessageCode;
@@ -91,41 +92,45 @@ public class WechatPayWithdrawService {
         //该班次上一次提现截止时间
         Timestamp orderDeadline = DateTools.stringToTimestamp(withdrawDeadlineTime, DateTools.TIME_PATTERN);
         //校验是否有状态为wait,submit提现申请
-        List<Long> unfinishIds = wechatPayWithdrawRepository.findIdsByClassIdAndStatus(classId,
-                new EpWechatPayWithdrawStatus[]{EpWechatPayWithdrawStatus.wait, EpWechatPayWithdrawStatus.submit});
-        if (unfinishIds.size() > BizConstant.DB_NUM_ZERO) {
-            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}存在未完成的{}笔提现,ids={}。", classId, unfinishIds.size(), unfinishIds.toString());
+        List<Long> unfinishIds = wechatPayWithdrawRepository.findIdsByClassIdAndStatus(classId, EpWechatPayWithdrawStatus.wait, EpWechatPayWithdrawStatus.submit);
+        if (CollectionsTools.isNotEmpty(unfinishIds)) {
+            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}存在未完成的{}笔提现,ids={}。", classId, unfinishIds.size(), unfinishIds);
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_WITHDRAW_UNFINISH_WITHDRAW_EXIST);
         }
         //校验是否有提现中的订单
         List<Long> withdrawApplyIds = orderRepository.findIdsWithdrawApply(classId);
-        if (withdrawApplyIds.size() > BizConstant.DB_NUM_ZERO) {
-            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}存在申请中的{}笔订单,ids={}。", classId, unfinishIds.size(), withdrawApplyIds.toString());
+        if (CollectionsTools.isNotEmpty(withdrawApplyIds)) {
+            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}存在申请中的{}笔订单,ids={}。", classId, unfinishIds.size(), withdrawApplyIds);
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_WITHDRAW_WITHDRAW_APPLY_ORDER_EXIST);
         }
         //校验是否有重复支付的订单
-        List<Long[]> duplicatePaidOrder = orderRepository.findDuplicatePaidOrder(classId, orderDeadline);
-        if (duplicatePaidOrder.size() > BizConstant.DB_NUM_ZERO) {
-            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}存在重复支付的{}笔订单,重复支付订单={}。", classId, duplicatePaidOrder.size(), duplicatePaidOrder.toString());
+        List<Long> duplicatePaidOrder = orderRepository.findDuplicatePaidOrder(classId, orderDeadline);
+        if (CollectionsTools.isNotEmpty(duplicatePaidOrder)) {
+            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}存在重复支付订单， duplicatePaidOrder={}。", classId, duplicatePaidOrder);
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_WITHDRAW_DUPLICATEPAID_ORDER_EXIST);
         }
         List<EpWechatPayBillDetailPo> paidList = orderRepository.findWechatPaidOrderBillDetail(classId, orderDeadline);
-        int wchatPayNum = 0;
+        if (CollectionsTools.isEmpty(paidList)) {
+            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}没有可提现订单。", classId);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_WITHDRAW_NO_PAID_ORDERS);
+        }
+        int wchatPayNum = BizConstant.DB_NUM_ZERO;
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal wechatPayFee = BigDecimal.ZERO;
         for (EpWechatPayBillDetailPo p : paidList) {
             if (orderRepository.withdrawApplyOrderById(p.getOrderId()) == BizConstant.DB_NUM_ONE) {
                 wchatPayNum++;
+                totalAmount = totalAmount.add(p.getTotalFee());
+                wechatPayFee = wechatPayFee.add(p.getPoundage());
             }
-            totalAmount = totalAmount.add(p.getTotalFee());
-            wechatPayFee = wechatPayFee.add(p.getPoundage());
         }
-
-
+        if (wchatPayNum == BizConstant.DB_NUM_ZERO) {
+            log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}没有可提现订单。", classId);
+            return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_WITHDRAW_NO_PAID_ORDERS);
+        }
         EpWechatPayWithdrawPo wechatPayWithdrawPo = new EpWechatPayWithdrawPo();
         wechatPayWithdrawPo.setClassId(classId);
         wechatPayWithdrawPo.setCourseId(courseId);
-
         wechatPayWithdrawPo.setOrderDeadline(orderDeadline);
         wechatPayWithdrawPo.setStatus(EpWechatPayWithdrawStatus.wait);
         //微信支付订单数(即待提现订单数)
