@@ -7,12 +7,13 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.WechatPayWithdrawBo;
 import com.ep.domain.pojo.po.EpWechatPayBillDetailPo;
+import com.ep.domain.pojo.po.EpWechatPayWithdrawDetailPo;
 import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
 import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.WechatPayBillDetailRepository;
-import com.ep.domain.repository.WechatPayBillRepository;
+import com.ep.domain.repository.WechatPayWithdrawDetailRepository;
 import com.ep.domain.repository.WechatPayWithdrawRepository;
 import com.ep.domain.repository.domain.enums.EpWechatPayWithdrawStatus;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +41,7 @@ public class WechatPayWithdrawService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private WechatPayBillDetailRepository wechatPayBillDetailRepository;
-    @Autowired
-    private WechatPayBillRepository wechatPayBillRepository;
-
-    public Optional<EpWechatPayWithdrawPo> findById(Long id) {
-        return wechatPayWithdrawRepository.findById(id);
-    }
+    private WechatPayWithdrawDetailRepository wechatPayWithdrawDetailRepository;
 
     /**
      * 微信支付提现平台分页
@@ -86,6 +81,7 @@ public class WechatPayWithdrawService {
      * @param courseId
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo applyPayWithdrawByClassId(Long classId, Long courseId, String withdrawDeadlineTime, String accountName, String accountNumber) {
         log.info("[微信订单费提现]微信支付订单费提现申请开始，classId={},courseId={}，withdrawDeadlineTime={}，accountName={}，accountNumber={}。"
                 , classId, courseId, withdrawDeadlineTime, accountName, accountNumber);
@@ -117,12 +113,15 @@ public class WechatPayWithdrawService {
         int wchatPayNum = BizConstant.DB_NUM_ZERO;
         BigDecimal totalAmount = BigDecimal.ZERO;
         BigDecimal wechatPayFee = BigDecimal.ZERO;
-        for (EpWechatPayBillDetailPo p : paidList) {
-            if (orderRepository.withdrawApplyOrderById(p.getOrderId()) == BizConstant.DB_NUM_ONE) {
-                wchatPayNum++;
-                totalAmount = totalAmount.add(p.getTotalFee());
-                wechatPayFee = wechatPayFee.add(p.getPoundage());
+        List<EpWechatPayBillDetailPo> withdrawBills = Lists.newArrayList();
+        for (EpWechatPayBillDetailPo paid : paidList) {
+            if (orderRepository.withdrawApplyOrderById(paid.getOrderId()) == BizConstant.DB_NUM_ZERO) {
+                continue;
             }
+            wchatPayNum++;
+            totalAmount = totalAmount.add(paid.getTotalFee());
+            wechatPayFee = wechatPayFee.add(paid.getPoundage());
+            withdrawBills.add(paid);
         }
         if (wchatPayNum == BizConstant.DB_NUM_ZERO) {
             log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}没有可提现订单。", classId);
@@ -144,6 +143,15 @@ public class WechatPayWithdrawService {
         //收款账户号
         wechatPayWithdrawPo.setAccountNumber(accountNumber);
         wechatPayWithdrawRepository.insert(wechatPayWithdrawPo);
+        List<EpWechatPayWithdrawDetailPo> withdrawDetails = Lists.newArrayList();
+        for (EpWechatPayBillDetailPo withdrawBill : withdrawBills) {
+            EpWechatPayWithdrawDetailPo detailPo = new EpWechatPayWithdrawDetailPo();
+            detailPo.setWithdrawId(wechatPayWithdrawPo.getId());
+            detailPo.setOrderId(withdrawBill.getOrderId());
+            detailPo.setOutTradeNo(withdrawBill.getOutTradeNo());
+            withdrawDetails.add(detailPo);
+        }
+        wechatPayWithdrawDetailRepository.insert(withdrawDetails);
         log.info("[微信订单费提现]微信支付订单费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
         log.info("[微信订单费提现]微信支付订单费提现申请成功，classId={},courseId={}。", classId, courseId);
         return ResultDo.build();
@@ -175,13 +183,13 @@ public class WechatPayWithdrawService {
     public ResultDo finishPayWithdrawById(Long id, String outWithdrawNo, String payId, BigDecimal withdrawFee, Timestamp paidTime) {
         log.info("[微信订单费提现]提现完成开始，id={}。", id);
         Optional<EpWechatPayWithdrawPo> wechatPayWithdrawOptional = wechatPayWithdrawRepository.findById(id);
-        Long classId = wechatPayWithdrawOptional.get().getClassId();
-        EpWechatPayWithdrawPo lastFinishWithdrawPo = wechatPayWithdrawRepository.getLastFinishWithdrawByClassId(classId);
-
+        List<Long> orderIds = wechatPayWithdrawDetailRepository.findOrderIdsByWithdrawId(id);
+        if (!wechatPayWithdrawOptional.isPresent() || CollectionsTools.isEmpty(orderIds)) {
+            log.error("[微信订单费提现]提现完成失败, 数据缺失, id={}, orderIds={}", id, orderIds);
+            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+        }
         if (wechatPayWithdrawRepository.finishPayWithdrawById(id, outWithdrawNo, payId, withdrawFee, paidTime) == BizConstant.DB_NUM_ONE) {
-            List<Long> orderIds = wechatPayWithdrawRepository.findWaitWithdrawOrderIds(classId,
-                    lastFinishWithdrawPo != null ? lastFinishWithdrawPo.getOrderDeadline() : null, wechatPayWithdrawOptional.get().getOrderDeadline());
-            orderRepository.finishPayWithdrawByOrderIds(orderIds);
+            orderRepository.finishPayWithdrawByOrderIds(wechatPayWithdrawOptional.get().getClassId(), orderIds);
             log.info("[微信订单费提现]提现完成成功，wechatPayWithdrawId={},orderIds={}。", id, orderIds.toString());
             return ResultDo.build();
         }
@@ -199,10 +207,16 @@ public class WechatPayWithdrawService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo refusePayWithdrawById(Long id, String remark) {
         log.info("[微信订单费提现]提现申请拒绝开始，id={}。", id);
-        if (wechatPayWithdrawRepository.refusePayWithdrawById(id, remark) == BizConstant.DB_NUM_ONE) {
-            Optional<EpWechatPayWithdrawPo> payWithdrawOptional = wechatPayWithdrawRepository.findById(id);
-            Long classId = payWithdrawOptional.get().getClassId();
-            int count = orderRepository.refuseWithdrawByClassId(classId);
+        Optional<EpWechatPayWithdrawPo> wechatPayWithdrawOptional = wechatPayWithdrawRepository.findById(id);
+        List<Long> orderIds = wechatPayWithdrawDetailRepository.findOrderIdsByWithdrawId(id);
+        if (!wechatPayWithdrawOptional.isPresent() || CollectionsTools.isEmpty(orderIds)) {
+            log.error("[微信订单费提现]提现完成失败, 数据缺失, id={}, orderIds={}", id, orderIds);
+            return ResultDo.build(MessageCode.ERROR_DATA_MISS);
+        }
+        int num = wechatPayWithdrawRepository.refusePayWithdrawById(id, remark);
+        if (num == BizConstant.DB_NUM_ONE) {
+            Long classId = wechatPayWithdrawOptional.get().getClassId();
+            int count = orderRepository.refuseWithdrawByClassId(classId, orderIds);
             log.info("[微信订单费提现]提现申请拒绝成功，id={},拒绝{}笔订单。", id, count);
             return ResultDo.build();
         }

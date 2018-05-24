@@ -3,7 +3,6 @@ package com.ep.domain.repository;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.WechatPayWithdrawBo;
 import com.ep.domain.pojo.po.EpWechatPayWithdrawPo;
-import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
 import com.ep.domain.repository.domain.enums.EpWechatPayWithdrawStatus;
 import com.ep.domain.repository.domain.tables.records.EpWechatPayWithdrawRecord;
 import com.google.common.collect.Lists;
@@ -109,22 +108,6 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
     }
 
     /**
-     * 最近一次提现完成记录
-     *
-     * @param classId
-     * @return
-     */
-    public EpWechatPayWithdrawPo getLastFinishWithdrawByClassId(Long classId) {
-        return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
-                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
-                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.finish))
-                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
-                .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
-                .limit(BizConstant.DB_NUM_ONE)
-                .fetchOneInto(EpWechatPayWithdrawPo.class);
-    }
-
-    /**
      * 审核通过提现申请
      *
      * @param id
@@ -166,12 +149,12 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
      */
     public int refusePayWithdrawById(Long id, String remark) {
         return dslContext.update(EP_WECHAT_PAY_WITHDRAW)
-                .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.refuse)
-                .set(EP_WECHAT_PAY_WITHDRAW.REMARK, remark)
-                .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
-                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.eq(EpWechatPayWithdrawStatus.wait))
-                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_WECHAT_PAY_WITHDRAW.STATUS, EpWechatPayWithdrawStatus.refuse)
+                         .set(EP_WECHAT_PAY_WITHDRAW.REMARK, remark)
+                         .where(EP_WECHAT_PAY_WITHDRAW.ID.eq(id))
+                         .and(EP_WECHAT_PAY_WITHDRAW.STATUS.in(EpWechatPayWithdrawStatus.wait, EpWechatPayWithdrawStatus.submit))
+                         .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
@@ -200,43 +183,6 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                 .and(EP_WECHAT_PAY_WITHDRAW.STATUS.in(statuses))
                 .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
                 .fetchInto(Long.class);
-    }
-
-    /**
-     * 按班次和时间区间统计提现订单id
-     *
-     * @param classId
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    public List<Long> findWaitWithdrawOrderIds(Long classId, Timestamp startTime, Timestamp endTime) {
-        if (startTime == null) {
-            return dslContext.select(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID)
-                    .from(EP_WECHAT_PAY_BILL_DETAIL)
-                    .innerJoin(EP_ORDER)
-                    .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
-                    .where(EP_WECHAT_PAY_BILL_DETAIL.CLASS_ID.eq(classId))
-                    .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                    .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
-                    .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
-                    .and(EP_ORDER.DEL_FLAG.eq(false))
-                    .fetchInto(Long.class);
-        } else {
-            return dslContext.select(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID)
-                    .from(EP_WECHAT_PAY_BILL_DETAIL)
-                    .innerJoin(EP_ORDER)
-                    .on(EP_ORDER.ID.eq(EP_WECHAT_PAY_BILL_DETAIL.ORDER_ID))
-                    .where(EP_WECHAT_PAY_BILL_DETAIL.CLASS_ID.eq(classId))
-                    .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
-                    .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
-                    .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)>=unix_timestamp(" + "'" + startTime.toString() + "'" + ")")
-                    .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
-                    .and(EP_ORDER.DEL_FLAG.eq(false))
-                    .fetchInto(Long.class);
-        }
     }
 
 }

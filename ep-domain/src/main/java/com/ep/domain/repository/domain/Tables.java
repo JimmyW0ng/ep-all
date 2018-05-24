@@ -228,6 +228,11 @@ public class Tables {
     public static final EpWechatPayWithdraw EP_WECHAT_PAY_WITHDRAW = com.ep.domain.repository.domain.tables.EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW;
 
     /**
+     * 微信支付提现明细表
+     */
+    public static final EpWechatPayWithdrawDetail EP_WECHAT_PAY_WITHDRAW_DETAIL = com.ep.domain.repository.domain.tables.EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL;
+
+    /**
      * 微信支付统一订单
      */
     public static final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = com.ep.domain.repository.domain.tables.EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER;

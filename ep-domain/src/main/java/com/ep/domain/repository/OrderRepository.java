@@ -987,10 +987,11 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param orderIds
      * @return
      */
-    public int finishPayWithdrawByOrderIds(List<Long> orderIds) {
+    public int finishPayWithdrawByOrderIds(Long classId, List<Long> orderIds) {
         return dslContext.update(EP_ORDER)
                          .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.withdraw_finish)
-                         .where(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                         .where(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                          .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
                          .and(EP_ORDER.DEL_FLAG.eq(false))
                          .and(EP_ORDER.ID.in(orderIds))
@@ -1140,14 +1141,16 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      * @param classId
      * @return
      */
-    public int refuseWithdrawByClassId(Long classId) {
+    public int refuseWithdrawByClassId(Long classId, List<Long> orderIds) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
-                .where(EP_ORDER.CLASS_ID.eq(classId))
-                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
-                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                         .where(EP_ORDER.ID.in(orderIds))
+                         .and(EP_ORDER.CLASS_ID.eq(classId))
+                         .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
+                         .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
+
 }
 

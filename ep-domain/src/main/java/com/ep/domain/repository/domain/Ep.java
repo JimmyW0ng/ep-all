@@ -32,7 +32,7 @@ public class Ep extends SchemaImpl {
      * The reference instance of <code>ep</code>
      */
     public static final Ep EP = new Ep();
-    private static final long serialVersionUID = 400692506;
+    private static final long serialVersionUID = -693545269;
     /**
      * 课程类目表
      */
@@ -239,6 +239,11 @@ public class Ep extends SchemaImpl {
     public final EpWechatPayWithdraw EP_WECHAT_PAY_WITHDRAW = com.ep.domain.repository.domain.tables.EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW;
 
     /**
+     * 微信支付提现明细表
+     */
+    public final EpWechatPayWithdrawDetail EP_WECHAT_PAY_WITHDRAW_DETAIL = com.ep.domain.repository.domain.tables.EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL;
+
+    /**
      * 微信支付统一订单
      */
     public final EpWechatUnifiedOrder EP_WECHAT_UNIFIED_ORDER = com.ep.domain.repository.domain.tables.EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER;
@@ -309,6 +314,7 @@ public class Ep extends SchemaImpl {
                 EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL,
                 EpWechatPayRefund.EP_WECHAT_PAY_REFUND,
                 EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW,
+                EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL,
                 EpWechatUnifiedOrder.EP_WECHAT_UNIFIED_ORDER);
     }
 }
