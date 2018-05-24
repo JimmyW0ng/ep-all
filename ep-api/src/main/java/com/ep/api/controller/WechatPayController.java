@@ -1,7 +1,6 @@
 package com.ep.api.controller;
 
 import com.ep.common.tool.IpTools;
-import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.wechat.WechatSessionBo;
@@ -11,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,17 +34,10 @@ public class WechatPayController extends ApiController {
     private WechatXcxService wechatXcxService;
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private WechatPayComponent wechatPayComponent;
-
-//    @ApiOperation(value = "获取沙箱环境秘钥")
-//    @PostMapping("/sandbox/key")
-//    public ResultDo getCaptcha() {
-//        return wechatPayComponent.getSandboxSignkey();
-//    }
 
     @ApiOperation(value = "统一下单")
     @PostMapping("/unifiedorder")
+    @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo unifiedorder(HttpServletRequest request,
                                  @RequestParam("sessionToken") String sessionToken,
                                  @RequestParam("orderId") Long orderId) throws Exception {
@@ -66,12 +59,5 @@ public class WechatPayController extends ApiController {
         // 微信支付生成预支付订单
         return orderService.prePayByWechatPay(memberId, sessionBo.getOpenid(), orderId, IpTools.getIpAddr(request));
     }
-
-//    @ApiOperation(value = "退单")
-//    @PostMapping("/refund")
-//    public ResultDo refund(@RequestParam("outTradeNo") String outTradeNo) throws Exception {
-//        log.info("【微信支付退单】开始, outTradeNo={}", outTradeNo);
-//        return wechatPayComponent.xcxPayRefund(outTradeNo);
-//    }
 
 }
