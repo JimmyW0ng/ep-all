@@ -363,65 +363,21 @@ public class OrderService {
     }
 
     /**
-     * 批量报名（不同孩子的班次批量报名）
-     *
-     * @param pos
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public ResultDo batchOrderSuccess(List<EpOrderPo> pos) {
-//        //按classId排序
-//        Collections.sort(pos, new Comparator() {
-//            @Override
-//            public int compare(Object o1, Object o2) {
-//                EpOrderPo po1 = (EpOrderPo) o1;
-//                EpOrderPo po2 = (EpOrderPo) o2;
-//                if (po1.getClassId().longValue() > po2.getClassId().longValue()) {
-//                    return 1;
-//                } else if (po1.getClassId().longValue() == po2.getClassId().longValue()) {
-//                    return 0;
-//                } else {
-//                    return -1;
-//                }
-//            }
-//        });
-//        //不同classId的记录封装在不同的map中
-//        Map<Long, Object> map = Maps.newHashMap();
-//        List<EpOrderPo> list = Lists.newArrayList();
-//        Long classId = pos.get(0).getClassId();
-//        for (int i = 0; i < pos.size(); i++) {
-//            if (classId.longValue() == pos.get(i).getClassId().longValue()) {
-//                list.add(pos.get(i));
-//            } else {
-//                map.put(classId, list);
-//                list = Lists.newArrayList();
-//                classId = pos.get(i).getClassId();
-//                list.add(pos.get(i));
-//            }
-//            map.put(classId, list);
-//        }
-//        //不同班次的孩子批量报名
-//        log.info("[订单],订单批量报名成功，pos={}。", pos);
-//        //相同班次批量报名
-//        map.keySet().forEach(key -> {
-//            List<EpOrderPo> orderPos = (List<EpOrderPo>) map.get(key);
-//            List<Long> classlist = Lists.newArrayList();
-//            for (int i = 0; i < orderPos.size(); i++) {
-//                classlist.add(orderPos.get(i).getId());
-//            }
-//            int count = orderRepository.orderSuccessByIds(classlist);
-//            organClassRepository.updateEnteredNumByorderSuccess(key, count);
-//        });
-//        log.info("[订单],订单批量报名成功，pos={}。", pos);
-        return ResultDo.build();
-    }
-
-    /**
      * 订单拒绝
      *
      * @param id
      */
     public ResultDo orderRefuseById(Long id, String remark) {
         log.info("[订单]订单拒绝操作开始，订单id={},remark={}。", id, remark);
+        Optional<EpOrderPo> existOrder = orderRepository.findById(id);
+        if (!existOrder.isPresent()) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+        }
+        EpOrderPo orderPo = existOrder.get();
+        // 存在微信支付必须已退款才能拒绝
+        if (EpOrderPayType.wechat_pay.equals(orderPo.getPayType()) && !EpOrderPayStatus.refund_finish.equals(orderPo.getPayStatus())) {
+            return ResultDo.build(MessageCode.ERROR_ORDER_PAY_STATUS_NOT_REFUND_FINISH);
+        }
         if (orderRepository.orderRefuseById(id, remark) == BizConstant.DB_NUM_ONE) {
             log.info("[订单]订单拒绝操作成功，订单id={}。", id);
             return ResultDo.build();

@@ -298,21 +298,6 @@ public class OrderController extends BackendController {
     }
 
     /**
-     * 批量报名成功
-     *
-     * @param pos
-     * @return
-     */
-    @PostMapping("batchOrderSuccess")
-    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-    @ResponseBody
-    public ResultDo batchOrderSuccess(
-            @RequestBody List<EpOrderPo> pos) {
-        //不同班次的孩子批量报名
-        return orderService.batchOrderSuccess(pos);
-    }
-
-    /**
      * 单个订单报名成功
      *
      * @param id

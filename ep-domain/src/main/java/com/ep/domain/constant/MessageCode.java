@@ -99,6 +99,7 @@ public class MessageCode {
     public static final String ERROR_ORDER_NOT_END = "ERROR_ORDER_NOT_END";
     public static final String ERROR_ORDER_CANCEL_STATUS_WRONG = "ERROR_ORDER_CANCEL_STATUS_WRONG";
     public static final String ERROR_ORDER_PAY_STATUS_NOT_PAID = "ERROR_ORDER_PAY_STATUS_NOT_PAID";
+    public static final String ERROR_ORDER_PAY_STATUS_NOT_REFUND_FINISH = "ERROR_ORDER_PAY_STATUS_NOT_REFUND_FINISH";
 
     /**
      * 产品评论
