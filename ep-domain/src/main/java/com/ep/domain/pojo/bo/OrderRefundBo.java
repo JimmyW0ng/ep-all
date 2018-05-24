@@ -17,4 +17,5 @@ import lombok.ToString;
 @AllArgsConstructor
 public class OrderRefundBo extends EpOrderRefundPo {
     private String ognName;
+    private String applyName;
 }
