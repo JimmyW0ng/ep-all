@@ -149,7 +149,8 @@
                                 th:text="#{EpOrderStatusBespeak.+${bo.status}}"></td>
                             <td style="display: none" name="status" th:text="${bo.status}"></td>
                             <td>
-
+                                <span th:if="${bo.payType!=null}"
+                                      th:text="#{EpOrderPayType.+${bo.payType}}+'--'"></span>
                                 <span th:if="${bo.payStatus!=null}"
                                       th:text="#{EpOrderPayStatus.+${bo.payStatus}}"></span>
                                 <button th:if="${#strings.equals(bo.payStatus,'wait_pay')&&

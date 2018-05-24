@@ -1121,10 +1121,16 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
                          .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
                          .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
                          .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                         .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_REFUND_NO).gt(BizConstant.DB_NUM_ONE))
+                .groupBy(EP_ORDER.ID).having(DSL.count(EP_WECHAT_PAY_BILL_DETAIL.OUT_TRADE_NO).gt(BizConstant.DB_NUM_ONE))
                          .fetchInto(Long.class);
     }
 
+    /**
+     * 订单申请提现
+     *
+     * @param id
+     * @return
+     */
     public int withdrawApplyOrderById(Long id) {
         return dslContext.update(EP_ORDER)
                 .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.withdraw_apply)

@@ -118,7 +118,6 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
                                 <a class="btn btn-xs btn-primary"
-                                   th:if="${#stringTools.equals(bo.tradeState,'INIT')}"
                                    th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>
 
                             </td>
