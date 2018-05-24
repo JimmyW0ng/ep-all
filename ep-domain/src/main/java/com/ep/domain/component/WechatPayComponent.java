@@ -441,6 +441,7 @@ public class WechatPayComponent {
      * @return
      * @throws Exception
      */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo orderQuery(String transactionId, String outTradeNo, Boolean synFlag) throws Exception {
         log.info("【微信支付】查询订单开始: transactionId={}, outTradeNo={}", transactionId, outTradeNo);
         Map<String, String> requestMap = Maps.newHashMap();
@@ -529,6 +530,7 @@ public class WechatPayComponent {
             log.info("【微信支付】查询订单已退款: outTradeNo={}", outTradeNo);
             // 更新微信订单交易状态
             wechatUnifiedOrderRepository.refundByOutTradeNo(outTradeNo);
+            orderRefundRepository.successByOutTradeNo(outTradeNo);
             // 订单更新支付状态
             EpWechatUnifiedOrderPo unifiedOrderPo = wechatUnifiedOrderRepository.findByOutTradeNo(outTradeNo);
             List<EpWechatUnifiedOrderPo> unifiedOrders = wechatUnifiedOrderRepository.findByOrderId(unifiedOrderPo.getOrderId());
