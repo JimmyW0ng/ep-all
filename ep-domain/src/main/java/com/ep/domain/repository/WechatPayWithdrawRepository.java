@@ -174,12 +174,32 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                 .execute();
     }
 
+    /**
+     * 根据班次id获取提现记录
+     *
+     * @param classId
+     * @return
+     */
     public List<EpWechatPayWithdrawPo> findByClassId(Long classId) {
         return dslContext.selectFrom(EP_WECHAT_PAY_WITHDRAW)
-                         .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
-                         .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
-                         .orderBy(EP_WECHAT_PAY_WITHDRAW.ID.desc())
-                         .fetchInto(EpWechatPayWithdrawPo.class);
+                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .fetchInto(EpWechatPayWithdrawPo.class);
+    }
+
+    /**
+     * 根据班次id和状态获取提现记录
+     *
+     * @param classId
+     * @return
+     */
+    public List<Long> findIdsByClassIdAndStatus(Long classId, EpWechatPayWithdrawStatus... statuses) {
+        return dslContext.select(EP_WECHAT_PAY_WITHDRAW.ID)
+                .from(EP_WECHAT_PAY_WITHDRAW)
+                .where(EP_WECHAT_PAY_WITHDRAW.CLASS_ID.eq(classId))
+                .and(EP_WECHAT_PAY_WITHDRAW.STATUS.in(statuses))
+                .and(EP_WECHAT_PAY_WITHDRAW.DEL_FLAG.eq(false))
+                .fetchInto(Long.class);
     }
 
     /**
@@ -200,7 +220,7 @@ public class WechatPayWithdrawRepository extends AbstractCRUDRepository<EpWechat
                     .and(EP_WECHAT_PAY_BILL_DETAIL.TRADE_STATE.eq("SUCCESS"))
                     .and(EP_WECHAT_PAY_BILL_DETAIL.DEL_FLAG.eq(false))
                     .and("unix_timestamp(`ep`.`ep_wechat_pay_bill_detail`.`transaction_time`)<unix_timestamp(" + "'" + endTime.toString() + "'" + ")")
-                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.withdraw_apply))
                     .and(EP_ORDER.DEL_FLAG.eq(false))
                     .fetchInto(Long.class);
         } else {

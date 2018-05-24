@@ -50,17 +50,44 @@ public class OrderRefundController extends BackendController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("platformIndex")
-    public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    @RequestMapping("platformRecord")
+    public String platformRecord(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                 @RequestParam(value = "ognName", required = false) String ognName,
+                                 @RequestParam(value = "orderId", required = false) Long orderId) {
         Map<String, Object> searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
-
+        if (StringTools.isNotBlank(ognName)) {
+            conditions.add(EP.EP_ORGAN.OGN_NAME.eq(ognName));
+        }
+        searchMap.put("ognName", ognName);
+        if (null != orderId) {
+            conditions.add(EP.EP_ORDER_REFUND.ORDER_ID.eq(orderId));
+        }
+        searchMap.put("orderId", orderId);
         conditions.add(EP_ORDER_REFUND.DEL_FLAG.eq(false));
         Page<OrderRefundBo> page = orderRefundService.findbyPageAndCondition(pageable, conditions);
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
 
-        return "orderRefund/platformIndex";
+        return "orderRefund/platformRecord";
+    }
+
+    @RequestMapping("merchantRecord")
+    public String merchantRecord(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                 @RequestParam(value = "orderId", required = false) Long orderId) {
+        Map<String, Object> searchMap = Maps.newHashMap();
+        Collection<Condition> conditions = Lists.newArrayList();
+        if (null != orderId) {
+            conditions.add(EP.EP_ORDER_REFUND.ORDER_ID.eq(orderId));
+        }
+        searchMap.put("orderId", orderId);
+        conditions.add(EP_ORDER_REFUND.DEL_FLAG.eq(false));
+        conditions.add(EP_ORDER_REFUND.OGN_ID.eq(this.getCurrentUserOgnId()));
+        Page<OrderRefundBo> page = orderRefundService.findbyPageAndCondition(pageable, conditions);
+        model.addAttribute("page", page);
+        model.addAttribute("searchMap", searchMap);
+
+        return "orderRefund/merchantRecord";
     }
 
     /**

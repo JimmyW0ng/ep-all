@@ -123,6 +123,13 @@ public class WechatPayWithdrawController extends BackendController {
         return "wechatPayWithdraw/withdrawMerchantIndex";
     }
 
+    /**
+     * 商户申请提现初始化
+     *
+     * @param classId
+     * @param model
+     * @return
+     */
     @GetMapping("classWithdrawInit/{classId}")
     public String classWithdrawInit(@PathVariable("classId") Long classId, Model model) {
         Optional<EpOrganClassPo> classOptional = organClassService.findById(classId);
@@ -175,7 +182,14 @@ public class WechatPayWithdrawController extends BackendController {
         return "wechatPayWithdraw/classWithdraw";
     }
 
-
+    /**
+     * 商户提现记录
+     * @param model
+     * @param pageable
+     * @param courseName
+     * @param className
+     * @return
+     */
     @GetMapping("merchantRecord")
     public String merchantIndex(Model model,
                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
