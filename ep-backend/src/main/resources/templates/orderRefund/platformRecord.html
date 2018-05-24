@@ -54,6 +54,7 @@
                             <th>操作人员</th>
                             <th>创建时间</th>
                             <th>备注</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -69,6 +70,18 @@
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.remark}"></td>
+                            <td>
+                                <button class="btn btn-xs btn-primary"
+                                        th:if="${#stringTools.equals(bo.status,'save')}"
+                                        th:onclick="'wechatPayRefundSuccess(\''+${bo.outTradeNo}+'\')'">
+                                    退款通过
+                                </button>
+                                <button class="btn btn-xs btn-primary"
+                                        th:if="${#stringTools.equals(bo.status,'save')}"
+                                        th:onclick="'wechatPayRefundRefuse('+${bo.orderId}+')'">
+                                    退款拒绝
+                                </button>
+                            </td>
 
                         </tr>
                         </tbody>
@@ -95,7 +108,18 @@
 
 <script th:replace="~{fragments/scripts}"></script>
 <script th:inline="javascript">
-
+    /**
+     * 微信退款成功
+     */
+    function wechatPayRefundSuccess(outTradeNo) {
+        $ajaxGet("/auth/wechat/wechatPayRefund/" + outTradeNo)
+    }
+    /**
+     * 微信拒绝
+     */
+    function wechatPayRefundRefuse(orderId) {
+        $ajaxGet("/auth/orderRefund/refuseOrderRefund/" + orderId)
+    }
 </script>
 </body>
 </html>

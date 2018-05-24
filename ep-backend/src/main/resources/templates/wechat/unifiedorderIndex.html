@@ -129,23 +129,10 @@
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td>
-                                <a class="btn btn-xs btn-primary"
-                                   th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步</a>
                                 <button class="btn btn-xs btn-primary"
-                                        th:if="${#stringTools.equals(bo.orderRefundApplyStstus,'save')&&
-                                        #stringTools.equals(bo.orderPayStstus,'refund_apply')&&
-                                         #stringTools.equals(bo.orderPayType,'wechat_pay')&&
-                                         orderRefundId==null}"
-                                        th:onclick="'wechatPayRefundSuccess(\''+${bo.outTradeNo}+'\')'">
-                                    退款通过
+                                        th:onclick="'syncUnifiedorder(\''+${bo.outTradeNo}+'\')'">同步
                                 </button>
-                                <button class="btn btn-xs btn-primary"
-                                        th:if="${#stringTools.equals(bo.orderRefundApplyStstus,'save')&&
-                                        #stringTools.equals(bo.orderPayStstus,'refund_apply')&&
-                                         #stringTools.equals(bo.orderPayType,'wechat_pay')&&
-                                         orderRefundId==null}" th:onclick="'wechatPayRefundRefuse('+${bo.orderId}+')'">
-                                    退款拒绝
-                                </button>
+
 
                             </td>
                         </tr>
@@ -215,18 +202,7 @@
             }
         })
     }
-    /**
-     * 微信退款
-     */
-    function wechatPayRefundSuccess(outTradeNo) {
-        $ajaxGet("/auth/wechat/wechatPayRefund/" + outTradeNo)
-    }
-    /**
-     * 微信拒绝
-     */
-    function wechatPayRefundRefuse(orderId) {
-        $ajaxGet("/auth/orderRefund/refuseOrderRefund/" + orderId)
-    }
+
 </script>
 </body>
 </html>
