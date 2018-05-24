@@ -821,22 +821,39 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
     }
 
     /**
-     * 确认线下支付已完成
+     * 确认线下支付已完成（支付状态为wait_pay或refund_finish）
      *
      * @param orderId
      * @param payConfirmTime
      * @return
      */
-    public int offlinePaidByOrderId(Long orderId, Timestamp payConfirmTime) {
-        return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.PAY_TYPE, EpOrderPayType.offline)
-                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
-                .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
-                .where(EP_ORDER.ID.eq(orderId))
-                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.wait_pay))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+    public int offlinePaidByOrderId(Long orderId, EpOrderPayStatus payStatus, Timestamp payConfirmTime) {
+        if (payStatus.equals(EpOrderPayStatus.wait_pay)) {
+            return dslContext.update(EP_ORDER)
+                    .set(EP_ORDER.PAY_TYPE, EpOrderPayType.offline)
+                    .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                    .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
+                    .where(EP_ORDER.ID.eq(orderId))
+                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.wait_pay))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .execute();
+        } else if (payStatus.equals(EpOrderPayStatus.refund_finish)) {
+            return dslContext.update(EP_ORDER)
+                    .set(EP_ORDER.PAY_TYPE, EpOrderPayType.offline)
+                    .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.paid)
+                    .set(EP_ORDER.PAY_CONFIRM_TIME, payConfirmTime)
+                    .where(EP_ORDER.ID.eq(orderId))
+                    .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.refund_finish))
+                    .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                    .and(EP_ORDER.DEL_FLAG.eq(false))
+                    .execute();
+        } else {
+            return BizConstant.DB_NUM_ZERO;
+        }
+
     }
+
+
 
     /**
      * 支付退单成功
