@@ -122,6 +122,9 @@
                                 <a class="btn btn-xs btn-danger" href="javascript:void(0)"
                                    th:if="${#strings.equals(bo.status,'opening')&&#strings.equals(bo.type,'normal')}"
                                    th:onclick="'endBox('+${bo.id}+',\''+${bo.className}+'\')'">结束</a>
+                                <button class="btn btn-xs btn-danger" th:if="${bo.enteredNum==0}"
+                                        th:onclick="'cancelBox('+${bo.id}+')'">撤班
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -406,6 +409,15 @@
                 toastr_error_system(XMLHttpRequest.status);
             },
         })
+    }
+
+    /*撤班*/
+    function cancelBox(id) {
+        layer_confirm(formatMsg("撤销", "班次", ""), 3, cancelDo, id)
+    }
+    function cancelDo(id) {
+        $ajaxGet("/auth/organClass/cancel/" + id)
+
     }
 </script>
 </body>
