@@ -78,17 +78,24 @@ public class OrderRefundService {
         return orderRefundRepository.findOrderRefundPayRefundBoByOrderId(orderId);
     }
 
+    /**
+     * 拒绝退款
+     *
+     * @param orderId
+     * @return
+     * @throws Exception
+     */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo refuseOrderRefund(Long orderId) throws Exception {
+    public ResultDo refuseOrderRefund(Long orderId, Long operateId) throws Exception {
         log.info("[微信退款]拒绝微信退款开始，orderId={}。", orderId);
         if (orderRepository.refundRefuseOrder(orderId) == BizConstant.DB_NUM_ONE) {
             log.info("[微信退款]拒绝微信退款，ep_order表更新状态为refund_apply,orderId={}。", orderId);
         } else {
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
         }
-        int count = orderRefundRepository.refuseOrderRefund(orderId);
+        int count = orderRefundRepository.refuseOrderRefund(orderId, operateId);
         if (count == BizConstant.DB_NUM_ONE) {
-            log.info("[微信退款]拒绝微信退款，ep_order_refund表更新申请状态为refuse,orderId={}。", orderId);
+            log.info("[微信退款]拒绝微信退款，ep_order_refund表更新申请状态为refuse,orderId={},operateId={}。", orderId, operateId);
         } else if (count == BizConstant.DB_NUM_ZERO) {
             log.error("[微信退款]拒绝微信退款失败，不存在orderId={},status=save的记录。", orderId);
             throw new ServiceRuntimeException("拒绝微信退款失败，不存在orderId=" + orderId + ",status=save的记录");

@@ -44,7 +44,6 @@
                             <th>退单原因</th>
                             <th>状态</th>
                             <th>申请人员</th>
-                            <th>操作人员</th>
                             <th>创建时间</th>
                             <th>备注</th>
                         </tr>
@@ -56,8 +55,7 @@
                             <td th:text="${bo.outTradeNo}"></td>
                             <td th:text="${bo.refundReason}"></td>
                             <td th:text="#{EpOrderRefundStatus.+${bo.status}}"></td>
-                            <td th:text="${bo.applyId}"></td>
-                            <td th:text="${bo.operateId}"></td>
+                            <td th:text="${bo.applyName}"></td>
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td th:text="${bo.remark}"></td>

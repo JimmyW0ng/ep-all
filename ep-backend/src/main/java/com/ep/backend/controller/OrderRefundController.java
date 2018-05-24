@@ -203,7 +203,8 @@ public class OrderRefundController extends BackendController {
     public ResultDo refuseOrderRefund(
             @PathVariable("orderId") Long orderId
     ) throws Exception {
-        return orderRefundService.refuseOrderRefund(orderId);
+        Long operateId = this.getCurrentUser().get().getId();
+        return orderRefundService.refuseOrderRefund(orderId, operateId);
     }
 
     /**

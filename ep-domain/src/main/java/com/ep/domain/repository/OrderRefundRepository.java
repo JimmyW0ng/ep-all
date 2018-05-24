@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_ORDER_REFUND;
 import static com.ep.domain.repository.domain.Tables.EP_ORGAN;
+import static com.ep.domain.repository.domain.tables.EpSystemUser.EP_SYSTEM_USER;
 import static com.ep.domain.repository.domain.tables.EpWechatPayRefund.EP_WECHAT_PAY_REFUND;
 
 /**
@@ -47,16 +48,19 @@ public class OrderRefundRepository extends AbstractCRUDRepository<EpOrderRefundR
         long totalCount = dslContext.selectCount()
                 .from(EP_ORDER_REFUND)
                 .leftJoin(EP_ORGAN).on(EP_ORDER_REFUND.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_SYSTEM_USER).on(EP_SYSTEM_USER.ID.eq(EP_ORDER_REFUND.APPLY_ID))
                 .where(condition).fetchOne(0, Long.class);
         if (totalCount == BizConstant.DB_NUM_ZERO) {
             return new PageImpl<>(Lists.newArrayList(), pageable, totalCount);
         }
         List<Field<?>> fieldList = Lists.newArrayList(EP_ORDER_REFUND.fields());
         fieldList.add(EP_ORGAN.OGN_NAME);
+        fieldList.add(EP_SYSTEM_USER.USER_NAME.as("applyName"));
 
         SelectConditionStep<Record> record = dslContext.select(fieldList)
                 .from(EP_ORDER_REFUND)
                 .leftJoin(EP_ORGAN).on(EP_ORDER_REFUND.OGN_ID.eq(EP_ORGAN.ID))
+                .leftJoin(EP_SYSTEM_USER).on(EP_SYSTEM_USER.ID.eq(EP_ORDER_REFUND.APPLY_ID))
                 .where(condition);
 
         List<OrderRefundBo> list = record.orderBy(getSortFields(pageable.getSort()))
@@ -93,9 +97,10 @@ public class OrderRefundRepository extends AbstractCRUDRepository<EpOrderRefundR
      * @param orderId
      * @return
      */
-    public int refuseOrderRefund(Long orderId) {
+    public int refuseOrderRefund(Long orderId, Long operateId) {
         return dslContext.update(EP_ORDER_REFUND)
                 .set(EP_ORDER_REFUND.STATUS, EpOrderRefundStatus.refuse)
+                .set(EP_ORDER_REFUND.OPERATE_ID, operateId)
                 .where(EP_ORDER_REFUND.ORDER_ID.eq(orderId))
                 .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.save))
                 .and(EP_ORDER_REFUND.DEL_FLAG.eq(false))
