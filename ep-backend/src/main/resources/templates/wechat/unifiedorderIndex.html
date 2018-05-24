@@ -26,17 +26,6 @@
                                placeholder="订单id">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control " name="outTradeNo"
-                               th:value="${searchMap.get('outTradeNo')}"
-                               placeholder="商户订单号">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control " name="transactionId"
-                               th:value="${searchMap.get('transactionId')}"
-                               placeholder="微信支付订单号">
-                    </div>
-
-                    <div class="form-group">
                         <input type="text" class="form-control " name="className"
                                th:value="${searchMap.get('className')}"
                                placeholder="班次名称">
@@ -50,6 +39,16 @@
                                     th:text="#{EpOrderPayStatus.+${state.literal}}">
                             </option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="outTradeNo"
+                               th:value="${searchMap.get('outTradeNo')}"
+                               placeholder="商户订单号">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control " name="transactionId"
+                               th:value="${searchMap.get('transactionId')}"
+                               placeholder="微信支付订单号">
                     </div>
 
 
@@ -98,6 +97,8 @@
                         <tr>
                             <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
                             <th>订单id</th>
+                            <th>班次名称</th>
+                            <th>订单支付状态</th>
                             <th>商户订单号</th>
                             <th>商品描述</th>
                             <th>标价金额（元）</th>
@@ -105,8 +106,6 @@
                             <th>微信支付订单号</th>
 
                             <th>支付完成时间</th>
-                            <th>班次名称</th>
-                            <th>订单支付状态</th>
 
                             <th>发起支付时间</th>
 
@@ -117,14 +116,14 @@
                         <tr th:each="bo:${page.content}">
                             <td th:text="${bo.id}"></td>
                             <td th:text="${bo.orderId}"></td>
+                            <td th:text="${bo.className}"></td>
+                            <td th:text="#{EpOrderPayStatus.+${bo.orderPayStstus}}"></td>
                             <td th:text="${bo.outTradeNo}"></td>
                             <td th:text="${bo.body}"></td>
                             <td th:text="${bo.totalFee}/100"></td>
 
                             <td th:text="${bo.transactionId}"></td>
                             <td th:text="${bo.timeEnd}"></td>
-                            <td th:text="${bo.className}"></td>
-                            <td th:text="#{EpOrderPayStatus.+${bo.orderPayStstus}}"></td>
 
 
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
