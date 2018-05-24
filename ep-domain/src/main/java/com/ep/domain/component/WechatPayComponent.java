@@ -420,7 +420,7 @@ public class WechatPayComponent {
                     if (po.getOutTradeNo().equals(refundPo.getOutTradeNo())) {
                         continue;
                     }
-                    if (!WechatTools.TRADE_STATE_REFUND.equals(po.getTradeState())) {
+                    if (WechatTools.TRADE_STATE_SUCCESS.equals(po.getTradeState())) {
                         allRefund = false;
                     }
                 }
@@ -537,7 +537,7 @@ public class WechatPayComponent {
                 if (po.getOutTradeNo().equals(outTradeNo)) {
                     continue;
                 }
-                if (!WechatTools.TRADE_STATE_REFUND.equals(po.getTradeState())) {
+                if (WechatTools.TRADE_STATE_SUCCESS.equals(po.getTradeState())) {
                     allRefund = false;
                 }
             }
