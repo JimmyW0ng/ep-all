@@ -26,9 +26,18 @@
                         <input type="text" class="form-control " name="className" th:value="${map.get('className')}"
                                placeholder="班次名称">
                     </div>
-
                     <div class="form-group ">
-                        <select class="form-control" name="status" id="type" style="width:182px;" >
+                        <select class="form-control" name="type" id="type" style="width:182px;">
+                            <option value>类型</option>
+                            <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassType).values()}"
+                                    th:value="${state}"
+                                    th:selected="${#stringTools.equals(state,map.get('type'))}"
+                                    th:text="#{EpOrganClassType.+${state.literal}}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <select class="form-control" name="status" id="status" style="width:182px;">
                             <option value>状态</option>
                             <option th:each="state : ${T(com.ep.domain.repository.domain.enums.EpOrganClassStatus).values()}"
                                     th:value="${state}"

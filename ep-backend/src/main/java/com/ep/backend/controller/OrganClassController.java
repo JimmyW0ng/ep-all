@@ -8,6 +8,7 @@ import com.ep.domain.pojo.bo.OrganClassBo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
+import com.ep.domain.repository.domain.enums.EpOrganClassType;
 import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
@@ -50,6 +51,7 @@ public class OrganClassController extends BackendController {
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "className", required = false) String className,
+                        @RequestParam(value = "type", required = false) String type,
                         @RequestParam(value = "status", required = false) String status,
                         @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                         @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime
@@ -61,6 +63,10 @@ public class OrganClassController extends BackendController {
             conditions.add(EP_ORGAN_CLASS.CLASS_NAME.like("%" + className + "%"));
         }
         map.put("className", className);
+        if (StringTools.isNotBlank(type)) {
+            conditions.add(EP_ORGAN_CLASS.TYPE.eq(EpOrganClassType.valueOf(type)));
+        }
+        map.put("type", type);
         if (StringTools.isNotBlank(status)) {
             conditions.add(EP_ORGAN_CLASS.STATUS.eq(EpOrganClassStatus.valueOf(status)));
         }

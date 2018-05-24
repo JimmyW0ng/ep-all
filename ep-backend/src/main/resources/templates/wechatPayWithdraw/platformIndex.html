@@ -87,6 +87,7 @@
                                 <button class="btn btn-xs btn-primary" th:if="${#stringTools.equals(bo.status,'wait')}"
                                         th:onclick="'submitPayWithdrawBox('+${bo.id}+')'">审核通过
                                 </button>
+
                                 <button class="btn btn-xs btn-primary"
                                         th:if="${#stringTools.equals(bo.status,'wait')||#stringTools.equals(bo.status,'submit')}"
                                         th:onclick="'refusePayWithdrawBox('+${bo.id}+')'">拒绝

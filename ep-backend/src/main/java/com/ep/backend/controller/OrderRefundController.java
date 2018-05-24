@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,7 @@ public class OrderRefundController extends BackendController {
     private OrderService orderService;
 
     @RequestMapping("platformRecord")
+    @PreAuthorize("hasAnyAuthority('platform:orderRefund:platformRecord')")
     public String platformRecord(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                  @RequestParam(value = "ognName", required = false) String ognName,
                                  @RequestParam(value = "orderId", required = false) Long orderId) {
@@ -73,6 +75,7 @@ public class OrderRefundController extends BackendController {
     }
 
     @RequestMapping("merchantRecord")
+    @PreAuthorize("hasAnyAuthority('merchant:orderRefund:merchantRecord')")
     public String merchantRecord(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                  @RequestParam(value = "orderId", required = false) Long orderId) {
         Map<String, Object> searchMap = Maps.newHashMap();
@@ -106,6 +109,7 @@ public class OrderRefundController extends BackendController {
      * @return
      */
     @GetMapping("merchantIndex")
+    @PreAuthorize("hasAnyAuthority('merchant:orderRefund:merchantIndex')")
     public String orderRefundIndex(Model model,
                                    @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                    @RequestParam(value = "mobile", required = false) String mobile,
@@ -178,6 +182,7 @@ public class OrderRefundController extends BackendController {
      * @return
      */
     @PostMapping("saveOrderRefund")
+    @PreAuthorize("hasAnyAuthority('merchant:orderRefund:merchantIndex')")
     @ResponseBody
     public ResultDo saveOrderRefund(
             @RequestParam("orderId") Long orderId,
@@ -199,6 +204,7 @@ public class OrderRefundController extends BackendController {
      * @return
      */
     @GetMapping("refuseOrderRefund/{orderId}")
+    @PreAuthorize("hasAnyAuthority('platform:orderRefund:platformRecord')")
     @ResponseBody
     public ResultDo refuseOrderRefund(
             @PathVariable("orderId") Long orderId

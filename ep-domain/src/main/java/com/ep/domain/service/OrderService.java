@@ -715,8 +715,13 @@ public class OrderService {
      */
     public ResultDo offlinePaidByOrderId(Long orderId, Timestamp payConfirmTime) {
         log.info("[订单]确认线下支付已完成开始，orderId={},payConfirmTime={}。", orderId, payConfirmTime);
-        if (orderRepository.offlinePaidByOrderId(orderId, payConfirmTime) == BizConstant.DB_NUM_ONE) {
-            log.info("[订单]确认线下支付已完成成功，orderId={},payConfirmTime={}。", orderId, payConfirmTime);
+        Optional<EpOrderPo> orderOptional = orderRepository.findById(orderId);
+        if (!orderOptional.isPresent()) {
+            log.error("[订单]确认线下支付已完成失败，orderId={}不存在。", orderId);
+            return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+        }
+        if (orderRepository.offlinePaidByOrderId(orderId, orderOptional.get().getPayStatus(), payConfirmTime) == BizConstant.DB_NUM_ONE) {
+            log.info("[订单]确认线下支付已完成成功，orderId={},payConfirmTime={},支付完成前payStatus={}。", orderId, payConfirmTime, orderOptional.get().getPayStatus());
             return ResultDo.build();
         } else {
             log.error("[订单]确认线下支付已完成失败，orderId={},payConfirmTime={}。", orderId, payConfirmTime);

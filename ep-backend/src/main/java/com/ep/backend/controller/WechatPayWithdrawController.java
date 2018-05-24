@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +62,7 @@ public class WechatPayWithdrawController extends BackendController {
 
 
     @GetMapping("platformIndex")
+    @PreAuthorize("hasAnyAuthority('platform:wechatPaywithdraw:platformIndex')")
     public String index(Model model,
                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(value = "courseName", required = false) String courseName,
@@ -87,6 +89,7 @@ public class WechatPayWithdrawController extends BackendController {
     }
 
     @GetMapping("merchantIndex")
+    @PreAuthorize("hasAnyAuthority('merchant:wechatPaywithdraw:merchantIndex')")
     public String classWithdrawMerchantIndex(Model model,
                                              @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                              @RequestParam(value = "courseName", required = false) String courseName,
@@ -131,6 +134,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @return
      */
     @GetMapping("classWithdrawInit/{classId}")
+    @PreAuthorize("hasAnyAuthority('merchant:wechatPaywithdraw:merchantIndex')")
     public String classWithdrawInit(@PathVariable("classId") Long classId, Model model) {
         Optional<EpOrganClassPo> classOptional = organClassService.findById(classId);
         if (!classOptional.isPresent() || !classOptional.get().getOgnId().equals(this.getCurrentUserOgnId())) {
@@ -191,6 +195,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @return
      */
     @GetMapping("merchantRecord")
+    @PreAuthorize("hasAnyAuthority('merchant:wechatPaywithdraw:merchantRecord')")
     public String merchantIndex(Model model,
                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                 @RequestParam(value = "courseName", required = false) String courseName,
@@ -224,6 +229,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @return
      */
     @PostMapping("applyPayWithdraw")
+    @PreAuthorize("hasAnyAuthority('merchant:wechatPaywithdraw:merchantIndex')")
     @ResponseBody
     public ResultDo applyPayWithdraw(@RequestParam(value = "classId") Long classId,
                                      @RequestParam(value = "withdrawDeadlineTime") String withdrawDeadlineTime,
@@ -244,6 +250,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @return
      */
     @GetMapping("submitPayWithdraw/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:wechatPaywithdraw:platformIndex')")
     @ResponseBody
     public ResultDo submitPayWithdraw(@PathVariable("id") Long id) {
         return wechatPayWithdrawService.submitPayWithdrawById(id);
@@ -255,6 +262,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @return
      */
     @PostMapping("finishPayWithdraw")
+    @PreAuthorize("hasAnyAuthority('platform:wechatPaywithdraw:platformIndex')")
     @ResponseBody
     public ResultDo finishPayWithdraw(@RequestParam(value = "id") Long id,
                                       @RequestParam(value = "outWithdrawNo") String outWithdrawNo,
@@ -271,6 +279,7 @@ public class WechatPayWithdrawController extends BackendController {
      * @return
      */
     @GetMapping("refusePayWithdraw")
+    @PreAuthorize("hasAnyAuthority('platform:wechatPaywithdraw:platformIndex')")
     @ResponseBody
     public ResultDo refusePayWithdraw(@RequestParam(value = "id") Long id, @RequestParam(value = "remark") String remark) {
 
