@@ -199,6 +199,20 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
     }
 
     /**
+     * 根据订单id获取成功的微信统一下单记录
+     *
+     * @param orderId
+     * @return
+     */
+    public List<EpWechatUnifiedOrderPo> findSuccessByOrderId(Long orderId) {
+        return dslContext.selectFrom(EP_WECHAT_UNIFIED_ORDER)
+                         .where(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(orderId))
+                         .and(EP_WECHAT_UNIFIED_ORDER.TRADE_STATE.eq(WechatTools.TRADE_STATE_SUCCESS))
+                         .and(EP_WECHAT_UNIFIED_ORDER.DEL_FLAG.eq(false))
+                         .fetchInto(EpWechatUnifiedOrderPo.class);
+    }
+
+    /**
      * 根据orderId统一下单成功后退款bo
      *
      * @param orderId

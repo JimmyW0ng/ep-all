@@ -1,6 +1,7 @@
 package com.ep.domain.component;
 
 import com.ep.common.component.SpringComponent;
+import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.SerialNumberTools;
 import com.ep.common.tool.StringTools;
@@ -10,6 +11,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
+import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
@@ -271,6 +273,25 @@ public class WechatPayComponent {
         if (!WechatTools.TRADE_STATE_SUCCESS.equals(unifiedOrderPo.getTradeState())) {
             log.error("【微信支付退单】商户订单号不是支付成功状态，utTradeNo={}", outTradeNo);
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_OUT_TRADE_NO_SUCCESS);
+        }
+        // 只存在一笔支付的订单必须校验报名支付状态是否是退款申请中
+        List<EpWechatUnifiedOrderPo> successPaidOrders = wechatUnifiedOrderRepository.findSuccessByOrderId(unifiedOrderPo.getOrderId());
+        if (CollectionsTools.isNotEmpty(successPaidOrders) && successPaidOrders.size() == BizConstant.DB_NUM_ONE) {
+            EpWechatUnifiedOrderPo successPaid = successPaidOrders.get(BizConstant.DB_NUM_ZERO);
+            if (!outTradeNo.equals(successPaid.getOutTradeNo())) {
+                log.error("【微信支付退单】失败，微信支付统一下单商户订单号不匹配，inputOutTradeNo={}, queryOutTradeNo={}", outTradeNo, successPaid.getOutTradeNo());
+                return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_OUT_TRADE_NO_SUCCESS);
+            }
+            Optional<EpOrderPo> existOrder = orderRepository.findById(successPaid.getOrderId());
+            if (!existOrder.isPresent()) {
+                log.error("【微信支付退单】失败，找不到报名订单，outTradeNo={}, orderId={}", outTradeNo, successPaid.getOrderId());
+                return ResultDo.build(MessageCode.ERROR_ORDER_NOT_EXISTS);
+            }
+            EpOrderPo orderPo = existOrder.get();
+            if (!EpOrderPayStatus.refund_apply.equals(orderPo.getPayStatus())) {
+                log.error("【微信支付退单】失败，报名订单不是退款申请中，outTradeNo={}, orderId={}, payStatus={}", outTradeNo, successPaid.getOrderId(), orderPo.getPayStatus());
+                return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_REFUND_NOT_APPLY);
+            }
         }
         // 生成退单编号
         String outRefundNo = SerialNumberTools.generateOutRefundNo(unifiedOrderPo.getOrderId());
