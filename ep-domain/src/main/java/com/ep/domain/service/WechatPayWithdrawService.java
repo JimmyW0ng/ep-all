@@ -123,6 +123,7 @@ public class WechatPayWithdrawService {
             wechatPayFee = wechatPayFee.add(paid.getPoundage());
             withdrawBills.add(paid);
         }
+        log.info("[微信订单费提现]提现申请订单数，classId={}, wchatPayNum={}", classId, wchatPayNum);
         if (wchatPayNum == BizConstant.DB_NUM_ZERO) {
             log.error("[微信订单费提现]微信支付订单费提现申请失败，原因：classId={}没有可提现订单。", classId);
             return ResultDo.build(MessageCode.ERROR_WECHAT_PAY_WITHDRAW_NO_PAID_ORDERS);
@@ -143,6 +144,7 @@ public class WechatPayWithdrawService {
         //收款账户号
         wechatPayWithdrawPo.setAccountNumber(accountNumber);
         wechatPayWithdrawRepository.insert(wechatPayWithdrawPo);
+        log.info("[微信订单费提现]提现申请保存, classId={}, wechatPayWithdrawPo={}, withdrawBills={}", classId, wechatPayWithdrawPo, withdrawBills);
         List<EpWechatPayWithdrawDetailPo> withdrawDetails = Lists.newArrayList();
         for (EpWechatPayBillDetailPo withdrawBill : withdrawBills) {
             EpWechatPayWithdrawDetailPo detailPo = new EpWechatPayWithdrawDetailPo();
@@ -151,6 +153,7 @@ public class WechatPayWithdrawService {
             detailPo.setOutTradeNo(withdrawBill.getOutTradeNo());
             withdrawDetails.add(detailPo);
         }
+        log.info("[微信订单费提现]提现申请明细保存, classId={}, withdrawDetails={}", classId, withdrawDetails);
         wechatPayWithdrawDetailRepository.insert(withdrawDetails);
         log.info("[微信订单费提现]微信支付订单费提现申请，ep_wechat_pay_withdraw表插入数据。{}。", wechatPayWithdrawPo);
         log.info("[微信订单费提现]微信支付订单费提现申请成功，classId={},courseId={}。", classId, courseId);
