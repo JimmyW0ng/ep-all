@@ -157,7 +157,8 @@ public class OrderRefundController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:orderRefund:merchantRecord')")
     @ResponseBody
     public ResultDo<Map<String, Object>> orderRefundApplyInit(@PathVariable(value = "orderId") Long orderId) {
-        if (null == this.innerOgnOrPlatformReq(orderId, super.getCurrentUserOgnId())) {
+        Optional<EpOrderPo> orderOptional = orderService.findById(orderId);
+        if (!orderOptional.isPresent() || !orderOptional.get().getOgnId().equals(super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
         List<WechatUnifiedOrderPayRefundBo> unifiedOrderlist = wechatUnifiedOrderService.findUnifiedOrderPayRefundBoByOrderId(orderId);
