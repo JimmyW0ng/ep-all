@@ -1083,12 +1083,13 @@ public class OrderRepository extends AbstractCRUDRepository<EpOrderRecord, Long,
      */
     public int refundApplyOrder(Long orderId) {
         return dslContext.update(EP_ORDER)
-                .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.refund_apply)
-                .where(EP_ORDER.ID.eq(orderId))
-                .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
-                .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
-                .and(EP_ORDER.DEL_FLAG.eq(false))
-                .execute();
+                         .set(EP_ORDER.PAY_STATUS, EpOrderPayStatus.refund_apply)
+                         .where(EP_ORDER.ID.eq(orderId))
+                         .and(EP_ORDER.STATUS.eq(EpOrderStatus.save))
+                         .and(EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.paid))
+                         .and(EP_ORDER.PAY_TYPE.eq(EpOrderPayType.wechat_pay))
+                         .and(EP_ORDER.DEL_FLAG.eq(false))
+                         .execute();
     }
 
     /**
