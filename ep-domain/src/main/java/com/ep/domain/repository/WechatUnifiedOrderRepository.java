@@ -228,6 +228,7 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
         fieldList.add(EP_WECHAT_UNIFIED_ORDER.TRANSACTION_ID);
         fieldList.add(EP_WECHAT_UNIFIED_ORDER.TIME_END);
         fieldList.add(EP_WECHAT_UNIFIED_ORDER.NOTIFY_RESULT_CODE);
+        fieldList.add(EP_ORDER.STATUS.as("orderStatus"));
 
         fieldList.add(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO);
         fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_FEE);
@@ -238,6 +239,7 @@ public class WechatUnifiedOrderRepository extends AbstractCRUDRepository<EpWecha
         fieldList.add(EP_WECHAT_PAY_REFUND.REFUND_ACCOUNT);
 
         return dslContext.select(fieldList).from(EP_WECHAT_UNIFIED_ORDER)
+                .leftJoin(EP_ORDER).on(EP_WECHAT_UNIFIED_ORDER.ORDER_ID.eq(EP_ORDER.ID))
                 .leftJoin(EP_WECHAT_PAY_REFUND)
                 //refund_status退款状态必须为SUCCESS否则查空
                 .on(

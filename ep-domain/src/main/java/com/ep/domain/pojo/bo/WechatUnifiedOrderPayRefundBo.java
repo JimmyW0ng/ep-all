@@ -23,4 +23,5 @@ public class WechatUnifiedOrderPayRefundBo extends EpWechatUnifiedOrderPo {
     private String successTime;
     private String refundRecvAccout;
     private String refundAccount;
+    private String orderStatus;
 }

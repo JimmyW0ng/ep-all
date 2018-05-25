@@ -60,6 +60,8 @@
                             <th>提现手续费（元）</th>
                             <th>商户单号</th>
                             <th>付款单号</th>
+                            <th>收款方户名</th>
+                            <th>收款方账号</th>
                             <th>到账时间</th>
                             <th>提现状态</th>
                             <th>创建时间</th>
@@ -79,6 +81,8 @@
                             <td th:text="${bo.withdrawFee}"></td>
                             <td th:text="${bo.outWithdrawNo}"></td>
                             <td th:text="${bo.payId}"></td>
+                            <td th:text="${bo.accountName}"></td>
+                            <td th:text="${bo.accountNumber}"></td>
                             <td th:text="${bo.paidTime}"></td>
                             <td th:text="#{EpWechatPayWithdrawStatus.+${bo.status}}"></td>
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>

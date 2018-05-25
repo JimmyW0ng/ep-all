@@ -155,7 +155,8 @@
                             <td th:text="${#dates.format(bo.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
                             <td name="button">
 
-                                <button class="btn btn-xs btn-info" th:if="${#strings.equals(bo.payStatus,'paid')}"
+                                <button class="btn btn-xs btn-info"
+                                        th:if="${#strings.equals(bo.status,'save')&&#strings.equals(bo.payStatus,'paid')}"
                                         th:onclick="'orderRefundApplyBox('+${bo.id}+')'">申请退款
                                 </button>
                                 <button class="btn btn-xs btn-info"
@@ -287,7 +288,7 @@
         <td name="outTradeNo">${outTradeNo}
         </td>
         <td>${body}</td>
-        <td>${totalFee/100}</td>
+        <td>{{if totalFee}}${totalFee/100}{{/if}}</td>
         <td>${transactionId}</td>
         <td>${timeEnd}</td>
         <td>${notifyResultCode}</td>
@@ -299,8 +300,12 @@
 
         <td>{{if successTime}}
             {{else}}
+            {{if orderStatus=='save'}}
             <button class="btn btn-xs btn-info" onclick="confirmPayRefundBox(this)">申请退款
+
             </button>
+
+            {{/if}}
             {{/if}}
         </td>
     </tr>
@@ -312,7 +317,7 @@
         <td name="outTradeNo">${outTradeNo}
         </td>
         <td>${body}</td>
-        <td>${totalFee/100}</td>
+        <td>{{if totalFee}}${totalFee/100}{{/if}}</td>
         <td>${transactionId}</td>
         <td>${timeEnd}</td>
         <td>${notifyResultCode}</td>
@@ -332,8 +337,8 @@
         <td>${outTradeNo}</td>
         <td>${transactionId}</td>
         <td>${outRefundNo}</td>
-        <td>${totalFee}</td>
-        <td>${refundFee}</td>
+        <td>{{if totalFee}}${totalFee/100}{{/if}}</td>
+        <td>{{if refundFee}}${refundFee/100}{{/if}}</td>
         <td>${status}</td>
         <td>${successTime}</td>
         <td>${refundRecvAccout}
@@ -349,6 +354,7 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:src="@{/js/jquery.tmpl.min.js}"></script>
 <script th:inline="javascript">
+
     EpOrderRefundStatus = {save: "申请中", success: "成功", fail: "失败", refuse: "拒绝", cancel: "撤销"}
     function confirmPayRefundBox(ele) {
         $("#myModal").modal("show")
@@ -372,11 +378,12 @@
                     console.log(data.result)
                     if (data.result) {
                         $("#unifiedordersBody").html($("#unifiedordersBodyTmpl").tmpl(data.result.unifiedOrderlist))
+                        console.log(data.result.unifiedOrderlist[0].successTime)
                         var orderRefundlist = data.result.orderRefundlist
                         for (var i = 0; i < orderRefundlist.length; i++) {
                             orderRefundlist[i].status = EpOrderRefundStatus[orderRefundlist[i].status]
                         }
-                        $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(data.result.orderRefundlist))
+                        $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(orderRefundlist))
                     }
 //                    toastr_success(null, document.location.href)
                 } else {
@@ -408,10 +415,13 @@
                     if (data.result) {
                         $("#unifiedordersBody").html($("#viewUnifiedordersBodyTmpl").tmpl(data.result.unifiedOrderlist))
                         var orderRefundlist = data.result.orderRefundlist
-                        for (var i = 0; i < orderRefundlist.length; i++) {
-                            orderRefundlist[i].status = EpOrderRefundStatus[orderRefundlist[i].status]
+                        if (orderRefundlist && orderRefundlist.length != 0) {
+                            for (var i = 0; i < orderRefundlist.length; i++) {
+                                orderRefundlist[i].status = EpOrderRefundStatus[orderRefundlist[i].status]
+                            }
                         }
                         $("#payrefundBody").html($("#payrefundBodyTmpl").tmpl(orderRefundlist))
+
                     }
 //                    toastr_success(null, document.location.href)
                 } else {
@@ -453,6 +463,7 @@
             }
         })
     }
+
 </script>
 </body>
 </html>

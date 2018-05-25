@@ -2,6 +2,11 @@ img[src=""] {
     opacity: 0;
 }
 
+.btn {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
 .course-mainpic-box {
     border: 3px dashed #e6e6e6;
     height: 345px;

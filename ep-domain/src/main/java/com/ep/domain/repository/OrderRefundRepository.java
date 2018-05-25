@@ -83,7 +83,7 @@ public class OrderRefundRepository extends AbstractCRUDRepository<EpOrderRefundR
         fieldList.add(EP_WECHAT_PAY_REFUND.SUCCESS_TIME);
         return dslContext.select(fieldList).from(EP_ORDER_REFUND)
                 .leftJoin(EP_WECHAT_PAY_REFUND)
-                .on(EP_ORDER_REFUND.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_REFUND_NO)
+                .on(EP_ORDER_REFUND.OUT_TRADE_NO.eq(EP_WECHAT_PAY_REFUND.OUT_TRADE_NO)
                         .and(EP_WECHAT_PAY_REFUND.REFUND_STATUS.eq("SUCCESS"))
                         .and(EP_ORDER_REFUND.STATUS.eq(EpOrderRefundStatus.success)))
                 .where(EP_ORDER_REFUND.ORDER_ID.eq(orderId))
