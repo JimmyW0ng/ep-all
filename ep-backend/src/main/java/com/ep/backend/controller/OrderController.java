@@ -6,9 +6,7 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
-import com.ep.domain.pojo.bo.OrderRefundPayRefundBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
-import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
@@ -503,32 +501,6 @@ public class OrderController extends BackendController {
         }
         return orderService.offlinePaidByOrderId(id, payConfirmTime);
     }
-
-
-    /**
-     * 退款申请初始化,获取统一下单成功后退款bo(统一下单成功记录信息，该单退款成功记录信息)
-     *
-     * @param orderId
-     * @return
-     */
-    @GetMapping("/orderRefundApplyInit/{orderId}")
-    @PreAuthorize("hasAnyAuthority('merchant:order:index')")
-    @ResponseBody
-    public ResultDo<Map<String, Object>> orderRefundApplyInit(@PathVariable(value = "orderId") Long orderId) {
-        if (null == this.innerOgnOrPlatformReq(orderId, super.getCurrentUserOgnId())) {
-            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
-        }
-        List<WechatUnifiedOrderPayRefundBo> unifiedOrderlist = wechatUnifiedOrderService.findUnifiedOrderPayRefundBoByOrderId(orderId);
-        List<OrderRefundPayRefundBo> orderRefundlist = orderRefundService.findOrderRefundPayRefundBoByOrderId(orderId);
-        ResultDo<Map<String, Object>> resultDo = ResultDo.build();
-        Map<String, Object> map = Maps.newHashMap();
-        map.put("unifiedOrderlist", unifiedOrderlist);
-        map.put("orderRefundlist", orderRefundlist);
-        return resultDo.setResult(map);
-    }
-
-
-
 
 
 

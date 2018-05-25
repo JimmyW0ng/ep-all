@@ -369,7 +369,7 @@
         $("#payrefundBody").html("")
         $.ajax({
             type: "GET",
-            url: "/auth/order/orderRefundApplyInit/" + orderId,
+            url: "/auth/orderRefund/orderRefundApplyInit/" + orderId,
             beforeSend: function () {
                 layer.load(2, {shade: [0.1, '#fff']});
             },
@@ -405,7 +405,7 @@
         $("#payrefundBody").html("")
         $.ajax({
             type: "GET",
-            url: "/auth/order/orderRefundApplyInit/" + orderId,
+            url: "/auth/orderRefund/orderRefundApplyInit/" + orderId,
             beforeSend: function () {
                 layer.load(2, {shade: [0.1, '#fff']});
             },

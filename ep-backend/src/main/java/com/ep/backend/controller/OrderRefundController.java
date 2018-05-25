@@ -6,11 +6,14 @@ import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderRefundBo;
+import com.ep.domain.pojo.bo.OrderRefundPayRefundBo;
+import com.ep.domain.pojo.bo.WechatUnifiedOrderPayRefundBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrderRefundPo;
 import com.ep.domain.pojo.po.EpSystemUserPo;
 import com.ep.domain.service.OrderRefundService;
 import com.ep.domain.service.OrderService;
+import com.ep.domain.service.WechatUnifiedOrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -45,6 +49,8 @@ public class OrderRefundController extends BackendController {
     private OrderRefundService orderRefundService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private WechatUnifiedOrderService wechatUnifiedOrderService;
     @Autowired
     private WechatPayComponent wechatPayComponent;
 
@@ -139,6 +145,28 @@ public class OrderRefundController extends BackendController {
     @ResponseBody
     public ResultDo wechatPayRefund(@PathVariable("outTradeNo") String outTradeNo) throws Exception {
         return wechatPayComponent.xcxPayRefund(outTradeNo);
+    }
+
+    /**
+     * 退款申请初始化,获取统一下单成功后退款bo(统一下单成功记录信息，该单退款成功记录信息)
+     *
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/orderRefundApplyInit/{orderId}")
+    @PreAuthorize("hasAnyAuthority('merchant:orderRefund:merchantRecord')")
+    @ResponseBody
+    public ResultDo<Map<String, Object>> orderRefundApplyInit(@PathVariable(value = "orderId") Long orderId) {
+        if (null == this.innerOgnOrPlatformReq(orderId, super.getCurrentUserOgnId())) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        List<WechatUnifiedOrderPayRefundBo> unifiedOrderlist = wechatUnifiedOrderService.findUnifiedOrderPayRefundBoByOrderId(orderId);
+        List<OrderRefundPayRefundBo> orderRefundlist = orderRefundService.findOrderRefundPayRefundBoByOrderId(orderId);
+        ResultDo<Map<String, Object>> resultDo = ResultDo.build();
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("unifiedOrderlist", unifiedOrderlist);
+        map.put("orderRefundlist", orderRefundlist);
+        return resultDo.setResult(map);
     }
 
     /**
