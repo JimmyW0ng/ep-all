@@ -355,7 +355,8 @@ public class OrderService {
             // 增加机构总参与人数
             organRepository.addTotalParticipate(orderPo.getOgnId(), count);
             log.info("[订单]订单报名成功，订单id={},班次classId={}。", id, orderPo.getClassId());
-            return ResultDo.build().setResult(orderPo);
+            Optional<EpOrderPo> updateOrderOptional = orderRepository.findById(id);
+            return ResultDo.build().setResult(updateOrderOptional.get());
         } else {
             log.error("[订单]订单报名失败，订单id={}", id);
             return ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);

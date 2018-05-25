@@ -38,7 +38,7 @@ import static com.ep.domain.repository.domain.tables.EpOrganCourse.EP_ORGAN_COUR
 import static com.ep.domain.repository.domain.tables.EpWechatPayWithdraw.EP_WECHAT_PAY_WITHDRAW;
 
 /**
- * @Description:
+ * @Description: 微信提现控制器
  * @Author: CC.F
  * @Date: 22:22 2018/5/16
  */
@@ -246,7 +246,7 @@ public class WechatPayWithdrawController extends BackendController {
     }
 
     /**
-     * 审核通过提现申请
+     * 平台审核通过提现申请
      * @return
      */
     @GetMapping("submitPayWithdraw/{id}")
@@ -257,7 +257,7 @@ public class WechatPayWithdrawController extends BackendController {
     }
 
     /**
-     * 完成提现
+     * 平台完成提现
      *
      * @return
      */
@@ -274,7 +274,7 @@ public class WechatPayWithdrawController extends BackendController {
     }
 
     /**
-     * 拒绝提现
+     * 平台拒绝提现
      *
      * @return
      */
@@ -282,9 +282,7 @@ public class WechatPayWithdrawController extends BackendController {
     @PreAuthorize("hasAnyAuthority('platform:wechatPaywithdraw:platformIndex')")
     @ResponseBody
     public ResultDo refusePayWithdraw(@RequestParam(value = "id") Long id, @RequestParam(value = "remark") String remark) {
-
         remark = StringTools.isBlank(remark) ? null : remark;
         return wechatPayWithdrawService.refusePayWithdrawById(id, remark);
-
     }
 }

@@ -555,6 +555,7 @@
             success:function (data) {
                 if(data.success){
                     var orderPo = data.result
+                    console.log("报名成功后订单状态为" + orderPo.status)
                     var $tr = $(ele).parents("tr").eq(0)
                     $tr.find("td[name='statusZh']").eq(0).html(EpOrderStatus[orderPo.status]);
                     $tr.find("td[name='status']").eq(0).text(orderPo.status);
@@ -740,7 +741,7 @@
         $("#wechatOrderModal").modal("show")
         $.ajax({
             type: "GET",
-            url: "/auth/wechat/findWechatUnifiedOrderByOrderId/" + orderId,
+            url: "/auth/wechatUnifiedOrder/findWechatUnifiedOrderByOrderId/" + orderId,
             beforeSend: function () {
                 layer.load(2, {shade: [0.1, '#fff']});
             },
