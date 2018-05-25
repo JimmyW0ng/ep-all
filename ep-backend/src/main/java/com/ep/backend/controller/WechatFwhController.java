@@ -66,6 +66,7 @@ public class WechatFwhController extends BackendController {
      * @return
      */
     @GetMapping("menuDelete")
+    @PreAuthorize("hasAnyAuthority('platform:wechatFwh:index')")
     @ResponseBody
     public ResultDo menuDelete() {
         return wechatFwhService.menuDelete();

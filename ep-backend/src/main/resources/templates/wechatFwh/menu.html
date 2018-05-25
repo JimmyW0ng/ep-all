@@ -50,7 +50,7 @@
 <script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
 <script th:inline="javascript">
     function menuGet() {
-        $ajaxGetFun("/auth/wechat/menuGet", function (data) {
+        $ajaxGetFun("/auth/wechatFwh/menuGet", function (data) {
             $("#resultJson").val(data)
         })
     }
@@ -59,12 +59,12 @@
             console.log("valid fail")
             return;
         }
-        $ajaxPostFun("/auth/wechat/menuCreate", {menuJson: $("#menuJson").val()}, function (data) {
+        $ajaxPostFun("/auth/wechatFwh/menuCreate", {menuJson: $("#menuJson").val()}, function (data) {
             $("#resultJson").val(data)
         })
     }
     function menuDelete() {
-        $ajaxGetFun("/auth/wechat/menuDelete", function (data) {
+        $ajaxGetFun("/auth/wechatFwh/menuDelete", function (data) {
             $("#resultJson").val(data)
         })
     }
