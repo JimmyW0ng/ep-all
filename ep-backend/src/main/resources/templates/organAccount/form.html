@@ -26,7 +26,7 @@
                     <label class="col-sm-2 control-label"><span class="required-sign">*</span>姓名</label>
                     <div class="col-sm-3">
                         <input id="accountName" name="accountName" type="text" class="form-control" required="true" th:field="*{accountName}"
-                               aria-required="true">
+                               maxlength="30" aria-required="true">
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@
                     <label class="col-sm-2 control-label"><span class="required-sign">*</span>对外昵称</label>
                     <div class="col-sm-3">
                         <input id="nickName" name="nickName" type="text" class="form-control" required="true" th:field="*{nickName}"
-                                aria-required="true">
+                               maxlength="30" aria-required="true">
 
                         </input>
                     </div>
@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">介绍</label>
                     <div class="col-sm-3">
-                        <textarea id="introduce" name="introduce" type="text" class="form-control"
+                        <textarea id="introduce" name="introduce" type="text" class="form-control" maxlength="250"
                                   th:field="*{introduce}"
                         >
                         </textarea>
@@ -63,6 +63,7 @@
                     <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-3">
                         <textarea id="remark" name="remark" type="text" class="form-control" th:field="*{remark}"
+                                  maxlength="250"
                         >
                         </textarea>
                     </div>

@@ -576,8 +576,8 @@ public class OrganCourseService {
      * @param ognId
      * @return
      */
-    public List<EpOrganCoursePo> findByOgnIdAndStatus(Long ognId, EpOrganCourseCourseStatus status) {
-        return organCourseRepository.findByOgnIdAndStatus(ognId, status);
+    public List<EpOrganCoursePo> findByOgnIdAndStatus(Long ognId, EpOrganCourseCourseStatus... statuses) {
+        return organCourseRepository.findByOgnIdAndStatus(ognId, statuses);
     }
 
     /**

@@ -57,8 +57,6 @@ public class WechatPayWithdrawController extends BackendController {
     private WechatPayBillService wechatPayBillService;
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private WechatPayBillDetailService wechatPayBillDetailService;
 
 
     @GetMapping("platformIndex")

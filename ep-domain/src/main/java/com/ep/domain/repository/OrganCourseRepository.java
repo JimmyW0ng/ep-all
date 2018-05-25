@@ -276,10 +276,10 @@ public class OrganCourseRepository extends AbstractCRUDRepository<EpOrganCourseR
      * @param ognId
      * @return
      */
-    public List<EpOrganCoursePo> findByOgnIdAndStatus(Long ognId, EpOrganCourseCourseStatus status) {
+    public List<EpOrganCoursePo> findByOgnIdAndStatus(Long ognId, EpOrganCourseCourseStatus... statuses) {
         return dslContext.selectFrom(EP_ORGAN_COURSE)
                 .where(EP_ORGAN_COURSE.OGN_ID.eq(ognId))
-                .and(EP_ORGAN_COURSE.COURSE_STATUS.eq(status))
+                .and(EP_ORGAN_COURSE.COURSE_STATUS.in(statuses))
                 .and(EP_ORGAN_COURSE.DEL_FLAG.eq(false))
                 .fetchInto(EpOrganCoursePo.class);
     }

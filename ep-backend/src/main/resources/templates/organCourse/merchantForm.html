@@ -39,8 +39,8 @@
                                 <div class="form-group ">
                                     <label for="courseName">产品名称 <span class="required-sign">*</span></label>
                                     <input id="courseName" name="organCoursePo.courseName" type="text"
-                                           th:value="${organCoursePo.courseName}"
-                                           required="true" aria-required="true" class=" form-control">
+                                           th:value="${organCoursePo.courseName}" maxlength="30"
+                                           required="true" aria-required="true" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="courseType">产品类型 <span class="required-sign">*</span></label>
@@ -244,7 +244,7 @@
                 <label>目录标题<span class="required-sign">*</span></label>
                 <input name="id" type="hidden" jprop="id" value=${id}>
                 <input id="catalogTitle${tmplIndex}" name="catalogTitle" jprop="catalogTitle" class="form-control "
-                       value="${catalogTitle}"
+                       value="${catalogTitle}" maxlength="30"
                        required="true"/>
                 <input name="catalogIndex" jprop="catalogIndex" type="hidden" value=${len}>
             </div>
@@ -284,6 +284,7 @@
         <div class="col-sm-10 form-group">
             <label>目录描述<span class="required-sign">*</span></label>
             <textarea id="catalogDesc${tmplIndex}" name="catalogDesc" jprop="catalogDesc" class="form-control "
+                      maxlength="250"
                       required="true">${catalogDesc}</textarea>
         </div>
     </div>
@@ -322,7 +323,7 @@
                         <div class="form-group">
                             <label>班次名称 <span class="required-sign">*</span></label>
                             <input id="className${tmplIndex}" name="className" jprop="className" type="text"
-                                   class=" form-control "
+                                   class=" form-control " maxlength="30"
                                    value="${className}"
                                    required="true"
                                    onblur="setClassBoxTitle(this)">
@@ -703,7 +704,7 @@
     }
     /* 设置班次名称*/
     function setClassBoxTitle(ele) {
-        $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val())
+        $(ele).parents("div[name='organClassBosBox']").find("a[name='boxTitle']").text($(ele).val() == '' ? '班次' : $(ele).val())
     }
     /*班次类型绑定事件*/
     function bindChangeClassTypeEvent($box) {

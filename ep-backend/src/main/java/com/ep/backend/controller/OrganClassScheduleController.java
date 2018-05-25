@@ -111,7 +111,7 @@ public class OrganClassScheduleController extends BackendController {
         model.addAttribute("classOgnAccountId", organClassOptioal.isPresent() ? organClassOptioal.get().getOgnAccountId() : null);
 
         //课程下拉框
-        List<EpOrganCoursePo> organCoursePos = organCourseService.findByOgnIdAndStatus(ognId, EpOrganCourseCourseStatus.online);
+        List<EpOrganCoursePo> organCoursePos = organCourseService.findByOgnIdAndStatus(ognId, EpOrganCourseCourseStatus.online, EpOrganCourseCourseStatus.offline);
         Map<Long, String> courseMap = Maps.newHashMap();
         organCoursePos.forEach(p -> {
             courseMap.put(p.getId(), p.getCourseName());
