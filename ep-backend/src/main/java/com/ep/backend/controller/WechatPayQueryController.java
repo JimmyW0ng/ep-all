@@ -23,7 +23,7 @@ public class WechatPayQueryController {
 
     @GetMapping("orderquery")
     public String getOrderquery() {
-        return "wechatPay/orderquery";
+        return "wechatPayQuery/orderquery";
 
     }
 
@@ -44,7 +44,7 @@ public class WechatPayQueryController {
 
     @GetMapping("refundquery")
     public String getRefundquery() {
-        return "wechatPay/refundquery";
+        return "wechatPayQuery/refundquery";
 
     }
 

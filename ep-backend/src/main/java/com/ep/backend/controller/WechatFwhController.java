@@ -1,6 +1,5 @@
 package com.ep.backend.controller;
 
-import com.ep.domain.component.WechatPayComponent;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.service.WechatFwhService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class WechatFwhController extends BackendController {
     @Autowired
     private WechatFwhService wechatFwhService;
 
-    @Autowired
-    private WechatPayComponent wechatPayComponent;
 
     @Value("${wechat.fwh.token}")
     private String wechatFwhToken;
@@ -33,7 +30,7 @@ public class WechatFwhController extends BackendController {
      *
      * @return
      */
-    @GetMapping("index")
+    @GetMapping("menu")
     @PreAuthorize("hasAnyAuthority('platform:wechatFwh:index')")
     public String menu() {
         return "wechatFwh/menu";
