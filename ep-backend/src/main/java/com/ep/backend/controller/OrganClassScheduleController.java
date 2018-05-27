@@ -9,6 +9,7 @@ import com.ep.domain.constant.MessageCode;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrganClassBespeakScheduleBo;
 import com.ep.domain.pojo.dto.OrganClassScheduleDto;
+import com.ep.domain.pojo.event.ScheduleEventBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.domain.enums.EpMemberChildCommentType;
 import com.ep.domain.repository.domain.enums.EpOrganClassScheduleStatus;
@@ -19,6 +20,7 @@ import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +58,8 @@ public class OrganClassScheduleController extends BackendController {
     private OrganClassService organClassService;
     @Autowired
     private OrganClassCatalogService organClassCatalogService;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     private Collection<Condition> formatJooqSearchConditions(Long classId, Long classCatalogId, String childNickName, String childTrueName) {
         Collection<Condition> conditions = Lists.newArrayList();
@@ -185,7 +189,14 @@ public class OrganClassScheduleController extends BackendController {
     @PreAuthorize("hasAnyAuthority('merchant:classSchedule:index')")
     @ResponseBody
     public ResultDo<Map<String, Object>> createSchedule(EpOrganClassSchedulePo po) {
-        return organClassScheduleService.createSchedule(po);
+        ResultDo<Map<String, Object>> resultDo = organClassScheduleService.createSchedule(po);
+        // 发送短信
+        if (resultDo.isSuccess()) {
+            EpOrganClassSchedulePo schedulePo = (EpOrganClassSchedulePo) resultDo.getResult().get("classSchedulePo");
+            ScheduleEventBo eventBo = new ScheduleEventBo(schedulePo);
+            publisher.publishEvent(eventBo);
+        }
+        return resultDo;
     }
 
     /**

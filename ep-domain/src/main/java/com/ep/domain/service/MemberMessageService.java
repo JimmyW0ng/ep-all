@@ -1,7 +1,9 @@
 package com.ep.domain.service;
 
+import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.CollectionsTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.MemberMessageBo;
@@ -41,9 +43,15 @@ public class MemberMessageService {
     @Autowired
     private OrganAccountRepository organAccountRepository;
     @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
     private MemberChildRepository memberChildRepository;
     @Autowired
     private OrganCourseRepository organCourseRepository;
+    @Autowired
+    private SystemDictRepository systemDictRepository;
+    @Autowired
+    private QcloudsmsComponent qcloudsmsComponent;
 
     /**
      * 孩子消息未读数
@@ -104,6 +112,8 @@ public class MemberMessageService {
         EpOrganPo organPo = organRepository.getById(classPo.getOgnId());
         // 孩子
         EpMemberChildPo childPo = memberChildRepository.getById(schedulePo.getChildId());
+        // 会员
+        EpMemberPo memberPo = memberRepository.getById(childPo.getMemberId());
         // 消息内容
         String content = String.format(BizConstant.MESSAGE_CONTENT_CLASS_CATALOG_COMMENT,
                 childPo.getChildNickName(),
@@ -122,5 +132,25 @@ public class MemberMessageService {
         messagePo.setContent(content);
         messagePo.setSourceId(classScheduleId);
         memberMessageRepository.insert(messagePo);
+        // 发送随堂评价短信
+        if (SpringComponent.isProduct()) {
+            log.info("发送随堂评价短信开始, classScheduleId={}", classScheduleId);
+            // 手机号
+            String mobileStr = memberPo.getMobile().toString();
+            // 孩子姓名
+            String name;
+            if (StringTools.isNotBlank(childPo.getChildTrueName())) {
+                name = childPo.getChildTrueName();
+            } else {
+                name = childPo.getChildNickName();
+            }
+            // 发送短信
+            EpSystemDictPo dictPo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_KEY_CHILD_COMMENT, BizConstant.DICT_KEY_CHILD_COMMENT);
+            //短信模板id
+            int templateId = Integer.parseInt(dictPo.getValue());
+            String[] params = new String[]{StringTools.encodeUTF(name)};
+            log.info("发送随堂评价短信：模版id={}, mobile={}, params={}", templateId, mobileStr, params);
+            qcloudsmsComponent.singleSend(templateId, mobileStr, params);
+        }
     }
 }

@@ -222,6 +222,10 @@ public class BizConstant {
     public static String DICT_GROUP_QCLOUDSMS = "QCLOUDSMS";
     public static String DICT_KEY_LOGIN_CAPTCHA = "LOGIN_CAPTCHA";
     public static String DICT_KEY_WECHAT_BIND_MOBILE_CAPTCHA = "WECHAT_BIND_MOBILE_CAPTCHA";
+    public static String DICT_KEY_OPEN_CLASS = "OPEN_CLASS";
+    public static String DICT_KEY_CHILD_COMMENT = "CHILD_COMMENT";
+    public static String DICT_KEY_BESPEAK_SCHEDULE = "BESPEAK_SCHEDULE";
+    public static String DICT_KEY_BESPEAK_SUCCESS = "BESPEAK_SUCCESS";
     /**
      * 微信支付
      */

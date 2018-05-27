@@ -8,17 +8,21 @@ import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
+import com.ep.domain.pojo.event.OrderBespeakEventBo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
-import com.ep.domain.service.*;
+import com.ep.domain.service.OrderService;
+import com.ep.domain.service.OrganClassScheduleService;
+import com.ep.domain.service.OrganClassService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -59,13 +63,7 @@ public class OrderController extends BackendController {
     @Autowired
     private OrganClassService organClassService;
     @Autowired
-    private WechatUnifiedOrderService wechatUnifiedOrderService;
-    @Autowired
-    private WechatPayWithdrawService wechatPayWithdrawService;
-    @Autowired
-    private WechatPayBillService wechatPayBillService;
-    @Autowired
-    private OrderRefundService orderRefundService;
+    private ApplicationEventPublisher publisher;
 
     private Collection<Condition> formatJooqSearchConditions(String mobile, String childTrueName, String childNickName, String courseName,
                                                              String className, String classType, String status, Timestamp crStartTime, Timestamp crEndTime) {
@@ -362,11 +360,14 @@ public class OrderController extends BackendController {
         if (null == this.innerOgnOrPlatformReq(id, super.getCurrentUserOgnId())) {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
-
-        return orderService.orderBespeakById(id);
+        ResultDo resultDo = orderService.orderBespeakById(id);
+        // 发送短信
+        if (resultDo.isSuccess()) {
+            OrderBespeakEventBo eventBo = new OrderBespeakEventBo(id);
+            publisher.publishEvent(eventBo);
+        }
+        return resultDo;
     }
-
-
 
     /**
      * 订单退单
