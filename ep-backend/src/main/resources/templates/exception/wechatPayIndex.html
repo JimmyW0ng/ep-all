@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
+<head th:replace="~{fragments/header :: common_header}">
+    <header>
+        <th:block layout:fragment="links">
+        </th:block>
+
+    </header>
+<body>
+<div class="col-sm-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 th:text="'资金对账异常'"></h5>
+
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal m-t" id="payBillFrm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">对账日期（yyyyMMdd）</label>
+                    <div class="col-sm-3">
+                        <input id="billDate" name="billDate" type="text" class="form-control" required="true"
+                               aria-required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-2" style="margin-top: 20px">
+                        <button class="btn btn-primary" type="button" onclick="payBill()">提 交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+    <!--<div class="ibox float-e-margins">-->
+    <!--<div class="ibox-title">-->
+    <!--<h5 th:text="'个人信息'"></h5>-->
+
+    <!--</div>-->
+    <!--<div class="ibox-content">-->
+    <!--<form class="form-horizontal m-t" >-->
+
+    <!--</form>-->
+    <!--</div>-->
+    <!--<div class="modal inmodal" id="psdModal" tabindex="-1" role="dialog" aria-hidden="true">-->
+    <!--<div class="modal-dialog">-->
+    <!--<div class="modal-content animated bounceInRight">-->
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <div class="modal inmodal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <input type="hidden" id="sourceId">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">关闭</span>
+                    </button>
+                    <h3 style="text-align: left">密码修改</h3>
+
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="psdFrm">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">原密码：</label>
+                            <div class="col-sm-4">
+                                <input id="oldPsd" name="oldPsd" type="text" class="form-control" required="true"
+                                       aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">新密码：</label>
+                            <div class="col-sm-4">
+                                <input id="password" name="password" type="password" class="form-control"
+                                       required="true"
+                                       aria-required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">确认新密码：</label>
+                            <div class="col-sm-4">
+                                <input id="confirm_password" name="confirm_password" type="password"
+                                       class="form-control" required="true"
+                                       aria-required="true">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="updatePsdDo()">提 交</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:replace="~{fragments/scripts}"></script>
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+
+<script th:src="@{/js/laydate/laydate.js}"></script>
+<script th:inline="javascript">
+    function payBill() {
+        if (!$("#payBillFrm").valid()) {
+            console.log("valid fail")
+            return;
+        }
+        $.ajax({
+            type: "GET",
+            url: "/auth/exception/wechatPay/bill?billDate=" + $("#billDate").val(),
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
+            success: function (data) {
+                if (data.success) {
+                    toastr.success("操作成功！")
+                } else {
+                    toastr.error("操作失败，原因：" + data.errorDescription);
+                }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
+            }
+        })
+    }
+    //    function updatePsdInit(id) {
+    //        $("#psdModal").modal("show")
+    //        $("#psdFrm").find("input").val("")
+    //        $("#sourceId").val(id)
+    //        $("#psdFrm").validate(
+    //            {
+    //                rules: {
+    //                    password: {minlength: 6, maxlength: 12},
+    //                    confirm_password: {minlength: 6, maxlength: 12, equalTo: "#password"}
+    //                },
+    //                messages: {
+    //                    password: {minlength: "密码为6到12个字符"},
+    //                    confirm_password: {minlength: "密码为6到12个字符", equalTo: "两次输入的密码不一致"}
+    //                }
+    //            }
+    //        )
+    //    }
+    //    function updatePsdDo() {
+    //        if (!$("#psdFrm").valid()) {
+    //            console.log("valid fail")
+    //            return;
+    //        }
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "/auth/updatePsd",
+    //            data: {oldPsd: $("#oldPsd").val(), password: $("#password").val()},
+    //            success: function (data) {
+    //                if (data.success) {
+    //                    toastr.success('操作成功')
+    //                    $("#psdModal").modal("hide")
+    //                } else {
+    //                    toastr.error(data.errorDescription);
+    //                }
+    //            },
+    //            error: function (XMLHttpRequest) {
+    //                toastr_error_system(XMLHttpRequest.status);
+    //            }
+    //        })
+    //    }
+    $(function () {
+
+    })
+</script>
+</body>
+</html>
