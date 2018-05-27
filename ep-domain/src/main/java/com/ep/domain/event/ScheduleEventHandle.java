@@ -54,7 +54,7 @@ public class ScheduleEventHandle {
         if (!SpringComponent.isProduct()) {
             return;
         }
-        if (schedulePo == null || schedulePo.getDelFlag()) {
+        if (schedulePo == null) {
             log.error("创建行程发送短信失败行程不存在, schedulePo={}", schedulePo);
             return;
         }
