@@ -85,7 +85,7 @@ public class OrderBespeakEventHandle {
         EpSystemDictPo dictPo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_BESPEAK_SUCCESS);
         //短信模板id
         int templateId = Integer.parseInt(dictPo.getValue());
-        String[] params = new String[]{StringTools.encodeUTF(name)};
+        String[] params = new String[]{name};
         log.info("订单提交预约开班短信：模版id={}, mobile={}, params={}", templateId, mobileStr, params);
         qcloudsmsComponent.singleSend(templateId, mobileStr, params);
     }
