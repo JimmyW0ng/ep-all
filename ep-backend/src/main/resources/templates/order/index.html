@@ -135,7 +135,8 @@
                             <td th:text="${bo.id}"></td>
                             <td name="mobile" th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
-                            <td name="childNickName" th:text="${bo.childNickName}"></td>
+                            <td><a href="javascript:void(0)" th:onclick="'viewChild('+${bo.childId}+')'" title="查看孩子信息"><span
+                                    name="childNickName" th:text="${bo.childNickName}"></span></a></td>
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
                             <td name="className" th:text="${bo.className}"></td>
@@ -414,6 +415,50 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" onclick="offlinePaidDo()">确认</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="childModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h3 style="text-align: left">学员信息</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal m-t">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">昵称：</label>
+                        <label class=" " style="padding-top: 7px;" id=""></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">姓名：</label>
+                        <label class="" style="padding-top: 7px;"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">身份证号：</label>
+                        <label class="" style="padding-top: 7px;"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">生日：</label>
+                        <label class="" style="padding-top: 7px;"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">班级：</label>
+                        <label class="" style="padding-top: 7px;"> </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">学校：</label>
+                        <label class="" style="padding-top: 7px;"> </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
             </div>
 
         </div>
@@ -772,7 +817,7 @@
         $("#offlinePaidModal").modal("show")
         $("#offline_paid_pay_confirm_time").val(formatDate(new Date(), "yyyy-mm-dd HH:mm:ss"))
         $("#offlinePaidMobile").text($(ele).parents("tr").eq(0).find("td[name='mobile']").eq(0).text())
-        $("#offlinePaidChildNickName").text($(ele).parents("tr").eq(0).find("td[name='childNickName']").eq(0).text())
+        $("#offlinePaidChildNickName").text($(ele).parents("tr").eq(0).find("span[name='childNickName']").eq(0).text())
         $("#offlinePaidClassName").text($(ele).parents("tr").eq(0).find("td[name='className']").eq(0).text())
 
     }
@@ -800,6 +845,23 @@
             },
             complete: function () {
                 layer.closeAll();
+            }
+        })
+    }
+
+    /*查看孩子信息*/
+    function viewChild(childId) {
+        $("#childModal").modal("show")
+        $.ajax({
+            type: 'GET',
+            url: '/auth/memberChild/getMemberChild/' + childId,
+            beforeSend: function () {
+                layer.load(2, {shade: [0.1, '#fff']});
+            },
+            success: function (data) {
+                if (data.success) {
+
+                }
             }
         })
     }

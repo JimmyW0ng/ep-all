@@ -53,6 +53,16 @@ public class MemberChildService {
     private OrganClassScheduleRepository organClassScheduleRepository;
 
     /**
+     * 根据id获取记录
+     *
+     * @param id
+     * @return
+     */
+    public Optional<EpMemberChildPo> findById(Long id) {
+        return memberChildRepository.findById(id);
+    }
+
+    /**
      * 新增孩子信息
      *
      * @param memberId

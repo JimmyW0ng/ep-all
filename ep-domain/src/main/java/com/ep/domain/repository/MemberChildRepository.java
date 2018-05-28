@@ -37,6 +37,14 @@ public class MemberChildRepository extends AbstractCRUDRepository<EpMemberChildR
         super(dslContext, EP_MEMBER_CHILD, EP_MEMBER_CHILD.ID, EpMemberChildPo.class);
     }
 
+    public Optional<EpMemberChildPo> findById(Long id) {
+        EpMemberChildPo data = dslContext.selectFrom(EP_MEMBER_CHILD)
+                .where(EP_MEMBER_CHILD.ID.eq(id))
+                .and(EP_MEMBER_CHILD.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberChildPo.class);
+        return Optional.ofNullable(data);
+    }
+
     /**
      * 更新孩子信息
      *

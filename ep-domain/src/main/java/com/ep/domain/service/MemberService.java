@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @Description:会员业务接口
@@ -28,6 +29,10 @@ public class MemberService {
     private MemberRepository memberRepository;
     @Autowired
     private OrganAccountRepository organAccountRepository;
+
+    public Optional<EpMemberPo> findById(Long id) {
+        return memberRepository.findById(id);
+    }
 
     /**
      * 分页查询会员信息

@@ -7,6 +7,8 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import static com.ep.domain.repository.domain.Tables.EP_MEMBER;
 
 /**
@@ -23,6 +25,14 @@ public class MemberRepository extends AbstractCRUDRepository<EpMemberRecord, Lon
     @Autowired
     public MemberRepository(DSLContext dslContext) {
         super(dslContext, EP_MEMBER, EP_MEMBER.ID, EpMemberPo.class);
+    }
+
+    public Optional<EpMemberPo> findById(Long id) {
+        EpMemberPo data = dslContext.selectFrom(EP_MEMBER)
+                .where(EP_MEMBER.ID.eq(id))
+                .and(EP_MEMBER.DEL_FLAG.eq(false))
+                .fetchOneInto(EpMemberPo.class);
+        return Optional.ofNullable(data);
     }
 
     /**
