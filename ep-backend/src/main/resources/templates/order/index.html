@@ -135,7 +135,8 @@
                             <td th:text="${bo.id}"></td>
                             <td name="mobile" th:text="${bo.mobile}"></td>
                             <td th:text="${bo.childTrueName}"></td>
-                            <td><a href="javascript:void(0)" th:onclick="'viewChild('+${bo.childId}+')'" title="查看孩子信息"><span
+                            <td><a href="javascript:void(0)" th:onclick="'viewChild('+${bo.childId}+','+${bo.id}+')'"
+                                   title="查看孩子信息"><span
                                     name="childNickName" th:text="${bo.childNickName}"></span></a></td>
                             <td th:text="${bo.courseName}"></td>
                             <td style="display: none" name="classId" th:text="${bo.classId}"></td>
@@ -432,28 +433,28 @@
             <div class="modal-body">
                 <form class="form-horizontal m-t">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">昵称：</label>
-                        <label class=" " style="padding-top: 7px;" id=""></label>
+                        <label class="col-sm-4 control-label">姓名：</label>
+                        <label class="" style="padding-top: 7px;" id="childTrueName"> </label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">姓名：</label>
-                        <label class="" style="padding-top: 7px;"> </label>
+                        <label class="col-sm-4 control-label">昵称：</label>
+                        <label class="" style="padding-top: 7px;" id="childNickName"></label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">身份证号：</label>
-                        <label class="" style="padding-top: 7px;"> </label>
+                        <label class="col-sm-4 control-label">身份证号：</label>
+                        <label class="" style="padding-top: 7px;" id="childIdentity"> </label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">生日：</label>
-                        <label class="" style="padding-top: 7px;"> </label>
+                        <label class="col-sm-4 control-label">生日：</label>
+                        <label class="" style="padding-top: 7px;" id="childBirthday"> </label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">班级：</label>
-                        <label class="" style="padding-top: 7px;"> </label>
+                        <label class="col-sm-4 control-label">班级：</label>
+                        <label class="" style="padding-top: 7px;" id="currentClass"> </label>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">学校：</label>
-                        <label class="" style="padding-top: 7px;"> </label>
+                        <label class="col-sm-4 control-label">学校：</label>
+                        <label class="" style="padding-top: 7px;" id="currentSchool"> </label>
                     </div>
                 </form>
             </div>
@@ -850,18 +851,31 @@
     }
 
     /*查看孩子信息*/
-    function viewChild(childId) {
-        $("#childModal").modal("show")
+    function viewChild(childId, orderId) {
         $.ajax({
             type: 'GET',
-            url: '/auth/memberChild/getMemberChild/' + childId,
+            url: '/auth/order/getOrderChild/' + orderId + '&' + childId,
             beforeSend: function () {
                 layer.load(2, {shade: [0.1, '#fff']});
             },
             success: function (data) {
                 if (data.success) {
-
+                    $("#childNickName").text(data.result.childNickName)
+                    $("#childTrueName").text(data.result.childTrueName)
+                    $("#childIdentity").text(data.result.childIdentity)
+                    $("#childBirthday").text(formatDate(data.result.childBirthday, 'yyyy-mm-dd'))
+                    $("#currentClass").text(data.result.currentClass)
+                    $("#currentSchool").text(data.result.currentSchool)
+                    $("#childModal").modal("show")
+                } else {
+                    toastr.error(data.errorDescription);
                 }
+            },
+            error: function (XMLHttpRequest) {
+                toastr_error_system(XMLHttpRequest.status);
+            },
+            complete: function () {
+                layer.closeAll();
             }
         })
     }

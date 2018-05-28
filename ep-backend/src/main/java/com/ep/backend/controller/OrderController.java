@@ -9,11 +9,13 @@ import com.ep.domain.pojo.bo.OrderBo;
 import com.ep.domain.pojo.bo.OrganClassScheduleBo;
 import com.ep.domain.pojo.dto.OrderChildStatisticsDto;
 import com.ep.domain.pojo.event.OrderBespeakEventBo;
+import com.ep.domain.pojo.po.EpMemberChildPo;
 import com.ep.domain.pojo.po.EpOrderPo;
 import com.ep.domain.pojo.po.EpOrganClassPo;
 import com.ep.domain.repository.domain.enums.EpOrderPayStatus;
 import com.ep.domain.repository.domain.enums.EpOrderStatus;
 import com.ep.domain.repository.domain.enums.EpOrganClassType;
+import com.ep.domain.service.MemberChildService;
 import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassScheduleService;
 import com.ep.domain.service.OrganClassService;
@@ -63,10 +65,12 @@ public class OrderController extends BackendController {
     @Autowired
     private OrganClassService organClassService;
     @Autowired
+    private MemberChildService memberChildService;
+    @Autowired
     private ApplicationEventPublisher publisher;
 
     private Collection<Condition> formatJooqSearchConditions(String mobile, String childTrueName, String childNickName, String courseName,
-                                                             String className, String classType, String status, Timestamp crStartTime, Timestamp crEndTime) {
+                                                             String className, String classType, String status, String payStatus, Timestamp crStartTime, Timestamp crEndTime) {
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(mobile)) {
             conditions.add(EP.EP_MEMBER.MOBILE.eq(Long.parseLong(mobile)));
@@ -88,6 +92,9 @@ public class OrderController extends BackendController {
         }
         if (StringTools.isNotBlank(status)) {
             conditions.add(EP.EP_ORDER.STATUS.eq(EpOrderStatus.valueOf(status)));
+        }
+        if (StringTools.isNotBlank(payStatus)) {
+            conditions.add(EP.EP_ORDER.PAY_STATUS.eq(EpOrderPayStatus.valueOf(payStatus)));
         }
         if (null != crStartTime) {
             conditions.add(EP.EP_ORDER.CREATE_AT.greaterOrEqual(crStartTime));
@@ -462,11 +469,12 @@ public class OrderController extends BackendController {
                                  @RequestParam(value = "className", required = false) String className,
                                  @RequestParam(value = "classType", required = false) String classType,
                                  @RequestParam(value = "status", required = false) String status,
+                                 @RequestParam(value = "payStatus", required = false) String payStatus,
                                  @RequestParam(value = "crStartTime", required = false) Timestamp crStartTime,
                                  @RequestParam(value = "crEndTime", required = false) Timestamp crEndTime,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
-        Collection<Condition> conditions = formatJooqSearchConditions(mobile, childTrueName, childNickName, courseName, className, classType, status, crStartTime, crEndTime);
+        Collection<Condition> conditions = formatJooqSearchConditions(mobile, childTrueName, childNickName, courseName, className, classType, status, payStatus, crStartTime, crEndTime);
         orderService.indexExportExcel(request, response, "订单列表", pageable, conditions);
     }
 
@@ -501,6 +509,29 @@ public class OrderController extends BackendController {
             return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
         }
         return orderService.offlinePaidByOrderId(id, payConfirmTime);
+    }
+
+    /**
+     * 订单获取孩子信息
+     *
+     * @param childId
+     * @return
+     */
+    @GetMapping("getOrderChild/{orderId}&{childId}")
+    @ResponseBody
+    public ResultDo getOrderChild(@PathVariable("orderId") Long orderId, @PathVariable("childId") Long childId) {
+        //校验订单存在
+        EpOrderPo orderPo = this.innerOgnOrPlatformReq(orderId, super.getCurrentUserOgnId());
+        if (null == orderPo) {
+            return ResultDo.build(MessageCode.ERROR_ILLEGAL_RESOURCE);
+        }
+        //校验订单的孩子id
+        if (orderPo.getChildId().equals(childId)) {
+            Optional<EpMemberChildPo> memberChildOptional = memberChildService.findById(orderPo.getChildId());
+            return memberChildOptional.isPresent() ? ResultDo.build().setResult(memberChildOptional.get())
+                    : ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
+        }
+        return ResultDo.build(MessageCode.ERROR_CHILD_NOT_EXISTS);
     }
 
 

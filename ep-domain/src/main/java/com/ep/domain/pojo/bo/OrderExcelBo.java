@@ -3,9 +3,7 @@ package com.ep.domain.pojo.bo;
 import com.ep.common.component.SpringComponent;
 import com.ep.common.tool.DateTools;
 import com.ep.domain.pojo.AbstractBasePojo;
-import com.ep.domain.repository.domain.enums.EpOrderStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassStatus;
-import com.ep.domain.repository.domain.enums.EpOrganClassType;
+import com.ep.domain.repository.domain.enums.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -21,12 +19,18 @@ public class OrderExcelBo extends AbstractBasePojo {
     private String mobile;
     private String childTrueName;
     private String childNickName;
+    private String childIdentity;
+    private Timestamp childBirthday;
+    private String currentClass;
+    private String currentSchool;
     private String courseName;
     private String className;
     private EpOrganClassType classType;
     private EpOrganClassStatus classStatus;
     private BigDecimal prize;
     private EpOrderStatus status;
+    private EpOrderPayType payType;
+    private EpOrderPayStatus payStatus;
     private String remark;
     private Timestamp createAt;
 
@@ -42,6 +46,18 @@ public class OrderExcelBo extends AbstractBasePojo {
 
     public String getClassStatusText() {
         return SpringComponent.messageSource("EpOrganClassStatus." + classStatus.getLiteral());
+    }
+
+    public String getPayTypeStatusText() {
+        String payTypeText = "";
+        if (null != payType) {
+            payTypeText = SpringComponent.messageSource("EpOrderPayType." + payType.getLiteral()) + "--";
+        }
+        return payTypeText + SpringComponent.messageSource("EpOrderPayStatus." + payStatus.getLiteral());
+    }
+
+    public String getFmtChildBirthday() {
+        return DateTools.timestampToString(childBirthday, DateTools.DATE_FMT_3);
     }
 
     public String getFmtCreateAt() {

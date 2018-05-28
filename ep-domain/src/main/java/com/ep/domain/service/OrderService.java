@@ -552,12 +552,18 @@ public class OrderService {
         fieldList.add(EP_MEMBER.MOBILE);
         fieldList.add(EP_MEMBER_CHILD.CHILD_TRUE_NAME);
         fieldList.add(EP_MEMBER_CHILD.CHILD_NICK_NAME);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_IDENTITY);
+        fieldList.add(EP_MEMBER_CHILD.CHILD_BIRTHDAY);
+        fieldList.add(EP_MEMBER_CHILD.CURRENT_CLASS);
+        fieldList.add(EP_MEMBER_CHILD.CURRENT_SCHOOL);
         fieldList.add(EP_ORGAN_COURSE.COURSE_NAME);
         fieldList.add(EP_ORGAN_CLASS.CLASS_NAME);
         fieldList.add(EP_ORGAN_CLASS.TYPE.as("classType"));
         fieldList.add(EP_ORGAN_CLASS.STATUS.as("classStatus"));
         fieldList.add(EP_ORDER.PRIZE);
         fieldList.add(EP_ORDER.STATUS);
+        fieldList.add(EP_ORDER.PAY_TYPE);
+        fieldList.add(EP_ORDER.PAY_STATUS);
         fieldList.add(EP_ORDER.REMARK);
         fieldList.add(EP_ORDER.CREATE_AT);
         List<OrderExcelBo> list = orderRepository.indexExportExcel(fieldList, pageable, condition);
@@ -565,15 +571,20 @@ public class OrderService {
         fieldNameStrs.add("mobile");
         fieldNameStrs.add("childTrueName");
         fieldNameStrs.add("childNickName");
+        fieldNameStrs.add("childIdentity");
+        fieldNameStrs.add("fmtChildBirthday");
+        fieldNameStrs.add("currentClass");
+        fieldNameStrs.add("currentSchool");
         fieldNameStrs.add("courseName");
         fieldNameStrs.add("className");
         fieldNameStrs.add("classTypeText");
         fieldNameStrs.add("classStatusText");
         fieldNameStrs.add("prize");
         fieldNameStrs.add("statusText");
+        fieldNameStrs.add("payTypeStatusText");
         fieldNameStrs.add("remark");
         fieldNameStrs.add("fmtCreateAt");
-        String[] titles = {"会员账号", "姓名", "昵称", "产品", "班次", "班次类型", "班次状态", "价格", "订单状态", "备注", "创建时间"};
+        String[] titles = {"会员账号", "姓名", "昵称", "身份证号", "生日", "班级", "学校", "产品", "班次", "班次类型", "班次状态", "价格", "订单状态", "支付状态", "备注", "创建时间"};
         try {
             ExcelUtil.exportExcel(request, response, fileName, fieldList.size(), list, fieldNameStrs, titles);
         } catch (Exception e) {
