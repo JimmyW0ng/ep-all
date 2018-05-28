@@ -145,7 +145,7 @@ public class MemberMessageService {
                 name = childPo.getChildNickName();
             }
             // 发送短信
-            EpSystemDictPo dictPo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_KEY_CHILD_COMMENT, BizConstant.DICT_KEY_CHILD_COMMENT);
+            EpSystemDictPo dictPo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_GROUP_QCLOUDSMS, BizConstant.DICT_KEY_CHILD_COMMENT);
             //短信模板id
             int templateId = Integer.parseInt(dictPo.getValue());
             String[] params = new String[]{name};

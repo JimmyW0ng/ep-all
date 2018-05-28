@@ -683,7 +683,7 @@ public class WechatPayComponent {
             byte[] body = responseEntity.getBody();
             log.info("【下载对账单】接口返回 Byte[].length={}", body.length);
             // 写入文本文件
-            String filePath = "/home/ep/bill/bill_" + billDateStr + ".txt";
+            String filePath = "/home/bill/bill_" + billDateStr + ".txt";
             log.info("【下载对账单】写入文本文件 file={}", filePath);
             OutputStream os = new FileOutputStream(filePath);
             InputStream is = new ByteArrayInputStream(body);
