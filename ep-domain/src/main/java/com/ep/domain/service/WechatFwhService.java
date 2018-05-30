@@ -64,7 +64,7 @@ public class WechatFwhService {
     private ApplicationEventPublisher publisher;
 
     /**
-     * 指定openid发送消息
+     * 客服接口-发消息
      *
      * @param accessToken
      * @param openId
@@ -387,6 +387,7 @@ public class WechatFwhService {
         //判断是否已绑定
         if (epMemberPo != null) {
             if (epMemberPo.getStatus().equals(EpMemberStatus.normal)) {
+
                 responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！");
             } else if (epMemberPo.getStatus().equals(EpMemberStatus.freeze)) {
                 responseMap.put(WechatTools.PARAM_CONTENT, "该手机号已绑定！但手机号已被冻结！");

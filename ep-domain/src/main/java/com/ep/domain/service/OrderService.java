@@ -233,6 +233,8 @@ public class OrderService {
             orderPo.setPayStatus(EpOrderPayStatus.wait_pay);
         }
         orderRepository.insert(orderPo);
+        // 微信服务号发送报名成功信息
+
         // 判断是否需要微信支付
         OrderDto result = new OrderDto();
         result.setOrderId(orderPo.getId());
