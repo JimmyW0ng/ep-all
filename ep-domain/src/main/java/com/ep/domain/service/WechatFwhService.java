@@ -209,7 +209,7 @@ public class WechatFwhService {
             responseMap = this.receiveText(requestMap.get(WechatTools.PARAM_CONTENT), requestMap.get(WechatTools.PARAM_FROMUSERNAME));
         } else {
             //请求为其他类型
-            responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
+            responseMap.put(WechatTools.PARAM_CONTENT, BizConstant.WECHAT_INVALID_REQUEST);
             responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         }
         return responseMap;
@@ -287,7 +287,7 @@ public class WechatFwhService {
             return this.receiveTextMsgCaptchaMobile(contentParams[0], contentParams[1], openid);
 
         }
-        responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
+        responseMap.put(WechatTools.PARAM_CONTENT, BizConstant.WECHAT_INVALID_REQUEST);
         responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }
@@ -436,7 +436,7 @@ public class WechatFwhService {
 
     private Map<String, String> defaultResponse() {
         Map<String, String> responseMap = Maps.newHashMap();
-        responseMap.put(WechatTools.PARAM_CONTENT, "么么哒！");
+        responseMap.put(WechatTools.PARAM_CONTENT, BizConstant.WECHAT_INVALID_REQUEST);
         responseMap.put(WechatTools.PARAM_MSGTYPE, WechatTools.MSGTYPE_TEXT);
         return responseMap;
     }

@@ -3,6 +3,7 @@ package com.ep.backend.controller;
 import com.ep.common.tool.DateTools;
 import com.ep.common.tool.wechat.TokenTools;
 import com.ep.common.tool.wechat.WechatTools;
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.service.WechatFwhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,14 +73,16 @@ public class WechatAccessController {
         response.setContentType("text/xml");
         Map<String, String> requestMap = WechatTools.xmlToMap(request);
         Map<String, String> responseMap = wechatFwhService.postReq(requestMap);
-        responseMap.put("CreateTime", String.valueOf(DateTools.getCurrentDate().getTime()));
-        responseMap.put("ToUserName", requestMap.get("FromUserName"));
-        responseMap.put("FromUserName", wechatFwhId);
-        String xml = WechatTools.mapToXmlString(responseMap);
-        try {
-            response.getWriter().write(xml);
-        } catch (IOException e) {
-            response.getWriter().write("");
+        if (!responseMap.get(WechatTools.PARAM_CONTENT).equals(BizConstant.WECHAT_INVALID_REQUEST)) {
+            responseMap.put("CreateTime", String.valueOf(DateTools.getCurrentDate().getTime()));
+            responseMap.put("ToUserName", requestMap.get("FromUserName"));
+            responseMap.put("FromUserName", wechatFwhId);
+            String xml = WechatTools.mapToXmlString(responseMap);
+            try {
+                response.getWriter().write(xml);
+            } catch (IOException e) {
+                response.getWriter().write("");
+            }
         }
     }
 }

@@ -211,6 +211,10 @@ public class BizConstant {
      * 恶意输入多个#正则表达式
      */
     public static String PATTERN_ILLEGAL_SPLIT = "^#+$";
+    /**
+     * 服务号输入无效请求
+     */
+    public static String WECHAT_INVALID_REQUEST = "WECHAT_INVALID_REQUEST";
 
     /**
      * 腾讯云短信 地区国内CODE
