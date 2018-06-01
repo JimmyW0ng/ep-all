@@ -5,14 +5,12 @@ import com.ep.common.tool.StringTools;
 import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.event.ClassOpenEventBo;
-import com.ep.domain.pojo.po.EpMemberChildPo;
-import com.ep.domain.pojo.po.EpMemberPo;
-import com.ep.domain.pojo.po.EpOrderPo;
-import com.ep.domain.pojo.po.EpSystemDictPo;
-import com.ep.domain.repository.MemberChildRepository;
-import com.ep.domain.repository.MemberRepository;
-import com.ep.domain.repository.SystemDictRepository;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.*;
+import com.ep.domain.repository.domain.enums.EpWechatFormBizType;
 import com.ep.domain.service.OrganClassScheduleService;
+import com.ep.domain.service.WechatXcxService;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -40,6 +38,12 @@ public class ClassOpenEventHandle {
     private SystemDictRepository systemDictRepository;
     @Autowired
     private QcloudsmsComponent qcloudsmsComponent;
+    @Autowired
+    private WechatXcxService wechatXcxService;
+    @Autowired
+    private WechatUnifiedOrderRepository wechatUnifiedOrderRepository;
+    @Autowired
+    private WechatFormRepository wechatFormRepository;
 
     @Async
     @EventListener
@@ -50,7 +54,17 @@ public class ClassOpenEventHandle {
         //发送短信
         sendOpenClassMsg(event.getClassId(), event.getOpeningOrders());
         //小程序发送模板消息
-
+        List<Long> orderIds = Lists.newArrayList();
+        event.getOpeningOrders().forEach(order -> {
+            orderIds.add(order.getId());
+        });
+        List<EpWechatFormPo> wechatFormPos = wechatFormRepository.findBySourceIdsAndBizType(orderIds, EpWechatFormBizType.order);
+        String templateId = "";
+        String page = "";
+        String data = "";
+        wechatFormPos.forEach(po -> {
+            wechatXcxService.messageTemplateSend(po.getTouser(), templateId, page, po.getFormId(), data, null, null);
+        });
         log.info("开班事件处理结束");
     }
 

@@ -43,6 +43,15 @@ public class OrderController extends ApiController {
     @PostMapping("/new")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrderDto> order(@RequestParam("childId") Long childId,
+                                    @RequestParam("classId") Long classId) {
+        Optional<EpMemberPo> optional = super.getCurrentUser();
+        return orderService.order(optional.get().getId(), childId, classId);
+    }
+
+    @ApiOperation(value = "创建订单")
+    @PostMapping("/new")
+    @PreAuthorize("hasAnyAuthority('api:base')")
+    public ResultDo<OrderDto> order(@RequestParam("childId") Long childId,
                                     @RequestParam("classId") Long classId,
                                     @RequestParam("formId") String formId,
                                     @RequestParam("openid") String openid

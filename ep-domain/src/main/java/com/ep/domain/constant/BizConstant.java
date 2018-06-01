@@ -155,6 +155,8 @@ public class BizConstant {
 
     public static String DICT_KEY_WECHAT_FWH_ACCESS_TOKEN = "WECHAT_FWH_ACCESS_TOKEN";
 
+    public static String DICT_KEY_WECHAT_XCX_ACCESS_TOKEN = "WECHAT_XCX_ACCESS_TOKEN";
+
     public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
 
     public static int WECHAT_SESSION_TIME_OUT_M = -60;
@@ -179,6 +181,16 @@ public class BizConstant {
     public static String WECHAT_XCX_ORGAN_URL = "pages/orgnization/orgnizationDetail/OrganizationDetailPage?scene=%s";
 
     public static String WECHAT_XCX_COURSE_URL = "pages/course/courseDetailPage/courseDetailPage?scene=%sand";
+    /**
+     * 小程序 获取 access_token 接口地址
+     */
+    public static String WECHAT_XCX_API_MESSAGE_TEMPLATE_SEND = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s";
+
+    /**
+     * 小程序 发送模板消息 接口地址
+     */
+    public static String WECHAT_XCX_API_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+
 
     public static String WECHAT_TEXT_MSG_SPLIT = "#";
 

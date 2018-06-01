@@ -110,6 +110,143 @@ public class OrderService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
+    public ResultDo<OrderDto> order(Long memberId, Long childId, Long classId) {
+        ResultDo<OrderDto> resultDo = ResultDo.build();
+        log.info("下单开始: memberId={}, childId={}, classId={}", memberId, childId, classId);
+        if (childId == null) {
+            log.error("下单失败，孩子id为空！");
+            resultDo.setError(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);
+            return resultDo;
+        }
+        // 查询孩子信息
+        EpMemberChildPo childPo = memberChildRepository.getById(childId);
+        if (childPo == null
+                || !childPo.getMemberId().equals(memberId)
+                || childPo.getDelFlag()) {
+            log.error("下单失败，孩子信息不存在或已删除！");
+            resultDo.setError(MessageCode.ERROR_CHILD_NOT_EXISTS);
+            return resultDo;
+        }
+        // 查询是否有重复下单
+        List<EpOrderPo> orders = orderRepository.findByChildIdAndClassId(childId, classId);
+        if (CollectionsTools.isNotEmpty(orders)) {
+            log.error("下单失败，同一个班次重复下单！");
+            resultDo.setError(MessageCode.ERROR_ORDER_DUPLICATE);
+            return resultDo;
+        }
+        // 查询课程班次
+        EpOrganClassPo classPo = organClassRepository.getById(classId);
+        if (classPo == null || classPo.getDelFlag()) {
+            log.error("下单失败，班次不存在！");
+            resultDo.setError(MessageCode.ERROR_COURSE_NOT_EXIST);
+            return resultDo;
+        }
+        // 校验课程状态
+        if (classPo.getStatus().equals(EpOrganClassStatus.save)) {
+            log.error("下单失败，班次未上线！");
+            resultDo.setError(MessageCode.ERROR_COURSE_NOT_ONLINE);
+            return resultDo;
+        }
+        if (classPo.getStatus().equals(EpOrganClassStatus.opening)) {
+            log.error("下单失败，班次已开班！");
+            resultDo.setError(MessageCode.ERROR_CLASS_IS_OPENING);
+            return resultDo;
+        }
+        if (classPo.getStatus().equals(EpOrganClassStatus.end)) {
+            log.error("下单失败，课程已结束！");
+            resultDo.setError(MessageCode.ERROR_CLASS_IS_END);
+            return resultDo;
+        }
+        // 校验报名时间
+        EpOrganCoursePo coursePo = organCourseRepository.getById(classPo.getCourseId());
+        Date now = DateTools.getCurrentDate();
+        if (now.before(coursePo.getEnterTimeStart())) {
+            log.error("下单失败，班次报名未开始！");
+            resultDo.setError(MessageCode.ERROR_COURSE_ENTER_NOT_START);
+            return resultDo;
+        }
+        if (coursePo.getEnterTimeEnd() != null && now.after(coursePo.getEnterTimeEnd())) {
+            log.error("下单失败，班次报名已结束！");
+            resultDo.setError(MessageCode.ERROR_COURSE_ENTER_END);
+            return resultDo;
+        }
+        // 校验是否会员才能报名
+        if (coursePo.getVipFlag()) {
+            Boolean existVip = organVipRepository.existVipByOgnIdAndChildId(classPo.getOgnId(), childId);
+            if (!existVip) {
+                EpOrganPo organPo = organRepository.getById(classPo.getOgnId());
+                String vipName = (organPo != null && !organPo.getDelFlag() && organPo.getVipFlag()) ? organPo.getVipName() : BizConstant.VIP_NAME;
+                String errorMsg = SpringComponent.messageSource(MessageCode.ERROR_CLASS_NEED_VIP, new Object[]{vipName});
+                resultDo.setError(MessageCode.ERROR_CLASS_NEED_VIP).setErrorDescription(errorMsg);
+                return resultDo;
+            }
+        }
+        // 校验班次报名人数
+        if (classPo.getEnterLimitFlag()) {
+            // 成功报名数已满
+            if (classPo.getEnteredNum() >= classPo.getEnterRequireNum()) {
+                log.error("下单失败，成功报名数已满！");
+                resultDo.setError(MessageCode.ERROR_ORDER_ENTERED_FULL);
+                return resultDo;
+            }
+            // 下单人数超过阈值
+            if (classPo.getEnterRequireNum() + BizConstant.ORDER_BEYOND_NUM <= classPo.getOrderedNum()) {
+                log.error("下单失败，下单人数超过阈值！");
+                resultDo.setError(MessageCode.ERROR_ORDER_ORDERED_NUM_FULL);
+                return resultDo;
+            }
+        }
+        // 更新下单数
+        int orderNum;
+        if (classPo.getEnterLimitFlag()) {
+            orderNum = organClassRepository.orderWithLimit(classId);
+        } else {
+            orderNum = organClassRepository.orderWithNoLimit(classId);
+        }
+        if (orderNum < BizConstant.DB_NUM_ONE) {
+            resultDo.setError(MessageCode.ERROR_ORDER);
+            return resultDo;
+        }
+        // 订单金额
+        BigDecimal prize = classPo.getDiscountAmount() != null ? classPo.getDiscountAmount() : classPo.getClassPrize();
+        // 判断是否需要微信支付
+        boolean waitPayFlag = false;
+        Optional<EpOrganConfigPo> existOrganConfig = organConfigRepository.getByOgnId(classPo.getOgnId());
+        if (existOrganConfig.isPresent()
+                && existOrganConfig.get().getWechatPayFlag()
+                && coursePo.getWechatPayFlag()
+                && NumberTools.compareBigDecimal(prize, BigDecimal.ZERO)) {
+            waitPayFlag = true;
+        }
+        // 创建订单记录
+        EpOrderPo orderPo = new EpOrderPo();
+        orderPo.setMemberId(memberId);
+        orderPo.setChildId(childId);
+        orderPo.setOgnId(classPo.getOgnId());
+        orderPo.setCourseId(classPo.getCourseId());
+        orderPo.setClassId(classId);
+        orderPo.setPrize(prize);
+        orderPo.setStatus(EpOrderStatus.save);
+        if (waitPayFlag) {
+            orderPo.setPayStatus(EpOrderPayStatus.wait_pay);
+        }
+        orderRepository.insert(orderPo);
+        // 判断是否需要微信支付
+        OrderDto result = new OrderDto();
+        result.setOrderId(orderPo.getId());
+        result.setWaitPayFlag(waitPayFlag);
+        return resultDo.setResult(result);
+    }
+
+    /**
+     * 下单接口
+     *
+     * @param memberId
+     * @param childId
+     * @param classId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
     public ResultDo<OrderDto> order(Long memberId, Long childId, Long classId, String formId, String openid) {
         ResultDo<OrderDto> resultDo = ResultDo.build();
         log.info("下单开始: memberId={}, childId={}, classId={}", memberId, childId, classId);
