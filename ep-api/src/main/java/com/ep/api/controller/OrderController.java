@@ -49,7 +49,7 @@ public class OrderController extends ApiController {
     }
 
     @ApiOperation(value = "创建订单")
-    @PostMapping("/new")
+    @PostMapping("/newOrder")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrderDto> order(@RequestParam("childId") Long childId,
                                     @RequestParam("classId") Long classId,
