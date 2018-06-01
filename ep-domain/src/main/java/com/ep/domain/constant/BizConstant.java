@@ -236,5 +236,9 @@ public class BizConstant {
     public static String WECHAT_PAY_BODY = "小竹马-订单编号";
     public static String WECHAT_PAY_NOTIFY_REMARK = "notify通知接收成功";
     public static String WECHAT_PAY_QUERY_REMARK = "订单查询接收成功";
+    /**
+     * 小程序form过期时间
+     */
+    public static int WECHAT_XCX_EXPIRE_TIME = 7;
 
 }

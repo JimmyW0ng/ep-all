@@ -67,6 +67,7 @@ public class Keys {
     public static final Identity<EpSystemUserRecord, Long> IDENTITY_EP_SYSTEM_USER = Identities0.IDENTITY_EP_SYSTEM_USER;
     public static final Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = Identities0.IDENTITY_EP_SYSTEM_USER_ROLE;
     public static final Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = Identities0.IDENTITY_EP_TOKEN;
+    public static final Identity<EpWechatFormRecord, Long> IDENTITY_EP_WECHAT_FORM = Identities0.IDENTITY_EP_WECHAT_FORM;
     public static final Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = Identities0.IDENTITY_EP_WECHAT_OPENID;
     public static final Identity<EpWechatPayBillRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL = Identities0.IDENTITY_EP_WECHAT_PAY_BILL;
     public static final Identity<EpWechatPayBillDetailRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL_DETAIL = Identities0.IDENTITY_EP_WECHAT_PAY_BILL_DETAIL;
@@ -128,6 +129,7 @@ public class Keys {
     public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_UNIQUE_MOBILE = UniqueKeys0.KEY_EP_SYSTEM_USER_UNIQUE_MOBILE;
     public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = UniqueKeys0.KEY_EP_SYSTEM_USER_ROLE_PRIMARY;
     public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = UniqueKeys0.KEY_EP_TOKEN_PRIMARY;
+    public static final UniqueKey<EpWechatFormRecord> KEY_EP_WECHAT_FORM_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_FORM_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_OPENID_PRIMARY;
     public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = UniqueKeys0.KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE;
     public static final UniqueKey<EpWechatPayBillRecord> KEY_EP_WECHAT_PAY_BILL_PRIMARY = UniqueKeys0.KEY_EP_WECHAT_PAY_BILL_PRIMARY;
@@ -187,6 +189,7 @@ public class Keys {
         public static Identity<EpSystemUserRecord, Long> IDENTITY_EP_SYSTEM_USER = createIdentity(EpSystemUser.EP_SYSTEM_USER, EpSystemUser.EP_SYSTEM_USER.ID);
         public static Identity<EpSystemUserRoleRecord, Long> IDENTITY_EP_SYSTEM_USER_ROLE = createIdentity(EpSystemUserRole.EP_SYSTEM_USER_ROLE, EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static Identity<EpTokenRecord, Long> IDENTITY_EP_TOKEN = createIdentity(EpToken.EP_TOKEN, EpToken.EP_TOKEN.ID);
+        public static Identity<EpWechatFormRecord, Long> IDENTITY_EP_WECHAT_FORM = createIdentity(EpWechatForm.EP_WECHAT_FORM, EpWechatForm.EP_WECHAT_FORM.ID);
         public static Identity<EpWechatOpenidRecord, Long> IDENTITY_EP_WECHAT_OPENID = createIdentity(EpWechatOpenid.EP_WECHAT_OPENID, EpWechatOpenid.EP_WECHAT_OPENID.ID);
         public static Identity<EpWechatPayBillRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL = createIdentity(EpWechatPayBill.EP_WECHAT_PAY_BILL, EpWechatPayBill.EP_WECHAT_PAY_BILL.ID);
         public static Identity<EpWechatPayBillDetailRecord, Long> IDENTITY_EP_WECHAT_PAY_BILL_DETAIL = createIdentity(EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL, EpWechatPayBillDetail.EP_WECHAT_PAY_BILL_DETAIL.ID);
@@ -246,6 +249,7 @@ public class Keys {
         public static final UniqueKey<EpSystemUserRecord> KEY_EP_SYSTEM_USER_UNIQUE_MOBILE = createUniqueKey(EpSystemUser.EP_SYSTEM_USER, "KEY_ep_system_user_UNIQUE_MOBILE", EpSystemUser.EP_SYSTEM_USER.MOBILE);
         public static final UniqueKey<EpSystemUserRoleRecord> KEY_EP_SYSTEM_USER_ROLE_PRIMARY = createUniqueKey(EpSystemUserRole.EP_SYSTEM_USER_ROLE, "KEY_ep_system_user_role_PRIMARY", EpSystemUserRole.EP_SYSTEM_USER_ROLE.ID);
         public static final UniqueKey<EpTokenRecord> KEY_EP_TOKEN_PRIMARY = createUniqueKey(EpToken.EP_TOKEN, "KEY_ep_token_PRIMARY", EpToken.EP_TOKEN.ID);
+        public static final UniqueKey<EpWechatFormRecord> KEY_EP_WECHAT_FORM_PRIMARY = createUniqueKey(EpWechatForm.EP_WECHAT_FORM, "KEY_ep_wechat_form_PRIMARY", EpWechatForm.EP_WECHAT_FORM.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_PRIMARY = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_PRIMARY", EpWechatOpenid.EP_WECHAT_OPENID.ID);
         public static final UniqueKey<EpWechatOpenidRecord> KEY_EP_WECHAT_OPENID_INDEX_OPENID_TYPE_MOBILE = createUniqueKey(EpWechatOpenid.EP_WECHAT_OPENID, "KEY_ep_wechat_openid_INDEX_OPENID_TYPE_MOBILE", EpWechatOpenid.EP_WECHAT_OPENID.OPENID, EpWechatOpenid.EP_WECHAT_OPENID.TYPE, EpWechatOpenid.EP_WECHAT_OPENID.MOBILE);
         public static final UniqueKey<EpWechatPayBillRecord> KEY_EP_WECHAT_PAY_BILL_PRIMARY = createUniqueKey(EpWechatPayBill.EP_WECHAT_PAY_BILL, "KEY_ep_wechat_pay_bill_PRIMARY", EpWechatPayBill.EP_WECHAT_PAY_BILL.ID);

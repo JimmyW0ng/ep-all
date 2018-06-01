@@ -50,6 +50,8 @@ public class WechatXcxService {
         return resultDo.setResult(CryptTools.aesEncrypt(jsonStr, BizConstant.WECHAT_TOKEN_SECRET));
     }
 
+//    public
+
     /**
      * 根据sessionToken获取微信登录对象
      *

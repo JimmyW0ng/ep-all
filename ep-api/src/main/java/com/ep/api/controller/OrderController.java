@@ -43,9 +43,12 @@ public class OrderController extends ApiController {
     @PostMapping("/new")
     @PreAuthorize("hasAnyAuthority('api:base')")
     public ResultDo<OrderDto> order(@RequestParam("childId") Long childId,
-                                    @RequestParam("classId") Long classId) {
+                                    @RequestParam("classId") Long classId,
+                                    @RequestParam("formId") String formId,
+                                    @RequestParam("openid") String openid
+    ) {
         Optional<EpMemberPo> optional = super.getCurrentUser();
-        return orderService.order(optional.get().getId(), childId, classId);
+        return orderService.order(optional.get().getId(), childId, classId, formId, openid);
     }
 
 }

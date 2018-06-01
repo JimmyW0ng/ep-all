@@ -32,41 +32,6 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     private static final long serialVersionUID = 27403863;
 
     /**
-     * Create a detached EpOrderRefundRecord
-     */
-    public EpOrderRefundRecord() {
-        super(EpOrderRefund.EP_ORDER_REFUND);
-    }
-
-    /**
-     * Create a detached, initialised EpOrderRefundRecord
-     */
-    public EpOrderRefundRecord(Long id, Long ognId, Long orderId, String outTradeNo, String refundReason, EpOrderRefundStatus status, Long applyId, Long operateId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrderRefund.EP_ORDER_REFUND);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, orderId);
-        set(3, outTradeNo);
-        set(4, refundReason);
-        set(5, status);
-        set(6, applyId);
-        set(7, operateId);
-        set(8, createAt);
-        set(9, updateAt);
-        set(10, remark);
-        set(11, delFlag);
-        set(12, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_order_refund.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_order_refund.id</code>. 主键
      */
     public EpOrderRefundRecord setId(Long value) {
@@ -75,10 +40,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_order_refund.id</code>. 主键
      */
-    public Long getOgnId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -90,10 +55,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.order_id</code>. 订单id
+     * Getter for <code>ep.ep_order_refund.ogn_id</code>. 机构id
      */
-    public Long getOrderId() {
-        return (Long) get(2);
+    public Long getOgnId() {
+        return (Long) get(1);
     }
 
     /**
@@ -105,10 +70,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.out_trade_no</code>. 商户订单号
+     * Getter for <code>ep.ep_order_refund.order_id</code>. 订单id
      */
-    public String getOutTradeNo() {
-        return (String) get(3);
+    public Long getOrderId() {
+        return (Long) get(2);
     }
 
     /**
@@ -120,10 +85,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.refund_reason</code>. 退单原因
+     * Getter for <code>ep.ep_order_refund.out_trade_no</code>. 商户订单号
      */
-    public String getRefundReason() {
-        return (String) get(4);
+    public String getOutTradeNo() {
+        return (String) get(3);
     }
 
     /**
@@ -135,10 +100,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.status</code>. 状态：已保存；成功；失败；拒绝；撤销；
+     * Getter for <code>ep.ep_order_refund.refund_reason</code>. 退单原因
      */
-    public EpOrderRefundStatus getStatus() {
-        return (EpOrderRefundStatus) get(5);
+    public String getRefundReason() {
+        return (String) get(4);
     }
 
     /**
@@ -150,10 +115,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.apply_id</code>. 申请人员
+     * Getter for <code>ep.ep_order_refund.status</code>. 状态：已保存；成功；失败；拒绝；撤销；
      */
-    public Long getApplyId() {
-        return (Long) get(6);
+    public EpOrderRefundStatus getStatus() {
+        return (EpOrderRefundStatus) get(5);
     }
 
     /**
@@ -165,10 +130,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.operate_id</code>. 操作人员
+     * Getter for <code>ep.ep_order_refund.apply_id</code>. 申请人员
      */
-    public Long getOperateId() {
-        return (Long) get(7);
+    public Long getApplyId() {
+        return (Long) get(6);
     }
 
     /**
@@ -180,10 +145,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_order_refund.operate_id</code>. 操作人员
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(8);
+    public Long getOperateId() {
+        return (Long) get(7);
     }
 
     /**
@@ -195,10 +160,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_order_refund.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(9);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -210,10 +175,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.remark</code>. 备注
+     * Getter for <code>ep.ep_order_refund.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(10);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -225,10 +190,10 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
-     * Getter for <code>ep.ep_order_refund.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_order_refund.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(11);
+    public String getRemark() {
+        return (String) get(10);
     }
 
     /**
@@ -239,20 +204,12 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_order_refund.version</code>.
+     * Getter for <code>ep.ep_order_refund.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(12);
+    public Boolean getDelFlag() {
+        return (Boolean) get(11);
     }
-
-    // -------------------------------------------------------------------------
-    // Record13 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_order_refund.version</code>.
@@ -263,12 +220,27 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
     }
 
     /**
+     * Getter for <code>ep.ep_order_refund.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(12);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record13 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -602,10 +574,6 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -634,5 +602,37 @@ public class EpOrderRefundRecord extends UpdatableRecordImpl<EpOrderRefundRecord
         value12(value12);
         value13(value13);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpOrderRefundRecord
+     */
+    public EpOrderRefundRecord() {
+        super(EpOrderRefund.EP_ORDER_REFUND);
+    }
+
+    /**
+     * Create a detached, initialised EpOrderRefundRecord
+     */
+    public EpOrderRefundRecord(Long id, Long ognId, Long orderId, String outTradeNo, String refundReason, EpOrderRefundStatus status, Long applyId, Long operateId, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrderRefund.EP_ORDER_REFUND);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, orderId);
+        set(3, outTradeNo);
+        set(4, refundReason);
+        set(5, status);
+        set(6, applyId);
+        set(7, operateId);
+        set(8, createAt);
+        set(9, updateAt);
+        set(10, remark);
+        set(11, delFlag);
+        set(12, version);
     }
 }

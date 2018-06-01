@@ -69,9 +69,7 @@ public class OrderService {
     @Autowired
     private WechatPayComponent wechatPayComponent;
     @Autowired
-    private WechatUnifiedOrderService wechatUnifiedOrderService;
-    @Autowired
-    private WechatPayRefundService wechatPayRefundService;
+    private WechatFormRepository wechatFormRepository;
 
     /**
      * 加载会员下单需要的数据
@@ -112,7 +110,7 @@ public class OrderService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public ResultDo<OrderDto> order(Long memberId, Long childId, Long classId) {
+    public ResultDo<OrderDto> order(Long memberId, Long childId, Long classId, String formId, String openid) {
         ResultDo<OrderDto> resultDo = ResultDo.build();
         log.info("下单开始: memberId={}, childId={}, classId={}", memberId, childId, classId);
         if (childId == null) {
@@ -233,8 +231,14 @@ public class OrderService {
             orderPo.setPayStatus(EpOrderPayStatus.wait_pay);
         }
         orderRepository.insert(orderPo);
-        // 微信服务号发送报名成功信息
-
+        // ep_wechat_form插入记录
+        EpWechatFormPo wechatFormPo = new EpWechatFormPo();
+        wechatFormPo.setFormId(formId);
+        wechatFormPo.setTouser(openid);
+        wechatFormPo.setSourceId(orderPo.getId());
+        wechatFormPo.setBizType(EpWechatFormBizType.order);
+        wechatFormPo.setExpireTime(DateTools.addDate(DateTools.getCurrentDateTime(), BizConstant.WECHAT_XCX_EXPIRE_TIME));
+        wechatFormRepository.insert(wechatFormPo);
         // 判断是否需要微信支付
         OrderDto result = new OrderDto();
         result.setOrderId(orderPo.getId());

@@ -45,8 +45,12 @@ public class ClassOpenEventHandle {
     @EventListener
     public void handle(ClassOpenEventBo event) {
         log.info("开班事件处理开始, event={}", event);
+        //创建行程
         organClassScheduleService.batchInitByClassId(event.getClassId(), event.getOpeningOrders());
+        //发送短信
         sendOpenClassMsg(event.getClassId(), event.getOpeningOrders());
+        //小程序发送模板消息
+
         log.info("开班事件处理结束");
     }
 
@@ -89,5 +93,6 @@ public class ClassOpenEventHandle {
             qcloudsmsComponent.singleSend(templateId, mobileStr, params);
         }
     }
+
 
 }

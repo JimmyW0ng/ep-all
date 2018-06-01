@@ -203,6 +203,11 @@ public class Tables {
     public static final EpToken EP_TOKEN = com.ep.domain.repository.domain.tables.EpToken.EP_TOKEN;
 
     /**
+     * 微信form提交关联表
+     */
+    public static final EpWechatForm EP_WECHAT_FORM = com.ep.domain.repository.domain.tables.EpWechatForm.EP_WECHAT_FORM;
+
+    /**
      * 公众号关联表
      */
     public static final EpWechatOpenid EP_WECHAT_OPENID = com.ep.domain.repository.domain.tables.EpWechatOpenid.EP_WECHAT_OPENID;

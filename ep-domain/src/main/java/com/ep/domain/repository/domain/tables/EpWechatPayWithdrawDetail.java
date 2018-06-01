@@ -29,43 +29,61 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatPayWithdrawDetail extends TableImpl<EpWechatPayWithdrawDetailRecord> {
 
+    private static final long serialVersionUID = -1124346948;
+
     /**
      * The reference instance of <code>ep.ep_wechat_pay_withdraw_detail</code>
      */
     public static final EpWechatPayWithdrawDetail EP_WECHAT_PAY_WITHDRAW_DETAIL = new EpWechatPayWithdrawDetail();
-    private static final long serialVersionUID = -1124346948;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpWechatPayWithdrawDetailRecord> getRecordType() {
+        return EpWechatPayWithdrawDetailRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.id</code>. 主键
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.withdraw_id</code>. 提现id
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, Long> WITHDRAW_ID = createField("withdraw_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "提现id");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.order_id</code>. 订单id
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "订单id");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.out_trade_no</code>. 微信支付商户订单号
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, String> OUT_TRADE_NO = createField("out_trade_no", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false), this, "微信支付商户订单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.create_at</code>. 创建时间
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.update_at</code>. 更新时间
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.remark</code>. 备注
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.del_flag</code>. 删除标记
      */
     public final TableField<EpWechatPayWithdrawDetailRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_wechat_pay_withdraw_detail.version</code>.
      */
@@ -91,14 +109,6 @@ public class EpWechatPayWithdrawDetail extends TableImpl<EpWechatPayWithdrawDeta
 
     private EpWechatPayWithdrawDetail(String alias, Table<EpWechatPayWithdrawDetailRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "微信支付提现明细表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpWechatPayWithdrawDetailRecord> getRecordType() {
-        return EpWechatPayWithdrawDetailRecord.class;
     }
 
     /**

@@ -28,6 +28,442 @@ public class EpWechatPayRefundRecord extends UpdatableRecordImpl<EpWechatPayRefu
     private static final long serialVersionUID = 778171441;
 
     /**
+     * Setter for <code>ep.ep_wechat_pay_refund.id</code>. 主键
+     */
+    public EpWechatPayRefundRecord setId(Long value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.id</code>. 主键
+     */
+    public Long getId() {
+        return (Long) get(0);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.appid</code>. appid
+     */
+    public EpWechatPayRefundRecord setAppid(String value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.appid</code>. appid
+     */
+    public String getAppid() {
+        return (String) get(1);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.mch_id</code>. 商户号
+     */
+    public EpWechatPayRefundRecord setMchId(String value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.mch_id</code>. 商户号
+     */
+    public String getMchId() {
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.out_trade_no</code>. 商户订单号
+     */
+    public EpWechatPayRefundRecord setOutTradeNo(String value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.out_trade_no</code>. 商户订单号
+     */
+    public String getOutTradeNo() {
+        return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.transaction_id</code>. 微信订单号
+     */
+    public EpWechatPayRefundRecord setTransactionId(String value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.transaction_id</code>. 微信订单号
+     */
+    public String getTransactionId() {
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.out_refund_no</code>. 商户退款单号
+     */
+    public EpWechatPayRefundRecord setOutRefundNo(String value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.out_refund_no</code>. 商户退款单号
+     */
+    public String getOutRefundNo() {
+        return (String) get(5);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.total_fee</code>. 订单金额
+     */
+    public EpWechatPayRefundRecord setTotalFee(Integer value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.total_fee</code>. 订单金额
+     */
+    public Integer getTotalFee() {
+        return (Integer) get(6);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.refund_fee</code>. 退款金额
+     */
+    public EpWechatPayRefundRecord setRefundFee(Integer value) {
+        set(7, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.refund_fee</code>. 退款金额
+     */
+    public Integer getRefundFee() {
+        return (Integer) get(7);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.refund_desc</code>. 退款原因
+     */
+    public EpWechatPayRefundRecord setRefundDesc(String value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.refund_desc</code>. 退款原因
+     */
+    public String getRefundDesc() {
+        return (String) get(8);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.return_code</code>. 返回状态码
+     */
+    public EpWechatPayRefundRecord setReturnCode(String value) {
+        set(9, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.return_code</code>. 返回状态码
+     */
+    public String getReturnCode() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.return_msg</code>. 返回信息
+     */
+    public EpWechatPayRefundRecord setReturnMsg(String value) {
+        set(10, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.return_msg</code>. 返回信息
+     */
+    public String getReturnMsg() {
+        return (String) get(10);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.result_code</code>. 业务结果
+     */
+    public EpWechatPayRefundRecord setResultCode(String value) {
+        set(11, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.result_code</code>. 业务结果
+     */
+    public String getResultCode() {
+        return (String) get(11);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.err_code</code>. 错误代码
+     */
+    public EpWechatPayRefundRecord setErrCode(String value) {
+        set(12, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.err_code</code>. 错误代码
+     */
+    public String getErrCode() {
+        return (String) get(12);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.err_code_des</code>. 错误代码描述
+     */
+    public EpWechatPayRefundRecord setErrCodeDes(String value) {
+        set(13, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.err_code_des</code>. 错误代码描述
+     */
+    public String getErrCodeDes() {
+        return (String) get(13);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.refund_id</code>. 微信退款单号
+     */
+    public EpWechatPayRefundRecord setRefundId(String value) {
+        set(14, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.refund_id</code>. 微信退款单号
+     */
+    public String getRefundId() {
+        return (String) get(14);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.notify_return_code</code>. 通知返回状态码
+     */
+    public EpWechatPayRefundRecord setNotifyReturnCode(String value) {
+        set(15, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.notify_return_code</code>. 通知返回状态码
+     */
+    public String getNotifyReturnCode() {
+        return (String) get(15);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.notify_return_msg</code>. 返回信息
+     */
+    public EpWechatPayRefundRecord setNotifyReturnMsg(String value) {
+        set(16, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.notify_return_msg</code>. 返回信息
+     */
+    public String getNotifyReturnMsg() {
+        return (String) get(16);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.refund_status</code>.
+     */
+    public EpWechatPayRefundRecord setRefundStatus(String value) {
+        set(17, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.refund_status</code>.
+     */
+    public String getRefundStatus() {
+        return (String) get(17);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.settlement_total_fee</code>. 应结订单金额
+     */
+    public EpWechatPayRefundRecord setSettlementTotalFee(Integer value) {
+        set(18, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.settlement_total_fee</code>. 应结订单金额
+     */
+    public Integer getSettlementTotalFee() {
+        return (Integer) get(18);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.settlement_refund_fee</code>. 退款金额
+     */
+    public EpWechatPayRefundRecord setSettlementRefundFee(Integer value) {
+        set(19, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.settlement_refund_fee</code>. 退款金额
+     */
+    public Integer getSettlementRefundFee() {
+        return (Integer) get(19);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.success_time</code>. 退款成功时间
+     */
+    public EpWechatPayRefundRecord setSuccessTime(String value) {
+        set(20, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.success_time</code>. 退款成功时间
+     */
+    public String getSuccessTime() {
+        return (String) get(20);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.refund_recv_accout</code>. 退款入账账户
+     */
+    public EpWechatPayRefundRecord setRefundRecvAccout(String value) {
+        set(21, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.refund_recv_accout</code>. 退款入账账户
+     */
+    public String getRefundRecvAccout() {
+        return (String) get(21);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.refund_account</code>. 退款资金来源
+     */
+    public EpWechatPayRefundRecord setRefundAccount(String value) {
+        set(22, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.refund_account</code>. 退款资金来源
+     */
+    public String getRefundAccount() {
+        return (String) get(22);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.create_at</code>. 创建时间
+     */
+    public EpWechatPayRefundRecord setCreateAt(Timestamp value) {
+        set(23, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.create_at</code>. 创建时间
+     */
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(23);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.update_at</code>. 更新时间
+     */
+    public EpWechatPayRefundRecord setUpdateAt(Timestamp value) {
+        set(24, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.update_at</code>. 更新时间
+     */
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(24);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.remark</code>. 备注
+     */
+    public EpWechatPayRefundRecord setRemark(String value) {
+        set(25, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.remark</code>. 备注
+     */
+    public String getRemark() {
+        return (String) get(25);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.del_flag</code>. 删除标记
+     */
+    public EpWechatPayRefundRecord setDelFlag(Boolean value) {
+        set(26, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.del_flag</code>. 删除标记
+     */
+    public Boolean getDelFlag() {
+        return (Boolean) get(26);
+    }
+
+    /**
+     * Setter for <code>ep.ep_wechat_pay_refund.version</code>.
+     */
+    public EpWechatPayRefundRecord setVersion(Long value) {
+        set(27, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>ep.ep_wechat_pay_refund.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(27);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Record1<Long> key() {
+        return (Record1) super.key();
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
      * Create a detached EpWechatPayRefundRecord
      */
     public EpWechatPayRefundRecord() {
@@ -68,441 +504,5 @@ public class EpWechatPayRefundRecord extends UpdatableRecordImpl<EpWechatPayRefu
         set(25, remark);
         set(26, delFlag);
         set(27, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.id</code>. 主键
-     */
-    public EpWechatPayRefundRecord setId(Long value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.appid</code>. appid
-     */
-    public String getAppid() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.appid</code>. appid
-     */
-    public EpWechatPayRefundRecord setAppid(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.mch_id</code>. 商户号
-     */
-    public String getMchId() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.mch_id</code>. 商户号
-     */
-    public EpWechatPayRefundRecord setMchId(String value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.out_trade_no</code>. 商户订单号
-     */
-    public String getOutTradeNo() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.out_trade_no</code>. 商户订单号
-     */
-    public EpWechatPayRefundRecord setOutTradeNo(String value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.transaction_id</code>. 微信订单号
-     */
-    public String getTransactionId() {
-        return (String) get(4);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.transaction_id</code>. 微信订单号
-     */
-    public EpWechatPayRefundRecord setTransactionId(String value) {
-        set(4, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.out_refund_no</code>. 商户退款单号
-     */
-    public String getOutRefundNo() {
-        return (String) get(5);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.out_refund_no</code>. 商户退款单号
-     */
-    public EpWechatPayRefundRecord setOutRefundNo(String value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.total_fee</code>. 订单金额
-     */
-    public Integer getTotalFee() {
-        return (Integer) get(6);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.total_fee</code>. 订单金额
-     */
-    public EpWechatPayRefundRecord setTotalFee(Integer value) {
-        set(6, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.refund_fee</code>. 退款金额
-     */
-    public Integer getRefundFee() {
-        return (Integer) get(7);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.refund_fee</code>. 退款金额
-     */
-    public EpWechatPayRefundRecord setRefundFee(Integer value) {
-        set(7, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.refund_desc</code>. 退款原因
-     */
-    public String getRefundDesc() {
-        return (String) get(8);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.refund_desc</code>. 退款原因
-     */
-    public EpWechatPayRefundRecord setRefundDesc(String value) {
-        set(8, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.return_code</code>. 返回状态码
-     */
-    public String getReturnCode() {
-        return (String) get(9);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.return_code</code>. 返回状态码
-     */
-    public EpWechatPayRefundRecord setReturnCode(String value) {
-        set(9, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.return_msg</code>. 返回信息
-     */
-    public String getReturnMsg() {
-        return (String) get(10);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.return_msg</code>. 返回信息
-     */
-    public EpWechatPayRefundRecord setReturnMsg(String value) {
-        set(10, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.result_code</code>. 业务结果
-     */
-    public String getResultCode() {
-        return (String) get(11);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.result_code</code>. 业务结果
-     */
-    public EpWechatPayRefundRecord setResultCode(String value) {
-        set(11, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.err_code</code>. 错误代码
-     */
-    public String getErrCode() {
-        return (String) get(12);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.err_code</code>. 错误代码
-     */
-    public EpWechatPayRefundRecord setErrCode(String value) {
-        set(12, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.err_code_des</code>. 错误代码描述
-     */
-    public String getErrCodeDes() {
-        return (String) get(13);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.err_code_des</code>. 错误代码描述
-     */
-    public EpWechatPayRefundRecord setErrCodeDes(String value) {
-        set(13, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.refund_id</code>. 微信退款单号
-     */
-    public String getRefundId() {
-        return (String) get(14);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.refund_id</code>. 微信退款单号
-     */
-    public EpWechatPayRefundRecord setRefundId(String value) {
-        set(14, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.notify_return_code</code>. 通知返回状态码
-     */
-    public String getNotifyReturnCode() {
-        return (String) get(15);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.notify_return_code</code>. 通知返回状态码
-     */
-    public EpWechatPayRefundRecord setNotifyReturnCode(String value) {
-        set(15, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.notify_return_msg</code>. 返回信息
-     */
-    public String getNotifyReturnMsg() {
-        return (String) get(16);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.notify_return_msg</code>. 返回信息
-     */
-    public EpWechatPayRefundRecord setNotifyReturnMsg(String value) {
-        set(16, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.refund_status</code>.
-     */
-    public String getRefundStatus() {
-        return (String) get(17);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.refund_status</code>.
-     */
-    public EpWechatPayRefundRecord setRefundStatus(String value) {
-        set(17, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.settlement_total_fee</code>. 应结订单金额
-     */
-    public Integer getSettlementTotalFee() {
-        return (Integer) get(18);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.settlement_total_fee</code>. 应结订单金额
-     */
-    public EpWechatPayRefundRecord setSettlementTotalFee(Integer value) {
-        set(18, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.settlement_refund_fee</code>. 退款金额
-     */
-    public Integer getSettlementRefundFee() {
-        return (Integer) get(19);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.settlement_refund_fee</code>. 退款金额
-     */
-    public EpWechatPayRefundRecord setSettlementRefundFee(Integer value) {
-        set(19, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.success_time</code>. 退款成功时间
-     */
-    public String getSuccessTime() {
-        return (String) get(20);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.success_time</code>. 退款成功时间
-     */
-    public EpWechatPayRefundRecord setSuccessTime(String value) {
-        set(20, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.refund_recv_accout</code>. 退款入账账户
-     */
-    public String getRefundRecvAccout() {
-        return (String) get(21);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.refund_recv_accout</code>. 退款入账账户
-     */
-    public EpWechatPayRefundRecord setRefundRecvAccout(String value) {
-        set(21, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.refund_account</code>. 退款资金来源
-     */
-    public String getRefundAccount() {
-        return (String) get(22);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.refund_account</code>. 退款资金来源
-     */
-    public EpWechatPayRefundRecord setRefundAccount(String value) {
-        set(22, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.create_at</code>. 创建时间
-     */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(23);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.create_at</code>. 创建时间
-     */
-    public EpWechatPayRefundRecord setCreateAt(Timestamp value) {
-        set(23, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.update_at</code>. 更新时间
-     */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(24);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.update_at</code>. 更新时间
-     */
-    public EpWechatPayRefundRecord setUpdateAt(Timestamp value) {
-        set(24, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.remark</code>. 备注
-     */
-    public String getRemark() {
-        return (String) get(25);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.remark</code>. 备注
-     */
-    public EpWechatPayRefundRecord setRemark(String value) {
-        set(25, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.del_flag</code>. 删除标记
-     */
-    public Boolean getDelFlag() {
-        return (Boolean) get(26);
-    }
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.del_flag</code>. 删除标记
-     */
-    public EpWechatPayRefundRecord setDelFlag(Boolean value) {
-        set(26, value);
-        return this;
-    }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_refund.version</code>.
-     */
-    public Long getVersion() {
-        return (Long) get(27);
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>ep.ep_wechat_pay_refund.version</code>.
-     */
-    public EpWechatPayRefundRecord setVersion(Long value) {
-        set(27, value);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Record1<Long> key() {
-        return (Record1) super.key();
     }
 }

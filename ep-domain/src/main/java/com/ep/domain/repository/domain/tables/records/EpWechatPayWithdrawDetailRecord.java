@@ -31,37 +31,6 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     private static final long serialVersionUID = -752160507;
 
     /**
-     * Create a detached EpWechatPayWithdrawDetailRecord
-     */
-    public EpWechatPayWithdrawDetailRecord() {
-        super(EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL);
-    }
-
-    /**
-     * Create a detached, initialised EpWechatPayWithdrawDetailRecord
-     */
-    public EpWechatPayWithdrawDetailRecord(Long id, Long withdrawId, Long orderId, String outTradeNo, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL);
-
-        set(0, id);
-        set(1, withdrawId);
-        set(2, orderId);
-        set(3, outTradeNo);
-        set(4, createAt);
-        set(5, updateAt);
-        set(6, remark);
-        set(7, delFlag);
-        set(8, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_wechat_pay_withdraw_detail.id</code>. 主键
      */
     public EpWechatPayWithdrawDetailRecord setId(Long value) {
@@ -70,10 +39,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.withdraw_id</code>. 提现id
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.id</code>. 主键
      */
-    public Long getWithdrawId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -85,10 +54,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.order_id</code>. 订单id
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.withdraw_id</code>. 提现id
      */
-    public Long getOrderId() {
-        return (Long) get(2);
+    public Long getWithdrawId() {
+        return (Long) get(1);
     }
 
     /**
@@ -100,10 +69,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.out_trade_no</code>. 微信支付商户订单号
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.order_id</code>. 订单id
      */
-    public String getOutTradeNo() {
-        return (String) get(3);
+    public Long getOrderId() {
+        return (Long) get(2);
     }
 
     /**
@@ -115,10 +84,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.out_trade_no</code>. 微信支付商户订单号
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(4);
+    public String getOutTradeNo() {
+        return (String) get(3);
     }
 
     /**
@@ -130,10 +99,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(5);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(4);
     }
 
     /**
@@ -145,10 +114,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.remark</code>. 备注
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(6);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(5);
     }
 
     /**
@@ -160,10 +129,10 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(7);
+    public String getRemark() {
+        return (String) get(6);
     }
 
     /**
@@ -174,20 +143,12 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.version</code>.
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(8);
+    public Boolean getDelFlag() {
+        return (Boolean) get(7);
     }
-
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_wechat_pay_withdraw_detail.version</code>.
@@ -198,12 +159,27 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
     }
 
     /**
+     * Getter for <code>ep.ep_wechat_pay_withdraw_detail.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(8);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -437,10 +413,6 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -465,5 +437,33 @@ public class EpWechatPayWithdrawDetailRecord extends UpdatableRecordImpl<EpWecha
         value8(value8);
         value9(value9);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpWechatPayWithdrawDetailRecord
+     */
+    public EpWechatPayWithdrawDetailRecord() {
+        super(EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL);
+    }
+
+    /**
+     * Create a detached, initialised EpWechatPayWithdrawDetailRecord
+     */
+    public EpWechatPayWithdrawDetailRecord(Long id, Long withdrawId, Long orderId, String outTradeNo, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpWechatPayWithdrawDetail.EP_WECHAT_PAY_WITHDRAW_DETAIL);
+
+        set(0, id);
+        set(1, withdrawId);
+        set(2, orderId);
+        set(3, outTradeNo);
+        set(4, createAt);
+        set(5, updateAt);
+        set(6, remark);
+        set(7, delFlag);
+        set(8, version);
     }
 }

@@ -44,6 +44,7 @@ public class WechatPayController extends ApiController {
         log.info("【小程序报名支付】开始, sessionToken={}, orderId={}", sessionToken, orderId);
         // 当前用户
         Long memberId = super.getCurrentUser().get().getId();
+
         // 微信session
         WechatSessionBo sessionBo;
         try {

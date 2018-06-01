@@ -31,38 +31,6 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     private static final long serialVersionUID = -300721221;
 
     /**
-     * Create a detached EpOrganConfigRecord
-     */
-    public EpOrganConfigRecord() {
-        super(EpOrganConfig.EP_ORGAN_CONFIG);
-    }
-
-    /**
-     * Create a detached, initialised EpOrganConfigRecord
-     */
-    public EpOrganConfigRecord(Long id, Long ognId, Boolean privateFlag, Boolean supportTag, Boolean wechatPayFlag, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpOrganConfig.EP_ORGAN_CONFIG);
-
-        set(0, id);
-        set(1, ognId);
-        set(2, privateFlag);
-        set(3, supportTag);
-        set(4, wechatPayFlag);
-        set(5, createAt);
-        set(6, updateAt);
-        set(7, remark);
-        set(8, delFlag);
-        set(9, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_organ_config.id</code>.
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_organ_config.id</code>.
      */
     public EpOrganConfigRecord setId(Long value) {
@@ -71,10 +39,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.ogn_id</code>. 机构id
+     * Getter for <code>ep.ep_organ_config.id</code>.
      */
-    public Long getOgnId() {
-        return (Long) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -86,10 +54,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.private_flag</code>. 机构资源是否私有
+     * Getter for <code>ep.ep_organ_config.ogn_id</code>. 机构id
      */
-    public Boolean getPrivateFlag() {
-        return (Boolean) get(2);
+    public Long getOgnId() {
+        return (Long) get(1);
     }
 
     /**
@@ -101,10 +69,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能
+     * Getter for <code>ep.ep_organ_config.private_flag</code>. 机构资源是否私有
      */
-    public Boolean getSupportTag() {
-        return (Boolean) get(3);
+    public Boolean getPrivateFlag() {
+        return (Boolean) get(2);
     }
 
     /**
@@ -116,10 +84,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.wechat_pay_flag</code>. 是否支持微信支付
+     * Getter for <code>ep.ep_organ_config.support_tag</code>. 是否支持标签功能
      */
-    public Boolean getWechatPayFlag() {
-        return (Boolean) get(4);
+    public Boolean getSupportTag() {
+        return (Boolean) get(3);
     }
 
     /**
@@ -131,10 +99,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_organ_config.wechat_pay_flag</code>. 是否支持微信支付
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(5);
+    public Boolean getWechatPayFlag() {
+        return (Boolean) get(4);
     }
 
     /**
@@ -146,10 +114,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_organ_config.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(6);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(5);
     }
 
     /**
@@ -161,10 +129,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.remark</code>. 备注
+     * Getter for <code>ep.ep_organ_config.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(7);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(6);
     }
 
     /**
@@ -176,10 +144,10 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
-     * Getter for <code>ep.ep_organ_config.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_organ_config.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(8);
+    public String getRemark() {
+        return (String) get(7);
     }
 
     /**
@@ -190,20 +158,12 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_organ_config.version</code>.
+     * Getter for <code>ep.ep_organ_config.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(9);
+    public Boolean getDelFlag() {
+        return (Boolean) get(8);
     }
-
-    // -------------------------------------------------------------------------
-    // Record10 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_organ_config.version</code>.
@@ -214,12 +174,27 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
     }
 
     /**
+     * Getter for <code>ep.ep_organ_config.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(9);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record10 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -478,10 +453,6 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -507,5 +478,34 @@ public class EpOrganConfigRecord extends UpdatableRecordImpl<EpOrganConfigRecord
         value9(value9);
         value10(value10);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpOrganConfigRecord
+     */
+    public EpOrganConfigRecord() {
+        super(EpOrganConfig.EP_ORGAN_CONFIG);
+    }
+
+    /**
+     * Create a detached, initialised EpOrganConfigRecord
+     */
+    public EpOrganConfigRecord(Long id, Long ognId, Boolean privateFlag, Boolean supportTag, Boolean wechatPayFlag, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpOrganConfig.EP_ORGAN_CONFIG);
+
+        set(0, id);
+        set(1, ognId);
+        set(2, privateFlag);
+        set(3, supportTag);
+        set(4, wechatPayFlag);
+        set(5, createAt);
+        set(6, updateAt);
+        set(7, remark);
+        set(8, delFlag);
+        set(9, version);
     }
 }

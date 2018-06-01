@@ -32,42 +32,6 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     private static final long serialVersionUID = -921809409;
 
     /**
-     * Create a detached EpWechatPayBillRecord
-     */
-    public EpWechatPayBillRecord() {
-        super(EpWechatPayBill.EP_WECHAT_PAY_BILL);
-    }
-
-    /**
-     * Create a detached, initialised EpWechatPayBillRecord
-     */
-    public EpWechatPayBillRecord(Long id, Integer billDate, Integer totalNum, BigDecimal totalAmount, BigDecimal totalRefundAmount, BigDecimal totalCouponRefundAmount, BigDecimal totalPoundage, String returnCode, String returnMsg, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
-        super(EpWechatPayBill.EP_WECHAT_PAY_BILL);
-
-        set(0, id);
-        set(1, billDate);
-        set(2, totalNum);
-        set(3, totalAmount);
-        set(4, totalRefundAmount);
-        set(5, totalCouponRefundAmount);
-        set(6, totalPoundage);
-        set(7, returnCode);
-        set(8, returnMsg);
-        set(9, createAt);
-        set(10, updateAt);
-        set(11, remark);
-        set(12, delFlag);
-        set(13, version);
-    }
-
-    /**
-     * Getter for <code>ep.ep_wechat_pay_bill.id</code>. 主键
-     */
-    public Long getId() {
-        return (Long) get(0);
-    }
-
-    /**
      * Setter for <code>ep.ep_wechat_pay_bill.id</code>. 主键
      */
     public EpWechatPayBillRecord setId(Long value) {
@@ -76,10 +40,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.bill_date</code>. 对账日期
+     * Getter for <code>ep.ep_wechat_pay_bill.id</code>. 主键
      */
-    public Integer getBillDate() {
-        return (Integer) get(1);
+    public Long getId() {
+        return (Long) get(0);
     }
 
     /**
@@ -91,10 +55,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.total_num</code>. 总交易单数
+     * Getter for <code>ep.ep_wechat_pay_bill.bill_date</code>. 对账日期
      */
-    public Integer getTotalNum() {
-        return (Integer) get(2);
+    public Integer getBillDate() {
+        return (Integer) get(1);
     }
 
     /**
@@ -106,10 +70,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.total_amount</code>. 总交易额
+     * Getter for <code>ep.ep_wechat_pay_bill.total_num</code>. 总交易单数
      */
-    public BigDecimal getTotalAmount() {
-        return (BigDecimal) get(3);
+    public Integer getTotalNum() {
+        return (Integer) get(2);
     }
 
     /**
@@ -121,10 +85,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.total_refund_amount</code>. 总退款金额
+     * Getter for <code>ep.ep_wechat_pay_bill.total_amount</code>. 总交易额
      */
-    public BigDecimal getTotalRefundAmount() {
-        return (BigDecimal) get(4);
+    public BigDecimal getTotalAmount() {
+        return (BigDecimal) get(3);
     }
 
     /**
@@ -136,10 +100,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.total_coupon_refund_amount</code>. 总代金券或立减优惠退款金额
+     * Getter for <code>ep.ep_wechat_pay_bill.total_refund_amount</code>. 总退款金额
      */
-    public BigDecimal getTotalCouponRefundAmount() {
-        return (BigDecimal) get(5);
+    public BigDecimal getTotalRefundAmount() {
+        return (BigDecimal) get(4);
     }
 
     /**
@@ -151,10 +115,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.total_poundage</code>. 总手续费
+     * Getter for <code>ep.ep_wechat_pay_bill.total_coupon_refund_amount</code>. 总代金券或立减优惠退款金额
      */
-    public BigDecimal getTotalPoundage() {
-        return (BigDecimal) get(6);
+    public BigDecimal getTotalCouponRefundAmount() {
+        return (BigDecimal) get(5);
     }
 
     /**
@@ -166,10 +130,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.return_code</code>.
+     * Getter for <code>ep.ep_wechat_pay_bill.total_poundage</code>. 总手续费
      */
-    public String getReturnCode() {
-        return (String) get(7);
+    public BigDecimal getTotalPoundage() {
+        return (BigDecimal) get(6);
     }
 
     /**
@@ -181,10 +145,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.return_msg</code>.
+     * Getter for <code>ep.ep_wechat_pay_bill.return_code</code>.
      */
-    public String getReturnMsg() {
-        return (String) get(8);
+    public String getReturnCode() {
+        return (String) get(7);
     }
 
     /**
@@ -196,10 +160,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.create_at</code>. 创建时间
+     * Getter for <code>ep.ep_wechat_pay_bill.return_msg</code>.
      */
-    public Timestamp getCreateAt() {
-        return (Timestamp) get(9);
+    public String getReturnMsg() {
+        return (String) get(8);
     }
 
     /**
@@ -211,10 +175,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.update_at</code>. 更新时间
+     * Getter for <code>ep.ep_wechat_pay_bill.create_at</code>. 创建时间
      */
-    public Timestamp getUpdateAt() {
-        return (Timestamp) get(10);
+    public Timestamp getCreateAt() {
+        return (Timestamp) get(9);
     }
 
     /**
@@ -226,10 +190,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.remark</code>. 备注
+     * Getter for <code>ep.ep_wechat_pay_bill.update_at</code>. 更新时间
      */
-    public String getRemark() {
-        return (String) get(11);
+    public Timestamp getUpdateAt() {
+        return (Timestamp) get(10);
     }
 
     /**
@@ -241,10 +205,10 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.del_flag</code>. 删除标记
+     * Getter for <code>ep.ep_wechat_pay_bill.remark</code>. 备注
      */
-    public Boolean getDelFlag() {
-        return (Boolean) get(12);
+    public String getRemark() {
+        return (String) get(11);
     }
 
     /**
@@ -255,20 +219,12 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>ep.ep_wechat_pay_bill.version</code>.
+     * Getter for <code>ep.ep_wechat_pay_bill.del_flag</code>. 删除标记
      */
-    public Long getVersion() {
-        return (Long) get(13);
+    public Boolean getDelFlag() {
+        return (Boolean) get(12);
     }
-
-    // -------------------------------------------------------------------------
-    // Record14 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Setter for <code>ep.ep_wechat_pay_bill.version</code>.
@@ -279,12 +235,27 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
     }
 
     /**
+     * Getter for <code>ep.ep_wechat_pay_bill.version</code>.
+     */
+    public Long getVersion() {
+        return (Long) get(13);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public Record1<Long> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record14 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -643,10 +614,6 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -676,5 +643,38 @@ public class EpWechatPayBillRecord extends UpdatableRecordImpl<EpWechatPayBillRe
         value13(value13);
         value14(value14);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached EpWechatPayBillRecord
+     */
+    public EpWechatPayBillRecord() {
+        super(EpWechatPayBill.EP_WECHAT_PAY_BILL);
+    }
+
+    /**
+     * Create a detached, initialised EpWechatPayBillRecord
+     */
+    public EpWechatPayBillRecord(Long id, Integer billDate, Integer totalNum, BigDecimal totalAmount, BigDecimal totalRefundAmount, BigDecimal totalCouponRefundAmount, BigDecimal totalPoundage, String returnCode, String returnMsg, Timestamp createAt, Timestamp updateAt, String remark, Boolean delFlag, Long version) {
+        super(EpWechatPayBill.EP_WECHAT_PAY_BILL);
+
+        set(0, id);
+        set(1, billDate);
+        set(2, totalNum);
+        set(3, totalAmount);
+        set(4, totalRefundAmount);
+        set(5, totalCouponRefundAmount);
+        set(6, totalPoundage);
+        set(7, returnCode);
+        set(8, returnMsg);
+        set(9, createAt);
+        set(10, updateAt);
+        set(11, remark);
+        set(12, delFlag);
+        set(13, version);
     }
 }

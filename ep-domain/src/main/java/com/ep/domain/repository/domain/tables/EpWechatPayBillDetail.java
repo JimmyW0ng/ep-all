@@ -30,147 +30,191 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class EpWechatPayBillDetail extends TableImpl<EpWechatPayBillDetailRecord> {
 
+    private static final long serialVersionUID = -1930450196;
+
     /**
      * The reference instance of <code>ep.ep_wechat_pay_bill_detail</code>
      */
     public static final EpWechatPayBillDetail EP_WECHAT_PAY_BILL_DETAIL = new EpWechatPayBillDetail();
-    private static final long serialVersionUID = -1930450196;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<EpWechatPayBillDetailRecord> getRecordType() {
+        return EpWechatPayBillDetailRecord.class;
+    }
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.id</code>. 主键
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "主键");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.bill_id</code>. 对账id
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> BILL_ID = createField("bill_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "对账id");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.ogn_id</code>. 机构id
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> OGN_ID = createField("ogn_id", org.jooq.impl.SQLDataType.BIGINT, this, "机构id");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.course_id</code>. 课程id
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> COURSE_ID = createField("course_id", org.jooq.impl.SQLDataType.BIGINT, this, "课程id");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.class_id</code>. 班次id
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> CLASS_ID = createField("class_id", org.jooq.impl.SQLDataType.BIGINT, this, "班次id");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.order_id</code>. 订单id
      */
     public final TableField<EpWechatPayBillDetailRecord, Long> ORDER_ID = createField("order_id", org.jooq.impl.SQLDataType.BIGINT, this, "订单id");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.transaction_time</code>. 交易时间
      */
     public final TableField<EpWechatPayBillDetailRecord, String> TRANSACTION_TIME = createField("transaction_time", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "交易时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.appid</code>. appid
      */
     public final TableField<EpWechatPayBillDetailRecord, String> APPID = createField("appid", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "appid");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.mch_id</code>. 商户号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> MCH_ID = createField("mch_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "商户号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.sub_mch_id</code>. 子商户号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> SUB_MCH_ID = createField("sub_mch_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "子商户号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.device_no</code>. 设备号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> DEVICE_NO = createField("device_no", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "设备号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.transaction_id</code>. 微信支付订单号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> TRANSACTION_ID = createField("transaction_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "微信支付订单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.out_trade_no</code>. 商户订单号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> OUT_TRADE_NO = createField("out_trade_no", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "商户订单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.openid</code>. 用户标识
      */
     public final TableField<EpWechatPayBillDetailRecord, String> OPENID = createField("openid", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "用户标识");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.trade_type</code>. 交易类型
      */
     public final TableField<EpWechatPayBillDetailRecord, String> TRADE_TYPE = createField("trade_type", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "交易类型");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.trade_state</code>. 交易状态
      */
     public final TableField<EpWechatPayBillDetailRecord, String> TRADE_STATE = createField("trade_state", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "交易状态");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.bank_type</code>. 付款银行
      */
     public final TableField<EpWechatPayBillDetailRecord, String> BANK_TYPE = createField("bank_type", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "付款银行");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.fee_type</code>. 货币种类
      */
     public final TableField<EpWechatPayBillDetailRecord, String> FEE_TYPE = createField("fee_type", org.jooq.impl.SQLDataType.VARCHAR.length(8), this, "货币种类");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.total_fee</code>. 总金额
      */
     public final TableField<EpWechatPayBillDetailRecord, BigDecimal> TOTAL_FEE = createField("total_fee", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "总金额");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.coupon_fee</code>. 企业红包金额
      */
     public final TableField<EpWechatPayBillDetailRecord, BigDecimal> COUPON_FEE = createField("coupon_fee", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "企业红包金额");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.refund_id</code>. 退款单号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> REFUND_ID = createField("refund_id", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "退款单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.out_refund_no</code>. 商户退款单号
      */
     public final TableField<EpWechatPayBillDetailRecord, String> OUT_REFUND_NO = createField("out_refund_no", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "商户退款单号");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.refund_fee</code>. 退款金额
      */
     public final TableField<EpWechatPayBillDetailRecord, BigDecimal> REFUND_FEE = createField("refund_fee", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "退款金额");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.refund_coupon_fee</code>. 企业红包退款金额
      */
     public final TableField<EpWechatPayBillDetailRecord, BigDecimal> REFUND_COUPON_FEE = createField("refund_coupon_fee", org.jooq.impl.SQLDataType.DECIMAL.precision(12, 2), this, "企业红包退款金额");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.refund_type</code>. 退款类型
      */
     public final TableField<EpWechatPayBillDetailRecord, String> REFUND_TYPE = createField("refund_type", org.jooq.impl.SQLDataType.VARCHAR.length(64), this, "退款类型");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.refund_status</code>. 退款状态
      */
     public final TableField<EpWechatPayBillDetailRecord, String> REFUND_STATUS = createField("refund_status", org.jooq.impl.SQLDataType.VARCHAR.length(16), this, "退款状态");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.body</code>. 商品描述
      */
     public final TableField<EpWechatPayBillDetailRecord, String> BODY = createField("body", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "商品描述");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.attach</code>. 商户数据包
      */
     public final TableField<EpWechatPayBillDetailRecord, String> ATTACH = createField("attach", org.jooq.impl.SQLDataType.VARCHAR.length(128), this, "商户数据包");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.poundage</code>. 手续费
      */
     public final TableField<EpWechatPayBillDetailRecord, BigDecimal> POUNDAGE = createField("poundage", org.jooq.impl.SQLDataType.DECIMAL.precision(15, 5), this, "手续费");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.poundage_rate</code>. 费率
      */
     public final TableField<EpWechatPayBillDetailRecord, String> POUNDAGE_RATE = createField("poundage_rate", org.jooq.impl.SQLDataType.VARCHAR.length(32), this, "费率");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.create_at</code>. 创建时间
      */
     public final TableField<EpWechatPayBillDetailRecord, Timestamp> CREATE_AT = createField("create_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "创建时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.update_at</code>. 更新时间
      */
     public final TableField<EpWechatPayBillDetailRecord, Timestamp> UPDATE_AT = createField("update_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.remark</code>. 备注
      */
     public final TableField<EpWechatPayBillDetailRecord, String> REMARK = createField("remark", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "备注");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.del_flag</code>. 删除标记
      */
     public final TableField<EpWechatPayBillDetailRecord, Boolean> DEL_FLAG = createField("del_flag", org.jooq.impl.SQLDataType.BIT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "删除标记");
+
     /**
      * The column <code>ep.ep_wechat_pay_bill_detail.version</code>.
      */
@@ -196,14 +240,6 @@ public class EpWechatPayBillDetail extends TableImpl<EpWechatPayBillDetailRecord
 
     private EpWechatPayBillDetail(String alias, Table<EpWechatPayBillDetailRecord> aliased, Field<?>[] parameters) {
         super(alias, null, aliased, parameters, "微信支付对账明细表");
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<EpWechatPayBillDetailRecord> getRecordType() {
-        return EpWechatPayBillDetailRecord.class;
     }
 
     /**
