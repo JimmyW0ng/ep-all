@@ -65,17 +65,9 @@ public class OrderController extends ApiController {
     public ResultDo<OrderDto> order(@RequestParam("childId") Long childId,
                                     @RequestParam("classId") Long classId,
                                     @RequestParam("formId") String formId,
-                                    @RequestParam("code") String code
+                                    @RequestParam("sessionToken") String sessionToken
     ) throws GeneralSecurityException {
         Optional<EpMemberPo> optional = super.getCurrentUser();
-        //获取sessionToken
-        ResultDo<String> sessionTokenResultDo = wechatXcxService.getSessionToken(code, xcxMemberAppId, xcxMemberSecret);
-        String sessionToken;
-        if (!sessionTokenResultDo.isSuccess()) {
-            log.error("【小程序创建订单】获取sessionToken失败, 原因：{}。", sessionTokenResultDo.getErrorDescription());
-            return ResultDo.build(MessageCode.ERROR_WECHAT_SESSION_TOKEN_CONTENT);
-        }
-        sessionToken = sessionTokenResultDo.getResult();
         // 微信session
         WechatSessionBo sessionBo;
         try {
