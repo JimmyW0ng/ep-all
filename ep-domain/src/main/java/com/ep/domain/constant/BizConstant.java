@@ -186,6 +186,12 @@ public class BizConstant {
      */
     public static String WECHAT_XCX_API_MESSAGE_TEMPLATE_SEND = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s";
 
+    public static String WECHAT_XCX_API_MESSAGE_TEMPLATE_LIBRARY_GET = "https://api.weixin.qq.com/cgi-bin/wxopen/template/library/get?access_token=%s";
+    /**
+     * 小程序 获取帐号下已存在的模板列表
+     */
+    public static String WECHAT_XCX_API_MESSAGE_TEMPLATE_LIST = "https://api.weixin.qq.com/cgi-bin/wxopen/template/list?access_token=%s";
+
     /**
      * 小程序 发送模板消息 接口地址
      */

@@ -94,6 +94,57 @@ public class WechatXcxService {
     }
 
     /**
+     * 获取模板库某个模板标题下关键词库
+     *
+     * @param id
+     * @return
+     */
+    public ResultDo templateLibraryGet(String id) {
+        log.info("[微信小程序]获取模板库某个模板标题下关键词库开始。");
+        ResultDo resultDoAccessToken = this.getAccessToken();
+        if (!resultDoAccessToken.isSuccess()) {
+            return ResultDo.build().setSuccess(false);
+        }
+        String accessToken = (String) resultDoAccessToken.getResult();
+        String url = String.format(BizConstant.WECHAT_XCX_API_MESSAGE_TEMPLATE_LIBRARY_GET, accessToken);
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("id", id);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, jsonParam.toString(), String.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            log.info("[微信小程序]获取模板库某个模板标题下关键词库，接口返回={}。", responseEntity.getBody());
+            return ResultDo.build().setResult(responseEntity.getBody());
+        }
+        log.error("[微信小程序]获取模板库某个模板标题下关键词库失败，原因={}。", MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+    }
+
+    /**
+     * 获取帐号下已存在的模板列表
+     *
+     * @param offset
+     * @return
+     */
+    public ResultDo templateList(Integer offset, Integer count) {
+        log.info("[微信小程序]获取帐号下已存在的模板列表开始。");
+        ResultDo resultDoAccessToken = this.getAccessToken();
+        if (!resultDoAccessToken.isSuccess()) {
+            return ResultDo.build().setSuccess(false);
+        }
+        String accessToken = (String) resultDoAccessToken.getResult();
+        String url = String.format(BizConstant.WECHAT_XCX_API_MESSAGE_TEMPLATE_LIST, accessToken);
+        JSONObject jsonParam = new JSONObject();
+        jsonParam.put("offset", offset);
+        jsonParam.put("count", count);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, jsonParam.toString(), String.class);
+        if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
+            log.info("[微信小程序]获取帐号下已存在的模板列表，接口返回={}。", responseEntity.getBody());
+            return ResultDo.build().setResult(responseEntity.getBody());
+        }
+        log.error("[微信小程序]获取帐号下已存在的模板列表失败，原因={}。", MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+        return ResultDo.build(MessageCode.ERROR_WECHAT_HTTP_REQUEST);
+    }
+
+    /**
      * 发送模板消息
      *
      * @param openid
@@ -106,7 +157,7 @@ public class WechatXcxService {
      * @return
      */
     public ResultDo messageTemplateSend(String openid, String templateId, String page, String formId, String data, String color, String emphasisKeyword) {
-        log.info("[微信小程序]发送模板消息");
+        log.info("[微信小程序]发送模板消息开始");
         ResultDo resultDoAccessToken = this.getAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
             return ResultDo.build().setSuccess(false);
