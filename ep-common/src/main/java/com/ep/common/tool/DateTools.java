@@ -169,6 +169,8 @@ public class DateTools {
 
     public static final String DATE_FMT_18 = "yyyy";
 
+    public static final String DATE_FMT_19 = "yyyy年MM月dd日HH:mm";
+
     /**
      * date format yyyy-MM-dd HH:mm:ss
      */

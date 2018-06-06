@@ -1,13 +1,16 @@
 package com.ep.domain.event;
 
 import com.ep.common.component.SpringComponent;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.DictComponent;
 import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.event.ClassOpenEventBo;
 import com.ep.domain.pojo.po.*;
 import com.ep.domain.repository.*;
 import com.ep.domain.repository.domain.enums.EpWechatFormBizType;
+import com.ep.domain.service.OrderService;
 import com.ep.domain.service.OrganClassScheduleService;
 import com.ep.domain.service.WechatXcxService;
 import com.google.common.collect.Lists;
@@ -18,6 +21,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 开班事件处理
@@ -41,9 +45,20 @@ public class ClassOpenEventHandle {
     @Autowired
     private WechatXcxService wechatXcxService;
     @Autowired
-    private WechatUnifiedOrderRepository wechatUnifiedOrderRepository;
+    private DictComponent dictComponent;
     @Autowired
     private WechatFormRepository wechatFormRepository;
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrganCourseRepository organCourseRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
+    @Autowired
+    private OrganClassCatalogRepository organClassCatalogRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
 
     @Async
     @EventListener
@@ -59,12 +74,28 @@ public class ClassOpenEventHandle {
             orderIds.add(order.getId());
         });
         List<EpWechatFormPo> wechatFormPos = wechatFormRepository.findBySourceIdsAndBizType(orderIds, EpWechatFormBizType.order);
-        String templateId = "";
-        String page = "";
-        String data = "";
-        wechatFormPos.forEach(po -> {
-            wechatXcxService.messageTemplateSend(po.getTouser(), templateId, page, po.getFormId(), data, null, null);
-        });
+        EpSystemDictPo templateDictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.WECHAT_XCX_TEMPLATE_NORMAL_CLASS_OPEN);
+        EpSystemDictPo pageDictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.WECHAT_XCX_PAGE_SCHEDULE);
+        if (templateDictPo != null && pageDictPo != null) {
+            String templateId = templateDictPo.getValue();
+            String page = pageDictPo.getValue();
+
+            for (EpWechatFormPo po : wechatFormPos) {
+                Optional<EpOrderPo> orderOptional = orderService.findById(po.getSourceId());
+                if (!orderOptional.isPresent()) {
+                    continue;
+                }
+                EpOrderPo orderPo = orderOptional.get();
+                Optional<EpMemberChildPo> childOptional = memberChildRepository.findById(orderPo.getChildId());
+                String childNickName = childOptional.isPresent() ? childOptional.get().getChildNickName() : "";
+                Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(orderPo.getCourseId());
+                String courseName = courseOptional.isPresent() ? courseOptional.get().getCourseName() : "";
+                String orderTime = DateTools.timestampToString(orderPo.getCreateAt(), DateTools.DATE_FMT_19);
+                String data = "";
+                wechatXcxService.messageTemplateSend(po.getTouser(), templateId, page, po.getFormId(), data, null, null);
+            }
+        }
+
         log.info("开班事件处理结束");
     }
 

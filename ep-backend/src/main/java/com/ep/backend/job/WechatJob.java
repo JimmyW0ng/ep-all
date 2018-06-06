@@ -48,23 +48,23 @@ public class WechatJob {
      * 定时获取微信小程序（客户端）ACCESS_TOKEN
      */
     @Scheduled(fixedRate = 10 * 60 * 1000)
-    public void getWechatAccessToken() {
-        log.info("定时获取微信ACCESS_TOKEN...start");
+    public void getWechatXcxMemberAccessToken() {
+        log.info("定时获取微信小程序（客户端）ACCESS_TOKEN...start");
         EpSystemDictPo sysDictPojo = systemDictRepository.findByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_XCX_MEMBER_ACCESS_TOKEN);
         if (DateTools.addMinute(DateTools.getCurrentDate(), BizConstant.WECHAT_SESSION_TIME_OUT_M).before(sysDictPojo.getUpdateAt())) {
             return;
         }
         String url = String.format(BizConstant.WECHAT_URL_ACCESS_TOKEN, xcxMemberAppId, xcxMemberSecret);
         ResponseEntity<WechatAccessTokenBo> entity = restTemplate.getForEntity(url, WechatAccessTokenBo.class);
-        log.info("定时获取微信ACCESS_TOKEN...返回：{}", entity);
+        log.info("定时获取微信小程序（客户端）ACCESS_TOKEN...返回：{}", entity);
         if (HttpStatus.OK.equals(entity.getStatusCode())) {
             WechatAccessTokenBo accessTokenPojo = entity.getBody();
             if (StringTools.isNotBlank(accessTokenPojo.getAccess_token())) {
-                log.info("刷新微信ACCESS_TOKEN...accessToken={}", accessTokenPojo.getAccess_token());
+                log.info("刷新微信小程序（客户端）ACCESS_TOKEN...accessToken={}", accessTokenPojo.getAccess_token());
                 systemDictRepository.updateByGroupName(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_XCX_MEMBER_ACCESS_TOKEN, accessTokenPojo.getAccess_token());
             }
         } else {
-            log.error("刷新微信ACCESS_TOKEN失败！");
+            log.error("刷新微信小程序（客户端）ACCESS_TOKEN失败！");
         }
     }
 

@@ -65,12 +65,12 @@ public class WechatXcxService {
     }
 
     /**
-     * 获取小程序access_token,先从从数据库获取再调用微信小程序接口
+     * 获取小程序(客户端)access_token,先从从数据库获取再调用微信小程序接口
      *
      * @return
      */
-    public ResultDo getAccessToken() {
-        EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_XCX_ACCESS_TOKEN);
+    public ResultDo getMemberAccessToken() {
+        EpSystemDictPo dictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.DICT_KEY_WECHAT_XCX_MEMBER_ACCESS_TOKEN);
         //本地access_token是否过期
         if (dictPo != null && DateTools.addMinute(DateTools.getCurrentDate(), BizConstant.WECHAT_SESSION_TIME_OUT_M).before(dictPo.getUpdateAt())) {
             return ResultDo.build().setResult(dictPo.getValue());
@@ -101,7 +101,7 @@ public class WechatXcxService {
      */
     public ResultDo templateLibraryGet(String id) {
         log.info("[微信小程序]获取模板库某个模板标题下关键词库开始。");
-        ResultDo resultDoAccessToken = this.getAccessToken();
+        ResultDo resultDoAccessToken = this.getMemberAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
             return ResultDo.build().setSuccess(false);
         }
@@ -126,7 +126,7 @@ public class WechatXcxService {
      */
     public ResultDo templateList(Integer offset, Integer count) {
         log.info("[微信小程序]获取帐号下已存在的模板列表开始。");
-        ResultDo resultDoAccessToken = this.getAccessToken();
+        ResultDo resultDoAccessToken = this.getMemberAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
             return ResultDo.build().setSuccess(false);
         }
@@ -158,7 +158,7 @@ public class WechatXcxService {
      */
     public ResultDo messageTemplateSend(String openid, String templateId, String page, String formId, String data, String color, String emphasisKeyword) {
         log.info("[微信小程序]发送模板消息开始");
-        ResultDo resultDoAccessToken = this.getAccessToken();
+        ResultDo resultDoAccessToken = this.getMemberAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
             return ResultDo.build().setSuccess(false);
         }
