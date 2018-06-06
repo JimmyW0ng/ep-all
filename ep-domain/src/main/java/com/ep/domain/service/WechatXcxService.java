@@ -156,7 +156,7 @@ public class WechatXcxService {
      * @param emphasisKeyword
      * @return
      */
-    public ResultDo messageTemplateSend(String openid, String templateId, String page, String formId, String data, String color, String emphasisKeyword) {
+    public ResultDo messageTemplateSend(String openid, String templateId, String page, String formId, JSONObject data, String color, String emphasisKeyword) {
         log.info("[微信小程序]发送模板消息开始");
         ResultDo resultDoAccessToken = this.getMemberAccessToken();
         if (!resultDoAccessToken.isSuccess()) {
@@ -182,7 +182,7 @@ public class WechatXcxService {
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             Map<String, Object> responseMap = responseEntity.getBody();
             if (responseMap.get("errcode").toString().equals(BizConstant.WECHAT_SUCCESS_CODE)) {
-                log.info("[微信小程序]发送模版消息成功，openid={}。", openid);
+                log.info("[微信小程序]发送模版消息成功，openid={},templateId={},data={}。", openid, templateId, jsonParam.toString());
                 return ResultDo.build();
             } else {
                 log.error("[微信小程序]发送模版消息失败，openid={},errcode={}。", openid, responseMap.get("errcode").toString());

@@ -82,5 +82,4 @@ public class OrderController extends ApiController {
         }
         return orderService.order(optional.get().getId(), childId, classId, formId, sessionBo.getOpenid());
     }
-
 }

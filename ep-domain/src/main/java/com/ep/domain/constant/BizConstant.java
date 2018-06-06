@@ -161,6 +161,8 @@ public class BizConstant {
 
     public static String WECHAT_XCX_PAGE_SCHEDULE = "WECHAT_XCX_PAGE_SCHEDULE";
 
+    public static String WECHAT_XCX_PAGE_ORDER = "WECHAT_XCX_PAGE_ORDER";
+
     public static String WECHAT_REQ_CURRENT_SESSION = "currentWechatSession";
 
     public static int WECHAT_SESSION_TIME_OUT_M = -60;
@@ -204,7 +206,7 @@ public class BizConstant {
 
     public static String WECHAT_TEXT_MSG_SPLIT = "#";
 
-    public static int WECHAT_SUCCESS_CODE = 0;
+    public static String WECHAT_SUCCESS_CODE = "0";
 
     public static String WECHAT_TEXT_MSG_BIND_MOBILE = "绑定";
 

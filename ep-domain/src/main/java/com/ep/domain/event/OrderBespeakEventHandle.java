@@ -1,23 +1,25 @@
 package com.ep.domain.event;
 
 import com.ep.common.component.SpringComponent;
+import com.ep.common.tool.DateTools;
 import com.ep.common.tool.StringTools;
+import com.ep.domain.component.DictComponent;
 import com.ep.domain.component.QcloudsmsComponent;
 import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.event.OrderBespeakEventBo;
-import com.ep.domain.pojo.po.EpMemberChildPo;
-import com.ep.domain.pojo.po.EpMemberPo;
-import com.ep.domain.pojo.po.EpOrderPo;
-import com.ep.domain.pojo.po.EpSystemDictPo;
-import com.ep.domain.repository.MemberChildRepository;
-import com.ep.domain.repository.MemberRepository;
-import com.ep.domain.repository.OrderRepository;
-import com.ep.domain.repository.SystemDictRepository;
+import com.ep.domain.pojo.po.*;
+import com.ep.domain.repository.*;
+import com.ep.domain.repository.domain.enums.EpWechatFormBizType;
+import com.ep.domain.service.OrderService;
+import com.ep.domain.service.WechatXcxService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * @Description: 订单提交预约
@@ -38,12 +40,27 @@ public class OrderBespeakEventHandle {
     private SystemDictRepository systemDictRepository;
     @Autowired
     private QcloudsmsComponent qcloudsmsComponent;
+    @Autowired
+    private DictComponent dictComponent;
+    @Autowired
+    private WechatFormRepository wechatFormRepository;
+    @Autowired
+    private OrganCourseRepository organCourseRepository;
+    @Autowired
+    private OrganClassRepository organClassRepository;
+    @Autowired
+    private OrganAccountRepository organAccountRepository;
+    @Autowired
+    private WechatXcxService wechatXcxService;
+    @Autowired
+    private OrderService orderService;
 
     @Async
     @EventListener
     public void handle(OrderBespeakEventBo event) {
         log.info("订单提交预约事件处理开始, event={}", event);
         sendOrderBespeakClassMsg(event.getOrderId());
+        messageTemplateSend(event.getOrderId());
         log.info("订单提交预约事件处理结束");
     }
 
@@ -90,4 +107,58 @@ public class OrderBespeakEventHandle {
         qcloudsmsComponent.singleSend(templateId, mobileStr, params);
     }
 
+    /**
+     * 小程序模板消息发送报名成功通知
+     *
+     * @param orderId
+     */
+    private void messageTemplateSend(Long orderId) {
+        log.info("[微信小程序]发送报名成功通知开始。");
+        EpWechatFormPo wechatFormPo = wechatFormRepository.findBySourceIdAndBizType(orderId, EpWechatFormBizType.order);
+        EpSystemDictPo templateDictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.WECHAT_XCX_TEMPLATE_BESPEAK_CLASS_OPEN);
+        EpSystemDictPo pageDictPo = dictComponent.getByGroupNameAndKey(BizConstant.DICT_GROUP_WECHAT, BizConstant.WECHAT_XCX_PAGE_ORDER);
+        Optional<EpOrderPo> orderOptional = orderService.findById(wechatFormPo.getSourceId());
+        if (templateDictPo != null && pageDictPo != null && wechatFormPo.getExpireTime().after(DateTools.getCurrentDateTime()) && orderOptional.isPresent()) {
+            //消息模板id
+            String templateId = templateDictPo.getValue();
+            //小程序跳转页面
+            String page = pageDictPo.getValue();
+            EpOrderPo orderPo = orderOptional.get();
+            Optional<EpMemberChildPo> childOptional = memberChildRepository.findById(orderPo.getChildId());
+            String childNickName = childOptional.isPresent() ? childOptional.get().getChildNickName() : "";
+            Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(orderPo.getCourseId());
+            String courseName = courseOptional.isPresent() ? courseOptional.get().getCourseName() : "";
+            String orderTime = DateTools.timestampToString(orderPo.getCreateAt(), DateTools.DATE_FMT_19);
+            Optional<EpOrganClassPo> classOptional = organClassRepository.findById(orderPo.getClassId());
+            String referAccount = "";
+            if (classOptional.isPresent()) {
+                Optional<EpOrganAccountPo> accountOptional = organAccountRepository.findById(classOptional.get().getOgnAccountId());
+                referAccount = accountOptional.isPresent() ? accountOptional.get().getNickName() + accountOptional.get().getReferMobile() : "";
+
+            }
+            JSONObject jsonData = new JSONObject();
+            //报名姓名
+            JSONObject jsonChildNickName = new JSONObject();
+            jsonChildNickName.put("value", childNickName);
+            jsonData.put("keyword1", jsonChildNickName);
+            //报名项目
+            JSONObject jsonCourseName = new JSONObject();
+            jsonCourseName.put("value", courseName);
+            jsonData.put("keyword2", jsonCourseName);
+            //报名时间
+            JSONObject jsonOrderTime = new JSONObject();
+            jsonOrderTime.put("value", orderTime);
+            jsonData.put("keyword3", jsonOrderTime);
+            //联系人
+            JSONObject jsonReferAccount = new JSONObject();
+            jsonReferAccount.put("value", referAccount);
+            jsonData.put("keyword4", jsonReferAccount);
+            //备注
+            JSONObject jsonRemark = new JSONObject();
+            jsonRemark.put("value", SpringComponent.messageSource("WECHAT_XCX_TEMPLATE_BESPEAK_CLASS_OPEN_REMARK"));
+            jsonData.put("keyword5", jsonRemark);
+            wechatXcxService.messageTemplateSend(wechatFormPo.getTouser(), templateId, page, wechatFormPo.getFormId(), jsonData, null, null);
+            log.info("[微信小程序]发送报名成功通知：模版id={}, openid={}。", templateId, wechatFormPo.getTouser());
+        }
+    }
 }

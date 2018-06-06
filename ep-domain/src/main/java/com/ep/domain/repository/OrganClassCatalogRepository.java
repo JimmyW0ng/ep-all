@@ -1,5 +1,6 @@
 package com.ep.domain.repository;
 
+import com.ep.domain.constant.BizConstant;
 import com.ep.domain.pojo.bo.RectifyOrganClassCatalogBo;
 import com.ep.domain.pojo.po.EpOrganClassCatalogPo;
 import com.ep.domain.repository.domain.tables.records.EpOrganClassCatalogRecord;
@@ -178,5 +179,20 @@ public class OrganClassCatalogRepository extends AbstractCRUDRepository<EpOrganC
                 .and(EP_ORGAN_CLASS_CATALOG.START_TIME.greaterThan(DSL.currentTimestamp()))
                 .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
                 .fetchOneInto(Integer.class);
+    }
+
+    /**
+     * 获取班次下第一个目录
+     *
+     * @param classId
+     * @return
+     */
+    public EpOrganClassCatalogPo findFirstByClassId(Long classId) {
+        return dslContext.selectFrom(EP_ORGAN_CLASS_CATALOG)
+                .where(EP_ORGAN_CLASS_CATALOG.CLASS_ID.eq(classId))
+                .and(EP_ORGAN_CLASS_CATALOG.DEL_FLAG.eq(false))
+                .orderBy(EP_ORGAN_CLASS_CATALOG.CATALOG_INDEX.asc())
+                .limit(BizConstant.DB_NUM_ONE)
+                .fetchOneInto(EpOrganClassCatalogPo.class);
     }
 }
