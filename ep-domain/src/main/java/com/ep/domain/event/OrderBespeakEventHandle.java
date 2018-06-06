@@ -158,7 +158,7 @@ public class OrderBespeakEventHandle {
             jsonRemark.put("value", SpringComponent.messageSource("WECHAT_XCX_TEMPLATE_BESPEAK_CLASS_OPEN_REMARK"));
             jsonData.put("keyword5", jsonRemark);
             wechatXcxService.messageTemplateSend(wechatFormPo.getTouser(), templateId, page, wechatFormPo.getFormId(), jsonData, null, null);
-            log.info("[微信小程序]发送报名成功通知：模版id={}, openid={}。", templateId, wechatFormPo.getTouser());
+            log.info("[微信小程序]发送报名成功通知成功：模版id={}, openid={}。", templateId, wechatFormPo.getTouser());
         }
     }
 }

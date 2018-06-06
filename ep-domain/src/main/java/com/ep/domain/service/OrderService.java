@@ -249,7 +249,7 @@ public class OrderService {
     @Transactional(rollbackFor = Exception.class)
     public ResultDo<OrderDto> order(Long memberId, Long childId, Long classId, String formId, String openid) {
         ResultDo<OrderDto> resultDo = ResultDo.build();
-        log.info("下单开始: memberId={}, childId={}, classId={}", memberId, childId, classId);
+        log.info("下单开始: memberId={}, childId={}, classId={}, formId={}, openid={}", memberId, childId, classId, openid);
         if (childId == null) {
             log.error("下单失败，孩子id为空！");
             resultDo.setError(MessageCode.ERROR_SYSTEM_PARAM_FORMAT);

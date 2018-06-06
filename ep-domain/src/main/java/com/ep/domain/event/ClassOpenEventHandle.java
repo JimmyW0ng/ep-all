@@ -133,62 +133,65 @@ public class ClassOpenEventHandle {
             String templateId = templateDictPo.getValue();
             String page = pageDictPo.getValue();
             for (EpWechatFormPo po : wechatFormPos) {
-                //formId是否过期
-                if (po.getExpireTime().before(DateTools.getCurrentDateTime())) {
-                    continue;
-                }
-                Optional<EpOrderPo> orderOptional = orderService.findById(po.getSourceId());
-                if (!orderOptional.isPresent()) {
-                    continue;
-                }
-                EpOrderPo orderPo = orderOptional.get();
-                Optional<EpMemberChildPo> childOptional = memberChildRepository.findById(orderPo.getChildId());
-                String childNickName = childOptional.isPresent() ? childOptional.get().getChildNickName() : "";
-                Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(orderPo.getCourseId());
-                String courseName = courseOptional.isPresent() ? courseOptional.get().getCourseName() : "";
-                String orderTime = DateTools.timestampToString(orderPo.getCreateAt(), DateTools.DATE_FMT_19);
-                Optional<EpOrganClassPo> classOptional = organClassRepository.findById(orderPo.getClassId());
-                String address = classOptional.isPresent() ? classOptional.get().getAddress() : "";
-                EpOrganClassCatalogPo catalogPo = organClassCatalogRepository.findFirstByClassId(orderPo.getClassId());
-                String startTime = catalogPo != null ? DateTools.timestampToString(catalogPo.getStartTime(), DateTools.DATE_FMT_19) : "";
-                String referAccount = "";
-                if (classOptional.isPresent()) {
-                    Optional<EpOrganAccountPo> accountOptional = organAccountRepository.findById(classOptional.get().getOgnAccountId());
-                    referAccount = accountOptional.isPresent() ? accountOptional.get().getNickName() + accountOptional.get().getReferMobile() : "";
+                try {
+                    //formId是否过期
+                    if (po.getExpireTime().before(DateTools.getCurrentDateTime())) {
+                        continue;
+                    }
+                    Optional<EpOrderPo> orderOptional = orderService.findById(po.getSourceId());
+                    if (!orderOptional.isPresent()) {
+                        continue;
+                    }
+                    EpOrderPo orderPo = orderOptional.get();
+                    Optional<EpMemberChildPo> childOptional = memberChildRepository.findById(orderPo.getChildId());
+                    String childNickName = childOptional.isPresent() ? childOptional.get().getChildNickName() : "";
+                    Optional<EpOrganCoursePo> courseOptional = organCourseRepository.findById(orderPo.getCourseId());
+                    String courseName = courseOptional.isPresent() ? courseOptional.get().getCourseName() : "";
+                    String orderTime = DateTools.timestampToString(orderPo.getCreateAt(), DateTools.DATE_FMT_19);
+                    Optional<EpOrganClassPo> classOptional = organClassRepository.findById(orderPo.getClassId());
+                    String address = classOptional.isPresent() ? classOptional.get().getAddress() : "";
+                    EpOrganClassCatalogPo catalogPo = organClassCatalogRepository.findFirstByClassId(orderPo.getClassId());
+                    String startTime = catalogPo != null ? DateTools.timestampToString(catalogPo.getStartTime(), DateTools.DATE_FMT_19) : "";
+                    String referAccount = "";
+                    if (classOptional.isPresent()) {
+                        Optional<EpOrganAccountPo> accountOptional = organAccountRepository.findById(classOptional.get().getOgnAccountId());
+                        referAccount = accountOptional.isPresent() ? accountOptional.get().getNickName() + accountOptional.get().getReferMobile() : "";
 
+                    }
+                    JSONObject jsonData = new JSONObject();
+                    //报名姓名
+                    JSONObject jsonChildNickName = new JSONObject();
+                    jsonChildNickName.put("value", childNickName);
+                    jsonData.put("keyword1", jsonChildNickName);
+                    //报名项目
+                    JSONObject jsonCourseName = new JSONObject();
+                    jsonCourseName.put("value", courseName);
+                    jsonData.put("keyword2", jsonCourseName);
+                    //报名时间
+                    JSONObject jsonOrderTime = new JSONObject();
+                    jsonOrderTime.put("value", orderTime);
+                    jsonData.put("keyword3", jsonOrderTime);
+                    //集合地点
+                    JSONObject jsonAddress = new JSONObject();
+                    jsonAddress.put("value", address);
+                    jsonData.put("keyword4", jsonAddress);
+                    //集合时间
+                    JSONObject jsonStartTime = new JSONObject();
+                    jsonStartTime.put("value", startTime);
+                    jsonData.put("keyword5", jsonStartTime);
+                    //联系人
+                    JSONObject jsonReferAccount = new JSONObject();
+                    jsonReferAccount.put("value", referAccount);
+                    jsonData.put("keyword6", jsonReferAccount);
+                    //备注
+                    JSONObject jsonRemark = new JSONObject();
+                    jsonRemark.put("value", SpringComponent.messageSource("WECHAT_XCX_TEMPLATE_NORMAL_CLASS_OPEN_REMARK"));
+                    jsonData.put("keyword7", jsonRemark);
+                    wechatXcxService.messageTemplateSend(po.getTouser(), templateId, page, po.getFormId(), jsonData, null, null);
+                    log.info("[微信小程序]发送报名成功通知成功：模版id={}, openid={}。", templateId, po.getTouser());
+                } catch (Exception e) {
+                    log.error("[微信小程序]发送报名成功通知失败：模版id={}, openid={}。", templateId, po.getTouser(), e);
                 }
-                JSONObject jsonData = new JSONObject();
-                //报名姓名
-                JSONObject jsonChildNickName = new JSONObject();
-                jsonChildNickName.put("value", childNickName);
-                jsonData.put("keyword1", jsonChildNickName);
-                //报名项目
-                JSONObject jsonCourseName = new JSONObject();
-                jsonCourseName.put("value", courseName);
-                jsonData.put("keyword2", jsonCourseName);
-                //报名时间
-                JSONObject jsonOrderTime = new JSONObject();
-                jsonOrderTime.put("value", orderTime);
-                jsonData.put("keyword3", jsonOrderTime);
-                //集合地点
-                JSONObject jsonAddress = new JSONObject();
-                jsonAddress.put("value", address);
-                jsonData.put("keyword4", jsonAddress);
-                //集合时间
-                JSONObject jsonStartTime = new JSONObject();
-                jsonStartTime.put("value", startTime);
-                jsonData.put("keyword5", jsonStartTime);
-                //联系人
-                JSONObject jsonReferAccount = new JSONObject();
-                jsonReferAccount.put("value", referAccount);
-                jsonData.put("keyword6", jsonReferAccount);
-                //备注
-                JSONObject jsonRemark = new JSONObject();
-                jsonRemark.put("value", SpringComponent.messageSource("WECHAT_XCX_TEMPLATE_NORMAL_CLASS_OPEN_REMARK"));
-                jsonData.put("keyword7", jsonRemark);
-                wechatXcxService.messageTemplateSend(po.getTouser(), templateId, page, po.getFormId(), jsonData, null, null);
-                log.info("[微信小程序]发送报名成功通知：模版id={}, openid={}。", templateId, po.getTouser());
-
             }
         }
     }
