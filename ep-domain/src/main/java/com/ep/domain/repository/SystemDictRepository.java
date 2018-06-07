@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_DICT;
 
@@ -26,12 +27,32 @@ public class SystemDictRepository extends AbstractCRUDRepository<EpSystemDictRec
         super(dslContext, EP_SYSTEM_DICT, EP_SYSTEM_DICT.ID, EpSystemDictPo.class);
     }
 
+    public Optional<EpSystemDictPo> findById(Long id) {
+        EpSystemDictPo data = dslContext
+                .selectFrom(EP_SYSTEM_DICT)
+                .where(EP_SYSTEM_DICT.ID.eq(id))
+                .and(EP_SYSTEM_DICT.DEL_FLAG.eq(false))
+                .fetchOneInto(EpSystemDictPo.class);
+        return Optional.ofNullable(data);
+    }
+
     public List<EpSystemDictPo> findByCondition(Collection<? extends Condition> condition) {
         return dslContext.selectFrom(EP_SYSTEM_DICT).where(condition).fetchInto(EpSystemDictPo.class);
     }
 
+    /**
+     * 根据id逻辑删除字典
+     *
+     * @param id
+     * @return
+     */
     public int deleteLogical(Long id) {
-        return dslContext.update(EP_SYSTEM_DICT).set(EP_SYSTEM_DICT.DEL_FLAG, true).where(EP_SYSTEM_DICT.ID.eq(id)).execute();
+        return dslContext
+                .update(EP_SYSTEM_DICT)
+                .set(EP_SYSTEM_DICT.DEL_FLAG, true)
+                .where(EP_SYSTEM_DICT.ID.eq(id))
+                .and(EP_SYSTEM_DICT.DEL_FLAG.eq(false))
+                .execute();
     }
 
     public void enableSysDict(Long id) {
@@ -116,12 +137,32 @@ public class SystemDictRepository extends AbstractCRUDRepository<EpSystemDictRec
 
     public int updateByGroupName(String groupName, String key, String value) {
         return dslContext.update(EP_SYSTEM_DICT)
-                         .set(EP_SYSTEM_DICT.VALUE, value)
-                         .where(EP_SYSTEM_DICT.GROUP_NAME.eq(groupName))
-                         .and(EP_SYSTEM_DICT.KEY.eq(key))
-                         .and(EP_SYSTEM_DICT.STATUS.eq(EpSystemDictStatus.enable))
-                         .and(EP_SYSTEM_DICT.DEL_FLAG.eq(false))
-                         .execute();
+                .set(EP_SYSTEM_DICT.VALUE, value)
+                .where(EP_SYSTEM_DICT.GROUP_NAME.eq(groupName))
+                .and(EP_SYSTEM_DICT.KEY.eq(key))
+                .and(EP_SYSTEM_DICT.STATUS.eq(EpSystemDictStatus.enable))
+                .and(EP_SYSTEM_DICT.DEL_FLAG.eq(false))
+                .execute();
+    }
+
+    /**
+     * 根据id修改字典
+     *
+     * @param po
+     * @return
+     */
+    public int updateById(EpSystemDictPo po) {
+        return dslContext.update(EP_SYSTEM_DICT)
+                .set(EP_SYSTEM_DICT.LABEL, po.getLabel())
+                .set(EP_SYSTEM_DICT.GROUP_NAME, po.getGroupName())
+                .set(EP_SYSTEM_DICT.KEY, po.getKey())
+                .set(EP_SYSTEM_DICT.VALUE, po.getValue())
+                .set(EP_SYSTEM_DICT.DESCRIPTION, po.getDescription())
+                .set(EP_SYSTEM_DICT.SORT, po.getSort())
+                .set(EP_SYSTEM_DICT.STATUS, po.getStatus())
+                .where(EP_SYSTEM_DICT.ID.eq(po.getId()))
+                .and(EP_SYSTEM_DICT.DEL_FLAG.eq(false))
+                .execute();
     }
 
 }

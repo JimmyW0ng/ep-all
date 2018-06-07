@@ -1,6 +1,8 @@
 package com.ep.backend.controller;
 
 import com.ep.common.tool.StringTools;
+import com.ep.domain.constant.MessageCode;
+import com.ep.domain.pojo.ResultDo;
 import com.ep.domain.pojo.po.EpSystemDictPo;
 import com.ep.domain.service.SystemDictService;
 import com.google.common.collect.Lists;
@@ -15,13 +17,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ep.domain.repository.domain.Tables.EP_SYSTEM_DICT;
 
@@ -54,7 +55,7 @@ public class SystemDictController extends BackendController {
         Map searchMap = Maps.newHashMap();
         Collection<Condition> conditions = Lists.newArrayList();
         if (StringTools.isNotBlank(label)) {
-            conditions.add(EP_SYSTEM_DICT.LABEL.eq(label));
+            conditions.add(EP_SYSTEM_DICT.LABEL.like("%" + label + "%"));
         }
         searchMap.put("label", label);
         if (StringTools.isNotBlank(groupName)) {
@@ -62,10 +63,9 @@ public class SystemDictController extends BackendController {
         }
         searchMap.put("groupName", groupName);
         if (StringTools.isNotBlank(key)) {
-            conditions.add(EP_SYSTEM_DICT.KEY.eq(key));
+            conditions.add(EP_SYSTEM_DICT.KEY.like("%" + key + "%"));
         }
         searchMap.put("key", key);
-
         if (null != crStartTime) {
             conditions.add(EP_SYSTEM_DICT.CREATE_AT.greaterOrEqual(crStartTime));
         }
@@ -79,5 +79,58 @@ public class SystemDictController extends BackendController {
         model.addAttribute("page", page);
         model.addAttribute("searchMap", searchMap);
         return "systemDict/index";
+    }
+
+    /**
+     * 查看字典
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("viewDict/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:dict:index')")
+    @ResponseBody
+    public ResultDo viewDict(@PathVariable("id") Long id) {
+        Optional<EpSystemDictPo> optional = systemDictService.findById(id);
+        return optional.isPresent() ? ResultDo.build().setResult(optional.get()) : ResultDo.build(MessageCode.ERROR_OPERATE_FAIL);
+    }
+
+    /**
+     * 新增字典
+     *
+     * @param po
+     * @return
+     */
+    @PostMapping("newDict")
+    @PreAuthorize("hasAnyAuthority('platform:dict:index')")
+    @ResponseBody
+    public ResultDo newDict(EpSystemDictPo po) {
+        return systemDictService.createDict(po);
+    }
+
+    /**
+     * 修改字典
+     *
+     * @param po
+     * @return
+     */
+    @PostMapping("updateDict")
+    @PreAuthorize("hasAnyAuthority('platform:dict:index')")
+    @ResponseBody
+    public ResultDo viewDict(EpSystemDictPo po) {
+        return systemDictService.updateDict(po);
+    }
+
+    /**
+     * 删除字典
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("deleteDict/{id}")
+    @PreAuthorize("hasAnyAuthority('platform:dict:index')")
+    @ResponseBody
+    public ResultDo deleteDict(@PathVariable("id") Long id) {
+        return systemDictService.deleteDict(id);
     }
 }

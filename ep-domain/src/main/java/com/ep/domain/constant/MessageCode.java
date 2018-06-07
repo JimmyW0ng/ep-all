@@ -34,6 +34,10 @@ public class MessageCode {
      */
     public static final String ERROR_GET_CAPTCHA_NUM_OUT_LIMIT = "ERROR_GET_CAPTCHA_NUM_OUT_LIMIT";
     /**
+     * 字典
+     */
+    public static final String ERROR_DICT_NOT_EXISTS = "ERROR_DICT_NOT_EXISTS";
+    /**
      * 会员不存在
      */
     public static final String ERROR_MEMBER_NOT_EXISTS = "ERROR_MEMBER_NOT_EXISTS";
